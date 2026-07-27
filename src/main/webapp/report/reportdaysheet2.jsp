@@ -48,6 +48,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.MyGroupDao" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     AppointmentArchiveDao appointmentArchiveDao = (AppointmentArchiveDao) SpringUtils.getBean(AppointmentArchiveDao.class);
     OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
@@ -109,7 +110,7 @@
           leftmargin="0" rightmargin="0">
 
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
-        <tr bgcolor="<%=deepColor%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(deepColor))%>">
             <input type="button"
                    name="Button"
                    value="<fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportdaysheet.btnPrint"/>"
@@ -202,7 +203,7 @@
             <td><font size=6>Dr. David Lane</font></td>
         </tr>
         <tr align="center">
-            <td><font size=5> Patient List <%=dateTemp%>
+            <td><font size=5> Patient List <%=Encode.forHtml(String.valueOf(dateTemp))%>
             </font></td>
         </tr>
 
@@ -221,13 +222,13 @@
         %>
         <tr bgcolor="<%=bodd ? "#EEEEFF" : "white"%>">
             <td align="center" nowrap
-                title="<%="End Time: " + rsdemo.getString("end_time")%>"><%=rsdemo.getString("start_time").substring(0, 5)%>
+                title="<%=Encode.forHtmlAttribute(String.valueOf("End Time: " + rsdemo.getString("end_time")))%>"><%=Encode.forHtml(String.valueOf(rsdemo.getString("start_time").substring(0, 5)))%>
             </td>
-            <td align="left"><%=Misc.toUpperLowerCase(rsdemo.getString("name"))%>
+            <td align="left"><%=Encode.forHtml(String.valueOf(Misc.toUpperLowerCase(rsdemo.getString("name"))))%>
             </td>
-            <td align="center">&nbsp;<%=rsdemo.getString("dob")%>&nbsp;</td>
-            <td align="center">&nbsp;<%=rsdemo.getString("hin") + " " + rsdemo.getString("ver")%>&nbsp;</td>
-            <td align="left">&nbsp;<%=rsdemo.getString("reason")%>&nbsp;</td>
+            <td align="center">&nbsp;<%=Encode.forHtml(String.valueOf(rsdemo.getString("dob")))%>&nbsp;</td>
+            <td align="center">&nbsp;<%=Encode.forHtml(String.valueOf(rsdemo.getString("hin") + " " + rsdemo.getString("ver")))%>&nbsp;</td>
+            <td align="left">&nbsp;<%=Encode.forHtml(String.valueOf(rsdemo.getString("reason")))%>&nbsp;</td>
         </tr>
         <%
             }

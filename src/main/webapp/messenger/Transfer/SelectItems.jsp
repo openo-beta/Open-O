@@ -122,6 +122,7 @@
 <%@ page import="ca.openosp.openo.messenger.pageUtil.MsgSessionBean" %>
 <%@ page import="ca.openosp.openo.messenger.docxfer.util.MsgCommxml" %>
 <%@ page import="ca.openosp.openo.messenger.docxfer.send.MsgGenerate" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -384,7 +385,7 @@
 
             <form method="POST" action="<%= request.getContextPath() %>/messenger/Transfer/PostItems.jsp"><input type=hidden
                                                               name="xmlDoc"
-                                                              value="<%= MsgCommxml.encode64(MsgCommxml.toXML(root)) %>"/> <% DrawDoc(root, out); %>
+                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(MsgCommxml.encode64(MsgCommxml.toXML(root))))%>"/> <% DrawDoc(root, out); %>
                 <br>
                 <input type=submit value="Send These eDocs"/></form>
 

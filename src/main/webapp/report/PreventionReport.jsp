@@ -25,6 +25,7 @@
 --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -836,7 +837,7 @@
                 });
                 window.open(urlToOpen);
             }
-            <%-- <%=queryStr%>&amp;message=Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType"),"UTF-8")%>&amp;followupType=<%=followUpType%>&amp;followupValue=L1">Generate First Letter</a>*/ --%>
+            <%-- <%=Encode.forJavaScript(String.valueOf(queryStr))%>&amp;message=Letter 1 Reminder Letter sent for :"+request.getAttribute("prevType"),"UTF-8")%>&amp;followupType=<%=Encode.forUriComponent(String.valueOf(followUpType))%>&amp;followupValue=L1">Generate First Letter</a>*/ --%>
         }
 
         $scope.openBill = function (demographicNo, billingCode) {
@@ -938,7 +939,7 @@
 
         $scope.openDemo = function (demo) {
             window.open("<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=" + demo + "&displaymode=edit&dboperation=search_detail", 'MasterDemographic');
-            <%--','MasterDemographic')"><%=dis.demographicNo%></a>) --%>
+            <%--','MasterDemographic')"><%=Encode.forJavaScript(String.valueOf(dis.demographicNo))%></a>) --%>
         }
     });
 

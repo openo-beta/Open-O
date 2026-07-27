@@ -54,6 +54,7 @@
 <%@page import="ca.openosp.openo.commn.model.InstitutionDepartmentPK" %>
 <%@page import="ca.openosp.openo.commn.dao.InstitutitionDepartmentDao" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.config.pageUtil.EctConTitlebar" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     InstitutionDao institutionDao = SpringUtils.getBean(InstitutionDao.class);
     DepartmentDao departmentDao = SpringUtils.getBean(DepartmentDao.class);
@@ -81,7 +82,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -113,12 +114,12 @@
 
                     <!----Start new rows here-->
                     <tr>
-                        <td>Please check off all the departments offered by <%=name%>.</td>
+                        <td>Please check off all the departments offered by <%=Encode.forHtml(String.valueOf(name))%>.</td>
                     </tr>
                     <tr>
                         <td>
                             <form action="${pageContext.request.contextPath}/oscarEncounter/UpdateInstitutionDepartment.do" method="post">
-                            <input type="hidden" name="id" value="<%=id %>">
+                            <input type="hidden" name="id" value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>">
                             <input type="submit"
                                    value="Update Institution Department">
                             <div class="ChooseRecipientsBox1">
@@ -138,7 +139,7 @@
                                         <td>
 
                                             <input type=checkbox name="specialists"
-                                                   value=<%=i.getId()%> <%=assoc!=null?"checked=\"checked\"":"" %>>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(i.getId()))%>" <%=assoc!=null?"checked=\"checked\"":""%>>
 
                                         </td>
                                         <td>

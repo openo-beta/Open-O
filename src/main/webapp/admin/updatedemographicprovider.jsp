@@ -134,7 +134,7 @@
                     }
                 }
         %>
-        <%=rowsAffected %>
+        <%=Encode.forHtml(String.valueOf(rowsAffected))%>
         <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.updatedemographicprovider.msgRecords"/>
         <br>
         <%
@@ -175,7 +175,7 @@
                     }
                 }
         %>
-        <%=rowsAffected %>
+        <%=Encode.forHtml(String.valueOf(rowsAffected))%>
         <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.updatedemographicprovider.msgRecords"/>
         <br>
         <%
@@ -219,7 +219,7 @@
                     }
                 }
         %>
-        <%= rowsAffected %>
+        <%=Encode.forHtml(String.valueOf(rowsAffected))%>
         <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.updatedemographicprovider.msgRecords"/>
         <br>
         <%
@@ -241,7 +241,7 @@
                     }
                 }
         %>
-        <%= rowsAffected %>
+        <%=Encode.forHtml(String.valueOf(rowsAffected))%>
         <fmt:setBundle basename="oscarResources"/><fmt:message key="admin.updatedemographicprovider.msgRecords"/>
         <br>
         <% } %>
@@ -285,8 +285,8 @@
                                     char cletter = 'A';
                                     for (int i = 0; i < 26; i++) {
                                 %>
-                                <option value="<%= (char) (cletter + i) %>">
-                                    <%= (char) (cletter + i) %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf((char) (cletter + i)))%>">
+                                    <%=Encode.forHtml(String.valueOf((char) (cletter + i)))%>
                                 </option>
                                 <% } %>
                             </select>
@@ -296,8 +296,8 @@
                                     cletter = 'A';
                                     for (int i = 0; i < 26; i++) {
                                 %>
-                                <option value="<%= (char) (cletter + i) %>">
-                                    <%= (char) (cletter + i) %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf((char) (cletter + i)))%>">
+                                    <%=Encode.forHtml(String.valueOf((char) (cletter + i)))%>
                                 </option>
                                 <% } %>
                             </select> <br>
@@ -349,8 +349,8 @@
                                     cletter = 'A';
                                     for (int i = 0; i < 26; i++) {
                                 %>
-                                <option value="<%= (char) (cletter + i) %>">
-                                    <%= (char) (cletter + i) %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf((char) (cletter + i)))%>">
+                                    <%=Encode.forHtml(String.valueOf((char) (cletter + i)))%>
                                 </option>
                                 <% } %>
                             </select>
@@ -360,8 +360,8 @@
                                     cletter = 'A';
                                     for (int i = 0; i < 26; i++) {
                                 %>
-                                <option value="<%= (char) (cletter + i) %>">
-                                    <%= (char) (cletter + i) %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf((char) (cletter + i)))%>">
+                                    <%=Encode.forHtml(String.valueOf((char) (cletter + i)))%>
                                 </option>
                                 <% } %>
                             </select> <br>
@@ -415,8 +415,8 @@
                                     cletter = 'A';
                                     for (int i = 0; i < 26; i++) {
                                 %>
-                                <option value="<%=(char) (cletter+i) %>">
-                                    <%= (char) (cletter + i) %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf((char) (cletter+i)))%>">
+                                    <%=Encode.forHtml(String.valueOf((char) (cletter + i)))%>
                                 </option>
                                 <% } %>
                             </select>
@@ -427,8 +427,8 @@
                                     cletter = 'A';
                                     for (int i = 0; i < 26; i++) {
                                 %>
-                                <option value="<%=(char) (cletter+i) %>">
-                                    <%= (char) (cletter + i) %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf((char) (cletter+i)))%>">
+                                    <%=Encode.forHtml(String.valueOf((char) (cletter + i)))%>
                                 </option>
                                 <% } %>
                             </select> <br>
@@ -479,8 +479,8 @@
                                     cletter = 'A';
                                     for (int i = 0; i < 26; i++) {
                                 %>
-                                <option value="<%= (char) (cletter+i) %>">
-                                    <%= (char) (cletter + i) %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf((char) (cletter+i)))%>">
+                                    <%=Encode.forHtml(String.valueOf((char) (cletter + i)))%>
                                 </option>
                                 <% } %>
                             </select>
@@ -490,8 +490,8 @@
                                     cletter = 'A';
                                     for (int i = 0; i < 26; i++) {
                                 %>
-                                <option value="<%=(char) (cletter+i) %>">
-                                    <%= (char) (cletter + i) %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf((char) (cletter+i)))%>">
+                                    <%=Encode.forHtml(String.valueOf((char) (cletter + i)))%>
                                 </option>
                                 <% } %>
                             </select> <br>

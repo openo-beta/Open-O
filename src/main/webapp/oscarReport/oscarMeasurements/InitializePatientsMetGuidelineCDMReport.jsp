@@ -31,6 +31,7 @@
 <%@ page import="ca.openosp.openo.report.oscarMeasurements.pageUtil.*" %>
 <%@ page import="java.util.*, java.sql.*, java.text.*, java.net.*" %>
 <%@ page import="ca.openosp.openo.commn.model.MeasurementType" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     GregorianCalendar now = new GregorianCalendar();
@@ -91,7 +92,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -136,12 +137,12 @@
                                                 type="text" name='startDateA'
                                                 value='<c:out value="${lastYear}"/>' size="10"> <img
                                                 src="<%= request.getContextPath() %>/img/calendar.gif" border="0"
-                                                onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=startDateA&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=<%="RptInitializePatientsMetGuidelineCDMReportForm"%>','','width=300,height=300')"/>
+                                                onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=startDateA&amp;year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&amp;month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&amp;form=<%="RptInitializePatientsMetGuidelineCDMReportForm"%>','','width=300,height=300')"/>
                                         </td>
                                         <td width="120" class="fieldBox" bgcolor="#ddddff"><input
                                                 type="text" name='endDateA' value='<c:out value="${today}"/>'
                                                 size="10"> <img src="<%= request.getContextPath() %>/img/calendar.gif" border="0"
-                                                                onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=endDateA&amp;year=<%=curYear%>&amp;month=<%=curMonth%>&amp;form=<%="RptInitializePatientsMetGuidelineCDMReportForm"%>','','width=300,height=300')"/>
+                                                                onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=endDateA&amp;year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&amp;month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&amp;form=<%="RptInitializePatientsMetGuidelineCDMReportForm"%>','','width=300,height=300')"/>
                                         </td>
                                         <td width="450" class="fieldBox" bgcolor="#ddddff"></td>
                                     </tr>

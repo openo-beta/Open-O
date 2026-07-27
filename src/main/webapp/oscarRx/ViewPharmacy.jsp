@@ -29,6 +29,7 @@
 <%@ page
         import="ca.openosp.openo.rx.pageUtil.*,ca.openosp.openo.rx.data.*,java.util.*" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -58,11 +59,11 @@
             <%
              if (request.getParameter("ID") != null && type != null && type.equals("View")){ %>
             $(function () {
-                var data = "pharmacyId=<%=request.getParameter("ID")%>";
+                var data = "pharmacyId=<%=Encode.forUriComponent(request.getParameter("ID"))%>";
                 $.get("<%=request.getContextPath()%>/oscarRx/managePharmacy.do?method=getPharmacyInfo",
                     data, function (data) {
                         if (data.name) {
-                            $('#pharmacyId').val(<%=request.getParameter("ID")%>);
+                            $('#pharmacyId').val("<%=Encode.forJavaScript(request.getParameter("ID"))%>");
                             $('#pharmacyName').html(data.name);
                             $('#pharmacyAddress').html(data.address);
                             $('#pharmacyCity').html(data.city);
@@ -124,7 +125,7 @@
                                             <% %>
                                             <input type="hidden" id="pharmacyId" name="pharmacyId"/>
                                             <input type="hidden" id="demographicNo" name="demographicNo"
-                                                   value="<%=bean.getDemographicNo()%>"/>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(bean.getDemographicNo()))%>"/>
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="ManagePharmacy.txtfld.label.pharmacyName"/> :
                                         </td>
                                         <td><label type="text" readonly="true" id="pharmacyName" name="pharmacyName"/>

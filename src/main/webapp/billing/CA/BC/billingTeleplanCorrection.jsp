@@ -123,6 +123,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.Billing" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
     DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
@@ -247,12 +248,12 @@
 
             <td width="20%"><font face="Arial, Helvetica, sans-serif"
                                   size="2"><input type="text" name="billing_no"
-                                                  value="<%=billNo%>" maxsize="10"></td>
+                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(billNo))%>" maxsize="10"></td>
 
             <td width="60%" align="left"><b><font
                     face="Arial, Helvetica, sans-serif" size="2" color="#000000"><b>Last
 
-                update: <%=UpdateDate%>
+                update: <%=Encode.forHtml(String.valueOf(UpdateDate))%>
             </font></b></td>
 
         </tr>
@@ -287,9 +288,9 @@
 <br>
 <form name="serviceform" method="post"
       action="billingCorrectionValid.jsp"><input type="hidden"
-                                                 name="xml_billing_no" value="<%=billNo%>"><input type="hidden"
+                                                 name="xml_billing_no" value="<%=Encode.forHtmlAttribute(String.valueOf(billNo))%>"><input type="hidden"
                                                                                                   name="update_date"
-                                                                                                  value="<%=UpdateDate%>">
+                                                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(UpdateDate))%>">
 
     <table width="600" border="0">
 
@@ -305,15 +306,15 @@
         <tr>
 
             <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
-                                     size="2">Patient Name: <%=DemoName%> <input type="hidden"
-                                                                                 name="demo_name" value="<%=DemoName%>">
+                                     size="2">Patient Name: <%=Encode.forHtml(String.valueOf(DemoName))%> <input type="hidden"
+                                                                                 name="demo_name" value="<%=Encode.forHtmlAttribute(String.valueOf(DemoName))%>">
             </font></b></td>
 
             <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
                                      size="2">Health# : <input type="text" style="font-size: 80%;"
-                                                               name="hin" value="<%=hin%>"> <input type="hidden"
+                                                               name="hin" value="<%=Encode.forHtmlAttribute(String.valueOf(hin))%>"> <input type="hidden"
                                                                                                    name="xml_hin"
-                                                                                                   value="<%=hin%>">
+                                                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(hin))%>">
             </font></b></td>
 
         </tr>
@@ -321,14 +322,14 @@
         <tr bgcolor="#EEEEFF">
 
             <td><font size="2" face="Arial, Helvetica, sans-serif"><b>Sex:
-                <%=DemoSex%> <input type="hidden" name="demo_sex" value="<%=DemoSex%>">
+                <%=Encode.forHtml(String.valueOf(DemoSex))%> <input type="hidden" name="demo_sex" value="<%=Encode.forHtmlAttribute(String.valueOf(DemoSex))%>">
 
-                <input type="hidden" name="hc_sex" value="<%=HCSex%>"> </b></font></td>
+                <input type="hidden" name="hc_sex" value="<%=Encode.forHtmlAttribute(String.valueOf(HCSex))%>"> </b></font></td>
 
             <td><font size="2"><b><font
                     face="Arial, Helvetica, sans-serif">D.O.B. : <input
-                    type="hidden" name="xml_dob" value="<%=DemoDOB%>"> <input
-                    type="text" style="font-size: 80%;" name="dob" value="<%=DemoDOB%>">
+                    type="hidden" name="xml_dob" value="<%=Encode.forHtmlAttribute(String.valueOf(DemoDOB))%>"> <input
+                    type="text" style="font-size: 80%;" name="dob" value="<%=Encode.forHtmlAttribute(String.valueOf(DemoDOB))%>">
 
             </font></b></font></td>
 
@@ -337,24 +338,24 @@
         <tr>
 
             <td><b><font size="2" face="Arial, Helvetica, sans-serif">Address:
-                <%=DemoAddress%> <input type="hidden" name="demo_address"
-                                        value="<%=DemoAddress%>"> </font></b></td>
+                <%=Encode.forHtml(String.valueOf(DemoAddress))%> <input type="hidden" name="demo_address"
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(DemoAddress))%>"> </font></b></td>
 
             <td><b><font size="2" face="Arial, Helvetica, sans-serif">City:
-                <%=DemoCity%> <input type="hidden" name="demo_city"
-                                     value="<%=DemoCity%>"> </font></b></td>
+                <%=Encode.forHtml(String.valueOf(DemoCity))%> <input type="hidden" name="demo_city"
+                                     value="<%=Encode.forHtmlAttribute(String.valueOf(DemoCity))%>"> </font></b></td>
 
         </tr>
 
         <tr bgcolor="#EEEEFF">
 
             <td><b><font size="2" face="Arial, Helvetica, sans-serif">Province:
-                <%=DemoProvince%> <input type="hidden" name="demo_province"
-                                         value="<%=DemoProvince%>"> </font></b></td>
+                <%=Encode.forHtml(String.valueOf(DemoProvince))%> <input type="hidden" name="demo_province"
+                                         value="<%=Encode.forHtmlAttribute(String.valueOf(DemoProvince))%>"> </font></b></td>
 
             <td><b><font size="2" face="Arial, Helvetica, sans-serif">Postal
-                Code: <%=DemoPostal%> <input type="hidden" name="demo_postal"
-                                             value="<%=DemoPostal%>"> </font></b></td>
+                Code: <%=Encode.forHtml(String.valueOf(DemoPostal))%> <input type="hidden" name="demo_postal"
+                                             value="<%=Encode.forHtmlAttribute(String.valueOf(DemoPostal))%>"> </font></b></td>
 
         </tr>
 
@@ -375,7 +376,7 @@
 
             <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
                                      size="2">Billing Type: <input type="hidden" name="xml_status"
-                                                                   value="<%=BillType%>"> <select
+                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(BillType))%>"> <select
                     style="font-size: 80%;"
                     name="status">
 
@@ -420,10 +421,10 @@
 
             <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
                                      size="2"><a href="#"
-                                                 onClick='rs("billingcalendar","billingCalendarPopup.jsp?year=<%=curYear%>&month=<%=curMonth%>&type=&returnForm=serviceform&returnItem=xml_appointment_date","380","300","0")'>Billing
+                                                 onClick='rs("billingcalendar","billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&type=&returnForm=serviceform&returnItem=xml_appointment_date","380","300","0")'>Billing
 
                 Date: </a><input type="text" style="font-size: 80%;"
-                                 name="xml_appointment_date" value="<%=BillDate%>"> </font></b></td>
+                                 name="xml_appointment_date" value="<%=Encode.forHtmlAttribute(String.valueOf(BillDate))%>"> </font></b></td>
 
         </tr>
 
@@ -431,7 +432,7 @@
 
             <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
                                      size="2">Visit: <input type="hidden"
-                                                            name="xml_clinic_ref_code" value="<%=location%>"><select
+                                                            name="xml_clinic_ref_code" value="<%=Encode.forHtmlAttribute(String.valueOf(location))%>"><select
                     style="font-size: 80%;" name="clinic_ref_code">
                 <option value="">--- Select Visit Location ---</option>
                     <%
@@ -443,9 +444,9 @@
 
  %>
 
-                <option value="<%=BillLocationNo%>"
-                        <%=location.equals(BillLocationNo) ? "selected" : ""%>><%=BillLocationNo%>
-                    | <%=BillLocation%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(BillLocationNo))%>"
+                        <%=location.equals(BillLocationNo) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(BillLocationNo))%>
+                    | <%=Encode.forHtml(String.valueOf(BillLocation))%>
                 </option>
 
 
@@ -479,9 +480,9 @@ String proFirst="", proLast="", proOHIP="", proNo="";
 
 %>
 
-                <option value="<%=proOHIP%>"
-                        <%=Provider.equals(proOHIP) ? "selected" : ""%>><%=proOHIP%> |
-                    <%=proLast%>, <%=proFirst%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>"
+                        <%=Provider.equals(proOHIP) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(proOHIP))%> |
+                    <%=Encode.forHtml(String.valueOf(proLast))%>, <%=Encode.forHtml(String.valueOf(proFirst))%>
                 </option>
 
                     <% } }
@@ -490,7 +491,7 @@ String proFirst="", proLast="", proOHIP="", proNo="";
 
 
 
-  %><input type="hidden" name="xml_provider_no" value="<%=Provider%>"></font></b></td>
+  %><input type="hidden" name="xml_provider_no" value="<%=Encode.forHtmlAttribute(String.valueOf(Provider))%>"></font></b></td>
 
         </tr>
 
@@ -498,7 +499,7 @@ String proFirst="", proLast="", proOHIP="", proNo="";
 
             <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
                                      size="2">Visit Type: <input type="hidden" name="xml_visittype"
-                                                                 value="<%=visittype%>"> <select style="font-size: 80%;"
+                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(visittype))%>"> <select style="font-size: 80%;"
                                                                                                  name="visittype">
 
                 <option value="">--- Select Visit Type ---</option>
@@ -544,10 +545,10 @@ String proFirst="", proLast="", proOHIP="", proNo="";
 
             <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
                                      size="2"><input type="hidden" name="xml_visitdate"
-                                                     value="<%=visitdate%>"><a href="#"
-                                                                               onClick='rs("billingcalendar","billingCalendarPopup.jsp?year=<%=curYear%>&month=<%=curMonth%>&type=&returnForm=serviceform&returnItem=xml_vdate","380","300","0")'>
+                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(visitdate))%>"><a href="#"
+                                                                               onClick='rs("billingcalendar","billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&type=&returnForm=serviceform&returnItem=xml_vdate","380","300","0")'>
                 Admission Date:</a> <input type="text" style="font-size: 80%;"
-                                           name="xml_vdate" value="<%=visitdate%>"></font></b></td>
+                                           name="xml_vdate" value="<%=Encode.forHtmlAttribute(String.valueOf(visitdate))%>"></font></b></td>
 
         </tr>
 
@@ -613,30 +614,30 @@ String proFirst="", proLast="", proOHIP="", proNo="";
 
             <td width="25%"><font face="Arial, Helvetica, sans-serif"
                                   size="2"><input type="hidden"
-                                                  name="xml_service_code<%=rowCount%>" value="<%=serviceCode%>"><input
-                    type="text" style="font-size: 80%;" name="servicecode<%=rowCount-1%>"
-                    value="<%=serviceCode%>"></font></td>
+                                                  name="xml_service_code<%=Encode.forHtmlAttribute(String.valueOf(rowCount))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"><input
+                    type="text" style="font-size: 80%;" name="servicecode<%=Encode.forHtmlAttribute(String.valueOf(rowCount-1))%>"
+                    value="<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"></font></td>
 
 
             <td width="50%"><font face="Arial, Helvetica, sans-serif"
-                                  size="1"><%=serviceDesc%>
+                                  size="1"><%=Encode.forHtml(String.valueOf(serviceDesc))%>
             </font></td>
 
             <td width="12%"><font face="Arial, Helvetica, sans-serif"
                                   size="2"><input type="hidden"
-                                                  name="xml_billing_unit<%=rowCount%>" value="<%=billingunit%>"><input
-                    type="text" style="font-size: 80%;" name="billingunit<%=rowCount-1%>"
-                    value="<%=billingunit%>" size="5" maxlength="5"></font></td>
+                                                  name="xml_billing_unit<%=Encode.forHtmlAttribute(String.valueOf(rowCount))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(billingunit))%>"><input
+                    type="text" style="font-size: 80%;" name="billingunit<%=Encode.forHtmlAttribute(String.valueOf(rowCount-1))%>"
+                    value="<%=Encode.forHtmlAttribute(String.valueOf(billingunit))%>" size="5" maxlength="5"></font></td>
 
             <td width="13%">
 
                 <div align="right"><font face="Arial, Helvetica, sans-serif"
                                          size="2"><input type="hidden"
-                                                         name="xml_billing_amount<%=rowCount%>"
-                                                         value="<%=billAmount.substring(0,billAmount.length()-2) + "." + billAmount.substring(billAmount.length()-2)%>"><input
+                                                         name="xml_billing_amount<%=Encode.forHtmlAttribute(String.valueOf(rowCount))%>"
+                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(billAmount.substring(0,billAmount.length()-2) + "." + billAmount.substring(billAmount.length()-2)))%>"><input
                         type="text" style="font-size: 80%;" size="5" maxlength="5"
-                        name="billingamount<%=rowCount-1%>"
-                        value="<%=billAmount.substring(0,billAmount.length()-2) + "." + billAmount.substring(billAmount.length()-2)%>"></font>
+                        name="billingamount<%=Encode.forHtmlAttribute(String.valueOf(rowCount-1))%>"
+                        value="<%=Encode.forHtmlAttribute(String.valueOf(billAmount.substring(0,billAmount.length()-2) + "." + billAmount.substring(billAmount.length()-2)))%>"></font>
                 </div>
 
             </td>
@@ -709,10 +710,10 @@ String proFirst="", proLast="", proOHIP="", proNo="";
 
             <td colspan="4"><font face="Arial, Helvetica, sans-serif"
                                   size="2"><input type="hidden" name="xml_diagnostic_code"
-                                                  value="<%=diagCode%>"><input type="text"
+                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(diagCode))%>"><input type="text"
                                                                                style="font-size: 80%;"
                                                                                name="xml_diagnostic_detail"
-                                                                               value="<%=diagCode%>" size="50"><input
+                                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(diagCode))%>" size="50"><input
                     type="hidden"
                     name="xml_dig_search1"><a href="javascript:ScriptAttach()">DX
                 Search</a></font></td>

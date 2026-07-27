@@ -19,6 +19,7 @@
 --%>
 <%@ page import="java.util.*,ca.openosp.openo.commn.model.*" %>
 <%@ page import="ca.openosp.openo.commn.model.AppointmentStatus" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -60,7 +61,7 @@
     <tr bgcolor="#486ebd">
         <th align="CENTER" NOWRAP><font face="Helvetica" color="#FFFFFF"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.appt.status.mgr.title"/></font></th>
         <th align="right" NOWRAP><font face="Helvetica" color="#CCCCCC"><a
-                href=<%=reseturl%>>reset</a></font></th>
+                href=<%=Encode.forHtml(String.valueOf(reseturl))%>>reset</a></font></th>
     </tr>
 </table>
 
@@ -93,13 +94,13 @@
             iEditable = apptStatus.getEditable();
     %>
     <tr class=<%=(i % 2 == 0) ? "even" : "odd"%>>
-        <td class="nowrap"><%=strStatus%>
+        <td class="nowrap"><%=Encode.forHtml(String.valueOf(strStatus))%>
         </td>
-        <td class="nowrap"><%=strDesc%>
+        <td class="nowrap"><%=Encode.forHtml(String.valueOf(strDesc))%>
         </td>
-        <td class="nowrap" bgcolor="<%=strColor%>"><%=strColor%>
+        <td class="nowrap" bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(strColor))%>"><%=Encode.forHtml(String.valueOf(strColor))%>
         </td>
-        <td class="nowrap"><%=iActive%>
+        <td class="nowrap"><%=Encode.forHtml(String.valueOf(iActive))%>
         </td>
         <td class="nowrap">
             <%
@@ -131,7 +132,7 @@
     String strUseStatus = (String) request.getAttribute("useStatus");
     if (null != strUseStatus && strUseStatus.length() > 0) {
 %>
-The code [<%=strUseStatus%>] has been used before, please enable that
+The code [<%=Encode.forHtml(String.valueOf(strUseStatus))%>] has been used before, please enable that
 status.
 <%
     }

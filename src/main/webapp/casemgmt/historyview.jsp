@@ -26,6 +26,7 @@
 
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -64,26 +65,26 @@
 <br>
 Client name:
 <I> <c:if test="${not empty requestScope.demoName}">
-    <c:out value="${requestScope.demoName}"/>
+    <%=request.getAttribute("demoName") == null ? "" : Encode.forHtml(String.valueOf(request.getAttribute("demoName")))%>
 </c:if>
 <c:if test="${empty requestScope.demoName}">
-    <c:out value="${param.demoName}"/>
+    <%=request.getParameter("demoName") == null ? "" : Encode.forHtml(request.getParameter("demoName"))%>
 </c:if> </I>
 <br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Age:
 <I> <c:if test="${not empty requestScope.demoName}">
-    <c:out value="${requestScope.demoAge}"/>
+    <%=request.getAttribute("demoAge") == null ? "" : Encode.forHtml(String.valueOf(request.getAttribute("demoAge")))%>
 </c:if>
 <c:if test="${empty requestScope.demoName}">
-    <c:out value="${param.demoAge}"/>
+    <%=request.getParameter("demoAge") == null ? "" : Encode.forHtml(request.getParameter("demoAge"))%>
 </c:if> </I>
 <br>
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; DOB:
 <I> <c:if test="${not empty requestScope.demoName}">
-    <c:out value="${requestScope.demoDOB}"/>
+    <%=request.getAttribute("demoDOB") == null ? "" : Encode.forHtml(String.valueOf(request.getAttribute("demoDOB")))%>
 </c:if>
 <c:if test="${empty requestScope.demoName}">
-    <c:out value="${param.demoDOB}"/>
+    <%=request.getParameter("demoDOB") == null ? "" : Encode.forHtml(request.getParameter("demoDOB"))%>
 </c:if> </I>
 <br>
 <br>

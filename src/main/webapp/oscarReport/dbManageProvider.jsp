@@ -29,6 +29,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.ReportProvider" %>
 <%@ page import="ca.openosp.openo.commn.dao.ReportProviderDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ReportProviderDao reportProviderDao = SpringUtils.getBean(ReportProviderDao.class);
 %>
@@ -97,7 +98,7 @@
 %>
     <script type="text/javascript">
         <%if(action.equals("visitreport")){%>
-        window.opener.location.href = "<%=request.getContextPath() %>/administration/?show=<%=action%>";
+        window.opener.location.href = "<%=request.getContextPath() %>/administration/?show=<%=Encode.forUriComponent(String.valueOf(action))%>";
         <%}%>
 
         window.close();

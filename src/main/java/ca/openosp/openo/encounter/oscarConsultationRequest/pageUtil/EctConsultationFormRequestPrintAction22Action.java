@@ -91,7 +91,7 @@ public class EctConsultationFormRequestPrintAction22Action extends ActionSupport
 
         String demoNo = request.getParameter("demographicNo");
         ArrayList<EDoc> docs = EDocUtil.listDocs(loggedInInfo, demoNo, reqId, EDocUtil.ATTACHED);
-        String path = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String path = OscarProperties.getInstance().getDocumentDirectory();
         if (!path.endsWith(File.separator)) {
             path = path + File.separator;
         }

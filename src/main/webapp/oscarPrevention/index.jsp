@@ -25,7 +25,6 @@
 --%>
 
 <%@ page import="java.nio.charset.StandardCharsets" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@page import="ca.openosp.openo.commn.model.CVCMapping" %>
@@ -153,6 +152,7 @@
 <%@ page import="ca.openosp.openo.prevention.PreventionDisplayConfig" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 
     <head>
@@ -310,7 +310,7 @@
             function addByLot() {
                 var lotNbr = $("#lotNumberToAdd").val();
 
-                popup(600, 900, 'AddPreventionData.jsp?demographic_no=<%=demographic_no%>&lotNumber=' + lotNbr, 'addPreventionData' + <%=new java.util.Random().nextInt(10000) + 1%>);
+                popup(600, 900, 'AddPreventionData.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&lotNumber=' + lotNbr, 'addPreventionData' + <%=new java.util.Random().nextInt(10000) + 1%>);
 
             }
         </script>
@@ -565,7 +565,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><%=nameAge%>
+                        <td><%=Encode.forHtml(String.valueOf(nameAge))%>
                         </td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a
@@ -597,17 +597,17 @@
                             %>
                             <li style="margin-top: 2px;"><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onclick="javascript:popup(600,900,'AddPreventionDataDisambiguate.jsp?<%=snomedId != null ? "snomedId=" + snomedId + "&" : ""%>prevention=<%= java.net.URLEncoder.encode(prevName, StandardCharsets.UTF_8) %>&amp;demographic_no=<%=demographic_no%>&amp;prevResultDesc=<%= java.net.URLEncoder.encode(h.get("resultDesc"), StandardCharsets.UTF_8) %>','addPreventionData<%=Math.abs(prevName.hashCode()) %>')"
-                                    title="<%=h.get("desc")%>">
-                                <%=prevName%>
+                                    onclick="javascript:popup(600,900,'AddPreventionDataDisambiguate.jsp?<%=Encode.forJavaScript(String.valueOf(snomedId != null ? "snomedId=" + snomedId + "&" : ""))%>prevention=<%=Encode.forJavaScript(String.valueOf(prevName))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;prevResultDesc=<%=Encode.forUriComponent(String.valueOf(h.get("resultDesc")))%>','addPreventionData<%=Encode.forJavaScript(String.valueOf(Math.abs(prevName.hashCode())))%>')"
+                                    title="<%=Encode.forHtmlAttribute(String.valueOf(h.get("desc")))%>">
+                                <%=Encode.forHtml(String.valueOf(prevName))%>
                             </a></li>
                             <% } else {
                             %>
                             <li style="margin-top: 2px;"><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onclick="javascript:popup(600,900,'AddPreventionData.jsp?4=4&<%=snomedId != null ? "snomedId=" + snomedId + "&" : ""%>prevention=<%= java.net.URLEncoder.encode(prevName, StandardCharsets.UTF_8) %>&amp;demographic_no=<%=demographic_no%>&amp;prevResultDesc=<%= java.net.URLEncoder.encode(h.get("resultDesc"), StandardCharsets.UTF_8) %>','addPreventionData<%=Math.abs(prevName.hashCode()) %>')"
-                                    title="<%=h.get("desc")%>">
-                                <%=prevName%>
+                                    onclick="javascript:popup(600,900,'AddPreventionData.jsp?4=4&<%=Encode.forJavaScript(String.valueOf(snomedId != null ? "snomedId=" + snomedId + "&" : ""))%>prevention=<%=Encode.forJavaScript(String.valueOf(prevName))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;prevResultDesc=<%=Encode.forUriComponent(String.valueOf(h.get("resultDesc")))%>','addPreventionData<%=Encode.forJavaScript(String.valueOf(Math.abs(prevName.hashCode())))%>')"
+                                    title="<%=Encode.forHtmlAttribute(String.valueOf(h.get("desc")))%>">
+                                <%=Encode.forHtml(String.valueOf(prevName))%>
                             </a></li>
                             <%
                                             }
@@ -639,17 +639,17 @@
                             %>
                             <li style="margin-top: 2px;"><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onclick="javascript:popup(600,900,'AddPreventionDataDisambiguate.jsp?<%=snomedId != null ? "snomedId=" + snomedId + "&" : ""%>prevention=<%= java.net.URLEncoder.encode(prevName, StandardCharsets.UTF_8) %>&amp;demographic_no=<%=demographic_no%>&amp;prevResultDesc=<%= java.net.URLEncoder.encode(h.get("resultDesc"), StandardCharsets.UTF_8) %>','addPreventionData<%=Math.abs(prevName.hashCode()) %>')"
-                                    title="<%=h.get("desc")%>">
-                                <%=prevName%><%=ispa1 %>
+                                    onclick="javascript:popup(600,900,'AddPreventionDataDisambiguate.jsp?<%=Encode.forJavaScript(String.valueOf(snomedId != null ? "snomedId=" + snomedId + "&" : ""))%>prevention=<%=Encode.forJavaScript(String.valueOf(prevName))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;prevResultDesc=<%=Encode.forUriComponent(String.valueOf(h.get("resultDesc")))%>','addPreventionData<%=Encode.forJavaScript(String.valueOf(Math.abs(prevName.hashCode())))%>')"
+                                    title="<%=Encode.forHtmlAttribute(String.valueOf(h.get("desc")))%>">
+                                <%=Encode.forHtml(String.valueOf(prevName))%><%=Encode.forHtml(String.valueOf(ispa1))%>
                             </a></li>
                             <% } else {
                             %>
                             <li style="margin-top: 2px;"><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onclick="javascript:popup(600,900,'AddPreventionData.jsp?4=4&<%=snomedId != null ? "snomedId=" + snomedId + "&" : ""%>prevention=<%= java.net.URLEncoder.encode(prevName, StandardCharsets.UTF_8) %>&amp;demographic_no=<%=demographic_no%>&amp;prevResultDesc=<%= java.net.URLEncoder.encode(h.get("resultDesc"), StandardCharsets.UTF_8) %>','addPreventionData<%=Math.abs(prevName.hashCode()) %>')"
-                                    title="<%=h.get("desc")%>">
-                                <%=prevName%><%=ispa1 %>
+                                    onclick="javascript:popup(600,900,'AddPreventionData.jsp?4=4&<%=Encode.forJavaScript(String.valueOf(snomedId != null ? "snomedId=" + snomedId + "&" : ""))%>prevention=<%=Encode.forJavaScript(String.valueOf(prevName))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;prevResultDesc=<%=Encode.forUriComponent(String.valueOf(h.get("resultDesc")))%>','addPreventionData<%=Encode.forJavaScript(String.valueOf(Math.abs(prevName.hashCode())))%>')"
+                                    title="<%=Encode.forHtmlAttribute(String.valueOf(h.get("desc")))%>">
+                                <%=Encode.forHtml(String.valueOf(prevName))%><%=Encode.forHtml(String.valueOf(ispa1))%>
                             </a></li>
                             <%
                                             }
@@ -675,17 +675,17 @@
                                             if (mappings != null && mappings.size() > 1) {%>
                             <li style="margin-top: 2px;"><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onclick="javascript:popup(600,900,'AddPreventionDataDisambiguate.jsp?<%=snomedId != null ? "snomedId=" + snomedId + "&" : ""%>prevention=<%= java.net.URLEncoder.encode(prevName, StandardCharsets.UTF_8) %>&amp;demographic_no=<%=demographic_no%>&amp;prevResultDesc=<%= java.net.URLEncoder.encode(h.get("resultDesc"), StandardCharsets.UTF_8) %>','addPreventionData<%=Math.abs(prevName.hashCode()) %>')"
-                                    title="<%=h.get("desc")%>">
-                                <%=prevName%>
+                                    onclick="javascript:popup(600,900,'AddPreventionDataDisambiguate.jsp?<%=Encode.forJavaScript(String.valueOf(snomedId != null ? "snomedId=" + snomedId + "&" : ""))%>prevention=<%=Encode.forJavaScript(String.valueOf(prevName))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;prevResultDesc=<%=Encode.forUriComponent(String.valueOf(h.get("resultDesc")))%>','addPreventionData<%=Encode.forJavaScript(String.valueOf(Math.abs(prevName.hashCode())))%>')"
+                                    title="<%=Encode.forHtmlAttribute(String.valueOf(h.get("desc")))%>">
+                                <%=Encode.forHtml(String.valueOf(prevName))%>
                             </a></li>
                             <% } else {
                             %>
                             <li style="margin-top: 2px;"><a
                                     href="javascript: function myFunction() {return false; }"
-                                    onclick="javascript:popup(600,900,'AddPreventionData.jsp?4=4&<%=snomedId != null ? "snomedId=" + snomedId + "&" : ""%>prevention=<%= java.net.URLEncoder.encode(prevName, StandardCharsets.UTF_8) %>&amp;demographic_no=<%=demographic_no%>&amp;prevResultDesc=<%= java.net.URLEncoder.encode(h.get("resultDesc"), StandardCharsets.UTF_8) %>','addPreventionData<%=Math.abs(prevName.hashCode()) %>')"
-                                    title="<%=h.get("desc")%>">
-                                <%=prevName%>
+                                    onclick="javascript:popup(600,900,'AddPreventionData.jsp?4=4&<%=Encode.forJavaScript(String.valueOf(snomedId != null ? "snomedId=" + snomedId + "&" : ""))%>prevention=<%=Encode.forJavaScript(String.valueOf(prevName))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;prevResultDesc=<%=Encode.forUriComponent(String.valueOf(h.get("resultDesc")))%>','addPreventionData<%=Encode.forJavaScript(String.valueOf(Math.abs(prevName.hashCode())))%>')"
+                                    title="<%=Encode.forHtmlAttribute(String.valueOf(h.get("desc")))%>">
+                                <%=Encode.forHtml(String.valueOf(prevName))%>
                             </a></li>
                             <%
                                             }
@@ -699,7 +699,7 @@
                 <oscar:oscarPropertiesCheck property="IMMUNIZATION_IN_PREVENTION"
                                             value="yes">
                     <a href="javascript: function myFunction() {return false; }"
-                       onclick="javascript:popup(700,960,'<%=request.getContextPath()%>/oscarEncounter/immunization/initSchedule.do?demographic_no=<%=demographic_no%>','oldImms')">Old
+                       onclick="javascript:popup(700,960,'<%=request.getContextPath()%>/oscarEncounter/immunization/initSchedule.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>','oldImms')">Old
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="global.immunizations"/></a>
                     <br>
                 </oscar:oscarPropertiesCheck></td>
@@ -753,12 +753,12 @@
                         <ul>
                             <% for (int i = 0; i < warnings.size(); i++) {
                                 String warn = (String) warnings.get(i);%>
-                            <li style="color: red;"><%=warn%>
+                            <li style="color: red;"><%=Encode.forHtml(String.valueOf(warn))%>
                             </li>
                             <%}%>
                             <% for (int i = 0; i < recomendations.size(); i++) {
                                 String warn = (String) recomendations.get(i);%>
-                            <li style="color: black;"><%=warn%>
+                            <li style="color: black;"><%=Encode.forHtml(String.valueOf(warn))%>
                             </li>
                             <%}%>
                             <!--li style="color: red;">6 month TD overdue</li>
@@ -822,9 +822,9 @@
 
 
                     <div>
-                        <input type="hidden" name="demographic_no" value="<%=demographic_no%>"/>
-                        <input type="hidden" name="hin" value="<%=hin%>"/>
-                        <input type="hidden" name="mrp" value="<%=mrp%>"/>
+                        <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/>
+                        <input type="hidden" name="hin" value="<%=Encode.forHtmlAttribute(String.valueOf(hin))%>"/>
+                        <input type="hidden" name="mrp" value="<%=Encode.forHtmlAttribute(String.valueOf(mrp))%>"/>
                         <input type="hidden" name="module" value="prevention">
                                 <%
                  if (!ca.openosp.OscarProperties.getInstance().getBooleanProperty("PREVENTION_CLASSIC_VIEW","yes")){
@@ -869,15 +869,15 @@
                                             List<CVCMapping> mappings = cvcMappingDao.findMultipleByOscarName(prevName);
                                             if (mappings != null && mappings.size() > 1) {%>
                                         <a href="javascript: function myFunction() {return false; }"
-                                           onclick="javascript:popup(600,900,'AddPreventionDataDisambiguate.jsp?1=1&<%=snomedId != null ? "snomedId=" + snomedId + "&" : ""%>prevention=<%= java.net.URLEncoder.encode(h.get("name"), StandardCharsets.UTF_8) %>&amp;demographic_no=<%=demographic_no%>&amp;prevResultDesc=<%= java.net.URLEncoder.encode(h.get("resultDesc"), StandardCharsets.UTF_8) %>','addPreventionData<%=Math.abs( ( h.get("name")).hashCode() ) %>')">
-                                            <span title="<%=h.get("desc")%>"
-                                                  style="font-weight: bold;"><%=h.get("name")%><%=ispa1%></span>
+                                           onclick="javascript:popup(600,900,'AddPreventionDataDisambiguate.jsp?1=1&<%=Encode.forJavaScript(String.valueOf(snomedId != null ? "snomedId=" + snomedId + "&" : ""))%>prevention=<%=Encode.forJavaScript(String.valueOf(h.get("name")))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;prevResultDesc=<%=Encode.forUriComponent(String.valueOf(h.get("resultDesc")))%>','addPreventionData<%=Encode.forJavaScript(String.valueOf(Math.abs( ( h.get("name")).hashCode() )))%>')">
+                                            <span title="<%=Encode.forHtmlAttribute(String.valueOf(h.get("desc")))%>"
+                                                  style="font-weight: bold;"><%=Encode.forHtml(String.valueOf(h.get("name")))%><%=Encode.forHtml(String.valueOf(ispa1))%></span>
                                         </a>
                                         <% } else { %>
                                         <a href="javascript: function myFunction() {return false; }"
-                                           onclick="javascript:popup(600,900,'AddPreventionData.jsp?1=1&<%=snomedId != null ? "snomedId=" + snomedId + "&" : ""%>prevention=<%= java.net.URLEncoder.encode(h.get("name"), StandardCharsets.UTF_8) %>&amp;demographic_no=<%=demographic_no%>&amp;prevResultDesc=<%= java.net.URLEncoder.encode(h.get("resultDesc"), StandardCharsets.UTF_8) %>','addPreventionData<%=Math.abs( ( h.get("name")).hashCode() ) %>')">
-                                            <span title="<%=h.get("desc")%>"
-                                                  style="font-weight: bold;"><%=h.get("name")%><%=ispa1 %></span>
+                                           onclick="javascript:popup(600,900,'AddPreventionData.jsp?1=1&<%=Encode.forJavaScript(String.valueOf(snomedId != null ? "snomedId=" + snomedId + "&" : ""))%>prevention=<%=Encode.forJavaScript(String.valueOf(h.get("name")))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;prevResultDesc=<%=Encode.forUriComponent(String.valueOf(h.get("resultDesc")))%>','addPreventionData<%=Encode.forJavaScript(String.valueOf(Math.abs( ( h.get("name")).hashCode() )))%>')">
+                                            <span title="<%=Encode.forHtmlAttribute(String.valueOf(h.get("desc")))%>"
+                                                  style="font-weight: bold;"><%=Encode.forHtml(String.valueOf(h.get("name")))%><%=Encode.forHtml(String.valueOf(ispa1))%></span>
                                         </a>
                                         <% } %>
                                         <br/>
@@ -894,19 +894,19 @@
                                             onClickCode = "popup(300,500,'display_remote_prevention.jsp?remoteFacilityId=" + hdata.get("integratorFacilityId") + "&remotePreventionId=" + hdata.get("integratorPreventionId") + "&amp;demographic_no=" + demographic_no + "')";
                                 %>
 
-                                <div class="preventionProcedure" onclick="<%=onClickCode%>"
-                                     title="fade=[on] header=[<%=StringEscapeUtils.escapeHtml4((String)hdata.get("age"))%> -- Date:<%=StringEscapeUtils.escapeHtml4((String)hdata.get("prevention_date_no_time"))%>] body=[<%=StringEscapeUtils.escapeHtml4((String)hExt.get("comments"))%>&lt;br/&gt;Administered By: <%=StringEscapeUtils.escapeHtml4((String)hdata.get("provider_name"))%>]">
+                                <div class="preventionProcedure" onclick="<%=Encode.forJavaScript(String.valueOf(onClickCode))%>"
+                                     title="fade=[on] header=[<%=Encode.forHtml((String)hdata.get("age"))%> -- Date:<%=Encode.forHtml((String)hdata.get("prevention_date_no_time"))%>] body=[<%=Encode.forHtml((String)hExt.get("comments"))%>&lt;br/&gt;Administered By: <%=Encode.forHtml((String)hdata.get("provider_name"))%>]">
 
 
                                     <p <%=r(hdata.get("refused"),result)%> >
-                                        Age: <%=StringEscapeUtils.escapeHtml4((String)hdata.get("age"))%> <%if(result!=null && result.equals("abnormal")){out.print("result:"+StringEscapeUtils.escapeHtml4(result));}%>
+                                        Age: <%=Encode.forHtml((String)hdata.get("age"))%> <%if(result!=null && result.equals("abnormal")){out.print("result:"+Encode.forHtml(result));}%>
                                         <br/>
-                                        <!--<%=refused(hdata.get("refused"))%>-->
-                                        Date: <%=StringEscapeUtils.escapeHtml4((String)hdata.get("prevention_date_no_time"))%>
+                                        <!--<%=Encode.forHtml(String.valueOf(refused(hdata.get("refused"))))%>-->
+                                        Date: <%=Encode.forHtml((String)hdata.get("prevention_date_no_time"))%>
                                                 <%if (hExt.get("comments") != null && (hExt.get("comments")).length()>0) {
                     if (ca.openosp.OscarProperties.getInstance().getBooleanProperty("prevention_show_comments","yes")){%>
                                     <div class="comments">
-                                        <span><%=StringEscapeUtils.escapeHtml4((String) hExt.get("comments"))%></span>
+                                        <span><%=Encode.forHtml((String) hExt.get("comments"))%></span>
                                     </div>
                                     <% } else { %>
                                     <span class="footnote">1</span>
@@ -920,7 +920,7 @@
 
                                             if (!dhirLogs.isEmpty()) {
                                     %> <span class="footnote"
-                                             style="background-color:black;color:white"><%=dhirLogs.get(0).getStatus()%></span> <%
+                                             style="background-color:black;color:white"><%=Encode.forHtml(String.valueOf(dhirLogs.get(0).getStatus()))%></span> <%
                                 } else {
                                     if (dhirEnabled && !StringUtils.isEmpty(snomedId)) {
                                         if ((ispa && hasIspaConsent) || (!ispa && hasNonIspaConsent)) {
@@ -969,9 +969,9 @@
                                         </div>
                                         <div class="headPrevention">
                                             <p><a href="javascript: function myFunction() {return false; }"
-                                                  onclick="javascript:popup(600,900,'AddPreventionData.jsp?2=2&<%=snomedId != null ? "snomedId=" + snomedId + "&" : ""%>prevention=<%= java.net.URLEncoder.encode(h.get("name"), StandardCharsets.UTF_8) %>&amp;demographic_no=<%=demographic_no%>&amp;prevResultDesc=<%= java.net.URLEncoder.encode(h.get("resultDesc"), StandardCharsets.UTF_8) %>','addPreventionData<%=Math.abs( ( h.get("name")).hashCode() ) %>')">
-                                                <span title="<%=h.get("desc")%>"
-                                                      style="font-weight: bold;"><%=h.get("name")%><%=ispa1 %></span>
+                                                  onclick="javascript:popup(600,900,'AddPreventionData.jsp?2=2&<%=Encode.forJavaScript(String.valueOf(snomedId != null ? "snomedId=" + snomedId + "&" : ""))%>prevention=<%=Encode.forJavaScript(String.valueOf(h.get("name")))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;prevResultDesc=<%=Encode.forUriComponent(String.valueOf(h.get("resultDesc")))%>','addPreventionData<%=Encode.forJavaScript(String.valueOf(Math.abs( ( h.get("name")).hashCode() )))%>')">
+                                                <span title="<%=Encode.forHtmlAttribute(String.valueOf(h.get("desc")))%>"
+                                                      style="font-weight: bold;"><%=Encode.forHtml(String.valueOf(h.get("name")))%><%=Encode.forHtml(String.valueOf(ispa1))%></span>
                                             </a>
 
                                                 <br/>
@@ -985,15 +985,15 @@
                                                 result = hExt.get("result");
                                         %>
                                         <div class="preventionProcedure"
-                                             onclick="javascript:popup(600,900,'AddPreventionData.jsp?id=<%=hdata.get("id")%>&amp;demographic_no=<%=demographic_no%>','addPreventionData')"
-                                             title="fade=[on] header=[<%=StringEscapeUtils.escapeHtml4((String)hdata.get("age"))%> -- Date:<%=StringEscapeUtils.escapeHtml4((String)hdata.get("prevention_date_no_time"))%>] body=[<%=StringEscapeUtils.escapeHtml4((String)hExt.get("comments"))%>&lt;br/&gt;Administered By: <%=StringEscapeUtils.escapeHtml4((String)hdata.get("provider_name"))%>]">
-                                            <p <%=r(hdata.get("refused"), result)%>>Age: <%=hdata.get("age")%> <br/>
-                                                <!--<%=refused(hdata.get("refused"))%>-->
-                                                Date: <%=StringEscapeUtils.escapeHtml4((String)hdata.get("prevention_date_no_time"))%>
+                                             onclick="javascript:popup(600,900,'AddPreventionData.jsp?id=<%=Encode.forUriComponent(String.valueOf(hdata.get("id")))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>','addPreventionData')"
+                                             title="fade=[on] header=[<%=Encode.forHtml((String)hdata.get("age"))%> -- Date:<%=Encode.forHtml((String)hdata.get("prevention_date_no_time"))%>] body=[<%=Encode.forHtml((String)hExt.get("comments"))%>&lt;br/&gt;Administered By: <%=Encode.forHtml((String)hdata.get("provider_name"))%>]">
+                                            <p <%=r(hdata.get("refused"), result)%>>Age: <%=Encode.forHtml(String.valueOf(hdata.get("age")))%> <br/>
+                                                <!--<%=Encode.forHtml(String.valueOf(refused(hdata.get("refused"))))%>-->
+                                                Date: <%=Encode.forHtml((String)hdata.get("prevention_date_no_time"))%>
                                                         <%if (hExt.get("comments") != null && (hExt.get("comments")).length()>0) {
                      if (ca.openosp.OscarProperties.getInstance().getBooleanProperty("prevention_show_comments","yes")){ %>
                                             <div class="comments">
-                                                <span><%=StringEscapeUtils.escapeHtml4((String) hExt.get("comments"))%></span>
+                                                <span><%=Encode.forHtml((String) hExt.get("comments"))%></span>
                                             </div>
                                             <% } else { %>
                                             <span class="footnote">1</span>
@@ -1006,7 +1006,7 @@
 
                                                     if (!dhirLogs.isEmpty()) {
                                             %> <span class="footnote"
-                                                     style="background-color:black;color:white"><%=dhirLogs.get(0).getStatus()%></span> <%
+                                                     style="background-color:black;color:white"><%=Encode.forHtml(String.valueOf(dhirLogs.get(0).getStatus()))%></span> <%
                                         } else {
                                             if (dhirEnabled && !StringUtils.isEmpty(snomedId)) {
                                                 if ((ispa && hasIspaConsent) || (!ispa && hasNonIspaConsent)) {
@@ -1034,15 +1034,15 @@
                                         String[] prevs = (String[]) setHash.get("prevList");
                                 %>
                                 <div class="immSet">
-                                    <h2 style="display: block;"><%=setHash.get("title")%>
-                                        <span><%=setHash.get("effective")%></span></h2>
-                                    <!--a style="font-size:xx-small;" onclick="javascript:showHideItem('<%="prev"+setNum%>')" href="javascript: function myFunction() {return false; }" >show/hide</a-->
+                                    <h2 style="display: block;"><%=Encode.forHtml(String.valueOf(setHash.get("title")))%>
+                                        <span><%=Encode.forHtml(String.valueOf(setHash.get("effective")))%></span></h2>
+                                    <!--a style="font-size:xx-small;" onclick="javascript:showHideItem('<%=Encode.forJavaScript(String.valueOf("prev"+setNum))%>')" href="javascript: function myFunction() {return false; }" >show/hide</a-->
                                     <a href="#"
-                                       onclick="Element.toggle('<%="prev"+setNum%>'); return false;"
+                                       onclick="Element.toggle('<%=Encode.forJavaScript(String.valueOf("prev"+setNum))%>'); return false;"
                                        style="font-size: xx-small;">show/hide</a>
                                     <div class="preventionSet"
-                                         <%=pdc.getDisplay(loggedInInfo, setHash,demographic_no)%>;
-                                    " id="<%="prev" + setNum%>">
+                                         <%=Encode.forHtml(String.valueOf(pdc.getDisplay(loggedInInfo, setHash,demographic_no)))%>;
+                                    " id="<%=Encode.forHtmlAttribute(String.valueOf("prev" + setNum))%>">
                                     <%
                                         for (int i = 0; i < prevs.length; i++) {
                                             HashMap<String, String> h = pdc.getPrevention(prevs[i]);
@@ -1054,9 +1054,9 @@
                                     <div class="preventionSection">
                                         <div class="headPrevention">
                                             <p><a href="javascript: function myFunction() {return false; }"
-                                                  onclick="javascript:popup(600,900,'AddPreventionData.jsp?3=3&prevention=<%= java.net.URLEncoder.encode(h.get("name"), StandardCharsets.UTF_8) %>&amp;demographic_no=<%=demographic_no%>&amp;prevResultDesc=<%= java.net.URLEncoder.encode(h.get("resultDesc"), StandardCharsets.UTF_8) %>','addPreventionData<%=Math.abs(h.get("name").hashCode())%>')">
-                                                <span title="<%=h.get("desc")%>"
-                                                      style="font-weight: bold;"><%=h.get("name")%></span>
+                                                  onclick="javascript:popup(600,900,'AddPreventionData.jsp?3=3&prevention=<%=Encode.forUriComponent(String.valueOf(h.get("name")))%>&amp;demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&amp;prevResultDesc=<%=Encode.forUriComponent(String.valueOf(h.get("resultDesc")))%>','addPreventionData<%=Encode.forJavaScript(String.valueOf(Math.abs(h.get("name").hashCode())))%>')">
+                                                <span title="<%=Encode.forHtmlAttribute(String.valueOf(h.get("desc")))%>"
+                                                      style="font-weight: bold;"><%=Encode.forHtml(String.valueOf(h.get("name")))%></span>
                                             </a> <br/>
                                             </p>
                                         </div>
@@ -1074,10 +1074,10 @@
                                                 if (hdata.get("id") == null)
                                                     onClickCode = "popup(300,500,'display_remote_prevention.jsp?remoteFacilityId=" + hdata.get("integratorFacilityId") + "&remotePreventionId=" + hdata.get("integratorPreventionId") + "&amp;demographic_no=" + demographic_no + "')";
                                         %>
-                                        <div class="preventionProcedure" onclick="<%=onClickCode%>">
-                                            <p <%=r(hdata.get("refused"), result)%>>Age: <%=hdata.get("age")%> <br/>
-                                                <!--<%=refused(hdata.get("refused"))%>-->
-                                                Date: <%=StringEscapeUtils.escapeHtml4((String) hdata.get("prevention_date_no_time"))%>
+                                        <div class="preventionProcedure" onclick="<%=Encode.forJavaScript(String.valueOf(onClickCode))%>">
+                                            <p <%=r(hdata.get("refused"), result)%>>Age: <%=Encode.forHtml(String.valueOf(hdata.get("age")))%> <br/>
+                                                <!--<%=Encode.forHtml(String.valueOf(refused(hdata.get("refused"))))%>-->
+                                                Date: <%=Encode.forHtml((String) hdata.get("prevention_date_no_time"))%>
                                                 <%=getFromFacilityMsg(hdata)%>
                                             </p>
                                         </div>
@@ -1091,7 +1091,7 @@
                             }
                         %>
                         </div>
-                                <%=legend %>
+                                <%=legend%>
                 </td>
         </tr>
         <tr>
@@ -1102,7 +1102,7 @@
 			</input>
             </td>
 
-            <input type="hidden" id="demographicNo" name="demographicNo" value="<%=demographic_no%>"/>
+            <input type="hidden" id="demographicNo" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/>
 
             <%
                 for (int i = 0; i < prevList.size(); i++) {
@@ -1112,7 +1112,7 @@
                     PreventionData.addRemotePreventions(loggedInInfo, alist, demographicId, prevName, demographicDateOfBirth);
                     if (alist.size() > 0) { %>
             <input type="hidden" id="preventionHeader<%=i%>"
-                   name="preventionHeader<%=i%>" value="<%=h.get("name")%>">
+                   name="preventionHeader<%=i%>" value="<%=Encode.forHtmlAttribute(String.valueOf(h.get("name")))%>">
 
             <%
                 for (int k = 0; k < alist.size(); k++) {
@@ -1121,71 +1121,71 @@
             %>
 
             <input type="hidden" id="preventProcedureProvider<%=i%>-<%=k%>"
-                   name="preventProcedureProvider<%=i%>-<%=k%>" value="<%=hdata.get("provider_name")%>"/>
+                   name="preventProcedureProvider<%=i%>-<%=k%>" value="<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("provider_name")))%>"/>
 
             <input type="hidden" id="preventProcedureStatus<%=i%>-<%=k%>"
                    name="preventProcedureStatus<%=i%>-<%=k%>"
-                   value="<%=hdata.get("refused")%>">
+                   value="<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("refused")))%>">
             <input type="hidden" id="preventProcedureAge<%=i%>-<%=k%>"
                    name="preventProcedureAge<%=i%>-<%=k%>"
-                   value="<%=hdata.get("age")%>">
+                   value="<%=Encode.forHtmlAttribute(String.valueOf(hdata.get("age")))%>">
             <input type="hidden" id="preventProcedureDate<%=i%>-<%=k%>"
                    name="preventProcedureDate<%=i%>-<%=k%>"
-                   value="<%=StringEscapeUtils.escapeHtml4((String)hdata.get("prevention_date_no_time"))%>">
+                   value="<%=Encode.forHtml((String)hdata.get("prevention_date_no_time"))%>">
             <% String comments = hExt.get("comments");
                 if (comments != null && !comments.isEmpty()) {%>
             <input type="hidden" id="preventProcedureComments<%=i%>-<%=k%>"
                    name="preventProcedureComments<%=i%>-<%=k%>"
-                   value="<%=StringEscapeUtils.escapeHtml4(comments)%>">
+                   value="<%=Encode.forHtml(comments)%>">
             <% } %>
 
             <% String result = hExt.get("result");
                 if (result != null && !result.isEmpty()) {%>
             <input type="hidden" id="preventProcedureResult<%=i%>-<%=k%>"
                    name="preventProcedureResult<%=i%>-<%=k%>"
-                   value="<%=StringEscapeUtils.escapeHtml4(result)%>">
+                   value="<%=Encode.forHtml(result)%>">
             <% } %>
 
             <% String reason = hExt.get("reason");
                 if (reason != null && !reason.isEmpty()) {%>
             <input type="hidden" id="preventProcedureReason<%=i%>-<%=k%>"
                    name="preventProcedureReason<%=i%>-<%=k%>"
-                   value="<%=StringEscapeUtils.escapeHtml4(reason)%>">
+                   value="<%=Encode.forHtml(reason)%>">
             <% } %>
 
             <% String nameOfVaccine = hExt.get("name");
                 if (nameOfVaccine != null && !nameOfVaccine.isEmpty()) {%>
             <input type="hidden" id="preventProcedureNameOfVaccine<%=i%>-<%=k%>"
                    name="preventProcedureNameOfVaccine<%=i%>-<%=k%>"
-                   value="<%=StringEscapeUtils.escapeHtml4(nameOfVaccine)%>">
+                   value="<%=Encode.forHtml(nameOfVaccine)%>">
             <% } %>
 
             <% String manufacture = hExt.get("manufacture");
                 if (manufacture != null && !manufacture.isEmpty()) {%>
             <input type="hidden" id="preventProcedureManufacture<%=i%>-<%=k%>"
                    name="preventProcedureManufacture<%=i%>-<%=k%>"
-                   value="<%=StringEscapeUtils.escapeHtml4(manufacture)%>">
+                   value="<%=Encode.forHtml(manufacture)%>">
             <% } %>
 
             <% String lotID = hExt.get("lot");
                 if (lotID != null && !lotID.isEmpty()) {%>
             <input type="hidden" id="preventProcedureLotID<%=i%>-<%=k%>"
                    name="preventProcedureLotID<%=i%>-<%=k%>"
-                   value="<%=StringEscapeUtils.escapeHtml4(lotID)%>">
+                   value="<%=Encode.forHtml(lotID)%>">
             <% } %>
 
             <% String doseAdministered = hExt.get("dose");
                 if (doseAdministered != null && !doseAdministered.isEmpty()) {%>
             <input type="hidden" id="preventProcedureDoseAdministered<%=i%>-<%=k%>"
                    name="preventProcedureDoseAdministered<%=i%>-<%=k%>"
-                   value="<%=StringEscapeUtils.escapeHtml4(doseAdministered)%>">
+                   value="<%=Encode.forHtml(doseAdministered)%>">
             <% } %>
 
             <% String locationOfShot = hExt.get("location");
                 if (locationOfShot != null && !locationOfShot.isEmpty()) {%>
             <input type="hidden" id="preventProcedureLocationOfShot<%=i%>-<%=k%>"
                    name="preventProcedureLocationOfShot<%=i%>-<%=k%>"
-                   value="<%=StringEscapeUtils.escapeHtml4(locationOfShot)%>">
+                   value="<%=Encode.forHtml(locationOfShot)%>">
             <% }
             }
             }
@@ -1243,10 +1243,10 @@
 
                     //We need to load AddPreventionData with possible brand name, and possible lotnumber/exp.
                     if (oData[4].length > 0) {
-                        popup(465, 635, 'AddPreventionData.jsp?demographic_no=<%=demographic_no%>&lotNumber=' + oData[4], 'addPreventionData' + <%=new java.util.Random().nextInt(10000) + 1%>);
+                        popup(465, 635, 'AddPreventionData.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&lotNumber=' + oData[4], 'addPreventionData' + <%=new java.util.Random().nextInt(10000) + 1%>);
                         document.getElementById('lotNumberToAdd2').value = '';
                     } else {
-                        popup(465, 635, 'AddPreventionData.jsp?search=true&demographic_no=<%=demographic_no%>&snomedId=' + oData[2] + '&brandSnomedId=' + oData[3], 'addPreventionData' + <%=new java.util.Random().nextInt(10000) + 1%>);
+                        popup(465, 635, 'AddPreventionData.jsp?search=true&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&snomedId=' + oData[2] + '&brandSnomedId=' + oData[3], 'addPreventionData' + <%=new java.util.Random().nextInt(10000) + 1%>);
                         document.getElementById('lotNumberToAdd2').value = '';
                     }
 

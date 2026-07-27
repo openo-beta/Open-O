@@ -28,6 +28,7 @@
 <%@page import="ca.openosp.openo.commn.model.Provider" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 %>
@@ -46,7 +47,7 @@
                 opener.document.forms[0].pg1_priCare.value = v;
                 <% } else {%>
                 opener.document.forms[0]
-            .<%=fieldName%>.
+            .<%=Encode.forJavaScript(String.valueOf(fieldName))%>.
                 value = v;
                 <% }%>
                 opener.recheckForm();
@@ -58,7 +59,7 @@
     <body onLoad="setfocus()" topmargin="0" leftmargin="0" rightmargin="0">
 
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
-        <tr bgcolor="<%=deepcolor%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>">
             <th><font face="Helvetica">Provider List</font></th>
         </tr>
         <tr>
@@ -74,7 +75,7 @@
     <CENTER>
         <table width="100%" border="0" bgcolor="silver" cellspacing="2"
                cellpadding="2">
-            <tr bgcolor='<%=deepcolor%>'>
+            <tr bgcolor='<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>'>
                 <TH align="center" width="50%" nowrap><a
                         href="formbcarpg1namepopup.jsp?orderby=first_name">First Name</a></TH>
                 <TH align="center" width="50%"><a
@@ -92,13 +93,13 @@
                     lastName = p.getLastName() != null ? p.getLastName() : "";
                     firstName = p.getFirstName() != null ? p.getFirstName() : "";
             %>
-            <tr bgcolor="<%=bgColor%>"
+            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>"
                 onMouseOver="this.style.backgroundColor='pink';"
-                onMouseout="this.style.backgroundColor='<%=bgColor%>';"
-                onClick='typeInData("<%=firstName + " " + lastName%>");'>
-                <td nowrap><%=firstName%>
+                onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>';"
+                onClick='typeInData("<%=Encode.forJavaScript(String.valueOf(firstName + " " + lastName))%>");'>
+                <td nowrap><%=Encode.forHtml(String.valueOf(firstName))%>
                 </td>
-                <td nowrap><%=lastName%>
+                <td nowrap><%=Encode.forHtml(String.valueOf(lastName))%>
                 </td>
             </tr>
             <%

@@ -20,6 +20,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String formClass = "Adf";
@@ -53,7 +54,7 @@
 
         function reset() {
             document.forms[0].target = "apptProviderSearch";
-            document.forms[0].action = "/<%=project_home%>/form/formname.do";
+            document.forms[0].action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
         }
 
         function onPrint() {
@@ -257,14 +258,14 @@
     -->
     <form action="${pageContext.request.contextPath}/form/formname" method="post">
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
-        <!--input type="hidden" name="provider_no" value=<%=request.getParameter("provNo")%> />
-        <input type="hidden" name="provNo" value="<%= request.getParameter("provNo") %>" /-->
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
+        <!--input type="hidden" name="provider_no" value="<%=Encode.forHtml(request.getParameter("provNo"))%>" />
+        <input type="hidden" name="provNo" value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>" /-->
         <input type="hidden" name="submit" value="exit"/>
 
 
@@ -286,7 +287,7 @@
                     if (!bView) {
                 %>
                 <td align="right"><a
-                        href="javascript: popupFixedPage(700,950,'<%=request.getContextPath()%>/decision/antenatal/antenatalplanner.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>');">Planner</a>
+                        href="javascript: popupFixedPage(700,950,'<%=request.getContextPath()%>/decision/antenatal/antenatalplanner.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>');">Planner</a>
                 </td>
                 <%
                     }
@@ -313,31 +314,31 @@
                 <td width="15%" align="left">Patient Name</td>
                 <td width="35%"><input type="text" name="c_patientname"
                                        style="width: 100%" size="60" maxlength="60"
-                                       value="<%= props.getProperty("c_surname", "")+", " + props.getProperty("c_givenName", "") %>"
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_surname", "")+", " + props.getProperty("c_givenName", "")))%>"
                                        @oscar.formDB/></td>
                 <td width="15%" align="right">Resident No.</td>
                 <td width="35%"><input type="text" name="residentno"
                                        style="width: 100%" size="20" maxlength="20"
-                                       value="<%= props.getProperty("residentno", "") %>" @oscar.formDB/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("residentno", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td width="20%" align="left">Examining Physician</td>
                 <td width="80%" colspan='3'><input type="text"
                                                    name="c_physician" style="width: 100%" size="30" maxlength="60"
-                                                   value="<%= props.getProperty("c_physician", "") %>" @oscar.formDB/>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_physician", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td>Address</td>
                 <td width="45%"><input type="text" name="c_address"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("c_address", "") %>" @oscar.formDB/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_address", "")))%>" @oscar.formDB/>
                 </td>
                 <td align="right">Phone &nbsp</td>
                 <td><input type="text" name="c_phone" style="width: 100%"
                            size="20" maxlength="20"
-                           value="<%= props.getProperty("c_phone", "") %>" @oscar.formDB/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_phone", "")))%>" @oscar.formDB/></td>
             </tr>
         </table>
         <br>
@@ -351,13 +352,13 @@
             <tr>
                 <td colspan="3">Chief Complaint <textarea name="cComplait"
                                                           style="width: 100%" cols="20" rows="3" @oscar.formDB
-                                                          dbType="text"/><%= props.getProperty("cComplait", "") %></textarea>
+                                                          dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("cComplait", "")))%></textarea>
                 </td>
             </tr>
             <tr>
                 <td colspan="3">History of Present Illness <textarea
                         name="histPresIll" style="width: 100%" cols="20" rows="3"
-                        @oscar.formDB dbType="text"/><%= props.getProperty("histPresIll", "") %></textarea>
+                        @oscar.formDB dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("histPresIll", "")))%></textarea>
                 </td>
             </tr>
             <tr>
@@ -365,46 +366,46 @@
                 <td>Childhood</td>
                 <td><input type="text" name="childhood" style="width: 100%"
                            size="60" maxlength="80"
-                           value="<%= props.getProperty("childhood", "") %>" @oscar.formDB/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("childhood", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td width="10%">Adult</td>
                 <td><input type="text" name="adult" style="width: 100%"
                            size="60" maxlength="80"
-                           value="<%= props.getProperty("adult", "") %>" @oscar.formDB/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("adult", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Operations</td>
                 <td><input type="text" name="operations" style="width: 100%"
                            size="60" maxlength="80"
-                           value="<%= props.getProperty("operations", "") %>" @oscar.formDB/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("operations", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td>Injuries</td>
                 <td><input type="text" name="injuries" style="width: 100%"
                            size="60" maxlength="80"
-                           value="<%= props.getProperty("injuries", "") %>" @oscar.formDB/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("injuries", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Mental Illness</td>
                 <td><input type="text" name="mentalIll" style="width: 100%"
                            size="60" maxlength="80"
-                           value="<%= props.getProperty("mentalIll", "") %>" @oscar.formDB/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("mentalIll", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td colspan="3">Family History <textarea name="familyHist"
                                                          style="width: 100%" cols="20" rows="3" @oscar.formDB
-                                                         dbType="text"/><%= props.getProperty("familyHist", "") %></textarea>
+                                                         dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("familyHist", "")))%></textarea>
                 </td>
             </tr>
             <tr>
                 <td colspan="3">Social History<b>(Refer to Section 10 in
                     DSF)</b> <textarea name="socialHist" style="width: 100%" cols="20"
                                        rows="3" @oscar.formDB
-                                       dbType="text"/><%= props.getProperty("socialHist", "") %></textarea>
+                                       dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("socialHist", "")))%></textarea>
                 </td>
             </tr>
             <tr>
@@ -412,77 +413,77 @@
                 <td>General</td>
                 <td><input type="text" name="general" style="width: 100%"
                            size="60" maxlength="80"
-                           value="<%= props.getProperty("general", "") %>" @oscar.formDB/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("general", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Skin</td>
                 <td><input type="text" name="histSkin" style="width: 100%"
                            size="60" maxlength="80"
-                           value="<%= props.getProperty("histSkin", "") %>" @oscar.formDB/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("histSkin", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Head & Neck</td>
                 <td><input type="text" name="headNeck" style="width: 100%"
                            size="60" maxlength="80"
-                           value="<%= props.getProperty("headNeck", "") %>" @oscar.formDB/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("headNeck", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Respiratory</td>
                 <td><input type="text" name="respiratory" style="width: 100%"
                            size="60" maxlength="80"
-                           value="<%= props.getProperty("respiratory", "") %>" @oscar.formDB/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("respiratory", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td>Cardiovascular</td>
                 <td><input type="text" name="cardiovascular" style="width: 100%"
                            size="60" maxlength="80"
-                           value="<%= props.getProperty("cardiovascular", "") %>" @oscar.formDB/>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("cardiovascular", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td>G.I.</td>
                 <td><input type="text" name="gi" style="width: 100%" size="60"
-                           maxlength="80" value="<%= props.getProperty("gi", "") %>"
+                           maxlength="80" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("gi", "")))%>"
                            @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>G.U</td>
                 <td><input type="text" name="gu" style="width: 100%" size="60"
-                           maxlength="80" value="<%= props.getProperty("gu", "") %>"
+                           maxlength="80" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("gu", "")))%>"
                            @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>C.N.S.</td>
                 <td><input type="text" name="cns" style="width: 100%" size="60"
-                           maxlength="80" value="<%= props.getProperty("cns", "") %>"
+                           maxlength="80" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("cns", "")))%>"
                            @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Extremities</td>
                 <td><input type="text" name="histExtremities"
                            style="width: 100%" size="60" maxlength="80"
-                           value="<%= props.getProperty("histExtremities", "") %>"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("histExtremities", "")))%>"
                            @oscar.formDB/></td>
             </tr>
 
             <tr>
                 <td colspan="3">Allergies<b>(Refer to Section 11 in DSF)</b> <textarea
                         name="allergies" style="width: 100%" cols="30" rows="3"
-                        @oscar.formDB dbType="text"/><%= props.getProperty("allergies", "") %></textarea>
+                        @oscar.formDB dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("allergies", "")))%></textarea>
                 </td>
             </tr>
             <tr>
                 <td colspan="3">Sensitivities to Drugs <textarea
                         name="sensitivityDrug" style="width: 100%" cols="20" rows="3"
-                        @oscar.formDB dbType="text"/><%= props.getProperty("sensitivityDrug", "") %></textarea>
+                        @oscar.formDB dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("sensitivityDrug", "")))%></textarea>
                 </td>
             </tr>
             <tr>
                 <td colspan="3">Current Medications<b>(Refer to Section 9 in
                     DSF)</b> <textarea name="currentMedication" style="width: 100%" cols="30"
                                        rows="3" @oscar.formDB
-                                       dbType="text"/><%= props.getProperty("currentMedication", "") %></textarea>
+                                       dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("currentMedication", "")))%></textarea>
                 </td>
             </tr>
         </table>
@@ -499,183 +500,183 @@
                 <td width="10%">Temp.</td>
                 <td width="22%"><input type="text" name="temp"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("temp", "") %>" @oscar.formDB/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("temp", "")))%>" @oscar.formDB/></td>
                 <td width="10%" align="right">Pulse &nbsp</td>
                 <td width="22%"><input type="text" name="pulse"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("pulse", "") %>" @oscar.formDB/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pulse", "")))%>" @oscar.formDB/></td>
                 <td width="10%" align="right">Resp.&nbsp</td>
                 <td><input type="text" name="resp" style="width: 100%" size="60"
-                           maxlength="80" value="<%= props.getProperty("resp", "") %>"
+                           maxlength="80" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("resp", "")))%>"
                            @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>B.P</td>
                 <td><input type="text" name="bp" style="width: 100%" size="60"
-                           maxlength="80" value="<%= props.getProperty("bp", "") %>"
+                           maxlength="80" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bp", "")))%>"
                            @oscar.formDB/></td>
                 <td align="right">Height &nbsp</td>
                 <td><input type="text" name="height" style="width: 100%"
                            size="60" maxlength="80"
-                           value="<%= props.getProperty("height", "") %>" @oscar.formDB/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("height", "")))%>" @oscar.formDB/></td>
                 <td align="right">Weight &nbsp</td>
                 <td><input type="text" name="weight" style="width: 100%"
                            size="60" maxlength="80"
-                           value="<%= props.getProperty("weight", "") %>" @oscar.formDB/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("weight", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td colspan='6'>Physical Condition <textarea
                         name="physicalCondition" style="width: 100%" cols="20" rows="3"
-                        @oscar.formDB dbType="text"/><%= props.getProperty("physicalCondition", "") %></textarea>
+                        @oscar.formDB dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("physicalCondition", "")))%></textarea>
                 </td>
             </tr>
             <tr>
                 <td colspan='6'>Mental Condition <textarea
                         name="mentalCondition" style="width: 100%" cols="20" rows="3"
-                        @oscar.formDB dbType="text"/><%= props.getProperty("mentalCondition", "") %></textarea>
+                        @oscar.formDB dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("mentalCondition", "")))%></textarea>
                 </td>
             </tr>
             <tr>
                 <td>Skin</td>
                 <td colspan='5'><input type="text" name="skin"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("skin", "") %>" @oscar.formDB/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("skin", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Eyes</td>
                 <td colspan='5'><input type="text" name="eyes"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("eyes", "") %>" @oscar.formDB/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("eyes", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Ears</td>
                 <td colspan='5'><input type="text" name="ears"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("ears", "") %>" @oscar.formDB/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ears", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Nose</td>
                 <td colspan='5'><input type="text" name="nose"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("nose", "") %>" @oscar.formDB/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("nose", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Mouth,Teeth</td>
                 <td colspan='5'><input type="text" name="mouthTeeth"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("mouthTeeth", "") %>" @oscar.formDB/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("mouthTeeth", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td>Throat</td>
                 <td colspan='5'><input type="text" name="throat"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("throat", "") %>" @oscar.formDB/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("throat", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Neck</td>
                 <td colspan='5'><input type="text" name="neck"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("neck", "") %>" @oscar.formDB/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("neck", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Chest</td>
                 <td colspan='5'><input type="text" name="chest"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("chest", "") %>" @oscar.formDB/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("chest", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Heart</td>
                 <td colspan='5'><input type="text" name="heart"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("heart", "") %>" @oscar.formDB/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("heart", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Abdomen</td>
                 <td colspan='5'><input type="text" name="abdomen"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("abdomen", "") %>" @oscar.formDB/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("abdomen", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Genitalia</td>
                 <td colspan='5'><input type="text" name="genitalia"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("genitalia", "") %>" @oscar.formDB/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("genitalia", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td>Lymphatics</td>
                 <td colspan='5'><input type="text" name="lymphatics"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("lymphatics", "") %>" @oscar.formDB/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("lymphatics", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td>Blood Vessels</td>
                 <td colspan='5'><input type="text" name="bloodVessels"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("bloodVessels", "") %>" @oscar.formDB/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bloodVessels", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td>Locomotor</td>
                 <td colspan='5'><input type="text" name="locomotor"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("locomotor", "") %>" @oscar.formDB/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("locomotor", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td>Extremities</td>
                 <td colspan='5'><input type="text" name="extremities"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("extremities", "") %>" @oscar.formDB/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("extremities", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td>Rectal</td>
                 <td colspan='5'><input type="text" name="rectal"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("rectal", "") %>" @oscar.formDB/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rectal", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Vaginal</td>
                 <td colspan='5'><input type="text" name="vaginal"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("vaginal", "") %>" @oscar.formDB/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("vaginal", "")))%>" @oscar.formDB/></td>
             </tr>
             <tr>
                 <td>Neurological</td>
                 <td colspan='5'><input type="text" name="neurological"
                                        style="width: 100%" size="60" maxlength="80"
-                                       value="<%= props.getProperty("neurological", "") %>" @oscar.formDB/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("neurological", "")))%>" @oscar.formDB/>
                 </td>
             </tr>
             <tr>
                 <td colspan="6">Behavior Problems <textarea
                         name="behaviorProblem" style="width: 100%" cols="20" rows="5"
-                        @oscar.formDB dbType="text"/><%= props.getProperty("behaviorProblem", "") %></textarea>
+                        @oscar.formDB dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("behaviorProblem", "")))%></textarea>
                 </td>
             </tr>
             <tr>
                 <td colspan="6">Functional Limitations <textarea
                         name="functionalLimitation" style="width: 100%" cols="20" rows="5"
-                        @oscar.formDB dbType="text"/><%= props.getProperty("functionalLimitation", "") %></textarea>
+                        @oscar.formDB dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("functionalLimitation", "")))%></textarea>
                 </td>
             </tr>
             <tr>
                 <td colspan="6">Diagnoses <textarea name="diagnoses"
                                                     style="width: 100%" cols="20" rows="5" @oscar.formDB
-                                                    dbType="text"/><%= props.getProperty("diagnoses", "") %></textarea>
+                                                    dbType="text"/><%=Encode.forHtml(String.valueOf(props.getProperty("diagnoses", "")))%></textarea>
                 </td>
             </tr>
             <tr>
                 <td colspan='3'>Date (yyyy/mm/dd) <input type="text"
                                                          name="sigDate" size="10" maxlength="10"
-                                                         value="<%= props.getProperty("sigDate", "") %>" @oscar.formDB
+                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("sigDate", "")))%>" @oscar.formDB
                                                          dbType="date"/></td>
                 <td colspan='3'>Physician's Signature <input type="text"
                                                              name="signature" size="50" maxlength="60"
-                                                             value="<%= props.getProperty("signature", "") %>"
+                                                             value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("signature", "")))%>"
                                                              @oscar.formDB/>
                 </td>
             </tr>
@@ -700,7 +701,7 @@
                     if (!bView) {
                 %>
                 <td align="right"><a
-                        href="javascript: popupFixedPage(700,950,'<%=request.getContextPath()%>/decision/antenatal/antenatalplanner.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>');">Planner</a>
+                        href="javascript: popupFixedPage(700,950,'<%=request.getContextPath()%>/decision/antenatal/antenatalplanner.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>');">Planner</a>
                 </td>
                 <%
                     }

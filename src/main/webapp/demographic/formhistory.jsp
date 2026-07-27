@@ -50,6 +50,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Form" %>
 <%@ page import="ca.openosp.openo.commn.dao.FormDao" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     RecycleBinDao recycleBinDao = SpringUtils.getBean(RecycleBinDao.class);
     FormDao formDao = SpringUtils.getBean(FormDao.class);
@@ -138,14 +139,14 @@
 
                         i++;
                 %>
-                &nbsp;<%=ConversionUtils.toDateString(f.getFormDate())%> <%=ConversionUtils.toTimeString(f.getFormTime())%>
+                &nbsp;<%=Encode.forHtml(String.valueOf(ConversionUtils.toDateString(f.getFormDate())))%> <%=Encode.forHtml(String.valueOf(ConversionUtils.toTimeString(f.getFormTime())))%>
 
-                <input type="checkbox" name="<%="form_no"+i%>"
-                       value="<%=f.getId()%>"> <font color="blue">
+                <input type="checkbox" name="<%=Encode.forHtmlAttribute(String.valueOf("form_no"+i))%>"
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(f.getId()))%>"> <font color="blue">
                 <a href=#
-                   onClick="popupPage(600,800,'<%= request.getContextPath() %>/provider/providercontrol.jsp?form_no=<%=f.getId()%>&dboperation=search_form&displaymodevariable=form<%=f.getFormName()%>.jsp&displaymode=vary&bNewForm=0')">
-                    <%=f.getFormName()%>
-                </a></font> by <%=f.getProviderNo()%><br>
+                   onClick="popupPage(600,800,'<%= request.getContextPath() %>/provider/providercontrol.jsp?form_no=<%=Encode.forUriComponent(String.valueOf(f.getId()))%>&dboperation=search_form&displaymodevariable=form<%=Encode.forJavaScript(String.valueOf(f.getFormName()))%>.jsp&displaymode=vary&bNewForm=0')">
+                    <%=Encode.forHtml(String.valueOf(f.getFormName()))%>
+                </a></font> by <%=Encode.forHtml(String.valueOf(f.getProviderNo()))%><br>
                 <%
                     }
                 %>
@@ -154,7 +155,7 @@
         <tr bgcolor="#eeeeee">
             <td align="center"><input type="hidden" name="formnum"
                                       value="<%=i%>"> <input type="hidden" name="demographic_no"
-                                                             value="<%=request.getParameter("demographic_no")%>"> <input
+                                                             value="<%=Encode.forHtmlAttribute(request.getParameter("demographic_no"))%>"> <input
                     type="submit" name="submit" value="Delete"><input
                     type="button" name="button" value="Cancel" onClick="window.close()">
             </td>

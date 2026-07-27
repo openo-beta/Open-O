@@ -51,6 +51,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -176,13 +177,13 @@
                 <td>
                     <select name="scope" id="scope" onChange="updateScope()">
                         <option value="">Select Below</option>
-                        <option value="<%=FlowSheetUserCreated.SCOPE_CLINIC %>" <%="clinic".equals(scope) ? "selected=\"selected\" " : "" %>>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(FlowSheetUserCreated.SCOPE_CLINIC))%>" <%="clinic".equals(scope) ? " selected=\"selected\" " : ""%>>
                             Clinic
                         </option>
-                        <option value="<%=FlowSheetUserCreated.SCOPE_PROVIDER %>" <%="providers".equals(scope) ? "selected=\"selected\" " : "" %>>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(FlowSheetUserCreated.SCOPE_PROVIDER))%>" <%="providers".equals(scope) ? " selected=\"selected\" " : ""%>>
                             Provider
                         </option>
-                        <option value="<%=FlowSheetUserCreated.SCOPE_PATIENT %>" <%="patient".equals(scope) ? "selected=\"selected\" " : "" %>>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(FlowSheetUserCreated.SCOPE_PATIENT))%>" <%="patient".equals(scope) ? " selected=\"selected\" " : ""%>>
                             Patient
                         </option>
                     </select>

@@ -25,6 +25,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.BillingServiceDao" %>
 <%@page import="ca.openosp.openo.commn.model.BillingService" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     BillingServiceDao billingServiceDao = SpringUtils.getBean(BillingServiceDao.class);
 %>
@@ -37,10 +38,17 @@
         function CodeAttach(File0, File1, File2) {
 
             <%
-            if(request.getParameter("nameF") != null) {
-                    out.println("self.opener." + request.getParameter("nameF") + " = File0;");
-            } else {
+            // formIndex and elementName together identify a form field. They are validated
+            // against strict allowlists so the access path below is emitted from a fixed
+            // server-side template — no caller-supplied text reaches the JS source.
+            String formIndex = request.getParameter("formIndex");
+            String elementName = request.getParameter("elementName");
+            boolean hasStructuredTarget = ("0".equals(formIndex) || "1".equals(formIndex))
+                    && elementName != null && elementName.matches("^[a-zA-Z_$][a-zA-Z0-9_$]*$");
+            if (hasStructuredTarget) {
             %>
+            self.opener.document.forms[<%=formIndex%>].elements['<%=Encode.forJavaScript(elementName)%>'].value = File0;
+            <% } else { %>
             self.opener.document.serviceform.xml_other1.value = File0;
             self.opener.document.serviceform.xml_other2.value = File1;
             self.opener.document.serviceform.xml_other3.value = File2;
@@ -92,7 +100,7 @@
 %>
 <script LANGUAGE="JavaScript">
     <!--
-    CodeAttach('<%=param[0]%>', '<%=param[1]%>', '<%=param[2]%>');
+    CodeAttach('<%=Encode.forJavaScript(String.valueOf(param[0]))%>', '<%=Encode.forJavaScript(String.valueOf(param[1]))%>', '<%=Encode.forJavaScript(String.valueOf(param[2]))%>');
     -->
 
 </script>

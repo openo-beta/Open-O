@@ -32,7 +32,6 @@
 <%@page import="java.util.Enumeration" %>
 <%@page import="ca.openosp.openo.encounter.pageUtil.NavBarDisplayDAO" %>
 <%@page import="java.util.Arrays,java.util.Properties,java.util.List,java.util.Set,java.util.ArrayList,java.util.Enumeration,java.util.HashSet,java.util.Iterator,java.text.SimpleDateFormat,java.util.Calendar,java.util.Date,java.text.ParseException" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.casemgmt.model.*,ca.openosp.openo.casemgmt.service.* " %>
 <%@page import="ca.openosp.openo.casemgmt.web.formbeans.*" %>
 <%@page import="ca.openosp.openo.PMmodule.model.*" %>
@@ -68,6 +67,7 @@
 <%@ page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean" %>
 <%@ page import="ca.openosp.openo.commn.model.*" %>
 <%@ page import="ca.openosp.openo.PMmodule.model.ProgramProvider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 
@@ -146,14 +146,52 @@
 </script>
 <link rel="stylesheet" type="text/css" href="<c:out value="${ctx}"/>/library/jquery/jquery-ui-1.12.1.min.css">
 <script src="<c:out value="${ctx}"/>/share/javascript/prototype.js" type="text/javascript"></script>
+<script type="text/javascript">
+    // Lock prototype.js's `$` and `$F` so nothing on the page can
+    // overwrite them after this point.
+    //
+    // Why: third-party integrations loaded into this page (browser
+    // extensions, userscripts, or embedded toolbars) sometimes pull in
+    // their own copy of jQuery and effectively run `window.$ = jQuery`.
+    // That overwrites prototype's `$`, so when prototype's own methods
+    // later call `$(element)` internally they receive a jQuery wrapper
+    // instead of a DOM node and throw inside `Form.Element.getValue`
+    // / `_getElementsByXPath`. In the encounter window this silently
+    // kills Sign & Save and Sign Save & Bill -- the button click does
+    // nothing and the user has to refresh. It happens only when the
+    // third-party script wins the race to assign `$` before the user
+    // clicks, which is why the failure looks random in practice.
+    // The fix is to stop those overwrites at the source: lock the
+    // global so the rogue assignment is a no-op.
+    //
+    // Why `writable: false` and not a get/set accessor: prototype
+    // declares `function $()` at the top of a classic script, which
+    // in modern engines creates a non-configurable global binding.
+    // Converting a non-configurable data property into an accessor
+    // is not allowed and would throw. Tightening `writable: true ->
+    // false` IS allowed on a non-configurable property, and it is
+    // enough: subsequent `window.$ = ...` assignments silently fail
+    // in non-strict callers (or throw in strict ones), and prototype's
+    // `$` survives either way.
+    (function () {
+        if (typeof window.$ === 'function') {
+            try { Object.defineProperty(window, '$', { writable: false }); }
+            catch (e) { /* property may already be locked; safe to ignore */ }
+        }
+        if (typeof window.$F === 'function') {
+            try { Object.defineProperty(window, '$F', { writable: false }); }
+            catch (e) { /* property may already be locked; safe to ignore */ }
+        }
+    })();
+</script>
 <script src="<c:out value="${ctx}"/>/share/javascript/scriptaculous.js" type="text/javascript"></script>
 <script type="text/javascript" src="<c:out value="${ctx}/js/newCaseManagementView.js.jsp"/>"></script>
 <script type="text/javascript">
     ctx = "<c:out value="${ctx}"/>";
     imgPrintgreen.src = ctx + "/oscarEncounter/graphics/printerGreen.png"; //preload green print image so firefox will update properly
-    providerNo = "<%=provNo%>";
-    demographicNo = "<%=demographicNo%>";
-    case_program_id = "<%=pId%>";
+    providerNo = "<%=Encode.forJavaScript(String.valueOf(provNo))%>";
+    demographicNo = "<%=Encode.forJavaScript(String.valueOf(demographicNo))%>";
+    case_program_id = "<%=Encode.forJavaScript(String.valueOf(pId))%>";
 
     <caisi:isModuleLoad moduleName="caisi">
     caisiEnabled = true;
@@ -175,7 +213,7 @@
     <% } %>
 
 
-    strToday = "<%=strToday%>";
+    strToday = "<%=Encode.forJavaScript(String.valueOf(strToday))%>";
 
     notesIncrement = parseInt("<%=OscarProperties.getInstance().getProperty("num_loaded_notes", "20") %>");
 
@@ -185,14 +223,14 @@
     });
 
     <% if( request.getAttribute("NoteLockError") != null ) { %>
-    alert("<%=request.getAttribute("NoteLockError")%>");
+    alert("<%=Encode.forJavaScript(String.valueOf(request.getAttribute("NoteLockError")))%>");
     <%}%>
 
 </script>
 <div id="topContent">
     <form name="caseManagementViewForm" action="${pageContext.request.contextPath}/CaseManagementView.do" method="post">
-        <input type="hidden" name="demographicNo" value="<%=demographicNo%>"/>
-        <input type="hidden" name="providerNo" value="<%=provNo%>"/>
+        <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demographicNo))%>"/>
+        <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(provNo))%>"/>
         <input type="hidden" name="tab" value="Current Issues"/>
         <input type="hidden" name="hideActiveIssue" id="hideActiveIssue"/>
         <input type="hidden" name="ectWin.rowOneSize" id="rowOneSize"/>
@@ -200,7 +238,7 @@
         <input type="hidden" name="chain" value="list">
         <input type="hidden" name="method" value="view">
         <input type="hidden" id="check_issue" name="check_issue">
-        <input type="hidden" id="serverDate" value="<%=strToday%>">
+        <input type="hidden" id="serverDate" value="<%=Encode.forHtmlAttribute(String.valueOf(strToday))%>">
         <input type="hidden" id="resetFilter" name="resetFilter" value="false">
 
         <div id="filteredresults">
@@ -306,7 +344,7 @@
                                         providerNo = prov.getProviderNo();
                                 %>
                                 <li>
-                                    <input type="checkbox" name="filter_providers" value="<%= providerNo %>" onclick="filterCheckBox(this)" /><%=prov.getFormattedName()%>
+                                    <input type="checkbox" name="filter_providers" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>" onclick="filterCheckBox(this)" /><%=Encode.forHtml(String.valueOf(prov.getFormattedName()))%>
                                 </li>
                                 <%
                                     }
@@ -328,8 +366,8 @@
                                         Secrole role = (Secrole) roles.get(num);
                                 %>
                                 <li>
-                                    <input type="checkbox" name="filter_roles" value="<%=String.valueOf(role.getId())%>" onclick="filterCheckBox(this)" />
-                                    <%=role.getName()%>
+                                    <input type="checkbox" name="filter_roles" value="<%=Encode.forHtmlAttribute(String.valueOf(String.valueOf(role.getId())))%>" onclick="filterCheckBox(this)" />
+                                    <%=Encode.forHtml(String.valueOf(role.getName()))%>
                                 </li>
                                 <%
                                     }
@@ -376,9 +414,9 @@
                                         CheckBoxBean issue_checkBoxBean = (CheckBoxBean) issues.get(num);
                                 %>
                                 <li>
-                                    <input type="checkbox" name="issues" value="<%=String.valueOf(issue_checkBoxBean.getIssue().getId())%>"
+                                    <input type="checkbox" name="issues" value="<%=Encode.forHtmlAttribute(String.valueOf(String.valueOf(issue_checkBoxBean.getIssue().getId())))%>"
                                                    onclick="filterCheckBox(this)" />
-                                    <%=issue_checkBoxBean.getIssueDisplay().getResolved().equals("resolved") ? "* " : ""%> <%=issue_checkBoxBean.getIssueDisplay().getDescription()%>
+                                    <%=issue_checkBoxBean.getIssueDisplay().getResolved().equals("resolved") ? "* " : ""%> <%=Encode.forHtml(String.valueOf(issue_checkBoxBean.getIssueDisplay().getDescription()))%>
                                 </li>
                                 <%
                                     }
@@ -403,12 +441,12 @@
                 <oscar:oscarPropertiesCheck value="true" property="STUDENT_PARTICIPATION_CONSENT">
                     <input type="checkbox" value="" name="studentParticipationConsentCheck"
                            id="studentParticipationConsentCheck"
-                           onClick="return doStudentParticipationCheck('<%=demoNo%>');"/>
+                           onClick="return doStudentParticipationCheck('<%=Encode.forJavaScript(String.valueOf(demoNo))%>');"/>
                     <label for="studentParticipationConsentCheck"><fmt:setBundle basename="oscarResources"/><fmt:message key="casemgmt.chartnotes.studentParticipationConsent"/></label>
                 </oscar:oscarPropertiesCheck>
                 <oscar:oscarPropertiesCheck value="false" property="STUDENT_PARTICIPATION_CONSENT">
                     <input type="checkbox" value="" name="informedConsentCheck" id="informedConsentCheck"
-                           onClick="return doInformedConsent('<%=demoNo%>');"/>
+                           onClick="return doInformedConsent('<%=Encode.forJavaScript(String.valueOf(demoNo))%>');"/>
                     <label for="informedConsentCheck"><fmt:setBundle basename="oscarResources"/><fmt:message key="casemgmt.chartnotes.informedConsent"/></label>
                 </oscar:oscarPropertiesCheck>
             </div>
@@ -478,11 +516,11 @@
                 </security:oscarSec>
 
                 <security:oscarSec roleName="<%=roleName%>" objectName="_newCasemgmt.templates" rights="r">
-                <select onchange="javascript:popupPage(700,700,'Templates',this.value);">
+                <select onchange="openTemplate(this.value);">
                     <option value="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Header.Templates"/></option>
                     <option value="-1">------------------</option>
                     <security:oscarSec roleName="<%=roleName%>" objectName="_newCasemgmt.templates" rights="w">
-                        <option value="<%=request.getContextPath()%>/admin/providertemplate.jsp">New / Edit Template
+                        <option value="__new__">New / Edit Template
                         </option>
                         <option value="-1">------------------</option>
                     </security:oscarSec>
@@ -491,9 +529,9 @@
                         List<EncounterTemplate> allTemplates = encounterTemplateDao.findAll();
 
                         for (EncounterTemplate encounterTemplate : allTemplates) {
-                            String templateName = StringEscapeUtils.escapeHtml4(encounterTemplate.getEncounterTemplateName());
+                            String templateName = encounterTemplate.getEncounterTemplateName();
                     %>
-                    <option value="<%=request.getContextPath()+"/admin/providertemplate.jsp?dboperation=Edit&name="+templateName%>"><%=templateName%>
+                    <option value="<%=Encode.forHtmlAttribute(templateName)%>"><%=Encode.forHtmlContent(templateName)%>
                     </option>
                     <%
                         }
@@ -518,10 +556,10 @@
     String OscarMsgTypeLink = (String) request.getParameter("OscarMsgTypeLink");
 %>
 <form name="caseManagementEntryForm" id="caseManagementEntryForm" action="<%=request.getContextPath()%>/CaseManagementEntry.do" method="post">
-    <input type="hidden" name="demographicNo" value="<%=demographicNo%>"/>
+    <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demographicNo))%>"/>
     <input type="hidden" name="includeIssue" value="off"/>
-    <input type="hidden" name="OscarMsgType" value="<%=oscarMsgType%>"/>
-    <input type="hidden" name="OscarMsgTypeLink" value="<%=OscarMsgTypeLink%>"/>
+    <input type="hidden" name="OscarMsgType" value="<%=Encode.forHtmlAttribute(String.valueOf(oscarMsgType))%>"/>
+    <input type="hidden" name="OscarMsgTypeLink" value="<%=Encode.forHtmlAttribute(String.valueOf(OscarMsgTypeLink))%>"/>
     <%
         String apptNo = request.getParameter("appointmentNo");
         if (apptNo == null || apptNo.equals("") || apptNo.equals("null")) {
@@ -549,13 +587,13 @@
         }
     %>
 
-    <input type="hidden" name="appointmentNo" value="<%=apptNo%>"/>
-    <input type="hidden" name="appointmentDate" value="<%=apptDate%>"/>
-    <input type="hidden" name="start_time" value="<%=startTime%>"/>
+    <input type="hidden" name="appointmentNo" value="<%=Encode.forHtmlAttribute(String.valueOf(apptNo))%>"/>
+    <input type="hidden" name="appointmentDate" value="<%=Encode.forHtmlAttribute(String.valueOf(apptDate))%>"/>
+    <input type="hidden" name="start_time" value="<%=Encode.forHtmlAttribute(String.valueOf(startTime))%>"/>
     <input type="hidden" name="billRegion"
                  value="<%=(OscarProperties.getInstance().getProperty("billregion","")).trim().toUpperCase()%>"/>
-    <input type="hidden" name="apptProvider" value="<%=apptProv%>"/>
-    <input type="hidden" name="providerview" value="<%=provView%>"/>
+    <input type="hidden" name="apptProvider" value="<%=Encode.forHtmlAttribute(String.valueOf(apptProv))%>"/>
+    <input type="hidden" name="providerview" value="<%=Encode.forHtmlAttribute(String.valueOf(provView))%>"/>
     <input type="hidden" name="toBill" id="toBill" value="false">
     <input type="hidden" name="deleteId" value="0">
     <input type="hidden" name="lineId" value="0">
@@ -567,7 +605,7 @@
     <input type="hidden" name="newIssueName" id="newIssueName">
     <input type="hidden" name="ajax" value="false">
     <input type="hidden" name="chain" value="">
-    <input type="hidden" name="caseNote.program_no" value="<%=pId%>">
+    <input type="hidden" name="caseNote.program_no" value="<%=Encode.forHtmlAttribute(String.valueOf(pId))%>">
     <input type="hidden" name="noteId" value="0">
     <input type="hidden" name="note_edit" value="">
     <input type="hidden" name="sign" value="off">
@@ -705,7 +743,7 @@
                 <button type="button" onclick="toggleFullViewForAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btneExpandLoadedNotes"/></button>
                 <button type="button" onclick="toggleCollapseViewForAll();"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.btnCollapseLoadedNotes"/></button>
                 <button type="button"
-                        onclick="popupPage(500,200,'noteBrowser<%=bean.demographicNo%>','casemgmt/noteBrowser.jsp?demographic_no=<%=bean.demographicNo%>&FirstTime=1');">
+                        onclick="popupPage(500,200,'noteBrowser<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>','casemgmt/noteBrowser.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&FirstTime=1');">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.BrowseNotes"/></button>
             </div>
         </div>

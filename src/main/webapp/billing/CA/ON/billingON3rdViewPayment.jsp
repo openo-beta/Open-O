@@ -24,6 +24,7 @@
 <%@page import="ca.openosp.openo.commn.dao.BillingPaymentTypeDao" %>
 
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     BillingONPayment billPayment = (BillingONPayment) request.getAttribute("billPayment");
@@ -83,32 +84,32 @@
 <table width="100%" border="0">
     <tr align="right">
         <td width="86%">Date:</td>
-        <td><%=billPayment.getPaymentDateFormatted() %>
+        <td><%=Encode.forHtml(String.valueOf(billPayment.getPaymentDateFormatted()))%>
         </td>
     </tr>
     <tr align="right">
         <td width="86%">Payment type:</td>
-        <td><%=payType %>
+        <td><%=Encode.forHtml(String.valueOf(payType))%>
         </td>
     </tr>
     <tr align="right">
         <td width="86%">Payment:</td>
-        <td><%=billPayment.getTotal_payment() %>
+        <td><%=Encode.forHtml(String.valueOf(billPayment.getTotal_payment()))%>
         </td>
     </tr>
     <tr align="right">
         <td width="86%">Discount:</td>
-        <td><%=billPayment.getTotal_discount() %>
+        <td><%=Encode.forHtml(String.valueOf(billPayment.getTotal_discount()))%>
         </td>
     </tr>
     <tr align="right">
         <td width="86%">Refund Credit / Overpayment:</td>
-        <td><%=billPayment.getTotal_credit()%>
+        <td><%=Encode.forHtml(String.valueOf(billPayment.getTotal_credit()))%>
         </td>
     </tr>
     <tr align="right">
         <td width="86%">Refund / Write off:</td>
-        <td><%=billPayment.getTotal_refund() %>
+        <td><%=Encode.forHtml(String.valueOf(billPayment.getTotal_refund()))%>
         </td>
     </tr>
 </table>

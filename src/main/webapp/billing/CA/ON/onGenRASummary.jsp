@@ -33,6 +33,7 @@
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     RaHeaderDao dao = SpringUtils.getBean(RaHeaderDao.class);
 %>
@@ -146,13 +147,13 @@
                             plast = prop.getProperty("last_name", "");
                             pfirst = prop.getProperty("first_name", "");
                     %>
-                    <option value="<%=pohipno%>" <%=proNo.equals(pohipno) ? "selected" : ""%>><%=plast%>,<%=pfirst%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(pohipno))%>" <%=proNo.equals(pohipno) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(plast))%>,<%=Encode.forHtml(String.valueOf(pfirst))%>
                     </option>
                     <%
                         }
                     %>
                 </select><input type='submit' name='submit' value='Generate'> <input
-                    type="hidden" name="rano" value="<%=raNo%>"> <input
+                    type="hidden" name="rano" value="<%=Encode.forHtmlAttribute(String.valueOf(raNo))%>"> <input
                     type='button' name='print' value='Print' onClick='window.print()'>
                 <input type='button' name='close' value='Close'
                        onClick='window.close()'></th>
@@ -187,57 +188,57 @@
         %>
 
     <tr>
-        <td height="16"><%=account%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(account))%>
         </td>
-        <td height="16"><%=demo_docname%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(demo_docname))%>
         </td>
-        <td height="16"><%=demo_name%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(demo_name))%>
         </td>
-        <td height="16"><%=demo_hin%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(demo_hin))%>
         </td>
-        <td height="16"><%=servicedate%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(servicedate))%>
         </td>
-        <td height="16"><%=servicecode%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(servicecode))%>
         </td>
-        <!-- <td width="8%" height="16"><%=serviceno%></td>-->
-        <td height="16" align=right><%=amountsubmit%>
+        <!-- <td width="8%" height="16"><%=Encode.forHtml(String.valueOf(serviceno))%></td>-->
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountsubmit))%>
         </td>
-        <td height="16" align=right><%=amountpay%>
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
         </td>
         <td height="16" align=right>N/A</td>
-        <td height="16" align=right><%=amountpay%>
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
         </td>
-        <td height="16" align=right><%=amountOB%>
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountOB))%>
         </td>
-        <td height="16" align=right><%=explain%>
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(explain))%>
         </td>
     </tr>
 
 
     <tr>
-        <td height="16"><%=account%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(account))%>
         </td>
-        <td height="16"><%=demo_docname%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(demo_docname))%>
         </td>
-        <td height="16"><%=demo_name%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(demo_name))%>
         </td>
-        <td height="16"><%=demo_hin%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(demo_hin))%>
         </td>
-        <td height="16"><%=servicedate%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(servicedate))%>
         </td>
-        <td height="16"><%=servicecode%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(servicecode))%>
         </td>
-        <!-- <td width="8%" height="16"><%=serviceno%></td>-->
-        <td height="16" align=right><%=amountsubmit%>
+        <!-- <td width="8%" height="16"><%=Encode.forHtml(String.valueOf(serviceno))%></td>-->
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountsubmit))%>
         </td>
-        <td height="16" align=right><%=amountpay%>
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
         </td>
-        <td height="16" align=right><%=amountpay%>
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
         </td>
         <td height="16" align=right>N/A</td>
-        <td height="16" align=right><%=amountOB%>
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountOB))%>
         </td>
-        <td height="16" align=right><%=explain%>
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(explain))%>
         </td>
     </tr>
 
@@ -249,28 +250,28 @@
 */
 %>
     <tr>
-        <td height="16"><%=account%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(account))%>
         </td>
-        <td height="16"><%=demo_docname%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(demo_docname))%>
         </td>
-        <td height="16"><%=demo_name%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(demo_name))%>
         </td>
-        <td height="16"><%=demo_hin%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(demo_hin))%>
         </td>
-        <td height="16"><%=servicedate%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(servicedate))%>
         </td>
-        <td height="16"><%=servicecode%>
+        <td height="16"><%=Encode.forHtml(String.valueOf(servicecode))%>
         </td>
-        <!-- <td width="8%" height="16"><%=serviceno%></td>-->
-        <td height="16" align=right><%=amountsubmit%>
+        <!-- <td width="8%" height="16"><%=Encode.forHtml(String.valueOf(serviceno))%></td>-->
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountsubmit))%>
         </td>
-        <td height="16" align=right><%=amountpay%>
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountpay))%>
         </td>
         <td height="16" align=right>N/A</td>
         <td height="16" align=right>N/A</td>
-        <td height="16" align=right><%=amountOB%>
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(amountOB))%>
         </td>
-        <td height="16" align=right><%=explain%>
+        <td height="16" align=right><%=Encode.forHtml(String.valueOf(explain))%>
         </td>
     </tr>
         <%
@@ -309,35 +310,35 @@
 		color = i == (aL.size()-1) ? "class='myYellow'" : color;
 %>
         <tr <%=color %>>
-            <td align="center"><%=prop.getProperty("account", "&nbsp;")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("account", "\u00A0")))%>
             </td>
-            <td align="center"><%=prop.getProperty("claimNo", "&nbsp;")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("claimNo", "\u00A0")))%>
             </td>
-            <!--  >td><%=prop.getProperty("demo_docname", "&nbsp;")%></td -->
-            <td><%=prop.getProperty("demo_name", "&nbsp;")%>
+            <!--  >td><%=Encode.forHtml(String.valueOf(prop.getProperty("demo_docname", "\u00A0")))%></td -->
+            <td><%=Encode.forHtml(String.valueOf(prop.getProperty("demo_name", "\u00A0")))%>
             </td>
-            <td align="center"><%=prop.getProperty("demo_doc", "&nbsp;")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("demo_doc", "\u00A0")))%>
             </td>
-            <td align="center"><%=prop.getProperty("demo_hin", "&nbsp;")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("demo_hin", "\u00A0")))%>
             </td>
-            <td align="center"><%=prop.getProperty("servicedate", "&nbsp;")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("servicedate", "\u00A0")))%>
             </td>
-            <td align="center"><%=prop.getProperty("servicecode", "&nbsp;")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("servicecode", "\u00A0")))%>
             </td>
-            <!--<td width="8%"><%=serviceno%></td>-->
-            <td align=right><%=prop.getProperty("amountsubmit", "&nbsp;")%>
+            <!--<td width="8%"><%=Encode.forHtml(String.valueOf(serviceno))%></td>-->
+            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("amountsubmit", "\u00A0")))%>
             </td>
-            <td align=right><%=prop.getProperty("amountpay", "&nbsp;")%>
+            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("amountpay", "\u00A0")))%>
             </td>
-            <td align=right><%=prop.getProperty("clinicPay", "&nbsp;")%>
+            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("clinicPay", "\u00A0")))%>
             </td>
-            <td align=right><%=prop.getProperty("hospitalPay", "&nbsp;")%>
+            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("hospitalPay", "\u00A0")))%>
             </td>
-            <td align=right><%=prop.getProperty("obPay", "&nbsp;")%>
+            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("obPay", "\u00A0")))%>
             </td>
-            <td align=right><%=prop.getProperty("explain", "&nbsp;")%>
+            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("explain", "\u00A0")))%>
             </td>
-            <td width="0" style="display:none"><%=prop.getProperty("site", "")%>
+            <td width="0" style="display:none"><%=Encode.forHtml(String.valueOf(prop.getProperty("site", "")))%>
             </td>
         </tr>
 

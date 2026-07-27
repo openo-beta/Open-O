@@ -34,6 +34,9 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import ca.openosp.openo.casemgmt.model.CaseManagementIssue;
 
 @XmlRootElement(name = "encounterNote")
@@ -43,9 +46,15 @@ public class NoteTo1 implements Serializable {
     private Boolean isSigned;
     private Boolean isVerified;
     private Boolean isEditable;
+
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date observationDate;
+
     private String revision;
+
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date updateDate;
+    
     private String providerName;
     private String providerNo;
     private String status;

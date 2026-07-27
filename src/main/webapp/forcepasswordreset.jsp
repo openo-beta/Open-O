@@ -41,6 +41,7 @@
         import="java.lang.*,ca.openosp.*"
         errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%!
     OscarProperties op = OscarProperties.getInstance();
@@ -83,10 +84,10 @@
 
                 var password_min_length = <%=op.getProperty("password_min_length")%>;
                 var password_min_groups = <%=op.getProperty("password_min_groups")%>;
-                var password_group_lower_chars = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_lower_chars"))%>";
-                var password_group_upper_chars = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_upper_chars"))%>";
-                var password_group_digits = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))%>";
-                var password_group_special = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_special"))%>";
+                var password_group_lower_chars = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_lower_chars"))))%>";
+                var password_group_upper_chars = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_upper_chars"))))%>";
+                var password_group_digits = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))))%>";
+                var password_group_special = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_special"))))%>";
 
                 <%
                 if (!Boolean.parseBoolean(op.getProperty("IGNORE_PASSWORD_REQUIREMENTS")))
@@ -140,10 +141,10 @@
 
                 var password_min_length = <%=op.getProperty("password_min_length")%>;
                 var password_min_groups = <%=op.getProperty("password_min_groups")%>;
-                var password_group_lower_chars = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_lower_chars"))%>";
-                var password_group_upper_chars = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_upper_chars"))%>";
-                var password_group_digits = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))%>";
-                var password_group_special = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_special"))%>";
+                var password_group_lower_chars = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_lower_chars"))))%>";
+                var password_group_upper_chars = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_upper_chars"))))%>";
+                var password_group_digits = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))))%>";
+                var password_group_special = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_special"))))%>";
 
                 <%
                 if (!Boolean.parseBoolean(op.getProperty("IGNORE_PASSWORD_REQUIREMENTS")))
@@ -196,7 +197,7 @@
             function validatePin(pin) {
 
                 var password_pin_min_length = <%=op.getProperty("password_pin_min_length")%>;
-                var password_group_digits = "<%=JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))%>";
+                var password_group_digits = "<%=Encode.forJavaScript(String.valueOf(JavaScriptUtils.javaScriptEscape(op.getProperty("password_group_digits"))))%>";
 
                 if (pin.length < password_pin_min_length) {
                     alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="password.policy.violation.msgPinLengthError"/> ' +
@@ -234,7 +235,7 @@
         </table>
         <center>
 
-            <p><b><font color='red'><%=errormsg%>
+            <p><b><font color='red'><%=Encode.forHtml(String.valueOf(errormsg))%>
             </font></b>
 
             <table border="0" width="100%" cellpadding="4" cellspacing="0">
@@ -247,13 +248,13 @@
                     <td width="50%" align="right"><font face="arial"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgChooseNew"/> &nbsp; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.formNewPassword"/>:</b></font></td>
                     <td><input type=password name="newPassword" value="" size=20
                                maxlength=32> <font size="-2">(<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgAtLeast"/>
-                        <%=op.getProperty("password_min_length")%> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
+                        <%=Encode.forHtml(String.valueOf(op.getProperty("password_min_length")))%> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
                 </tr>
                 <tr>
                     <td width="50%" align="right"><font face="arial"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgConfirm"/> &nbsp; <b><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.formNewPassword"/>:</b></font></td>
                     <td><input type=password name="confirmPassword" value="" size=20
                                maxlength=32> <font size="-2">(<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgAtLeast"/>
-                        <%=op.getProperty("password_min_length")%> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
+                        <%=Encode.forHtml(String.valueOf(op.getProperty("password_min_length")))%> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerchangepassword.msgSymbols"/>)</font></td>
                 </tr>
             </table>
         </center>

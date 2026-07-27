@@ -42,8 +42,8 @@ public class EctAlphaRecord {
         Properties props = new Properties();
 
         if (existingID <= 0) {
-            String sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName FROM demographic WHERE demographic_no = " + demographicNo;
-            ResultSet rs = DBHandler.GetSQL(sql);
+            String sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName FROM demographic WHERE demographic_no = ?";
+            ResultSet rs = DBHandler.GetPreSQL(sql, demographicNo);
             if (rs.next()) {
                 props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
                 props.setProperty("pName", Misc.getString(rs, "pName"));
@@ -53,8 +53,8 @@ public class EctAlphaRecord {
             }
             rs.close();
         } else {
-            String sql = "SELECT * FROM formAlpha WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
-            ResultSet rs = DBHandler.GetSQL(sql);
+            String sql = "SELECT * FROM formAlpha WHERE demographic_no = ? AND ID = ?";
+            ResultSet rs = DBHandler.GetPreSQL(sql, demographicNo, existingID);
             if (rs.next()) {
                 ResultSetMetaData md = rs.getMetaData();
                 for (int i = 1; i <= md.getColumnCount(); i++) {
@@ -82,8 +82,8 @@ public class EctAlphaRecord {
     public int saveAlphaRecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");
 
-        String sql = "SELECT * FROM formAlpha WHERE demographic_no=" + demographic_no + " AND ID=0";
-        ResultSet rs = DBHandler.GetSQL(sql, true);
+        String sql = "SELECT * FROM formAlpha WHERE demographic_no = ? AND ID = 0";
+        ResultSet rs = DBHandler.GetPreSQLUpdatable(sql, demographic_no);
         rs.moveToInsertRow();
         ResultSetMetaData md = rs.getMetaData();
         for (int i = 1; i <= md.getColumnCount(); i++) {
@@ -126,7 +126,7 @@ public class EctAlphaRecord {
         rs.close();
         int ret = 0;
         sql = "SELECT LAST_INSERT_ID()";
-        rs = DBHandler.GetSQL(sql);
+        rs = DBHandler.GetPreSQL(sql);
         if (rs.next())
             ret = rs.getInt(1);
         rs.close();
@@ -136,8 +136,8 @@ public class EctAlphaRecord {
     public Properties getAlphaPrintRecord(int demographicNo, int existingID) throws SQLException {
         Properties props = new Properties();
 
-        String sql = "SELECT * FROM formAlpha WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
-        ResultSet rs = DBHandler.GetSQL(sql);
+        String sql = "SELECT * FROM formAlpha WHERE demographic_no = ? AND ID = ?";
+        ResultSet rs = DBHandler.GetPreSQL(sql, demographicNo, existingID);
         if (rs.next()) {
             ResultSetMetaData md = rs.getMetaData();
             for (int i = 1; i <= md.getColumnCount(); i++) {

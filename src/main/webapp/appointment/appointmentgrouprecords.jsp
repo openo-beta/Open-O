@@ -70,6 +70,7 @@
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.MyDateFormat" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -418,7 +419,7 @@
         </table>
 
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
-            <tr bgcolor="<%=deepcolor%>">
+            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>">
                 <th><font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.msgLabel"/></font></th>
             </tr>
         </table>
@@ -492,22 +493,22 @@
                 temp = e.nextElement().toString();
                 if (temp.equals("dboperation") || temp.equals("displaymode") || temp.equals("search_mode") || temp.equals("chart_no"))
                     continue;
-                out.println("<input type='hidden' name='" + temp + "' value=\"" + UtilMisc.htmlEscape(request.getParameter(temp)) + "\">");
+                out.println("<input type='hidden' name='" + Encode.forHtmlAttribute(temp) + "' value=\"" + UtilMisc.htmlEscape(Encode.forHtmlAttribute(request.getParameter(temp))) + "\">");
             }
         %>
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
             <tr>
-                <td nowrap><font color='black'><%=request.getParameter("appointment_date")%>
-                    | <%=request.getParameter("start_time")%> - <%=request.getParameter("end_time")%>
-                    | <%=UtilMisc.toUpperLowerCase(request.getParameter("keyword"))%>
+                <td nowrap><font color='black'><%=Encode.forHtml(request.getParameter("appointment_date"))%>
+                    | <%=Encode.forHtml(request.getParameter("start_time"))%> - <%=Encode.forHtml(request.getParameter("end_time"))%>
+                    | <%=Encode.forHtml(UtilMisc.toUpperLowerCase(request.getParameter("keyword")))%>
                 </font></td>
-                <td align='right' nowrap>Group : <%=mygroupno%>
+                <td align='right' nowrap>Group : <%=Encode.forHtml(String.valueOf(mygroupno))%>
                 </td>
             </tr>
         </table>
         <table BORDER="0" CELLPADDING="2" CELLSPACING="2" WIDTH="100%"
                BGCOLOR="white">
-            <tr BGCOLOR="<%=tableTitle%>">
+            <tr BGCOLOR="<%=Encode.forHtmlAttribute(String.valueOf(tableTitle))%>">
                 <th width=30% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.msgProviderName"/></th>
                 <th width=11% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.msgFirstAppointment"/></th>
                 <th width=11% nowrap><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmentgrouprecords.msgSecondAppointment"/></th>
@@ -535,7 +536,7 @@
             %>
             <tr
                     BGCOLOR="<%=bDefProvider?deepcolor:(bAvailProvider?weakcolor:"#e0e0e0")%>">
-                <td align='right'>&nbsp;<%=provider.getFormattedName()%>
+                <td align='right'>&nbsp;<%=Encode.forHtml(String.valueOf(provider.getFormattedName()))%>
                 </td>
                 <td align='center'>&nbsp; <input type="checkbox" name="one<%=i%>"
                                                  value="<%=i%>"
@@ -543,14 +544,14 @@
 		!= null ? otherAppt.getProperty(provider.getProviderNo()+"one") : "") : (bDefProvider? "checked":"")%>
                                                  onclick="onCheck(this)"> <input type="hidden"
                                                                                  name="provider_no<%=i%>"
-                                                                                 value="<%=provider.getProviderNo()%>">
+                                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>">
                     <INPUT
                             TYPE="hidden" NAME="last_name<%=i%>"
-                            VALUE='<%=provider.getLastName()%>'> <INPUT
+                            VALUE='<%=Encode.forHtmlAttribute(String.valueOf(provider.getLastName()))%>'> <INPUT
                             TYPE="hidden" NAME="first_name<%=i%>"
-                            VALUE='<%=provider.getFirstName()%>'> <% if (otherAppt.getProperty(provider.getProviderNo() + "apptno") != null) {%>
+                            VALUE='<%=Encode.forHtmlAttribute(String.valueOf(provider.getFirstName()))%>'> <% if (otherAppt.getProperty(provider.getProviderNo() + "apptno") != null) {%>
                     <input type="hidden" name="appointment_no<%=i%>"
-                           value="<%=otherAppt.getProperty(provider.getProviderNo()+"apptno")%>">
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(otherAppt.getProperty(provider.getProviderNo()+"apptno")))%>">
                     <% } %>
                 </td>
                 <td align='center'>&nbsp; <input type="checkbox" name="two<%=i%>"
@@ -561,7 +562,7 @@
                 <td nowrap><%=otherAppt.getProperty(provider.getProviderNo() + "appt")
                         != null ? otherAppt.getProperty(provider.getProviderNo() + "appt") : ""%>
                         <%--
-                    // <input type="text" name="orig<%=i%>" value="<%=bDefProvider? request.getParameter("reason"):""%>" style="width:100%">
+                    // <input type="text" name="orig<%=i%>" value="<%=Encode.forHtmlAttribute(bDefProvider? request.getParameter("reason"):"")%>" style="width:100%">
                 --%> &nbsp;
                 </td>
             </tr>

@@ -34,6 +34,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicAccessoryDao" %>
 <%@page import="ca.openosp.openo.commn.model.DemographicAccessory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DemographicAccessoryDao demographicAccessoryDao = (DemographicAccessoryDao) SpringUtils.getBean(DemographicAccessoryDao.class);
 %>
@@ -57,7 +58,7 @@
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
     <tr bgcolor="#486ebd">
-        <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><%=request.getParameter("demographic_name")%>
+        <th align=CENTER NOWRAP><font face="Helvetica" color="#FFFFFF"><%=Encode.forHtml(request.getParameter("demographic_name"))%>
         </font></th>
     </tr>
 </table>
@@ -135,7 +136,7 @@
         <tr>
             <td align="center"><br>
                 <input type="hidden" name="demographic_no"
-                       value="<%=request.getParameter("demographic_no")%>"> <input
+                       value="<%=Encode.forHtmlAttribute(request.getParameter("demographic_no"))%>"> <input
                         type="submit" name="submit" value=" Save "> <input
                         type="button" name="Button" value="Cancel" onClick="window.close();">
             </td>

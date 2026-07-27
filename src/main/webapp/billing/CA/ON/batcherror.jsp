@@ -38,7 +38,8 @@
 </head>
 <body style="background-color:#C4D9E7;" onload='setTimeout("exit();",5000)'>
 
-<%=request.getAttribute("error")%>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%=Encode.forHtml(String.valueOf(request.getAttribute("error")))%>
 
 </body>
 </html>

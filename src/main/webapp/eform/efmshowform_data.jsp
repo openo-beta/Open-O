@@ -77,6 +77,9 @@
      */
     String fid = request.getParameter("fid");
     String fdid = StringUtils.isNullOrEmpty(request.getParameter("fdid")) ? ((String) request.getAttribute("fdid")) : request.getParameter("fdid");
+    // Validate numeric parameters to prevent injection
+    if (fid != null && !fid.matches("\\d+")) { fid = null; }
+    if (fdid != null && !fdid.matches("\\d+")) { fdid = null; }
     String messageOnFailure = "No eform or appointment is available";
     EForm eForm = null;
     if (fid == null) {  // form exists in patient

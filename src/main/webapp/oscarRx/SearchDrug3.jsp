@@ -50,7 +50,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@page import="ca.openosp.openo.utility.WebUtils" %>
 <%@page import="ca.openosp.openo.commn.model.PharmacyInfo" %>
 <%@page import="ca.openosp.OscarProperties,ca.openosp.openo.log.*" %>
@@ -68,6 +67,7 @@
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPharmacyData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -118,7 +118,7 @@
 
 %>
 <security:oscarSec roleName="<%=roleName2$%>"
-                   objectName='<%="_rx$"+demoNo%>' rights="o"
+                   objectName='<%=Encode.forHtmlAttribute(String.valueOf("_rx$"+demoNo))%>' rights="o"
                    reverse="<%=false%>">
   <fmt:setBundle basename="oscarResources"/><fmt:message key="demographic.demographiceditdemographic.accessDenied"/>
   <% response.sendRedirect(request.getContextPath() + "/acctLocked.html"); %>
@@ -325,6 +325,7 @@
   </style>
 
   <script type="text/javascript" src="${ctx}/js/global.js"></script>
+  <script src="${ctx}/csrfguard"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/prototype.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/screen.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/javascript/rx.js"/>"></script>
@@ -342,6 +343,12 @@
   <script type="text/javascript" src="<c:out value="${ctx}/share/yui/js/datasource-min.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/share/yui/js/autocomplete-min.js"/>"></script>
   <script type="text/javascript" src="<c:out value="${ctx}/js/checkDate.js"/>"></script>
+
+  <%-- RxSessionInterceptor: Enables multi-patient tab support by adding demographicNo to AJAX calls --%>
+  <script type="text/javascript">
+    var currentDemographicNo = '<%= Encode.forJavaScript(Integer.toString(rxSessionBean.getDemographicNo())) %>';
+  </script>
+  <script type="text/javascript" src="${ctx}/oscarRx/js/rxSessionInterceptor.js"></script>
 
   <script type="text/javascript">
     let selectedReRxIDs = [];
@@ -413,7 +420,7 @@
       let top = winY + 70;
       let left = winX + 110;
       let url = ctx + "/oscarRx/searchDrug.do?rx2=true&searchString=" + encodeURIComponent($('searchString').value);
-      popup2(600, 800, top, left, url, 'windowNameRxSearch<%=demoNo%>');
+      popup2(600, 800, top, left, url, 'windowNameRxSearch<%=Encode.forJavaScript(String.valueOf(demoNo))%>');
 
     }
 
@@ -425,7 +432,7 @@
       let top = winY + 70;
       let left = winX + 110;
       let url = ctx + "/oscarRx/SelectReason.jsp?demographicNo=" + demographic + "&drugId=" + encodeURIComponent(id);
-      popup2(575, 650, top, left, url, 'windowNameRxReason<%=demoNo%>');
+      popup2(575, 650, top, left, url, 'windowNameRxReason<%=Encode.forJavaScript(String.valueOf(demoNo))%>');
 
     }
 
@@ -774,7 +781,7 @@
     			String today = formatter.format(new java.util.Date());
     		%>
         txt.disabled = true;
-        txt.value = '<%=today%>';
+        txt.value = '<%=Encode.forJavaScript(String.valueOf(today))%>';
       } else {
         txt.disabled = false;
       }
@@ -785,7 +792,7 @@
     function completeMedRec() {
       let ok = confirm("Are you sure you would like to mark the Med Rec as complete?");
       if (ok) {
-        let url = ctx + "/oscarRx/completeMedRec.jsp?demographicNo=<%=rxSessionBean.getDemographicNo()%>";
+        let url = ctx + "/oscarRx/completeMedRec.jsp?demographicNo=<%=Encode.forUriComponent(String.valueOf(rxSessionBean.getDemographicNo()))%>";
         let data;
         new Ajax.Request(url, {
           method: 'get', parameters: data, onSuccess: function (transport) {
@@ -977,7 +984,6 @@
       height: 150px;
       overflow: auto;
       border: thin solid #DCDCDC;
-      display: none;
     }
 
     .text-indent-5 {
@@ -1017,12 +1023,17 @@
 
     #discontinueUI {
       position: absolute;
-      display: none;
       width: 500px;
       height: 200px;
       background-color: white;
       padding: 20px;
       border: 1px solid grey;
+    }
+
+    /* Bootstrap added to this page resets h1-h6 to font-weight:500,
+       which un-bolds the popup heading vs the pre-Bootstrap look. Restore bold here. */
+    #discontinueUI h3 {
+      font-weight: bold;
     }
 
     #drugProfile {
@@ -1056,6 +1067,9 @@
 
     .rightColumnAdjust {
       padding-left: 10px;
+      /* Table cells default to vertical-align: middle, so a long favourites column (left cell)
+         makes the row tall and drifts this content to the page middle (#2464). Pin it to top. */
+      vertical-align: top;
     }
   </style>
 
@@ -1116,8 +1130,8 @@
                     name="drugForm" method="post">
                 <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
 
-                <input type="hidden" property="demographicNo"
-                       value="<%=Integer.toString(patient.getDemographicNo())%>"/>
+                <input type="hidden" name="demographicNo"
+                       value="<%=Encode.forHtmlAttribute(Integer.toString(demoNo))%>"/>
                 <table>
                   <tr id="prescriptionStageRow">
                     <td>
@@ -1129,7 +1143,8 @@
                         <div id="rxText"></div>
                         <%-- Prescriptions are staged here via the prescribe.jsp widget --%>
 
-                        <input type="hidden" property="demographicNo" value="<%=patient.getDemographicNo()%>"/>
+                        <input type="hidden" id="deleteOnCloseRxBox" value="false"/>
+                        <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(Integer.toString(demoNo))%>"/>
 
                       </div>
                       <input type="hidden" id="rxPharmacyId" name="rxPharmacyId" value=""/>
@@ -1234,7 +1249,7 @@
                         basename="oscarResources"/><fmt:message key="SearchDrug.Print"/></a>
 
                       <%if (securityManager.hasWriteAccess("_rx", roleName2$, true)) {%>
-                      <a href="javascript:void(0);"  class="btn btn-link"  onclick="$('reprint').toggle();return false;"><fmt:setBundle
+                      <a href="javascript:void(0);"  class="btn btn-link"  onclick="document.getElementById('reprint').toggleAttribute('hidden');return false;"><fmt:setBundle
                         basename="oscarResources"/><fmt:message key="SearchDrug.Reprint"/></a>
 
                       <a href="javascript:void(0);"  class="btn btn-link"  id="cmdRePrescribe" onclick="RePrescribeLongTerm();"><fmt:setBundle basename="oscarResources"/><fmt:message
@@ -1242,7 +1257,7 @@
 
                       <% } %>
                       <a  class="btn btn-link"
-                          href="javascript:popupWindow(720,920, ctx + '/oscarRx/chartDrugProfile.jsp?demographic_no=<%=demoNo%>','PrintDrugProfile2')">Timeline
+                          href="javascript:popupWindow(720,920, ctx + '/oscarRx/chartDrugProfile.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>','PrintDrugProfile2')">Timeline
                         Drug Profile</a>
 
                     </div>
@@ -1250,7 +1265,8 @@
                   </td>
                 </tr>
                 <tr>
-                  <td id="reprint">
+                  <%-- hidden attribute is toggled by JS via toggleAttribute('hidden') — do not move to CSS or the reprint section will not open --%>
+                  <td id="reprint" hidden>
 
 
                       <% for (int i = 0; prescribedDrugs.length > i; i++) {
@@ -1262,9 +1278,9 @@
                                                     %>
 
 
-                    <div class="btn btn-link text-indent-5">
-                      <a href="javascript:void(0);" onclick="reprint2('<%=drug.getScript_no()%>')">
-                        <%=drug.getRxDisplay()%>
+                    <div class="text-indent-5">
+                      <a href="javascript:void(0);" onclick="reprint2('<%=Encode.forJavaScript(String.valueOf(drug.getScript_no()))%>')">
+                        <%=Encode.forHtml(String.valueOf(drug.getRxDisplay()))%>
                       </a>
                     </div>
 
@@ -1277,17 +1293,17 @@
 <div class="reprintRxItem">
   <div class="reprintRxItemHeading">
     <div>
-      <strong>Rx: <%=drug.getRxDate()%>
+      <strong>Rx: <%=Encode.forHtml(String.valueOf(drug.getRxDate()))%>
       </strong>
     </div>
     <div>
-      <a href="javascript:void(0)" onclick="showPreviousPrints(<%=drug.getScript_no() %>);return false;">
-        <%=drug.getNumPrints()%>Print(s)
+      <a href="javascript:void(0)" onclick="showPreviousPrints(<%=Encode.forJavaScript(String.valueOf(drug.getScript_no()))%>);return false;">
+        <%=Encode.forHtml(String.valueOf(drug.getNumPrints()))%> Print(s)
       </a>
     </div>
   </div>
   <div class="text-indent-5">
-    <a href="javascript:void(0);" onclick="reprint2('<%=drug.getScript_no()%>')"><%=drug.getRxDisplay()%>
+    <a href="javascript:void(0);" onclick="reprint2('<%=Encode.forJavaScript(String.valueOf(drug.getScript_no()))%>')"><%=Encode.forHtml(String.valueOf(drug.getRxDisplay()))%>
     </a>
   </div>
 
@@ -1456,9 +1472,9 @@
               String str = note.getNote();
         %>
         <tr>
-          <td><%=formatter.format(note.getCreate_date()) %>
+          <td><%=Encode.forHtml(String.valueOf(formatter.format(note.getCreate_date())))%>
           </td>
-          <td><%=StringEscapeUtils.escapeHtml4(str)%>
+          <td><%=Encode.forHtml(str)%>
           </td>
         </tr>
         <%
@@ -1483,7 +1499,8 @@
 
 
 <div id="dragifm"></div>
-<div id="discontinueUI">
+<%-- hidden attribute is toggled by JS (hidden = true/false) — do not move to CSS as display:none or the discontinue popup will not open (Prototype show() cannot override a stylesheet rule) --%>
+<div id="discontinueUI" hidden>
   <h3>Discontinue :<span id="disDrug"></span></h3>
   <input type="hidden" name="disDrugId" id="disDrugId"/>
   <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.discontinuedReason.msgReason"/>
@@ -1527,7 +1544,7 @@
   <br/>
   <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.discontinuedReason.msgComment"/><br/>
   <textarea id="disComment" rows="3" cols="45"></textarea><br/>
-  <input type="button" onclick="$('discontinueUI').hide();" value="Cancel"/>
+  <input type="button" onclick="document.getElementById('discontinueUI').hidden = true;" value="Cancel"/>
   <input type="button"
          onclick="Discontinue2($('disDrugId').value,$('disReason').value,$('disComment').value,$('disDrug').innerHTML);"
          value="Discontinue"/>
@@ -2104,20 +2121,20 @@
     let drugName = prescripElement ? prescripElement.textContent : '';
     $('discontinueUI').setStyle(styleStr);
     safeSetText('disDrug', drugName);
-    $('discontinueUI').show();
+    document.getElementById('discontinueUI').hidden = false;
     $('disDrugId').value = id;
   }
 
   function Discontinue2(id, reason, comment, drugSpecial) {
     let url = ctx + "/oscarRx/deleteRx.do?parameterValue=Discontinue";
-    let demoNo = '<%=patient.getDemographicNo()%>';
+    let demoNo = '<%=Encode.forJavaScript(String.valueOf(demoNo))%>';
     let data = "drugId=" + encodeURIComponent(id) + "&reason=" + encodeURIComponent(reason) + "&comment=" + encodeURIComponent(comment) + "&demoNo=" + demoNo + "&drugSpecial=" + encodeURIComponent(drugSpecial) + "&rand=" + generateSecureRandomId();
     new Ajax.Request(url, {
       method: 'post', postBody: data,
       onSuccess: function (transport) {
         try {
           let json = JSON.parse(transport.responseText);
-          $('discontinueUI').hide();
+          document.getElementById('discontinueUI').hidden = true;
           $('rxDate_' + json.id).style.textDecoration = 'line-through';
           $('reRx_' + json.id).style.textDecoration = 'line-through';
           $('del_' + json.id).style.textDecoration = 'line-through';
@@ -2129,7 +2146,7 @@
       },
       onFailure: function (transport) {
         console.error('Discontinue request failed with status: ' + (transport.status || 'unknown'));
-        $('discontinueUI').hide();
+        document.getElementById('discontinueUI').hidden = true;
       }
     });
   }
@@ -2154,8 +2171,8 @@
 
   //represcribe long term meds
   function RePrescribeLongTerm() {
-    let demoNo = '<%=patient.getDemographicNo()%>';
-    let data = "demoNo=" + demoNo + "&showall=<%=showall%>&rand=" + Math.floor(Math.random() * 10001);
+    let demoNo = '<%=Encode.forJavaScript(String.valueOf(demoNo))%>';
+    let data = "demoNo=" + demoNo + "&showall=<%=Encode.forUriComponent(String.valueOf(showall))%>&rand=" + Math.floor(Math.random() * 10001);
     let url = ctx + "/oscarRx/rePrescribe2.do?method=repcbAllLongTerm";
     new Ajax.Updater('rxText', url, {
       method: 'get',
@@ -2304,7 +2321,7 @@
       let ele = $(textId);
       let url = ctx + "/oscarRx/TreatmentMyD.jsp"
       let ran_number = generateSecureRandomId();
-      let params = "demographicNo=<%=demoNo%>&cond=" + encodeURIComponent(ele.value) + "&rand=" + ran_number;
+      let params = "demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&cond=" + encodeURIComponent(ele.value) + "&rand=" + ran_number;
       new Ajax.Updater(id, url, {
         method: 'get',
         parameters: params,
@@ -2357,7 +2374,7 @@
   // so each appended section initialises its own independent DataTable instance.
   function doAdditionWebService(url, id) {
       let ran_number = generateSecureRandomId();
-      jQuery.get(url, { demographicNo: '<%=demoNo%>', rand: ran_number })
+      jQuery.get(url, { demographicNo: '<%=Encode.forJavaScript(String.valueOf(demoNo))%>', rand: ran_number })
         .done(function (responseText) {
           jQuery('#' + id).append(responseText);
         })
@@ -2376,7 +2393,7 @@
       }
       drugProfileAdditionQueue[id] = [];
       let ran_number = generateSecureRandomId();
-      jQuery.post(url, { demographicNo: '<%=demoNo%>', rand: ran_number })
+      jQuery.post(url, { demographicNo: '<%=Encode.forJavaScript(String.valueOf(demoNo))%>', rand: ran_number })
         .done(function (responseText) {
           
           // .html() replaces the container content and evaluates inline scripts,
@@ -2811,7 +2828,7 @@
       let url = ctx + "/oscarRx/WriteScript.do";
       let ran_number = Math.round(Math.random() * 1000000);
       let params = "parameterValue=createNewRx"
-        + "&demographicNo=" + <%=demoNo%>
+        + "&demographicNo=" + <%=Encode.forJavaScript(String.valueOf(demoNo))%>
         +"&drugId=" + encodeURIComponent(drugId)
         + "&text=" + encodeURIComponent(name)
         + "&randomId="
@@ -3238,7 +3255,7 @@
         function getRenalDosingInformation(divId, atcCode) {
       let url = "<%= request.getContextPath() %>/oscarRx/RenalDosing.jsp";
             let ran_number = Math.round(Math.random() * 1000000);
-      let params = "demographicNo=<%=demoNo%>&atcCode=" + encodeURIComponent(atcCode) + "&divId=" + divId + "&rand=" + ran_number;
+      let params = "demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&atcCode=" + encodeURIComponent(atcCode) + "&divId=" + divId + "&rand=" + ran_number;
             new Ajax.Updater(divId, url, {
                 method: 'get',
                 parameters: params,
@@ -3361,11 +3378,43 @@
         }
     
     
+        /**
+         * Counts the medications currently staged for this prescription.
+         *
+         * Each staged drug renders a drugName_<rand> input inside the drug form;
+         * a ReRx box that was only checked (not staged) produces no such input.
+         * This deliberately keys on the same drugName_ marker that the server
+         * uses to detect staged drugs in RxWriteScript2Action.updateSaveAllDrugs()
+         * ("ele.startsWith(\"drugName_\")"), so this gate matches exactly what the
+         * server would persist. Keep the two in sync if that marker ever changes.
+         *
+         * @returns {number} the number of staged medications
+         */
+        function countStagedMedications() {
+            const form = document.getElementById('drugForm');
+            if (!form) {
+                return 0;
+            }
+            return form.querySelectorAll('input[name^="drugName_"]').length;
+        }
+
         function updateSaveAllDrugsPrintCheckContinue() {
+            // Nothing staged: warn instead of saving an empty prescription (#2453).
+            // The ReRx selection is left intact so the user can still click
+            // Stage Medication; it is only archived once actually staged and saved
+            // (guarded in RxWriteScript2Action.saveDrug()).
+            if (countStagedMedications() === 0) {
+                alert('No medications have been added.');
+                return;
+            }
             updateSaveAllDrugsPrintContinue();
         }
-    
+
         function updateSaveAllDrugsCheckContinue() {
+            // Nothing staged: do nothing rather than save an empty prescription (#2453).
+            if (countStagedMedications() === 0) {
+                return;
+            }
             updateSaveAllDrugsContinue();
         }
     

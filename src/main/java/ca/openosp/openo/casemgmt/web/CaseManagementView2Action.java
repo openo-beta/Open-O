@@ -32,6 +32,8 @@ import ca.openosp.openo.commn.model.*;
 import ca.openosp.openo.services.security.SecurityManager;
 import ca.openosp.openo.util.UtilDateUtilities;
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import ca.openosp.openo.model.security.Secrole;
 import ca.openosp.openo.services.security.RolesManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -80,7 +82,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.*;
 
-public class CaseManagementView2Action extends ActionSupport {
+public class CaseManagementView2Action extends ActionSupport implements UploadedFilesAware {
 
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
@@ -456,10 +458,15 @@ public class CaseManagementView2Action extends ActionSupport {
             request.setAttribute("Prescriptions", prescriptions);
 
             // Setup RX bean start
-            RxSessionBean bean = new RxSessionBean();
-            bean.setProviderNo(loggedInInfo.getLoggedInProviderNo());
-            bean.setDemographicNo(Integer.parseInt(demoNo));
-            request.getSession().setAttribute("RxSessionBean", bean);
+            // Reuse existing per-patient bean so this tab render doesn't wipe a concurrent Rx stash.
+            int demoInt = Integer.parseInt(demoNo);
+            RxSessionBean bean = RxSessionBean.getFromSession(request, demoInt);
+            if (bean == null) {
+                bean = new RxSessionBean();
+                bean.setProviderNo(loggedInInfo.getLoggedInProviderNo());
+                bean.setDemographicNo(demoInt);
+            }
+            RxSessionBean.saveToSession(request, bean);
             // Setup RX end
         }
 
@@ -1303,7 +1310,9 @@ public class CaseManagementView2Action extends ActionSupport {
             hashMap.put("Issues", issues);
 
             ObjectNode json = objectMapper.valueToTree(hashMap);
-            response.getOutputStream().write(json.toString().getBytes());
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getOutputStream().write(json.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
             return null;
         }
 
@@ -1854,7 +1863,7 @@ public class CaseManagementView2Action extends ActionSupport {
     private CaseManagementCPP cpp = new CaseManagementCPP();
     private EncounterWindow ectWin = new EncounterWindow();
     public static final String[] tabs = {"Current Issues", "Client History", "Allergies", "Prescriptions", "Reminders", "Ticklers", "Search"};
-    private File imageFile;
+    private UploadedFile imageFile;
 
     private String searchStartDate;
     private String searchEndDate;
@@ -1895,12 +1904,11 @@ public class CaseManagementView2Action extends ActionSupport {
         this.note_sort = note_sort;
     }
 
-    public File getImageFile() {
-        return imageFile;
-    }
-
-    public void setImageFile(File imageFile) {
-        this.imageFile = imageFile;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.imageFile = uploadedFiles.get(0);
+        }
     }
 
     public CaseManagementCPP getCpp() {

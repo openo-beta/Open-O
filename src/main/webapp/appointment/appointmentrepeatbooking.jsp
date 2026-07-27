@@ -55,6 +55,7 @@
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     AppointmentArchiveDao appointmentArchiveDao = (AppointmentArchiveDao) SpringUtils.getBean(AppointmentArchiveDao.class);
     OscarAppointmentDao appointmentDao = (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class);
@@ -310,7 +311,7 @@
         </table>
 
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
-            <tr bgcolor="<%=deepcolor%>">
+            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>">
                 <th><font face="Helvetica"><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.appointmenteditrepeatbooking.title"/></font>
                 </th>
             </tr>
@@ -359,7 +360,7 @@
                     <font size="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="ddmmyyyy"/></font></td>
                 <td nowrap valign="top"><input type="text" id="endDate"
                                                name="endDate" size="10"
-                                               value="<%=UtilDateUtilities.DateToString(new Date(),"dd/MM/yyyy")%>"
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(UtilDateUtilities.DateToString(new Date(),"dd/MM/yyyy")))%>"
                                                readonly></td>
             </tr>
         </table>
@@ -369,7 +370,7 @@
                 temp = e.nextElement().toString();
                 if (temp.equals("dboperation") || temp.equals("displaymode") || temp.equals("search_mode") || temp.equals("chart_no"))
                     continue;
-                out.println("<input type='hidden' name='" + temp + "' value=\"" + UtilMisc.htmlEscape(request.getParameter(temp)) + "\">");
+                out.println("<input type='hidden' name='" + Encode.forHtmlAttribute(temp) + "' value=\"" + UtilMisc.htmlEscape(Encode.forHtmlAttribute(request.getParameter(temp))) + "\">");
             }
         %>
     </form>

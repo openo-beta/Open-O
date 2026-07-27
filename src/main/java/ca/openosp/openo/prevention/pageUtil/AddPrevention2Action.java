@@ -34,7 +34,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hl7.fhir.dstu3.model.Bundle;
+import ca.openosp.openo.integration.fhir.r4.api.DHIR;
+import ca.openosp.openo.integration.fhir.r4.builder.FhirBundleBuilder;
+
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.dao.CVCImmunizationDao;
 import ca.openosp.openo.commn.dao.ConsentDao;
@@ -47,8 +49,7 @@ import ca.openosp.openo.commn.dao.PreventionDao;
 import ca.openosp.openo.commn.model.CVCImmunization;
 import ca.openosp.openo.commn.model.Consent;
 import ca.openosp.openo.commn.model.PartialDate;
-import ca.openosp.openo.integration.fhir.api.DHIR;
-import ca.openosp.openo.integration.fhir.builder.FhirBundleBuilder;
+
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.provider.model.PreventionManager;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -63,6 +64,7 @@ import ca.openosp.openo.prevention.PreventionDisplayConfig;
  */
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.hl7.fhir.r4.model.Bundle;
 
 public class AddPrevention2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
@@ -254,9 +256,8 @@ public class AddPrevention2Action extends ActionSupport {
 
                 if ("given".equals(given) || "given_ext".equals(given)) {
 
-                    FhirBundleBuilder fbb = DHIR.getFhirBundleBuilder(LoggedInInfo.getLoggedInInfoFromSession(request), Integer.parseInt(demographic_no), preventionId);
+                    Bundle bundle = DHIR.getBundleResource(LoggedInInfo.getLoggedInInfoFromSession(request), Integer.parseInt(demographic_no), preventionId);
 
-                    Bundle bundle = fbb.getBundle();
                     request.setAttribute("bundle", bundle);
 
                     Map<String, Bundle> bundles = (Map<String, Bundle>) request.getSession().getAttribute("bundles");
@@ -265,9 +266,6 @@ public class AddPrevention2Action extends ActionSupport {
                     }
                     bundles.put(bundle.getId(), bundle);
                     request.getSession().setAttribute("bundles", bundles);
-
-                    MiscUtils.getLogger().info(fbb.getMessageJson());
-
                     request.setAttribute("preventionId", preventionId);
                     request.setAttribute("demographicNo", demographic_no);
                     return "review";

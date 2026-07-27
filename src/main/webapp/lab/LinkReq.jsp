@@ -202,6 +202,7 @@
 
 
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <title>Link to Lab Requisition</title>
@@ -212,15 +213,15 @@
         }
     </script>
 </head>
-<body <%=(close) ? "onLoad=\"closeItUp()\" " : "" %>>
+<body <%=(close) ? "onLoad=\"closeItUp()\" " : ""%>>
 
 <form action="LinkReq.jsp" method="post">
-    <input type="hidden" name="table" value="<%=table%>"/>
-    <input type="hidden" name="rptid" value="<%=rptId%>"/>
-    <input type="hidden" name="reqid" value="<%=reqId%>"/>
+    <input type="hidden" name="table" value="<%=Encode.forHtmlAttribute(String.valueOf(table))%>"/>
+    <input type="hidden" name="rptid" value="<%=Encode.forHtmlAttribute(String.valueOf(rptId))%>"/>
+    <input type="hidden" name="reqid" value="<%=Encode.forHtmlAttribute(String.valueOf(reqId))%>"/>
 
     <p>&nbsp;</p>
-    Requisition Date: <%=reqDateLink%>
+    Requisition Date: <%=Encode.forHtml(String.valueOf(reqDateLink))%>
     <p>
         Link to Lab Requisition:
         <select name="linkReqId">
@@ -239,8 +240,8 @@
 
                 for (int i = 0; i < req_id.size(); i++) {
             %>
-            <option value="<%=req_id.get(i)%>" <%=req_id.get(i).equals(matchingId) ? "selected" : ""%>><%=formDisplayName.get(i)%>
-                : <%=formCreated.get(i)%> : <%=patientName.get(i)%>
+            <option value="<%=Encode.forHtmlAttribute(String.valueOf(req_id.get(i)))%>" <%=req_id.get(i).equals(matchingId) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(formDisplayName.get(i)))%>
+                : <%=Encode.forHtml(String.valueOf(formCreated.get(i)))%> : <%=Encode.forHtml(String.valueOf(patientName.get(i)))%>
             </option>
             <% } %>
         </select>

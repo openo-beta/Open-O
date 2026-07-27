@@ -44,6 +44,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String formClass = "Caregiver";
@@ -83,7 +84,7 @@
         var d = new Array(0, 100, 52);
         var allMatch = new Array(a, b, c, d);
 
-        var action = "/<%=project_home%>/form/formname.do";
+        var action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
 
         function backToPage1() {
             document.getElementById('page1').style.display = 'block';
@@ -161,14 +162,14 @@
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
     <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
-        <!--input type="hidden" name="provider_no" value=<%=request.getParameter("provNo")%> />
-        <input type="hidden" name="provNo" value="<%= request.getParameter("provNo") %>" /-->
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
+        <!--input type="hidden" name="provider_no" value="<%=Encode.forHtml(request.getParameter("provNo"))%>" />
+        <input type="hidden" name="provNo" value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>" /-->
         <input type="hidden" name="submit" value="exit"/>
 
         <table border="0" cellspacing="0" cellpadding="0" width="740px"
@@ -201,13 +202,13 @@
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="sexM" <%= props.getProperty("sexM", "") %> /> M
+                                                                  name="sexM" <%=Encode.forHtml(String.valueOf(props.getProperty("sexM", "")))%> /> M
                                         </td>
                                     </tr>
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="sexF" <%= props.getProperty("sexF", "") %> /> F
+                                                                  name="sexF" <%=Encode.forHtml(String.valueOf(props.getProperty("sexF", "")))%> /> F
                                         </td>
                                     </tr>
 
@@ -219,12 +220,12 @@
                                         <td></td>
                                         <td class="answer"><input type="text" name="dobYear"
                                                                   size="5"
-                                                                  value="<%= props.getProperty("dobYear", "") %>"/>/
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dobYear", "")))%>"/>/
                                             <input
                                                     type="text" name="dobMonth" size="5"
-                                                    value="<%= props.getProperty("dobMonth", "") %>"/>/ <input
+                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dobMonth", "")))%>"/>/ <input
                                                     type="text" name="dobDay" size="5"
-                                                    value="<%= props.getProperty("dobDay", "") %>"/></td>
+                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dobDay", "")))%>"/></td>
                                     </tr>
 
                                     <tr class="question">
@@ -236,45 +237,45 @@
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="spouseY" <%= props.getProperty("spouseY", "") %> />
+                                                                  name="spouseY" <%=Encode.forHtml(String.valueOf(props.getProperty("spouseY", "")))%> />
                                             Spouse
                                         </td>
                                     </tr>
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="childY" <%= props.getProperty("childY", "") %> />
+                                                                  name="childY" <%=Encode.forHtml(String.valueOf(props.getProperty("childY", "")))%> />
                                             Child
                                         </td>
                                     </tr>
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="grandchildY" <%= props.getProperty("grandchildY", "") %> />
+                                                                  name="grandchildY" <%=Encode.forHtml(String.valueOf(props.getProperty("grandchildY", "")))%> />
                                             Grandchild
                                         </td>
                                     </tr>
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="siblingY" <%= props.getProperty("siblingY", "") %> />
+                                                                  name="siblingY" <%=Encode.forHtml(String.valueOf(props.getProperty("siblingY", "")))%> />
                                             Sibling
                                         </td>
                                     </tr>
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="friendY" <%= props.getProperty("friendY", "") %> />
+                                                                  name="friendY" <%=Encode.forHtml(String.valueOf(props.getProperty("friendY", "")))%> />
                                             Friend
                                         </td>
                                     </tr>
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="otherY" <%= props.getProperty("otherY", "") %> />
+                                                                  name="otherY" <%=Encode.forHtml(String.valueOf(props.getProperty("otherY", "")))%> />
                                             Other,
                                             please specify: <input type="text" name="otherRelation"
-                                                                   value="<%=props.getProperty("otherRelation", "")%>"/>
+                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("otherRelation", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr class="question">
@@ -284,14 +285,14 @@
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="resideY" <%= props.getProperty("resideY", "") %> />
+                                                                  name="resideY" <%=Encode.forHtml(String.valueOf(props.getProperty("resideY", "")))%> />
                                             Yes
                                         </td>
                                     </tr>
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="resideN" <%= props.getProperty("resideN", "") %> />
+                                                                  name="resideN" <%=Encode.forHtml(String.valueOf(props.getProperty("resideN", "")))%> />
                                             No
                                         </td>
                                     </tr>
@@ -303,14 +304,14 @@
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="healthEx" <%= props.getProperty("healthEx", "") %> />
+                                                                  name="healthEx" <%=Encode.forHtml(String.valueOf(props.getProperty("healthEx", "")))%> />
                                             Excellent
                                         </td>
                                     </tr>
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="healthVG" <%= props.getProperty("healthVG", "") %> />
+                                                                  name="healthVG" <%=Encode.forHtml(String.valueOf(props.getProperty("healthVG", "")))%> />
                                             Very
                                             Good
                                         </td>
@@ -318,21 +319,21 @@
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="healthG" <%= props.getProperty("healthG", "") %> />
+                                                                  name="healthG" <%=Encode.forHtml(String.valueOf(props.getProperty("healthG", "")))%> />
                                             Good
                                         </td>
                                     </tr>
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="healthF" <%= props.getProperty("healthF", "") %> />
+                                                                  name="healthF" <%=Encode.forHtml(String.valueOf(props.getProperty("healthF", "")))%> />
                                             Fair
                                         </td>
                                     </tr>
                                     <tr class="answer">
                                         <td></td>
                                         <td class="answer"><input type="checkbox" class="checkbox"
-                                                                  name="healthP" <%= props.getProperty("healthP", "") %> />
+                                                                  name="healthP" <%=Encode.forHtml(String.valueOf(props.getProperty("healthP", "")))%> />
                                             Poor
                                         </td>
                                     </tr>
@@ -370,10 +371,10 @@
                                         <td class="answerYN" width="9%"><input type="checkbox"
                                                                                onchange="javascript: calScore();"
                                                                                class="checkbox" name="Q1Y"
-                                                <%= props.getProperty("Q1Y", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q1Y", "")))%> /></td>
                                         <td class="answerYN" width="9%"><input type="checkbox"
                                                                                class="checkbox"
-                                                                               name="Q1N" <%= props.getProperty("Q1N", "") %> />
+                                                                               name="Q1N" <%=Encode.forHtml(String.valueOf(props.getProperty("Q1N", "")))%> />
                                         </td>
                                     </tr>
 
@@ -385,9 +386,9 @@
                                         <td class="answerYN"><input type="checkbox"
                                                                     onchange="javascript: calScore();" class="checkbox"
                                                                     name="Q2Y"
-                                                <%= props.getProperty("Q2Y", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q2Y", "")))%> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
-                                                                    name="Q2N" <%= props.getProperty("Q2N", "") %> />
+                                                                    name="Q2N" <%=Encode.forHtml(String.valueOf(props.getProperty("Q2N", "")))%> />
                                         </td>
                                     </tr>
 
@@ -400,9 +401,9 @@
                                         <td class="answerYN"><input type="checkbox"
                                                                     onchange="javascript: calScore();" class="checkbox"
                                                                     name="Q3Y"
-                                                <%= props.getProperty("Q3Y", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q3Y", "")))%> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
-                                                                    name="Q3N" <%= props.getProperty("Q3N", "") %> />
+                                                                    name="Q3N" <%=Encode.forHtml(String.valueOf(props.getProperty("Q3N", "")))%> />
                                         </td>
                                     </tr>
                                     <tr>
@@ -413,9 +414,9 @@
                                         <td class="answerYN"><input type="checkbox"
                                                                     onchange="javascript: calScore();" class="checkbox"
                                                                     name="Q4Y"
-                                                <%= props.getProperty("Q4Y", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q4Y", "")))%> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
-                                                                    name="Q4N" <%= props.getProperty("Q4N", "") %> />
+                                                                    name="Q4N" <%=Encode.forHtml(String.valueOf(props.getProperty("Q4N", "")))%> />
                                         </td>
                                     </tr>
                                     <tr>
@@ -427,9 +428,9 @@
                                         <td class="answerYN"><input type="checkbox"
                                                                     onchange="javascript: calScore();" class="checkbox"
                                                                     name="Q5Y"
-                                                <%= props.getProperty("Q5Y", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q5Y", "")))%> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
-                                                                    name="Q5N" <%= props.getProperty("Q5N", "") %> />
+                                                                    name="Q5N" <%=Encode.forHtml(String.valueOf(props.getProperty("Q5N", "")))%> />
                                         </td>
                                     </tr>
                                     <tr>
@@ -440,9 +441,9 @@
                                         <td class="answerYN"><input type="checkbox"
                                                                     onchange="javascript: calScore();" class="checkbox"
                                                                     name="Q6Y"
-                                                <%= props.getProperty("Q6Y", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q6Y", "")))%> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
-                                                                    name="Q6N" <%= props.getProperty("Q6N", "") %> />
+                                                                    name="Q6N" <%=Encode.forHtml(String.valueOf(props.getProperty("Q6N", "")))%> />
                                         </td>
                                     </tr>
                                     <tr>
@@ -453,9 +454,9 @@
                                         <td class="answerYN"><input type="checkbox"
                                                                     onchange="javascript: calScore();" class="checkbox"
                                                                     name="Q7Y"
-                                                <%= props.getProperty("Q7Y", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q7Y", "")))%> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
-                                                                    name="Q7N" <%= props.getProperty("Q7N", "") %> />
+                                                                    name="Q7N" <%=Encode.forHtml(String.valueOf(props.getProperty("Q7N", "")))%> />
                                         </td>
                                     </tr>
                                     <tr>
@@ -466,9 +467,9 @@
                                         <td class="answerYN"><input type="checkbox"
                                                                     onchange="javascript: calScore();" class="checkbox"
                                                                     name="Q8Y"
-                                                <%= props.getProperty("Q8Y", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q8Y", "")))%> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
-                                                                    name="Q8N" <%= props.getProperty("Q8N", "") %> />
+                                                                    name="Q8N" <%=Encode.forHtml(String.valueOf(props.getProperty("Q8N", "")))%> />
                                         </td>
                                     </tr>
                                     <tr>
@@ -480,9 +481,9 @@
                                         <td class="answerYN"><input type="checkbox"
                                                                     onchange="javascript: calScore();" class="checkbox"
                                                                     name="Q9Y"
-                                                <%= props.getProperty("Q9Y", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q9Y", "")))%> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
-                                                                    name="Q9N" <%= props.getProperty("Q9N", "") %> />
+                                                                    name="Q9N" <%=Encode.forHtml(String.valueOf(props.getProperty("Q9N", "")))%> />
                                         </td>
                                     </tr>
                                     <tr>
@@ -494,9 +495,9 @@
                                         <td class="answerYN"><input type="checkbox"
                                                                     onchange="javascript: calScore();" class="checkbox"
                                                                     name="Q10Y"
-                                                <%= props.getProperty("Q10Y", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q10Y", "")))%> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
-                                                                    name="Q10N" <%= props.getProperty("Q10N", "") %> />
+                                                                    name="Q10N" <%=Encode.forHtml(String.valueOf(props.getProperty("Q10N", "")))%> />
                                         </td>
                                     </tr>
                                     <tr>
@@ -507,9 +508,9 @@
                                         <td class="answerYN"><input type="checkbox"
                                                                     onchange="javascript: calScore();" class="checkbox"
                                                                     name="Q11Y"
-                                                <%= props.getProperty("Q11Y", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q11Y", "")))%> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
-                                                                    name="Q11N" <%= props.getProperty("Q11N", "") %> />
+                                                                    name="Q11N" <%=Encode.forHtml(String.valueOf(props.getProperty("Q11N", "")))%> />
                                         </td>
                                     </tr>
                                     <tr>
@@ -518,9 +519,9 @@
                                         <td class="answerYN"><input type="checkbox"
                                                                     onchange="javascript: calScore();" class="checkbox"
                                                                     name="Q12Y"
-                                                <%= props.getProperty("Q12Y", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q12Y", "")))%> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
-                                                                    name="Q12N" <%= props.getProperty("Q12N", "") %> />
+                                                                    name="Q12N" <%=Encode.forHtml(String.valueOf(props.getProperty("Q12N", "")))%> />
                                         </td>
                                     </tr>
                                     <tr>
@@ -531,9 +532,9 @@
                                         <td class="answerYN"><input type="checkbox"
                                                                     onchange="javascript: calScore();" class="checkbox"
                                                                     name="Q13Y"
-                                                <%= props.getProperty("Q13Y", "") %> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("Q13Y", "")))%> /></td>
                                         <td class="answerYN"><input type="checkbox" class="checkbox"
-                                                                    name="Q13N" <%= props.getProperty("Q13N", "") %> />
+                                                                    name="Q13N" <%=Encode.forHtml(String.valueOf(props.getProperty("Q13N", "")))%> />
                                         </td>
                                     </tr>
                                     <tr>
@@ -545,7 +546,7 @@
                                         </td>
                                         <td class="answerYN" colspan="2"><input type="text"
                                                                                 name="score1" size="10"
-                                                                                value="<%= props.getProperty("score1", "") %>"/>
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("score1", "")))%>"/>
                                         </td>
                                 </table>
                             </td>
@@ -581,7 +582,7 @@
                                     <tr>
                                         <td class="answer">SRB Score <input type="text"
                                                                             name="SRBScore"
-                                                                            value="<%= props.getProperty("SRBScore", "")%>"/>
+                                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("SRBScore", "")))%>"/>
                                         </td>
                                     </tr>
                                 </table>
@@ -613,9 +614,9 @@
                                                                                          value="Print"
                                                                                          onclick="javascript:window.print();"/>
                             </td>
-                            <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
+                            <td align="right">Study ID: <%=Encode.forHtml(String.valueOf(props.getProperty("studyID", "N/A")))%>
                                 <input type="hidden" name="studyID"
-                                       value="<%= props.getProperty("studyID", "N/A") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("studyID", "N/A")))%>"/></td>
                         </tr>
                     </table>
                 </td>

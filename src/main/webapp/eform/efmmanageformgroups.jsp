@@ -26,6 +26,7 @@
 <%@page import="java.net.URLEncoder" %>
 <%@ page import="ca.openosp.openo.eform.data.*, ca.openosp.openo.eform.*, java.util.*" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%
@@ -129,15 +130,15 @@
                 <tr>
                     <%}%>
                     <td>
-                        <a href='<%= request.getContextPath() %>/eforms/delGroup.do?group_name=<%=URLEncoder.encode(groupName, "UTF-8")%>'
+                        <a href='<%= request.getContextPath() %>/eforms/delGroup.do?group_name=<%=Encode.forUriComponent(String.valueOf(groupName))%>'
                            class="btn btn-small" title="delete this group"
-                           data-confirm="<i class='icon-warning-sign icon-large'></i> Are you sure you would like to delete group: <strong><%=groupName%></strong>?"><i
+                           data-confirm="<i class='icon-warning-sign icon-large'></i> Are you sure you would like to delete group: <strong><%=Encode.forHtml(String.valueOf(groupName))%></strong>?"><i
                                 class="icon-trash"></i></a></td>
-                    <td title="<%=groupName%>"><a
-                            href='<%= request.getContextPath() %>/eform/efmmanageformgroups.jsp?orderby=form_name&group_view=<%=URLEncoder.encode(groupName, "UTF-8")%>'
-                            class="contentLink"><%=groupName%>
+                    <td title="<%=Encode.forHtmlAttribute(String.valueOf(groupName))%>"><a
+                            href='<%= request.getContextPath() %>/eform/efmmanageformgroups.jsp?orderby=form_name&group_view=<%=Encode.forUriComponent(String.valueOf(groupName))%>'
+                            class="contentLink"><%=Encode.forHtml(String.valueOf(groupName))%>
                     </a></td>
-                    <td><%= (String) curhash.get("count") %>
+                    <td><%=Encode.forHtml(String.valueOf((String) curhash.get("count")))%>
                     </td>
 
                 </tr>
@@ -151,7 +152,7 @@
         <!--EFORMS IN GROUP-->
 
         <div class="well span6">
-            <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.contents"/>: <%=groupView%>
+            <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.contents"/>: <%=Encode.forHtml(String.valueOf(groupView))%>
             </h4>
 
             <table class="table table-condensed table-striped">
@@ -161,14 +162,14 @@
                     </th>
 
                     <th>
-                        <a href="<%= request.getContextPath() %>/eform/efmmanageformgroups.jsp?orderby=form_name&group_view=<%=groupView%>"
+                        <a href="<%= request.getContextPath() %>/eform/efmmanageformgroups.jsp?orderby=form_name&group_view=<%=Encode.forUriComponent(String.valueOf(groupView))%>"
                            class="contentLink">
                             <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnFormName"/>
                         </a>
                     </th>
 
                     <th>
-                        <a href="<%= request.getContextPath() %>/eform/efmmanageformgroups.jsp?group_view=<%=groupView%>"
+                        <a href="<%= request.getContextPath() %>/eform/efmmanageformgroups.jsp?group_view=<%=Encode.forUriComponent(String.valueOf(groupView))%>"
                            class="contentLink">
                             <fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnDate"/>
                         </a>
@@ -185,22 +186,22 @@
                             for (int i = 0; i < eForms.size(); i++) {
                                 HashMap<String, ? extends Object> curForm = eForms.get(i);
                 %>
-                <tr rel="popover" data-html="true" data-title="<%=curForm.get("formName")%>"
-                    data-content="<strong><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnSubject"/>:</strong><br> <%=curForm.get("formSubject")%> <br> <small><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnFile"/>: <%=curForm.get("formFileName")%></small>"
+                <tr rel="popover" data-html="true" data-title="<%=Encode.forHtmlAttribute(String.valueOf(curForm.get("formName")))%>"
+                    data-content="<strong><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnSubject"/>:</strong><br> <%=Encode.forHtmlContent(curForm.get("formSubject") != null ? curForm.get("formSubject").toString() : "")%> <br> <small><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadhtml.btnFile"/>: <%=Encode.forHtmlContent(curForm.get("formFileName") != null ? curForm.get("formFileName").toString() : "")%></small>"
                     data-trigger="hover" data-placement="bottom">
 
                     <td>
-                        <a href="<%= request.getContextPath() %>/eforms/removeFromGroup.do?fid=<%=curForm.get("fid")%>&groupName=<%=URLEncoder.encode(groupView, "UTF-8")%>"
+                        <a href="<%= request.getContextPath() %>/eforms/removeFromGroup.do?fid=<%=Encode.forUriComponent(String.valueOf(curForm.get("fid")))%>&groupName=<%=Encode.forUriComponent(String.valueOf(groupView))%>"
                            title="remove from group" class="btn btn-small" title="delete eform from group"
                            data-confirm="<i class='icon-warning-sign icon-large'></i> Are you sure you would like to remove this eform from this group?"><i
                                 class="icon-trash"></i></a>
                     </td>
 
                     <td><a href="#"
-                           onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=curForm.get("fid")%>', '<%="FormG" + i%>'); return false;"><%=curForm.get("formName")%>
+                           onclick="newWindow('<%= request.getContextPath() %>/eform/efmshowform_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(curForm.get("fid")))%>', '<%=Encode.forJavaScript(String.valueOf("FormG" + i))%>'); return false;"><%=Encode.forHtml(String.valueOf(curForm.get("formName")))%>
                     </a></td>
 
-                    <td align='center'><%=curForm.get("formDate")%>
+                    <td align='center'><%=Encode.forHtml(String.valueOf(curForm.get("formDate")))%>
                     </td>
 
 
@@ -232,7 +233,7 @@
              aria-hidden="true">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-                <h3 id="myModalLabel"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.addToGroup"/> <%=groupView%>
+                <h3 id="myModalLabel"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.groups.addToGroup"/> <%=Encode.forHtml(String.valueOf(groupView))%>
                 </h3>
             </div>
             <div class="modal-body">
@@ -245,13 +246,13 @@
                                 HashMap<String, ? extends Object> curhash = forms.get(i);
                         %>
                         <option
-                                value='<%= (String) curhash.get("fid")%>'><%= (String) curhash.get("formName")%> | <%= (String) curhash.get("formDate")%>
+                                value='<%=Encode.forHtmlAttribute(String.valueOf((String) curhash.get("fid")))%>'><%=Encode.forHtml(String.valueOf((String) curhash.get("formName")))%> | <%=Encode.forHtml(String.valueOf((String) curhash.get("formDate")))%>
                         </option>
                         <% } %>
                     </select>
 
 
-                    <input type="hidden" name="groupName" value="<%= groupView%>">
+                    <input type="hidden" name="groupName" value="<%=Encode.forHtmlAttribute(String.valueOf(groupView))%>">
 
                 </div>
 

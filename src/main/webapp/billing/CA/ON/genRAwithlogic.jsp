@@ -25,6 +25,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Billing" %>
 <%@ page import="ca.openosp.openo.commn.dao.BillingDao" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     RaHeaderDao raHeaderDao = SpringUtils.getBean(RaHeaderDao.class);
     BillingDao billingDao = SpringUtils.getBean(BillingDao.class);
@@ -207,15 +208,15 @@
         <tr>
             <td width="12%" height="16">File Name:</td>
             <td width="33%" height="16"><input type="text" name="textfield2"
-                                               value="<%=filename%>" style="width: 100%"></td>
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(filename))%>" style="width: 100%"></td>
             <td width="16%" height="16">Payment Date:</td>
             <td width="35%" height="16"><input type="text" name="textfield"
-                                               value="<%=paymentdate%>" style="width: 100%"></td>
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(paymentdate))%>" style="width: 100%"></td>
         </tr>
         <tr>
             <td width="12%">Payable To:</td>
             <td width="33%"><input type="text" name="textfield3"
-                                   value="<%=payable%>" style="width: 100%"></td>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(payable))%>" style="width: 100%"></td>
             <td width="16%">Total:</td>
             <td width="35%"><input type="text" name="textfield4"
                                    value="<%=total%>" style="width: 100%"></td>
@@ -226,7 +227,7 @@
                                                value="<%=count%>" style="width: 100%"></td>
             <td width="16%" height="16">Total Transaction:</td>
             <td width="35%" height="16"><input type="text" name="textfield6"
-                                               value="<%=tCount%>" style="width: 100%"></td>
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(tCount))%>" style="width: 100%"></td>
         </tr>
     </form>
 </table>

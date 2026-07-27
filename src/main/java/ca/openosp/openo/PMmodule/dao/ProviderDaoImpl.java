@@ -297,7 +297,7 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
     public List<Provider> getProviders(boolean active) {
 
         List<Provider> rs = (List<Provider>) getHibernateTemplate().find(
-                "FROM  Provider p where p.Status='" + (active ? 1 : 0) + "' order by p.LastName");
+                "FROM  Provider p where p.Status=?0 order by p.LastName", String.valueOf(active ? 1 : 0));
         return rs;
     }
 
@@ -439,8 +439,8 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
         Session session = currentSession();
         try {
             SQLQuery query = session.createSQLQuery(
-                    "select facility_id from provider_facility,Facility where Facility.id=provider_facility.facility_id and Facility.disabled=0 and provider_no=\'"
-                            + provider_no + "\'");
+                    "select facility_id from provider_facility,Facility where Facility.id=provider_facility.facility_id and Facility.disabled=0 and provider_no = ?1");
+            query.setParameter(1, provider_no);
             List<Integer> results = query.list();
             return results;
         } finally {
@@ -451,16 +451,14 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
 
     @Override
     public List<String> getProviderIds(int facilityId) {
-        // Session session = getSession();
         Session session = currentSession();
         try {
             SQLQuery query = session
-                    .createSQLQuery("select provider_no from provider_facility where facility_id=" + facilityId);
+                    .createSQLQuery("select provider_no from provider_facility where facility_id = ?1");
+            query.setParameter(1, facilityId);
             List<String> results = query.list();
             return results;
         } finally {
-            // this.releaseSession(session);
-            //session.close();
         }
 
     }
@@ -577,13 +575,9 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
 
     @Override
     public List<Provider> getCurrentTeamProviders(String providerNo) {
-        String hql = "SELECT p FROM Provider p "
-                + "WHERE p.Status='1' and p.OhipNo != '' "
-                + "AND (p.ProviderNo='" + providerNo
-                + "' or team=(SELECT p2.Team FROM Provider p2 where p2.ProviderNo='" + providerNo + "')) "
-                + "ORDER BY p.LastName, p.FirstName";
+        String hql = "SELECT p FROM Provider p WHERE p.Status='1' and p.OhipNo != '' AND (p.ProviderNo=?0 or team=(SELECT p2.Team FROM Provider p2 where p2.ProviderNo=?1)) ORDER BY p.LastName, p.FirstName";
 
-        return (List<Provider>) this.getHibernateTemplate().find(hql);
+        return (List<Provider>) this.getHibernateTemplate().find(hql, providerNo, providerNo);
     }
 
     @Override
@@ -601,10 +595,8 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
         try {
             // providersite is not mapped in hibernate - this can be rewritten w.o.
             // subselect with a cross product IHMO
-            SQLQuery query = session.createSQLQuery(
-                    "select distinct team from provider p inner join providersite s on s.provider_no = p.provider_no " +
-                            " where s.site_id in (select site_id from providersite where provider_no = '" + providerNo
-                            + "') order by team ");
+            SQLQuery query = session.createSQLQuery("select distinct team from provider p inner join providersite s on s.provider_no = p.provider_no where s.site_id in (select site_id from providersite where provider_no = ?1) order by team");
+            query.setParameter(1, providerNo);
             return query.list();
         } finally {
             // this.releaseSession(session);
@@ -734,11 +726,8 @@ public class ProviderDaoImpl extends HibernateDaoSupport implements ProviderDao 
         Session session = currentSession();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            String sql = "SELECT p.provider_no FROM provider p WHERE p.provider_no IN (SELECT DISTINCT a.provider_no FROM appointment a WHERE a.appointment_date = '"
-                    + sdf.format(appointmentDate) + "') " +
-                    "AND p.Status='1'";
-            SQLQuery query = session.createSQLQuery(sql);
-
+            SQLQuery query = session.createSQLQuery("SELECT p.provider_no FROM provider p WHERE p.provider_no IN (SELECT DISTINCT a.provider_no FROM appointment a WHERE a.appointment_date = ?1) AND p.Status='1'");
+            query.setParameter(1, sdf.format(appointmentDate));
             return query.list();
         } finally {
             // this.releaseSession(session);

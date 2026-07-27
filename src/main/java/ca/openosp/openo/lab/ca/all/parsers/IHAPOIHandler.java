@@ -138,14 +138,14 @@ public class IHAPOIHandler extends MEDITECHHandler implements MessageHandler {
 
         try {
             accession = getString(msg.getRESPONSE().getORDER_OBSERVATION().getOBR().getPlacerOrderNumber(0).getEntityIdentifier().getValue());
-        } catch (HL7Exception e) {
+        } catch (Exception e) {
             // do nothing. Lab may not display correctly with out accession.
         }
         try {
             if (accession == null || accession.isEmpty()) {
                 accession = getString(msg.getRESPONSE().getORDER_OBSERVATION().getORC().getPlacerOrderNumber(0).getEntityIdentifier().getValue());
             }
-        } catch (HL7Exception e) {
+        } catch (Exception e) {
             // do nothing. Lab may not display correctly with out accession.
         }
 

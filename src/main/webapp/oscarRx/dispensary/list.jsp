@@ -35,6 +35,7 @@
 <%@page import="ca.openosp.openo.commn.model.DrugDispensing" %>
 <%@page import="java.util.Map" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String roleName$ = session.getAttribute("userrole") + "," + session.getAttribute("user");
     boolean authed = true;
@@ -202,7 +203,7 @@
                     var amount = parseInt($("#lot_" + hash).attr('amount'));
                     var currentDoses = parseInt(getCurrentDoses());
 
-                    if ((currentDoses + amount) <= <%=totalDosesAvailable%>) {
+                    if ((currentDoses + amount) <= <%=Encode.forJavaScript(String.valueOf(totalDosesAvailable))%>) {
                         var maxAvailable = parseInt($("#max_" + hash).html());
                         if ((amountsSelected[hash] + 1) <= maxAvailable) {
                             amountsSelected[hash] = amountsSelected[hash] + 1;
@@ -235,7 +236,7 @@
                 if(selectedProductCode != null) {
 
                     %>
-                $("#product").val('<%=selectedProductCode%>');
+                $("#product").val('<%=Encode.forJavaScript(String.valueOf(selectedProductCode))%>');
                 $("#product").attr("disabled", true);
                 updateLots();
                 <%
@@ -272,7 +273,7 @@
                 }
                 $("#current_doses").css('color', 'black');
                 <%if(totalDosesAvailable != null){%>
-                if (totalDosesBeingAsked > <%=totalDosesAvailable%>) {
+                if (totalDosesBeingAsked > <%=Encode.forJavaScript(String.valueOf(totalDosesAvailable))%>) {
                     $("#current_doses").css('color', 'red');
                 }
                 <% } %>
@@ -315,8 +316,8 @@
                     totalDosesBeingAsked += pAmounts[arr[i]];
                 }
 
-                if (totalDosesBeingAsked > <%=totalDosesRemaining%>) {
-                    alert('You may only dispense a maximum of <%=totalDosesRemaining%> doses for this prescription');
+                if (totalDosesBeingAsked > <%=Encode.forJavaScript(String.valueOf(totalDosesRemaining))%>) {
+                    alert('You may only dispense a maximum of <%=Encode.forJavaScript(String.valueOf(totalDosesRemaining))%> doses for this prescription');
 
                     return false;
                 }
@@ -343,7 +344,7 @@
 
             function deleteDispensingEvent(id) {
                 if (confirm("Are you sure you want to delete this record?")) {
-                    location.href = "<%=request.getContextPath()%>/oscarRx/Dispense.do?method=delete&eventId=" + id + "&id=" + <%=request.getAttribute("id")%>;
+                    location.href = "<%=request.getContextPath()%>/oscarRx/Dispense.do?method=delete&eventId=" + id + "&id=<%=Encode.forUriComponent(String.valueOf(request.getAttribute("id")))%>";
                 }
             }
         </script>
@@ -369,17 +370,17 @@
                             <table>
                                 <tr>
                                     <td><b>Patient Name:</b></td>
-                                    <td><%=demographic.getFormattedName() %>
+                                    <td><%=Encode.forHtml(String.valueOf(demographic.getFormattedName()))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><b>Entered Date:</b></td>
-                                    <td><%=UtilDateUtilities.DateToString(drug.getCreateDate())%>
+                                    <td><%=Encode.forHtml(String.valueOf(UtilDateUtilities.DateToString(drug.getCreateDate())))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><b>Medication:</b></td>
-                                    <td><%=RxPrescriptionData.getFullOutLine(drug.getSpecial()).replaceAll(";", " ") %>
+                                    <td><%=Encode.forHtml(String.valueOf(RxPrescriptionData.getFullOutLine(drug.getSpecial()).replaceAll(";", " ")))%>
                                     </td>
                                 </tr>
                                 <tr style="height: 8px;">
@@ -398,7 +399,7 @@
                                                 status = "Expired";
                                             }
                                         %>
-                                        <%="Status:" + status %>
+                                        <%=Encode.forHtml(String.valueOf("Status:" + status))%>
                                     </b></td>
                                     <td>
 
@@ -439,22 +440,22 @@
                                         <security:oscarSec roleName="<%=roleName$%>" objectName="_dispensing"
                                                            rights="w">
                                             <a href="javascript:void(0)"
-                                               onClick="deleteDispensingEvent('<%=dd.getId()%>')"><img border="0"
+                                               onClick="deleteDispensingEvent('<%=Encode.forJavaScript(String.valueOf(dd.getId()))%>')"><img border="0"
                                                                                                        src="<%=request.getContextPath()%>/images/delete.png"/></a>
                                         </security:oscarSec>
                                     </td>
-                                    <td><%=dd.getDateCreatedAsString() %>
+                                    <td><%=Encode.forHtml(String.valueOf(dd.getDateCreatedAsString()))%>
                                     </td>
-                                    <td style="text-align:right"><%=dd.getQuantity() %>
+                                    <td style="text-align:right"><%=Encode.forHtml(String.valueOf(dd.getQuantity()))%>
                                     </td>
-                                    <td><%=providerNames.get(dd.getDispensingProviderNo()) %>
+                                    <td><%=Encode.forHtml(String.valueOf(providerNames.get(dd.getDispensingProviderNo())))%>
                                     </td>
-                                    <td><%=providerNames.get(dd.getProviderNo()) %>
+                                    <td><%=Encode.forHtml(String.valueOf(providerNames.get(dd.getProviderNo())))%>
                                     </td>
 
-                                    <td><%=details.get(dd.getId()) %>
+                                    <td><%=Encode.forHtml(String.valueOf(details.get(dd.getId())))%>
                                     </td>
-                                    <td><%=dd.getNotes() %>
+                                    <td><%=Encode.forHtml(String.valueOf(dd.getNotes()))%>
                                     </td>
                                 </tr>
                                 <% } %>
@@ -467,10 +468,10 @@
                     </tr>
                     <tr style="height:15px">
                         <td>
-                            There are <%=strTotalDosesAvailable%> doses available in this prescription.
+                            There are <%=Encode.forHtml(String.valueOf(strTotalDosesAvailable))%> doses available in this prescription.
                             <br/>
-                            <%=totalDosesDispensed %> doses have already been dispensed,
-                            leaving <%=strTotalDosesRemaining%> doses available.
+                            <%=Encode.forHtml(String.valueOf(totalDosesDispensed))%> doses have already been dispensed,
+                            leaving <%=Encode.forHtml(String.valueOf(strTotalDosesRemaining))%> doses available.
                             <br/>
 
                         </td>
@@ -492,7 +493,7 @@
                             <h3>Create a new dispensing event for this prescription</h3>
                             <form action="<%=request.getContextPath()%>/oscarRx/Dispense.do">
                                 <input type="hidden" name="method" value="saveEvent"/>
-                                <input type="hidden" name="drugId" value="<%=drug.getId()%>"/>
+                                <input type="hidden" name="drugId" value="<%=Encode.forHtmlAttribute(String.valueOf(drug.getId()))%>"/>
                                 <input type="hidden" name="productCode" id="productCode" value=""/>
                                 <table>
                                     <tr>
@@ -501,7 +502,7 @@
                                             <select name="product" id="product">
                                                 <option value="">Select Below</option>
                                                 <%for (Object[] p : products) { %>
-                                                <option value="<%=p[0]%>"><%=p[1] %>
+                                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(p[0]))%>"><%=Encode.forHtml(String.valueOf(p[1]))%>
                                                 </option>
                                                 <% } %>
                                             </select>
@@ -522,7 +523,7 @@
                                             <select name="dispensedBy">
                                                 <option value="Select Below"/>
                                                 <%for (Provider p : providers) { %>
-                                                <option value="<%=p.getProviderNo()%>"><%=p.getFormattedName() %>
+                                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>"><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                                                 </option>
                                                 <% } %>
                                             </select>

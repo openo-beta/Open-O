@@ -46,6 +46,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String formClass = "HomeFalls";
     String formLink = "formhomefalls.jsp";
@@ -78,7 +79,7 @@
         var choiceFormat = new Array(6, 7, 8, 9, 10, 11, 12, 14, 15, 17, 18, 20, 21, 22, 23, 24, 25, 27, 28, 30, 31, 33, 34, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 49, 50, 52, 53, 55, 56, 58, 59, 60, 61, 63, 64, 65, 66, 68);
         var allNumericField = null;
         var allMatch = null;
-        var action = "/<%=project_home%>/form/formname.do";
+        var action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
 
         function backToPage1() {
             document.getElementById('page1').style.display = 'block';
@@ -185,12 +186,12 @@
     -->
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table border="0" cellspacing="0" cellpadding="0" width="740px"
@@ -251,11 +252,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="floor1Y" <%= props.getProperty("floor1Y", "") %> />
+                                                               name="floor1Y" <%=Encode.forHtml(String.valueOf(props.getProperty("floor1Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="floor1N" <%= props.getProperty("floor1N", "") %> />
+                                                               name="floor1N" <%=Encode.forHtml(String.valueOf(props.getProperty("floor1N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -276,11 +277,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="floor2Y" <%= props.getProperty("floor2Y", "") %> />
+                                                               name="floor2Y" <%=Encode.forHtml(String.valueOf(props.getProperty("floor2Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="floor2N" <%= props.getProperty("floor2N", "") %> />
+                                                               name="floor2N" <%=Encode.forHtml(String.valueOf(props.getProperty("floor2N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -302,11 +303,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="floor3Y" <%= props.getProperty("floor3Y", "") %> />
+                                                               name="floor3Y" <%=Encode.forHtml(String.valueOf(props.getProperty("floor3Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="floor3N" <%= props.getProperty("floor3N", "") %> />
+                                                               name="floor3N" <%=Encode.forHtml(String.valueOf(props.getProperty("floor3N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -327,15 +328,15 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="floor4Y" <%= props.getProperty("floor4Y", "") %> />
+                                                               name="floor4Y" <%=Encode.forHtml(String.valueOf(props.getProperty("floor4Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="floor4N" <%= props.getProperty("floor4N", "") %> />
+                                                               name="floor4N" <%=Encode.forHtml(String.valueOf(props.getProperty("floor4N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"><input type="checkbox" class="checkbox"
-                                                               name="floor4NA" <%= props.getProperty("floor4NA", "") %> />N/A
+                                                               name="floor4NA" <%=Encode.forHtml(String.valueOf(props.getProperty("floor4NA", "")))%> />N/A
                                             (there are no mats in the house)
                                         </td>
                                     </tr>
@@ -383,15 +384,15 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="furniture5Y" <%= props.getProperty("furniture5Y", "") %> />
+                                                               name="furniture5Y" <%=Encode.forHtml(String.valueOf(props.getProperty("furniture5Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="furniture5N" <%= props.getProperty("furniture5N", "") %> />
+                                                               name="furniture5N" <%=Encode.forHtml(String.valueOf(props.getProperty("furniture5N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"><input type="checkbox" class="checkbox"
-                                                               name="furniture5NA" <%= props.getProperty("furniture5NA", "") %> />N/A
+                                                               name="furniture5NA" <%=Encode.forHtml(String.valueOf(props.getProperty("furniture5NA", "")))%> />N/A
                                         </td>
                                     </tr>
                                     <tr>
@@ -410,15 +411,15 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="furniture6Y" <%= props.getProperty("furniture6Y", "") %> />
+                                                               name="furniture6Y" <%=Encode.forHtml(String.valueOf(props.getProperty("furniture6Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="furniture6N" <%= props.getProperty("furniture6N", "") %> />
+                                                               name="furniture6N" <%=Encode.forHtml(String.valueOf(props.getProperty("furniture6N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"><input type="checkbox" class="checkbox"
-                                                               name="furniture6NA" <%= props.getProperty("furniture6NA", "") %> />N/A
+                                                               name="furniture6NA" <%=Encode.forHtml(String.valueOf(props.getProperty("furniture6NA", "")))%> />N/A
                                             (person uses wheelchair constantly)
                                         </td>
                                     </tr>
@@ -444,11 +445,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="lighting7Y" <%= props.getProperty("lighting7Y", "") %> />
+                                                               name="lighting7Y" <%=Encode.forHtml(String.valueOf(props.getProperty("lighting7Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="lighting7N" <%= props.getProperty("lighting7N", "") %> />
+                                                               name="lighting7N" <%=Encode.forHtml(String.valueOf(props.getProperty("lighting7N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -469,11 +470,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="lighting8Y" <%= props.getProperty("lighting8Y", "") %> />
+                                                               name="lighting8Y" <%=Encode.forHtml(String.valueOf(props.getProperty("lighting8Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="lighting8N" <%= props.getProperty("lighting8N", "") %> />
+                                                               name="lighting8N" <%=Encode.forHtml(String.valueOf(props.getProperty("lighting8N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -494,18 +495,18 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="lighting9Y" <%= props.getProperty("lighting9Y", "") %> />
+                                                               name="lighting9Y" <%=Encode.forHtml(String.valueOf(props.getProperty("lighting9Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="lighting9N" <%= props.getProperty("lighting9N", "") %> />
+                                                               name="lighting9N" <%=Encode.forHtml(String.valueOf(props.getProperty("lighting9N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%">
                                             <table width="100%">
                                                 <tr>
                                                     <td width="3%"><input type="checkbox" class="checkbox"
-                                                                          name="lighting9NA" <%= props.getProperty("lighting9NA", "") %> />
+                                                                          name="lighting9NA" <%=Encode.forHtml(String.valueOf(props.getProperty("lighting9NA", "")))%> />
                                                     </td>
                                                     <td width="97%">N/A (no outside path, step or entrance =
                                                         access door opens straight onto public footpath)
@@ -560,15 +561,15 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom10Y" <%= props.getProperty("bathroom10Y", "") %> />
+                                                               name="bathroom10Y" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom10Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom10N" <%= props.getProperty("bathroom10N", "") %> />
+                                                               name="bathroom10N" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom10N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom10NA" <%= props.getProperty("bathroom10NA", "") %> />N/A
+                                                               name="bathroom10NA" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom10NA", "")))%> />N/A
                                             (person uses commode constantly)
                                         </td>
                                     </tr>
@@ -590,15 +591,15 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom11Y" <%= props.getProperty("bathroom11Y", "") %> />
+                                                               name="bathroom11Y" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom11Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom11N" <%= props.getProperty("bathroom11N", "") %> />
+                                                               name="bathroom11N" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom11N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom11NA" <%= props.getProperty("bathroom11NA", "") %> />N/A
+                                                               name="bathroom11NA" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom11NA", "")))%> />N/A
                                             (no bath in the home, or bath never used)
                                         </td>
                                     </tr>
@@ -618,15 +619,15 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom12Y" <%= props.getProperty("bathroom12Y", "") %> />
+                                                               name="bathroom12Y" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom12Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom12N" <%= props.getProperty("bathroom12N", "") %> />
+                                                               name="bathroom12N" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom12N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom12NA" <%= props.getProperty("bathroom12NA", "") %> />N/A
+                                                               name="bathroom12NA" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom12NA", "")))%> />N/A
                                             (no shower recess in the home)
                                         </td>
                                     </tr>
@@ -647,11 +648,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom13Y" <%= props.getProperty("bathroom13Y", "") %> />
+                                                               name="bathroom13Y" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom13Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom13N" <%= props.getProperty("bathroom13N", "") %> />
+                                                               name="bathroom13N" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom13N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -672,11 +673,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom14Y" <%= props.getProperty("bathroom14Y", "") %> />
+                                                               name="bathroom14Y" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom14Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom14N" <%= props.getProperty("bathroom14N", "") %> />
+                                                               name="bathroom14N" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom14N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -697,11 +698,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom15Y" <%= props.getProperty("bathroom15Y", "") %> />
+                                                               name="bathroom15Y" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom15Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="bathroom15N" <%= props.getProperty("bathroom15N", "") %> />
+                                                               name="bathroom15N" <%=Encode.forHtml(String.valueOf(props.getProperty("bathroom15N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -752,11 +753,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="storage16Y" <%= props.getProperty("storage16Y", "") %> />
+                                                               name="storage16Y" <%=Encode.forHtml(String.valueOf(props.getProperty("storage16Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="storage16N" <%= props.getProperty("storage16N", "") %> />
+                                                               name="storage16N" <%=Encode.forHtml(String.valueOf(props.getProperty("storage16N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -777,11 +778,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="storage17Y" <%= props.getProperty("storage17Y", "") %> />
+                                                               name="storage17Y" <%=Encode.forHtml(String.valueOf(props.getProperty("storage17Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="storage17N" <%= props.getProperty("storage17N", "") %> />
+                                                               name="storage17N" <%=Encode.forHtml(String.valueOf(props.getProperty("storage17N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -811,15 +812,15 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="stairway18Y" <%= props.getProperty("stairway18Y", "") %> />
+                                                               name="stairway18Y" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway18Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="stairway18N" <%= props.getProperty("stairway18N", "") %> />
+                                                               name="stairway18N" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway18N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"><input type="checkbox" class="checkbox"
-                                                               name="stairway18NA" <%= props.getProperty("stairway18NA", "") %> />N/A
+                                                               name="stairway18NA" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway18NA", "")))%> />N/A
                                             (no steps or stairs exist inside the home)
                                         </td>
                                     </tr>
@@ -842,15 +843,15 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="stairway19Y" <%= props.getProperty("stairway19Y", "") %> />
+                                                               name="stairway19Y" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway19Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="stairway19N" <%= props.getProperty("stairway19N", "") %> />
+                                                               name="stairway19N" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway19N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"><input type="checkbox" class="checkbox"
-                                                               name="stairway19NA" <%= props.getProperty("stairway19NA", "") %> />N/A
+                                                               name="stairway19NA" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway19NA", "")))%> />N/A
                                             (no steps or stairs exist outside the home)
                                         </td>
                                     </tr>
@@ -875,15 +876,15 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="stairway20Y" <%= props.getProperty("stairway20Y", "") %> />
+                                                               name="stairway20Y" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway20Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="stairway20N" <%= props.getProperty("stairway20N", "") %> />
+                                                               name="stairway20N" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway20N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"><input type="checkbox" class="checkbox"
-                                                               name="stairway20NA" <%= props.getProperty("stairway20NA", "") %> />N/A
+                                                               name="stairway20NA" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway20NA", "")))%> />N/A
                                             (no steps or stairs exist)
                                         </td>
                                     </tr>
@@ -932,15 +933,15 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="stairway21Y" <%= props.getProperty("stairway21Y", "") %> />
+                                                               name="stairway21Y" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway21Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="stairway21N" <%= props.getProperty("stairway21N", "") %> />
+                                                               name="stairway21N" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway21N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"><input type="checkbox" class="checkbox"
-                                                               name="stairway21NA" <%= props.getProperty("stairway21NA", "") %> />N/A
+                                                               name="stairway21NA" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway21NA", "")))%> />N/A
                                             (no steps or stairs exist)
                                         </td>
                                     </tr>
@@ -961,11 +962,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="stairway22Y" <%= props.getProperty("stairway22Y", "") %> />
+                                                               name="stairway22Y" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway22Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="stairway22N" <%= props.getProperty("stairway22N", "") %> />
+                                                               name="stairway22N" <%=Encode.forHtml(String.valueOf(props.getProperty("stairway22N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -992,15 +993,15 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="mobility23Y" <%= props.getProperty("mobility23Y", "") %> />
+                                                               name="mobility23Y" <%=Encode.forHtml(String.valueOf(props.getProperty("mobility23Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="mobility23N" <%= props.getProperty("mobility23N", "") %> />
+                                                               name="mobility23N" <%=Encode.forHtml(String.valueOf(props.getProperty("mobility23N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"><input type="checkbox" class="checkbox"
-                                                               name="mobility23NA" <%= props.getProperty("mobility23NA", "") %> />N/A
+                                                               name="mobility23NA" <%=Encode.forHtml(String.valueOf(props.getProperty("mobility23NA", "")))%> />N/A
                                             (no garden, path or yard exists)
                                         </td>
                                     </tr>
@@ -1021,11 +1022,11 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="mobility24Y" <%= props.getProperty("mobility24Y", "") %> />
+                                                               name="mobility24Y" <%=Encode.forHtml(String.valueOf(props.getProperty("mobility24Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="mobility24N" <%= props.getProperty("mobility24N", "") %> />
+                                                               name="mobility24N" <%=Encode.forHtml(String.valueOf(props.getProperty("mobility24N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"></td>
@@ -1050,15 +1051,15 @@
                                     <tr bgcolor="white">
                                         <td width="5%"></td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="mobility25Y" <%= props.getProperty("mobility25Y", "") %> />
+                                                               name="mobility25Y" <%=Encode.forHtml(String.valueOf(props.getProperty("mobility25Y", "")))%> />
                                             Yes
                                         </td>
                                         <td width="10%"><input type="checkbox" class="checkbox"
-                                                               name="mobility25N" <%= props.getProperty("mobility25N", "") %> />
+                                                               name="mobility25N" <%=Encode.forHtml(String.valueOf(props.getProperty("mobility25N", "")))%> />
                                             No
                                         </td>
                                         <td width="75%"><input type="checkbox" class="checkbox"
-                                                               name="mobility25NA" <%= props.getProperty("mobility25NA", "") %> />N/A
+                                                               name="mobility25NA" <%=Encode.forHtml(String.valueOf(props.getProperty("mobility25NA", "")))%> />N/A
                                             (there are no pets/animals)
                                         </td>
                                     </tr>
@@ -1100,9 +1101,9 @@
                                                                                          value="Print"
                                                                                          onclick="javascript:window.print();"/>
                             </td>
-                            <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
+                            <td align="right">Study ID: <%=Encode.forHtml(String.valueOf(props.getProperty("studyID", "N/A")))%>
                                 <input type="hidden" name="studyID"
-                                       value="<%= props.getProperty("studyID", "N/A") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("studyID", "N/A")))%>"/></td>
                         </tr>
                     </table>
                 </td>

@@ -43,6 +43,7 @@
         import="java.math.*, java.util.*, java.sql.*, ca.openosp.*, java.net.*, ca.openosp.openo.dxresearch.bean.*" %>
 <%@ page import="ca.openosp.openo.dxresearch.bean.dxResearchBean" %>
 <%@ page import="ca.openosp.openo.dxresearch.bean.dxResearchBeanHandler" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <ul
         <%
             String demoNO = request.getParameter("demographicNo");
@@ -76,7 +77,7 @@
                     desc = org.apache.commons.lang3.StringUtils.abbreviate(desc, len);
                 }
         %>>
-    <li>- <%=desc%>
+    <li>- <%=Encode.forHtml(String.valueOf(desc))%>
     </li<%
    }%>
     >

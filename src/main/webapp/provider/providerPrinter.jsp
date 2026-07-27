@@ -30,6 +30,7 @@
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -196,7 +197,7 @@
                             <td>
                                 <input type=radio name="labelTypeRadioName" value="0" checked><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.appointmentReceipt"/></td>
                             <td><input type="text" id="defaultPrinterName0" name="defaultPrinterNameAppointmentReceipt"
-                                       value="<%=defaultPrinterNameAppointmentReceipt%>" size="40" readonly>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(defaultPrinterNameAppointmentReceipt))%>" size="40" readonly>
                                 <input type="checkbox"
                                        name="silentPrintAppointmentReceipt" <%=silentPrintAppointmentReceipt == true ? "checked" : ""%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.silentPrint"/>
                             </td>
@@ -205,7 +206,7 @@
                             <td>
                                 <input type=radio name="labelTypeRadioName" value="1"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.PDFEnvelope"/></td>
                             <td><input type="text" id="defaultPrinterName1" name="defaultPrinterNamePDFEnvelope"
-                                       value="<%=defaultPrinterNamePDFEnvelope%>" size="40" readonly>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(defaultPrinterNamePDFEnvelope))%>" size="40" readonly>
                                 <input type="checkbox"
                                        name="silentPrintPDFEnvelope" <%=silentPrintPDFEnvelope == true ? "checked" : ""%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.silentPrint"/>
                             </td>
@@ -214,7 +215,7 @@
                             <td>
                                 <input type=radio name="labelTypeRadioName" value="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.PDFLabel"/></td>
                             <td><input type="text" id="defaultPrinterName2" name="defaultPrinterNamePDFLabel"
-                                       value="<%=defaultPrinterNamePDFLabel%>" size="40" readonly>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(defaultPrinterNamePDFLabel))%>" size="40" readonly>
                                 <input type="checkbox"
                                        name="silentPrintPDFLabel" <%=silentPrintPDFLabel == true ? "checked" : ""%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.silentPrint"/>
                             </td>
@@ -223,7 +224,7 @@
                             <td>
                                 <input type=radio name="labelTypeRadioName" value="3"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.PDFAddressLabel"/></td>
                             <td><input type="text" id="defaultPrinterName3" name="defaultPrinterNamePDFAddressLabel"
-                                       value="<%=defaultPrinterNamePDFAddressLabel%>" size="40" readonly>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(defaultPrinterNamePDFAddressLabel))%>" size="40" readonly>
                                 <input type="checkbox"
                                        name="silentPrintPDFAddressLabel" <%=silentPrintPDFAddressLabel == true ? "checked" : ""%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.silentPrint"/>
                             </td>
@@ -232,7 +233,7 @@
                             <td>
                                 <input type=radio name="labelTypeRadioName" value="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.PDFChartLabel"/></td>
                             <td><input type="text" id="defaultPrinterName4" name="defaultPrinterNamePDFChartLabel"
-                                       value="<%=defaultPrinterNamePDFChartLabel%>" size="40" readonly>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(defaultPrinterNamePDFChartLabel))%>" size="40" readonly>
                                 <input type="checkbox"
                                        name="silentPrintPDFChartLabel" <%=silentPrintPDFChartLabel == true ? "checked" : ""%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.silentPrint"/>
                             </td>
@@ -241,7 +242,7 @@
                             <td>
                                 <input type=radio name="labelTypeRadioName" value="5"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.ClientLabLabel"/></td>
                             <td><input type="text" id="defaultPrinterName5" name="defaultPrinterNameClientLabLabel"
-                                       value="<%=defaultPrinterNameClientLabLabel%>" size="40" readonly>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(defaultPrinterNameClientLabLabel))%>" size="40" readonly>
                                 <input type="checkbox"
                                        name="silentPrintClientLabLabel" <%=silentPrintClientLabLabel == true ? "checked" : ""%> ><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setDefaultPrinter.silentPrint"/>
                             </td>

@@ -23,6 +23,7 @@
     Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%--
 /**
@@ -83,11 +84,11 @@
 <h1>Document Transfer</h1>
 
 <!-- Debug: Servlet Path -->
-<%= this.getServletContext().getRealPath(request.getServletPath()) %>
+<%=Encode.forHtml(String.valueOf(this.getServletContext().getRealPath(request.getServletPath())))%>
 
 <form method="post" action="<%= request.getContextPath() %>/messenger/Transfer/SelectItems.jsp">Demographic No: <input
         type="text" name="demographicNo"
-        value="<%= request.getParameter("demo")%>"/> <input type="submit"
+        value="<%= Encode.forHtmlAttribute(request.getParameter("demo"))%>"/> <input type="submit"
                                                             name="submitXml" value="Submit to XML"> <input type="submit"
                                                                                                            name="submit"
                                                                                                            value="Submit"

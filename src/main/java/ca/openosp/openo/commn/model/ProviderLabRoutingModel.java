@@ -28,6 +28,57 @@ import org.apache.commons.lang3.StringUtils;
 @Table(name = "providerLabRouting")
 public class ProviderLabRoutingModel extends AbstractModel<Integer> implements Serializable {
 
+    /**
+     * Routing status codes stored in the {@code status} column of the
+     * {@code providerLabRouting} table. The single-character {@link #getCode() code}
+     * is what is persisted; the human-readable {@link #getDescription() description}
+     * mirrors the labels historically shown in the lab/document inbox.
+     */
+    public enum Status {
+        NEW("N", "Not Acknowledged"),
+        ACKNOWLEDGED("A", "Acknowledged"),
+        FILED("F", "Filed but not Acknowledged"),
+        REMOVED("X", "Removed"),
+        NOT_APPLICABLE("U", "N/A");
+
+        private final String code;
+        private final String description;
+
+        Status(String code, String description) {
+            this.code = code;
+            this.description = description;
+        }
+
+        /**
+         * @return String the single-character code persisted in the database
+         */
+        public String getCode() {
+            return code;
+        }
+
+        /**
+         * @return String the human-readable description for this status
+         */
+        public String getDescription() {
+            return description;
+        }
+
+        /**
+         * Resolves a persisted status code to its {@link Status}.
+         *
+         * @param code String the single-character status code (may be null)
+         * @return Status the matching status, or null if the code is unknown
+         */
+        public static Status fromCode(String code) {
+            for (Status status : values()) {
+                if (status.code.equals(code)) {
+                    return status;
+                }
+            }
+            return null;
+        }
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

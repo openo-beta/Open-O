@@ -42,6 +42,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.ClinicLocationDao" %>
 <%@page import="ca.openosp.openo.commn.model.ClinicLocation" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ClinicLocationDao clinicLocationDao = (ClinicLocationDao) SpringUtils.getBean(ClinicLocationDao.class);
 %>
@@ -138,9 +139,9 @@
                     providerArr[1] = proName;
                     providerArray.add(providerArr);
             %>
-            <option value="reportINR.jsp?provider_no=<%=proOHIP%>"
-                    <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=proLast%>,
-                <%=proFirst%>
+            <option value="reportINR.jsp?provider_no=<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>"
+                    <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(proLast))%>,
+                <%=Encode.forHtml(String.valueOf(proFirst))%>
             </option>
             <%
 
@@ -158,17 +159,17 @@
                     clinic_location = clinicLocation.getClinicLocationName();
                     clinic_code = clinicLocation.getClinicLocationNo();
             %>
-            <option value="<%=clinic_code%>"
-                    <%=clinicview.equals(clinic_code) ? "selected" : ""%>><%=clinic_location%>
+            <option value="<%=Encode.forHtmlAttribute(String.valueOf(clinic_code))%>"
+                    <%=clinicview.equals(clinic_code) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(clinic_location))%>
             </option>
             <%
                 }
             %>
         </select>
         <input type="hidden" name="verCode" value="V03">
-        <input type="hidden" name="curUser" value="<%=user_no%>">
-        <input type="hidden" name="curDate" value="<%=nowDate%>">
-        <input type="hidden" name="curTime" value="<%=nowTime%>">
+        <input type="hidden" name="curUser" value="<%=Encode.forHtmlAttribute(String.valueOf(user_no))%>">
+        <input type="hidden" name="curDate" value="<%=Encode.forHtmlAttribute(String.valueOf(nowDate))%>">
+        <input type="hidden" name="curTime" value="<%=Encode.forHtmlAttribute(String.valueOf(nowTime))%>">
 
         <table class="table table-striped  table-condensed">
 
@@ -225,20 +226,20 @@
             %>
             <tr>
                 <td width="12%" height="16"><input type="checkbox"
-                                                   name="inrbilling<%=billinginr_no%>"></td>
+                                                   name="inrbilling<%=Encode.forHtmlAttribute(String.valueOf(billinginr_no))%>"></td>
                 <td width="22%" height="16"><a href="#"
-                                               onClick='rs("billinginrupdate","updateINRbilling.jsp?demono=<%=demono%>&billinginr_no=<%=billinginr_no%>&servicecode=<%=service_code%>&billingamount=<%=billing_amount%>&dxcode=<%=diagnostic_code%>&demo_name=<%=URLEncoder.encode(demo_name, StandardCharsets.UTF_8)%>&provider_name=<%=URLEncoder.encode(proName1, StandardCharsets.UTF_8)%>","380","300","0")'><%=demo_name%>
+                                               onClick='rs("billinginrupdate","updateINRbilling.jsp?demono=<%=Encode.forUriComponent(String.valueOf(demono))%>&billinginr_no=<%=Encode.forUriComponent(String.valueOf(billinginr_no))%>&servicecode=<%=Encode.forUriComponent(String.valueOf(service_code))%>&billingamount=<%=Encode.forUriComponent(String.valueOf(billing_amount))%>&dxcode=<%=Encode.forUriComponent(String.valueOf(diagnostic_code))%>&demo_name=<%=Encode.forUriComponent(String.valueOf(demo_name))%>&provider_name=<%=Encode.forUriComponent(String.valueOf(proName1))%>","380","300","0")'><%=Encode.forHtml(String.valueOf(demo_name))%>
                 </a></td>
-                <td width="22%" height="16"><%=proName1%>
+                <td width="22%" height="16"><%=Encode.forHtml(String.valueOf(proName1))%>
                 </td>
-                <td width="12%" height="16"><%=service_code%>
+                <td width="12%" height="16"><%=Encode.forHtml(String.valueOf(service_code))%>
                 </td>
-                <td width="12%" height="16"><%=billing_amount%>
+                <td width="12%" height="16"><%=Encode.forHtml(String.valueOf(billing_amount))%>
                 </td>
-                <td width="10%" height="16"><%=diagnostic_code%>
+                <td width="10%" height="16"><%=Encode.forHtml(String.valueOf(diagnostic_code))%>
                 </td>
                 <td width="10%" height="16">
-                    <% if (billstatus.compareTo("A") == 0) {%><%=billdate.substring(0, 10)%>
+                    <% if (billstatus.compareTo("A") == 0) {%><%=Encode.forHtml(String.valueOf(billdate.substring(0, 10)))%>
                     <%} else {%>Not Available<%}%>
                 </td>
             </tr>
@@ -284,20 +285,20 @@
             %>
             <tr>
                 <td width="12%" height="16"><input type="checkbox"
-                                                   name="inrbilling<%=billinginr_no%>"></td>
+                                                   name="inrbilling<%=Encode.forHtmlAttribute(String.valueOf(billinginr_no))%>"></td>
                 <td width="22%" height="16"><a href="#"
-                                               onClick='rs("billinginrupdate","updateINRbilling.jsp?demono=<%=demono%>&billinginr_no=<%=billinginr_no%>&servicecode=<%=service_code%>&billingamount=<%=billing_amount%>&dxcode=<%=diagnostic_code%>&demo_name=<%=URLEncoder.encode(demo_name, StandardCharsets.UTF_8)%>&provider_name=<%=URLEncoder.encode(proName1, StandardCharsets.UTF_8)%>","380","300","0")'><%=demo_name%>
+                                               onClick='rs("billinginrupdate","updateINRbilling.jsp?demono=<%=Encode.forUriComponent(String.valueOf(demono))%>&billinginr_no=<%=Encode.forUriComponent(String.valueOf(billinginr_no))%>&servicecode=<%=Encode.forUriComponent(String.valueOf(service_code))%>&billingamount=<%=Encode.forUriComponent(String.valueOf(billing_amount))%>&dxcode=<%=Encode.forUriComponent(String.valueOf(diagnostic_code))%>&demo_name=<%=Encode.forUriComponent(String.valueOf(demo_name))%>&provider_name=<%=Encode.forUriComponent(String.valueOf(proName1))%>","380","300","0")'><%=Encode.forHtml(String.valueOf(demo_name))%>
                 </a></td>
-                <td width="22%" height="16"><%=proName1%>
+                <td width="22%" height="16"><%=Encode.forHtml(String.valueOf(proName1))%>
                 </td>
-                <td width="12%" height="16"><%=service_code%>
+                <td width="12%" height="16"><%=Encode.forHtml(String.valueOf(service_code))%>
                 </td>
-                <td width="12%" height="16"><%=billing_amount%>
+                <td width="12%" height="16"><%=Encode.forHtml(String.valueOf(billing_amount))%>
                 </td>
-                <td width="10%" height="16"><%=diagnostic_code%>
+                <td width="10%" height="16"><%=Encode.forHtml(String.valueOf(diagnostic_code))%>
                 </td>
                 <td width="10%" height="16">
-                    <% if (billstatus.compareTo("A") == 0) {%><%=billdate.substring(0, 10)%>
+                    <% if (billstatus.compareTo("A") == 0) {%><%=Encode.forHtml(String.valueOf(billdate.substring(0, 10)))%>
                     <%} else {%>Not Available<%}%>
                 </td>
             </tr>
@@ -313,16 +314,16 @@
             <tr>
                 <td>
                     <a href="#"
-                       onClick='rs("billingcalendar","<%= request.getContextPath() %>/billing/CA/ON/billingCalendarPopup.jsp?year=<%=curYear%>&month=<%=curMonth%>&type=service","380","300","0")'>Service
+                       onClick='rs("billingcalendar","<%= request.getContextPath() %>/billing/CA/ON/billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&type=service","380","300","0")'>Service
                         Date:</a>
                     <input type="text" name="xml_appointment_date"
-                           value="<%=now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH)%>"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1)+"-"+now.get(Calendar.DAY_OF_MONTH)))%>"
                            size="12" datafld='xml_appointment_date'>
                 </td>
                 <td colspan=7>
                     <input type="submit" name="submit" value="Generate INR Batch Billing">
-                    <input type="hidden" name="rowCount" value="<%=Count1%>">
-                    <input type="hidden" name="clinic_no" value="<%=Clinic_no%>">
+                    <input type="hidden" name="rowCount" value="<%=Encode.forHtmlAttribute(String.valueOf(Count1))%>">
+                    <input type="hidden" name="clinic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(Clinic_no))%>">
                     <input type="hidden" name="visittype" value="00">
                 </td>
             </tr>

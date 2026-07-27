@@ -32,6 +32,7 @@
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypeBeanHandler" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.data.ExportMeasurementType" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String mstring = request.getParameter("mType");
     String export = "<ERROR>";

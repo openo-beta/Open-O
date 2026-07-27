@@ -32,6 +32,7 @@
 <%@page import="ca.openosp.openo.commn.dao.BillingServiceDao" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.ServiceCodeAssociation" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.pageUtil.BillingAssociationPersistence" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -126,9 +127,9 @@
 </table>
 <form name="servicecode" id="servicecode" method="post"
       action="billingCodeNewUpdate.jsp"><input type="hidden"
-                                               name="formName" value="<%=formName%>"/> <input type="hidden"
+                                               name="formName" value="<%=Encode.forHtmlAttribute(formName)%>"/> <input type="hidden"
                                                                                               name="formElement"
-                                                                                              value="<%=formElement%>"/>
+                                                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(formElement))%>"/>
     <div style="height: 600; overflow: auto">
         <table width="800" border="1">
             <tr bgcolor="#CCCCFF">
@@ -176,21 +177,21 @@
                         }
                     }
             %>
-            <tr bgcolor="<%=color%>">
+            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
                 <td><font face="Arial, Helvetica, sans-serif"
                           size="2"><%if (Dcode.compareTo(xcodeName) == 0 || Dcode.compareTo(xcodeName1) == 0 || Dcode.compareTo(xcodeName2) == 0) { %>
-                    <input type="checkbox" name="code_<%=Dcode%>" checked> <%} else { %>
-                    <input type="checkbox" name="code_<%=Dcode%>"> <%} %> <%=Dcode%>
+                    <input type="checkbox" name="code_<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>" checked> <%} else { %>
+                    <input type="checkbox" name="code_<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"> <%} %> <%=Encode.forHtml(String.valueOf(Dcode))%>
                 </font></td>
                 <td><font face="Arial, Helvetica, sans-serif" size="2"> <input
-                        type="hidden" name="codedesc_<%=Dcode%>" value="<%=DcodeDesc%>">
-                    <input type="text" name="<%=Dcode%>" value="<%=DcodeDesc%>" size="80">
-                    <input type="submit" name="update" value="update <%=Dcode%>">
+                        type="hidden" name="codedesc_<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>">
+                    <input type="text" name="<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>" size="80">
+                    <input type="submit" name="update" value="update <%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>">
                 </font></td>
             </tr>
             <%} %>
             <%if (intCount == 0) { %>
-            <tr bgcolor="<%=color%>">
+            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
                 <td colspan="2"><font face="Arial, Helvetica, sans-serif"
                                       size="2"> No match found. <%// =i        %></font></td>
             </tr>
@@ -199,7 +200,7 @@
             <script LANGUAGE="JavaScript">
                 <!--
 
-                CodeAttach('<%=Dcode%>', '<%=dx1%>', '<%=dx2%>', '<%=dx3%>');
+                CodeAttach('<%=Encode.forJavaScript(String.valueOf(Dcode))%>', '<%=Encode.forJavaScript(String.valueOf(dx1))%>', '<%=Encode.forJavaScript(String.valueOf(dx2))%>', '<%=Encode.forJavaScript(String.valueOf(dx3))%>');
                 -->
 
             </script>

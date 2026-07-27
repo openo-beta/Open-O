@@ -12,6 +12,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="java.util.*, ca.openosp.openo.hospitalReportManager.*,ca.openosp.openo.hospitalReportManager.model.HRMCategory" %>
 <%@ page import="ca.openosp.openo.hospitalReportManager.HRMUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -131,19 +132,19 @@
                     <tr>
 
                         <td><a href="#"
-                               ONCLICK="popupPage('<%=request.getContextPath() %>/hospitalReportManager/Display.do?id=<%=curhrmdoc.get("id")%>', 'HRM Report'); return false;"
-                        ><%=curhrmdoc.get("report_type")%>
+                               ONCLICK="popupPage('<%=request.getContextPath() %>/hospitalReportManager/Display.do?id=<%=Encode.forUriComponent(String.valueOf(curhrmdoc.get("id")))%>', 'HRM Report'); return false;"
+                        ><%=Encode.forHtml(String.valueOf(curhrmdoc.get("report_type")))%>
                         </a></td>
-                        <td><%=curhrmdoc.get("description")%>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("description")))%>
                         </td>
-                        <td><%=curhrmdoc.get("report_status")%>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("report_status")))%>
                         </td>
-                        <td style="text-align: center;"><%=curhrmdoc.get("report_date")%>
+                        <td style="text-align: center;"><%=Encode.forHtml(String.valueOf(curhrmdoc.get("report_date")))%>
                         </td>
-                        <td style="text-align: center;"><%=curhrmdoc.get("time_received")%>
+                        <td style="text-align: center;"><%=Encode.forHtml(String.valueOf(curhrmdoc.get("time_received")))%>
                         </td>
-                        <td><%=curhrmdoc.get("category") != null ? curhrmdoc.get("category")  : "" %>
-                        <td><%=curhrmdoc.get("class_subclass") != null ? curhrmdoc.get("class_subclass")  : "" %>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("category") != null ? curhrmdoc.get("category")  : ""))%>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("class_subclass") != null ? curhrmdoc.get("class_subclass")  : ""))%>
                     </tr>
                     <%
                         }

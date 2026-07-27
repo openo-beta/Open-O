@@ -54,6 +54,7 @@
 <%@page import="ca.openosp.openo.providers.data.*" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <style type="text/css">
     #myAutoComplete {
@@ -141,7 +142,7 @@
     ArrayList doctypes = EDocUtil.getDoctypes(module);%>
 
 
-<div id="DocumentQueue_<%=currentQueue%>" style="background-color: #f2f7ff;">
+<div id="DocumentQueue_<%=Encode.forHtmlAttribute(String.valueOf(currentQueue))%>" style="background-color: #f2f7ff;">
     <%
         if (queueDocs != null && !queueDocs.isEmpty() && queueDocs.containsKey(currentQueue)) {
             List<EDoc> docList = (List<EDoc>) queueDocs.get(currentQueue);
@@ -160,36 +161,36 @@
                 if (numPage != 0)
                     numPageStr = (new Integer(numPage)).toString();
     %>
-    <div id="document<%=currentDocId%>">
+    <div id="document<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>">
         <table class="docTable">
             <tr>
                 <td colspan="8">
                     <a href="javascript:void(0);">
-                        <img src="<%=url%>" onclick="popupPage(500,600,'name_<%=currentDocId%>','<%=docUrl%>')"
+                        <img src="<%=Encode.forHtmlAttribute(String.valueOf(url))%>" onclick="popupPage(500,600,'name_<%=Encode.forJavaScript(String.valueOf(currentDocId))%>','<%=Encode.forJavaScript(String.valueOf(docUrl))%>')"
                              title="Click to Download File"/>
                     </a>
                 </td>
 
                 <td align="left" valign="top">
                     <fieldset>
-                        <legend>Document Uploaded :<%=curdoc.getDateTimeStamp()%> - Content
-                            Type: <%=contentType%> <%=curdoc.getFileName() %> - Number of Pages: <%=numPageStr%>
+                        <legend>Document Uploaded :<%=Encode.forHtml(String.valueOf(curdoc.getDateTimeStamp()))%> - Content
+                            Type: <%=Encode.forHtml(String.valueOf(contentType))%> <%=Encode.forHtml(String.valueOf(curdoc.getFileName()))%> - Number of Pages: <%=Encode.forHtml(String.valueOf(numPageStr))%>
                         </legend>
-                        <form id="forms<%=currentDocId%>" action="undocumentReport.jsp"
-                              onsubmit="return sendToServer('forms<%=currentDocId%>');">
+                        <form id="forms<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>" action="undocumentReport.jsp"
+                              onsubmit="return sendToServer('forms<%=Encode.forJavaScript(String.valueOf(currentDocId))%>');">
                             <input type="hidden" name="method" value="documentUpdate"/>
-                            <input type="hidden" name="documentId" value="<%=currentDocId%>"/>
+                            <input type="hidden" name="documentId" value="<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>"/>
                             <table>
                                 <tr>
                                     <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDocType"/>:</td>
                                     <td>
-                                        <select tabindex="<%=tabindex++%>" name="docType" id="docType">
+                                        <select tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" name="docType" id="docType">
                                             <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.formSelect"/></option>
                                             <%
                                                 for (int j = 0; j < doctypes.size(); j++) {
                                                     String doctype = (String) doctypes.get(j);
                                             %>
-                                            <option value="<%=doctype%>" <%=(curdoc.getType().equals(doctype)) ? " selected" : ""%>><%= doctype%>
+                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(doctype))%>" <%=(curdoc.getType().equals(doctype)) ? " selected" : ""%>><%=Encode.forHtml(String.valueOf(doctype))%>
                                             </option>
                                             <%}%>
                                         </select>
@@ -197,17 +198,17 @@
                                 </tr>
                                 <tr>
                                     <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgDocDesc"/>:</td>
-                                    <td><input tabindex="<%=tabindex++%>" type="text" name="documentDescription"
-                                               value="<%=curdoc.getDescription()%>"/></td>
+                                    <td><input tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" type="text" name="documentDescription"
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(curdoc.getDescription()))%>"/></td>
                                 </tr>
                                 <tr>
                                     <td>Observation Date:</td>
                                     <td>
-                                        <input tabindex="<%=tabindex++%>" id="observationDate<%=currentDocId%>"
+                                        <input tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" id="observationDate<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>"
                                                name="observationDate" type="text"
-                                               value="<%=curdoc.getObservationDate()%>">
-                                        <a id="obsdate<%=currentDocId%>"
-                                           onmouseover="renderCalendar(this.id,'observationDate<%=currentDocId%>' );"
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(curdoc.getObservationDate()))%>">
+                                        <a id="obsdate<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>"
+                                           onmouseover="renderCalendar(this.id,'observationDate<%=Encode.forJavaScript(String.valueOf(currentDocId))%>' );"
                                            href="javascript:void(0);"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif"
                                                                            alt="Calendar" border="0"/></a>
                                     </td>
@@ -215,13 +216,13 @@
                                 <tr>
                                     <td>
                                         Demographic: <% if (request.getParameter("demo_linked_Id") != null && request.getParameter("demo_linked_Id").equals(currentDocId)) {%>
-                                        <%=request.getParameter("name")%> <% }%>
+                                        <%=Encode.forHtml(request.getParameter("name"))%> <% }%>
                                     </td>
-                                    <td><input type="hidden" name="demog" id="demofind<%=currentDocId%>"/>
-                                        <input tabindex="<%=tabindex++%>" type="text"
-                                               id="autocompletedemo<%=currentDocId%>"
-                                               onchange="checkSave('<%=currentDocId%>')" name="demographicKeyword"/>
-                                        <div id="autocomplete_choices<%=currentDocId%>" class="autocomplete"></div>
+                                    <td><input type="hidden" name="demog" id="demofind<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>"/>
+                                        <input tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" type="text"
+                                               id="autocompletedemo<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>"
+                                               onchange="checkSave('<%=Encode.forJavaScript(String.valueOf(currentDocId))%>')" name="demographicKeyword"/>
+                                        <div id="autocomplete_choices<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>" class="autocomplete"></div>
 
                                         <script type="text/javascript">       <%-- testDemocomp2.jsp    --%>
 
@@ -244,7 +245,7 @@
                                             //oDS.connXhrMode ="cancelStaleRequests";
 
                                             // Instantiate the AutoComplete
-                                            var oAC = new YAHOO.widget.AutoComplete("autocompletedemo<%=currentDocId%>", "autocomplete_choices<%=currentDocId%>", oDS);
+                                            var oAC = new YAHOO.widget.AutoComplete("autocompletedemo<%=Encode.forJavaScript(String.valueOf(currentDocId))%>", "autocomplete_choices<%=Encode.forJavaScript(String.valueOf(currentDocId))%>", oDS);
                                             oAC.queryMatchSubset = true;
                                             oAC.minQueryLength = 3;
                                             oAC.maxResultsDisplayed = 25;
@@ -261,7 +262,7 @@
                                                 //oscarLog("--"+args[0].getInputEl().value);
                                                 selectedDemos.push(args[0].getInputEl().value);
                                                 //enable Save button whenever a selection is made
-                                                $('save<%=currentDocId%>').enable();
+                                                $('save<%=Encode.forJavaScript(String.valueOf(currentDocId))%>').enable();
 
                                             });
 
@@ -284,9 +285,9 @@
 
                                     <td>
                                         <div class="myAutoComplete">
-                                            <input tabindex="<%=tabindex++%>" type="text"
-                                                   id="autocompleteprov<%=currentDocId%>" name="demographicKeyword"/>
-                                            <div id="autocomplete_choicesprov<%=currentDocId%>"
+                                            <input tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" type="text"
+                                                   id="autocompleteprov<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>" name="demographicKeyword"/>
+                                            <div id="autocomplete_choicesprov<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>"
                                                  class="autocomplete"></div>
                                         </div>
 
@@ -296,7 +297,7 @@
                                                 oscarLog("FnMultipleFields ");
                                                 oscarLog(oDS.responseSchema);
                                                 // Instantiate AutoComplete
-                                                var oAC = new YAHOO.widget.AutoComplete("autocompleteprov<%=currentDocId%>", "autocomplete_choicesprov<%=currentDocId%>", oDS);
+                                                var oAC = new YAHOO.widget.AutoComplete("autocompleteprov<%=Encode.forJavaScript(String.valueOf(currentDocId))%>", "autocomplete_choicesprov<%=Encode.forJavaScript(String.valueOf(currentDocId))%>", oDS);
                                                 oAC.useShadow = true;
                                                 oAC.resultTypeList = false;
 
@@ -335,7 +336,7 @@
                                                     adoc.appendChild(idoc);
 
                                                     adoc.appendChild(bdoc);
-                                                    var providerList = $('providerList<%=currentDocId%>');
+                                                    var providerList = $('providerList<%=Encode.forJavaScript(String.valueOf(currentDocId))%>');
                                                     //    console.log('Now HERE'+providerList);
                                                     providerList.appendChild(adoc);
 
@@ -351,24 +352,24 @@
 
 
                                         </script>
-                                        <div id="providerList<%=currentDocId%>"></div>
+                                        <div id="providerList<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>"></div>
                                     </td>
                                 </tr>
 
 
                                 <tr>
                                     <td><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentReport.msgCreator"/>:</td>
-                                    <td><%=curdoc.getCreatorName()%>
+                                    <td><%=Encode.forHtml(String.valueOf(curdoc.getCreatorName()))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Queue:</td>
-                                    <td><%=currentQueueName%>
+                                    <td><%=Encode.forHtml(String.valueOf(currentQueueName))%>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" align="right"><input id="save<%=currentDocId%>"
-                                                                         tabindex="<%=tabindex++%>" type="submit"
+                                    <td colspan="2" align="right"><input id="save<%=Encode.forHtmlAttribute(String.valueOf(currentDocId))%>"
+                                                                         tabindex="<%=Encode.forHtmlAttribute(String.valueOf(tabindex++))%>" type="submit"
                                                                          name="save" value="Save" disabled/></td>
                                 </tr>
                             </table>
