@@ -64,6 +64,7 @@ public class OneIdFilter implements Filter {
         OneIdSession oneIdSession = oneIdSessionDao.find(loggedInUser);
         if (oneIdSession == null) {
             session.removeAttribute(LoggedInInfo.OH_GATEWAY_DATA);
+            attachToLoggedInInfo(session, null);
             return;
         }
         OneIdGatewayData gatewayData = (OneIdGatewayData) session.getAttribute(LoggedInInfo.OH_GATEWAY_DATA);
@@ -78,27 +79,43 @@ public class OneIdFilter implements Filter {
 
             // Get One ID session info here and fill OMDGatewayData
             String pcoiKey = getPcoiKey();
-            OneIdGatewayData oneIdGatewayData = new OneIdGatewayData();
-            oneIdGatewayData.setAccessTokenStr(oneIdSession.getAccessToken());
-            oneIdGatewayData.processAccessToken(oneIdSession.getAccessToken());
-            oneIdGatewayData.setRefreshTokenStr(oneIdSession.getRefreshToken());
-            oneIdGatewayData.processRefreshToken(oneIdSession.getRefreshToken());
-            oneIdGatewayData.setIdTokenStr(oneIdSession.getIdToken());
-            oneIdGatewayData.processIdToken(oneIdSession.getIdToken());
-            oneIdGatewayData.setAuthorizationId(oneIdSession.getAuthorizationId());
-            oneIdGatewayData.setHubTopic(oneIdSession.getHubTopic());
-            oneIdGatewayData.setCtxSessionId(oneIdSession.getHubTopic());
-            oneIdGatewayData.setUao(oneIdSession.getUaoUpi());
-            oneIdGatewayData.setUaoFriendlyName(oneIdSession.getUaoName());
-            oneIdGatewayData.setCmsUrl(resolveCmsEndpoint(oneIdSession));
-            oneIdGatewayData.setPcoiUrl(oneIdSession.getUrlFromToolbar(pcoiKey));
-            oneIdGatewayData.setFhirIss(oneIdSession.getUrlFromToolbar(OmdGateway.ToolbarKeys.FHIR_ISS.key));
-            oneIdGatewayData.setLastKeptActive(oneIdSession.getLastKeptActive());
-            oneIdGatewayData.setSso(oneIdSession.isSso());
+            gatewayData = new OneIdGatewayData();
+            gatewayData.setAccessTokenStr(oneIdSession.getAccessToken());
+            gatewayData.processAccessToken(oneIdSession.getAccessToken());
+            gatewayData.setRefreshTokenStr(oneIdSession.getRefreshToken());
+            gatewayData.processRefreshToken(oneIdSession.getRefreshToken());
+            gatewayData.setIdTokenStr(oneIdSession.getIdToken());
+            gatewayData.processIdToken(oneIdSession.getIdToken());
+            gatewayData.setAuthorizationId(oneIdSession.getAuthorizationId());
+            gatewayData.setHubTopic(oneIdSession.getHubTopic());
+            gatewayData.setCtxSessionId(oneIdSession.getHubTopic());
+            gatewayData.setUao(oneIdSession.getUaoUpi());
+            gatewayData.setUaoFriendlyName(oneIdSession.getUaoName());
+            gatewayData.setCmsUrl(resolveCmsEndpoint(oneIdSession));
+            gatewayData.setPcoiUrl(oneIdSession.getUrlFromToolbar(pcoiKey));
+            gatewayData.setFhirIss(oneIdSession.getUrlFromToolbar(OmdGateway.ToolbarKeys.FHIR_ISS.key));
+            gatewayData.setLastKeptActive(oneIdSession.getLastKeptActive());
+            gatewayData.setSso(oneIdSession.isSso());
 
-            session.setAttribute(LoggedInInfo.OH_GATEWAY_DATA, oneIdGatewayData);
-            LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(session);
-            loggedInInfo.setOneIdGatewayData(oneIdGatewayData);
+            session.setAttribute(LoggedInInfo.OH_GATEWAY_DATA, gatewayData);
+        }
+
+        attachToLoggedInInfo(session, gatewayData);
+    }
+
+    /**
+     * Puts the ONE ID gateway data on the logged-in info held by the session. The logged-in info is
+     * rebuilt on every request, so the data is attached each time rather than only on the request
+     * that reads it from the database.
+     *
+     * @param session     HttpSession the current session
+     * @param gatewayData OneIdGatewayData the resolved gateway data, or null when the provider has
+     *                    no ONE ID session
+     */
+    private void attachToLoggedInInfo(HttpSession session, OneIdGatewayData gatewayData) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(session);
+        if (loggedInInfo != null) {
+            loggedInInfo.setOneIdGatewayData(gatewayData);
             LoggedInInfo.setLoggedInInfoIntoSession(session, loggedInInfo);
         }
     }
