@@ -79,7 +79,15 @@ public class DHDRService extends AbstractServiceImpl {
 
   private static final String SECURITY_OBJECT = "_rx";
 
-  private static final String ERROR_TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm";
+  /**
+   * ISO-8601 local date-time, deliberately not a display format. DHDR03.06 requires one date format
+   * across the DHDR views, and presentation belongs to the viewer, which renders every notice
+   * timestamp through a single {@code | date:'medium'}. A server-formatted string reaches that
+   * filter unparseable and is passed through verbatim, producing a second format beside the
+   * client-built notices. Emit a value the filter can parse and let one place decide how it looks. 
+   * No trailing offset: the filter then reads it as local time rather than shifting it.
+   */
+  private static final String ERROR_TIMESTAMP_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
   /** DHDR14.01: a warning must direct the user to resolve the issue or receive support. */
   private static final String RETRY_GUIDANCE = "No drug or pharmacy service information was "
