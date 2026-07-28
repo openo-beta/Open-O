@@ -223,7 +223,7 @@
 		 		     required to see it, and no technical detail is exposed: that stays in the audit log. --%>
 		 		<div ng-repeat="serviceError in serviceErrors" class="alert" ng-class="serviceErrorClass(serviceError)" role="alert">
 		 			<strong>{{serviceError.httpMessage}}</strong>
-		 			<div>{{noticeCodeLabel(serviceError.severity)}} {{serviceError.httpCode}} &middot; Severity: {{serviceError.severity}} &middot; {{serviceError.dateTime}}</div>
+		 			<div>{{noticeCodeLabel(serviceError.severity)}} {{serviceError.httpCode}} &middot; Severity: {{serviceError.severity}} &middot; {{serviceError.dateTime | date:'medium'}}</div>
 		 			<div ng-if="serviceError.moreInformation">{{serviceError.moreInformation}}</div>
 		 		</div>
 
@@ -1790,7 +1790,12 @@
 							+ " returned by DHDR but could not be displayed.",
 						httpCode: "DHDR02.01",
 						severity: "error",
-						dateTime: new Date().toLocaleString(),
+						// DHDR03.06: a Date, rendered through the same filter as every other date in
+						// the viewer. toLocaleString() followed the workstation locale, so this one
+						// timestamp read 6/5/2026 or 05/06/2026 or 2026-06-05 depending on the machine
+						// - the only ambiguous date on screen, beside an outcome notice already using
+						// date:'medium'.
+						dateTime: new Date(),
 						moreInformation: "The data for these records was incomplete or in an unexpected format."
 							+ " The remaining records are shown. Use other available sources of medication"
 							+ " information to confirm this patient's history."
@@ -1996,7 +2001,7 @@
 						httpMessage: "Cannot search the DHDR: this patient has no Health Card Number on file.",
 						httpCode: "DHDR02.02",
 						severity: "error",
-						dateTime: new Date().toLocaleString(),
+						dateTime: new Date(),
 						moreInformation: "A Health Card Number is required to query the DHDR EHR Service. Add the HCN to the patient record and try again."
 					});
 					return;
