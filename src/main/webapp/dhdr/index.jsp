@@ -378,7 +378,7 @@
 										</span>
 									</a>
 								</th>
-								<th>Rx Count</th>
+								<th>Rx Group Count</th>
 							</tr>
 						</thead>
 
@@ -409,7 +409,7 @@
 								</td>
 								<td>{{med.prescriberLastname}}, {{med.prescriberFirstname}} <span ng-if="med.prescriberPhoneNumber">Tel:{{med.prescriberPhoneNumber}}</span></td>
 								<td>{{med.dispensingPharmacy}} <span ng-if="med.dispensingPharmacyFaxNumber">Fax:{{med.dispensingPharmacyFaxNumber}}</span></td>
-								<td ng-click="showGroupedMeds2(medsWithGroupedDups[med.getUniqVal()])"><span ng-if="med.headRecord"><a>{{medsWithGroupedDups[med.getUniqVal()].length}}</a></span><!-- {{med | json}}  --></td>
+								<td ng-click="showGroupedMeds2(medsWithGroupedDups[med.getUniqVal()])"><span ng-if="med.headRecord && drugGroupSize(med) > 1"><a>{{drugGroupSize(med)}}</a></span><!-- {{med | json}}  --></td>
 
 							</tr>
 						</tbody>
@@ -512,7 +512,7 @@
 								<th>
 									<a ng-click="serviceOrderByField='dispensingPharmacyFaxNumber'; serviceReverseSort = !serviceReverseSort">Pharmacy Fax<span ng-show="serviceOrderByField == 'dispensingPharmacyFaxNumber'"><span ng-show="!serviceReverseSort">^</span><span ng-show="serviceReverseSort">v</span></span></a>
 								</th>
-								<th>Service Count</th>
+								<th>Service Group Count</th>
 							</tr>
 						</thead>
 
@@ -529,7 +529,7 @@
 								<td>{{med.dispensingPharmacy}}</td>
 								<td>{{med.pharmacistLastname}}, {{med.pharmacistFirstname}} </td>
 								<td>{{med.dispensingPharmacyFaxNumber}}</td>
-								<td ng-click="showGroupedServices2(servicesWithGroupedDups[med.serviceGroupKey])"><span ng-if="med.headRecord"><a>{{servicesWithGroupedDups[med.serviceGroupKey].length}}</a></span><!-- {{med | json}}  --></td>
+								<td ng-click="showGroupedServices2(servicesWithGroupedDups[med.serviceGroupKey])"><span ng-if="med.headRecord && serviceGroupSize(med) > 1"><a>{{serviceGroupSize(med)}}</a></span><!-- {{med | json}}  --></td>
 
 							</tr>
 						</tbody>
@@ -1537,7 +1537,7 @@
 			// DHDR04.03: groups are collapsed by default (only the most-recent event per
 			// group shows via uniqMeds). This single-action toggle expands every group at
 			// once by switching the drug table to the full flat event list (meds), then
-			// collapses back to the grouped heads. Per-group expand stays on the Rx Count
+			// collapses back to the grouped heads. Per-group expand stays on the Rx Group Count
 			// modal (showGroupedMeds2).
 			$scope.expandAll = false;
 			$scope.toggleExpandAll = function(){
@@ -1846,6 +1846,21 @@
 			$scope.drugFilterActive = function(){ return anyFilterSet($scope.searchtxt); };
 			$scope.serviceFilterActive = function(){ return anyFilterSet($scope.searchServicetxt); };
 
+			// DHDR04.02/07.02: "a group MUST be identified differently than an event that is not part
+			// of any group". regroupByMostRecent marks every head with headRecord, including a group
+			// of one, so headRecord cannot tell the two apart - the size test is what distinguishes
+			// them. Both conditions are needed: headRecord still keeps the count off the other members
+			// once a group is expanded. The count is then its own marker - a row carries one only when
+			// it stands for events hidden behind it.
+			$scope.drugGroupSize = function(med){
+				var group = $scope.medsWithGroupedDups[med.getUniqVal()];
+				return group ? group.length : 0;
+			};
+			$scope.serviceGroupSize = function(med){
+				var group = $scope.servicesWithGroupedDups[med.serviceGroupKey];
+				return group ? group.length : 0;
+			};
+
 			// DHDR03.04: mirror the two composed columns onto the event so they can be filtered as
 			// displayed. The date uses the same $filter('date') default the tables use, so the two can
 			// only ever agree; the name uses the same "Last, First" the column renders, which makes one
@@ -2133,6 +2148,9 @@
 	    	
     		  
     		  $scope.showGroupedMeds2 =function(meds,$event){
+				// The cell stays clickable once its count is hidden, so guard here rather than in the
+				// template - a lone event is not a group and has nothing to expand (DHDR04.02).
+				if(!meds || meds.length < 2){ return; }
 				var modalInstance = $modal.open({
 	    		      
 	    		      templateUrl: 'drugDupsContent.html',
@@ -2162,6 +2180,8 @@
     		  
     		  
     		  $scope.showGroupedServices2 =function(services,$event){
+				// See showGroupedMeds2: same guard, DHDR07.02.
+				if(!services || services.length < 2){ return; }
   				var modalInstance = $modal.open({
   	    		      
   	    		      templateUrl: 'pharmaDupsContent.html',
