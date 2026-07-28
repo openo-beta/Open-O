@@ -49,7 +49,7 @@
 	// Both URLs are admin-configurable in oscar_mcmaster.properties (dhdr.odb_formulary_url /
 	// dhdr.eap_url); the OMD-published addresses are used when the properties are unset.
 	String odbUrl = OscarProperties.getInstance().getProperty("dhdr.odb_formulary_url", "https://www.ontario.ca/check-medication-coverage/");
-	String eapUrl = OscarProperties.getInstance().getProperty("dhdr.eap_url", "http://www.health.gov.on.ca/en/pro/programs/sadie/");
+	String eapUrl = OscarProperties.getInstance().getProperty("dhdr.eap_url", "https://www.ontario.ca/page/sadie-special-authorization-digital-information-exchange");
 
 	// DHDR-04: PCOI viewlet "not responding" timeout in milliseconds, configurable via the
 	// oneid_viewlet_timeout system preference; default 300000 (5 minutes) when unset or invalid.
@@ -1037,7 +1037,6 @@
 		 					<th>Prescriber</th>
 							<td>{{med.prescriberLastname}}, {{med.prescriberFirstname}} ({{med.prescriberLicenceNumber.value}})</td>
 						</tr>
-						<tr>
 						<tr>
 		 					<th>Prescriber ID</th>
 							<td title="{{getLicence(med.prescriberLicenceNumber.system)}}">{{getLicenceMnemonic(med.prescriberLicenceNumber.system)}} ({{med.prescriberLicenceNumber.value}})</td>

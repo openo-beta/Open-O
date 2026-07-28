@@ -1367,7 +1367,7 @@ Outside ProOhip: <%=Encode.forHtml(String.valueOf(thisForm.getOutsideProviderOhi
                                                              (dhdr.eap_url, shared with the DHDR viewer); the OMD-published SADIE address is
                                                              used when unset. --%>
                                                         <a target="_new"
-                                                           href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.eap_url", "http://www.health.gov.on.ca/en/pro/programs/sadie/"))%>">EAP
+                                                           href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.eap_url", "https://www.ontario.ca/page/sadie-special-authorization-digital-information-exchange"))%>">EAP
                                                             (SADIE)</a>
                                                         <%
                                                             ArrayList<LimitedUseCode> luList = LimitedUseLookup.getLUInfoForDin(regionalIdentifier);
