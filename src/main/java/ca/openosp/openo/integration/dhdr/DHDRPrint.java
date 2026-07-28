@@ -520,7 +520,14 @@ public class DHDRPrint {
 
     // Row 5
     getSummaryItemHeaderCell(headerTable, "HIN", patientHcn);
-    headerTable.addCell(getSpacerCell(4));
+    // DHDR13.01.b lists age among the DHDR-side demographics. The page header carries it, but this
+    // per-event block repeats the same identity with one field missing, so a reader checking the
+    // block rather than the header sees an incomplete set. Same source as the header's age.
+    // Blank rather than "N/A" when it cannot be derived, so it matches the DOB cell it comes from:
+    // a patient with no birthDate renders DOB as "" (optString's default), and two different blank
+    // markers for the same missing fact reads as a defect.
+    getSummaryItemHeaderCell(headerTable, "Age", computeAge(patientDob));
+    headerTable.addCell(getSpacerCell(2));
 
     return header;
   }
