@@ -149,11 +149,15 @@
 		     fields that do not match the EMR demographic. --%>
 		<div class="alert" ng-class="dhdrPatientDataUnmatched ? 'alert-warning' : 'alert-info'" role="alert" style="margin-bottom: 8px;">
 			<strong>DHDR EHR Service patient:</strong>
-			{{dhdrPatient.lastName}}, {{dhdrPatient.firstName}}{{matchNote(dhdrPatient.nameUnmatched, dhdrPatient.nameMissing)}}
-			&nbsp;&middot;&nbsp; HIN: {{dhdrPatient.hin}}{{matchNote(dhdrPatient.hinUnmatched, dhdrPatient.hinMissing)}}
-			&nbsp;&middot;&nbsp; DOB: {{dhdrPatient.dob | date}}{{matchNote(dhdrPatient.dobUnmatched, dhdrPatient.dobMissing)}}
-			&nbsp;&middot;&nbsp; Sex: {{dhdrPatient.gender}}{{matchNote(dhdrPatient.genderUnmatched, dhdrPatient.genderMissing)}}
+			{{dhdrPatient.lastName}}, {{dhdrPatient.firstName}}{{matchNote(dhdrPatient.nameUnmatched, dhdrPatient.nameMissing)}}{{variantNote('lastName')}}{{variantNote('firstName')}}
+			&nbsp;&middot;&nbsp; HIN: {{dhdrPatient.hin}}{{matchNote(dhdrPatient.hinUnmatched, dhdrPatient.hinMissing)}}{{variantNote('hin')}}
+			&nbsp;&middot;&nbsp; DOB: {{dhdrPatient.dob | date}}{{matchNote(dhdrPatient.dobUnmatched, dhdrPatient.dobMissing)}}{{variantNote('dob')}}
+			&nbsp;&middot;&nbsp; Sex: {{dhdrPatient.gender}}{{matchNote(dhdrPatient.genderUnmatched, dhdrPatient.genderMissing)}}{{variantNote('gender')}}
 			<div ng-show="dhdrPatientDataUnmatched"><em>Some DHDR patient details differ from the EMR record, or are not recorded in it.</em></div>
+			<%-- DHDR03.02 (#73): where the returned records disagree with each other, say so. Otherwise
+			     the banner shows one value and silently drops the rest, which is how the mismatch
+			     warning came to depend on which record arrived last. --%>
+			<div ng-show="anyVariants()"><em>The DHDR EHR Service returned more than one value for some patient details across this patient's records; every value shown was compared against the EMR.</em></div>
 		</div>
 	</div>
 	<div class="container">
@@ -1268,6 +1272,22 @@
 				if (!unmatched) { return ""; }
 				return missing ? " (NOT IN EMR)" : " (UNMATCHED)";
 			};
+			// DHDR03.02 (#73): the headline value is one of several when the returned records disagree.
+			// List the others beside it rather than dropping them - they were compared, so they should
+			// be visible.
+			$scope.variantNote = function(field){
+				var seen = $scope.dhdrPatientVariants ? $scope.dhdrPatientVariants[field] : null;
+				if (!seen || seen.length < 2) { return ""; }
+				return " [also in DHDR: " + seen.slice(1).join(", ") + "]";
+			};
+			$scope.anyVariants = function(){
+				var v = $scope.dhdrPatientVariants;
+				if (!v) { return false; }
+				for (var k in v) {
+					if (v.hasOwnProperty(k) && v[k] && v[k].length > 1) { return true; }
+				}
+				return false;
+			};
 			// DHDR02.03(c) searches all available events, normally from the patient's birth. Where
 			// there is no date of birth to start from, this floor stands in: dropping the lower
 			// bound is not equivalent, because the service then applies its own 120-day default
@@ -1323,6 +1343,13 @@
 				dobUnmatched: false,
 				hinUnmatched: false
 			};
+			// DHDR03.02 (#73): one response can carry more than one patient identity. BestPractice 15
+			// explains why - the DHDR query runs on HCN alone, so it returns every record for that HCN
+			// including historic ones whose name/DOB/gender the dispensing pharmacy recorded
+			// differently. OMD's own validation captures show both: three spellings of a given name in
+			// one response, and 10 male / 6 female rows for one patient. Every distinct value has to be
+			// compared, not just whichever record happened to arrive last.
+			$scope.dhdrPatientVariants = {firstName: [], lastName: [], gender: [], dob: [], hin: []};
 			$scope.dhdrPatientResolved = false;
 			$scope.dhdrPatientData = "";
 			$scope.patientDataUnmatched = false;
@@ -1713,12 +1740,39 @@
 					}else if(x.resource.resourceType === "MedicationDispense"){
 						var d = new MedicationDispense(x);
 						if (d.patient) {
-							$scope.dhdrPatient.firstName = getFirstName(d.patient.name);
-							$scope.dhdrPatient.lastName = getLastName(d.patient.name);
-							$scope.dhdrPatient.gender = d.patient.gender || "";
-							$scope.dhdrPatient.dob = d.patient.birthDate || "";
-							$scope.dhdrPatient.hin = getPatientIdentifier(d.patient.identifier);
+							// DHDR03.02 (#73): record every distinct value rather than overwriting. The
+							// first one seen stays the banner's headline value - not because it is the
+							// most recent (we ask for -whenprepared but the service may ignore it) but
+							// because it is deterministic, which is exactly what the old last-writer-wins
+							// assignment was not. collectVariant returns that headline value.
+							$scope.dhdrPatient.firstName =
+									collectVariant("firstName", getFirstName(d.patient.name));
+							$scope.dhdrPatient.lastName =
+									collectVariant("lastName", getLastName(d.patient.name));
+							$scope.dhdrPatient.gender = collectVariant("gender", d.patient.gender || "");
+							$scope.dhdrPatient.dob = collectVariant("dob", d.patient.birthDate || "");
+							$scope.dhdrPatient.hin =
+									collectVariant("hin", getPatientIdentifier(d.patient.identifier));
 							$scope.dhdrPatientResolved = true;
+						}
+
+						// Case- and padding-insensitive dedupe, matching how the values are compared
+						// against the EMR below: "YULIA" and "Yulia" are one identity, "YULIUA" is not.
+						function collectVariant(field, value) {
+							var seen = $scope.dhdrPatientVariants[field];
+							var normalised = String(value === null || value === undefined ? "" : value)
+									.trim().toUpperCase();
+							var already = false;
+							for (var vi = 0; vi < seen.length; vi++) {
+								if (String(seen[vi]).trim().toUpperCase() === normalised) {
+									already = true;
+									break;
+								}
+							}
+							if (!already) {
+								seen.push(value);
+							}
+							return seen[0];
 						}
 
 						function getFirstName(nameArray) {
@@ -1990,6 +2044,9 @@
 				$scope.searchConfig.pageId = null;
 				$scope.searchComplete = false;
 				$scope.dhdrPatientResolved = false;
+				// Cleared per search, not per page: a paged walk calls processEntries once per page and
+				// the variants must accumulate across all of them (#73).
+				$scope.dhdrPatientVariants = {firstName: [], lastName: [], gender: [], dob: [], hin: []};
 
 				// DHDR02.02: the HCN is mandatory in the request and must not be sent absent. The
 				// viewer auto-fires on load, so refuse to dispatch rather than send an empty hcn| query.
@@ -2048,8 +2105,6 @@
 						// being compared with the DHDR record's yyyy-MM-dd birthDate.
 						let demographicDob = partsAsSearchDate($scope.demographic.dobYear,
 								$scope.demographic.dobMonth, $scope.demographic.dobDay);
-						let dhdrGenderInitial = angular.isDefined($scope.dhdrPatient.gender)
-								? $scope.dhdrPatient.gender.charAt(0).toUpperCase() : "";
 						// DHDR03.02 asks that anything not matching be identified, so every difference
 						// is flagged - including a field the EMR simply does not hold. That case reads
 						// differently in the banner: a missing value needs filling in, a disagreeing
@@ -2066,20 +2121,43 @@
 									!== String(blank(dhdr) ? "" : dhdr).trim().toUpperCase();
 						};
 
+						// DHDR03.02 (#73) requires "any patient information that does not match" be
+						// identified, so each field is tested against EVERY distinct value the response
+						// carried, not just the headline one. Comparing only the headline made the MUST
+						// order-dependent: with OMD's WILLIAM_KINDRED capture (10 male / 6 female rows,
+						// one patient) reordering the entries alone turned the warning on and off.
+						let anyDiffers = function(field, compare){
+							let seen = $scope.dhdrPatientVariants[field];
+							if (!seen || seen.length === 0) { return false; }
+							for (let vi = 0; vi < seen.length; vi++) {
+								if (compare(seen[vi])) { return true; }
+							}
+							return false;
+						};
+
 						$scope.dhdrPatient.nameMissing = blank($scope.demographic.firstName)
 								|| blank($scope.demographic.lastName);
 						$scope.dhdrPatient.nameUnmatched =
-								differs($scope.demographic.firstName, $scope.dhdrPatient.firstName)
-								|| differs($scope.demographic.lastName, $scope.dhdrPatient.lastName);
+								anyDiffers("firstName", function(v){
+									return differs($scope.demographic.firstName, v); })
+								|| anyDiffers("lastName", function(v){
+									return differs($scope.demographic.lastName, v); });
 
 						$scope.dhdrPatient.genderMissing = blank($scope.demographic.sex);
-						$scope.dhdrPatient.genderUnmatched = differs($scope.demographic.sex, dhdrGenderInitial);
+						$scope.dhdrPatient.genderUnmatched = anyDiffers("gender", function(v){
+							// The EMR stores a single-letter sex, the DHDR record a FHIR gender token.
+							let initial = (v === null || v === undefined || v === "")
+									? "" : String(v).charAt(0).toUpperCase();
+							return differs($scope.demographic.sex, initial);
+						});
 
 						$scope.dhdrPatient.dobMissing = blank(demographicDob);
-						$scope.dhdrPatient.dobUnmatched = (demographicDob !== $scope.dhdrPatient.dob);
+						$scope.dhdrPatient.dobUnmatched = anyDiffers("dob", function(v){
+							return demographicDob !== v; });
 
 						$scope.dhdrPatient.hinMissing = blank($scope.demographic.hin);
-						$scope.dhdrPatient.hinUnmatched = ($scope.demographic.hin !== $scope.dhdrPatient.hin);
+						$scope.dhdrPatient.hinUnmatched = anyDiffers("hin", function(v){
+							return $scope.demographic.hin !== v; });
 
 						$scope.dhdrPatientDataUnmatched = ($scope.dhdrPatient.nameUnmatched
 								|| $scope.dhdrPatient.hinUnmatched || $scope.dhdrPatient.dobUnmatched
