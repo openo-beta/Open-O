@@ -2590,11 +2590,47 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 					this.patient = res;
 				} else {
 				}
-				
+
 			}
-			
+
+			// DHDR07.01(c)(d) and DHDR07.02 name MedicationDispense.type as the source of the pharmacy
+			// service type and description, and as the grouping key. No profile in either published IG
+			// constrains that element and no example populates it, so nothing can be read from it today -
+			// but the requirement is on us to read it, not on the service to send it. Read it when it
+			// arrives; otherwise leave the contained-Medication codings the parse above already set,
+			// which is what the Business View's Figure 4 illustrates for these same two columns.
+			//
+			// Scoped to service events: on a drug dispense these fields are Brand and Generic Name, which
+			// DHDR04.01 sources from the contained Medication and which this element does not govern.
+			if (this.categoryCode === "service" && angular.isDefined(this.med.resource.type)) {
+				var dispenseType = this.med.resource.type;
+				var typeCodings = angular.isDefined(dispenseType.coding) ? dispenseType.coding : [];
+				// Prefer coding.display over the sibling text: display is what the service columns render
+				// everywhere else, so a populated type reads consistently with a fallback one.
+				var typeDisplay = (typeCodings.length > 0 && angular.isDefined(typeCodings[0].display))
+						? typeCodings[0].display
+						: dispenseType.text;
+				if (angular.isDefined(typeDisplay) && typeDisplay !== null && (""+typeDisplay).trim() !== "") {
+					// Carries a display and deliberately no code, unlike the coding object the DIN branch
+					// assigns. The print appends brandName.code to the service type labelled "PIN:", and a
+					// service-type code is not a product identifier - it would print
+					// "MedsCheck (PIN: MEDSCHECK)". DHDR07.01 lists no product identifier for a pharmacy
+					// service event at all, so there is nothing to preserve here, only a wrong label to
+					// avoid. Keeping the brandName key means the display bindings, the filter and sort
+					// keys and the DHDR07.02 grouping key still follow without touching the templates.
+					this.brandName = { display: typeDisplay };
+
+					// (d) is sourced from this same element by the requirement, so it is only reachable
+					// when (c) was. Where a second coding is present take it as the description; a
+					// single-coding type leaves the generic-name fallback rather than blanking the column.
+					if (typeCodings.length > 1 && angular.isDefined(typeCodings[1].display)) {
+						this.genericName = typeCodings[1].display;
+					}
+				}
+			}
+
 		}
-			
+
 		app.controller('ModalInstanceCtrl', function ModalInstanceCtrl($scope, $modal, $modalInstance, med, demoNo,
 																	   dhdrPatient, $http){
 			$scope.med = med;
