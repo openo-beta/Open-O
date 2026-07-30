@@ -66,8 +66,6 @@ public class SFTPConnector {
     private Session sess;
     private Logger fLogger; //file logger
 
-    private static final String TEST_DIRECTORY = "Test";
-
     private static final String OMD_HRM_USER = OscarProperties.getInstance().getProperty("OMD_HRM_USER");
     private static final String OMD_HRM_IP = OscarProperties.getInstance().getProperty("OMD_HRM_IP");
     private static final int OMD_HRM_PORT = Integer.parseInt(OscarProperties.getInstance().getProperty("OMD_HRM_PORT"));
@@ -421,8 +419,11 @@ public class SFTPConnector {
      */
     public String decryptFile(String fullPath, String decryptionKey) throws Exception {
 
-        if (decryptionKey == null) {
+        if (decryptionKey == null || decryptionKey.trim().isEmpty()) {
             decryptionKey = OscarProperties.getInstance().getProperty("OMD_HRM_DECRYPTION_KEY");
+        }
+        if (decryptionKey == null || decryptionKey.trim().isEmpty()) {
+            throw new IllegalStateException("HRM decryption key is not configured. Set it on the HRM Configuration page.");
         }
         logger.info("About to decrypt: " + fullPath);
         File encryptedFile = new File(fullPath);
@@ -550,6 +551,10 @@ public class SFTPConnector {
      * Called by HRMDownloadJob (the scheduled auto-poll) and by the manual fetch on hospitalReportManager.jsp.
      */
     public synchronized boolean startAutoFetch(LoggedInInfo loggedInInfo, String remoteDir) {
+        if (remoteDir == null || remoteDir.trim().isEmpty()) {
+            throw new IllegalStateException("HRM remote folder path is not configured. Set it on the HRM Configuration page.");
+        }
+
         String[] localFilePaths = null;
         String[] paths = null;
 
@@ -558,10 +563,6 @@ public class SFTPConnector {
         if (!isAutoFetchRunning) {
             SFTPConnector.isAutoFetchRunning = true;
             logger.info("HRM: starting auto fetch");
-
-            if (remoteDir == null || remoteDir.isEmpty()) {
-                remoteDir = TEST_DIRECTORY;
-            }
 
             logger.info("HRM: remoteDir:" + remoteDir);
 

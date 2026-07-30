@@ -29,6 +29,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -202,7 +204,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
                     }
 
                     try (InputStream inputStream = new FileInputStream(uploadedFile)) {
-                        java.nio.file.Files.copy(inputStream, destinationFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                        Files.copy(inputStream, destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     }
 
                     // Parse and process the HRM report
@@ -297,8 +299,9 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
 
                     // Re-validate at point of use for static analysis visibility
                     File validatedUploadedFile = PathValidationUtils.validateUpload(uploadedFile);
+                    Files.createDirectories(destinationFile.toPath().getParent());
                     try (InputStream inputStream = new FileInputStream(validatedUploadedFile)) {
-                        java.nio.file.Files.copy(inputStream, destinationFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                        Files.copy(inputStream, destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     }
 
                     // Update user property with the private key filename

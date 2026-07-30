@@ -25,6 +25,9 @@
 package ca.openosp.openo.commn.jobs;
 
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.dao.OscarJobDao;
@@ -34,9 +37,38 @@ import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.Security;
 import ca.openosp.openo.utility.SpringUtils;
 import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.scheduling.support.PeriodicTrigger;
 
 public class OscarJobUtils {
+
+    /** A cron expression of the form "every N minutes", as written by the HRM polling configuration. */
+    private static final Pattern EVERY_N_MINUTES = Pattern.compile("^0\\s+0/(\\d{1,4})\\s+\\*\\s+1/1\\s+\\*\\s+\\?$");
+
+    /**
+     * Builds the trigger used to schedule a job.
+     * <p>
+     * A step in the cron minute field restarts at the top of each hour, so an interval that does not
+     * divide 60 leaves a short gap there: "every 25 minutes" fires at :00, :25 and :50, then at :00
+     * again, which is 10 minutes later. Intervals that do not divide 60 are scheduled at a fixed rate
+     * so the spacing between runs is exact.
+     *
+     * @param cronExpression String the cron expression stored on the job
+     * @return Trigger a fixed-rate PeriodicTrigger when the interval does not divide 60, otherwise a CronTrigger
+     */
+    static Trigger buildTrigger(String cronExpression) {
+        Matcher matcher = EVERY_N_MINUTES.matcher(cronExpression.trim());
+        if (matcher.matches()) {
+            int minutes = Integer.parseInt(matcher.group(1));
+            if (minutes > 0 && 60 % minutes != 0) {
+                PeriodicTrigger trigger = new PeriodicTrigger(minutes, TimeUnit.MINUTES);
+                trigger.setFixedRate(true);
+                return trigger;
+            }
+        }
+        return new CronTrigger(cronExpression);
+    }
 
 
     public static boolean isJobTypeCurrentlyValid(OscarJobType oscarJobType) {
@@ -113,7 +145,7 @@ public class OscarJobUtils {
             return false;
         }
 
-        CronTrigger trigger = new CronTrigger(job.getCronExpression());
+        Trigger trigger = buildTrigger(job.getCronExpression());
 
         OscarRunnable oscarRunnableInstance = (OscarRunnable) Class.forName(job.getOscarJobType().getClassName()).newInstance();
 

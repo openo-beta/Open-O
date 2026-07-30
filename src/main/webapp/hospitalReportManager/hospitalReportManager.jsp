@@ -165,7 +165,26 @@
 
         <script>
             function runFetch() {
-                window.location = "<%=request.getContextPath() %>/hospitalReportManager/hospitalReportManager.jsp?fetch=true";
+                const btn = document.getElementById("fetch-btn");
+                if (btn) {
+                    btn.disabled = true;
+                    btn.value = "Fetching...";
+                }
+                $.ajax({
+                    type: "GET",
+                    url: "<%=request.getContextPath() %>/hospitalReportManager/hrm.do?method=fetch",
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data && data.error) {
+                            alert('An error occured. Please check the HRM log for more information\n' + data.error);
+                        }
+                        window.location.reload();
+                    },
+                    error: function () {
+                        alert('An error occured. Please check the HRM log for more information');
+                        window.location.reload();
+                    }
+                });
             }
 
             function validateForm() {
@@ -256,21 +275,10 @@
             </div>
         </div>
 
-        <% if (request.getParameter("fetch") != null && request.getParameter("fetch").equalsIgnoreCase("true"))
-            if (loggedInInfo == null) {
-                System.err.println("loggedInInfo is null"); 
-            } else {
-                try {
-                    new SFTPConnector(loggedInInfo).startAutoFetch(loggedInInfo);
-                } catch (Exception e) {
-                    System.err.println("Error in startAutoFetch: " + e.getMessage()); 
-                }
-            }
-        %>
         <p>
             HRM Status: <%=SFTPConnector.isFetchRunning() ? "Fetching data from HRM" : "Idle" %><br>
             <% if (!SFTPConnector.isFetchRunning()) { %>
-            <input type="button" class="btn" onClick="runFetch()" value="Fetch New Data from HRM">
+            <input type="button" class="btn" id="fetch-btn" onClick="runFetch()" value="Fetch New Data from HRM">
             <% } else { %>
             Please wait until the current fetch task completes before requesting another data fetch.
             <% } %>
