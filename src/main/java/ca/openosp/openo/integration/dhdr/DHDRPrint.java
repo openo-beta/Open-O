@@ -139,6 +139,14 @@ public class DHDRPrint {
 
       table.setHeaderRows(1);
 
+      // DHDR06.01(a) inherits every element of the Summary View, which includes DHDR04.01(b) pickup
+      // date. The detail screen shows it directly under Dispense Date; the print omitted it, so the
+      // one view that is meant to be the most complete was the only one missing it. Reads pickUpDate,
+      // the property the viewer assigns for drug events (the service tables read whenHandedOver; both
+      // come from the same MedicationDispense.whenHandedOver).
+      table.addCell(getHeaderCell("Pickup Date"));
+      table.addCell(getItemCell(med.optString("pickUpDate")));
+
       table.addCell(getHeaderCell("Generic"));
       table.addCell(getItemCell(med.optString("genericName"))); // Generic
 
@@ -631,6 +639,152 @@ public class DHDRPrint {
   }
 
   /**
+   * Reads a string from the payload, treating an explicit JSON null as absent.
+   *
+   * <p>The EMR comparative payload carries several nullable boxed types ({@code refillQuantity} and
+   * {@code refillDuration} are {@code Integer}), and a serialised null read back through
+   * {@code optString} can surface as the four-character text "null". Printing that verbatim is the
+   * #41 trap - a field that reads as data rather than as an absence.
+   *
+   * @param med JSONObject one EMR medication from the comparative payload
+   * @param key String the field to read
+   * @return String the trimmed value, or an empty string when absent, blank or a stringified null
+   */
+  private String optText(JSONObject med, String key) {
+    String value = med.optString(key);
+    if (value == null) {
+      return "";
+    }
+    String trimmed = value.trim();
+    return "null".equalsIgnoreCase(trimmed) ? "" : trimmed;
+  }
+
+  /**
+   * Reports whether an optional trailing detail is worth printing.
+   *
+   * <p>The screen guards these with {@code ng-if}, which is falsy for {@code 0}, so a record with no
+   * refill or duration recorded shows the count alone. Treating "0" as present here instead printed
+   * "0 (0 / 0 days)" against the screen's "0" - noise on the common case, and a divergence between
+   * two renderings of the same data.
+   *
+   * @param value String the candidate detail
+   * @return boolean true when the value is present and not a zero
+   */
+  private boolean isMeaningful(String value) {
+    if (value == null || value.trim().isEmpty()) {
+      return false;
+    }
+    try {
+      return Double.parseDouble(value.trim()) != 0d;
+    } catch (NumberFormatException e) {
+      // Not numeric - a unit or free text, so it carries information.
+      return true;
+    }
+  }
+
+  /**
+   * Joins a value with its unit of measure, omitting the separator when either part is absent.
+   *
+   * <p>DHDR05.02 asks for several elements "(value and unit of measure)". Concatenating
+   * unconditionally prints a stray space or a bare unit for a record that carries only one part.
+   *
+   * @param value String the numeric part, possibly empty
+   * @param unit String the unit of measure, possibly empty
+   * @return String the two joined by a space, either one alone, or an empty string
+   */
+  private String joinValueAndUnit(String value, String unit) {
+    String v = value == null ? "" : value.trim();
+    String u = unit == null ? "" : unit.trim();
+    if (v.isEmpty()) {
+      return u;
+    }
+    return u.isEmpty() ? v : (v + " " + u);
+  }
+
+  /**
+   * Renders the medication's name for DHDR05.02(c), in the same fallback order as the screen.
+   *
+   * @param med JSONObject one EMR medication from the comparative payload
+   * @return String the generic name, else the brand name, else the custom name, else empty
+   */
+  private String emrMedicationName(JSONObject med) {
+    String generic = optText(med, "genericName");
+    if (!generic.trim().isEmpty()) {
+      return generic;
+    }
+    String brand = optText(med, "brandName");
+    if (!brand.trim().isEmpty()) {
+      return brand;
+    }
+    return optText(med, "customName");
+  }
+
+  /**
+   * Renders the prescribed dose for DHDR05.02(e), as a single value or a min-max range.
+   *
+   * <p>The unit is appended only when it differs from the strength unit already shown in its own
+   * column, mirroring the screen's {@code emrDoseUnit()}: OpenO stores the dosage unit as free text
+   * and a record often repeats the strength unit there, which would print "50 mg" under Dosage
+   * beside "50 mg" under Strength and read as a second strength.
+   *
+   * @param med JSONObject one EMR medication from the comparative payload
+   * @return String the dose, possibly a range, with a unit where one adds information
+   */
+  private String emrDose(JSONObject med) {
+    String min = optText(med, "takeMin");
+    String max = optText(med, "takeMax");
+    // Falsy-for-zero, as the screen's ng-if is: a recorded dose of 0 is placeholder data, not a dose.
+    if (!isMeaningful(min)) {
+      return "";
+    }
+    String dose = (!max.isEmpty() && !max.equals(min)) ? (min + " - " + max) : min;
+    String unit = optText(med, "unit");
+    if (unit.isEmpty() || unit.equalsIgnoreCase(optText(med, "strengthUnit"))) {
+      return dose;
+    }
+    return dose + " " + unit;
+  }
+
+  /**
+   * Renders the first fill's quantity and duration for DHDR05.02(g).
+   *
+   * @param med JSONObject one EMR medication from the comparative payload
+   * @return String the quantity, followed by "/ duration unit" when a duration is recorded
+   */
+  private String emrQuantityAndDuration(JSONObject med) {
+    String quantity = optText(med, "quantity");
+    String duration = optText(med, "duration");
+    if (!isMeaningful(duration)) {
+      return quantity;
+    }
+    String durationText = joinValueAndUnit(duration, optText(med, "durationUnit"));
+    return quantity.isEmpty() ? durationText : (quantity + " / " + durationText);
+  }
+
+  /**
+   * Renders the refill count with its duration and quantity, DHDR05.02(h) and (i).
+   *
+   * <p>Both share one column on the screen, so they share one here; a record with no refill detail
+   * prints the count alone rather than an empty bracket.
+   *
+   * @param med JSONObject one EMR medication from the comparative payload
+   * @return String the repeat count, optionally followed by the refill quantity and duration
+   */
+  private String emrRefills(JSONObject med) {
+    String repeats = optText(med, "repeats");
+    String refillQuantity = optText(med, "refillQuantity");
+    if (!isMeaningful(refillQuantity)) {
+      return repeats;
+    }
+    String detail = refillQuantity;
+    String refillDuration = optText(med, "refillDuration");
+    if (isMeaningful(refillDuration)) {
+      detail = detail + " / " + refillDuration + " days";
+    }
+    return repeats.isEmpty() ? detail : (repeats + " (" + detail + ")");
+  }
+
+  /**
    * Renders a dispense's frequency from the four parts the viewer model splits it into.
    *
    * <p>None of the parts is guaranteed: {@code dosageInstruction} is optional under the DHDR
@@ -901,7 +1055,12 @@ public class DHDRPrint {
         serviceTable.addCell(getHeaderCell("Therapeutic Class/Sub-class"));
         serviceTable.addCell(getHeaderCell("Pharmacy Name"));
         serviceTable.addCell(getHeaderCell("Pharmacist"));
-        serviceTable.addCell(getHeaderCell("Pharmacy #"));
+        // DHDR08.01(b) takes this view's element list from DHDR07.01, whose (h) is the pharmacy FAX.
+        // This column printed dispensingPharmacyPhoneNumber under a "Pharmacy #" heading - the third
+        // surface to confuse the two (see #57, the Fax filter and sort indicator wired to the phone,
+        // and #59, the grouped-services modal). The Summary print's equivalent table has always been
+        // correct, which is why the two differed.
+        serviceTable.addCell(getHeaderCell("Pharmacy Fax"));
         serviceTable.setHeaderRows(1);
 
         for (int i = 0; i < serviceArr.length(); i++) {
@@ -935,7 +1094,7 @@ public class DHDRPrint {
                       + pharmacistLicenceValue
                       + ")"));
           serviceTable.addCell(
-              getItemCell(med.optString("dispensingPharmacyPhoneNumber")));
+              getItemCell(med.optString("dispensingPharmacyFaxNumber")));
         }
 
         document.add(serviceTable);
@@ -966,15 +1125,25 @@ public class DHDRPrint {
       servicesProductParagraph.setSpacingAfter(5f);
       document.add(servicesProductParagraph);
 
-      PdfPTable localTable = new PdfPTable(4);
+      // DHDR13.01(d): the printout must carry "all data elements required for the View", and for the
+      // EMR half of the Comparative View that list is DHDR05.02's ten - (a) written or start date
+      // (b) DIN (c) name of medication (d) strength (e) dosage (f) frequency (g) duration/quantity of
+      // the first fill (h) number of refills (i) refill duration/quantity (j) prescriber. These are the
+      // same nine columns the screen renders, in the same order, so the two stay comparable.
+      PdfPTable localTable = new PdfPTable(9);
       localTable.setWidthPercentage(100.0f);
 
       if (localArr.length() > 0) {
 
         localTable.addCell(getHeaderCell("Start Date"));
         localTable.addCell(getHeaderCell("Medication"));
+        localTable.addCell(getHeaderCell("Strength"));
+        localTable.addCell(getHeaderCell("Dosage"));
+        localTable.addCell(getHeaderCell("Frequency"));
         localTable.addCell(getHeaderCell("Prescriber"));
         localTable.addCell(getHeaderCell("DIN"));
+        localTable.addCell(getHeaderCell("Qty / Duration"));
+        localTable.addCell(getHeaderCell("Refills"));
         localTable.setHeaderRows(1);
 
         for (int i = 0; i < localArr.length(); i++) {
@@ -985,9 +1154,19 @@ public class DHDRPrint {
             continue;
           }
           localTable.addCell(getItemCell(emrStartDate(med)));
-          localTable.addCell(getItemCell(med.optString("instructions")));
-          localTable.addCell(getItemCell(med.optString("providerName")));
-          localTable.addCell(getItemCell(med.optString("regionalIdentifier")));
+          // DHDR05.02(c) asks for the medication's name. This previously printed "instructions",
+          // which is Drug.special - the free-text prescription line, carrying newlines and its own
+          // "Qty:/Repeats:" text - so the column read as a block of prescription text rather than a
+          // drug name. Same fallback order as the screen.
+          localTable.addCell(getItemCell(emrMedicationName(med)));
+          localTable.addCell(getItemCell(
+              joinValueAndUnit(optText(med, "strength"), optText(med, "strengthUnit"))));
+          localTable.addCell(getItemCell(emrDose(med)));
+          localTable.addCell(getItemCell(optText(med, "frequency")));
+          localTable.addCell(getItemCell(optText(med, "providerName")));
+          localTable.addCell(getItemCell(optText(med, "regionalIdentifier")));
+          localTable.addCell(getItemCell(emrQuantityAndDuration(med)));
+          localTable.addCell(getItemCell(emrRefills(med)));
         }
 
         document.add(localTable);
