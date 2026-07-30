@@ -722,14 +722,47 @@ public class SFTPConnector {
         }
     }
 
+    /**
+     * Validates the directory that holds the sFTP private key, as configured by the OMD_DIRECTORY
+     * property or derived from the document directory when that property is unset.
+     * <p>
+     * A relative directory would resolve against the servlet container's working directory, and the
+     * filesystem root is never a legitimate place to keep a private key. Both are rejected here so
+     * that reading and writing the key fail with the same explanation.
+     *
+     * @param privateKeyDirectory String the configured or derived directory
+     * @return String the directory with surrounding whitespace removed
+     * @throws IllegalStateException if the directory is unset, relative, or resolves to the filesystem root
+     */
+    public static String requirePrivateKeyDirectory(String privateKeyDirectory) {
+        if (privateKeyDirectory == null || privateKeyDirectory.trim().isEmpty()) {
+            throw new IllegalStateException("HRM private key directory is not configured. Set the OMD_DIRECTORY property, or leave it unset to use the default location under the document directory.");
+        }
+
+        String trimmed = privateKeyDirectory.trim();
+        File dir = new File(trimmed);
+        if (!dir.isAbsolute()) {
+            throw new IllegalStateException("HRM private key directory '" + trimmed + "' is not an absolute path. Correct the OMD_DIRECTORY property.");
+        }
+
+        File resolved;
+        try {
+            resolved = dir.getCanonicalFile();
+        } catch (IOException e) {
+            throw new IllegalStateException("HRM private key directory '" + trimmed + "' could not be resolved. Correct the OMD_DIRECTORY property.");
+        }
+        if (resolved.getParentFile() == null) {
+            throw new IllegalStateException("HRM private key directory resolves to the filesystem root. Correct the OMD_DIRECTORY property to the directory that holds the sFTP private key, or leave it unset to use the default location under the document directory.");
+        }
+
+        return trimmed;
+    }
+
     public static String requirePrivateKeyPath(String privateKeyDirectory, String privateKeyFile) {
         if (privateKeyFile == null || privateKeyFile.trim().isEmpty()) {
             throw new IllegalStateException("HRM private key file is not configured. Upload one on the HRM Configuration page.");
         }
-        if (privateKeyDirectory == null || privateKeyDirectory.trim().isEmpty()) {
-            throw new IllegalStateException("HRM private key directory is not configured.");
-        }
-        File dir = new File(privateKeyDirectory);
+        File dir = new File(requirePrivateKeyDirectory(privateKeyDirectory));
         File keyFile = new File(dir, privateKeyFile);
         PathValidationUtils.validateExistingPath(keyFile, dir);
         return keyFile.getAbsolutePath();

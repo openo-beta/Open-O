@@ -265,6 +265,8 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         JSONObject obj = new JSONObject();
 
         try {
+            privateKeyDirectory = SFTPConnector.requirePrivateKeyDirectory(privateKeyDirectory);
+
             if (privateKeyFile != null && !privateKeyFile.isEmpty()) {
                 for (int i = 0; i < privateKeyFile.size(); i++) {
                     UploadedFile uf = privateKeyFile.get(i);
