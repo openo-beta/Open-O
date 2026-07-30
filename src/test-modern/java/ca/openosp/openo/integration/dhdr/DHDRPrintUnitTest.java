@@ -153,10 +153,10 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
   }
 
   @Nested
-  @DisplayName("pharmacistName - every separator is conditional")
+  @DisplayName("pharmacistName - name only, and both separators conditional")
   class PharmacistNameTests {
 
-    private JSONObject withLicence(String family, String given, String licence) throws Exception {
+    private JSONObject pharmacist(String family, String given, String licence) throws Exception {
       JSONObject med = med();
       if (family != null) {
         med.put("pharmacistLastname", family);
@@ -171,44 +171,40 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
     }
 
     @Test
-    @DisplayName("should render surname, given name and licence when all three are present")
-    void shouldRenderFully_whenAllPartsPresent() throws Exception {
-      assertThat(print.pharmacistName(withLicence("Sway", "Ken", "200087")))
-          .isEqualTo("Sway, Ken (200087)");
+    @DisplayName("should render surname and given name")
+    void shouldRenderName_whenBothPartsPresent() throws Exception {
+      assertThat(print.pharmacistName(pharmacist("Sway", "Ken", null))).isEqualTo("Sway, Ken");
     }
 
     @Test
-    @DisplayName("should omit the bracket entirely when no licence is on file")
-    void shouldOmitBracket_whenLicenceAbsent() throws Exception {
-      // The two pharmacy-service tables printed ", ()" for a pharmacist the viewer could not resolve,
-      // while the detail print guarded it - one obligation, two renderings.
-      assertThat(print.pharmacistName(withLicence("Sway", "Ken", null))).isEqualTo("Sway, Ken");
-      assertThat(print.pharmacistName(withLicence(null, null, null))).isEmpty();
+    @DisplayName("should not render the licence number, which is not an element of any DHDR view")
+    void shouldNotRenderLicence_evenWhenOneIsSupplied() throws Exception {
+      // DHDR04.01, DHDR06.01(g) and DHDR07.01(g) each specify the pharmacist as name only, and
+      // "pharmacist" appears nowhere else in the specification. The print used to append the licence
+      // where the screen's pharmacy-service tables never did.
+      assertThat(print.pharmacistName(pharmacist("Sway", "Ken", "200087")))
+          .isEqualTo("Sway, Ken")
+          .doesNotContain("200087");
     }
 
     @Test
     @DisplayName("should not render a leading comma when no surname is recorded")
     void shouldOmitComma_whenSurnameAbsent() throws Exception {
-      assertThat(print.pharmacistName(withLicence(null, "Ken", "200087")))
-          .isEqualTo("Ken (200087)");
+      assertThat(print.pharmacistName(pharmacist(null, "Ken", "200087"))).isEqualTo("Ken");
     }
 
     @Test
     @DisplayName("should render the surname alone when no given name is recorded")
     void shouldRenderSurnameAlone_whenGivenNameAbsent() throws Exception {
-      assertThat(print.pharmacistName(withLicence("Sway", null, null))).isEqualTo("Sway");
+      assertThat(print.pharmacistName(pharmacist("Sway", null, null))).isEqualTo("Sway");
     }
 
     @Test
-    @DisplayName("should render the licence alone rather than an orphan bracket")
-    void shouldRenderLicenceAlone_whenNoNameRecorded() throws Exception {
-      assertThat(print.pharmacistName(withLicence(null, null, "200087"))).isEqualTo("200087");
-    }
-
-    @Test
-    @DisplayName("should treat a blank licence value as absent")
-    void shouldTreatAsAbsent_whenLicenceValueIsBlank() throws Exception {
-      assertThat(print.pharmacistName(withLicence("Sway", "Ken", "   "))).isEqualTo("Sway, Ken");
+    @DisplayName("should render nothing when the viewer resolved no pharmacist at all")
+    void shouldRenderNothing_whenNoPharmacistResolved() throws Exception {
+      // The viewer only resolves a pharmacist from a Practitioner carrying ca-on-license-pharmacist,
+      // so an event without one leaves every part undefined. This used to print ", ()".
+      assertThat(print.pharmacistName(pharmacist(null, null, null))).isEmpty();
     }
   }
 
@@ -494,7 +490,7 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
     void shouldDeclarePharmacyServiceColumns_inRequirementOrder() {
       assertThat(print.pharmacyServiceColumns().stream().map(DHDRPrint.Column::label).toList())
           .containsExactly(
-              "Last Service Date",
+              "Dispensed Date",
               "Pickup Date",
               "Pharmacy Service Type",
               "Pharmacy Service Description",

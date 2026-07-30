@@ -326,7 +326,7 @@
 							<tr>
 								<th>
 									<a ng-click="orderByField='whenPrepared'; reverseSort = !reverseSort">
-										Dispense Date
+										Dispensed Date
 										<span ng-show="orderByField == 'whenPrepared'">
 											<span ng-show="!reverseSort">^</span>
 											<span ng-show="reverseSort">v</span>
@@ -452,7 +452,7 @@
 							</div>
 						  </div>
 						  <div class="form-group">
-							<label class="col-sm-2 control-label">Last Service Date</label>
+							<label class="col-sm-2 control-label">Dispensed Date</label>
 							<div class="col-sm-10">
 							  <input ng-model="searchServicetxt.whenPreparedDisplay" type="text" placeholder="type to filter" class="form-control" list="sumSvcDate" />
 							  <datalist id="sumSvcDate"><option ng-repeat="v in serviceFilterValues.whenPrepared" value="{{v}}"></datalist>
@@ -494,7 +494,7 @@
 							</tr>
 							<tr>
 								<th>
-									<a ng-click="serviceOrderByField='whenPrepared'; serviceReverseSort = !serviceReverseSort">Last Service Date <span ng-show="serviceOrderByField == 'whenPrepared'"><span ng-show="!serviceReverseSort">^</span><span ng-show="serviceReverseSort">v</span></span></a>
+									<a ng-click="serviceOrderByField='whenPrepared'; serviceReverseSort = !serviceReverseSort">Dispensed Date <span ng-show="serviceOrderByField == 'whenPrepared'"><span ng-show="!serviceReverseSort">^</span><span ng-show="serviceReverseSort">v</span></span></a>
 								</th>
 								<th>
 									<a ng-click="serviceOrderByField='whenHandedOver'; serviceReverseSort = !serviceReverseSort">Pickup Date <span ng-show="serviceOrderByField == 'whenHandedOver'"><span ng-show="!serviceReverseSort">^</span><span ng-show="serviceReverseSort">v</span></span></a>
@@ -613,7 +613,7 @@
 				 				<tr> 
 				 					<th>
 										<a ng-click="orderByField='whenPrepared'; reverseSort = !reverseSort">
-											Dispense Date
+											Dispensed Date
 											<span ng-show="orderByField == 'whenPrepared'">
 												<span ng-show="!reverseSort">^</span>
 												<span ng-show="reverseSort">v</span>
@@ -730,7 +730,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-2 control-label">Last Service Date</label>
+									<label class="col-sm-2 control-label">Dispensed Date</label>
 									<div class="col-sm-10">
 										<input ng-model="searchServicetxt.whenPreparedDisplay" type="text" placeholder="type to filter" class="form-control" list="compSvcDate" />
 										<datalist id="compSvcDate"><option ng-repeat="v in serviceFilterValues.whenPrepared" value="{{v}}"></datalist>
@@ -762,7 +762,7 @@
 							<tr>
 								<th>
 									<a ng-click="serviceOrderByField='whenPrepared'; serviceReverseSort = !serviceReverseSort">
-										Last Service Date
+										Dispensed Date
 										<span ng-show="serviceOrderByField == 'whenPrepared'">
 												 <span ng-show="!serviceReverseSort">&#9650;</span>
 												 <span ng-show="serviceReverseSort">&#9660;</span>
@@ -930,7 +930,7 @@
                     <table class="table table-bordered table striped" >
                        
 						<tr> 
-		 					<th>Dispense Date</th> 
+		 					<th>Dispensed Date</th> 
 							<th scope="row">{{med.whenPrepared | date}}</th>
 						</tr>
 						<tr>
@@ -1063,7 +1063,7 @@
 						</tr> 
 						<tr>
 							<th>Pharmacist</th>
-							<td>{{med | dhdrPharmacist:true}}</td>
+							<td>{{med | dhdrPharmacist}}</td>
 						</tr>
 					
 <!-- tr>
@@ -1102,7 +1102,7 @@
 					<table class="table table-condensed table-striped table-bordered" ng-show="meds.length > 0"> 		 			
 		 			<thead> 
 		 				<tr> 
-		 					<th>Dispense Date</th>
+		 					<th>Dispensed Date</th>
 							<th>Pickup Date</th>
 		 					<th>Generic</th> 
 		 					<th>Brand</th> 
@@ -1162,7 +1162,7 @@
 					<table class="table table-condensed table-striped table-bordered" ng-show="services.length > 0"> 		 			
 		 			<thead> 
 		 				<tr> 
-		 					<th>Last Service Date </th> 
+		 					<th>Dispensed Date </th> 
 		 					<th>Pickup Date</th> 
 		 					<th>Pharmacy Service Type</th> 
 		 					<th>Pharmacy Service Description</th> 
@@ -1223,22 +1223,21 @@
 		});
 
 
-		// Every part of a pharmacist is optional, so every separator is conditional: no licence must
-		// not render an empty bracket and no surname must not render a leading comma. Four cells
-		// composed this inline and all four dropped the guards, so a service whose pharmacist carries
-		// no OCP licence read as ", " - and the print, which does guard, then disagreed with the
-		// screen. A filter for the same reason as dhdrFrequency above: two of the four cells render
-		// in their own modal scope. Pass true to append the licence.
+		// Name only. DHDR04.01, DHDR06.01(g) and DHDR07.01(g) each specify the pharmacist as
+		// [Practitioner.name.given], [Practitioner.name.family] and nothing more, and "pharmacist"
+		// appears nowhere else in the specification - so the licence number the detail view used to
+		// append is not an element of any view. The prescriber does get an ID under DHDR06.01(e)/(f);
+		// the pharmacist deliberately does not.
+		//
+		// Both separators are conditional: four cells composed this inline and all four dropped the
+		// guards, so a service whose pharmacist carries no OCP licence read as ", ". A filter for the
+		// same reason as dhdrFrequency above: two of the four cells render in their own modal scope.
 		app.filter('dhdrPharmacist', function(){
-			return function(med, withLicence){
+			return function(med){
 				if(!med){ return ""; }
 				var last = (med.pharmacistLastname || "").trim();
 				var first = (med.pharmacistFirstname || "").trim();
-				var name = last ? (first ? last + ", " + first : last) : first;
-				if(!withLicence){ return name; }
-				var licence = ((med.pharmacistLicenceNumber || {}).value || "").trim();
-				if(!licence){ return name; }
-				return name ? name + " (" + licence + ")" : licence;
+				return last ? (first ? last + ", " + first : last) : first;
 			};
 		});
 

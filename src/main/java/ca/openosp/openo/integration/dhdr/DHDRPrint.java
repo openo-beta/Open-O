@@ -113,13 +113,13 @@ public class DHDRPrint {
     if (med != null) {
       auditMandatoryDispenseFields(med, 0);
 
-      table.addCell(getHeaderCell("Dispense Date"));
-      table.addCell(getHeaderCell(displayDate(med.optString("whenPrepared")))); // Dispense Date
+      table.addCell(getHeaderCell("Dispensed Date"));
+      table.addCell(getHeaderCell(displayDate(med.optString("whenPrepared")))); // Dispensed Date
 
       table.setHeaderRows(1);
 
       // DHDR06.01(a) inherits every element of the Summary View, which includes DHDR04.01(b) pickup
-      // date. The detail screen shows it directly under Dispense Date; the print omitted it, so the
+      // date. The detail screen shows it directly under Dispensed Date; the print omitted it, so the
       // one view that is meant to be the most complete was the only one missing it. Reads pickUpDate,
       // the property the viewer assigns for drug events (the service tables read whenHandedOver; both
       // come from the same MedicationDispense.whenHandedOver).
@@ -371,7 +371,7 @@ public class DHDRPrint {
     // Row 1
     getSummaryItemHeaderCell(headerTable, "First Name", patientFirstName);
     getSummaryItemHeaderCell(headerTable, "Prescriber", prescriberName);
-    getSummaryItemHeaderCell(headerTable, "Dispense Date", dispenseDate);
+    getSummaryItemHeaderCell(headerTable, "Dispensed Date", dispenseDate);
 
     // Row 2
     getSummaryItemHeaderCell(headerTable, "Last Name", patientLastName);
@@ -505,7 +505,7 @@ public class DHDRPrint {
    */
   List<Column> pharmacyServiceColumns() {
     return List.of(
-        new Column("Last Service Date", med -> displayDate(med.optString("whenPrepared"))),
+        new Column("Dispensed Date", med -> displayDate(med.optString("whenPrepared"))),
         new Column("Pickup Date", med -> displayDate(med.optString("whenHandedOver"))),
         new Column("Pharmacy Service Type", med -> serviceTypeWithPin(med.optJSONObject("brandName"))),
         new Column("Pharmacy Service Description", med -> med.optString("genericName")),
@@ -929,26 +929,24 @@ public class DHDRPrint {
   }
 
   /**
-   * Renders a dispense's pharmacist as "Lastname, Firstname (licence)".
+   * Renders a dispense's pharmacist as "Lastname, Firstname".
    *
-   * <p>Each part is optional, so each separator is conditional: an absent licence must not print an
-   * empty bracket and an absent surname must not print a leading comma. Composed here rather than at
-   * each table because the three views had drifted - the detail print guarded the bracket and the two
-   * pharmacy-service tables did not, so one pharmacist with no licence on file printed two ways.
+   * <p>Name only, and deliberately: the pharmacist's licence number is not an element of any DHDR
+   * view. DHDR04.01, DHDR06.01(g) and DHDR07.01(g) all specify exactly {@code
+   * [Practitioner.name.given], [Practitioner.name.family]}, and "pharmacist" appears nowhere else in
+   * the specification - while the same DHDR06.01 gives the *prescriber* both an ID (e) and a
+   * professional ID (f), so the omission reads as deliberate rather than as an oversight. The print
+   * used to append the licence, which the screen's own pharmacy-service tables never did.
+   *
+   * <p>Both separators are conditional: an absent surname must not print a leading comma.
    *
    * @param med JSONObject one dispense from the print payload
-   * @return String the pharmacist's name with the licence appended where there is one
+   * @return String the pharmacist's name, or an empty string when neither part was supplied
    */
   String pharmacistName(JSONObject med) {
     String last = optText(med, "pharmacistLastname");
     String first = optText(med, "pharmacistFirstname");
-    String name = last.isEmpty() ? first : (first.isEmpty() ? last : (last + ", " + first));
-    JSONObject licence = med.optJSONObject("pharmacistLicenceNumber");
-    String licenceValue = licence != null ? licence.optString("value").trim() : "";
-    if (licenceValue.isEmpty()) {
-      return name;
-    }
-    return name.isEmpty() ? licenceValue : (name + " (" + licenceValue + ")");
+    return last.isEmpty() ? first : (first.isEmpty() ? last : (last + ", " + first));
   }
 
   /**
