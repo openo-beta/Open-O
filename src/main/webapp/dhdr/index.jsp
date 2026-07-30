@@ -154,7 +154,7 @@
 			&nbsp;&middot;&nbsp; DOB: {{dhdrPatient.dob | date}}{{matchNote(dhdrPatient.dobUnmatched, dhdrPatient.dobMissing)}}{{variantNote('dob')}}
 			&nbsp;&middot;&nbsp; Sex: {{dhdrPatient.gender}}{{matchNote(dhdrPatient.genderUnmatched, dhdrPatient.genderMissing)}}{{variantNote('gender')}}
 			<div ng-show="dhdrPatientDataUnmatched"><em>Some DHDR patient details differ from the EMR record, or are not recorded in it.</em></div>
-			<%-- DHDR03.02 (#73): where the returned records disagree with each other, say so. Otherwise
+			<%-- DHDR03.02: where the returned records disagree with each other, say so. Otherwise
 			     the banner shows one value and silently drops the rest, which is how the mismatch
 			     warning came to depend on which record arrived last. --%>
 			<div ng-show="anyVariants()"><em>The DHDR EHR Service returned more than one value for some patient details across this patient's records; every value shown was compared against the EMR.</em></div>
@@ -199,7 +199,7 @@
 		 	<div class="col-xs-12" >
 		 	<i>DHDR is being searched with HIN: {{demographic.hin}}  DOB: {{demographicDobText()}}</i>
 	 	<br/>
-	 	<!-- DHDR02.05 (B2 #6): display the search period used alongside the results. -->
+	 	<!-- DHDR02.05: display the search period used alongside the results. -->
 	 	<%-- Formatted in searchPeriodText() so the period reads in the same format as the tables
 	 	     (DHDR03.06). A cleared start date sends no lower bound, so describe that rather than
 	 	     render a dangling "  to <end>" range the search never actually used (BP6). --%>
@@ -253,7 +253,7 @@
 				<div class="alert alert-warning" role="alert" ng-show="overrideResultMessage">{{overrideResultMessage}}</div>
 
 				<!-- DHDR02.04: a valid search returning zero events must inform the user. Distinct from the
-			     PCR patient-not-found / consent-suppressed cases (B2 #15), which surface via outcomes above. -->
+			     PCR patient-not-found / consent-suppressed cases, which surface via outcomes above. -->
 			<div class="alert alert-warning" role="alert" ng-show="searchComplete && !searching && meds.length === 0 && services.length === 0 && serviceErrors.length === 0 && !hasBlockingOutcome()">
 				No records found for the specified search date period.
 			</div>
@@ -1272,7 +1272,7 @@
 				if (!unmatched) { return ""; }
 				return missing ? " (NOT IN EMR)" : " (UNMATCHED)";
 			};
-			// DHDR03.02 (#73): the headline value is one of several when the returned records disagree.
+			// DHDR03.02: the headline value is one of several when the returned records disagree.
 			// List the others beside it rather than dropping them - they were compared, so they should
 			// be visible.
 			$scope.variantNote = function(field){
@@ -1343,7 +1343,7 @@
 				dobUnmatched: false,
 				hinUnmatched: false
 			};
-			// DHDR03.02 (#73): one response can carry more than one patient identity. BestPractice 15
+			// DHDR03.02: one response can carry more than one patient identity. BestPractice 15
 			// explains why - the DHDR query runs on HCN alone, so it returns every record for that HCN
 			// including historic ones whose name/DOB/gender the dispensing pharmacy recorded
 			// differently. OMD's own validation captures show both: three spellings of a given name in
@@ -1742,7 +1742,7 @@
 					}else if(x.resource.resourceType === "MedicationDispense"){
 						var d = new MedicationDispense(x);
 						if (d.patient) {
-							// DHDR03.02 (#73): record every distinct value rather than overwriting. The
+							// DHDR03.02: record every distinct value rather than overwriting. The
 							// first one seen stays the banner's headline value - not because it is the
 							// most recent (we ask for -whenprepared but the service may ignore it) but
 							// because it is deterministic, which is exactly what the old last-writer-wins
@@ -2047,7 +2047,7 @@
 				$scope.searchComplete = false;
 				$scope.dhdrPatientResolved = false;
 				// Cleared per search, not per page: a paged walk calls processEntries once per page and
-				// the variants must accumulate across all of them (#73).
+				// the variants must accumulate across all of them.
 				$scope.dhdrPatientVariants = {firstName: [], lastName: [], gender: [], dob: [], hin: []};
 
 				// DHDR02.02: the HCN is mandatory in the request and must not be sent absent. The
@@ -2123,7 +2123,7 @@
 									!== String(blank(dhdr) ? "" : dhdr).trim().toUpperCase();
 						};
 
-						// DHDR03.02 (#73) requires "any patient information that does not match" be
+						// DHDR03.02 requires "any patient information that does not match" be
 						// identified, so each field is tested against EVERY distinct value the response
 						// carried, not just the headline one. Comparing only the headline made the MUST
 						// order-dependent: with OMD's WILLIAM_KINDRED capture (10 male / 6 female rows,
@@ -2523,7 +2523,7 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 			if(angular.isDefined(this.med.resource.category) && angular.isDefined(this.med.resource.category.coding)){
 				for(coding of this.med.resource.category.coding) {
 
-					// DHDR-02 (B2 #1): route on the OH dispense-category code. The normative code set
+					// DHDR-02: route on the OH dispense-category code. The normative code set
 					// (device/drug/product/service) is stable, but the v4.0.3 IG emits this category
 					// under three different eHealth Ontario system URLs across its own search examples:
 					//   .../NamingSystem/ca-on-medication-dispense-category   (legacy)

@@ -261,17 +261,7 @@ public class DHDRPrint {
       table.addCell(getItemCell(med.optString("dispensingPharmacyPhoneNumber")));
 
       table.addCell(getHeaderCell("Pharmacist"));
-      JSONObject pharmacistLicenceNumber = med.optJSONObject("pharmacistLicenceNumber");
-      String pharmacistLicenceValue =
-          pharmacistLicenceNumber != null ? pharmacistLicenceNumber.optString("value") : "";
-      // Show the licence when there is one; the test was inverted, so it printed " ()" for a
-      // missing licence and hid a real one.
-      table.addCell(
-          getItemCell(
-              med.optString("pharmacistLastname")
-                  + ", "
-                  + med.optString("pharmacistFirstname")
-                  + (pharmacistLicenceValue.isEmpty() ? "" : (" (" + pharmacistLicenceValue + ")"))));
+      table.addCell(getItemCell(pharmacistName(med)));
 
       document.add(table);
     } else {
@@ -431,19 +421,7 @@ public class DHDRPrint {
           serviceTable.addCell(
               getItemCell(med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")));
           serviceTable.addCell(getItemCell(med.optString("dispensingPharmacy")));
-          JSONObject pharmacistLicenceNumberObj = med.optJSONObject("pharmacistLicenceNumber");
-          String pharmacistLicenceValue =
-              pharmacistLicenceNumberObj != null
-                  ? pharmacistLicenceNumberObj.optString("value")
-                  : "";
-          serviceTable.addCell(
-              getItemCell(
-                  med.optString("pharmacistLastname")
-                      + ", "
-                      + med.optString("pharmacistFirstname")
-                      + " ("
-                      + pharmacistLicenceValue
-                      + ")"));
+          serviceTable.addCell(getItemCell(pharmacistName(med)));
           serviceTable.addCell(
               getItemCell(med.optString("dispensingPharmacyFaxNumber")));
         }
@@ -625,19 +603,14 @@ public class DHDRPrint {
   /**
    * Renders a date for display in the same format the screen uses.
    *
-   * <p>DHDR03.06 requires a consistent date format across DHDR EHR views. The screen settled on
-   * Angular's default {@code | date} (medium date, "Jun 23, 2016") under #55, while the print kept
-   * ISO - so the same dispense read two ways depending on where you looked, and the comparative
-   * printout showed both at once: ISO in the DHDR half and ISO in the EMR half against a screen that
-   * showed neither. Whether a PDF is a "view" is arguable; two renderings of one date sitting side by
-   * side is not.
+   * <p>DHDR03.06 requires one date format across the DHDR views. The screen uses Angular's default
+   * {@code | date} ("Jun 23, 2016"); the print kept ISO, so one dispense read two ways.
    *
-   * <p>Accepts what the two sources actually supply: an epoch-millisecond string from the EMR
-   * transfer objects, and an ISO date or date-time from the DHDR service. Anything else is returned
-   * unchanged rather than blanked - an unrecognised value is still information.
+   * <p>Accepts what the two sources supply: epoch milliseconds from the EMR transfer objects, an ISO
+   * date or date-time from the DHDR service. Anything else is returned unchanged rather than blanked.
    *
-   * <p>Display only. The sort in {@code sortByWhenPreparedDesc} compares the raw ISO strings, where
-   * lexical order is chronological order; formatting first would break it.
+   * <p>Display only - {@code sortByWhenPreparedDesc} compares the raw ISO strings, where lexical
+   * order is chronological order, so formatting before sorting would break it.
    *
    * @param raw String the value as it arrives, possibly empty
    * @return String the date as "MMM d, yyyy", or the input unchanged when it cannot be parsed
@@ -661,33 +634,11 @@ public class DHDRPrint {
   }
 
   /**
-   * Renders an EMR medication's start date. The EMR list carries {@code rxDate} as an epoch
-   * millisecond value (the viewer formats it with Angular's date filter), so printing it as a raw
-   * string would emit the millisecond number. Formats a numeric value as {@code yyyy-MM-dd} to match
-   * the DHDR side; anything non-numeric (already a date string, or absent) is returned unchanged.
-   *
-   * @param med JSONObject one EMR medication from the comparative payload
-   * @return String the start date as yyyy-MM-dd, or the original value when it is not epoch millis
-   */
-  private String emrStartDate(JSONObject med) {
-    String raw = med.optString("rxDate");
-    if (raw == null || raw.isEmpty()) {
-      return "";
-    }
-    try {
-      return mediumDate.format(new Date(Long.parseLong(raw)));
-    } catch (NumberFormatException e) {
-      return raw;
-    }
-  }
-
-  /**
    * Reads a string from the payload, treating an explicit JSON null as absent.
    *
-   * <p>The EMR comparative payload carries several nullable boxed types ({@code refillQuantity} and
-   * {@code refillDuration} are {@code Integer}), and a serialised null read back through
-   * {@code optString} can surface as the four-character text "null". Printing that verbatim is the
-   * #41 trap - a field that reads as data rather than as an absence.
+   * <p>The EMR payload carries nullable boxed types ({@code refillQuantity}, {@code refillDuration}),
+   * and a serialised null read back through {@code optString} surfaces as the text "null" - which
+   * printed verbatim reads as data rather than as an absence.
    *
    * @param med JSONObject one EMR medication from the comparative payload
    * @param key String the field to read
@@ -706,9 +657,8 @@ public class DHDRPrint {
    * Reports whether an optional trailing detail is worth printing.
    *
    * <p>The screen guards these with {@code ng-if}, which is falsy for {@code 0}, so a record with no
-   * refill or duration recorded shows the count alone. Treating "0" as present here instead printed
-   * "0 (0 / 0 days)" against the screen's "0" - noise on the common case, and a divergence between
-   * two renderings of the same data.
+   * refill or duration recorded shows the count alone. Treating "0" as present printed
+   * "0 (0 / 0 days)" against the screen's "0".
    *
    * @param value String the candidate detail
    * @return boolean true when the value is present and not a zero
@@ -765,10 +715,9 @@ public class DHDRPrint {
   /**
    * Renders the prescribed dose for DHDR05.02(e), as a single value or a min-max range.
    *
-   * <p>The unit is appended only when it differs from the strength unit already shown in its own
-   * column, mirroring the screen's {@code emrDoseUnit()}: OpenO stores the dosage unit as free text
-   * and a record often repeats the strength unit there, which would print "50 mg" under Dosage
-   * beside "50 mg" under Strength and read as a second strength.
+   * <p>The unit is appended only when it differs from the strength unit already in its own column,
+   * mirroring the screen's {@code emrDoseUnit()}: OpenO stores the dosage unit as free text and a
+   * record often repeats the strength there, which would print "50 mg" under both headings.
    *
    * @param med JSONObject one EMR medication from the comparative payload
    * @return String the dose, possibly a range, with a unit where one adds information
@@ -904,6 +853,29 @@ public class DHDRPrint {
     if (system.endsWith("ca-on-license-naturopath")) return "College of Naturopaths of Ontario";
     if (system.endsWith("ca-on-unknown-prescriber")) return "Unknown Prescriber";
     return "";
+  }
+
+  /**
+   * Renders a dispense's pharmacist as "Lastname, Firstname (licence)".
+   *
+   * <p>Each part is optional, so each separator is conditional: an absent licence must not print an
+   * empty bracket and an absent surname must not print a leading comma. Composed here rather than at
+   * each table because the three views had drifted - the detail print guarded the bracket and the two
+   * pharmacy-service tables did not, so one pharmacist with no licence on file printed two ways.
+   *
+   * @param med JSONObject one dispense from the print payload
+   * @return String the pharmacist's name with the licence appended where there is one
+   */
+  private String pharmacistName(JSONObject med) {
+    String last = optText(med, "pharmacistLastname");
+    String first = optText(med, "pharmacistFirstname");
+    String name = last.isEmpty() ? first : (first.isEmpty() ? last : (last + ", " + first));
+    JSONObject licence = med.optJSONObject("pharmacistLicenceNumber");
+    String licenceValue = licence != null ? licence.optString("value").trim() : "";
+    if (licenceValue.isEmpty()) {
+      return name;
+    }
+    return name.isEmpty() ? licenceValue : (name + " (" + licenceValue + ")");
   }
 
   /**
@@ -1104,9 +1076,8 @@ public class DHDRPrint {
         serviceTable.addCell(getHeaderCell("Pharmacist"));
         // DHDR08.01(b) takes this view's element list from DHDR07.01, whose (h) is the pharmacy FAX.
         // This column printed dispensingPharmacyPhoneNumber under a "Pharmacy #" heading - the third
-        // surface to confuse the two (see #57, the Fax filter and sort indicator wired to the phone,
-        // and #59, the grouped-services modal). The Summary print's equivalent table has always been
-        // correct, which is why the two differed.
+        // surface to confuse the two, after the Fax filter/sort indicator and the grouped-services
+        // modal. The Summary print's equivalent table has always been correct, hence the divergence.
         serviceTable.addCell(getHeaderCell("Pharmacy Fax"));
         serviceTable.setHeaderRows(1);
 
@@ -1127,19 +1098,7 @@ public class DHDRPrint {
           serviceTable.addCell(
               getItemCell(med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")));
           serviceTable.addCell(getItemCell(med.optString("dispensingPharmacy")));
-          JSONObject pharmacistLicenceNumberObj = med.optJSONObject("pharmacistLicenceNumber");
-          String pharmacistLicenceValue =
-              pharmacistLicenceNumberObj != null
-                  ? pharmacistLicenceNumberObj.optString("value")
-                  : "";
-          serviceTable.addCell(
-              getItemCell(
-                  med.optString("pharmacistLastname")
-                      + ", "
-                      + med.optString("pharmacistFirstname")
-                      + " ("
-                      + pharmacistLicenceValue
-                      + ")"));
+          serviceTable.addCell(getItemCell(pharmacistName(med)));
           serviceTable.addCell(
               getItemCell(med.optString("dispensingPharmacyFaxNumber")));
         }
@@ -1200,7 +1159,7 @@ public class DHDRPrint {
                 "DHDR print: skipped local-history entry " + i + " - entry is not a JSON object");
             continue;
           }
-          localTable.addCell(getItemCell(emrStartDate(med)));
+          localTable.addCell(getItemCell(displayDate(med.optString("rxDate"))));
           // DHDR05.02(c) asks for the medication's name. This previously printed "instructions",
           // which is Drug.special - the free-text prescription line, carrying newlines and its own
           // "Qty:/Repeats:" text - so the column read as a block of prescription text rather than a

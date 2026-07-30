@@ -74,21 +74,21 @@ public class DHDRManager extends OmdGateway {
     // Send date of birth only when it renders as a valid FHIR date; a malformed one invites the
     // service to reject the whole search.
     //
-    // Note the obligation is stronger than DHDR02.02 suggests. The requirement lists date of birth
-    // under "MAY search using additional patient demographic data", but the FHIR IG's consumer
+    // The obligation is stronger than DHDR02.02 suggests. The requirement lists date of birth under
+    // "MAY search using additional patient demographic data", but the FHIR IG's consumer
     // CapabilityStatement marks composition.patient.birthdate "Conditional... Required when the
-    // patient identifier is HCN or MRN" and the provider one calls patient.birthDate "mandatory" -
-    // consistently across every published package. We always search by HCN, so it is required, not
-    // optional. Omitting it when the demographic has no usable date of birth is therefore a
-    // deliberate choice pending an answer on that conflict, not a free one: see the "MUST NOT allow
-    // a request to be sent if any mandatory patient data is missing" clause in the same requirement.
-    // The viewer discloses the omission - the search banner renders "DOB: --".
+    // patient identifier is HCN or MRN" and the provider one calls patient.birthDate "mandatory",
+    // consistently across every published package. We always search by HCN, so it is required.
+    // Omitting it when the demographic has no usable date of birth is therefore a deliberate choice
+    // pending an answer on that conflict - see the same requirement's "MUST NOT allow a request to be
+    // sent if any mandatory patient data is missing". The viewer discloses it: the banner reads
+    // "DOB: --".
     String birthDate = fhirBirthDate(demographic);
     if (birthDate != null) {
       wc.query("patient.birthdate", birthDate);
     }
 
-    // DHDR02.02 (B2 #16): the DHDR search is keyed on HCN (+ optional DOB); patient.gender is an
+    // DHDR02.02: the DHDR search is keyed on HCN (+ optional DOB); patient.gender is an
     // optional param that must not be sent - the EMR's recorded sex can diverge from the provincial
     // registry and would then wrongly narrow the result set.
 
@@ -139,17 +139,15 @@ public class DHDRManager extends OmdGateway {
   /**
    * Renders a demographic's date of birth as a FHIR {@code date}, or null when it cannot be.
    *
-   * <p>{@link Demographic#getBirthDayAsString()} joins the three birth columns with no padding and
-   * no null handling, so it can yield {@code 1985-4-05} or {@code null-06-15}. FHIR R4 requires
-   * {@code YYYY-MM-DD} with a padded month and day. That method is left alone because its other
-   * callers may rely on its current shape; the padding and validation belong here instead.</p>
+   * <p>Not {@link Demographic#getBirthDayAsString()}: it joins the three birth columns with no
+   * padding and no null handling, so it can yield {@code 1985-4-05} or {@code null-06-15} where FHIR
+   * R4 requires a padded {@code YYYY-MM-DD}. It is left alone because its other callers may rely on
+   * its current shape.</p>
    *
-   * <p>{@link LocalDate} does nearly all of it: it rejects an out-of-range month or day and an
-   * impossible calendar date such as {@code 1985-02-30}, and its {@code toString()} is already
-   * {@code yyyy-MM-dd} with both parts padded. The one thing it does not constrain is the year,
-   * so that is bounded to FHIR's own range of 1-9999. Outside it {@code toString()} renders
-   * {@code 0000-...}, a negative year, or the sign-prefixed {@code +12345-...}, none of which is
-   * a FHIR date.</p>
+   * <p>{@link LocalDate} does the rest - it rejects an out-of-range month or day and an impossible
+   * calendar date such as {@code 1985-02-30}, and pads. The year it does not constrain, so that is
+   * bounded to FHIR's range of 1-9999; outside it {@code toString()} renders {@code 0000-...}, a
+   * negative year, or {@code +12345-...}, none of which is a FHIR date.</p>
    *
    * @param demographic Demographic the patient whose date of birth is being rendered
    * @return String the date as {@code yyyy-MM-dd}, or null if any part is missing or invalid
