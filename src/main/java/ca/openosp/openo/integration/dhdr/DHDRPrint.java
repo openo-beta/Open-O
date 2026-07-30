@@ -57,6 +57,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
 
 public class DHDRPrint {
 
@@ -93,35 +94,13 @@ public class DHDRPrint {
       OutputStream outputStream,
       JSONObject jsonOb)
       throws Exception {
-    Document document;
-    PdfContentByte contentByte;
-
     Demographic demo = demographicManager.getDemographic(loggedInInfo, demographicNo);
 
     if (demo == null) throw new DocumentException();
 
-    document = new Document();
-    document.setPageSize(PageSize.LETTER);
-    document.setMargins(36, 36, 90, 140);
-
-    PdfWriter writer = PdfWriterFactory.newInstance(document, outputStream,
-        FontSettings.HELVETICA_10PT);
-    writer.setPageEvent(new DhdrFooterEvent(DHDR_DISCLAIMER, resolveConfidentialityStatement(), buildPrintedInfo(loggedInInfo)));
-
-    String dhdrDemoLine = buildDhdrDemoLine(jsonOb.optJSONObject("dhdrPatient"));
-    HeaderFooter header = getHeaderFooter(demo, "DHDR Detailed", dhdrDemoLine);
-    document.setHeader(header);
-
-    document.open();
-    contentByte = writer.getDirectContent();
-
-    Paragraph emrHeaderParagraph =
-        new Paragraph(
-            "DHDR Detailed",
-            FontFactory.getFont(
-                FontFactory.HELVETICA, 12, Font.BOLD | Font.UNDERLINE, Color.BLACK));
-    emrHeaderParagraph.add(Chunk.NEWLINE);
-    document.add(emrHeaderParagraph);
+    // Portrait, unlike the two grid views - this one is a label/value list, not a wide table.
+    Document document =
+        openDhdrDocument(loggedInInfo, demo, outputStream, "DHDR Detailed", jsonOb, false);
 
     document.add(Chunk.NEWLINE);
 
@@ -283,161 +262,64 @@ public class DHDRPrint {
       JSONObject jsonOb)
       throws Exception {
 
-    Document document;
-    PdfContentByte contentByte;
-
     Demographic demo = demographicManager.getDemographic(loggedInInfo, demographicNo);
 
     if (demo == null) throw new DocumentException();
 
-    document = new Document();
-    document.setPageSize(PageSize.LETTER.rotate());
-    document.setMargins(36, 36, 90, 140);
-
-    PdfWriter writer = PdfWriterFactory.newInstance(document, outputStream, FontSettings.HELVETICA_10PT);
-    writer.setPageEvent(new DhdrFooterEvent(DHDR_DISCLAIMER, resolveConfidentialityStatement(), buildPrintedInfo(loggedInInfo)));
-
-    String dhdrDemoLine = buildDhdrDemoLine(jsonOb.optJSONObject("dhdrPatient"));
-    HeaderFooter header = getHeaderFooter(demo, "DHDR Summary", dhdrDemoLine);
-    document.setHeader(header);
-
-    document.open();
-    contentByte = writer.getDirectContent();
-
-    Paragraph emrHeaderParagraph =
-        new Paragraph(
-            "DHDR Summary",
-            FontFactory.getFont(
-                FontFactory.HELVETICA, 12, Font.BOLD | Font.UNDERLINE, Color.BLACK));
-    emrHeaderParagraph.add(Chunk.NEWLINE);
-    document.add(emrHeaderParagraph);
-    // formatter.format(
-    Paragraph emrDateRangeParagraph =
-        new Paragraph(
-            "Date Range: ", FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
-    emrDateRangeParagraph.add(
-        new Phrase(
-            // DHDR02.05 displays the search period used; DHDR03.06 wants one date format across the
-            // views. The screen renders this through the same medium filter as the tables
-            // (searchPeriodText), so the printout does too - it was the last ISO date left on the page.
-            displayDate(jsonOb.optString("startDate")) + " to "
-                + displayDate(jsonOb.optString("endDate")),
-            FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
-    emrDateRangeParagraph.add(Chunk.NEWLINE);
-
-    document.add(emrDateRangeParagraph);
-
-    document.add(Chunk.NEWLINE);
+    Document document =
+        openDhdrDocument(loggedInInfo, demo, outputStream, "DHDR Summary", jsonOb, true);
+    addSearchPeriod(document, jsonOb);
 
     JSONArray arr = sortByWhenPreparedDesc(jsonOb.getJSONArray("meds"));
-    Paragraph drugProductParagraph =
-        new Paragraph(
-            "Drug Product", FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
-    drugProductParagraph.add(
-        new Phrase(
-            "(Found " + arr.length() + " Events)",
-            FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
-    drugProductParagraph.add(Chunk.NEWLINE);
-    drugProductParagraph.setSpacingAfter(5f);
-    document.add(drugProductParagraph);
+    addSectionHeading(document, "Drug Product", arr.length());
+    addDrugEventTables(document, arr);
 
-    /////// table
-    if (arr.length() > 0) {
-
-      for (var i = 0; i < arr.length(); i++) {
-        try {
-          JSONObject med = arr.getJSONObject(i);
-          auditMandatoryDispenseFields(med, i);
-          PdfPTable table = new PdfPTable(new float[] {3, 3, 3, 1.5f, 1.5f, 1, 1});
-          table.setSpacingAfter(10f);
-          table.setWidthPercentage(100.0f);
-          populateSummaryDrugMetaData(table, med);
-          populateSummaryDrugHeader(table);
-          populateSummaryDrugData(med, table);
-          document.add(table);
-        } catch (Exception e) {
-          // One malformed dispense must not blank the whole PDF (print-side analogue of the DHDR
-          // viewer's contained-guard fix). Log the structural fault - index + message only, never
-          // PHI - and render a placeholder so the reader knows a record was present but not shown.
-          logger.error("DHDR print: skipped drug entry " + i + " - " + e.getMessage());
-          document.add(incompleteEntryTable());
-        }
-      }
-    } else {
-      Paragraph noResults =
-          new Paragraph(
-              "No events found for the search time period.",
-              FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK));
-      noResults.add(Chunk.NEWLINE);
-      document.add(noResults);
-    }
     if (jsonOb.has("services")) {
       JSONArray serviceArr = sortByWhenPreparedDesc(jsonOb.getJSONArray("services"));
-
       document.add(Chunk.NEWLINE);
-
-      Paragraph servicesProductParagraph =
-          new Paragraph(
-              "Pharma Services",
-              FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
-      servicesProductParagraph.add(
-          new Phrase(
-              "(Found " + serviceArr.length() + " Events)",
-              FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
-      servicesProductParagraph.add(Chunk.NEWLINE);
-      servicesProductParagraph.setSpacingAfter(5f);
-      document.add(servicesProductParagraph);
-
-      PdfPTable serviceTable = new PdfPTable(9);
-      serviceTable.setWidthPercentage(100.0f);
-
-      if (serviceArr.length() > 0) {
-
-        serviceTable.addCell(getHeaderCell("Last Service Date"));
-        serviceTable.addCell(getHeaderCell("Pickup Date"));
-        serviceTable.addCell(getHeaderCell("Pharmacy Service Type"));
-        serviceTable.addCell(getHeaderCell("Pharmacy Service Description"));
-        serviceTable.addCell(getHeaderCell("Rx Number"));
-        serviceTable.addCell(getHeaderCell("Therapeutic Class/Sub-class"));
-        serviceTable.addCell(getHeaderCell("Pharmacy Name"));
-        serviceTable.addCell(getHeaderCell("Pharmacist"));
-        serviceTable.addCell(getHeaderCell("Pharmacy Fax"));
-        serviceTable.setHeaderRows(1);
-
-        for (int i = 0; i < serviceArr.length(); i++) {
-          JSONObject med = serviceArr.optJSONObject(i);
-          if (med == null) {
-            logger.error(
-                "DHDR print: skipped service entry " + i + " - entry is not a JSON object");
-            continue;
-          }
-
-          serviceTable.addCell(getItemCell(displayDate(med.optString("whenPrepared")))); // Last Service Date
-          serviceTable.addCell(getItemCell(displayDate(med.optString("whenHandedOver")))); // Pickup Date
-          JSONObject brandObj = med.optJSONObject("brandName");
-          serviceTable.addCell(getItemCell(serviceTypeWithPin(brandObj))); // Service Type (+ PIN)
-          serviceTable.addCell(getItemCell(med.optString("genericName")));
-          serviceTable.addCell(getItemCell(med.optString("rxNumber")));
-          serviceTable.addCell(
-              getItemCell(med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")));
-          serviceTable.addCell(getItemCell(med.optString("dispensingPharmacy")));
-          serviceTable.addCell(getItemCell(pharmacistName(med)));
-          serviceTable.addCell(
-              getItemCell(med.optString("dispensingPharmacyFaxNumber")));
-        }
-
-        document.add(serviceTable);
-      } else {
-        Paragraph noResults =
-            new Paragraph(
-                "No events found for the search time period.",
-                FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK));
-        noResults.add(Chunk.NEWLINE);
-        document.add(noResults);
-      }
+      addSectionHeading(document, "Pharma Services", serviceArr.length());
+      addGrid(document, pharmacyServiceColumns(), serviceArr, "service");
     }
 
     document.close();
+  }
+
+  /**
+   * Renders one table per drug event - the per-event patient/prescriber/pharmacy block, then that
+   * event's own header and data row - or the no-events line when there are none.
+   *
+   * <p>Not folded into {@link #addGrid}: this is not one grid but a table per event, each carrying a
+   * colspanned metadata block above its own header row. The three {@code populateSummaryDrug*} helpers
+   * were already shared between the Summary and Comparative prints and no defect was ever found in
+   * them, which is the argument for leaving their shape alone.
+   *
+   * @param document Document the document being written
+   * @param arr JSONArray the drug events, already sorted most-recent-first
+   */
+  private void addDrugEventTables(Document document, JSONArray arr) throws Exception {
+    if (arr.length() == 0) {
+      document.add(noEventsParagraph());
+      return;
+    }
+    for (int i = 0; i < arr.length(); i++) {
+      try {
+        JSONObject med = arr.getJSONObject(i);
+        auditMandatoryDispenseFields(med, i);
+        PdfPTable table = new PdfPTable(new float[] {3, 3, 3, 1.5f, 1.5f, 1, 1});
+        table.setSpacingAfter(10f);
+        table.setWidthPercentage(100.0f);
+        populateSummaryDrugMetaData(table, med);
+        populateSummaryDrugHeader(table);
+        populateSummaryDrugData(med, table);
+        document.add(table);
+      } catch (Exception e) {
+        // One malformed dispense must not blank the whole PDF (print-side analogue of the DHDR
+        // viewer's contained-guard fix). Log the structural fault - index + message only, never
+        // PHI - and render a placeholder so the reader knows a record was present but not shown.
+        logger.error("DHDR print: skipped drug entry " + i + " - " + e.getMessage());
+        document.add(incompleteEntryTable());
+      }
+    }
   }
 
   private PdfPCell populateSummaryDrugMetaData(PdfPTable table, JSONObject med) throws JSONException {
@@ -597,6 +479,190 @@ public class DHDRPrint {
     PdfPCell cell = new PdfPCell(new Phrase(name, font));
 
     return cell;
+  }
+
+  /**
+   * One column of a printed grid: the heading, and how to read the value out of one event.
+   *
+   * <p>Declaring a column list once and rendering it twice is the point. The pharmacy-service grid was
+   * built by hand in both the Summary and the Comparative print, and the two drifted: the Comparative
+   * copy showed the pharmacy phone under a "Pharmacy #" heading where the obligation is the fax
+   * (DHDR07.01(h)), while the Summary copy had always been correct. A column list cannot drift from
+   * itself.
+   */
+  private record Column(String label, Function<JSONObject, String> value) {}
+
+  /**
+   * The pharmacy-service columns, per DHDR07.01's element list. Rendered by both the Summary and the
+   * Comparative print - this list is the single declaration of what that view contains.
+   *
+   * @return List&lt;Column&gt; the nine columns in display order
+   */
+  private List<Column> pharmacyServiceColumns() {
+    return List.of(
+        new Column("Last Service Date", med -> displayDate(med.optString("whenPrepared"))),
+        new Column("Pickup Date", med -> displayDate(med.optString("whenHandedOver"))),
+        new Column("Pharmacy Service Type", med -> serviceTypeWithPin(med.optJSONObject("brandName"))),
+        new Column("Pharmacy Service Description", med -> med.optString("genericName")),
+        new Column("Rx Number", med -> med.optString("rxNumber")),
+        new Column("Therapeutic Class/Sub-class",
+            med -> med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")),
+        new Column("Pharmacy Name", med -> med.optString("dispensingPharmacy")),
+        new Column("Pharmacist", this::pharmacistName),
+        new Column("Pharmacy Fax", med -> med.optString("dispensingPharmacyFaxNumber")));
+  }
+
+  /**
+   * The EMR half of the Comparative view: DHDR05.02's ten elements in the nine columns the screen
+   * renders, in the same order, so the two halves stay comparable (DHDR13.01(d)).
+   *
+   * @return List&lt;Column&gt; the nine columns in display order
+   */
+  private List<Column> emrPrescriptionColumns() {
+    return List.of(
+        new Column("Start Date", med -> displayDate(med.optString("rxDate"))),
+        new Column("Medication", this::emrMedicationName),
+        new Column("Strength",
+            med -> joinValueAndUnit(optText(med, "strength"), optText(med, "strengthUnit"))),
+        new Column("Dosage", this::emrDose),
+        new Column("Frequency", med -> optText(med, "frequency")),
+        new Column("Prescriber", med -> optText(med, "providerName")),
+        new Column("DIN", med -> optText(med, "regionalIdentifier")),
+        new Column("Qty / Duration", this::emrQuantityAndDuration),
+        new Column("Refills", this::emrRefills));
+  }
+
+  /**
+   * Renders one full-width grid: a header row, then a row per event, or the no-events line when there
+   * are none. Absorbs the header/row/empty-branch handling that each table used to repeat.
+   *
+   * @param document Document the document being written
+   * @param columns List&lt;Column&gt; the columns, in display order
+   * @param events JSONArray the events to render, possibly empty
+   * @param entryLabel String how to name an entry in the log when one is not a JSON object
+   */
+  private void addGrid(Document document, List<Column> columns, JSONArray events, String entryLabel)
+      throws DocumentException {
+    if (events.length() == 0) {
+      document.add(noEventsParagraph());
+      return;
+    }
+    PdfPTable table = new PdfPTable(columns.size());
+    table.setWidthPercentage(100.0f);
+    for (Column column : columns) {
+      table.addCell(getHeaderCell(column.label()));
+    }
+    table.setHeaderRows(1);
+    for (int i = 0; i < events.length(); i++) {
+      JSONObject event = events.optJSONObject(i);
+      if (event == null) {
+        logger.error(
+            "DHDR print: skipped " + entryLabel + " entry " + i + " - entry is not a JSON object");
+        continue;
+      }
+      for (Column column : columns) {
+        table.addCell(getItemCell(column.value().apply(event)));
+      }
+    }
+    document.add(table);
+  }
+
+  /**
+   * The line shown in place of a grid when a section has no events (DHDR02.04 - a valid search that
+   * returns nothing must say so rather than render an empty table).
+   *
+   * @return Paragraph the no-events line
+   */
+  private Paragraph noEventsParagraph() {
+    Paragraph noResults =
+        new Paragraph(
+            "No events found for the search time period.",
+            FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK));
+    noResults.add(Chunk.NEWLINE);
+    return noResults;
+  }
+
+  /**
+   * A section heading with its event count, as in "Pharma Services(Found 3 Events)".
+   *
+   * @param document Document the document being written
+   * @param title String the section name
+   * @param count int the number of events in the section
+   */
+  private void addSectionHeading(Document document, String title, int count)
+      throws DocumentException {
+    Paragraph heading =
+        new Paragraph(title, FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
+    heading.add(
+        new Phrase(
+            "(Found " + count + " Events)",
+            FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
+    heading.add(Chunk.NEWLINE);
+    heading.setSpacingAfter(5f);
+    document.add(heading);
+  }
+
+  /**
+   * Opens a DHDR printout: page size, margins, the per-page footer event (DHDR13.01.c/e/g/h), the
+   * running header carrying both patient identities (DHDR13.01.a/b), and the underlined title.
+   *
+   * <p>The caller adds whatever follows the title - the Summary and Comparative prints add a search
+   * period, the Detail print a blank line.
+   *
+   * @param loggedInInfo LoggedInInfo the current session, for the printed-by line
+   * @param demo Demographic the EMR-side patient
+   * @param outputStream OutputStream where the PDF is written
+   * @param title String the document title, used for both the header and the heading
+   * @param jsonOb JSONObject the print payload, read for the DHDR-side patient
+   * @param landscape boolean true for the wide grid views, false for the portrait Detail view
+   * @return Document the opened document
+   */
+  private Document openDhdrDocument(LoggedInInfo loggedInInfo, Demographic demo,
+      OutputStream outputStream, String title, JSONObject jsonOb, boolean landscape)
+      throws Exception {
+    Document document = new Document();
+    document.setPageSize(landscape ? PageSize.LETTER.rotate() : PageSize.LETTER);
+    document.setMargins(36, 36, 90, 140);
+
+    PdfWriter writer =
+        PdfWriterFactory.newInstance(document, outputStream, FontSettings.HELVETICA_10PT);
+    writer.setPageEvent(new DhdrFooterEvent(DHDR_DISCLAIMER, resolveConfidentialityStatement(),
+        buildPrintedInfo(loggedInInfo)));
+
+    document.setHeader(
+        getHeaderFooter(demo, title, buildDhdrDemoLine(jsonOb.optJSONObject("dhdrPatient"))));
+    document.open();
+
+    Paragraph titleParagraph =
+        new Paragraph(
+            title,
+            FontFactory.getFont(
+                FontFactory.HELVETICA, 12, Font.BOLD | Font.UNDERLINE, Color.BLACK));
+    titleParagraph.add(Chunk.NEWLINE);
+    document.add(titleParagraph);
+    return document;
+  }
+
+  /**
+   * Adds the "Date Range" line. DHDR02.05 requires the search period used be displayed; DHDR03.06
+   * requires one date format across the views, so this renders through the same formatter as the grid
+   * cells rather than the ISO the payload carries.
+   *
+   * @param document Document the document being written
+   * @param jsonOb JSONObject the print payload, read for the search bounds
+   */
+  private void addSearchPeriod(Document document, JSONObject jsonOb) throws DocumentException {
+    Paragraph dateRange =
+        new Paragraph(
+            "Date Range: ", FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
+    dateRange.add(
+        new Phrase(
+            displayDate(jsonOb.optString("startDate")) + " to "
+                + displayDate(jsonOb.optString("endDate")),
+            FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
+    dateRange.add(Chunk.NEWLINE);
+    document.add(dateRange);
+    document.add(Chunk.NEWLINE);
   }
 
   /** DHDR03.06: matches the screen's Angular {@code | date} default. See displayDate. */
@@ -975,235 +1041,36 @@ public class DHDRPrint {
       JSONObject jsonOb)
       throws Exception {
 
-    Document document;
-
     Demographic demo = demographicManager.getDemographic(loggedInInfo, demographicNo);
 
     if (demo == null) throw new DocumentException();
 
-    document = new Document();
-    document.setPageSize(PageSize.LETTER.rotate());
-    document.setMargins(36, 36, 90, 140);
-
-    PdfWriter writer =
-        PdfWriterFactory.newInstance(document, outputStream, FontSettings.HELVETICA_10PT);
-    writer.setPageEvent(new DhdrFooterEvent(DHDR_DISCLAIMER, resolveConfidentialityStatement(), buildPrintedInfo(loggedInInfo)));
-
-    String dhdrDemoLine = buildDhdrDemoLine(jsonOb.optJSONObject("dhdrPatient"));
-    HeaderFooter header = getHeaderFooter(demo, "DHDR Comparative", dhdrDemoLine);
-    document.setHeader(header);
-
-    document.open();
-
-    Paragraph emrHeaderParagraph =
-        new Paragraph(
-            "DHDR Comparative",
-            FontFactory.getFont(
-                FontFactory.HELVETICA, 12, Font.BOLD | Font.UNDERLINE, Color.BLACK));
-    emrHeaderParagraph.add(Chunk.NEWLINE);
-    document.add(emrHeaderParagraph);
-    // formatter.format(
-    Paragraph emrDateRangeParagraph =
-        new Paragraph(
-            "Date Range: ", FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
-    emrDateRangeParagraph.add(
-        new Phrase(
-            // DHDR02.05 displays the search period used; DHDR03.06 wants one date format across the
-            // views. The screen renders this through the same medium filter as the tables
-            // (searchPeriodText), so the printout does too - it was the last ISO date left on the page.
-            displayDate(jsonOb.optString("startDate")) + " to "
-                + displayDate(jsonOb.optString("endDate")),
-            FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
-    emrDateRangeParagraph.add(Chunk.NEWLINE);
-
-    document.add(emrDateRangeParagraph);
-
-    document.add(Chunk.NEWLINE);
+    Document document =
+        openDhdrDocument(loggedInInfo, demo, outputStream, "DHDR Comparative", jsonOb, true);
+    addSearchPeriod(document, jsonOb);
 
     JSONArray arr = sortByWhenPreparedDesc(jsonOb.getJSONArray("meds"));
-    Paragraph drugProductParagraph =
-        new Paragraph(
-            "DHDR Drugs", FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
-    drugProductParagraph.add(
-        new Phrase(
-            "(Found " + arr.length() + " Events)",
-            FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
-    drugProductParagraph.add(Chunk.NEWLINE);
-    drugProductParagraph.setSpacingAfter(5f);
-    document.add(drugProductParagraph);
-
-    if (arr.length() > 0) {
-
-      for (var i = 0; i < arr.length(); i++) {
-        try {
-          JSONObject med = arr.getJSONObject(i);
-          auditMandatoryDispenseFields(med, i);
-          PdfPTable table = new PdfPTable(new float[] {3, 3, 3, 1.5f, 1.5f, 1, 1});
-          table.setSpacingAfter(10f);
-          table.setWidthPercentage(100.0f);
-          populateSummaryDrugMetaData(table, med);
-          populateSummaryDrugHeader(table);
-          populateSummaryDrugData(med, table);
-          document.add(table);
-        } catch (Exception e) {
-          // One malformed dispense must not blank the whole PDF (print-side analogue of the DHDR
-          // viewer's contained-guard fix). Log the structural fault - index + message only, never
-          // PHI - and render a placeholder so the reader knows a record was present but not shown.
-          logger.error("DHDR print: skipped drug entry " + i + " - " + e.getMessage());
-          document.add(incompleteEntryTable());
-        }
-      }
-
-    } else {
-      Paragraph noResults =
-          new Paragraph(
-              "No events found for the search time period.",
-              FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK));
-      noResults.add(Chunk.NEWLINE);
-      document.add(noResults);
-    }
+    addSectionHeading(document, "DHDR Drugs", arr.length());
+    addDrugEventTables(document, arr);
 
     if (jsonOb.has("services")) {
       JSONArray serviceArr = sortByWhenPreparedDesc(jsonOb.getJSONArray("services"));
-
       document.add(Chunk.NEWLINE);
-
-      Paragraph servicesProductParagraph =
-          new Paragraph(
-              "DHDR PharmaServices",
-              FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
-      servicesProductParagraph.add(
-          new Phrase(
-              "(Found " + serviceArr.length() + " Events)",
-              FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
-      servicesProductParagraph.add(Chunk.NEWLINE);
-      servicesProductParagraph.setSpacingAfter(5f);
-      document.add(servicesProductParagraph);
-
-      PdfPTable serviceTable = new PdfPTable(9);
-      serviceTable.setWidthPercentage(100.0f);
-
-      if (serviceArr.length() > 0) {
-
-        serviceTable.addCell(getHeaderCell("Last Service Date"));
-        serviceTable.addCell(getHeaderCell("Pickup Date"));
-        serviceTable.addCell(getHeaderCell("Pharmacy Service Type"));
-        serviceTable.addCell(getHeaderCell("Pharmacy Service Description"));
-        serviceTable.addCell(getHeaderCell("Rx Number"));
-        serviceTable.addCell(getHeaderCell("Therapeutic Class/Sub-class"));
-        serviceTable.addCell(getHeaderCell("Pharmacy Name"));
-        serviceTable.addCell(getHeaderCell("Pharmacist"));
-        // DHDR08.01(b) takes this view's element list from DHDR07.01, whose (h) is the pharmacy FAX.
-        // This column printed dispensingPharmacyPhoneNumber under a "Pharmacy #" heading - the third
-        // surface to confuse the two, after the Fax filter/sort indicator and the grouped-services
-        // modal. The Summary print's equivalent table has always been correct, hence the divergence.
-        serviceTable.addCell(getHeaderCell("Pharmacy Fax"));
-        serviceTable.setHeaderRows(1);
-
-        for (int i = 0; i < serviceArr.length(); i++) {
-          JSONObject med = serviceArr.optJSONObject(i);
-          if (med == null) {
-            logger.error(
-                "DHDR print: skipped service entry " + i + " - entry is not a JSON object");
-            continue;
-          }
-
-          serviceTable.addCell(getItemCell(displayDate(med.optString("whenPrepared"))));
-          serviceTable.addCell(getItemCell(displayDate(med.optString("whenHandedOver"))));
-          JSONObject brandObj = med.optJSONObject("brandName");
-          serviceTable.addCell(getItemCell(serviceTypeWithPin(brandObj)));
-          serviceTable.addCell(getItemCell(med.optString("genericName")));
-          serviceTable.addCell(getItemCell(med.optString("rxNumber")));
-          serviceTable.addCell(
-              getItemCell(med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")));
-          serviceTable.addCell(getItemCell(med.optString("dispensingPharmacy")));
-          serviceTable.addCell(getItemCell(pharmacistName(med)));
-          serviceTable.addCell(
-              getItemCell(med.optString("dispensingPharmacyFaxNumber")));
-        }
-
-        document.add(serviceTable);
-      } else {
-        Paragraph noResults =
-            new Paragraph(
-                "No events found for the search time period.",
-                FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK));
-        noResults.add(Chunk.NEWLINE);
-        document.add(noResults);
-      }
+      addSectionHeading(document, "DHDR PharmaServices", serviceArr.length());
+      // DHDR08.01(b) takes this view's element list from DHDR07.01, whose (h) is the pharmacy FAX.
+      // This grid once printed dispensingPharmacyPhoneNumber under a "Pharmacy #" heading while the
+      // Summary print's copy of the same table was correct - the divergence that a shared column list
+      // makes impossible.
+      addGrid(document, pharmacyServiceColumns(), serviceArr, "service");
     }
 
     if (jsonOb.has("localData")) {
       JSONArray localArr = jsonOb.getJSONArray("localData");
-
       document.add(Chunk.NEWLINE);
-
-      Paragraph servicesProductParagraph =
-          new Paragraph(
-              "EMR Prescriptions",
-              FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
-      servicesProductParagraph.add(
-          new Phrase(
-              "(Found " + localArr.length() + " Events)",
-              FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
-      servicesProductParagraph.add(Chunk.NEWLINE);
-      servicesProductParagraph.setSpacingAfter(5f);
-      document.add(servicesProductParagraph);
-
+      addSectionHeading(document, "EMR Prescriptions", localArr.length());
       // DHDR13.01(d): the printout must carry "all data elements required for the View", and for the
-      // EMR half of the Comparative View that list is DHDR05.02's ten - (a) written or start date
-      // (b) DIN (c) name of medication (d) strength (e) dosage (f) frequency (g) duration/quantity of
-      // the first fill (h) number of refills (i) refill duration/quantity (j) prescriber. These are the
-      // same nine columns the screen renders, in the same order, so the two stay comparable.
-      PdfPTable localTable = new PdfPTable(9);
-      localTable.setWidthPercentage(100.0f);
-
-      if (localArr.length() > 0) {
-
-        localTable.addCell(getHeaderCell("Start Date"));
-        localTable.addCell(getHeaderCell("Medication"));
-        localTable.addCell(getHeaderCell("Strength"));
-        localTable.addCell(getHeaderCell("Dosage"));
-        localTable.addCell(getHeaderCell("Frequency"));
-        localTable.addCell(getHeaderCell("Prescriber"));
-        localTable.addCell(getHeaderCell("DIN"));
-        localTable.addCell(getHeaderCell("Qty / Duration"));
-        localTable.addCell(getHeaderCell("Refills"));
-        localTable.setHeaderRows(1);
-
-        for (int i = 0; i < localArr.length(); i++) {
-          JSONObject med = localArr.optJSONObject(i);
-          if (med == null) {
-            logger.error(
-                "DHDR print: skipped local-history entry " + i + " - entry is not a JSON object");
-            continue;
-          }
-          localTable.addCell(getItemCell(displayDate(med.optString("rxDate"))));
-          // DHDR05.02(c) asks for the medication's name. This previously printed "instructions",
-          // which is Drug.special - the free-text prescription line, carrying newlines and its own
-          // "Qty:/Repeats:" text - so the column read as a block of prescription text rather than a
-          // drug name. Same fallback order as the screen.
-          localTable.addCell(getItemCell(emrMedicationName(med)));
-          localTable.addCell(getItemCell(
-              joinValueAndUnit(optText(med, "strength"), optText(med, "strengthUnit"))));
-          localTable.addCell(getItemCell(emrDose(med)));
-          localTable.addCell(getItemCell(optText(med, "frequency")));
-          localTable.addCell(getItemCell(optText(med, "providerName")));
-          localTable.addCell(getItemCell(optText(med, "regionalIdentifier")));
-          localTable.addCell(getItemCell(emrQuantityAndDuration(med)));
-          localTable.addCell(getItemCell(emrRefills(med)));
-        }
-
-        document.add(localTable);
-
-      } else {
-        Paragraph noResults =
-            new Paragraph(
-                "No events found for the search time period.",
-                FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK));
-        noResults.add(Chunk.NEWLINE);
-        document.add(noResults);
-      }
+      // EMR half that list is DHDR05.02's ten. See emrPrescriptionColumns.
+      addGrid(document, emrPrescriptionColumns(), localArr, "local-history");
     }
 
     document.close();
