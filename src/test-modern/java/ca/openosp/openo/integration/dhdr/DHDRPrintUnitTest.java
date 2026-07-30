@@ -545,4 +545,63 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
       }
     }
   }
+
+  /**
+   * BP4 requires the search parameters the service reports it used be checked. The viewer does the
+   * comparison and passes any mismatch here, so the printout does not assert the requested range
+   * unqualified - the paper outlives the screen that carries the warning.
+   */
+  @Nested
+  @DisplayName("serviceReportedPeriod - the printout must not overstate the range searched")
+  class ServiceReportedPeriodTests {
+
+    @Test
+    @DisplayName("should say nothing when the service reported the range that was requested")
+    void shouldReturnEmpty_whenNoMismatchRecorded() {
+      // The common case by far. An empty string is the signal to omit the line entirely: printing
+      // "reported searching: " on every document would train the reader to ignore it.
+      assertThat(print.serviceReportedPeriod(null)).isEmpty();
+    }
+
+    @Test
+    @DisplayName("should render both bounds in the document's date format")
+    void shouldRenderRange_whenBothBoundsReported() throws Exception {
+      // DHDR03.06: the ISO the payload carries must not reach the page. This is why the raw bounds
+      // are sent rather than the string the screen already formatted.
+      assertThat(print.serviceReportedPeriod(
+          med("startDate", "2026-04-01", "endDate", "2026-07-30")))
+          .isEqualTo("Apr 1, 2026 to Jul 30, 2026");
+    }
+
+    @Test
+    @DisplayName("should describe a lower bound with no upper bound as open-ended")
+    void shouldRenderOnwards_whenOnlyStartReported() throws Exception {
+      // A real shape: BundleResponseSample.json echoes ge with no le at all.
+      assertThat(print.serviceReportedPeriod(med("startDate", "2016-01-02")))
+          .isEqualTo("Jan 2, 2016 onwards");
+    }
+
+    @Test
+    @DisplayName("should describe an upper bound with no lower bound as everything up to it")
+    void shouldRenderUpTo_whenOnlyEndReported() throws Exception {
+      assertThat(print.serviceReportedPeriod(med("endDate", "2019-02-25")))
+          .isEqualTo("all events up to Feb 25, 2019");
+    }
+
+    @Test
+    @DisplayName("should quote the viewer's wording when the service used a prefix we never send")
+    void shouldQuoteViewerText_whenNoBoundsToFormat() throws Exception {
+      // The IG's own DHDR-MedDis.json echoes `eq`, which yields no ge/le to format. Printing nothing
+      // would silently drop the warning from the document that outlives the screen.
+      assertThat(print.serviceReportedPeriod(med("used", "eq2016-01-02")))
+          .isEqualTo("eq2016-01-02");
+    }
+
+    @Test
+    @DisplayName("should say nothing when a mismatch object carries no usable detail")
+    void shouldReturnEmpty_whenMismatchObjectIsBare() throws Exception {
+      // Nothing to report is preferable to a line reading "reported searching: ".
+      assertThat(print.serviceReportedPeriod(med())).isEmpty();
+    }
+  }
 }

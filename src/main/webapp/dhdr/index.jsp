@@ -1509,6 +1509,10 @@
 				// Already yyyy-MM-dd; re-filtering could shift the day.
 				toPrint.startDate = $scope.searchConfig.startDate;
 				toPrint.endDate   = $scope.searchConfig.endDate;
+				// BP4: where the service reported applying a different range, the printout must not
+				// assert the requested one unqualified - the paper outlives the screen carrying the
+				// warning, and the range it states is a DHDR13.01/02.05 claim.
+				toPrint.serviceReportedPeriod = $scope.searchPeriodEchoMismatch;
 
 				$http.post('../ws/rs/dhdr/'+$scope.demographicNo+'/print/summary',toPrint,{ responseType: 'arraybuffer' }).then(function (response) {
 					
@@ -1532,6 +1536,10 @@
 				// Already yyyy-MM-dd; re-filtering could shift the day.
 				toPrint.startDate = $scope.searchConfig.startDate;
 				toPrint.endDate   = $scope.searchConfig.endDate;
+				// BP4: where the service reported applying a different range, the printout must not
+				// assert the requested one unqualified - the paper outlives the screen carrying the
+				// warning, and the range it states is a DHDR13.01/02.05 claim.
+				toPrint.serviceReportedPeriod = $scope.searchPeriodEchoMismatch;
 
 				$http.post('../ws/rs/dhdr/'+$scope.demographicNo+'/print/comparative',toPrint,{ responseType: 'arraybuffer' }).then(function (response) {
 					
@@ -2149,7 +2157,11 @@
 						: (echoed.raw.length ? echoed.raw.join(", ") : "no date range");
 				$scope.searchPeriodEchoMismatch = {
 					requested: periodText(wantGe, wantLe),
-					used: used
+					used: used,
+					// Raw bounds as well, for the printout: it formats dates itself (DHDR03.06) rather
+					// than reprinting a string this screen has already formatted.
+					startDate: echoed.bounds.ge || "",
+					endDate: echoed.bounds.le || ""
 				};
 			};
 

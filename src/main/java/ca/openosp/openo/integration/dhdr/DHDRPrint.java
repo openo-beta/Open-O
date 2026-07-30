@@ -653,6 +653,10 @@ public class DHDRPrint {
    * requires one date format across the views, so this renders through the same formatter as the grid
    * cells rather than the ISO the payload carries.
    *
+   * <p>Where the service reported having applied a range other than the one requested, a second line
+   * says so. Without it the printout would state the requested range unqualified, and the paper
+   * outlives the screen that carries the warning.
+   *
    * @param document Document the document being written
    * @param jsonOb JSONObject the print payload, read for the search bounds
    */
@@ -666,8 +670,53 @@ public class DHDRPrint {
                 + displayDate(jsonOb.optString("endDate")),
             FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
     dateRange.add(Chunk.NEWLINE);
+
+    String reported = serviceReportedPeriod(jsonOb.optJSONObject("serviceReportedPeriod"));
+    if (!reported.isEmpty()) {
+      dateRange.add(
+          new Phrase(
+              "The DHDR EHR Service reported searching: ",
+              FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK)));
+      dateRange.add(
+          new Phrase(
+              reported,
+              FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
+      dateRange.add(Chunk.NEWLINE);
+    }
+
     document.add(dateRange);
     document.add(Chunk.NEWLINE);
+  }
+
+  /**
+   * Describes the search period the DHDR EHR Service reported having applied, or an empty string when
+   * it reported the one requested. BP4 requires the echoed search parameters be checked; the viewer
+   * does that and passes the result here.
+   *
+   * <p>Built from the raw bounds rather than the string the screen already formatted, so the line
+   * obeys DHDR03.06 like every other date in the document. A service answering with a prefix the EMR
+   * never sends leaves no bounds to format - the IG's own {@code DHDR-MedDis.json} echoes {@code eq} -
+   * so in that case the viewer's own wording is quoted rather than printing nothing.
+   *
+   * @param echo JSONObject the mismatch the viewer recorded, or null when there was none
+   * @return String the reported period, or "" when there is nothing to report
+   */
+  String serviceReportedPeriod(JSONObject echo) {
+    if (echo == null) {
+      return "";
+    }
+    String start = displayDate(echo.optString("startDate"));
+    String end = displayDate(echo.optString("endDate"));
+    if (!start.isEmpty() && !end.isEmpty()) {
+      return start + " to " + end;
+    }
+    if (!start.isEmpty()) {
+      return start + " onwards";
+    }
+    if (!end.isEmpty()) {
+      return "all events up to " + end;
+    }
+    return optText(echo, "used");
   }
 
   /** DHDR03.06: matches the screen's Angular {@code | date} default. See displayDate. */
