@@ -204,6 +204,12 @@
 	 	     (DHDR03.06). A cleared start date sends no lower bound, so describe that rather than
 	 	     render a dangling "  to <end>" range the search never actually used (BP6). --%>
 	 	<i>Search period: {{searchPeriodText()}}</i>
+	 	<%-- BP4: placed against the line it contradicts, because the two must be read together - the
+	 	     period above is what was asked for, and this says the service reported using another. --%>
+	 	<div class="alert alert-warning" role="alert" style="margin:6px 0 0 0;" ng-if="searchPeriodEchoMismatch">
+	 		<strong>The DHDR EHR Service reported searching a different period.</strong>
+	 		<div>Requested {{searchPeriodEchoMismatch.requested}}; the service reported using {{searchPeriodEchoMismatch.used}}. The events below may not cover the whole period shown above.</div>
+	 	</div>
 		 	</div>
 		 </div>
 		 
@@ -1335,16 +1341,20 @@
 
 			// DHDR02.05: state the period actually searched. With no start date the query carries no
 			// lower bound, so saying "<blank> to <end>" would advertise a period we never asked for.
-			$scope.searchPeriodText = function(){
+			// Shared with the BP4 echo check below so both describe a range identically.
+			let periodText = function(startDate, endDate){
 				// DHDR03.06: shown in the tables' format. Safe on a yyyy-MM-dd string - the date
 				// filter reads it as local, unlike new Date(), which would land a day earlier.
 				let shown = function(d){ return d ? $filter('date')(d) : d; };
-				let start = shown($scope.searchConfig.startDate);
-				let end = shown($scope.searchConfig.endDate);
+				let start = shown(startDate);
+				let end = shown(endDate);
 				if (!start && !end) { return "all available events"; }
 				if (!start) { return "all events up to " + end; }
 				if (!end) { return start + " onwards"; }
 				return start + " to " + end;
+			};
+			$scope.searchPeriodText = function(){
+				return periodText($scope.searchConfig.startDate, $scope.searchConfig.endDate);
 			};
 			$scope.searching = false;
 			$scope.showSummaryProductFilter = false;
@@ -1373,6 +1383,8 @@
 			$scope.dhdrPatientData = "";
 			$scope.patientDataUnmatched = false;
 			$scope.dhdrPatientDataUnmatched = false;
+			// BP4: set when the service's `self` link reports a date range other than the one requested.
+			$scope.searchPeriodEchoMismatch = null;
 			$scope.searchComplete = false;
 			$scope.buttonDisabled = false;
 
@@ -2065,6 +2077,8 @@
 				$scope.searchConfig.pageId = null;
 				$scope.searchComplete = false;
 				$scope.dhdrPatientResolved = false;
+				// Cleared per search: the notice describes the range this search asked for.
+				$scope.searchPeriodEchoMismatch = null;
 				// Cleared per search, not per page: a paged walk calls processEntries once per page and
 				// the variants must accumulate across all of them.
 				$scope.dhdrPatientVariants = {firstName: [], lastName: [], gender: [], dob: [], hin: []};
@@ -2088,6 +2102,57 @@
 			
 			}
 		
+			// BP4: the FHIR search specification requires that an application check the parameters the
+			// server reports it actually used, which come back in the bundle's `self` link. Only the date
+			// range is checked here. The sort hint cannot hurt us - the tables order client-side rather
+			// than trusting `_sort` - but a dropped whenprepared bound would silently substitute the
+			// service's own 120-day default (BP5), leaving the "Search period" line above advertising a
+			// window the results did not come from.
+			let whenPreparedBounds = function(selfUrl){
+				// `bounds` keyed by FHIR prefix for comparison, `raw` in order for the description: a
+				// service answering with a prefix we never send (the IG's own sample echoes eq) has no
+				// ge/le to describe, and reporting that as "all available events" would misstate it.
+				let out = {bounds: {}, raw: []};
+				let q = selfUrl.indexOf("?");
+				if (q < 0) { return out; }
+				selfUrl.substring(q + 1).split("&").forEach(function(part){
+					let eq = part.indexOf("=");
+					if (eq < 0) { return; }
+					if (decodeURIComponent(part.substring(0, eq)) !== "whenprepared") { return; }
+					let v = decodeURIComponent(part.substring(eq + 1));
+					// Keep the prefix rather than only the date: we send ge/le, and a service answering
+					// eq/gt/lt has not applied the bound as asked even when the date matches. An absent
+					// prefix means eq in FHIR.
+					let m = /^(ge|le|gt|lt|eq|sa|eb|ne)?(.*)$/.exec(v);
+					out.bounds[m[1] || "eq"] = m[2];
+					out.raw.push(v);
+				});
+				return out;
+			};
+			let checkSearchPeriodEcho = function(response){
+				let selfUrl = null;
+				(response.link || []).forEach(function(l){
+					if (l && l.relation === "self" && l.url) { selfUrl = l.url; }
+				});
+				// No self link is not a mismatch - the check is on values the service did return.
+				if (!selfUrl) { return; }
+				let echoed = whenPreparedBounds(selfUrl);
+				// Only bounds the viewer actually asked for are asserted. Where a date field was left
+				// blank the service supplies its own, and echoing that contradicts nothing.
+				let wantGe = $scope.searchConfig.startDate;
+				let wantLe = $scope.searchConfig.endDate;
+				if (!(wantGe && echoed.bounds.ge !== wantGe) && !(wantLe && echoed.bounds.le !== wantLe)) {
+					return;
+				}
+				let used = (echoed.bounds.ge || echoed.bounds.le)
+						? periodText(echoed.bounds.ge, echoed.bounds.le)
+						: (echoed.raw.length ? echoed.raw.join(", ") : "no date range");
+				$scope.searchPeriodEchoMismatch = {
+					requested: periodText(wantGe, wantLe),
+					used: used
+				};
+			};
+
 			search = function(demographicNo,searchConfig){
 				$scope.searching = true;
 				dhdrService.searchByDemographicNo2(demographicNo,searchConfig).then(function(response){
@@ -2184,6 +2249,8 @@
 								|| $scope.dhdrPatient.hinUnmatched || $scope.dhdrPatient.dobUnmatched
 								|| $scope.dhdrPatient.genderUnmatched);
 					}
+
+					checkSearchPeriodEcho(response);
 
 					if(response.link && response.link.some(function(l){ return l.relation === "next"; })){
 						$scope.searchConfig.searchId = response.id;
