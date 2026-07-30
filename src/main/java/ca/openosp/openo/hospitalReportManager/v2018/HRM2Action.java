@@ -341,7 +341,10 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
     //new SFTPConnector().startAutoFetch(loggedInInfo);
     public String fetch() throws Exception {
 
+        System.out.println("[HRM-DEBUG] fetch() called");
+
         boolean isHrm = securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_hrm", "r", null);
+        System.out.println(String.format("[HRM-DEBUG] _hrm privilege = %s", isHrm));
 
         if (!isHrm) {
             writeFetchResult("You do not have permission to fetch HRM reports. The _hrm privilege is required.");
@@ -358,20 +361,40 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
             String decryptionKey = getUserPropertyValueOrNull("hrm_decryption_key");
             String privateKeyFile = getUserPropertyValueOrNull("hrm_private_key_file");
 
+            System.out.println(String.format("[HRM-DEBUG] hrm_hostname         = %s", hostname));
+            System.out.println(String.format("[HRM-DEBUG] hrm_port             = %s", port));
+            System.out.println(String.format("[HRM-DEBUG] hrm_username         = %s", username));
+            System.out.println(String.format("[HRM-DEBUG] hrm_location         = %s", remoteDir));
+            System.out.println(String.format("[HRM-DEBUG] hrm_private_key_file = %s", privateKeyFile));
+            System.out.println(String.format("[HRM-DEBUG] hrm_decryption_key   = %s",
+                    decryptionKey == null ? "MISSING" : String.format("present, %d chars", decryptionKey.length())));
+
             String privateKeyDirectory = OscarProperties.getInstance().getProperty("OMD_DIRECTORY");
+            System.out.println(String.format("[HRM-DEBUG] OMD_DIRECTORY property = %s", privateKeyDirectory));
             if (privateKeyDirectory == null) {
                 privateKeyDirectory = OscarProperties.getInstance().getDocumentDirectory() + ".." + File.separator + "hrm" + File.separator + "OMD" + File.separator;
+                System.out.println(String.format("[HRM-DEBUG] OMD_DIRECTORY absent, using default %s", privateKeyDirectory));
             }
 
             int portNum = SFTPConnector.parsePort(port);
             String privateKeyPath = SFTPConnector.requirePrivateKeyPath(privateKeyDirectory, privateKeyFile);
 
+            File keyOnDisk = new File(privateKeyPath);
+            System.out.println(String.format("[HRM-DEBUG] key path = %s", privateKeyPath));
+            System.out.println(String.format("[HRM-DEBUG] key exists=%s readable=%s bytes=%d",
+                    keyOnDisk.exists(), keyOnDisk.canRead(), keyOnDisk.exists() ? keyOnDisk.length() : -1L));
+
+            System.out.println(String.format("[HRM-DEBUG] opening connection to %s:%d", hostname, portNum));
             connector = new SFTPConnector(LoggedInInfo.getLoggedInInfoFromSession(request), hostname, portNum, username, privateKeyPath, "Manual");
             SFTPConnector.setDecryptionKey(decryptionKey);
+
+            System.out.println(String.format("[HRM-DEBUG] starting fetch, remote folder %s", remoteDir));
             connector.startAutoFetch(LoggedInInfo.getLoggedInInfoFromSession(request), remoteDir);
             connector.close();
+            System.out.println("[HRM-DEBUG] fetch completed with no exception");
         } catch (Exception e) {
             error = e.getMessage();
+            System.out.println(String.format("[HRM-DEBUG] FAILED %s: %s", e.getClass().getName(), e.getMessage()));
             logger.error("HRM manual fetch failed", e);
             SFTPConnector.notifyHrmError(LoggedInInfo.getLoggedInInfoFromSession(request), error);
         }

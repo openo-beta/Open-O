@@ -66,6 +66,9 @@ public class SFTPConnector {
     private Session sess;
     private Logger fLogger; //file logger
 
+    /** Socket timeout for the sFTP connection, so an unreachable host fails quickly. */
+    private static final int CONNECT_TIMEOUT_MS = 30000;
+
     private static final String OMD_HRM_USER = OscarProperties.getInstance().getProperty("OMD_HRM_USER");
     private static final String OMD_HRM_IP = OscarProperties.getInstance().getProperty("OMD_HRM_IP");
     private static final int OMD_HRM_PORT = Integer.parseInt(OscarProperties.getInstance().getProperty("OMD_HRM_PORT"));
@@ -133,9 +136,13 @@ public class SFTPConnector {
 
         try {
             jsch = new JSch();
+            System.out.println(String.format("[HRM-DEBUG] loading identity %s", keyLocation));
             jsch.addIdentity(keyLocation);
+            System.out.println("[HRM-DEBUG] identity loaded");
             sess = jsch.getSession(user, host, port);
+            System.out.println(String.format("[HRM-DEBUG] session created for %s@%s:%d", user, host, port));
         } catch (JSchException je) {
+            System.out.println(String.format("[HRM-DEBUG] identity or session failed: %s", je.getMessage()));
             hrmLog.setError(je.getMessage());
             hrmLogDao.merge(hrmLog);
             throw je;
@@ -146,12 +153,17 @@ public class SFTPConnector {
         sess.setConfig(confProp);
 
         try {
-            sess.connect();
+            System.out.println(String.format("[HRM-DEBUG] opening TCP socket to %s:%d, timeout %dms", host, port, CONNECT_TIMEOUT_MS));
+            long startedAt = System.currentTimeMillis();
+            sess.connect(CONNECT_TIMEOUT_MS);
+            System.out.println(String.format("[HRM-DEBUG] authenticated after %dms", System.currentTimeMillis() - startedAt));
             Channel channel = sess.openChannel("sftp");
             channel.connect();
             cmd = (ChannelSftp) channel;
+            System.out.println(String.format("[HRM-DEBUG] sftp channel open, remote cwd %s", cmd.pwd()));
             fLogger.info("SFTP connection established with " + host + ":" + port + ". Current path on server is: " + cmd.pwd());
         } catch (JSchException je) {
+            System.out.println(String.format("[HRM-DEBUG] connect failed: %s", je.getMessage()));
             hrmLog.setError(je.getMessage());
             hrmLogDao.merge(hrmLog);
             throw je;
@@ -569,16 +581,23 @@ public class SFTPConnector {
             try {
 
                 String[] files = ls(remoteDir);
+                System.out.println(String.format("[HRM-DEBUG] listing %s returned %d entries",
+                        remoteDir, files == null ? -1 : files.length));
+
                 localFilePaths = downloadDirectoryContents(remoteDir);
+                System.out.println(String.format("[HRM-DEBUG] downloaded %d files locally",
+                        localFilePaths == null ? -1 : localFilePaths.length));
 
                 hrmLog.setDownloadedFiles(true);
                 hrmLog.setNumFilesDownloaded(files.length);
                 hrmLogDao.merge(hrmLog);
 
                 if (files == null || files.length == 0) {
+                    System.out.println("[HRM-DEBUG] nothing on the server, finishing");
                     return true;
                 }
                 deleteDirectoryContents(remoteDir, files);
+                System.out.println("[HRM-DEBUG] removed downloaded files from the server");
 
                 hrmLog.setDeleted(true);
                 hrmLogDao.merge(hrmLog);
