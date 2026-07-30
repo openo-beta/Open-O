@@ -531,7 +531,7 @@
 								<td>{{med.rxNumber}}</td>
 								<td scope="row">{{med.ahfsClass}}/{{med.ahfsSubClass}}</td>
 								<td>{{med.dispensingPharmacy}}</td>
-								<td>{{med.pharmacistLastname}}, {{med.pharmacistFirstname}} </td>
+								<td>{{med | dhdrPharmacist}}</td>
 								<td>{{med.dispensingPharmacyFaxNumber}}</td>
 								<td ng-click="showGroupedServices2(servicesWithGroupedDups[med.serviceGroupKey])"><span ng-if="med.headRecord && serviceGroupSize(med) > 1"><a>{{serviceGroupSize(med)}}</a></span><!-- {{med | json}}  --></td>
 
@@ -826,7 +826,7 @@
 								<td>{{med.rxNumber}}</td>
 								<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
 								<td>{{med.dispensingPharmacy}} - Fax:{{med.dispensingPharmacyFaxNumber}}</td>
-								<td>{{med.pharmacistLastname}}, {{med.pharmacistFirstname}} </td>
+								<td>{{med | dhdrPharmacist}}</td>
 
 							</tr>
 							</tbody>
@@ -1063,7 +1063,7 @@
 						</tr> 
 						<tr>
 							<th>Pharmacist</th>
-							<td>{{med.pharmacistLastname}}, {{med.pharmacistFirstname}} ({{med.pharmacistLicenceNumber.value}})
+							<td>{{med | dhdrPharmacist:true}}</td>
 						</tr>
 					
 <!-- tr>
@@ -1180,7 +1180,7 @@
 		 					<td>{{med.brandName.display}}</td> 
 		 					<td>{{med.genericName}} </td>
 		 					<td>{{med.dispensingPharmacy}}</td>
-		 					<td>{{med.pharmacistLastname}}, {{med.pharmacistFirstname}} </td>
+		 					<td>{{med | dhdrPharmacist}}</td>
 		 					<td>{{med.dispensingPharmacyFaxNumber}}</td>
 		 				</tr> 
 		 			</tbody> 
@@ -1219,6 +1219,26 @@
 				// already printed changes.
 				return (med.frequency || "") + " every " + (med.period || "")
 						+ " - " + (med.periodMax || "") + " " + (med.periodUnit || "");
+			};
+		});
+
+
+		// Every part of a pharmacist is optional, so every separator is conditional: no licence must
+		// not render an empty bracket and no surname must not render a leading comma. Four cells
+		// composed this inline and all four dropped the guards, so a service whose pharmacist carries
+		// no OCP licence read as ", " - and the print, which does guard, then disagreed with the
+		// screen. A filter for the same reason as dhdrFrequency above: two of the four cells render
+		// in their own modal scope. Pass true to append the licence.
+		app.filter('dhdrPharmacist', function(){
+			return function(med, withLicence){
+				if(!med){ return ""; }
+				var last = (med.pharmacistLastname || "").trim();
+				var first = (med.pharmacistFirstname || "").trim();
+				var name = last ? (first ? last + ", " + first : last) : first;
+				if(!withLicence){ return name; }
+				var licence = ((med.pharmacistLicenceNumber || {}).value || "").trim();
+				if(!licence){ return name; }
+				return name ? name + " (" + licence + ")" : licence;
 			};
 		});
 

@@ -503,7 +503,9 @@ public class DHDRPrint {
     headerTable.addCell(getSpacerCell(2));
 
     // Row 4
-    getSummaryItemHeaderCell(headerTable, "DOB", patientDob);
+    // DHDR03.06: the same format as every other date on the page. computeAge below keeps the raw
+    // value - it parses yyyy-MM-dd, so formatting first would break the age.
+    getSummaryItemHeaderCell(headerTable, "DOB", displayDate(patientDob));
     getSummaryItemHeaderCell(
         headerTable, "Pharmacy Fax", med.optString("dispensingPharmacyFaxNumber", "N/A"));
     headerTable.addCell(getSpacerCell(2));
@@ -897,13 +899,30 @@ public class DHDRPrint {
     return display.isEmpty() ? ("PIN: " + pin) : (display + " (PIN: " + pin + ")");
   }
 
+  /**
+   * Renders the EMR demographic's date of birth in the same format as every other date on the page.
+   *
+   * <p>Not {@link Demographic#getBirthDayAsString()} directly: it joins the three birth columns
+   * without padding, so it can yield {@code 1984-8-8}, which is not a date any formatter here parses.
+   * {@link DHDRManager#fhirBirthDate} already does the padding and validation for the search, so this
+   * borrows it rather than repeating it. Falls back to the raw string when it cannot be parsed - an
+   * unrecognised value is still information.
+   *
+   * @param demo Demographic the patient whose date of birth is being printed
+   * @return String the date as "MMM d, yyyy", or the raw joined value when it cannot be parsed
+   */
+  private String emrBirthDate(Demographic demo) {
+    String iso = DHDRManager.fhirBirthDate(demo);
+    return iso != null ? displayDate(iso) : demo.getBirthDayAsString();
+  }
+
   private String getDemoInfo(Demographic demo) {
     StringBuilder demoInfo =
         new StringBuilder(demo.getSexDesc())
             .append(" Age: ")
             .append(demo.getAge())
             .append(" (")
-            .append(demo.getBirthDayAsString())
+            .append(emrBirthDate(demo))
             .append(")")
             .append(" HIN: (")
             .append(demo.getHcType())
@@ -1250,7 +1269,8 @@ public class DHDRPrint {
       sb.append("   Gender: ").append(gender);
     }
     if (!dob.isEmpty()) {
-      sb.append("   DOB: ").append(dob);
+      // Formatted for display (DHDR03.06); computeAge still reads the raw yyyy-MM-dd.
+      sb.append("   DOB: ").append(displayDate(dob));
       String age = computeAge(dob);
       if (!age.isEmpty()) {
         sb.append("   Age: ").append(age);
