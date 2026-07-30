@@ -481,6 +481,11 @@ public class DHDRPrint {
     return cell;
   }
 
+  // The value-rendering helpers below, and the two column lists, are package-private rather than
+  // private so DHDRPrintUnitTest can exercise them directly - the same reason DHDRManager exposes
+  // fhirBirthDate and describesOperationOutcome. They are pure functions of their arguments; nothing
+  // outside this package uses them.
+
   /**
    * One column of a printed grid: the heading, and how to read the value out of one event.
    *
@@ -490,7 +495,7 @@ public class DHDRPrint {
    * (DHDR07.01(h)), while the Summary copy had always been correct. A column list cannot drift from
    * itself.
    */
-  private record Column(String label, Function<JSONObject, String> value) {}
+  record Column(String label, Function<JSONObject, String> value) {}
 
   /**
    * The pharmacy-service columns, per DHDR07.01's element list. Rendered by both the Summary and the
@@ -498,7 +503,7 @@ public class DHDRPrint {
    *
    * @return List&lt;Column&gt; the nine columns in display order
    */
-  private List<Column> pharmacyServiceColumns() {
+  List<Column> pharmacyServiceColumns() {
     return List.of(
         new Column("Last Service Date", med -> displayDate(med.optString("whenPrepared"))),
         new Column("Pickup Date", med -> displayDate(med.optString("whenHandedOver"))),
@@ -518,7 +523,7 @@ public class DHDRPrint {
    *
    * @return List&lt;Column&gt; the nine columns in display order
    */
-  private List<Column> emrPrescriptionColumns() {
+  List<Column> emrPrescriptionColumns() {
     return List.of(
         new Column("Start Date", med -> displayDate(med.optString("rxDate"))),
         new Column("Medication", this::emrMedicationName),
@@ -683,7 +688,7 @@ public class DHDRPrint {
    * @param raw String the value as it arrives, possibly empty
    * @return String the date as "MMM d, yyyy", or the input unchanged when it cannot be parsed
    */
-  private String displayDate(String raw) {
+  String displayDate(String raw) {
     String value = raw == null ? "" : raw.trim();
     if (value.isEmpty() || "null".equalsIgnoreCase(value)) {
       return "";
@@ -712,7 +717,7 @@ public class DHDRPrint {
    * @param key String the field to read
    * @return String the trimmed value, or an empty string when absent, blank or a stringified null
    */
-  private String optText(JSONObject med, String key) {
+  String optText(JSONObject med, String key) {
     String value = med.optString(key);
     if (value == null) {
       return "";
@@ -731,7 +736,7 @@ public class DHDRPrint {
    * @param value String the candidate detail
    * @return boolean true when the value is present and not a zero
    */
-  private boolean isMeaningful(String value) {
+  boolean isMeaningful(String value) {
     if (value == null || value.trim().isEmpty()) {
       return false;
     }
@@ -753,7 +758,7 @@ public class DHDRPrint {
    * @param unit String the unit of measure, possibly empty
    * @return String the two joined by a space, either one alone, or an empty string
    */
-  private String joinValueAndUnit(String value, String unit) {
+  String joinValueAndUnit(String value, String unit) {
     String v = value == null ? "" : value.trim();
     String u = unit == null ? "" : unit.trim();
     if (v.isEmpty()) {
@@ -768,7 +773,7 @@ public class DHDRPrint {
    * @param med JSONObject one EMR medication from the comparative payload
    * @return String the generic name, else the brand name, else the custom name, else empty
    */
-  private String emrMedicationName(JSONObject med) {
+  String emrMedicationName(JSONObject med) {
     String generic = optText(med, "genericName");
     if (!generic.trim().isEmpty()) {
       return generic;
@@ -790,7 +795,7 @@ public class DHDRPrint {
    * @param med JSONObject one EMR medication from the comparative payload
    * @return String the dose, possibly a range, with a unit where one adds information
    */
-  private String emrDose(JSONObject med) {
+  String emrDose(JSONObject med) {
     String min = optText(med, "takeMin");
     String max = optText(med, "takeMax");
     // Falsy-for-zero, as the screen's ng-if is: a recorded dose of 0 is placeholder data, not a dose.
@@ -811,7 +816,7 @@ public class DHDRPrint {
    * @param med JSONObject one EMR medication from the comparative payload
    * @return String the quantity, followed by "/ duration unit" when a duration is recorded
    */
-  private String emrQuantityAndDuration(JSONObject med) {
+  String emrQuantityAndDuration(JSONObject med) {
     String quantity = optText(med, "quantity");
     String duration = optText(med, "duration");
     if (!isMeaningful(duration)) {
@@ -830,7 +835,7 @@ public class DHDRPrint {
    * @param med JSONObject one EMR medication from the comparative payload
    * @return String the repeat count, optionally followed by the refill quantity and duration
    */
-  private String emrRefills(JSONObject med) {
+  String emrRefills(JSONObject med) {
     String repeats = optText(med, "repeats");
     String refillQuantity = optText(med, "refillQuantity");
     if (!isMeaningful(refillQuantity)) {
@@ -855,7 +860,7 @@ public class DHDRPrint {
    * @param med JSONObject one dispense from the print payload
    * @return String the composed frequency, or an empty string when no part was supplied
    */
-  private String frequencyText(JSONObject med) {
+  String frequencyText(JSONObject med) {
     String frequency = med.optString("frequency");
     String period = med.optString("period");
     String periodMax = med.optString("periodMax");
@@ -904,7 +909,7 @@ public class DHDRPrint {
    * @param system String the FHIR identifier system URI, or null/empty
    * @return String the licensing-body name, or an empty string when the system is unknown/absent
    */
-  private String licenceBody(String system) {
+  String licenceBody(String system) {
     if (system == null || system.isEmpty()) {
       return "";
     }
@@ -934,7 +939,7 @@ public class DHDRPrint {
    * @param med JSONObject one dispense from the print payload
    * @return String the pharmacist's name with the licence appended where there is one
    */
-  private String pharmacistName(JSONObject med) {
+  String pharmacistName(JSONObject med) {
     String last = optText(med, "pharmacistLastname");
     String first = optText(med, "pharmacistFirstname");
     String name = last.isEmpty() ? first : (first.isEmpty() ? last : (last + ", " + first));
@@ -953,7 +958,7 @@ public class DHDRPrint {
    * @param brandObj JSONObject the parsed brandName object, or null
    * @return String the service-type display with the PIN appended when available
    */
-  private String serviceTypeWithPin(JSONObject brandObj) {
+  String serviceTypeWithPin(JSONObject brandObj) {
     if (brandObj == null) {
       return "";
     }
@@ -977,7 +982,7 @@ public class DHDRPrint {
    * @param demo Demographic the patient whose date of birth is being printed
    * @return String the date as "MMM d, yyyy", or the raw joined value when it cannot be parsed
    */
-  private String emrBirthDate(Demographic demo) {
+  String emrBirthDate(Demographic demo) {
     String iso = DHDRManager.fhirBirthDate(demo);
     return iso != null ? displayDate(iso) : demo.getBirthDayAsString();
   }
@@ -1155,7 +1160,7 @@ public class DHDRPrint {
    * @param dob String the FHIR birthDate value
    * @return String the age in years, or an empty string when the value cannot be parsed
    */
-  private String computeAge(String dob) {
+  String computeAge(String dob) {
     try {
       String[] parts = dob.split("-");
       int year = Integer.parseInt(parts[0]);
