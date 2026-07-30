@@ -135,7 +135,7 @@ public class DHDRPrint {
       auditMandatoryDispenseFields(med, 0);
 
       table.addCell(getHeaderCell("Dispense Date"));
-      table.addCell(getHeaderCell(med.optString("whenPrepared"))); // Dispense Date
+      table.addCell(getHeaderCell(displayDate(med.optString("whenPrepared")))); // Dispense Date
 
       table.setHeaderRows(1);
 
@@ -145,7 +145,7 @@ public class DHDRPrint {
       // the property the viewer assigns for drug events (the service tables read whenHandedOver; both
       // come from the same MedicationDispense.whenHandedOver).
       table.addCell(getHeaderCell("Pickup Date"));
-      table.addCell(getItemCell(med.optString("pickUpDate")));
+      table.addCell(getItemCell(displayDate(med.optString("pickUpDate"))));
 
       table.addCell(getHeaderCell("Generic"));
       table.addCell(getItemCell(med.optString("genericName"))); // Generic
@@ -250,7 +250,7 @@ public class DHDRPrint {
             getItemCell(licenceBody.isEmpty() ? licenceValue : (licenceBody + " " + licenceValue)));
       }
 
-      table.addCell(getHeaderCell("Prescriber #"));
+      table.addCell(getHeaderCell("Prescriber Phone"));
       table.addCell(getItemCell(med.optString("prescriberPhoneNumber")));
       table.addCell(getHeaderCell("Pharmacy"));
       table.addCell(getItemCell(med.optString("dispensingPharmacy")));
@@ -327,7 +327,11 @@ public class DHDRPrint {
             "Date Range: ", FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
     emrDateRangeParagraph.add(
         new Phrase(
-            jsonOb.get("startDate") + " to " + jsonOb.get("endDate"),
+            // DHDR02.05 displays the search period used; DHDR03.06 wants one date format across the
+            // views. The screen renders this through the same medium filter as the tables
+            // (searchPeriodText), so the printout does too - it was the last ISO date left on the page.
+            displayDate(jsonOb.optString("startDate")) + " to "
+                + displayDate(jsonOb.optString("endDate")),
             FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
     emrDateRangeParagraph.add(Chunk.NEWLINE);
 
@@ -418,8 +422,8 @@ public class DHDRPrint {
             continue;
           }
 
-          serviceTable.addCell(getItemCell(med.optString("whenPrepared"))); // Last Service Date
-          serviceTable.addCell(getItemCell(med.optString("whenHandedOver"))); // Pickup Date
+          serviceTable.addCell(getItemCell(displayDate(med.optString("whenPrepared")))); // Last Service Date
+          serviceTable.addCell(getItemCell(displayDate(med.optString("whenHandedOver")))); // Pickup Date
           JSONObject brandObj = med.optJSONObject("brandName");
           serviceTable.addCell(getItemCell(serviceTypeWithPin(brandObj))); // Service Type (+ PIN)
           serviceTable.addCell(getItemCell(med.optString("genericName")));
@@ -464,8 +468,8 @@ public class DHDRPrint {
     header.setColspan(12);
     table.addCell(header);
 
-    String dispenseDate = med.optString("whenPrepared");
-    String pickupDate = med.optString("pickUpDate");
+    String dispenseDate = displayDate(med.optString("whenPrepared"));
+    String pickupDate = displayDate(med.optString("pickUpDate"));
     JSONObject patient = med.optJSONObject("patient");
     String patientDob = patient != null ? patient.optString("birthDate") : "N/A";
     String patientGender = patient != null ? patient.optString("gender") : "N/A";
@@ -512,7 +516,7 @@ public class DHDRPrint {
     // Row 2
     getSummaryItemHeaderCell(headerTable, "Last Name", patientLastName);
     getSummaryItemHeaderCell(
-        headerTable, "Prescriber #", med.optString("prescriberPhoneNumber", "N/A"));
+        headerTable, "Prescriber Phone", med.optString("prescriberPhoneNumber", "N/A"));
     getSummaryItemHeaderCell(headerTable, "Pickup Date", pickupDate);
 
     // Row 3
@@ -615,7 +619,46 @@ public class DHDRPrint {
     return cell;
   }
 
-  private final SimpleDateFormat dateOnly = new SimpleDateFormat("yyyy-MM-dd");
+  /** DHDR03.06: matches the screen's Angular {@code | date} default. See displayDate. */
+  private final SimpleDateFormat mediumDate = new SimpleDateFormat("MMM d, yyyy");
+
+  /**
+   * Renders a date for display in the same format the screen uses.
+   *
+   * <p>DHDR03.06 requires a consistent date format across DHDR EHR views. The screen settled on
+   * Angular's default {@code | date} (medium date, "Jun 23, 2016") under #55, while the print kept
+   * ISO - so the same dispense read two ways depending on where you looked, and the comparative
+   * printout showed both at once: ISO in the DHDR half and ISO in the EMR half against a screen that
+   * showed neither. Whether a PDF is a "view" is arguable; two renderings of one date sitting side by
+   * side is not.
+   *
+   * <p>Accepts what the two sources actually supply: an epoch-millisecond string from the EMR
+   * transfer objects, and an ISO date or date-time from the DHDR service. Anything else is returned
+   * unchanged rather than blanked - an unrecognised value is still information.
+   *
+   * <p>Display only. The sort in {@code sortByWhenPreparedDesc} compares the raw ISO strings, where
+   * lexical order is chronological order; formatting first would break it.
+   *
+   * @param raw String the value as it arrives, possibly empty
+   * @return String the date as "MMM d, yyyy", or the input unchanged when it cannot be parsed
+   */
+  private String displayDate(String raw) {
+    String value = raw == null ? "" : raw.trim();
+    if (value.isEmpty() || "null".equalsIgnoreCase(value)) {
+      return "";
+    }
+    try {
+      return mediumDate.format(new Date(Long.parseLong(value)));
+    } catch (NumberFormatException notEpoch) {
+      // Not epoch millis, so treat it as ISO. A date-time carries a 'T'; take the date part.
+      String datePart = value.length() > 10 && value.charAt(10) == 'T' ? value.substring(0, 10) : value;
+      try {
+        return mediumDate.format(java.sql.Date.valueOf(LocalDate.parse(datePart)));
+      } catch (Exception notIso) {
+        return value;
+      }
+    }
+  }
 
   /**
    * Renders an EMR medication's start date. The EMR list carries {@code rxDate} as an epoch
@@ -632,7 +675,7 @@ public class DHDRPrint {
       return "";
     }
     try {
-      return dateOnly.format(new Date(Long.parseLong(raw)));
+      return mediumDate.format(new Date(Long.parseLong(raw)));
     } catch (NumberFormatException e) {
       return raw;
     }
@@ -974,7 +1017,11 @@ public class DHDRPrint {
             "Date Range: ", FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
     emrDateRangeParagraph.add(
         new Phrase(
-            jsonOb.get("startDate") + " to " + jsonOb.get("endDate"),
+            // DHDR02.05 displays the search period used; DHDR03.06 wants one date format across the
+            // views. The screen renders this through the same medium filter as the tables
+            // (searchPeriodText), so the printout does too - it was the last ISO date left on the page.
+            displayDate(jsonOb.optString("startDate")) + " to "
+                + displayDate(jsonOb.optString("endDate")),
             FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
     emrDateRangeParagraph.add(Chunk.NEWLINE);
 
@@ -1071,8 +1118,8 @@ public class DHDRPrint {
             continue;
           }
 
-          serviceTable.addCell(getItemCell(med.optString("whenPrepared")));
-          serviceTable.addCell(getItemCell(med.optString("whenHandedOver")));
+          serviceTable.addCell(getItemCell(displayDate(med.optString("whenPrepared"))));
+          serviceTable.addCell(getItemCell(displayDate(med.optString("whenHandedOver"))));
           JSONObject brandObj = med.optJSONObject("brandName");
           serviceTable.addCell(getItemCell(serviceTypeWithPin(brandObj)));
           serviceTable.addCell(getItemCell(med.optString("genericName")));

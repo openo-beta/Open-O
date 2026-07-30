@@ -1425,7 +1425,9 @@
 			// often just repeats the strength unit, so fall back to the drug form where the
 			// form names a countable unit (DemographicExportHelper's list). Anything else
 			// has no unit to show, and DHDR05.02 asks for these "if available".
-			let emrDoseUnitForms = ["capsule","drop","dosing","grobule","granule","patch","pellet","pill","tablet"];
+			// "globule" was inherited as "grobule"; both are listed so a dosage form recorded with the
+			// original typo still matches, rather than silently losing its unit on correction.
+			let emrDoseUnitForms = ["capsule","drop","dosing","globule","grobule","granule","patch","pellet","pill","tablet"];
 			$scope.emrDoseUnit = function(med){
 				if (!med) { return ""; }
 				let unit = med.unit ? med.unit.toLowerCase() : "";
@@ -2378,7 +2380,13 @@
     						var failed = !dhdrOverridden && errors.length > 0;
 
     						// DHDR11.01.a/b, DHDR15.02: audit the actual outcome, not a blanket successful override.
-    						var auditStatus = dhdrOverridden ? 'Overwrite' : (failed ? 'Failed' : (cancelled ? 'Cancelled' : 'Overwrite'));
+    						// A response carrying no code we recognise is recorded as 'Unknown' rather than
+    						// 'Overwrite': the audit row is the evidence that an override happened, so asserting
+    						// a success we did not observe is the one wrong answer here. The re-search below
+    						// still runs - DHDR is the source of truth for whether access opened - so an
+    						// unrecognised-but-successful response still surfaces the data, it just is not
+    						// logged as a confirmed override.
+    						var auditStatus = dhdrOverridden ? 'Overwrite' : (failed ? 'Failed' : (cancelled ? 'Cancelled' : 'Unknown'));
     						dhdrService.logConsentOverride($scope.demographicNo, med.uuid, selectedItem.data, auditStatus);
 
     						if (failed) {
