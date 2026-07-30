@@ -342,6 +342,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         boolean isHrm = securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_hrm", "r", null);
 
         if (!isHrm) {
+            writeFetchResult("You do not have permission to fetch HRM reports. The _hrm privilege is required.");
             return null;
         }
         SFTPConnector connector = null;
@@ -373,13 +374,23 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
             SFTPConnector.notifyHrmError(LoggedInInfo.getLoggedInInfoFromSession(request), error);
         }
 
+        writeFetchResult(error);
+
+        return null;
+    }
+
+    /**
+     * Writes the outcome of a fetch request as JSON so the caller always receives a parseable body.
+     *
+     * @param error String the message to report to the user, or null when the fetch succeeded
+     * @throws Exception if the response cannot be written
+     */
+    private void writeFetchResult(String error) throws Exception {
         JSONObject obj = new JSONObject();
         obj.put("error", error);
 
         response.setContentType("application/json");
         obj.write(response.getWriter());
-
-        return null;
     }
 
     public String saveConfigurationDetails() throws Exception {

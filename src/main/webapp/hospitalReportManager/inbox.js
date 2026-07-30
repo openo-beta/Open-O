@@ -187,6 +187,10 @@ function fetchNewData() {
                 alert('An error occured. Please check the HRM log for more information\n' + data.error);
             }
             $("#libraryTable").DataTable().ajax.reload();
+        },
+        error: function () {
+            alert('An error occured. Please check the HRM log for more information');
+            $("#libraryTable").DataTable().ajax.reload();
         }
     });
 
