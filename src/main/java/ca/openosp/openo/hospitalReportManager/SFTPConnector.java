@@ -69,6 +69,9 @@ public class SFTPConnector {
     /** Socket timeout for the sFTP connection, so an unreachable host fails quickly. */
     private static final int CONNECT_TIMEOUT_MS = 30000;
 
+    /** Interval between keepalive messages sent while the connection is idle. */
+    private static final int SERVER_ALIVE_INTERVAL_MS = 60000;
+
     private static final String OMD_HRM_USER = OscarProperties.getInstance().getProperty("OMD_HRM_USER");
     private static final String OMD_HRM_IP = OscarProperties.getInstance().getProperty("OMD_HRM_IP");
     private static final int OMD_HRM_PORT = Integer.parseInt(OscarProperties.getInstance().getProperty("OMD_HRM_PORT"));
@@ -151,6 +154,10 @@ public class SFTPConnector {
         java.util.Properties confProp = new java.util.Properties();
         confProp.put("StrictHostKeyChecking", "no");
         sess.setConfig(confProp);
+
+        // Keeps the session open while downloaded reports are decrypted and parsed, which happens
+        // between the last download and the deletion of the files from the server.
+        sess.setServerAliveInterval(SERVER_ALIVE_INTERVAL_MS);
 
         try {
             System.out.println(String.format("[HRM-DEBUG] opening TCP socket to %s:%d, timeout %dms", host, port, CONNECT_TIMEOUT_MS));
@@ -596,15 +603,15 @@ public class SFTPConnector {
                     System.out.println("[HRM-DEBUG] nothing on the server, finishing");
                     return true;
                 }
-                deleteDirectoryContents(remoteDir, files);
-                System.out.println("[HRM-DEBUG] removed downloaded files from the server");
-
-                hrmLog.setDeleted(true);
-                hrmLogDao.merge(hrmLog);
 
                 if (localFilePaths == null || localFilePaths.length == 0) {
                     return true;
                 }
+
+                // Remote filenames of the reports that reached the document directory. These are the
+                // only files removed from the server; anything that failed earlier is left for the
+                // next fetch to retry.
+                List<String> storedRemoteFilenames = new ArrayList<String>();
 
                 for (String encryptedFile : localFilePaths) {
 
@@ -628,6 +635,8 @@ public class SFTPConnector {
                         hrmLogEntryDao.merge(hrmLogEntry);
 
                         if (filename != null) {
+
+                            storedRemoteFilenames.add(new File(encryptedFile).getName());
 
                             List<Throwable> errors = new ArrayList<Throwable>();
                             HRMReport report = HRMReportParser.parseReport(loggedInInfo, filename, errors);
@@ -666,6 +675,15 @@ public class SFTPConnector {
                     }
 
 
+                }
+
+                if (!storedRemoteFilenames.isEmpty()) {
+                    deleteDirectoryContents(remoteDir, storedRemoteFilenames.toArray(new String[0]));
+                    System.out.println("[HRM-DEBUG] server cleanup: " + storedRemoteFilenames.size()
+                            + " removed, " + (localFilePaths.length - storedRemoteFilenames.size()) + " kept for retry");
+
+                    hrmLog.setDeleted(true);
+                    hrmLogDao.merge(hrmLog);
                 }
 
                 logger.debug("Closed SFTP connection");
