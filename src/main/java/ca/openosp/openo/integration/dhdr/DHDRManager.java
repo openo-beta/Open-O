@@ -78,18 +78,23 @@ public class DHDRManager extends OmdGateway {
         "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn|"
             + demographic.getHin());//"5365837912");
 
-    // Send date of birth only when it renders as a valid FHIR date; a malformed one invites the
-    // service to reject the whole search.
+    // Date of birth is required, not optional, and is sent whenever the demographic holds one that
+    // renders as a valid FHIR date - a malformed one invites the service to reject the whole search.
+    // DHDR02.02 lists it under "MAY search using additional patient demographic data", but the
+    // consumer CapabilityStatement marks composition.patient.birthdate "Conditional... Required when
+    // the patient identifier is HCN or MRN" and the provider one calls patient.birthDate "mandatory",
+    // identically in every published package. Every search we make is an HCN search, so every search
+    // must carry it.
     //
-    // The obligation is stronger than DHDR02.02 suggests. The requirement lists date of birth under
-    // "MAY search using additional patient demographic data", but the FHIR IG's consumer
-    // CapabilityStatement marks composition.patient.birthdate "Conditional... Required when the
-    // patient identifier is HCN or MRN" and the provider one calls patient.birthDate "mandatory",
-    // consistently across every published package. We always search by HCN, so it is required.
-    // Omitting it when the demographic has no usable date of birth is therefore a deliberate choice
-    // pending an answer on that conflict - see the same requirement's "MUST NOT allow a request to be
-    // sent if any mandatory patient data is missing". The viewer discloses it: the banner reads
-    // "DOB: --".
+    // When the demographic has no usable date of birth we send the search without it rather than
+    // refusing to send at all. That is deliberate, and it is the half that is not settled: DHDR02.02
+    // also says the EMR "MUST NOT allow a request to be sent ... if any mandatory patient data is
+    // missing", which on the reading above would block the search exactly as a missing HCN does - and
+    // a missing HCN is refused, at both the viewer and the service boundary. Whether "mandatory
+    // patient data" means DHDR02.02's own list or the IG's obligation levels is with OMD as
+    // divergence D4. Refusing ahead of that answer would block searches the service may well accept,
+    // so the asymmetry stands for now; it is a held decision, not an oversight. The viewer discloses
+    // the gap - the search banner reads "DOB: --".
     String birthDate = fhirBirthDate(demographic);
     if (birthDate != null) {
       wc.query("patient.birthdate", birthDate);
