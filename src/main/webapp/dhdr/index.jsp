@@ -2896,8 +2896,13 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 									}
 								}
 							}else if(identifier.system.indexOf("ca-on-license") !== -1
+									|| identifier.system.indexOf("ca-on-registration") !== -1
 									|| identifier.system.indexOf("prescriber") !== -1) {
 								// Any prescriber licensing college, not physicians only. Pharmacist handled above.
+								// Not every college uses the "license" stem - the IG's practitioner-identifier
+								// CodeSystem spells the chiropodist one ca-on-registration-chiropodist, and
+								// matching only "ca-on-license" dropped that prescriber's name and licence
+								// entirely rather than merely mislabelling the college.
 								this.prescriberLicenceNumber = identifier;
 								if(angular.isDefined(res.name)){
 									for( humanName of res.name) {
@@ -2983,9 +2988,9 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 					return "College of Physicians and Surgeons of Ontario";
 				}else if(val.endsWith("ca-on-license-dental-surgeon")){
 					return "Royal College of Dental Surgeons of Ontario";
-				}else if(val.endsWith("ca-out-of-province -prescriber")){
+				}else if(val.endsWith("ca-out-of-province-prescriber")){
 					return "Out-of-Province Prescriber";
-				}else if(val.endsWith("ca-on-license-chiropodist")){
+				}else if(val.endsWith("ca-on-registration-chiropodist")){
 					return "College of Chiropodists of Ontario";
 				}else if(val.endsWith("ca-on-license-midwife")){
 					return "College of Midwives of Ontario";
@@ -3069,15 +3074,31 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 		
 		
 		app.controller('PcoiInstanceCtrl', function ModalInstanceCtrl($scope, $modal, $modalInstance,med,$sce,$window,$http,$timeout){
-			// Gets URL without parameters
-			const PCOI_ORIGIN_URL = med.referenceURL.split('?')[0];
+			// MessageEvent.origin is scheme + host + port only, never a path. The viewlet URL keeps
+			// its path (.../main), so stripping only the query string left a value that could not
+			// equal e.origin - the message was discarded and DHDR11.01 / DHDR15.02 never ran.
+			const PCOI_ORIGIN_URL = (function(rawUrl) {
+				try {
+					return new URL(rawUrl, $window.location.href).origin;
+				} catch (e) {
+					var parser = document.createElement('a');
+					parser.href = rawUrl;
+					return parser.protocol + '//' + parser.host;
+				}
+			})(med.referenceURL);
 
-			$window.addEventListener('message', function(e) {
+			var onPcoiMessage = function(e) {
 				if (e.origin === PCOI_ORIGIN_URL) {
 					$modalInstance.close(e);
 				}
+			};
+			$window.addEventListener('message', onPcoiMessage);
+			// The listener outlives the modal otherwise, and each unblock attempt adds another one
+			// holding a closed $modalInstance.
+			$scope.$on('$destroy', function() {
+				$window.removeEventListener('message', onPcoiMessage);
 			});
-			
+
 			$scope.showUntilLoaded = true;
 			$scope.viewletNotResponding = false;
 			

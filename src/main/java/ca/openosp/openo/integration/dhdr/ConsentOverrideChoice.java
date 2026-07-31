@@ -13,9 +13,12 @@ import java.util.List;
  * {@link #storedValues()}, and the report's display uses {@link #labelFor(String)}. Adding a
  * decision here is therefore enough to make it both selectable and labelled.
  *
- * <p>DHDR13.02 speaks of a continue / refuse / cancel choice. {@link #FAILED} is a fourth,
- * operational state written when the override did not complete (DHDR11.01.b); it has no requirement
- * vocabulary of its own and is surfaced plainly.
+ * <p>DHDR13.02 speaks of a continue / refuse / cancel choice. {@link #FAILED} and {@link #UNKNOWN}
+ * are operational states with no requirement vocabulary of their own, written when the override did
+ * not complete (DHDR11.01.b) and when the viewlet's response carried no code the EMR recognises;
+ * both are surfaced plainly. UNKNOWN must stay in this enum for the attempt to reach the report at
+ * all - {@link #storedValues()} is the query's whitelist, so a decision missing from here is
+ * written to the audit table and then never shown.
  *
  * @since 2026-07-09
  */
@@ -31,7 +34,10 @@ public enum ConsentOverrideChoice {
   CANCELLED("Cancelled", "Cancelled"),
 
   /** The unblock was attempted but did not complete; the block remains in force. */
-  FAILED("Failed", "Failed (did not complete)");
+  FAILED("Failed", "Failed (did not complete)"),
+
+  /** The viewlet answered with no code the EMR recognises, so no outcome could be asserted. */
+  UNKNOWN("Unknown", "Unknown (unrecognised response)");
 
   private static final List<String> STORED_VALUES;
 

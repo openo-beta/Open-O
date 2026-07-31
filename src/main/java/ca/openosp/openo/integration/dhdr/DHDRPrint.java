@@ -992,8 +992,8 @@ public class DHDRPrint {
       return "College of Physicians and Surgeons of Ontario";
     if (system.endsWith("ca-on-license-dental-surgeon"))
       return "Royal College of Dental Surgeons of Ontario";
-    if (system.endsWith("ca-out-of-province -prescriber")) return "Out-of-Province Prescriber";
-    if (system.endsWith("ca-on-license-chiropodist")) return "College of Chiropodists of Ontario";
+    if (system.endsWith("ca-out-of-province-prescriber")) return "Out-of-Province Prescriber";
+    if (system.endsWith("ca-on-registration-chiropodist")) return "College of Chiropodists of Ontario";
     if (system.endsWith("ca-on-license-midwife")) return "College of Midwives of Ontario";
     if (system.endsWith("ca-on-license-pharmacist")) return "Ontario College of Pharmacists";
     if (system.endsWith("ca-on-license-optometrist")) return "College of Optometrists of Ontario";

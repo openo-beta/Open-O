@@ -421,11 +421,41 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
     }
 
     @Test
+    @DisplayName("should map every code in the IG's practitioner-identifier CodeSystem")
+    void shouldMapEveryCode_whenSystemComesFromTheCodeSystem() {
+      // Spelled exactly as CodeSystem.ca-on-practitioner-identifier-system publishes them. Two of
+      // these were transcribed wrong and so matched nothing: out-of-province carried a stray space
+      // before the hyphen, and chiropodist used the "license" stem where the IG says "registration".
+      // Neither appeared in any fixture, so both printed with no licensing body at all.
+      String base = "https://fhir.infoway-inforoute.ca/NamingSystem/";
+      assertThat(print.licenceBody(base + "ca-out-of-province-prescriber"))
+          .isEqualTo("Out-of-Province Prescriber");
+      assertThat(print.licenceBody(base + "ca-on-registration-chiropodist"))
+          .isEqualTo("College of Chiropodists of Ontario");
+      assertThat(print.licenceBody(base + "ca-on-license-optometrist"))
+          .isEqualTo("College of Optometrists of Ontario");
+      assertThat(print.licenceBody(base + "ca-on-license-naturopath"))
+          .isEqualTo("College of Naturopaths of Ontario");
+      assertThat(print.licenceBody(base + "ca-on-license-midwife"))
+          .isEqualTo("College of Midwives of Ontario");
+      assertThat(print.licenceBody(base + "ca-on-license-nurse"))
+          .isEqualTo("College of Nurses of Ontario");
+      assertThat(print.licenceBody(base + "ca-on-license-dental-surgeon"))
+          .isEqualTo("Royal College of Dental Surgeons of Ontario");
+      assertThat(print.licenceBody(base + "ca-on-unknown-prescriber"))
+          .isEqualTo("Unknown Prescriber");
+    }
+
+    @Test
     @DisplayName("should return an empty string for an unknown or absent system")
     void shouldReturnEmpty_whenSystemUnknownOrAbsent() {
       assertThat(print.licenceBody("https://example.org/NamingSystem/made-up")).isEmpty();
       assertThat(print.licenceBody(null)).isEmpty();
       assertThat(print.licenceBody("")).isEmpty();
+      // The pre-fix spelling must not keep working, or the typo can quietly come back.
+      assertThat(print.licenceBody(
+          "https://fhir.infoway-inforoute.ca/NamingSystem/ca-out-of-province -prescriber"))
+          .isEmpty();
     }
   }
 

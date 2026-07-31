@@ -60,8 +60,18 @@ class ConsentOverrideReportUnitTest {
     @DisplayName("should expose every stored value so the query and the display cannot drift")
     void shouldExposeEveryStoredValue_whenListingStoredValues() {
       assertThat(ConsentOverrideChoice.storedValues())
-          .containsExactly("Overwrite", "Refused", "Cancelled", "Failed")
+          .containsExactly("Overwrite", "Refused", "Cancelled", "Failed", "Unknown")
           .hasSameSizeAs(ConsentOverrideChoice.values());
+    }
+
+    @Test
+    @DisplayName("should keep the viewer's Unknown outcome selectable by the report query")
+    void shouldStoreUnknownOutcome_whenViewletResponseUnrecognised() {
+      // The viewer writes "Unknown" when the PCOI response carries no code it recognises. The
+      // report query filters on storedValues(), so omitting it here hides the attempt entirely.
+      assertThat(ConsentOverrideChoice.storedValues()).contains("Unknown");
+      assertThat(ConsentOverrideChoice.labelFor("Unknown"))
+          .isEqualTo("Unknown (unrecognised response)");
     }
 
     @Test
