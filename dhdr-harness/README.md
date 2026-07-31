@@ -20,7 +20,7 @@ DHDR05.01 / 08.01. Without it those clauses can be read but not checked.
 | Path | What it is |
 |---|---|
 | `harness/dhdr_stub.py` | the stub service — routes on patient HCN to a scenario |
-| `harness/crafted_*.json` | 13 hand-built FHIR Bundles, one per structural case |
+| `harness/crafted_*.json` | 14 hand-built FHIR Bundles, one per structural case |
 | `harness/make_*_fixture.py` | generators for the four fixtures that are derived rather than written |
 | `harness/seed.sql` | seeds a `OneIdSession` row so the gateway will talk to the stub |
 | `harness/restore_demo3.sql` | restores one test demographic to a known state |

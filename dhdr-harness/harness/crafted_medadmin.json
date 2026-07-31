@@ -1,0 +1,552 @@
+{
+ "resourceType": "Bundle",
+ "id": "harness-medadmin-0001",
+ "type": "searchset",
+ "total": 2,
+ "link": [
+  {
+   "relation": "self",
+   "url": "http://localhost:8099/MedicationDispense?crafted=medadmin"
+  }
+ ],
+ "entry": [
+  {
+   "fullUrl": "https://provider.pst.ehealthontario.ca/api2/fhir/MedicationDispense/93F05B0FF749525FE05400144FF9F54A",
+   "resource": {
+    "resourceType": "MedicationDispense",
+    "id": "93F05B0FF749525FE05400144FF9F54A",
+    "meta": {
+     "lastUpdated": "2019-10-02T11:45:17.000-04:00",
+     "source": "http://ehealthontario.ca/hns"
+    },
+    "text": {
+     "status": "generated",
+     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Narrative is not implemented in this release</div>"
+    },
+    "contained": [
+     {
+      "resourceType": "Medication",
+      "id": "Medication93F05B0FF749525FE05400144FF9F54A",
+      "extension": [
+       {
+        "url": "http://ehealthontario.ca/fhir/StructureDefinition/ca-on-medications-ext-medication-strength",
+        "valueString": "325mg"
+       },
+       {
+        "url": "http://ehealthontario.ca/fhir/StructureDefinition/ca-on-medications-ext-compound-indicator",
+        "valueBoolean": false
+       }
+      ],
+      "code": {
+       "coding": [
+        {
+         "system": "http://hl7.org/fhir/NamingSystem/ca-hc-din",
+         "code": "00216666",
+         "display": "Novasen"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name",
+         "display": "ACETYLSALICYLIC ACID"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-class-ahfs",
+         "code": "280000000",
+         "display": "CENTRAL NERVOUS SYSTEM DRUG"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-subclass-ahfs",
+         "code": "280804000",
+         "display": "NONSTEROIDAL ANTI-INFLAMMATORY AGENTS"
+        }
+       ]
+      },
+      "form": {
+       "coding": [
+        {
+         "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+         "code": "ECTAB",
+         "display": "Enteric coated tablet"
+        }
+       ],
+       "text": "Oral/Ent Tab"
+      }
+     },
+     {
+      "resourceType": "Patient",
+      "id": "PatDisp93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn",
+        "value": "5259156783"
+       }
+      ],
+      "name": [
+       {
+        "family": "Mock",
+        "given": [
+         "One"
+        ]
+       }
+      ],
+      "gender": "female",
+      "birthDate": "1961-01-01"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractPrescr93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician",
+        "value": "9898789"
+       }
+      ],
+      "name": [
+       {
+        "family": "Smith",
+        "given": [
+         "John"
+        ]
+       }
+      ],
+      "telecom": [
+       {
+        "system": "phone",
+        "value": "905-543-2314",
+        "use": "work"
+       },
+       {
+        "system": "fax",
+        "value": "416-452-3963",
+        "use": "work"
+       }
+      ]
+     },
+     {
+      "resourceType": "Organization",
+      "id": "OrgPharm93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-pharmacy-id-ocp",
+        "value": "ON50533355"
+       }
+      ],
+      "name": "Good Life Pharmacy",
+      "telecom": [
+       {
+        "system": "phone",
+        "value": "416-539-5532",
+        "use": "work"
+       },
+       {
+        "system": "fax",
+        "value": "416-652-4553",
+        "use": "work"
+       }
+      ]
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractDisp93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-pharmacist",
+        "value": "200087"
+       }
+      ],
+      "name": [
+       {
+        "family": "Sway",
+        "given": [
+         "Ken"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "MedicationRequest",
+      "id": "MedRequest93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-pharmacy-ON50533355-rx-number",
+        "value": "888737369"
+       }
+      ],
+      "status": "unknown",
+      "intent": "original-order",
+      "medicationReference": {
+       "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+      },
+      "subject": {
+       "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+      },
+      "requester": {
+       "reference": "#PractPrescr93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "identifier": [
+     {
+      "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-pharmacy-ON50533355-rx-number",
+      "value": "309787731"
+     }
+    ],
+    "status": "completed",
+    "category": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-medication-dispense-category",
+       "code": "product",
+       "display": "Drug or Device"
+      }
+     ]
+    },
+    "medicationReference": {
+     "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+    },
+    "subject": {
+     "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+    },
+    "performer": [
+     {
+      "actor": {
+       "reference": "#OrgPharm93F05B0FF749525FE05400144FF9F54A"
+      }
+     },
+     {
+      "actor": {
+       "reference": "#PractDisp93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "authorizingPrescription": [
+     {
+      "reference": "#MedRequest93F05B0FF749525FE05400144FF9F54A"
+     }
+    ],
+    "quantity": {
+     "value": 15,
+     "unit": "Tablet",
+     "system": "http://snomed.info/sct",
+     "code": "428673006"
+    },
+    "daysSupply": {
+     "value": 10
+    },
+    "whenPrepared": "2016-03-27",
+    "dosageInstruction": [
+     {
+      "text": "Take 2 tablets every 4 to 6 hours",
+      "patientInstruction": "Take 2 tablets every 4 to 6 hours",
+      "timing": {
+       "repeat": {
+        "frequency": 1,
+        "period": 4,
+        "periodMax": 6,
+        "periodUnit": "h"
+       }
+      },
+      "asNeededBoolean": true,
+      "route": {
+       "coding": [
+        {
+         "system": "http://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration",
+         "code": "PO"
+        }
+       ],
+       "text": "Swallow, oral"
+      },
+      "doseAndRate": [
+       {
+        "doseQuantity": {
+         "value": 2,
+         "unit": "Tablet",
+         "system": "http://snomed.info/sct",
+         "code": "428673006"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "fullUrl": "urn:uuid:ma-1",
+   "resource": {
+    "resourceType": "MedicationAdministration",
+    "id": "94066C2D3E7D3025E05400144FF9F54ASB",
+    "meta": {
+     "source": "http://ehealthontario.ca/acCDR"
+    },
+    "contained": [
+     {
+      "resourceType": "Medication",
+      "id": "Medication94066C2D3E7D3025E05400144FF9F54A",
+      "extension": [
+       {
+        "url": "http://ehealthontario.ca/fhir/StructureDefinition/ca-on-medications-ext-compound-indicator",
+        "valueBoolean": false
+       },
+       {
+        "url": "http://ehealthontario.ca/fhir/StructureDefinition/ca-on-medications-ext-monitored-drug-indicator",
+        "valueBoolean": false
+       }
+      ],
+      "code": {
+       "coding": [
+        {
+         "system": "http://snomed.info/sct",
+         "code": "28531000087107",
+         "display": "COVID-19 mRNA vaccine (CRAFTED-IMMUNIZATION)"
+        }
+       ],
+       "text": "BISOPROLOL FUMARATE 5mg Oral/Tab"
+      }
+     },
+     {
+      "resourceType": "Patient",
+      "id": "PatDisp94066C2D3E7D3025E05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn",
+        "value": "5365837912"
+       }
+      ],
+      "name": [
+       {
+        "family": "FAKE-Wilkerson",
+        "given": [
+         "FAKE-Kendra"
+        ]
+       }
+      ],
+      "telecom": [
+       {
+        "system": "phone",
+        "value": "555-555-5555",
+        "use": "work"
+       }
+      ],
+      "gender": "male",
+      "birthDate": "1984-08-08",
+      "address": [
+       {
+        "use": "home",
+        "type": "physical",
+        "line": [
+         "13 Boring St"
+        ],
+        "city": "Toronto",
+        "state": "ON",
+        "postalCode": "M1M M2M",
+        "country": "CAN"
+       }
+      ]
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractPrescr94066C2D3E7D3025E05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician",
+        "value": "9898789"
+       }
+      ],
+      "name": [
+       {
+        "family": "Smith",
+        "given": [
+         "John"
+        ]
+       }
+      ],
+      "telecom": [
+       {
+        "system": "phone",
+        "value": "905-543-2314",
+        "use": "work"
+       }
+      ]
+     },
+     {
+      "resourceType": "Organization",
+      "id": "OrgPharm94066C2D3E7D3025E05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/org-id-uhn",
+        "value": "33355"
+       }
+      ],
+      "name": "University Health Network"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractDisp94066C2D3E7D3025E05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-nurse",
+        "value": "200086"
+       }
+      ],
+      "name": [
+       {
+        "family": "Lefty",
+        "given": [
+         "Lucky"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "MedicationRequest",
+      "id": "MedRequest94066C2D3E7D3025E05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-order-ID-number",
+        "value": "11111121"
+       }
+      ],
+      "status": "unknown",
+      "intent": "order",
+      "medicationReference": {
+       "reference": "#Medication94066C2D3E7D3025E05400144FF9F54A"
+      },
+      "subject": {
+       "reference": "#PatDisp94066C2D3E7D3025E05400144FF9F54A"
+      },
+      "requester": {
+       "reference": "#PractPrescr94066C2D3E7D3025E05400144FF9F54A"
+      },
+      "reasonCode": [
+       {
+        "coding": [
+         {
+          "system": "http://snomed.info/sct",
+          "code": "48589009",
+          "display": "Minor depressive disorder"
+         },
+         {
+          "system": "http://snomed.info/sct",
+          "code": "46206005",
+          "display": "Mood disorder"
+         }
+        ],
+        "text": "Mood disorder"
+       }
+      ],
+      "dosageInstruction": [
+       {
+        "text": "Take 2 tablets by mouth 3 times a day",
+        "timing": {
+         "repeat": {
+          "duration": 2,
+          "durationUnit": "h"
+         },
+         "code": {
+          "coding": [
+           {
+            "system": "http://snomed.info/sct",
+            "code": "225750008",
+            "display": "Every 2 hours"
+           }
+          ]
+         }
+        },
+        "asNeededBoolean": false,
+        "route": {
+         "coding": [
+          {
+           "system": "http://snomed.info/sct",
+           "code": "26643006",
+           "display": "Oral route"
+          }
+         ]
+        },
+        "doseAndRate": [
+         {
+          "doseQuantity": {
+           "value": 2,
+           "unit": "Tablet",
+           "system": "http://snomed.info/sct",
+           "code": "428673006"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "PractitionerRole",
+      "id": "practitionerRole87yssjw",
+      "practitioner": {
+       "reference": "#OrgPharm93F05B0FF748525FE05400144FF9F54A"
+      },
+      "organization": {
+       "reference": "#PractDisp93F05B0FF748525FE05400144FF9F54A"
+      },
+      "location": {
+       "reference": "#LocationC66632E5A2E111BE05400144FF84F18"
+      }
+     },
+     {
+      "resourceType": "Location",
+      "id": "LocationC66632E5A2E111BE05400144FF84F18",
+      "identifier": [
+       {
+        "system": "http://ehealthontario/NamingSystem/facilityURL",
+        "value": "50533355"
+       }
+      ],
+      "name": "Toronto General Hospital"
+     }
+    ],
+    "identifier": [
+     {
+      "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-order-ID-number",
+      "value": "11111121"
+     }
+    ],
+    "status": "completed",
+    "category": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/CodeSystem/medication-dispense-category",
+       "code": "immunization",
+       "display": "Immunization"
+      }
+     ]
+    },
+    "medicationReference": {
+     "reference": "#Medication94066C2D3E7D3025E05400144FF9F54A"
+    },
+    "subject": {
+     "reference": "#PatDisp94066C2D3E7D3025E05400144FF9F54A"
+    },
+    "effectivePeriod": {
+     "start": "2020-09-23T15:13:58-05:00"
+    },
+    "performer": [
+     {
+      "actor": {
+       "reference": "#practitionerRole87yssjw"
+      }
+     }
+    ],
+    "request": {
+     "reference": "#MedRequest94066C2D3E7D3025E05400144FF9F54A"
+    },
+    "dosage": {
+     "text": "Take 2 tablets by mouth 3 times a day",
+     "dose": {
+      "value": 2,
+      "unit": "Tablet",
+      "system": "http://snomed.info/sct",
+      "code": "428673006"
+     }
+    }
+   },
+   "search": {
+    "mode": "match"
+   }
+  }
+ ]
+}
