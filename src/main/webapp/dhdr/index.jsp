@@ -206,6 +206,13 @@
 	 	<i>Search period: {{searchPeriodText()}}</i>
 	 	<%-- BP4: placed against the line it contradicts, because the two must be read together - the
 	 	     period above is what was asked for, and this says the service reported using another. --%>
+	 	<%-- The service stated it matched more resources than it delivered, and offered no further
+	 	     page. What is on screen is part of the record, so say so where the period is stated
+	 	     rather than leaving the result counts to imply completeness (DHDR05.01). --%>
+	 	<div class="alert alert-danger" role="alert" style="margin:6px 0 0 0;" ng-if="resultShortfall">
+	 		<strong>This list is incomplete.</strong>
+	 		<div>The DHDR EHR Service reported {{resultShortfall.expected}} matching records but returned {{resultShortfall.received}}, with no further pages offered. Records are missing from the list below.</div>
+	 	</div>
 	 	<div class="alert alert-warning" role="alert" style="margin:6px 0 0 0;" ng-if="searchPeriodEchoMismatch">
 	 		<strong>The DHDR EHR Service reported searching a different period.</strong>
 	 		<div>Requested {{searchPeriodEchoMismatch.requested}}; the service reported using {{searchPeriodEchoMismatch.used}}. The events below may not cover the whole period shown above.</div>
@@ -1423,6 +1430,8 @@
 			$scope.dhdrPatientDataUnmatched = false;
 			// BP4: set when the service's `self` link reports a date range other than the one requested.
 			$scope.searchPeriodEchoMismatch = null;
+			$scope.resultShortfall = null;
+			$scope.collectedEntries = 0;
 			$scope.searchComplete = false;
 			$scope.buttonDisabled = false;
 
@@ -2125,6 +2134,8 @@
 				$scope.dhdrPatientResolved = false;
 				// Cleared per search: the notice describes the range this search asked for.
 				$scope.searchPeriodEchoMismatch = null;
+				$scope.resultShortfall = null;
+				$scope.collectedEntries = 0;
 				// Cleared per search, not per page: a paged walk calls processEntries once per page and
 				// the variants must accumulate across all of them.
 				$scope.dhdrPatientVariants = {firstName: [], lastName: [], gender: [], dob: [], hin: []};
@@ -2203,6 +2214,24 @@
 					startDate: echoed.bounds.ge || "",
 					endDate: echoed.bounds.le || ""
 				};
+			};
+
+			// A searchset states how many resources matched the whole search, and the viewer pages
+			// purely on the presence of a `next` link. Nothing checked that what arrived is what was
+			// matched: a service that caps the page size and omits the link hands back a partial
+			// medication history, and the "N results returned" counter then reports what we received
+			// rather than what exists. A missing dispense can hide an interaction, and nothing on
+			// screen would suggest anything was absent (DHDR05.01).
+			let checkResultCompleteness = function(response){
+				$scope.collectedEntries += (response.entry ? response.entry.length : 0);
+				// Bundle.total describes the search, not the page, so it is only conclusive once the
+				// walk has ended - mid-walk the running count is legitimately short of it.
+				if (response.link && response.link.some(function(l){ return l.relation === "next"; })) {
+					return;
+				}
+				let total = response.total;
+				if (typeof total !== "number" || $scope.collectedEntries >= total) { return; }
+				$scope.resultShortfall = { received: $scope.collectedEntries, expected: total };
 			};
 
 			search = function(demographicNo,searchConfig){
@@ -2340,6 +2369,7 @@
 					}
 
 					checkSearchPeriodEcho(response);
+					checkResultCompleteness(response);
 
 					if(response.link && response.link.some(function(l){ return l.relation === "next"; })){
 						$scope.searchConfig.searchId = response.id;
