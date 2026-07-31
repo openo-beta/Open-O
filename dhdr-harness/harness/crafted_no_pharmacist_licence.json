@@ -1,0 +1,576 @@
+{
+ "resourceType": "Bundle",
+ "id": "CRAFTED-no-pharmacist-licence",
+ "type": "searchset",
+ "link": [],
+ "entry": [
+  {
+   "fullUrl": "https://provider.pst.ehealthontario.ca/api2/fhir/MedicationDispense/CRAFTED-nolic-s1",
+   "resource": {
+    "resourceType": "MedicationDispense",
+    "id": "CRAFTED-nolic-s1",
+    "meta": {
+     "lastUpdated": "2019-10-02T11:45:17.000-04:00",
+     "source": "http://ehealthontario.ca/hns"
+    },
+    "text": {
+     "status": "generated",
+     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Narrative is not implemented in this release</div>"
+    },
+    "contained": [
+     {
+      "resourceType": "Medication",
+      "id": "Medication93F05B0FF748525FE05400144FF9F54A",
+      "code": {
+       "coding": [
+        {
+         "system": "http://hl7.org/fhir/NamingSystem/ca-hc-din",
+         "code": "02015986",
+         "display": "Fluviral -15mcg/0.5mL;5mL Multidose Vial"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name",
+         "display": "CONTROL SERVICE FEE - PHARMACIST FULLY IDENTIFIED"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-class-ahfs",
+         "code": "990000000",
+         "display": "PROFESSIONAL CARE SERVICE"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-subclass-ahfs",
+         "code": "999999000",
+         "display": "PROFESSIONAL CARE SERVICE"
+        }
+       ]
+      }
+     },
+     {
+      "resourceType": "Patient",
+      "id": "PatDisp93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn",
+        "value": "3675825061"
+       }
+      ],
+      "name": [
+       {
+        "family": "FAKE-Sporer",
+        "given": [
+         "FAKE-Kandice"
+        ]
+       }
+      ],
+      "gender": "female",
+      "birthDate": "1980-09-19"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractPrescr93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician",
+        "value": "2355676"
+       }
+      ],
+      "name": [
+       {
+        "family": "Newton",
+        "given": [
+         "Isaac"
+        ]
+       }
+      ],
+      "telecom": [
+       {
+        "system": "phone",
+        "value": "905-543-2314",
+        "use": "work"
+       },
+       {
+        "system": "fax",
+        "value": "416-452-3963",
+        "use": "work"
+       }
+      ]
+     },
+     {
+      "resourceType": "Organization",
+      "id": "OrgPharm93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-pharmacy-id-ocp",
+        "value": "ON50533355"
+       }
+      ],
+      "name": "Good Life Pharmacy",
+      "telecom": [
+       {
+        "system": "phone",
+        "value": "416-539-5532",
+        "use": "work"
+       },
+       {
+        "system": "fax",
+        "value": "416-652-4553",
+        "use": "work"
+       }
+      ]
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractDisp93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-pharmacist",
+        "value": "200087"
+       }
+      ],
+      "name": [
+       {
+        "family": "Sway",
+        "given": [
+         "Ken"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "MedicationRequest",
+      "id": "MedRequest93F05B0FF748525FE05400144FF9F54A",
+      "status": "unknown",
+      "intent": "original-order",
+      "medicationReference": {
+       "reference": "#Medication93F05B0FF748525FE05400144FF9F54A"
+      },
+      "subject": {
+       "reference": "#PatDisp93F05B0FF748525FE05400144FF9F54A"
+      },
+      "requester": {
+       "reference": "#PractPrescr93F05B0FF748525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "identifier": [
+     {
+      "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-pharmacy-ON50533355-rx-number",
+      "value": "900000001"
+     }
+    ],
+    "status": "completed",
+    "category": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-medication-dispense-category",
+       "code": "service",
+       "display": "Professional Service"
+      }
+     ]
+    },
+    "medicationReference": {
+     "reference": "#Medication93F05B0FF748525FE05400144FF9F54A"
+    },
+    "subject": {
+     "reference": "#PatDisp93F05B0FF748525FE05400144FF9F54A"
+    },
+    "performer": [
+     {
+      "actor": {
+       "reference": "#OrgPharm93F05B0FF748525FE05400144FF9F54A"
+      }
+     },
+     {
+      "actor": {
+       "reference": "#PractDisp93F05B0FF748525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "authorizingPrescription": [
+     {
+      "reference": "#MedRequest93F05B0FF748525FE05400144FF9F54A"
+     }
+    ],
+    "quantity": {
+     "value": 1
+    },
+    "daysSupply": {
+     "value": 1
+    },
+    "whenPrepared": "2016-09-05",
+    "whenHandedOver": "2016-09-05"
+   }
+  },
+  {
+   "fullUrl": "https://provider.pst.ehealthontario.ca/api2/fhir/MedicationDispense/CRAFTED-nolic-s2",
+   "resource": {
+    "resourceType": "MedicationDispense",
+    "id": "CRAFTED-nolic-s2",
+    "meta": {
+     "lastUpdated": "2019-10-02T11:45:17.000-04:00",
+     "source": "http://ehealthontario.ca/hns"
+    },
+    "text": {
+     "status": "generated",
+     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Narrative is not implemented in this release</div>"
+    },
+    "contained": [
+     {
+      "resourceType": "Medication",
+      "id": "Medication93F05B0FF748525FE05400144FF9F54A",
+      "code": {
+       "coding": [
+        {
+         "system": "http://hl7.org/fhir/NamingSystem/ca-hc-din",
+         "code": "02015986",
+         "display": "Fluviral -15mcg/0.5mL;5mL Multidose Vial"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name",
+         "display": "NO PHARMACIST LICENCE SERVICE FEE"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-class-ahfs",
+         "code": "990000000",
+         "display": "PROFESSIONAL CARE SERVICE"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-subclass-ahfs",
+         "code": "999999000",
+         "display": "PROFESSIONAL CARE SERVICE"
+        }
+       ]
+      }
+     },
+     {
+      "resourceType": "Patient",
+      "id": "PatDisp93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn",
+        "value": "3675825061"
+       }
+      ],
+      "name": [
+       {
+        "family": "FAKE-Sporer",
+        "given": [
+         "FAKE-Kandice"
+        ]
+       }
+      ],
+      "gender": "female",
+      "birthDate": "1980-09-19"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractPrescr93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician",
+        "value": "2355676"
+       }
+      ],
+      "name": [
+       {
+        "family": "Newton",
+        "given": [
+         "Isaac"
+        ]
+       }
+      ],
+      "telecom": [
+       {
+        "system": "phone",
+        "value": "905-543-2314",
+        "use": "work"
+       },
+       {
+        "system": "fax",
+        "value": "416-452-3963",
+        "use": "work"
+       }
+      ]
+     },
+     {
+      "resourceType": "Organization",
+      "id": "OrgPharm93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-pharmacy-id-ocp",
+        "value": "ON50533355"
+       }
+      ],
+      "name": "Good Life Pharmacy",
+      "telecom": [
+       {
+        "system": "phone",
+        "value": "416-539-5532",
+        "use": "work"
+       },
+       {
+        "system": "fax",
+        "value": "416-652-4553",
+        "use": "work"
+       }
+      ]
+     },
+     {
+      "resourceType": "MedicationRequest",
+      "id": "MedRequest93F05B0FF748525FE05400144FF9F54A",
+      "status": "unknown",
+      "intent": "original-order",
+      "medicationReference": {
+       "reference": "#Medication93F05B0FF748525FE05400144FF9F54A"
+      },
+      "subject": {
+       "reference": "#PatDisp93F05B0FF748525FE05400144FF9F54A"
+      },
+      "requester": {
+       "reference": "#PractPrescr93F05B0FF748525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "identifier": [
+     {
+      "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-pharmacy-ON50533355-rx-number",
+      "value": "900000002"
+     }
+    ],
+    "status": "completed",
+    "category": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-medication-dispense-category",
+       "code": "service",
+       "display": "Professional Service"
+      }
+     ]
+    },
+    "medicationReference": {
+     "reference": "#Medication93F05B0FF748525FE05400144FF9F54A"
+    },
+    "subject": {
+     "reference": "#PatDisp93F05B0FF748525FE05400144FF9F54A"
+    },
+    "performer": [
+     {
+      "actor": {
+       "reference": "#OrgPharm93F05B0FF748525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "authorizingPrescription": [
+     {
+      "reference": "#MedRequest93F05B0FF748525FE05400144FF9F54A"
+     }
+    ],
+    "quantity": {
+     "value": 1
+    },
+    "daysSupply": {
+     "value": 1
+    },
+    "whenPrepared": "2016-09-04",
+    "whenHandedOver": "2016-09-04"
+   }
+  },
+  {
+   "fullUrl": "https://provider.pst.ehealthontario.ca/api2/fhir/MedicationDispense/CRAFTED-nolic-s3",
+   "resource": {
+    "resourceType": "MedicationDispense",
+    "id": "CRAFTED-nolic-s3",
+    "meta": {
+     "lastUpdated": "2019-10-02T11:45:17.000-04:00",
+     "source": "http://ehealthontario.ca/hns"
+    },
+    "text": {
+     "status": "generated",
+     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Narrative is not implemented in this release</div>"
+    },
+    "contained": [
+     {
+      "resourceType": "Medication",
+      "id": "Medication93F05B0FF748525FE05400144FF9F54A",
+      "code": {
+       "coding": [
+        {
+         "system": "http://hl7.org/fhir/NamingSystem/ca-hc-din",
+         "code": "02015986",
+         "display": "Fluviral -15mcg/0.5mL;5mL Multidose Vial"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name",
+         "display": "PHARMACIST GIVEN NAME ONLY SERVICE FEE"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-class-ahfs",
+         "code": "990000000",
+         "display": "PROFESSIONAL CARE SERVICE"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-subclass-ahfs",
+         "code": "999999000",
+         "display": "PROFESSIONAL CARE SERVICE"
+        }
+       ]
+      }
+     },
+     {
+      "resourceType": "Patient",
+      "id": "PatDisp93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn",
+        "value": "3675825061"
+       }
+      ],
+      "name": [
+       {
+        "family": "FAKE-Sporer",
+        "given": [
+         "FAKE-Kandice"
+        ]
+       }
+      ],
+      "gender": "female",
+      "birthDate": "1980-09-19"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractPrescr93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician",
+        "value": "2355676"
+       }
+      ],
+      "name": [
+       {
+        "family": "Newton",
+        "given": [
+         "Isaac"
+        ]
+       }
+      ],
+      "telecom": [
+       {
+        "system": "phone",
+        "value": "905-543-2314",
+        "use": "work"
+       },
+       {
+        "system": "fax",
+        "value": "416-452-3963",
+        "use": "work"
+       }
+      ]
+     },
+     {
+      "resourceType": "Organization",
+      "id": "OrgPharm93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-pharmacy-id-ocp",
+        "value": "ON50533355"
+       }
+      ],
+      "name": "Good Life Pharmacy",
+      "telecom": [
+       {
+        "system": "phone",
+        "value": "416-539-5532",
+        "use": "work"
+       },
+       {
+        "system": "fax",
+        "value": "416-652-4553",
+        "use": "work"
+       }
+      ]
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractDisp93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-pharmacist",
+        "value": "200087"
+       }
+      ],
+      "name": [
+       {
+        "given": [
+         "Ken"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "MedicationRequest",
+      "id": "MedRequest93F05B0FF748525FE05400144FF9F54A",
+      "status": "unknown",
+      "intent": "original-order",
+      "medicationReference": {
+       "reference": "#Medication93F05B0FF748525FE05400144FF9F54A"
+      },
+      "subject": {
+       "reference": "#PatDisp93F05B0FF748525FE05400144FF9F54A"
+      },
+      "requester": {
+       "reference": "#PractPrescr93F05B0FF748525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "identifier": [
+     {
+      "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-pharmacy-ON50533355-rx-number",
+      "value": "900000003"
+     }
+    ],
+    "status": "completed",
+    "category": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-medication-dispense-category",
+       "code": "service",
+       "display": "Professional Service"
+      }
+     ]
+    },
+    "medicationReference": {
+     "reference": "#Medication93F05B0FF748525FE05400144FF9F54A"
+    },
+    "subject": {
+     "reference": "#PatDisp93F05B0FF748525FE05400144FF9F54A"
+    },
+    "performer": [
+     {
+      "actor": {
+       "reference": "#OrgPharm93F05B0FF748525FE05400144FF9F54A"
+      }
+     },
+     {
+      "actor": {
+       "reference": "#PractDisp93F05B0FF748525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "authorizingPrescription": [
+     {
+      "reference": "#MedRequest93F05B0FF748525FE05400144FF9F54A"
+     }
+    ],
+    "quantity": {
+     "value": 1
+    },
+    "daysSupply": {
+     "value": 1
+    },
+    "whenPrepared": "2016-09-03",
+    "whenHandedOver": "2016-09-03"
+   }
+  }
+ ],
+ "total": 3
+}

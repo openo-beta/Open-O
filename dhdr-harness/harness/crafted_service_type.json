@@ -1,0 +1,691 @@
+{
+ "resourceType": "Bundle",
+ "id": "CRAFTED-service-type",
+ "type": "searchset",
+ "total": 4,
+ "link": [],
+ "entry": [
+  {
+   "fullUrl": "https://provider.pst.ehealthontario.ca/api2/fhir/MedicationDispense/CRAFTED-type-two-codings",
+   "resource": {
+    "resourceType": "MedicationDispense",
+    "id": "CRAFTED-type-two-codings",
+    "contained": [
+     {
+      "resourceType": "Medication",
+      "id": "Medication93F05B0FF749525FE05400144FF9F54A",
+      "code": {
+       "coding": [
+        {
+         "system": "http://hl7.org/fhir/NamingSystem/ca-hc-din",
+         "code": "83000000",
+         "display": "Aaa Type Two Codings"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name",
+         "display": "AAA TYPE TWO CODINGS"
+        }
+       ]
+      },
+      "form": {
+       "coding": [
+        {
+         "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+         "code": "ECTAB",
+         "display": "Enteric coated tablet"
+        }
+       ],
+       "text": "Oral/Ent Tab"
+      }
+     },
+     {
+      "resourceType": "Patient",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn",
+        "value": "5610089932"
+       }
+      ],
+      "name": [
+       {
+        "family": "FAKE-Kohler",
+        "given": [
+         "FAKE-Andera"
+        ]
+       }
+      ],
+      "gender": "female",
+      "birthDate": "1971-11-02",
+      "id": "PatDisp93F05B0FF749525FE05400144FF9F54A"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractPrescr93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician",
+        "value": "9898789"
+       }
+      ],
+      "name": [
+       {
+        "family": "Smith",
+        "given": [
+         "John"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "Organization",
+      "id": "OrgPharm93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-pharmacy-id-ocp",
+        "value": "ON50533355"
+       }
+      ],
+      "name": "Good Life Pharmacy"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractDisp93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-pharmacist",
+        "value": "200087"
+       }
+      ],
+      "name": [
+       {
+        "family": "Sway",
+        "given": [
+         "Ken"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "MedicationRequest",
+      "id": "MedRequest93F05B0FF749525FE05400144FF9F54A",
+      "status": "unknown",
+      "intent": "original-order",
+      "medicationReference": {
+       "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+      },
+      "subject": {
+       "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+      },
+      "requester": {
+       "reference": "#PractPrescr93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "identifier": [
+     {
+      "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-pharmacy-ON50533355-rx-number",
+      "value": "930000"
+     }
+    ],
+    "status": "completed",
+    "category": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/CodeSystem/dispense-category",
+       "code": "service",
+       "display": "Pharmacy Service"
+      }
+     ]
+    },
+    "medicationReference": {
+     "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+    },
+    "subject": {
+     "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+    },
+    "performer": [
+     {
+      "actor": {
+       "reference": "#OrgPharm93F05B0FF749525FE05400144FF9F54A"
+      }
+     },
+     {
+      "actor": {
+       "reference": "#PractDisp93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "authorizingPrescription": [
+     {
+      "reference": "#MedRequest93F05B0FF749525FE05400144FF9F54A"
+     }
+    ],
+    "quantity": {
+     "value": 15,
+     "unit": "Tablet",
+     "system": "http://snomed.info/sct",
+     "code": "428673006"
+    },
+    "whenPrepared": "2016-02-01",
+    "type": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/CodeSystem/pharmacy-service-type",
+       "code": "MEDSCHECK",
+       "display": "MedsCheck Annual"
+      },
+      {
+       "system": "http://ehealthontario.ca/fhir/CodeSystem/pharmacy-service-type",
+       "code": "MEDSCHECK-D",
+       "display": "Annual medication review with the pharmacist"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "fullUrl": "https://provider.pst.ehealthontario.ca/api2/fhir/MedicationDispense/CRAFTED-type-one-coding",
+   "resource": {
+    "resourceType": "MedicationDispense",
+    "id": "CRAFTED-type-one-coding",
+    "contained": [
+     {
+      "resourceType": "Medication",
+      "id": "Medication93F05B0FF749525FE05400144FF9F54A",
+      "code": {
+       "coding": [
+        {
+         "system": "http://hl7.org/fhir/NamingSystem/ca-hc-din",
+         "code": "83000001",
+         "display": "Bbb Type One Coding"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name",
+         "display": "BBB TYPE ONE CODING"
+        }
+       ]
+      },
+      "form": {
+       "coding": [
+        {
+         "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+         "code": "ECTAB",
+         "display": "Enteric coated tablet"
+        }
+       ],
+       "text": "Oral/Ent Tab"
+      }
+     },
+     {
+      "resourceType": "Patient",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn",
+        "value": "5610089932"
+       }
+      ],
+      "name": [
+       {
+        "family": "FAKE-Kohler",
+        "given": [
+         "FAKE-Andera"
+        ]
+       }
+      ],
+      "gender": "female",
+      "birthDate": "1971-11-02",
+      "id": "PatDisp93F05B0FF749525FE05400144FF9F54A"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractPrescr93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician",
+        "value": "9898789"
+       }
+      ],
+      "name": [
+       {
+        "family": "Smith",
+        "given": [
+         "John"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "Organization",
+      "id": "OrgPharm93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-pharmacy-id-ocp",
+        "value": "ON50533355"
+       }
+      ],
+      "name": "Good Life Pharmacy"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractDisp93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-pharmacist",
+        "value": "200087"
+       }
+      ],
+      "name": [
+       {
+        "family": "Sway",
+        "given": [
+         "Ken"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "MedicationRequest",
+      "id": "MedRequest93F05B0FF749525FE05400144FF9F54A",
+      "status": "unknown",
+      "intent": "original-order",
+      "medicationReference": {
+       "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+      },
+      "subject": {
+       "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+      },
+      "requester": {
+       "reference": "#PractPrescr93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "identifier": [
+     {
+      "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-pharmacy-ON50533355-rx-number",
+      "value": "930001"
+     }
+    ],
+    "status": "completed",
+    "category": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/CodeSystem/dispense-category",
+       "code": "service",
+       "display": "Pharmacy Service"
+      }
+     ]
+    },
+    "medicationReference": {
+     "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+    },
+    "subject": {
+     "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+    },
+    "performer": [
+     {
+      "actor": {
+       "reference": "#OrgPharm93F05B0FF749525FE05400144FF9F54A"
+      }
+     },
+     {
+      "actor": {
+       "reference": "#PractDisp93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "authorizingPrescription": [
+     {
+      "reference": "#MedRequest93F05B0FF749525FE05400144FF9F54A"
+     }
+    ],
+    "quantity": {
+     "value": 15,
+     "unit": "Tablet",
+     "system": "http://snomed.info/sct",
+     "code": "428673006"
+    },
+    "whenPrepared": "2016-03-01",
+    "type": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/CodeSystem/pharmacy-service-type",
+       "code": "PHARMA-OPIOID",
+       "display": "Opioid Agonist Therapy"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "fullUrl": "https://provider.pst.ehealthontario.ca/api2/fhir/MedicationDispense/CRAFTED-type-text-only",
+   "resource": {
+    "resourceType": "MedicationDispense",
+    "id": "CRAFTED-type-text-only",
+    "contained": [
+     {
+      "resourceType": "Medication",
+      "id": "Medication93F05B0FF749525FE05400144FF9F54A",
+      "code": {
+       "coding": [
+        {
+         "system": "http://hl7.org/fhir/NamingSystem/ca-hc-din",
+         "code": "83000002",
+         "display": "Ccc Type Text Only"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name",
+         "display": "CCC TYPE TEXT ONLY"
+        }
+       ]
+      },
+      "form": {
+       "coding": [
+        {
+         "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+         "code": "ECTAB",
+         "display": "Enteric coated tablet"
+        }
+       ],
+       "text": "Oral/Ent Tab"
+      }
+     },
+     {
+      "resourceType": "Patient",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn",
+        "value": "5610089932"
+       }
+      ],
+      "name": [
+       {
+        "family": "FAKE-Kohler",
+        "given": [
+         "FAKE-Andera"
+        ]
+       }
+      ],
+      "gender": "female",
+      "birthDate": "1971-11-02",
+      "id": "PatDisp93F05B0FF749525FE05400144FF9F54A"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractPrescr93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician",
+        "value": "9898789"
+       }
+      ],
+      "name": [
+       {
+        "family": "Smith",
+        "given": [
+         "John"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "Organization",
+      "id": "OrgPharm93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-pharmacy-id-ocp",
+        "value": "ON50533355"
+       }
+      ],
+      "name": "Good Life Pharmacy"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractDisp93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-pharmacist",
+        "value": "200087"
+       }
+      ],
+      "name": [
+       {
+        "family": "Sway",
+        "given": [
+         "Ken"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "MedicationRequest",
+      "id": "MedRequest93F05B0FF749525FE05400144FF9F54A",
+      "status": "unknown",
+      "intent": "original-order",
+      "medicationReference": {
+       "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+      },
+      "subject": {
+       "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+      },
+      "requester": {
+       "reference": "#PractPrescr93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "identifier": [
+     {
+      "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-pharmacy-ON50533355-rx-number",
+      "value": "930002"
+     }
+    ],
+    "status": "completed",
+    "category": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/CodeSystem/dispense-category",
+       "code": "service",
+       "display": "Pharmacy Service"
+      }
+     ]
+    },
+    "medicationReference": {
+     "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+    },
+    "subject": {
+     "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+    },
+    "performer": [
+     {
+      "actor": {
+       "reference": "#OrgPharm93F05B0FF749525FE05400144FF9F54A"
+      }
+     },
+     {
+      "actor": {
+       "reference": "#PractDisp93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "authorizingPrescription": [
+     {
+      "reference": "#MedRequest93F05B0FF749525FE05400144FF9F54A"
+     }
+    ],
+    "quantity": {
+     "value": 15,
+     "unit": "Tablet",
+     "system": "http://snomed.info/sct",
+     "code": "428673006"
+    },
+    "whenPrepared": "2016-04-01",
+    "type": {
+     "text": "Smoking Cessation Program - follow up"
+    }
+   }
+  },
+  {
+   "fullUrl": "https://provider.pst.ehealthontario.ca/api2/fhir/MedicationDispense/CRAFTED-type-absent",
+   "resource": {
+    "resourceType": "MedicationDispense",
+    "id": "CRAFTED-type-absent",
+    "contained": [
+     {
+      "resourceType": "Medication",
+      "id": "Medication93F05B0FF749525FE05400144FF9F54A",
+      "code": {
+       "coding": [
+        {
+         "system": "http://hl7.org/fhir/NamingSystem/ca-hc-din",
+         "code": "83000003",
+         "display": "Ddd Type Absent (Fallback Path)"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name",
+         "display": "DDD TYPE ABSENT (fallback path)"
+        }
+       ]
+      },
+      "form": {
+       "coding": [
+        {
+         "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+         "code": "ECTAB",
+         "display": "Enteric coated tablet"
+        }
+       ],
+       "text": "Oral/Ent Tab"
+      }
+     },
+     {
+      "resourceType": "Patient",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn",
+        "value": "5610089932"
+       }
+      ],
+      "name": [
+       {
+        "family": "FAKE-Kohler",
+        "given": [
+         "FAKE-Andera"
+        ]
+       }
+      ],
+      "gender": "female",
+      "birthDate": "1971-11-02",
+      "id": "PatDisp93F05B0FF749525FE05400144FF9F54A"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractPrescr93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician",
+        "value": "9898789"
+       }
+      ],
+      "name": [
+       {
+        "family": "Smith",
+        "given": [
+         "John"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "Organization",
+      "id": "OrgPharm93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-pharmacy-id-ocp",
+        "value": "ON50533355"
+       }
+      ],
+      "name": "Good Life Pharmacy"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractDisp93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-pharmacist",
+        "value": "200087"
+       }
+      ],
+      "name": [
+       {
+        "family": "Sway",
+        "given": [
+         "Ken"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "MedicationRequest",
+      "id": "MedRequest93F05B0FF749525FE05400144FF9F54A",
+      "status": "unknown",
+      "intent": "original-order",
+      "medicationReference": {
+       "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+      },
+      "subject": {
+       "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+      },
+      "requester": {
+       "reference": "#PractPrescr93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "identifier": [
+     {
+      "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-pharmacy-ON50533355-rx-number",
+      "value": "930003"
+     }
+    ],
+    "status": "completed",
+    "category": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/CodeSystem/dispense-category",
+       "code": "service",
+       "display": "Pharmacy Service"
+      }
+     ]
+    },
+    "medicationReference": {
+     "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+    },
+    "subject": {
+     "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+    },
+    "performer": [
+     {
+      "actor": {
+       "reference": "#OrgPharm93F05B0FF749525FE05400144FF9F54A"
+      }
+     },
+     {
+      "actor": {
+       "reference": "#PractDisp93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "authorizingPrescription": [
+     {
+      "reference": "#MedRequest93F05B0FF749525FE05400144FF9F54A"
+     }
+    ],
+    "quantity": {
+     "value": 15,
+     "unit": "Tablet",
+     "system": "http://snomed.info/sct",
+     "code": "428673006"
+    },
+    "whenPrepared": "2016-05-01"
+   }
+  }
+ ]
+}

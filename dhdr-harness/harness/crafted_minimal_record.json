@@ -1,0 +1,518 @@
+{
+ "resourceType": "Bundle",
+ "id": "CRAFTED-minimal-record",
+ "type": "searchset",
+ "total": 3,
+ "link": [],
+ "entry": [
+  {
+   "fullUrl": "https://provider.pst.ehealthontario.ca/api2/fhir/MedicationDispense/93F05B0FF749525FE05400144FF9F54A",
+   "resource": {
+    "resourceType": "MedicationDispense",
+    "id": "CRAFTED-min-m1",
+    "contained": [
+     {
+      "resourceType": "Medication",
+      "id": "Medication93F05B0FF749525FE05400144FF9F54A",
+      "code": {
+       "coding": [
+        {
+         "system": "http://hl7.org/fhir/NamingSystem/ca-hc-din",
+         "code": "00216666",
+         "display": "Novasen"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name",
+         "display": "ACETYLSALICYLIC ACID"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-class-ahfs",
+         "code": "280000000",
+         "display": "CENTRAL NERVOUS SYSTEM DRUG"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-subclass-ahfs",
+         "code": "280804000",
+         "display": "NONSTEROIDAL ANTI-INFLAMMATORY AGENTS"
+        }
+       ]
+      },
+      "form": {
+       "coding": [
+        {
+         "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+         "code": "ECTAB",
+         "display": "Enteric coated tablet"
+        }
+       ],
+       "text": "Oral/Ent Tab"
+      }
+     },
+     {
+      "resourceType": "Patient",
+      "id": "PatDisp93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn",
+        "value": "5259156783"
+       }
+      ],
+      "name": [
+       {
+        "family": "Mock",
+        "given": [
+         "One"
+        ]
+       }
+      ],
+      "gender": "female",
+      "birthDate": "1961-01-01"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractPrescr93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician",
+        "value": "9898789"
+       }
+      ],
+      "name": [
+       {
+        "family": "Smith",
+        "given": [
+         "John"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "Organization",
+      "id": "OrgPharm93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-pharmacy-id-ocp",
+        "value": "ON50533355"
+       }
+      ],
+      "name": "Good Life Pharmacy"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractDisp93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-pharmacist",
+        "value": "200087"
+       }
+      ],
+      "name": [
+       {
+        "family": "Sway",
+        "given": [
+         "Ken"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "MedicationRequest",
+      "id": "MedRequest93F05B0FF749525FE05400144FF9F54A",
+      "status": "unknown",
+      "intent": "original-order",
+      "medicationReference": {
+       "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+      },
+      "subject": {
+       "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+      },
+      "requester": {
+       "reference": "#PractPrescr93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "identifier": [
+     {
+      "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-pharmacy-ON50533355-rx-number",
+      "value": "309787731"
+     }
+    ],
+    "status": "completed",
+    "category": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-medication-dispense-category",
+       "code": "product",
+       "display": "Drug or Device"
+      }
+     ]
+    },
+    "medicationReference": {
+     "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+    },
+    "subject": {
+     "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+    },
+    "performer": [
+     {
+      "actor": {
+       "reference": "#OrgPharm93F05B0FF749525FE05400144FF9F54A"
+      }
+     },
+     {
+      "actor": {
+       "reference": "#PractDisp93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "authorizingPrescription": [
+     {
+      "reference": "#MedRequest93F05B0FF749525FE05400144FF9F54A"
+     }
+    ],
+    "quantity": {
+     "value": 15,
+     "unit": "Tablet",
+     "system": "http://snomed.info/sct",
+     "code": "428673006"
+    },
+    "whenPrepared": "2016-04-10"
+   }
+  },
+  {
+   "fullUrl": "https://provider.pst.ehealthontario.ca/api2/fhir/MedicationDispense/93F05B0FF749525FE05400144FF9F54A",
+   "resource": {
+    "resourceType": "MedicationDispense",
+    "id": "CRAFTED-min-m2",
+    "contained": [
+     {
+      "resourceType": "Medication",
+      "id": "Medication93F05B0FF749525FE05400144FF9F54A",
+      "code": {
+       "coding": [
+        {
+         "system": "http://hl7.org/fhir/NamingSystem/ca-hc-din",
+         "code": "00216666",
+         "display": "Novasen"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name",
+         "display": "ACETYLSALICYLIC ACID"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-class-ahfs",
+         "code": "280000000",
+         "display": "CENTRAL NERVOUS SYSTEM DRUG"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-subclass-ahfs",
+         "code": "280804000",
+         "display": "NONSTEROIDAL ANTI-INFLAMMATORY AGENTS"
+        }
+       ]
+      },
+      "form": {
+       "coding": [
+        {
+         "system": "http://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
+         "code": "ECTAB",
+         "display": "Enteric coated tablet"
+        }
+       ],
+       "text": "Oral/Ent Tab"
+      }
+     },
+     {
+      "resourceType": "Patient",
+      "id": "PatDisp93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn",
+        "value": "5259156783"
+       }
+      ],
+      "name": [
+       {
+        "family": "Mock",
+        "given": [
+         "One"
+        ]
+       }
+      ],
+      "gender": "female",
+      "birthDate": "1961-01-01"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractPrescr93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician",
+        "value": "9898789"
+       }
+      ],
+      "name": [
+       {
+        "family": "Smith",
+        "given": [
+         "John"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "Organization",
+      "id": "OrgPharm93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-pharmacy-id-ocp",
+        "value": "ON50533355"
+       }
+      ],
+      "name": "Good Life Pharmacy"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractDisp93F05B0FF749525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-pharmacist",
+        "value": "200087"
+       }
+      ],
+      "name": [
+       {
+        "family": "Sway",
+        "given": [
+         "Ken"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "MedicationRequest",
+      "id": "MedRequest93F05B0FF749525FE05400144FF9F54A",
+      "status": "unknown",
+      "intent": "original-order",
+      "medicationReference": {
+       "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+      },
+      "subject": {
+       "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+      },
+      "requester": {
+       "reference": "#PractPrescr93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "identifier": [
+     {
+      "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-pharmacy-ON50533355-rx-number",
+      "value": "309787731"
+     }
+    ],
+    "status": "completed",
+    "category": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-medication-dispense-category",
+       "code": "product",
+       "display": "Drug or Device"
+      }
+     ]
+    },
+    "medicationReference": {
+     "reference": "#Medication93F05B0FF749525FE05400144FF9F54A"
+    },
+    "subject": {
+     "reference": "#PatDisp93F05B0FF749525FE05400144FF9F54A"
+    },
+    "performer": [
+     {
+      "actor": {
+       "reference": "#OrgPharm93F05B0FF749525FE05400144FF9F54A"
+      }
+     },
+     {
+      "actor": {
+       "reference": "#PractDisp93F05B0FF749525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "authorizingPrescription": [
+     {
+      "reference": "#MedRequest93F05B0FF749525FE05400144FF9F54A"
+     }
+    ],
+    "quantity": {
+     "value": 15,
+     "unit": "Tablet",
+     "system": "http://snomed.info/sct",
+     "code": "428673006"
+    },
+    "whenPrepared": "2016-06-22"
+   }
+  },
+  {
+   "fullUrl": "https://provider.pst.ehealthontario.ca/api2/fhir/MedicationDispense/93F05B0FF748525FE05400144FF9F54A",
+   "resource": {
+    "resourceType": "MedicationDispense",
+    "id": "CRAFTED-min-n1",
+    "contained": [
+     {
+      "resourceType": "Medication",
+      "id": "Medication93F05B0FF748525FE05400144FF9F54A",
+      "code": {
+       "coding": [
+        {
+         "system": "http://hl7.org/fhir/NamingSystem/ca-hc-din",
+         "code": "02015986",
+         "display": "Fluviral -15mcg/0.5mL;5mL Multidose Vial"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name",
+         "display": "INFLUENZA VACCINE PROGRAM PROFESSIONAL SERVICE FEE"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-class-ahfs",
+         "code": "990000000",
+         "display": "PROFESSIONAL CARE SERVICE"
+        },
+        {
+         "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-drug-subclass-ahfs",
+         "code": "999999000",
+         "display": "PROFESSIONAL CARE SERVICE"
+        }
+       ]
+      }
+     },
+     {
+      "resourceType": "Patient",
+      "id": "PatDisp93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn",
+        "value": "5259156783"
+       }
+      ],
+      "name": [
+       {
+        "family": "Mock",
+        "given": [
+         "One"
+        ]
+       }
+      ],
+      "gender": "female",
+      "birthDate": "1961-01-01"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractPrescr93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician",
+        "value": "2355676"
+       }
+      ],
+      "name": [
+       {
+        "family": "Newton",
+        "given": [
+         "Isaac"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "Organization",
+      "id": "OrgPharm93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-pharmacy-id-ocp",
+        "value": "ON50533355"
+       }
+      ],
+      "name": "Good Life Pharmacy"
+     },
+     {
+      "resourceType": "Practitioner",
+      "id": "PractDisp93F05B0FF748525FE05400144FF9F54A",
+      "identifier": [
+       {
+        "system": "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-pharmacist",
+        "value": "200087"
+       }
+      ],
+      "name": [
+       {
+        "family": "Sway",
+        "given": [
+         "Ken"
+        ]
+       }
+      ]
+     },
+     {
+      "resourceType": "MedicationRequest",
+      "id": "MedRequest93F05B0FF748525FE05400144FF9F54A",
+      "status": "unknown",
+      "intent": "original-order",
+      "medicationReference": {
+       "reference": "#Medication93F05B0FF748525FE05400144FF9F54A"
+      },
+      "subject": {
+       "reference": "#PatDisp93F05B0FF748525FE05400144FF9F54A"
+      },
+      "requester": {
+       "reference": "#PractPrescr93F05B0FF748525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "identifier": [
+     {
+      "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-pharmacy-ON50533355-rx-number",
+      "value": "189787356"
+     }
+    ],
+    "status": "completed",
+    "category": {
+     "coding": [
+      {
+       "system": "http://ehealthontario.ca/fhir/NamingSystem/ca-on-medication-dispense-category",
+       "code": "service",
+       "display": "Professional Service"
+      }
+     ]
+    },
+    "medicationReference": {
+     "reference": "#Medication93F05B0FF748525FE05400144FF9F54A"
+    },
+    "subject": {
+     "reference": "#PatDisp93F05B0FF748525FE05400144FF9F54A"
+    },
+    "performer": [
+     {
+      "actor": {
+       "reference": "#OrgPharm93F05B0FF748525FE05400144FF9F54A"
+      }
+     },
+     {
+      "actor": {
+       "reference": "#PractDisp93F05B0FF748525FE05400144FF9F54A"
+      }
+     }
+    ],
+    "authorizingPrescription": [
+     {
+      "reference": "#MedRequest93F05B0FF748525FE05400144FF9F54A"
+     }
+    ],
+    "quantity": {
+     "value": 1
+    },
+    "whenPrepared": "2016-05-05"
+   }
+  }
+ ]
+}

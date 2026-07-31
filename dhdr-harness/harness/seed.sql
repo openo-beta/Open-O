@@ -1,0 +1,7 @@
+DELETE FROM `OneIdSession` WHERE `providerNo`='999998';
+INSERT INTO `OneIdSession`
+ (`providerNo`,`accessToken`,`refreshToken`,`idToken`,`subject`,`email`,`uaoName`,`uaoUpi`,
+  `authorizationId`,`hubTopic`,`timestamp`,`lastKeptActive`,`sso`,`toolbar`)
+VALUES ('999998','eyJhbGciOiAiUlMyNTYiLCAidHlwIjogIkpXVCIsICJraWQiOiAiaGFybmVzcyJ9.eyJpYXQiOiAxNzg0MjM4NDQyLCAiZXhwaXJlc19pbiI6IDMxNTM2MDAwLCAiZXhwIjogMTgxNTc3NDQ0MiwgInN1YiI6ICJoYXJuZXNzLXN1YmplY3QiLCAiYXVkIjogImhhcm5lc3MiLCAiaXNzIjogImh0dHA6Ly9sb2NhbGhvc3Q6ODA5OSIsICJzY29wZSI6ICJvcGVuaWQgcHJvZmlsZSJ9.aGFybmVzcy1ub3QtYS1yZWFsLXNpZ25hdHVyZQ','eyJhbGciOiAiUlMyNTYiLCAidHlwIjogIkpXVCIsICJraWQiOiAiaGFybmVzcyJ9.eyJpYXQiOiAxNzg0MjM4NDQyLCAiZXhwaXJlc19pbiI6IDMxNTM2MDAwLCAiZXhwIjogMTgxNTc3NDQ0MiwgInN1YiI6ICJoYXJuZXNzLXN1YmplY3QifQ.aGFybmVzcy1ub3QtYS1yZWFsLXNpZ25hdHVyZQ','eyJhbGciOiAiUlMyNTYiLCAidHlwIjogIkpXVCIsICJraWQiOiAiaGFybmVzcyJ9.eyJpYXQiOiAxNzg0MjM4NDQyLCAiZXhwaXJlc19pbiI6IDMxNTM2MDAwLCAiZXhwIjogMTgxNTc3NDQ0MiwgInN1YiI6ICJoYXJuZXNzLXN1YmplY3QiLCAiZW1haWwiOiAiaGFybmVzc0BleGFtcGxlLmludmFsaWQiLCAibmFtZSI6ICJGQUtFIEhhcm5lc3MgUHJvdmlkZXIifQ.aGFybmVzcy1ub3QtYS1yZWFsLXNpZ25hdHVyZQ','harness-subject','harness@example.invalid',
+  'FAKE Harness Clinic','harness-uao-upi','harness-auth-id','harness-hub-topic',
+  1784238442, NOW(), 0, 'eyJGSElSX2lzcyI6ICJodHRwOi8vbG9jYWxob3N0OjgwOTkiLCAiaHViX3VybCI6ICJodHRwOi8vbG9jYWxob3N0OjgwOTkvaHViIiwgImNtc191cmwiOiAiaHR0cDovL2xvY2FsaG9zdDo4MDk5L2NtcyIsICJQQ09JX3VybCI6ICJodHRwOi8vbG9jYWxob3N0OjgwOTkvcGNvaSJ9');
