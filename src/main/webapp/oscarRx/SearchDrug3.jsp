@@ -1146,32 +1146,38 @@
                   <tr id="prescriptionStageRow">
                     <td>
 
+                      <%-- Sits OUTSIDE #prescriptionStageSet deliberately: that container is
+                           display:none until a drug is staged, so links placed inside it are
+                           invisible on arrival at the prescribing screen and only appear after
+                           the first prescription is staged. DHDR12.01/12.02 require them on the
+                           screen where the prescription is entered, which includes before one
+                           has been started - checking coverage precedes prescribing. --%>
+                      <oscar:oscarPropertiesCheck property="billregion" value="ON">
+                          <%-- DHDR12.01 / DHDR12.02: both links MUST sit on the screen where the
+                               prescription is entered. RX3 is the default prescribing UI
+                               (RxChoosePatient2Action reads RX3, shipped "yes"), so this screen is
+                               that screen - WriteScript.jsp carries the same block for the legacy
+                               RX1 flow, which RX3 users never reach. URLs are admin-configurable
+                               (dhdr.odb_formulary_url, dhdr.eap_url), shared with the DHDR viewer.
+                               The SADIE default is ontario.ca, not the v3.0 Related Documents
+                               address, whose certificate expired 2024-10-23 - see divergence D3. --%>
+                          <div class="dhdr-formulary-links" style="margin:4px 0;">
+                              <a target="_new"
+                                 href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.odb_formulary_url", "https://www.ontario.ca/check-medication-coverage/"))%>">ODB
+                                  lookup</a>
+                              &nbsp;|&nbsp;
+                              <a target="_new"
+                                 href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.eap_url", "https://www.ontario.ca/page/sadie-special-authorization-digital-information-exchange"))%>">EAP
+                                  (SADIE)</a>
+                          </div>
+                      </oscar:oscarPropertiesCheck>
+
                       <div id="prescriptionStageSet">
 
                         <div id="interactingDrugErrorMsg"></div>
 
                         <div id="rxText"></div>
                         <%-- Prescriptions are staged here via the prescribe.jsp widget --%>
-
-                        <oscar:oscarPropertiesCheck property="billregion" value="ON">
-                            <%-- DHDR12.01 / DHDR12.02: both links MUST sit on the screen where the
-                                 prescription is entered. RX3 is the default prescribing UI
-                                 (RxChoosePatient2Action reads RX3, shipped "yes"), so this screen is
-                                 that screen - WriteScript.jsp carries the same block for the legacy
-                                 RX1 flow, which RX3 users never reach. URLs are admin-configurable
-                                 (dhdr.odb_formulary_url, dhdr.eap_url), shared with the DHDR viewer.
-                                 The SADIE default is ontario.ca, not the v3.0 Related Documents
-                                 address, whose certificate expired 2024-10-23 - see divergence D3. --%>
-                            <div class="dhdr-formulary-links" style="margin:4px 0;">
-                                <a target="_new"
-                                   href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.odb_formulary_url", "https://www.ontario.ca/check-medication-coverage/"))%>">ODB
-                                    lookup</a>
-                                &nbsp;|&nbsp;
-                                <a target="_new"
-                                   href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.eap_url", "https://www.ontario.ca/page/sadie-special-authorization-digital-information-exchange"))%>">EAP
-                                    (SADIE)</a>
-                            </div>
-                        </oscar:oscarPropertiesCheck>
 
                         <input type="hidden" id="deleteOnCloseRxBox" value="false"/>
                         <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(Integer.toString(demoNo))%>"/>
