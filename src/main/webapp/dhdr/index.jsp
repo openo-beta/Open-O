@@ -2283,9 +2283,21 @@
 						// holds it, so compare them folded: a difference in case or padding is not a
 						// difference in identity, and flagging one sends the reader to reconcile two
 						// records that already agree.
+						// A value the DHDR record does not carry is UNKNOWN, not in conflict. Without this
+						// guard a dispense whose subject is an external reference - the shape the IG's own
+						// BundleSearch.json ships, carrying no contained Patient - compares every EMR value
+						// against "" and reports all four fields as disagreeing, when the record said
+						// nothing about the patient at all. Flagging those drowns the genuine mismatches
+						// this comparison exists to surface.
 						let differs = function(emr, dhdr){
+							if (blank(dhdr)) { return false; }
 							return String(blank(emr) ? "" : emr).trim().toUpperCase()
-									!== String(blank(dhdr) ? "" : dhdr).trim().toUpperCase();
+									!== String(dhdr).trim().toUpperCase();
+						};
+						// Same rule for the fields compared verbatim rather than case-folded (date of
+						// birth, health card number), so all four agree on what absence means.
+						let valueDiffers = function(emr, dhdr){
+							return blank(dhdr) ? false : emr !== dhdr;
 						};
 
 						// DHDR03.02 requires "any patient information that does not match" be
@@ -2328,11 +2340,11 @@
 
 						$scope.dhdrPatient.dobMissing = blank(demographicDob);
 						$scope.dhdrPatient.dobUnmatched = anyDiffers("dob", function(v){
-							return demographicDob !== v; });
+							return valueDiffers(demographicDob, v); });
 
 						$scope.dhdrPatient.hinMissing = blank($scope.demographic.hin);
 						$scope.dhdrPatient.hinUnmatched = anyDiffers("hin", function(v){
-							return $scope.demographic.hin !== v; });
+							return valueDiffers($scope.demographic.hin, v); });
 
 						$scope.dhdrPatientDataUnmatched = ($scope.dhdrPatient.nameUnmatched
 								|| $scope.dhdrPatient.hinUnmatched || $scope.dhdrPatient.dobUnmatched
@@ -2359,8 +2371,9 @@
 									nameUnmatched: differs($scope.demographic.firstName, getFirstName(p.name))
 											|| differs($scope.demographic.lastName, getLastName(p.name)),
 									genderUnmatched: differs($scope.demographic.sex, genderInitial),
-									dobUnmatched: demographicDob !== (p.birthDate || ""),
-									hinUnmatched: $scope.demographic.hin !== getPatientIdentifier(p.identifier)
+									dobUnmatched: valueDiffers(demographicDob, p.birthDate || ""),
+									hinUnmatched: valueDiffers($scope.demographic.hin,
+											getPatientIdentifier(p.identifier))
 								};
 								// BP14 clause 2 requires every event whose patient metadata disagrees with
 								// the EMR be flagged, not only the ones a reader thinks to open. Derived
