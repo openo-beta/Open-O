@@ -411,7 +411,7 @@
 								<th>{{med.pickUpDate | date}}</th>
 								<td ng-click="getDetailView(med);">
 									<a href="#">
-										{{med.genericName}} <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span>
+										{{med.genericName}} <span ng-if="med.eventPatient.anyUnmatched" class="label label-warning" title="{{med.eventPatient.unmatchedSummary}}">Patient data differs</span> <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span>
 									</a>
 								</td>
 								<td>{{med.brandName.display}} {{med.dispensedDrugStrength}} {{med.drugDosageForm}}</td>
@@ -540,7 +540,7 @@
 								<th scope="row">{{med.whenPrepared | date}}</th>
 								<td scope="row">{{med.whenHandedOver | date}}</td>
 								<td>{{med.brandName.display}}</td>
-								<td>{{med.genericName}} <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span></td>
+								<td>{{med.genericName}} <span ng-if="med.eventPatient.anyUnmatched" class="label label-warning" title="{{med.eventPatient.unmatchedSummary}}">Patient data differs</span> <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span></td>
 								<td>{{med.rxNumber}}</td>
 								<td scope="row">{{med.ahfsClass}}/{{med.ahfsSubClass}}</td>
 								<td>{{med.dispensingPharmacy}}</td>
@@ -690,7 +690,7 @@
 				 					<th>{{med.pickUpDate | date}}</th>
 									<td ng-click="getDetailView(med);">
 										<a href="#">
-											{{med.brandName.display}} {{med.dispensedDrugStrength}} {{med.drugDosageForm}} ({{med.genericName}}) <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span>
+											{{med.brandName.display}} {{med.dispensedDrugStrength}} {{med.drugDosageForm}} ({{med.genericName}}) <span ng-if="med.eventPatient.anyUnmatched" class="label label-warning" title="{{med.eventPatient.unmatchedSummary}}">Patient data differs</span> <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span>
 										</a>
 									</td>
 									<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
@@ -835,7 +835,7 @@
 								<th scope="row">{{med.whenPrepared | date}}</th>
 								<td scope="row">{{med.whenHandedOver | date}}</td>
 								<td>{{med.brandName.display}}</td>
-								<td>{{med.genericName}} <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span></td>
+								<td>{{med.genericName}} <span ng-if="med.eventPatient.anyUnmatched" class="label label-warning" title="{{med.eventPatient.unmatchedSummary}}">Patient data differs</span> <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span></td>
 								<td>{{med.rxNumber}}</td>
 								<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
 								<td>{{med.dispensingPharmacy}} - Fax:{{med.dispensingPharmacyFaxNumber}}</td>
@@ -1155,7 +1155,7 @@
 		 				<tr ng-repeat="med in meds | filter : searchtxt">
 		 					<th scope="row">{{med.whenPrepared | date}}</th>
 							<th>{{med.pickUpDate | date}}</th>
-		 					<td ng-click="getDetailView(med);">{{med.genericName}} <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span></td>
+		 					<td ng-click="getDetailView(med);">{{med.genericName}} <span ng-if="med.eventPatient.anyUnmatched" class="label label-warning" title="{{med.eventPatient.unmatchedSummary}}">Patient data differs</span> <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span></td>
 		 					<td>{{med.brandName.display}}</td>
 		 					<td>{{med.dispensedDrugStrength}}</td>
 		 					<td>{{med.drugDosageForm}}</td>
@@ -2362,6 +2362,23 @@
 									dobUnmatched: demographicDob !== (p.birthDate || ""),
 									hinUnmatched: $scope.demographic.hin !== getPatientIdentifier(p.identifier)
 								};
+								// BP14 clause 2 requires every event whose patient metadata disagrees with
+								// the EMR be flagged, not only the ones a reader thinks to open. Derived
+								// once here so the four result-set templates do not each re-encode the
+								// same four-way condition and drift apart.
+								let ep = m.eventPatient;
+								let differing = [];
+								if (ep.nameUnmatched) { differing.push("name"); }
+								if (ep.genderUnmatched) { differing.push("gender"); }
+								if (ep.dobUnmatched) { differing.push("date of birth"); }
+								if (ep.hinUnmatched) { differing.push("health card number"); }
+								ep.anyUnmatched = differing.length > 0;
+								// Named in the tooltip so the row answers "what differs" without being
+								// opened; the Detailed view remains the place the values themselves are.
+								ep.unmatchedSummary = differing.length
+										? "This event's DHDR patient details differ from the EMR record: "
+												+ differing.join(", ") + "."
+										: "";
 							});
 						};
 						decorate($scope.meds);
