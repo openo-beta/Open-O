@@ -41,6 +41,13 @@ public class DHDRManager extends OmdGateway {
       SystemPreferencesDao.class);
 
   /**
+   * Lower bound used when a search supplies none. Earlier than any dispense record the DHDR holds, so
+   * it means "everything" without leaving the bound off - which the service would answer by applying
+   * its own 120-day default. Mirrors {@code earliestSearchDate} in {@code dhdr/index.jsp}.
+   */
+  static final String EARLIEST_SEARCH_DATE = "1900-01-01";
+
+  /**
    * Runs a DHDR dispense search for one patient.
    *
    * <p>The bounds are {@code yyyy-MM-dd} calendar dates, passed through to the query untouched. They
@@ -105,8 +112,20 @@ public class DHDRManager extends OmdGateway {
     } else {
       wc.query("whenprepared", "le" + endDate);
     }
+    // A lower bound is ALWAYS sent, even when the caller supplies none. Omitting it is not "search
+    // everything": the service substitutes its own configured default - 120 days back (BP5) - and
+    // returns that window while the viewer goes on advertising "all events up to <end>". A patient with
+    // dispenses outside the window then reads as having none, which is a false negative on a medication
+    // history rather than a cosmetic range error.
+    //
+    // The viewer already sends this floor for "Search All" (see the earliestSearchDate constant in
+    // dhdr/index.jsp), added when the same hazard was found there. It was never applied to a date field
+    // the user clears by hand, which reaches the identical state. Enforcing it here covers every caller
+    // rather than one button.
     if (startDate != null && !startDate.trim().isEmpty()) {
       wc.query("whenprepared", "ge" + startDate);
+    } else {
+      wc.query("whenprepared", "ge" + EARLIEST_SEARCH_DATE);
     }
     wc.query("_format", "application/fhir+json");
 

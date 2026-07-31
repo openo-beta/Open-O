@@ -547,6 +547,43 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
   }
 
   /**
+   * The printed "Date Range" line. Previously it concatenated {@code start + " to " + end}
+   * unconditionally, so a cleared start date produced a dangling {@code " to Jul 30, 2026"} - a range
+   * the search never used. BP6 requires the period be described however it is bounded.
+   */
+  @Nested
+  @DisplayName("searchPeriodText - a missing bound must not produce a dangling range")
+  class SearchPeriodTextTests {
+
+    @Test
+    @DisplayName("should render both bounds when the range is closed")
+    void shouldRenderRange_whenBothBoundsPresent() {
+      assertThat(print.searchPeriodText("2026-04-01", "2026-07-30"))
+          .isEqualTo("Apr 1, 2026 to Jul 30, 2026");
+    }
+
+    @Test
+    @DisplayName("should describe an open lower bound rather than a dangling range")
+    void shouldDescribeOpenStart_whenStartMissing() {
+      // The #81 case: the printout stated " to Jul 30, 2026" for a search with no lower bound.
+      assertThat(print.searchPeriodText("", "2026-07-30"))
+          .isEqualTo("all events up to Jul 30, 2026");
+    }
+
+    @Test
+    @DisplayName("should describe an open upper bound as onwards")
+    void shouldDescribeOpenEnd_whenEndMissing() {
+      assertThat(print.searchPeriodText("2016-01-02", "")).isEqualTo("Jan 2, 2016 onwards");
+    }
+
+    @Test
+    @DisplayName("should describe an entirely unbounded search")
+    void shouldDescribeUnbounded_whenNeitherBoundPresent() {
+      assertThat(print.searchPeriodText("", "")).isEqualTo("all available events");
+    }
+  }
+
+  /**
    * BP4 requires the search parameters the service reports it used be checked. The viewer does the
    * comparison and passes any mismatch here, so the printout does not assert the requested range
    * unqualified - the paper outlives the screen that carries the warning.

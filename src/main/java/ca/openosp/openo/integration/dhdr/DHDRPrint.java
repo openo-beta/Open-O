@@ -666,8 +666,7 @@ public class DHDRPrint {
             "Date Range: ", FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD, Color.BLACK));
     dateRange.add(
         new Phrase(
-            displayDate(jsonOb.optString("startDate")) + " to "
-                + displayDate(jsonOb.optString("endDate")),
+            searchPeriodText(jsonOb.optString("startDate"), jsonOb.optString("endDate")),
             FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL, Color.BLACK)));
     dateRange.add(Chunk.NEWLINE);
 
@@ -686,6 +685,33 @@ public class DHDRPrint {
 
     document.add(dateRange);
     document.add(Chunk.NEWLINE);
+  }
+
+  /**
+   * Describes a search period the way the viewer does, covering the cases where one bound is absent.
+   *
+   * <p>Previously the printout concatenated {@code start + " to " + end} unconditionally, so a cleared
+   * start date produced a dangling {@code " to Jul 30, 2026"} - a range the search never used. BP6
+   * requires the date range be displayed "if available else anything that represents the search period",
+   * and the screen already renders all four shapes; the printout rendered one.
+   *
+   * @param startDate String the lower bound as {@code yyyy-MM-dd}, or empty
+   * @param endDate String the upper bound as {@code yyyy-MM-dd}, or empty
+   * @return String the period in the document's date format (DHDR03.06)
+   */
+  String searchPeriodText(String startDate, String endDate) {
+    String start = displayDate(startDate);
+    String end = displayDate(endDate);
+    if (start.isEmpty() && end.isEmpty()) {
+      return "all available events";
+    }
+    if (start.isEmpty()) {
+      return "all events up to " + end;
+    }
+    if (end.isEmpty()) {
+      return start + " onwards";
+    }
+    return start + " to " + end;
   }
 
   /**

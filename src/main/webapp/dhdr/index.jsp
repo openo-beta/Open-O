@@ -150,14 +150,14 @@
 		<div class="alert" ng-class="dhdrPatientDataUnmatched ? 'alert-warning' : 'alert-info'" role="alert" style="margin-bottom: 8px;">
 			<strong>DHDR EHR Service patient:</strong>
 			{{dhdrPatient.lastName}}, {{dhdrPatient.firstName}}{{matchNote(dhdrPatient.nameUnmatched, dhdrPatient.nameMissing)}}{{variantNote('lastName')}}{{variantNote('firstName')}}
-			&nbsp;&middot;&nbsp; HIN: {{dhdrPatient.hin}}{{matchNote(dhdrPatient.hinUnmatched, dhdrPatient.hinMissing)}}{{variantNote('hin')}}
-			&nbsp;&middot;&nbsp; DOB: {{dhdrPatient.dob | date}}{{matchNote(dhdrPatient.dobUnmatched, dhdrPatient.dobMissing)}}{{variantNote('dob')}}
-			&nbsp;&middot;&nbsp; Sex: {{dhdrPatient.gender}}{{matchNote(dhdrPatient.genderUnmatched, dhdrPatient.genderMissing)}}{{variantNote('gender')}}
-			<div ng-show="dhdrPatientDataUnmatched"><em>Some DHDR patient details differ from the EMR record, or are not recorded in it.</em></div>
+			&nbsp;&middot;&nbsp; HIN: {{dhdrPatient.hin}}{{headlineNote('hin', dhdrPatient.hin, dhdrPatient.hinUnmatched, dhdrPatient.hinMissing)}}{{variantNote('hin')}}
+			&nbsp;&middot;&nbsp; DOB: {{dhdrPatient.dob | date}}{{headlineNote('dob', dhdrPatient.dob, dhdrPatient.dobUnmatched, dhdrPatient.dobMissing)}}{{variantNote('dob')}}
+			&nbsp;&middot;&nbsp; Sex: {{dhdrPatient.gender}}{{headlineNote('gender', dhdrPatient.gender, dhdrPatient.genderUnmatched, dhdrPatient.genderMissing)}}{{variantNote('gender')}}
+			<div ng-show="dhdrPatientDataUnmatched"><em>Some of this patient's DHDR details differ from the EMR record, or are not recorded in it.</em></div>
 			<%-- DHDR03.02: where the returned records disagree with each other, say so. Otherwise
 			     the banner shows one value and silently drops the rest, which is how the mismatch
 			     warning came to depend on which record arrived last. --%>
-			<div ng-show="anyVariants()"><em>The DHDR EHR Service returned more than one value for some patient details across this patient's records; every value shown was compared against the EMR.</em></div>
+			<div ng-show="anyVariants()"><em>The DHDR EHR Service returned more than one value for some of this patient's details; every value shown was compared against the EMR.</em></div>
 		</div>
 	</div>
 	<div class="container">
@@ -404,7 +404,7 @@
 								<th>{{med.pickUpDate | date}}</th>
 								<td ng-click="getDetailView(med);">
 									<a href="#">
-										{{med.genericName}}
+										{{med.genericName}} <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span>
 									</a>
 								</td>
 								<td>{{med.brandName.display}} {{med.dispensedDrugStrength}} {{med.drugDosageForm}}</td>
@@ -533,7 +533,7 @@
 								<th scope="row">{{med.whenPrepared | date}}</th>
 								<td scope="row">{{med.whenHandedOver | date}}</td>
 								<td>{{med.brandName.display}}</td>
-								<td>{{med.genericName}} </td>
+								<td>{{med.genericName}} <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span></td>
 								<td>{{med.rxNumber}}</td>
 								<td scope="row">{{med.ahfsClass}}/{{med.ahfsSubClass}}</td>
 								<td>{{med.dispensingPharmacy}}</td>
@@ -683,7 +683,7 @@
 				 					<th>{{med.pickUpDate | date}}</th>
 									<td ng-click="getDetailView(med);">
 										<a href="#">
-											{{med.brandName.display}} {{med.dispensedDrugStrength}} {{med.drugDosageForm}} ({{med.genericName}})
+											{{med.brandName.display}} {{med.dispensedDrugStrength}} {{med.drugDosageForm}} ({{med.genericName}}) <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span>
 										</a>
 									</td>
 									<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
@@ -828,7 +828,7 @@
 								<th scope="row">{{med.whenPrepared | date}}</th>
 								<td scope="row">{{med.whenHandedOver | date}}</td>
 								<td>{{med.brandName.display}}</td>
-								<td>{{med.genericName}} </td>
+								<td>{{med.genericName}} <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span></td>
 								<td>{{med.rxNumber}}</td>
 								<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
 								<td>{{med.dispensingPharmacy}} - Fax:{{med.dispensingPharmacyFaxNumber}}</td>
@@ -939,6 +939,21 @@
 		 					<th>Dispensed Date</th> 
 							<th scope="row">{{med.whenPrepared | date}}</th>
 						</tr>
+						<%-- MedicationDispense.status is 1..1 and mustSupport, so the Detailed view states it
+						     always, not only when abnormal. Shown conditionally, an absent row is ambiguous:
+						     a reader cannot tell "this dispense is valid" from "this EMR does not display
+						     status". Only the styling is conditional - a normal status must not compete for
+						     attention with one that invalidates the event. --%>
+						<tr>
+							<th>Dispense Status</th>
+							<td>
+								<span ng-if="!med.statusNotCompleted">{{med.status}}</span>
+								<span ng-if="med.statusNotCompleted">
+									<span class="label label-danger">{{med.status}}</span>
+									Not a completed dispense - may have been reversed or recorded in error.
+								</span>
+							</td>
+						</tr>
 						<tr>
 							<th>Pickup Date</th>
 							<th scope="row">{{med.pickUpDate | date}}</th>
@@ -1018,29 +1033,29 @@
 						<tr>
 							<th>Patient Name</th>
 							<td>
-								{{dhdrPatient.lastName}}, {{dhdrPatient.firstName}}
-								<span ng-show="dhdrPatient.nameUnmatched"> (UNMATCHED)</span>
+								{{med.eventPatient.lastName}}, {{med.eventPatient.firstName}}
+								<span ng-show="med.eventPatient.nameUnmatched"> (UNMATCHED)</span>
 							</td>
 						</tr>
 						<tr>
 							<th>Patient Gender</th>
 							<td>
-								{{dhdrPatient.gender}}
-								<span ng-show="dhdrPatient.genderUnmatched"> (UNMATCHED)</span>
+								{{med.eventPatient.gender}}
+								<span ng-show="med.eventPatient.genderUnmatched"> (UNMATCHED)</span>
 							</td>
 						</tr>
 						<tr>
 							<th>Patient DOB</th>
 							<td>
-								{{dhdrPatient.dob | date}}
-								<span ng-show="dhdrPatient.dobUnmatched"> (UNMATCHED)</span>
+								{{med.eventPatient.dob | date}}
+								<span ng-show="med.eventPatient.dobUnmatched"> (UNMATCHED)</span>
 							</td>
 						</tr>
 						<tr>
 							<th>Patient HIN</th>
 							<td>
-								{{dhdrPatient.hin}}
-								<span ng-show="dhdrPatient.hinUnmatched"> (UNMATCHED)</span>
+								{{med.eventPatient.hin}}
+								<span ng-show="med.eventPatient.hinUnmatched"> (UNMATCHED)</span>
 							</td>
 						</tr>
 						<tr>
@@ -1133,7 +1148,7 @@
 		 				<tr ng-repeat="med in meds | filter : searchtxt">
 		 					<th scope="row">{{med.whenPrepared | date}}</th>
 							<th>{{med.pickUpDate | date}}</th>
-		 					<td ng-click="getDetailView(med);">{{med.genericName}} </td>
+		 					<td ng-click="getDetailView(med);">{{med.genericName}} <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span></td>
 		 					<td>{{med.brandName.display}}</td>
 		 					<td>{{med.dispensedDrugStrength}}</td>
 		 					<td>{{med.drugDosageForm}}</td>
@@ -1297,13 +1312,34 @@
 				if (!unmatched) { return ""; }
 				return missing ? " (NOT IN EMR)" : " (UNMATCHED)";
 			};
+			// The marker belongs on the value it describes. `unmatched` above is a set-level
+			// verdict - true when ANY returned value differs - so pinning it to the headline mislabels
+			// the headline whenever the disagreeing value is one of the others. These two ask the
+			// question per value instead.
+			$scope.headlineNote = function(field, headline, unmatched, missing){
+				if (!unmatched) { return ""; }
+				if (missing) { return " (NOT IN EMR)"; }
+				let bad = $scope.dhdrPatientUnmatchedValues
+						? $scope.dhdrPatientUnmatchedValues[field] : null;
+				// No per-value record (name spans two fields, so it keeps the set-level answer) falls
+				// back to the old behaviour rather than silently dropping the marker.
+				if (!bad) { return " (UNMATCHED)"; }
+				return bad.indexOf(headline) >= 0 ? " (UNMATCHED)" : "";
+			};
 			// DHDR03.02: the headline value is one of several when the returned records disagree.
 			// List the others beside it rather than dropping them - they were compared, so they should
 			// be visible.
 			$scope.variantNote = function(field){
 				var seen = $scope.dhdrPatientVariants ? $scope.dhdrPatientVariants[field] : null;
 				if (!seen || seen.length < 2) { return ""; }
-				return " [also in DHDR: " + seen.slice(1).join(", ") + "]";
+				var bad = $scope.dhdrPatientUnmatchedValues
+						? $scope.dhdrPatientUnmatchedValues[field] : null;
+				// mark the differing ones where they are listed, so the reader can tell which of
+				// several returned values is the one that disagrees with the chart.
+				var rest = seen.slice(1).map(function(v){
+					return (bad && bad.indexOf(v) >= 0) ? v + " (UNMATCHED)" : v;
+				});
+				return " [also in DHDR: " + rest.join(", ") + "]";
 			};
 			$scope.anyVariants = function(){
 				var v = $scope.dhdrPatientVariants;
@@ -1379,6 +1415,8 @@
 			// one response, and 10 male / 6 female rows for one patient. Every distinct value has to be
 			// compared, not just whichever record happened to arrive last.
 			$scope.dhdrPatientVariants = {firstName: [], lastName: [], gender: [], dob: [], hin: []};
+			// which of those values disagree with the EMR, so the marker lands on the right one.
+			$scope.dhdrPatientUnmatchedValues = {firstName: [], lastName: [], gender: [], dob: [], hin: []};
 			$scope.dhdrPatientResolved = false;
 			$scope.dhdrPatientData = "";
 			$scope.patientDataUnmatched = false;
@@ -1771,6 +1809,28 @@
 				}
 			}
 			
+			// Hoisted out of processEntries so the per-event patient decoration can reuse them
+			// rather than carry a second copy.
+			function getFirstName(nameArray) {
+				if (Array.isArray(nameArray) && nameArray.length > 0) {
+					const givenNames = nameArray[0].given || [];
+					return givenNames[0] || "";
+				}
+				return "";
+			}
+			function getLastName(nameArray) {
+				if (Array.isArray(nameArray) && nameArray.length > 0) {
+					return nameArray[0].family || "";
+				}
+				return "";
+			}
+			function getPatientIdentifier(identifierArray) {
+				if (Array.isArray(identifierArray) && identifierArray.length > 0) {
+					return identifierArray[0].value || "";
+				}
+				return "";
+			}
+
 			processEntries = function(entries){
 				var skipped = 0;
 				for (x of entries) {
@@ -1814,28 +1874,6 @@
 								seen.push(value);
 							}
 							return seen[0];
-						}
-
-						function getFirstName(nameArray) {
-							if (Array.isArray(nameArray) && nameArray.length > 0) {
-								const givenNames = nameArray[0].given || [];
-								return givenNames[0] || "";
-							}
-							return "";
-						}
-
-						function getLastName(nameArray) {
-							if (Array.isArray(nameArray) && nameArray.length > 0) {
-								return nameArray[0].family || "";
-							}
-							return "";
-						}
-
-						function getPatientIdentifier(identifierArray) {
-							if (Array.isArray(identifierArray) && identifierArray.length > 0) {
-								return identifierArray[0].value || "";
-							}
-							return "";
 						}
 
 						if(d.categoryCode === "service"){
@@ -2090,6 +2128,8 @@
 				// Cleared per search, not per page: a paged walk calls processEntries once per page and
 				// the variants must accumulate across all of them.
 				$scope.dhdrPatientVariants = {firstName: [], lastName: [], gender: [], dob: [], hin: []};
+			// Which of those values disagree with the EMR, so the marker lands on the right one.
+			$scope.dhdrPatientUnmatchedValues = {firstName: [], lastName: [], gender: [], dob: [], hin: []};
 
 				// DHDR02.02: the HCN is mandatory in the request and must not be sent absent. The
 				// viewer auto-fires on load, so refuse to dispatch rather than send an empty hcn| query.
@@ -2224,13 +2264,21 @@
 						// carried, not just the headline one. Comparing only the headline made the MUST
 						// order-dependent: with OMD's WILLIAM_KINDRED capture (10 male / 6 female rows,
 						// one patient) reordering the entries alone turned the warning on and off.
+						// Records WHICH values differ, not just whether any did. The set-level answer alone
+						// put the "(UNMATCHED)" marker beside the headline whatever the headline was, so a
+						// response whose first value agrees and whose later value does not marked the
+						// agreeing one. Every value is still compared; the verdict
+						// is just kept at the granularity it gets displayed at.
 						let anyDiffers = function(field, compare){
 							let seen = $scope.dhdrPatientVariants[field];
+							$scope.dhdrPatientUnmatchedValues[field] = [];
 							if (!seen || seen.length === 0) { return false; }
 							for (let vi = 0; vi < seen.length; vi++) {
-								if (compare(seen[vi])) { return true; }
+								if (compare(seen[vi])) {
+									$scope.dhdrPatientUnmatchedValues[field].push(seen[vi]);
+								}
 							}
-							return false;
+							return $scope.dhdrPatientUnmatchedValues[field].length > 0;
 						};
 
 						$scope.dhdrPatient.nameMissing = blank($scope.demographic.firstName)
@@ -2260,6 +2308,35 @@
 						$scope.dhdrPatientDataUnmatched = ($scope.dhdrPatient.nameUnmatched
 								|| $scope.dhdrPatient.hinUnmatched || $scope.dhdrPatient.dobUnmatched
 								|| $scope.dhdrPatient.genderUnmatched);
+
+						// The Detailed view is scoped to ONE event, so it must show that event's
+						// patient metadata rather than the whole result set's headline. Each event's
+						// contained Patient is already captured (this.patient) and was only being read to
+						// build the variant list. Decorated onto the event itself rather than exposed as a
+						// controller helper: the Detail template is a $modal template and cannot see
+						// controller scope, which is why the block was bound to dhdrPatient in the first
+						// place. Same comparison functions as above, so the two cannot drift.
+						let decorate = function(list){
+							angular.forEach(list, function(m){
+								let p = m.patient || {};
+								let genderInitial = blank(p.gender)
+										? "" : String(p.gender).charAt(0).toUpperCase();
+								m.eventPatient = {
+									firstName: getFirstName(p.name),
+									lastName: getLastName(p.name),
+									gender: blank(p.gender) ? "" : p.gender,
+									dob: p.birthDate || "",
+									hin: getPatientIdentifier(p.identifier),
+									nameUnmatched: differs($scope.demographic.firstName, getFirstName(p.name))
+											|| differs($scope.demographic.lastName, getLastName(p.name)),
+									genderUnmatched: differs($scope.demographic.sex, genderInitial),
+									dobUnmatched: demographicDob !== (p.birthDate || ""),
+									hinUnmatched: $scope.demographic.hin !== getPatientIdentifier(p.identifier)
+								};
+							});
+						};
+						decorate($scope.meds);
+						decorate($scope.services);
 					}
 
 					checkSearchPeriodEcho(response);
@@ -2602,6 +2679,18 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 				}
 			}
         
+			// MedicationDispense.status is 1..1 in FHIR and mustSupport in the DHDR profile, so it
+			// cannot be left unread. The value set is not fixed to "completed": the FHIR-to-CDS mapping
+			// declares the full medication-dispense-status set, which includes cancelled,
+			// entered-in-error, stopped and declined. An event in one of those states is NOT a valid
+			// dispense, and rendering it like one puts a medication in the history that was reversed or
+			// recorded in error.
+			this.status = this.med.resource.status;
+			// Anything other than completed needs to be visible rather than silently normal. Kept as a
+			// derived flag so the templates do not each re-encode which tokens count as valid.
+			this.statusNotCompleted = angular.isDefined(this.status)
+					&& this.status !== null && String(this.status).toLowerCase() !== "completed";
+
 			this.whenPrepared = this.med.resource.whenPrepared;
 			if (angular.isDefined(this.med.resource.whenHandedOver)) {
 				// Drug tables bind pickUpDate, pharmacy tables bind whenHandedOver; same source.
