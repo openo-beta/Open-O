@@ -1,8 +1,8 @@
 package ca.openosp.openo.integration.oneId;
 
-import ca.openosp.openo.commn.dao.SystemPreferencesDao;
 import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.integration.dhdr.OmdGateway;
+import ca.openosp.openo.managers.EhrConnectivityManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SessionConstants;
@@ -22,8 +22,8 @@ import java.io.IOException;
 public class OneIdFilter implements Filter {
 
     private static final Logger logger = MiscUtils.getLogger();
-  private final SystemPreferencesDao systemPreferencesDao =
-      SpringUtils.getBean(SystemPreferencesDao.class);
+  private final EhrConnectivityManager ehrConnectivityManager =
+      SpringUtils.getBean(EhrConnectivityManager.class);
   private final OneIdSessionDao oneIdSessionDao = SpringUtils.getBean(OneIdSessionDao.class);
   private final OneIdViewletDao oneIdViewletDao = SpringUtils.getBean(OneIdViewletDao.class);
 
@@ -142,9 +142,11 @@ public class OneIdFilter implements Filter {
     }
 
     private String getPcoiKey() {
-        OneIdViewlet oneIdViewlet = oneIdViewletDao.queryOneIdViewletForKey(
-            systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.pcoi_key).getName()
-        );
+        String configuredKey = ehrConnectivityManager.getConfigValue(SystemPreferences.ONEID_KEYS.pcoi_key, "");
+        if (configuredKey == null || configuredKey.trim().isEmpty()) {
+            return "";
+        }
+        OneIdViewlet oneIdViewlet = oneIdViewletDao.queryOneIdViewletForKey(configuredKey.trim());
         return oneIdViewlet == null ? "" : oneIdViewlet.getKeyValue();
     }
 }
