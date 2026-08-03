@@ -83,6 +83,7 @@ public class OneIdLoginAction extends ActionSupport {
 
             OneIdGatewayData gatewayData = new OneIdGatewayData();
             gatewayData.hasScope(OneIdGatewayData.fullScope);
+            gatewayData.hasProfile(OneIdGatewayData.fullProfile);
 
             String authorizeUrl = omdGateway.buildAuthorizeUrl(gatewayData, state, nonce, verifier);
             response.sendRedirect(authorizeUrl);
