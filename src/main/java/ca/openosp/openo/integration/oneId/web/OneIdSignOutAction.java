@@ -23,6 +23,8 @@
  */
 package ca.openosp.openo.integration.oneId.web;
 
+import ca.openosp.openo.integration.dhdr.OmdGateway;
+import ca.openosp.openo.integration.ohcms.CMSManager;
 import ca.openosp.openo.integration.oneId.OneIdGatewayData;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
@@ -39,13 +41,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Removes the ONE ID association from the acting provider's own account and ends the ONE ID session
- * for that provider. Clearing the stored key means a later ONE ID login no longer resolves to this
- * account until it is bound again. The provider stays signed into OpenO.
+ * Ends the acting provider's ONE ID session while leaving them signed into OpenO. The patient and
+ * user are cleared from the EHR context, the access token is revoked, and the stored ONE ID session
+ * is removed, so a later EHR service launch starts a fresh sign-in. The account stays linked; use
+ * the unlink action to sever the binding itself.
  *
- * @since 2026-07-02
+ * @since 2026-08-03
  */
-public class OneIdUnlinkAction extends ActionSupport {
+public class OneIdSignOutAction extends ActionSupport {
 
     private static final Logger logger = MiscUtils.getLogger();
     private static final String SEC_OBJECT = "_ehr.connectivity";
@@ -62,38 +65,62 @@ public class OneIdUnlinkAction extends ActionSupport {
             throw new SecurityException("missing required sec object (" + SEC_OBJECT + ")");
         }
 
-        // Unlinking only runs on a POST, so a crafted link or image cannot sever the binding;
+        // Signing out only runs on a POST, so a crafted link or image cannot end the session;
         // a plain GET just returns to the preference page untouched.
         if (!"POST".equalsIgnoreCase(request.getMethod())) {
-            try {
-                response.sendRedirect(request.getContextPath() + "/provider/providerpreference.jsp");
-            } catch (Exception e) {
-                logger.error("Failed to redirect a non-POST unlink request", e);
-            }
+            redirectToPreferences();
             return NONE;
         }
 
         String providerNo = loggedInInfo.getLoggedInProviderNo();
-        if (ehrConnectivityManager.clearOneIdBinding(loggedInInfo, providerNo)) {
-            LogAction.addLog(providerNo, LogConst.UNLINK, "ONE ID", "", request.getRemoteAddr());
-        }
-
-        ehrConnectivityManager.removeOneIdSession(loggedInInfo, providerNo);
-        if (loggedInInfo.getOneIdGatewayData() != null) {
-            // The emptied object is detached as well; left on the session it would make the
-            // provider look signed in to ONE ID with no usable tokens.
-            loggedInInfo.getOneIdGatewayData().clearGatewayData();
-            loggedInInfo.setOneIdGatewayData((OneIdGatewayData) null);
-            if (request.getSession(false) != null) {
-                request.getSession(false).removeAttribute(LoggedInInfo.OH_GATEWAY_DATA);
-            }
+        OneIdGatewayData gatewayData = loggedInInfo.getOneIdGatewayData();
+        if (gatewayData == null) {
+            redirectToPreferences();
+            return NONE;
         }
 
         try {
+            CMSManager.userLogout(loggedInInfo);
+        } catch (Exception e) {
+            logger.error("ONE ID CMS context clear on sign out failed", e);
+        }
+        try {
+            new OmdGateway().revokeToken(loggedInInfo, gatewayData);
+        } catch (Exception e) {
+            logger.error("ONE ID token revoke on sign out failed", e);
+        }
+        try {
+            ehrConnectivityManager.removeOneIdSession(loggedInInfo, providerNo);
+        } catch (Exception e) {
+            logger.error("ONE ID session removal on sign out failed", e);
+        }
+
+        clearGatewayData(loggedInInfo, gatewayData);
+        LogAction.addLog(providerNo, LogConst.LOGOUT, "ONE ID", "", request.getRemoteAddr());
+        redirectToPreferences();
+        return NONE;
+    }
+
+    /**
+     * Clears the gateway data and detaches it from the HTTP session. Leaving the emptied object on
+     * the session would make the provider look signed in to ONE ID with no usable tokens.
+     *
+     * @param loggedInInfo LoggedInInfo the acting provider's session information
+     * @param gatewayData  OneIdGatewayData the gateway data being discarded
+     */
+    private void clearGatewayData(LoggedInInfo loggedInInfo, OneIdGatewayData gatewayData) {
+        gatewayData.clearGatewayData();
+        loggedInInfo.setOneIdGatewayData((OneIdGatewayData) null);
+        if (request.getSession(false) != null) {
+            request.getSession(false).removeAttribute(LoggedInInfo.OH_GATEWAY_DATA);
+        }
+    }
+
+    private void redirectToPreferences() {
+        try {
             response.sendRedirect(request.getContextPath() + "/provider/providerpreference.jsp");
         } catch (Exception e) {
-            logger.error("Failed to redirect after ONE ID unlink", e);
+            logger.error("Failed to redirect after ONE ID sign out", e);
         }
-        return NONE;
     }
 }

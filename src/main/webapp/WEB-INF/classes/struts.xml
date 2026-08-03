@@ -107,6 +107,7 @@
         <action name="oneIdLogin" class="ca.openosp.openo.integration.oneId.web.OneIdLoginAction"/>
         <action name="oneIdCallback" class="ca.openosp.openo.integration.oneId.web.OneIdCallbackAction"/>
         <action name="oneIdUnlink" class="ca.openosp.openo.integration.oneId.web.OneIdUnlinkAction"/>
+        <action name="oneIdSignOut" class="ca.openosp.openo.integration.oneId.web.OneIdSignOutAction"/>
         <action name="admin/uaoAdmin" class="ca.openosp.openo.integration.oneId.web.UaoAdminAction">
             <result name="success">/admin/uaoAdmin.jsp</result>
         </action>
