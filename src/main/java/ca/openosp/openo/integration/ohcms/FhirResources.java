@@ -19,9 +19,14 @@
 package ca.openosp.openo.integration.ohcms;
 
 import ca.openosp.openo.commn.Gender;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.dao.DemographicContactDao;
 import ca.openosp.openo.commn.model.Clinic;
+import ca.openosp.openo.commn.model.Contact;
 import ca.openosp.openo.commn.model.Demographic;
+import ca.openosp.openo.commn.model.DemographicContact;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.integration.fhir.r4.utils.EnumMappingUtil;
 import ca.openosp.openo.integration.oneId.OneIdGatewayData;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -32,6 +37,7 @@ import org.hl7.fhir.r4.model.Address.AddressUse;
 import org.hl7.fhir.r4.model.BaseResource;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.ContactPoint;
 import org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r4.model.ContactPoint.ContactPointUse;
 import org.hl7.fhir.r4.model.HumanName;
@@ -43,13 +49,18 @@ import org.hl7.fhir.r4.model.Organization;
 import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Practitioner;
+import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.StringType;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FhirResources {
 
   ClinicDAO clinicDao = SpringUtils.getBean(ClinicDAO.class);
+  ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
+  DemographicContactDao demographicContactDao = SpringUtils.getBean(DemographicContactDao.class);
   private static final FhirContext fhirContext = FhirContext.forR4();
 
   public Organization getOrganization(LoggedInInfo loggedInInfo) throws CMSException {
@@ -81,10 +92,12 @@ public class FhirResources {
     // entities: one custodian covers many clinics. OpenO holds no address for a custodian, so the
     // Organization goes out identified by name and UAO alone.
     if (clinic.getWorkPhone() != null && clinic.getWorkPhone().trim().length() > 4) {
-      organization.addTelecom().setSystem(ContactPointSystem.PHONE).setValue(clinic.getWorkPhone());
+      organization.addTelecom().setSystem(ContactPointSystem.PHONE)
+          .setUse(ContactPointUse.WORK).setValue(clinic.getWorkPhone());
     }
     if (clinic.getFax() != null && clinic.getFax().trim().length() > 4) {
-      organization.addTelecom().setSystem(ContactPointSystem.FAX).setValue(clinic.getFax());
+      organization.addTelecom().setSystem(ContactPointSystem.FAX)
+          .setUse(ContactPointUse.WORK).setValue(clinic.getFax());
     }
     return organization;
   }
@@ -159,10 +172,17 @@ public class FhirResources {
     practitioner.getMeta().addProfile(
         "http://ehealthontario.ca/fhir/StructureDefinition/ca-on-cms-profile-Practitioner|1.0.0");
     practitioner.addIdentifier()
-        .setSystem("https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician")
-        .setValue(loggedInInfo.getLoggedInProvider().getPractitionerNo());
-    practitioner.addName().setFamily(loggedInInfo.getLoggedInProvider().getLastName())
+        .setType(licenceIdentifierType())
+        .setSystem(PHYSICIAN_LICENCE_SYSTEM)
+        .setValue(loggedInInfo.getLoggedInProvider().getPractitionerNo())
+        .getAssigner().setDisplay(PHYSICIAN_LICENCE_ASSIGNER);
+    HumanName practitionerName = practitioner.addName()
+        .setFamily(loggedInInfo.getLoggedInProvider().getLastName())
         .addGiven(loggedInInfo.getLoggedInProvider().getFirstName());
+    String title = loggedInInfo.getLoggedInProvider().getTitle();
+    if (title != null && !title.trim().isEmpty()) {
+      practitionerName.addPrefix(title.trim());
+    }
     return practitioner;
   }
 
@@ -224,11 +244,25 @@ public class FhirResources {
       humanName.addPrefix(demographic.getTitle());
     }
     patient.addName(humanName);
-    CodeableConcept cc = new CodeableConcept();
-    Coding c = cc.addCoding();
-    c.setSystem("https://www.hl7.org/fhir/valueset-languages.html");
-    c.setCode("en-US");
-    patient.addCommunication().setLanguage(cc);
+    // Only sent when the record actually says which language the patient uses. Naming one the
+    // patient never gave is worse than saying nothing: an absent element leaves the question open,
+    // a present one asserts an answer the clinic never recorded.
+    String languageCode = languageCode(demographic.getOfficialLanguage());
+    if (languageCode != null) {
+      CodeableConcept cc = new CodeableConcept();
+      cc.addCoding().setSystem("urn:ietf:bcp:47").setCode(languageCode);
+      patient.addCommunication().setLanguage(cc);
+    }
+    // The provider the patient is rostered to. Carried as an identifier rather than a pointer to
+    // another resource, because the context holds one Practitioner, the signed-in one, and a
+    // pointer to anything else would lead nowhere.
+    Reference generalPractitioner = generalPractitionerReference(demographic.getProviderNo());
+    if (generalPractitioner != null) {
+      patient.addGeneralPractitioner(generalPractitioner);
+    }
+    for (Patient.ContactComponent contact : patientContacts(demographic.getDemographicNo())) {
+      patient.addContact(contact);
+    }
     if (demographic.getPhone() != null && !demographic.getPhone().trim().isEmpty()) {
       patient.addTelecom().setUse(ContactPointUse.HOME)
           .setSystem(ContactPointSystem.PHONE)
@@ -240,6 +274,138 @@ public class FhirResources {
           .setValue(demographic.getPhone2());
     }
     return patient;
+  }
+
+  /**
+   * Turns the language recorded on a patient record into the BCP 47 code the profile expects.
+   *
+   * <p>The record holds a language name chosen from a two-option list, "English" or "French", so
+   * anything else is a value this mapping does not know and the caller sends nothing rather than
+   * guess.
+   *
+   * @param recorded String the language name held on the record, or null
+   * @return String the BCP 47 code, or null when the record names no language this recognises
+   * @since 2026-08-04
+   */
+  static String languageCode(String recorded) {
+    if (recorded == null) {
+      return null;
+    }
+    String name = recorded.trim();
+    if ("English".equalsIgnoreCase(name)) {
+      return "en";
+    }
+    if ("French".equalsIgnoreCase(name)) {
+      return "fr";
+    }
+    return null;
+  }
+
+  /** The naming system OpenO asserts for a practitioner's licence number. */
+  private static final String PHYSICIAN_LICENCE_SYSTEM =
+      "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician";
+
+  /** The body that issues numbers in that system. */
+  private static final String PHYSICIAN_LICENCE_ASSIGNER =
+      "College of Physicians and Surgeons of Ontario";
+
+  /** Marks an identifier as a medical licence number, from the HL7 identifier-type table. */
+  private static CodeableConcept licenceIdentifierType() {
+    CodeableConcept type = new CodeableConcept();
+    type.addCoding()
+        .setSystem("http://hl7.org/fhir/v2/0203")
+        .setCode("MD")
+        .setDisplay("Medical License number");
+    return type;
+  }
+
+  /**
+   * Points at the provider the patient is rostered to, by licence number.
+   *
+   * @param providerNo String the provider number held on the patient record, or null
+   * @return Reference the provider as an identifier, or null when there is none to name
+   * @since 2026-08-04
+   */
+  private Reference generalPractitionerReference(String providerNo) {
+    if (providerNo == null || providerNo.trim().isEmpty()) {
+      return null;
+    }
+    Provider provider = providerDao.getProvider(providerNo.trim());
+    if (provider == null || provider.getPractitionerNo() == null
+        || provider.getPractitionerNo().trim().isEmpty()) {
+      return null;
+    }
+    Reference reference = new Reference();
+    reference.getIdentifier()
+        .setType(licenceIdentifierType())
+        .setSystem(PHYSICIAN_LICENCE_SYSTEM)
+        .setValue(provider.getPractitionerNo().trim());
+    String name = fullName(provider.getFirstName(), provider.getLastName());
+    if (name != null) {
+      reference.setDisplay(name);
+    }
+    return reference;
+  }
+
+  /**
+   * The patient's contacts, as recorded on their chart.
+   *
+   * @param demographicNo Integer the patient's demographic number
+   * @return List the contacts to place on the Patient, empty when the chart names none
+   * @since 2026-08-04
+   */
+  private List<Patient.ContactComponent> patientContacts(Integer demographicNo) {
+    List<Patient.ContactComponent> contacts = new ArrayList<Patient.ContactComponent>();
+    if (demographicNo == null) {
+      return contacts;
+    }
+    for (DemographicContact link : demographicContactDao.findActiveByDemographicNo(demographicNo)) {
+      Contact details = link.getDetails();
+      if (details == null) {
+        continue;
+      }
+      Patient.ContactComponent contact = new Patient.ContactComponent();
+      String name = fullName(details.getFirstName(), details.getLastName());
+      if (name == null) {
+        continue;
+      }
+      contact.getName().setFamily(details.getLastName()).addGiven(details.getFirstName());
+      if (link.getRole() != null && !link.getRole().trim().isEmpty()) {
+        contact.addRelationship().setText(link.getRole().trim());
+      }
+      addContactPoint(contact, ContactPointSystem.PHONE, ContactPointUse.HOME, details.getResidencePhone());
+      addContactPoint(contact, ContactPointSystem.PHONE, ContactPointUse.MOBILE, details.getCellPhone());
+      addContactPoint(contact, ContactPointSystem.PHONE, ContactPointUse.WORK, details.getWorkPhone());
+      addContactPoint(contact, ContactPointSystem.EMAIL, null, details.getEmail());
+      if (details.getAddress() != null && !details.getAddress().trim().isEmpty()) {
+        contact.getAddress()
+            .setUse(AddressUse.HOME)
+            .addLine(details.getAddress().trim())
+            .setCity(details.getCity())
+            .setState(details.getProvince())
+            .setPostalCode(details.getPostal());
+      }
+      contacts.add(contact);
+    }
+    return contacts;
+  }
+
+  private static void addContactPoint(Patient.ContactComponent contact, ContactPointSystem system,
+      ContactPointUse use, String value) {
+    if (value == null || value.trim().length() <= 4) {
+      return;
+    }
+    ContactPoint point = contact.addTelecom().setSystem(system).setValue(value.trim());
+    if (use != null) {
+      point.setUse(use);
+    }
+  }
+
+  private static String fullName(String firstName, String lastName) {
+    String first = firstName == null ? "" : firstName.trim();
+    String last = lastName == null ? "" : lastName.trim();
+    String name = (first + " " + last).trim();
+    return name.isEmpty() ? null : name;
   }
 
   public Parameters getLanguageParameter(String id, String lang) {
