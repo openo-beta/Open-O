@@ -13,6 +13,10 @@ CREATE TABLE IF NOT EXISTS `OMDGatewayTransactionLog` (
   `externalSystem` varchar(50) DEFAULT NULL,
   `demographicNo` int(10) DEFAULT NULL,
   `resultCode` int(10) DEFAULT NULL,
+  -- The EHR service's own outcome code, for example IN_0045 or CONSENT_EXISTS. resultCode holds
+  -- the HTTP status, which says a call was refused but not why; this holds the reason as a value
+  -- that can be filtered on. Values come from the published ca.on.ehr.r4 CodeSystem-ErrorCode.
+  `ehrResultCode` varchar(255) DEFAULT NULL,
   `success` tinyint(1) DEFAULT NULL,
   `error` longtext,
   `headers` longtext,
@@ -29,7 +33,8 @@ CREATE TABLE IF NOT EXISTS `OMDGatewayTransactionLog` (
   `xGtwyClientId` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `OMDGatewayTransactionLog_uniqueSessionId_idx` (`uniqueSessionId`(40)),
-  KEY `OMDGatewayTransactionLog_provider_idx` (`initiatingProviderNo`)
+  KEY `OMDGatewayTransactionLog_provider_idx` (`initiatingProviderNo`),
+  KEY `OMDGatewayTransactionLog_ehrResultCode_idx` (`ehrResultCode`(64))
 );
 
 -- Persisted ONE ID session (tokens/toolbar/UAO/hubTopic per provider)

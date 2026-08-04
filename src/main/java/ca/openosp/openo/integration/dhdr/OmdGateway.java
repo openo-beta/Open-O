@@ -56,6 +56,8 @@ import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.struts2.ServletActionContext;
 
 import javax.net.ssl.SSLContext;
@@ -133,10 +135,14 @@ public class OmdGateway {
 	/**
 	 * Records the outcome of a gateway call on its transaction log row.
 	 *
-	 * @param storeResponseBody when false the response body is not stored (used for token
-	 *                          endpoints, whose body carries access/refresh tokens)
+	 * @param storeResponseDetail when false neither the response body nor the response headers are
+	 *                            stored. Used for the OAuth calls: a token response carries access
+	 *                            and refresh tokens in its body, and an authorize response carries
+	 *                            the authorization code in its Location header. The correlation
+	 *                            headers are still lifted into their own columns above, so a call
+	 *                            excluded here is still traceable.
 	 */
-	protected static void completeLog(OMDGatewayTransactionLog log, Response response2, boolean storeResponseBody) {
+	protected static void completeLog(OMDGatewayTransactionLog log, Response response2, boolean storeResponseDetail) {
 		log.setResultCode(response2.getStatus());
 		log.setEnded(new Date());
 
@@ -163,26 +169,114 @@ public class OmdGateway {
 			log.setxCorrelationId(xCorrelationId);
 		}
 
+		// Stored for any status: a refusal carries the code that explains it, and a 200 can still
+		// carry one, for example the notice that a temporary consent unblock is in effect.
+		log.setEhrResultCode(extractEhrResultCode(body));
+
 		if (response2.getStatus() >= 300) {
 			log.setSuccess(false);
 			log.setError(body);
 		} else {
 			log.setSuccess(true);
-			if (storeResponseBody) {
+			if (storeResponseDetail) {
 				log.setDataRecieved(body);
 			}
 		}
 
-		StringBuilder headers = new StringBuilder();
-		for (String headerName : response2.getHeaders().keySet()) {
-			headers.append(headerName).append(":").append(response2.getHeaderString(headerName)).append("\n");
+		// Headers are withheld on the same terms as the body, because an OAuth response carries
+		// secrets in both: an authorize response returns the authorization code in Location. The
+		// correlation ids are lifted into their own columns above, so a call excluded here is
+		// still traceable.
+		if (storeResponseDetail) {
+			StringBuilder headers = new StringBuilder();
+			for (String headerName : response2.getHeaders().keySet()) {
+				headers.append(headerName).append(":").append(response2.getHeaderString(headerName)).append("\n");
+			}
+			log.setHeaders(headers.toString());
 		}
-		log.setHeaders(headers.toString());
 	}
 
 	/** Generates a unique X-Request-Id for a single gateway transaction. */
 	protected static String newRequestId() {
 		return UUID.randomUUID().toString();
+	}
+
+	private static final ObjectMapper auditObjectMapper = new ObjectMapper();
+	private static final int MAX_EHR_RESULT_CODE_LENGTH = 255;
+
+	/**
+	 * Reads the EHR service's own outcome codes out of a response body, for example IN_0045 or
+	 * CONSENT_EXISTS. They arrive inside an OperationOutcome, either on its own or as an entry in a
+	 * returned Bundle, and they are the only thing that says why a call was refused: the HTTP status
+	 * records that it was.
+	 *
+	 * @param body String the raw response body, which may be empty or may not be JSON at all
+	 * @return String the codes found, comma separated, or null when the body carries none
+	 * @since 2026-08-04
+	 */
+	static String extractEhrResultCode(String body) {
+		if (body == null || body.trim().isEmpty()) {
+			return null;
+		}
+		try {
+			List<String> codes = new ArrayList<String>();
+			collectOutcomeCodes(auditObjectMapper.readTree(body), codes);
+			if (codes.isEmpty()) {
+				return null;
+			}
+			String joined = String.join(",", codes);
+			return joined.length() > MAX_EHR_RESULT_CODE_LENGTH
+					? joined.substring(0, MAX_EHR_RESULT_CODE_LENGTH) : joined;
+		} catch (Exception e) {
+			// A body that is not JSON, or not shaped like FHIR, simply has no code to record.
+			return null;
+		}
+	}
+
+	/**
+	 * Walks a parsed body for OperationOutcome resources and collects the codes on their issues.
+	 *
+	 * <p>The search stops at each OperationOutcome instead of collecting every coding in the body.
+	 * A returned Bundle is full of clinical codings, drug identifiers among them, and sweeping
+	 * those into an audit column would put patient data in a field meant to hold a status.
+	 */
+	private static void collectOutcomeCodes(JsonNode node, List<String> codes) {
+		if (node == null) {
+			return;
+		}
+		if (node.isArray()) {
+			for (JsonNode child : node) {
+				collectOutcomeCodes(child, codes);
+			}
+			return;
+		}
+		if (!node.isObject()) {
+			return;
+		}
+		JsonNode resourceType = node.get("resourceType");
+		if (resourceType != null && "OperationOutcome".equals(resourceType.asText())) {
+			JsonNode issues = node.get("issue");
+			if (issues != null && issues.isArray()) {
+				for (JsonNode issue : issues) {
+					JsonNode details = issue.get("details");
+					JsonNode coding = details == null ? null : details.get("coding");
+					if (coding == null || !coding.isArray()) {
+						continue;
+					}
+					for (JsonNode entry : coding) {
+						JsonNode code = entry.get("code");
+						if (code != null && code.isTextual() && !code.asText().trim().isEmpty()
+								&& !codes.contains(code.asText().trim())) {
+							codes.add(code.asText().trim());
+						}
+					}
+				}
+			}
+			return;
+		}
+		for (JsonNode child : node) {
+			collectOutcomeCodes(child, codes);
+		}
 	}
 
 	/**
@@ -327,9 +421,30 @@ public class OmdGateway {
 	}
 	
 	public void logDataReceived(LoggedInInfo loggedInInfo,String externalSystem, String transactionType,String dataReceived,Integer demographicNo,String uniqueToken) {
+		logDataReceived(loggedInInfo, externalSystem, transactionType, dataReceived, demographicNo, uniqueToken, Boolean.TRUE);
+	}
+
+	/**
+	 * Records data received from an external system, with the outcome stated by the caller.
+	 *
+	 * <p>The success column is what an auditor filters on to answer whether an access happened, so
+	 * it has to mean one thing. The overloads above record a success because that is all they are
+	 * used for; a caller that records a mix of outcomes through this method must pass the real one,
+	 * otherwise a row describing a failed operation still reads as successful.
+	 *
+	 * @param loggedInInfo   LoggedInInfo the acting provider session
+	 * @param externalSystem String the system the data came from
+	 * @param transactionType String the transaction being recorded
+	 * @param dataReceived   String the payload to store on the row
+	 * @param demographicNo  Integer the patient the data concerns, or null
+	 * @param uniqueToken    String the correlation id tying this row to its request, or null
+	 * @param success        Boolean the real outcome; null when it is genuinely not known
+	 * @since 2026-08-04
+	 */
+	public void logDataReceived(LoggedInInfo loggedInInfo,String externalSystem, String transactionType,String dataReceived,Integer demographicNo,String uniqueToken,Boolean success) {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, null, externalSystem, transactionType);
 		omdGatewayTransactionLog.setStarted(new Date());
-		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
+		omdGatewayTransactionLog.setSuccess(success);
 		if(demographicNo != null) {
 			omdGatewayTransactionLog.setDemographicNo(demographicNo);
 		}
@@ -452,6 +567,10 @@ public class OmdGateway {
 			transactionLogDao.merge(omdGatewayTransactionLog);
 		}catch(Exception e) {
 			logger.error("ERROR OMD Gateway GET",e);
+			// The call threw before any response arrived, so completeLog never ran and the outcome
+			// is set here instead. A row left with a null success reads as one whose call is still
+			// in flight.
+			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
 			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);
@@ -565,6 +684,10 @@ public class OmdGateway {
 		transactionLogDao.merge(omdGatewayTransactionLog);
 		}catch(Exception e) {
 			e.getMessage();
+			// The call threw before any response arrived, so completeLog never ran and the outcome
+			// is set here instead. A row left with a null success reads as one whose call is still
+			// in flight.
+			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
 			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);
@@ -605,6 +728,10 @@ public class OmdGateway {
 		transactionLogDao.merge(omdGatewayTransactionLog);
 		}catch(Exception e) {
 			e.getMessage();
+			// The call threw before any response arrived, so completeLog never ran and the outcome
+			// is set here instead. A row left with a null success reads as one whose call is still
+			// in flight.
+			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
 			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);
@@ -753,7 +880,7 @@ public class OmdGateway {
 		Response response2 = null;
 		try {
 			response2 = wc.header("Content-Type", "application/x-www-form-urlencoded").get();
-			completeLog(omdGatewayTransactionLog,response2);
+			completeLog(omdGatewayTransactionLog,response2,false);
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			logger.info("Response Status from /Authorize =" + response2.getStatus());
 		}catch(Exception e) {
@@ -896,6 +1023,10 @@ public class OmdGateway {
 			completeLog(omdGatewayTransactionLog, response2, false);
 			transactionLogDao.merge(omdGatewayTransactionLog);
 		} catch (Exception e) {
+			// The call threw before any response arrived, so completeLog never ran and the outcome
+			// is set here instead. A row left with a null success reads as one whose call is still
+			// in flight.
+			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
 			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw e;

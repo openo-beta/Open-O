@@ -41,6 +41,11 @@ public class OMDGatewayTransactionLog extends AbstractModel<Integer> {
   private String externalSystem;
   private Integer demographicNo;
   private Integer resultCode;
+  
+  // The outcome code the EHR service itself returned, for example IN_0045 or CONSENT_EXISTS.
+  // resultCode holds the HTTP status, which says the call was rejected but not why; this holds
+  // the reason, as a value that can be filtered on rather than text buried in the error body.
+  private String ehrResultCode;
   private Boolean success;
   private String error;
   private String dataSent;
@@ -110,6 +115,18 @@ public class OMDGatewayTransactionLog extends AbstractModel<Integer> {
 
   public void setResultCode(Integer resultCode) {
     this.resultCode = resultCode;
+  }
+
+  /**
+   * @return String the EHR service's own outcome code, or null when the response carried none
+   * @since 2026-08-04
+   */
+  public String getEhrResultCode() {
+    return ehrResultCode;
+  }
+
+  public void setEhrResultCode(String ehrResultCode) {
+    this.ehrResultCode = ehrResultCode;
   }
 
   public Boolean getSuccess() {
