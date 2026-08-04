@@ -314,12 +314,50 @@ public class DHDRPrint {
         document.add(table);
       } catch (Exception e) {
         // One malformed dispense must not blank the whole PDF (print-side analogue of the DHDR
-        // viewer's contained-guard fix). Log the structural fault - index + message only, never
-        // PHI - and render a placeholder so the reader knows a record was present but not shown.
-        logger.error("DHDR print: skipped drug entry " + i + " - " + e.getMessage());
+        // viewer's contained-guard fix). Log the structural fault - the entry index and the
+        // exception types - and render a placeholder so the reader knows a record was present but
+        // not shown.
+        //
+        // The message is dropped rather than trimmed. Everything raised here is raised while
+        // reading the dispense record, so the message tends to quote what was being read: a
+        // NumberFormatException carries the offending value verbatim, and the JSON layer names the
+        // field it could not parse. The index already identifies which record to look at for anyone
+        // holding the payload, and the type chain says what kind of malformation it was, which is
+        // what this log is for.
+        logger.error("DHDR print: skipped drug entry " + i + " - " + exceptionTypes(e));
         document.add(incompleteEntryTable());
       }
     }
+  }
+
+  /** Bounds the cause chain walked when logging a throwable, in case a cause cycle exists. */
+  private static final int MAX_CAUSE_DEPTH = 10;
+
+  /**
+   * Renders a throwable as its chain of exception types, with every message omitted.
+   *
+   * <p>Types only, deliberately: this runs once per skipped entry inside a loop over the whole
+   * dispense history, so stack frames would bury the print log on a payload with several malformed
+   * records. The entry index in the message beside it is what locates the record; the type is what
+   * says how it was malformed.
+   *
+   * @param throwable Throwable the exception to render, may be null
+   * @return String the exception types from outermost to innermost, joined by " caused by "
+   */
+  private static String exceptionTypes(Throwable throwable) {
+    if (throwable == null) {
+      return "(none)";
+    }
+    StringBuilder rendered = new StringBuilder();
+    Throwable current = throwable;
+    for (int depth = 0; current != null && depth < MAX_CAUSE_DEPTH; depth++) {
+      if (depth > 0) {
+        rendered.append(" caused by ");
+      }
+      rendered.append(current.getClass().getName());
+      current = current.getCause() == current ? null : current.getCause();
+    }
+    return rendered.toString();
   }
 
   private PdfPCell populateSummaryDrugMetaData(PdfPTable table, JSONObject med) throws JSONException {
