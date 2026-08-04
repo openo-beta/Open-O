@@ -38,6 +38,7 @@ import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.HumanName.NameUse;
 import org.hl7.fhir.r4.model.IdType;
 import org.hl7.fhir.r4.model.Identifier;
+import org.hl7.fhir.r4.model.Location;
 import org.hl7.fhir.r4.model.Organization;
 import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.Patient;
@@ -75,16 +76,10 @@ public class FhirResources {
           "Organization name can not be blank. Select an authority (UAO) or edit Clinic details in the administration section.");
     }
     organization.setName(organizationName);
-    if (clinic.getAddress2() != null && clinic.getCity() != null && clinic.getProvince() != null
-        && clinic.getPostal() != null) {
-      organization.addAddress()
-          .setUse(AddressUse.WORK)
-          .addLine(clinic.getAddress2())
-          .setCity(clinic.getCity())
-          .setState(clinic.getProvince())
-          .setPostalCode(clinic.getPostal())
-          .setType(AddressType.PHYSICAL);
-    }
+    // No address here. The Organization is the Health Information Custodian the provider acts for,
+    // and the clinic's address is the Location's, which getLocation sends. The two are separate
+    // entities: one custodian covers many clinics. OpenO holds no address for a custodian, so the
+    // Organization goes out identified by name and UAO alone.
     if (clinic.getWorkPhone() != null && clinic.getWorkPhone().trim().length() > 4) {
       organization.addTelecom().setSystem(ContactPointSystem.PHONE).setValue(clinic.getWorkPhone());
     }
@@ -93,6 +88,52 @@ public class FhirResources {
     }
     return organization;
   }
+
+  /**
+   * Builds the CMS Location profile for this clinic.
+   *
+   * <p>Location and Organization are separate things. The Organization is the Health Information
+   * Custodian the provider is acting for, chosen by their Under Authority Of value, and a provider
+   * can act for several. The Location is the clinic itself, the place this EMR instance serves, and
+   * there is exactly one of it. That is why the clinic address lives here and not on the
+   * Organization.
+   *
+   * @param loggedInInfo LoggedInInfo the acting provider session
+   * @return Location the clinic to place in context, or null when no clinic is on file
+   * @since 2026-08-04
+   */
+  public Location getLocation(LoggedInInfo loggedInInfo) {
+    Clinic clinic = clinicDao.getClinic();
+    if (clinic == null) {
+      return null;
+    }
+    Location location = new Location();
+    location.setId(String.valueOf(clinic.getId()));
+    location.getMeta().addProfile(
+        "http://ehealthontario.ca/fhir/StructureDefinition/ca-on-cms-profile-Location|1.0.0");
+    location.setStatus(Location.LocationStatus.ACTIVE);
+    if (clinic.getClinicName() != null && !clinic.getClinicName().trim().isEmpty()) {
+      location.setName(clinic.getClinicName().trim());
+    }
+    if (clinic.getAddress() != null && !clinic.getAddress().trim().isEmpty()) {
+      location.getAddress()
+          .setUse(AddressUse.WORK)
+          .setType(AddressType.PHYSICAL)
+          .addLine(clinic.getAddress().trim())
+          .setCity(clinic.getCity())
+          .setState(clinic.getProvince())
+          .setPostalCode(clinic.getPostal());
+    }
+    if (clinic.getClinicPhone() != null && clinic.getClinicPhone().trim().length() > 4) {
+      location.addTelecom().setSystem(ContactPointSystem.PHONE)
+          .setValue(clinic.getClinicPhone().trim());
+    }
+    if (clinic.getClinicFax() != null && clinic.getClinicFax().trim().length() > 4) {
+      location.addTelecom().setSystem(ContactPointSystem.FAX).setValue(clinic.getClinicFax().trim());
+    }
+    return location;
+  }
+
 
   public Practitioner getPractitioner(LoggedInInfo loggedInInfo) throws CMSException {
 

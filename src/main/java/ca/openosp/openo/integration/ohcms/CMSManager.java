@@ -31,6 +31,7 @@ import ca.openosp.openo.utility.SpringUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONObject;
+import org.hl7.fhir.r4.model.Location;
 
 import javax.annotation.Nullable;
 import javax.ws.rs.core.Response;
@@ -73,8 +74,17 @@ public class CMSManager {
     String uuid = UUID.randomUUID().toString();
     UserLogin userLogin = new UserLogin(uuid, oneIdGatewayData.getHubTopic());
     try {
+      // The context is made up of four profiles: Organization, Location, Practitioner and Patient.
+      // The first three are set here, at sign-in; Patient is sent separately in patientOpen,
+      // immediately before an EHR service launches, so the patient in context is the one on screen.
+      // Organization is the custodian the provider acts for and changes with their authority;
+      // Location is this clinic, and there is one of it.
       userLogin.addContext("organization",
           fhirResources.getString(fhirResources.getOrganization(loggedInInfo)));
+      Location location = fhirResources.getLocation(loggedInInfo);
+      if (location != null) {
+        userLogin.addContext("location", fhirResources.getString(location));
+      }
       userLogin.addContext("practitioner",
           fhirResources.getString(fhirResources.getPractitioner(loggedInInfo)));
       String language = loggedInInfo.getLocale().getLanguage();
@@ -118,6 +128,12 @@ public class CMSManager {
     Event event = new Event(uuid, oneIdGatewayData.getHubTopic(), "OH.Organization-change");
     event.addContext("organization",
         fhirResources.getString(fhirResources.getOrganization(loggedInInfo)));
+    // The custodian the provider acts for has changed. The clinic they are working from has not,
+    // but it is re-sent with it so the pair in context always belongs together.
+    Location location = fhirResources.getLocation(loggedInInfo);
+    if (location != null) {
+      event.addContext("location", fhirResources.getString(location));
+    }
     Response hubTopicResponse = omdGateway.doPost(loggedInInfo, createHubTopic, event);
     String hubTopicResponseBody = hubTopicResponse.readEntity(String.class);
     logger.debug("OH.Organization-change: " + hubTopicResponseBody);
