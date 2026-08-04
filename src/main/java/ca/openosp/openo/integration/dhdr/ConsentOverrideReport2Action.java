@@ -28,16 +28,30 @@ import ca.openosp.openo.utility.SpringUtils;
  *
  * <p>The report itself is a read-only query; the only write is the {@link AuditInfo#VIEW} row this
  * action records, because the report is the one DHDR surface that discloses PHI for patients the
- * user did not select (DHDR15.01). Access rides the {@code _rx} security object (DHDR medication
- * data), consistent with the DHDR viewer and REST endpoints. Access policy for this surface (the
- * {@code _rx} reuse versus a dedicated object or an admin role) is the open question tracked in the
- * implementation plan, not something this class decides.
+ * user did not select (DHDR15.01).
+ *
+ * <p><b>Access requires both {@code _rx} and {@code _report}.</b> {@code _rx} alone is not enough:
+ * it means "may use the prescribing module", which every DHDR viewer and REST endpoint also checks -
+ * but those check it <em>against the demographic being viewed</em>, while this surface has no
+ * demographic to check against and returns every patient's row. Gating a cross-patient report on the
+ * clinical object alone would make it inseparable from prescribing, so a site could not withhold this
+ * report without withdrawing the ability to prescribe. {@code _report} is the object OpenO already
+ * uses for exactly this - every cross-patient report under {@code ca.openosp.openo.report} gates on
+ * it with a null scope - so requiring both keeps the clinical domain check and adds the
+ * cross-patient capability as a separately grantable decision.
+ *
+ * <p>The breadth itself is mandated, not chosen: DHDR13.02 requires a report on <em>all</em>
+ * temporary consent unblock requests, and names the patient's health card number among the elements
+ * it must carry. Narrowing the rows to the caller's own patients would fail the requirement, and
+ * would also make the report self-auditing - the overrides most in need of independent review are
+ * the ones the reviewer would no longer see.
  *
  * @since 2026-07-08
  */
 public class ConsentOverrideReport2Action extends ActionSupport {
 
   private static final String SECURITY_OBJECT = "_rx";
+  private static final String REPORT_SECURITY_OBJECT = "_report";
   private static final String DATE_FORMAT = "yyyy-MM-dd";
 
   private HttpServletRequest request = ServletActionContext.getRequest();
@@ -54,8 +68,9 @@ public class ConsentOverrideReport2Action extends ActionSupport {
    */
   public String execute() {
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-    if (!securityInfoManager.hasPrivilege(loggedInInfo, SECURITY_OBJECT, "r", null)) {
-      throw new SecurityException("missing required security object (_rx)");
+    if (!securityInfoManager.hasPrivilege(loggedInInfo, SECURITY_OBJECT, "r", null)
+        || !securityInfoManager.hasPrivilege(loggedInInfo, REPORT_SECURITY_OBJECT, "r", null)) {
+      throw new SecurityException("missing required security object (_rx and _report)");
     }
 
     String searchLastName = StringUtils.trimToNull(request.getParameter("searchLastName"));
