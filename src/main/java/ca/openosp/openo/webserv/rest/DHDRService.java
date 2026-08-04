@@ -2,6 +2,7 @@ package ca.openosp.openo.webserv.rest;
 
 import java.util.Base64;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -66,6 +67,15 @@ public class DHDRService extends AbstractServiceImpl {
   private static final int MAX_CAUSE_DEPTH = 10;
 
   private static final String SECURITY_OBJECT = "_rx";
+
+  /**
+   * The views {@code print} can render (DHDR13.01). Must stay in step with the dispatch inside
+   * {@code print}: a value accepted here but not dispatched there renders nothing at all, which is
+   * the failure this set exists to prevent, so the dispatch keeps a matching final branch that
+   * fails loudly rather than silently.
+   */
+  private static final Set<String> SUPPORTED_PRINT_VIEWS = Set.of("summary", "detail",
+      "comparative");
 
   /**
    * ISO-8601 local date-time, deliberately not a display format. DHDR03.06 requires one date format
@@ -326,6 +336,13 @@ public class DHDRService extends AbstractServiceImpl {
     if (!securityInfoManager.hasPrivilege(loggedInInfo, SECURITY_OBJECT, "r", demographicNo)) {
       throw new AccessDeniedException(SECURITY_OBJECT, "r", demographicNo);
     }
+    // Reject an unknown view here, before anything is audited or parsed. The chain inside write()
+    // has no branch for one, so an unsupported value used to stream nothing at all and return an
+    // empty 200 that the browser offers as a valid PDF - and the DHDR15.01 audit row below had
+    // already recorded a disclosure that never happened.
+    if (!SUPPORTED_PRINT_VIEWS.contains(view)) {
+      throw new WebApplicationException(Response.Status.BAD_REQUEST);
+    }
     final JSONObject jsonObject;
     try {
       jsonObject = new JSONObject(jsonBody);
@@ -347,9 +364,25 @@ public class DHDRService extends AbstractServiceImpl {
             dhdrPrint.printDetail(loggedInInfo, demo, os, jsonObject);
           } else if ("comparative".equals(printViewType)) {
             dhdrPrint.printComparative(loggedInInfo, demo, os, jsonObject);
+          } else {
+            // Unreachable while this chain matches SUPPORTED_PRINT_VIEWS, and here so that it stays
+            // that way: if the two drift, the request fails visibly instead of returning an empty
+            // PDF, which is the defect the set was added to close.
+            throw new IllegalStateException("no print branch for an accepted view");
           }
         } catch (Exception e) {
-          logger.error("error streaming", e);
+          // Messages omitted: the print payload carries the patient's dispense history, and an
+          // exception raised over it copies whatever it was reading into its message.
+          logger.error("error streaming the DHDR " + printViewType + " print\n"
+              + stackTraceWithoutMessages(e));
+          // Rethrow rather than returning normally. Returning left the response a 200 carrying a
+          // truncated or empty PDF, which the browser accepts and offers to save - a clinician then
+          // has a document that looks like a complete medication history and is not one. How much
+          // of that is recoverable depends on timing: fail before the first byte and the container
+          // can still map this to a 500; fail mid-stream and the status is already committed, so
+          // the most that can be done is abort the response instead of ending it cleanly. Both
+          // beat a silent success.
+          throw new WebApplicationException(e, Response.Status.INTERNAL_SERVER_ERROR);
         } finally {
           IOUtils.closeQuietly(os);
         }

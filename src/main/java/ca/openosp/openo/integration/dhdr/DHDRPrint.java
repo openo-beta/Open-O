@@ -270,12 +270,12 @@ public class DHDRPrint {
         openDhdrDocument(loggedInInfo, demo, outputStream, "DHDR Summary", jsonOb, true);
     addSearchPeriod(document, jsonOb);
 
-    JSONArray arr = sortByWhenPreparedDesc(jsonOb.getJSONArray("meds"));
+    JSONArray arr = sortByWhenPreparedDesc(jsonOb.getJSONArray("meds"), "drug");
     addSectionHeading(document, "Drug Product", arr.length());
     addDrugEventTables(document, arr);
 
     if (jsonOb.has("services")) {
-      JSONArray serviceArr = sortByWhenPreparedDesc(jsonOb.getJSONArray("services"));
+      JSONArray serviceArr = sortByWhenPreparedDesc(jsonOb.getJSONArray("services"), "service");
       document.add(Chunk.NEWLINE);
       addSectionHeading(document, "Pharma Services", serviceArr.length());
       addGrid(document, pharmacyServiceColumns(), serviceArr, "service");
@@ -1137,12 +1137,12 @@ public class DHDRPrint {
         openDhdrDocument(loggedInInfo, demo, outputStream, "DHDR Comparative", jsonOb, true);
     addSearchPeriod(document, jsonOb);
 
-    JSONArray arr = sortByWhenPreparedDesc(jsonOb.getJSONArray("meds"));
+    JSONArray arr = sortByWhenPreparedDesc(jsonOb.getJSONArray("meds"), "drug");
     addSectionHeading(document, "DHDR Drugs", arr.length());
     addDrugEventTables(document, arr);
 
     if (jsonOb.has("services")) {
-      JSONArray serviceArr = sortByWhenPreparedDesc(jsonOb.getJSONArray("services"));
+      JSONArray serviceArr = sortByWhenPreparedDesc(jsonOb.getJSONArray("services"), "service");
       document.add(Chunk.NEWLINE);
       addSectionHeading(document, "DHDR PharmaServices", serviceArr.length());
       // DHDR08.01(b) takes this view's element list from DHDR07.01, whose (h) is the pharmacy FAX.
@@ -1261,13 +1261,26 @@ public class DHDRPrint {
    * most recent first - as the printed history requires (DHDR13.01). Events with no whenPrepared
    * value sort last. The source array is left unmodified.
    *
+   * <p>A malformed entry is dropped here rather than allowed to abort the print. This runs before
+   * the guarded rendering loops, so {@code getJSONObject} threw past every one of them and lost the
+   * whole PDF over a single bad element - defeating the per-entry isolation those loops exist to
+   * provide. Skipping matches how the rendering loops already treat the same case, so one malformed
+   * entry costs one row wherever it is encountered.
+   *
    * @param arr JSONArray the DHDR dispense / pharmacy-service events
+   * @param entryLabel String what the entries are, for the skip log ("drug", "service")
    * @return JSONArray the events ordered by whenPrepared descending
    */
-  private JSONArray sortByWhenPreparedDesc(JSONArray arr) throws JSONException {
+  private JSONArray sortByWhenPreparedDesc(JSONArray arr, String entryLabel) throws JSONException {
     List<JSONObject> list = new ArrayList<>();
     for (int i = 0; i < arr.length(); i++) {
-      list.add(arr.getJSONObject(i));
+      JSONObject event = arr.optJSONObject(i);
+      if (event == null) {
+        logger.error(
+            "DHDR print: skipped " + entryLabel + " entry " + i + " - entry is not a JSON object");
+        continue;
+      }
+      list.add(event);
     }
     list.sort((a, b) -> b.optString("whenPrepared", "").compareTo(a.optString("whenPrepared", "")));
     JSONArray sorted = new JSONArray();
