@@ -5,8 +5,11 @@
  * waits for the Viewlet's completion message within the configured wait time, reads
  * the message for the real success or failure outcome, allows a bounded number of
  * reloads, records the outcome, and informs the user if the Viewlet does not
- * respond. Closing either the window or the dialog without a completion message is
- * recorded as a failure and clears the patient from the EHR context. A launch that
+ * respond. Closing either the window or the dialog without a completion message leaves
+ * the outcome unknown, and clears the patient from the EHR context; the outcome is
+ * handed to the caller, so a page holding its own copy of the data can re-query the EHR
+ * service, which is the only place the real result is known. A reply that confirms the
+ * Viewlet call but not the service the launch asked for counts as unconfirmed. A launch that
  * may put a second EHR service window on screen warns the clinician first; the
  * warning can be turned off and back on per user from the provider preferences. A
  * launch refused only for want of a ONE ID sign-in starts the mid-session ONE ID
@@ -142,9 +145,17 @@ function showMultiWindowNotice(ctx, proceed) {
     document.body.appendChild(overlay);
 }
 
-function launchViewlet(ctx, demographicNo, key, displayMode) {
+// options is optional; the eChart navbar calls this with four arguments. It carries:
+//   service    the line of business this launch is for, e.g. 'DHDR'. A Viewlet can serve several,
+//              and its reply names the one each result belongs to. Give the name here and the
+//              outcome is only reported as a success when that service is the one that confirmed.
+//   onOutcome  called once with the outcome object when the launch concludes, however it ends.
+//              A page with its own copy of the data uses this to refresh: after a consent
+//              override the drug list has to be re-queried, because the EHR service is the only
+//              place that knows whether access actually opened.
+function launchViewlet(ctx, demographicNo, key, displayMode, options) {
     if (!anotherViewletMayBeOpen(displayMode)) {
-        doLaunchViewlet(ctx, demographicNo, key, displayMode);
+        doLaunchViewlet(ctx, demographicNo, key, displayMode, options);
         return;
     }
     fetch(ctx + '/viewletNoticeSetting.do', {credentials: 'same-origin'})
@@ -153,16 +164,16 @@ function launchViewlet(ctx, demographicNo, key, displayMode) {
         })
         .then(function (setting) {
             if (setting && setting.enabled === false) {
-                doLaunchViewlet(ctx, demographicNo, key, displayMode);
+                doLaunchViewlet(ctx, demographicNo, key, displayMode, options);
             } else {
                 showMultiWindowNotice(ctx, function () {
-                    doLaunchViewlet(ctx, demographicNo, key, displayMode);
+                    doLaunchViewlet(ctx, demographicNo, key, displayMode, options);
                 });
             }
         })
         .catch(function () {
             showMultiWindowNotice(ctx, function () {
-                doLaunchViewlet(ctx, demographicNo, key, displayMode);
+                doLaunchViewlet(ctx, demographicNo, key, displayMode, options);
             });
         });
 }
@@ -197,7 +208,7 @@ function postViewletRequest(url, onDone, onFail) {
     }
 }
 
-function doLaunchViewlet(ctx, demographicNo, key, displayMode) {
+function doLaunchViewlet(ctx, demographicNo, key, displayMode, options) {
     var url = ctx + '/viewletLaunch.do?demographicNo=' + encodeURIComponent(demographicNo)
         + '&key=' + encodeURIComponent(key);
     postViewletRequest(url, function (status, data, contentType) {
@@ -223,13 +234,25 @@ function doLaunchViewlet(ctx, demographicNo, key, displayMode) {
         var timeout = viewletTimeout(data.timeoutMillis);
         var uuid = data.uuid;
         if (displayMode === 'modal') {
-            openViewletModal(data.viewletUrl, demographicNo, ctx, timeout, key, uuid);
+            openViewletModal(data.viewletUrl, demographicNo, ctx, timeout, key, uuid, options);
         } else {
-            popupEHRService(data.viewletUrl, demographicNo, ctx, timeout, key, uuid);
+            popupEHRService(data.viewletUrl, demographicNo, ctx, timeout, key, uuid, options);
         }
     }, function () {
         alert('The EHR service could not be launched. Please try again.');
     });
+}
+
+// Hands the finished outcome back to the page that asked for the launch. Best-effort: a caller
+// that throws must not break the launcher's own teardown.
+function notifyViewletOutcome(options, outcome) {
+    if (!options || typeof options.onOutcome !== 'function') {
+        return;
+    }
+    try {
+        options.onOutcome(outcome);
+    } catch (e) {
+    }
 }
 
 function viewletTimeout(value) {
@@ -262,7 +285,7 @@ function viewletMessagePayload(data) {
 // and utility.code[] instructions for the launching page, such as a user cancellation.
 // Returns the outcome and a loggable summary, or null when the message is not a
 // completion message.
-function parseViewletCompletion(data) {
+function parseViewletCompletion(data, service) {
     var body = data;
     if (typeof body === 'string') {
         try {
@@ -301,9 +324,54 @@ function parseViewletCompletion(data) {
             cancelled = true;
         }
     }
-    var status = (errors.length > 0 || cancelled) ? 'failure' : 'success';
+
+    // A Viewlet can act for several lines of business in one launch, and each entry it sends back
+    // names the service it belongs to. A reply can therefore say the Viewlet call itself worked
+    // while saying nothing about the service the clinician actually wanted.
+    //
+    // Example: the consent Viewlet answers with a success entry for PCOI, confirming the consent
+    // call was accepted, but no entry for DHDR. The drug override did not happen. Reading that as
+    // an outright success would write an audit row claiming an override nobody performed.
+    //
+    // So when the caller names the service it launched for and the reply names services, the
+    // outcome counts as a success only if that service is among them; otherwise it is 'partial'.
+    // A reply that names no service at all is taken at face value, which is how a single-service
+    // Viewlet behaves.
+    var confirmedServices = [];
+    for (var s = 0; s < successes.length; s++) {
+        var entryService = successes[s] && successes[s].microService;
+        if (entryService) {
+            confirmedServices.push(String(entryService));
+        }
+    }
+    var confirmed = true;
+    if (service && confirmedServices.length > 0) {
+        confirmed = false;
+        for (var c = 0; c < confirmedServices.length; c++) {
+            if (confirmedServices[c].toUpperCase() === String(service).toUpperCase()) {
+                confirmed = true;
+                break;
+            }
+        }
+    }
+
+    var status;
+    if (errors.length > 0 || cancelled) {
+        status = 'failure';
+    } else if (confirmed) {
+        status = 'success';
+    } else {
+        status = 'partial';
+    }
     var summary = codes.length ? ('codes: ' + codes.slice(0, 10).join(', ') + ' | ') : '';
-    return {status: status, message: summary + viewletMessagePayload(data)};
+    return {
+        status: status,
+        message: summary + viewletMessagePayload(data),
+        codes: codes,
+        services: confirmedServices,
+        cancelled: cancelled,
+        payload: data
+    };
 }
 
 // Records the outcome of a launch (success or failure) in the gateway log. Best-effort:
@@ -320,7 +388,7 @@ function reportViewletResult(ctx, demographicNo, key, uuid, status, message) {
     postViewletRequest(url, null, null);
 }
 
-function popupEHRService(url, demographicNo, ctx, timeout, key, uuid) {
+function popupEHRService(url, demographicNo, ctx, timeout, key, uuid, options) {
     var windowProperties = 'height=800,width=1300,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0';
     var popup = window.open(url, 'EHR Service', windowProperties);
     if (!popup) {
@@ -333,23 +401,31 @@ function popupEHRService(url, demographicNo, ctx, timeout, key, uuid) {
     var reported = false;
 
     // Record the outcome once; the first of a response or the window closing wins.
-    function reportOnce(status, message) {
+    function reportOnce(status, message, completion) {
         if (reported) {
             return;
         }
         reported = true;
         reportViewletResult(ctx, demographicNo, key, uuid, status, message);
+        notifyViewletOutcome(options, {
+            status: status,
+            message: message,
+            demographicNo: demographicNo,
+            key: key,
+            uuid: uuid,
+            completion: completion || null
+        });
     }
 
     // A message from the Viewlet's own origin marks it as alive; only a completion
-    // message decides the outcome. A window closed without one is recorded as a
-    // failure by the close poller.
+    // message decides the outcome. A window closed without one is recorded as
+    // 'noresponse' by the close poller; see closeModal for what that means.
     function onMessage(event) {
         if (expectedOrigin && event.origin === expectedOrigin) {
             responded = true;
-            var completion = parseViewletCompletion(event.data);
+            var completion = parseViewletCompletion(event.data, options && options.service);
             if (completion) {
-                reportOnce(completion.status, completion.message);
+                reportOnce(completion.status, completion.message, completion);
             }
         }
     }
@@ -388,7 +464,7 @@ function popupEHRService(url, demographicNo, ctx, timeout, key, uuid) {
                 clearInterval(poll);
                 clearTimeout(waitTimer);
                 window.removeEventListener('message', onMessage);
-                reportOnce('failure', 'The EHR service window was closed without a response.');
+                reportOnce('noresponse', 'The EHR service window was closed without a response.');
                 if (openPopupViewlet === popup) {
                     openPopupViewlet = null;
                 }
@@ -400,7 +476,7 @@ function popupEHRService(url, demographicNo, ctx, timeout, key, uuid) {
     popup.focus();
 }
 
-function openViewletModal(url, demographicNo, ctx, timeout, key, uuid) {
+function openViewletModal(url, demographicNo, ctx, timeout, key, uuid, options) {
     // Only one modal viewlet is shown at a time; a dialog already open is finalized
     // and replaced. Its patient context is not cleared here because the incoming
     // launch has already moved the context on the server.
@@ -418,14 +494,22 @@ function openViewletModal(url, demographicNo, ctx, timeout, key, uuid) {
     var reported = false;
     var waitTimer = null;
 
-    // Record the outcome once; rendering or a response is a success, closing before
-    // either is a failure.
-    function reportOnce(status, message) {
+    // Record the outcome once; a completion message decides it, and closing before one
+    // arrives leaves the outcome unknown.
+    function reportOnce(status, message, completion) {
         if (reported) {
             return;
         }
         reported = true;
         reportViewletResult(ctx, demographicNo, key, uuid, status, message);
+        notifyViewletOutcome(options, {
+            status: status,
+            message: message,
+            demographicNo: demographicNo,
+            key: key,
+            uuid: uuid,
+            completion: completion || null
+        });
     }
 
     var overlay = document.createElement('div');
@@ -481,8 +565,17 @@ function openViewletModal(url, demographicNo, ctx, timeout, key, uuid) {
         }
     }
 
+    // The window closed and the EHR service never sent a result.
+    //
+    // Silence is not failure. The clinician may well have finished the work: a consent unblock
+    // can go through at Ontario Health and the window still close without reporting back. So the
+    // outcome is 'noresponse', meaning the launch happened and the result is unknown.
+    //
+    // Only the EHR service knows what actually happened. A page holding its own copy of that data
+    // should re-query the service here, via the onOutcome callback on launchViewlet. This
+    // launcher does not, because it opens any service and holds no data of its own.
     function closeModal() {
-        finalizeModal('failure', 'The EHR service was closed without a response.', false);
+        finalizeModal('noresponse', 'The EHR service was closed without a response.', false);
     }
 
     var dispose = function () {
@@ -494,9 +587,9 @@ function openViewletModal(url, demographicNo, ctx, timeout, key, uuid) {
     // message is recorded as a failure.
     function onMessage(event) {
         if (expectedOrigin && event.origin === expectedOrigin) {
-            var completion = parseViewletCompletion(event.data);
+            var completion = parseViewletCompletion(event.data, options && options.service);
             if (completion) {
-                reportOnce(completion.status, completion.message);
+                reportOnce(completion.status, completion.message, completion);
                 closeModal();
             }
         }

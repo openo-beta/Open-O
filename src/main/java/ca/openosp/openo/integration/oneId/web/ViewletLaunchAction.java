@@ -133,11 +133,37 @@ public class ViewletLaunchAction extends ActionSupport {
         }
         String uniqueToken = emptyToNull(request.getParameter("uuid"));
         String message = bounded(request.getParameter("message"));
-        boolean success = "success".equalsIgnoreCase(request.getParameter("status"));
+        String status = request.getParameter("status");
+        boolean success = "success".equalsIgnoreCase(status);
+
+        // The window closed without saying anything, so the outcome is unknown. It is still
+        // recorded, and never as a success: the audit row must not claim an outcome nobody
+        // observed. The row says plainly that no response came back, so anyone reading the log
+        // later knows to confirm the result from the EHR service's own data.
+        boolean noResponse = "noresponse".equalsIgnoreCase(status);
+
+        // The EHR service answered, and the answer confirmed the Viewlet call but not the service
+        // the clinician launched for. A consent Viewlet acting for several services can accept the
+        // consent call while the drug override behind it never happens. The launch did not fail,
+        // and it did not do what was asked, so it gets its own outcome.
+        boolean partial = "partial".equalsIgnoreCase(status);
+        
         try {
             OmdGateway omdGateway = new OmdGateway();
             if (success) {
                 omdGateway.logDataReceived(loggedInInfo, key.trim(), "viewletResult", message, demographicNo, uniqueToken);
+            } else if (noResponse) {
+                omdGateway.logError(loggedInInfo, key.trim(), "viewletResultNoResponse",
+                        "The EHR service window closed with no response, so the outcome is unknown. "
+                                + "Confirm the result in the EHR service's own data. "
+                                + (message == null ? "" : message),
+                        demographicNo, uniqueToken);
+            } else if (partial) {
+                omdGateway.logError(loggedInInfo, key.trim(), "viewletResultPartial",
+                        "The EHR service replied without confirming the requested service, so the "
+                                + "outcome is unconfirmed. Confirm the result in the EHR service's own data. "
+                                + (message == null ? "" : message),
+                        demographicNo, uniqueToken);
             } else {
                 omdGateway.logError(loggedInInfo, key.trim(), "viewletResult",
                         message == null ? "The EHR service did not return a successful response." : message,
