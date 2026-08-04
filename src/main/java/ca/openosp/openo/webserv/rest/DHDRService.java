@@ -2,7 +2,6 @@ package ca.openosp.openo.webserv.rest;
 
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -20,16 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.HumanName;
-import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.Medication;
-import org.hl7.fhir.r4.model.MedicationDispense;
-import org.hl7.fhir.r4.model.Organization;
-import org.hl7.fhir.r4.model.Practitioner;
-import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.model.ResourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +38,6 @@ import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.webserv.rest.to.DHDRSearchConfig;
 import ca.openosp.openo.webserv.rest.to.model.DHDRErrorTo1;
-import ca.openosp.openo.webserv.rest.to.model.MedicationDispenseTo1;
 import ca.openosp.openo.webserv.rest.to.model.NotificationTo1;
 
 /**
@@ -231,68 +219,6 @@ public class DHDRService extends AbstractServiceImpl {
     error.setDateTime(DateUtils.format(ERROR_TIMESTAMP_FORMAT, new Date(), null));
     error.setMoreInformation(moreInformation);
     return error;
-  }
-
-  /**
-   * Maps a FHIR R4 {@code MedicationDispense} resource onto the DHDR viewer transfer object.
-   *
-   * @param medicationDispense MedicationDispense the FHIR dispense resource
-   * @return MedicationDispenseTo1 the populated transfer object
-   */
-  public MedicationDispenseTo1 translate(MedicationDispense medicationDispense) {
-    MedicationDispenseTo1 medicationDispenseTo1 = new MedicationDispenseTo1();
-    List<Resource> listRes = medicationDispense.getContained();
-    medicationDispenseTo1.setDispenseDate(medicationDispense.getWhenPrepared());
-    medicationDispenseTo1.setDispensedQuantity(
-        medicationDispense.getQuantity().getValue().toPlainString());
-    medicationDispenseTo1.setEstimatedDaysSupply(
-        medicationDispense.getDaysSupply().getValue().toPlainString());
-    for (Resource resource : listRes) {
-      if (resource.getResourceType() == ResourceType.Medication) {
-        Medication medication = (Medication) resource;
-        if (medication != null && medication.getCode() != null) {
-          medicationDispenseTo1.setDrugDosageForm(medication.getForm().getText());
-          Extension ext = medication.getExtensionByUrl(
-              "http://ehealthontario.ca/fhir/StructureDefinition/ca-on-medications-ext-medication-strength");
-          if (ext != null) {
-            medicationDispenseTo1.setDispensedDrugStrength(ext.getValue().primitiveValue());
-          }
-          List<Coding> codings = medication.getCode().getCoding();
-          for (Coding coding : codings) {
-            if ("http://hl7.org/fhir/NamingSystem/ca-hc-din".equals(coding.getSystem())) {
-              medicationDispenseTo1.setBrandName(coding.getDisplay());
-            }
-            if ("http://ehealthontario.ca/fhir/NamingSystem/ca-drug-gen-name".equals(
-                coding.getSystem())) {
-              medicationDispenseTo1.setGenericName(coding.getDisplay());
-            }
-          }
-        } else {
-          logger.error("was null " + medication);
-        }
-      } else if (resource.getResourceType() == ResourceType.Organization) {
-        Organization organization = (Organization) resource;
-        medicationDispenseTo1.setDispensingPharmacy(organization.getName());
-        medicationDispenseTo1.setDispensingPharmacyFaxNumber(
-            organization.getTelecom().get(1).getValue());
-      } else if (resource.getResourceType() == ResourceType.Practitioner) {
-        Practitioner practitioner = (Practitioner) resource;
-        for (Identifier identifier : practitioner.getIdentifier()) {
-          if ("https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician".equals(
-              identifier.getSystem())) {
-            for (HumanName humanName : practitioner.getName()) {
-              medicationDispenseTo1.setPrescriberLastname(humanName.getFamily());
-              medicationDispenseTo1.setPrescriberFirstname(humanName.getGivenAsSingleString());
-            }
-            medicationDispenseTo1.setPrescriberPhoneNumber(
-                practitioner.getTelecom().get(0).getValue());
-          }
-        }
-      } else {
-        logger.error("resource.getResourceType() " + resource.getResourceType());
-      }
-    }
-    return medicationDispenseTo1;
   }
 
   /**
