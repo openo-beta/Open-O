@@ -33,10 +33,11 @@
               last name and/or patient Unique ID, over a date range.
     Data    : Populated by ConsentOverrideReport2Action (mapped as dhdr/consentOverrideReport.do),
               which sets the "rows" request attribute (List of Row) plus the echoed search inputs.
-    Security: Rides the _rx security object (DHDR medication data); the action is the primary
-              guard and this page re-asserts the same privilege defensively.
+    Security: Requires both _rx (DHDR medication data) and _report (cross-patient reporting); the
+              action is the primary guard and this page re-asserts the same pair defensively.
     Params  : searchLastName, searchUniqueId, dateFrom (yyyy-MM-dd), dateTo (yyyy-MM-dd) - all
-              optional; the search form submits them back via GET (idempotent read).
+              optional; the search form submits them back via POST, so the patient identifiers
+              stay out of the URL, history and access logs.
     @since 2026-07-08
 --%>
 <%@ page contentType="text/html; charset=UTF-8" %>
@@ -49,6 +50,9 @@
 %><security:oscarSec roleName="<%=roleName$%>" objectName="_rx" rights="r" reverse="<%=true%>">
     <%authed = false;%>
     <%response.sendRedirect("../securityError.jsp?type=_rx");%>
+</security:oscarSec><security:oscarSec roleName="<%=roleName$%>" objectName="_report" rights="r" reverse="<%=true%>">
+    <%authed = false;%>
+    <%response.sendRedirect("../securityError.jsp?type=_report");%>
 </security:oscarSec><%
     if (!authed) {
         return;
@@ -59,13 +63,27 @@
 <head>
     <title>DHDR Temporary Consent Unblock Report</title>
     <link href="<%=request.getContextPath()%>/library/bootstrap/3.0.0/css/bootstrap.css" rel="stylesheet">
+    <%-- Injects the CSRF token into the search form below. Required now that the form POSTs:
+         CsrfGuard's ProtectedMethods covers POST, and without this the form carries no token.
+         Included per page, as the other ~50 form-bearing JSPs do (ehrConnectivitySettings.jsp is
+         the nearest sibling) - there is no filter that adds it. --%>
+    <script src="<%=request.getContextPath()%>/csrfguard" type="text/javascript"></script>
 </head>
 <body>
 <div class="container" style="margin-top: 20px;">
     <h3>DHDR Temporary Consent Unblock Report</h3>
     <p class="text-muted">Record of temporary consent-unblock (override) requests for the Digital Health Drug Repository.</p>
 
-    <form method="get" action="<%=request.getContextPath()%>/dhdr/consentOverrideReport.do" class="form-inline" style="margin-bottom: 15px;">
+    <%-- POST, not GET: the search terms are a patient surname and a Unique ID, and a GET puts them
+         in the URL, so they persist in browser history, in the Referer sent to any link followed
+         from here, and in proxy and access logs that are not treated as clinical records. The read
+         is still idempotent - the method is chosen to keep the identifiers out of places that
+         outlive the request, not to signal a state change. CsrfGuard protects POST, and the token
+         comes from the csrfguard.js include in the head above. Note that OscarCsrfGuardFilter runs
+         log-only unless the csrf_do_redirect property is set, so today a missing token would be
+         recorded rather than refused - the include is what makes this form work if that is ever
+         turned on. --%>
+    <form method="post" action="<%=request.getContextPath()%>/dhdr/consentOverrideReport.do" class="form-inline" style="margin-bottom: 15px;">
         <div class="form-group">
             <label for="searchLastName">Patient last name</label>
             <input type="text" class="form-control" id="searchLastName" name="searchLastName"

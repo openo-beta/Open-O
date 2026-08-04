@@ -1,6 +1,6 @@
 package ca.openosp.openo.integration.dhdr;
 
-import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -133,10 +133,14 @@ public class ConsentOverrideReport2Action extends ActionSupport {
     SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
     // Strict parsing: without this, "2026-13-45" would roll over into a valid but unintended date.
     format.setLenient(false);
-    Date parsed;
-    try {
-      parsed = format.parse(value);
-    } catch (ParseException e) {
+    // Parsed through a ParsePosition so the whole value has to be consumed. parse(String) stops at
+    // the first character it cannot use and reports success on what it read, so "2026-01-01junk"
+    // silently became 2026-01-01 - the user was shown a filtered report having typed something the
+    // form never accepted, with nothing to say so. setLenient(false) does not cover this: it
+    // governs rollover within the fields, not trailing text after them.
+    ParsePosition position = new ParsePosition(0);
+    Date parsed = format.parse(value, position);
+    if (parsed == null || position.getIndex() != value.length()) {
       return null;
     }
     if (!endOfDay) {

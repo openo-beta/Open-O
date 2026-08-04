@@ -28,8 +28,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -242,7 +244,8 @@ class ConsentOverrideReportUnitTest {
               anyString(), anyCollection(), any(Date.class), any(Date.class)))
           .thenReturn(List.of(log("Overwrite", "101", 42)));
       when(providerManager.getProvider(loggedInInfo, "101")).thenReturn(provider("Who", "Doctor"));
-      when(demographicDao.getDemographicById(42)).thenReturn(demographic("Smith", "John", "1234567890"));
+      when(demographicDao.getDemographics(anyList()))
+          .thenReturn(List.of(demographic(42, "Smith", "John", "1234567890")));
 
       List<Row> rows = service.findRows(loggedInInfo, null, null, new Date(0L), new Date());
 
@@ -263,8 +266,9 @@ class ConsentOverrideReportUnitTest {
               anyString(), anyCollection(), any(Date.class), any(Date.class)))
           .thenReturn(List.of(log("Overwrite", "101", 42), log("Refused", "101", 43)));
       when(providerManager.getProvider(loggedInInfo, "101")).thenReturn(provider("Who", "Doctor"));
-      when(demographicDao.getDemographicById(any(Integer.class)))
-          .thenReturn(demographic("Smith", "John", "1234567890"));
+      when(demographicDao.getDemographics(anyList()))
+          .thenReturn(List.of(demographic(42, "Smith", "John", "1234567890"),
+              demographic(43, "Smith", "John", "1234567890")));
 
       List<Row> rows = service.findRows(loggedInInfo, null, null, new Date(0L), new Date());
 
@@ -279,7 +283,7 @@ class ConsentOverrideReportUnitTest {
               anyString(), anyCollection(), any(Date.class), any(Date.class)))
           .thenReturn(List.of(log("Cancelled", "101", 42)));
       when(providerManager.getProvider(loggedInInfo, "101")).thenReturn(provider("Who", "Doctor"));
-      when(demographicDao.getDemographicById(42)).thenReturn(null);
+      when(demographicDao.getDemographics(anyList())).thenReturn(List.of());
 
       List<Row> rows = service.findRows(loggedInInfo, null, null, new Date(0L), new Date());
 
@@ -296,7 +300,8 @@ class ConsentOverrideReportUnitTest {
               anyString(), anyCollection(), any(Date.class), any(Date.class)))
           .thenReturn(List.of(log("Refused", "999", 42)));
       when(providerManager.getProvider(loggedInInfo, "999")).thenReturn(null);
-      when(demographicDao.getDemographicById(42)).thenReturn(demographic("Smith", "John", "1"));
+      when(demographicDao.getDemographics(anyList()))
+          .thenReturn(List.of(demographic(42, "Smith", "John", "1")));
 
       List<Row> rows = service.findRows(loggedInInfo, null, null, new Date(0L), new Date());
 
@@ -310,13 +315,65 @@ class ConsentOverrideReportUnitTest {
               anyString(), anyCollection(), any(Date.class), any(Date.class)))
           .thenReturn(List.of(log("Overwrite", "101", 42), log("Overwrite", "101", 43)));
       when(providerManager.getProvider(loggedInInfo, "101")).thenReturn(provider("Who", "Doctor"));
-      when(demographicDao.getDemographicById(42)).thenReturn(demographic("Smith", "John", "1"));
-      when(demographicDao.getDemographicById(43)).thenReturn(demographic("Jones", "Ann", "2"));
+      when(demographicDao.getDemographics(anyList()))
+          .thenReturn(List.of(demographic(42, "Smith", "John", "1"),
+              demographic(43, "Jones", "Ann", "2")));
 
       List<Row> rows = service.findRows(loggedInInfo, "jones", null, new Date(0L), new Date());
 
       assertThat(rows).hasSize(1);
       assertThat(rows.get(0).getPatientName()).isEqualTo("Jones, Ann");
+    }
+
+    @Test
+    @DisplayName("should resolve the patients in one query however many rows are in range")
+    void shouldQueryDemographicsOnce_whenManyRowsAreInRange() {
+      when(transactionLogDao.findByExternalSystemAndTransactionTypes(
+              anyString(), anyCollection(), any(Date.class), any(Date.class)))
+          .thenReturn(List.of(log("Overwrite", "101", 42), log("Refused", "102", 43),
+              log("Cancelled", "103", 42)));
+      when(providerManager.getProvider(eq(loggedInInfo), anyString()))
+          .thenReturn(provider("Who", "Doctor"));
+      when(demographicDao.getDemographics(anyList()))
+          .thenReturn(List.of(demographic(42, "Smith", "John", "1"),
+              demographic(43, "Jones", "Ann", "2")));
+
+      List<Row> rows = service.findRows(loggedInInfo, null, null, new Date(0L), new Date());
+
+      assertThat(rows).hasSize(3);
+      // One query for three rows, and the two rows sharing patient 42 do not re-fetch them.
+      verify(demographicDao, times(1)).getDemographics(List.of(42, 43));
+    }
+
+    @Test
+    @DisplayName("should not resolve patients the Unique-ID search has already excluded")
+    void shouldNotResolveExcludedPatients_whenSearchingByUniqueId() {
+      when(transactionLogDao.findByExternalSystemAndTransactionTypes(
+              anyString(), anyCollection(), any(Date.class), any(Date.class)))
+          .thenReturn(List.of(log("Overwrite", "101", 42), log("Refused", "101", 43)));
+      when(providerManager.getProvider(loggedInInfo, "101")).thenReturn(provider("Who", "Doctor"));
+      when(demographicDao.getDemographics(anyList()))
+          .thenReturn(List.of(demographic(43, "Jones", "Ann", "2")));
+
+      List<Row> rows = service.findRows(loggedInInfo, null, "43", new Date(0L), new Date());
+
+      assertThat(rows).hasSize(1);
+      assertThat(rows.get(0).getUniqueId()).isEqualTo("43");
+      // The Unique ID is on the log row, so the excluded patient is never looked up at all - the
+      // filter removes the work rather than discarding its result.
+      verify(demographicDao, times(1)).getDemographics(List.of(43));
+    }
+
+    @Test
+    @DisplayName("should not query for patients at all when nothing is in range")
+    void shouldNotQueryDemographics_whenNoRowsAreInRange() {
+      when(transactionLogDao.findByExternalSystemAndTransactionTypes(
+              anyString(), anyCollection(), any(Date.class), any(Date.class)))
+          .thenReturn(List.of());
+
+      assertThat(service.findRows(loggedInInfo, null, null, new Date(0L), new Date())).isEmpty();
+
+      verify(demographicDao, never()).getDemographics(anyList());
     }
 
     private OMDGatewayTransactionLog log(String transactionType, String providerNo,
@@ -336,8 +393,10 @@ class ConsentOverrideReportUnitTest {
       return provider;
     }
 
-    private Demographic demographic(String lastName, String firstName, String hin) {
+    private Demographic demographic(Integer demographicNo, String lastName, String firstName,
+        String hin) {
       Demographic demographic = new Demographic();
+      demographic.setDemographicNo(demographicNo);
       demographic.setLastName(lastName);
       demographic.setFirstName(firstName);
       demographic.setHin(hin);

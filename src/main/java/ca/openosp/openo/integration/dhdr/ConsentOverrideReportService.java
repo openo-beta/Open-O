@@ -3,8 +3,11 @@ package ca.openosp.openo.integration.dhdr;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,16 +81,72 @@ public class ConsentOverrideReportService {
     List<OMDGatewayTransactionLog> logs = transactionLogDao.findByExternalSystemAndTransactionTypes(
         EXTERNAL_SYSTEM, ConsentOverrideChoice.storedValues(), from, to);
 
+    // The Unique-ID filter needs no lookup at all: it compares the demographicNo already carried on
+    // the log row. Applying it here removes the resolution work rather than performing it and then
+    // discarding the result - searching for one patient used to resolve the entire history first,
+    // so the filters bought no reduction in work whatsoever.
+    List<OMDGatewayTransactionLog> candidates = new ArrayList<OMDGatewayTransactionLog>();
+    for (OMDGatewayTransactionLog log : logs) {
+      if (searchUniqueId == null || searchUniqueId.equals(uniqueIdOf(log))) {
+        candidates.add(log);
+      }
+    }
+
     // One provider typically raises many overrides; resolve each provider's name at most once.
     Map<String, String> providerNames = new HashMap<String, String>();
+    // Likewise for patients, but they need a query rather than a cache lookup: one patient can hold
+    // several override decisions, and each was re-fetching the same demographic. The default range
+    // is unbounded, so "every row in the report" is the normal case here, not the worst one.
+    Map<Integer, Demographic> demographics = loadDemographics(candidates);
     List<Row> rows = new ArrayList<Row>();
-    for (OMDGatewayTransactionLog log : logs) {
-      Row row = toRow(loggedInInfo, log, providerNames);
+    for (OMDGatewayTransactionLog log : candidates) {
+      Row row = toRow(loggedInInfo, log, providerNames, demographics);
+      // The last-name filter genuinely needs the demographic, so it stays after resolution - but
+      // after batching that costs one query regardless of how many rows are in range.
       if (matchesSearch(row, searchLastName, searchUniqueId)) {
         rows.add(row);
       }
     }
     return rows;
+  }
+
+  /**
+   * Returns the log record's patient Unique ID as the report renders it, for comparison against the
+   * search input before any lookup is done.
+   *
+   * @param log OMDGatewayTransactionLog the consent-override decision record
+   * @return String the Unique ID, or {@code null} when the record carries no demographic
+   */
+  private static String uniqueIdOf(OMDGatewayTransactionLog log) {
+    Integer demographicNo = log.getDemographicNo();
+    return demographicNo == null ? null : String.valueOf(demographicNo);
+  }
+
+  /**
+   * Loads every distinct patient referenced by the given decision records in one query.
+   *
+   * @param logs List&lt;OMDGatewayTransactionLog&gt; the decision records to be rendered
+   * @return Map&lt;Integer, Demographic&gt; the patients by demographic number; a number with no
+   *     matching patient is simply absent, which {@code toRow} renders the same as before
+   */
+  private Map<Integer, Demographic> loadDemographics(List<OMDGatewayTransactionLog> logs) {
+    Set<Integer> demographicNos = new LinkedHashSet<Integer>();
+    for (OMDGatewayTransactionLog log : logs) {
+      if (log.getDemographicNo() != null) {
+        demographicNos.add(log.getDemographicNo());
+      }
+    }
+    Map<Integer, Demographic> byDemographicNo = new HashMap<Integer, Demographic>();
+    if (demographicNos.isEmpty()) {
+      return byDemographicNo;
+    }
+    for (Demographic demographic
+        : demographicDao.getDemographics(new ArrayList<Integer>(demographicNos))) {
+      if (demographic != null && demographic.getDemographicNo() != null) {
+        byDemographicNo.put(demographic.getDemographicNo(), demographic);
+      }
+    }
+    return byDemographicNo;
   }
 
   /**
@@ -97,10 +156,12 @@ public class ConsentOverrideReportService {
    * @param log OMDGatewayTransactionLog the consent-override decision record
    * @param providerNames Map&lt;String, String&gt; a per-report providerNo to display-name cache,
    *     read and populated by this method
+   * @param demographics Map&lt;Integer, Demographic&gt; the patients for this report, loaded in one
+   *     query by {@code loadDemographics}
    * @return Row the resolved display row (never {@code null})
    */
   private Row toRow(LoggedInInfo loggedInInfo, OMDGatewayTransactionLog log,
-      Map<String, String> providerNames) {
+      Map<String, String> providerNames, Map<Integer, Demographic> demographics) {
     Row row = new Row();
     // DateUtils.format renders null as the empty string, which is what an unstamped record shows.
     row.setDateTime(DateUtils.format(TIMESTAMP_FORMAT, log.getStarted(), null));
@@ -120,7 +181,7 @@ public class ConsentOverrideReportService {
     Integer demographicNo = log.getDemographicNo();
     if (demographicNo != null) {
       row.setUniqueId(String.valueOf(demographicNo));
-      Demographic demographic = demographicDao.getDemographicById(demographicNo);
+      Demographic demographic = demographics.get(demographicNo);
       if (demographic != null) {
         row.setLastName(demographic.getLastName());
         row.setPatientName(demographic.getFullName());
@@ -144,8 +205,13 @@ public class ConsentOverrideReportService {
       return false;
     }
     if (lastName != null) {
-      String surname = row.getLastName() == null ? "" : row.getLastName().toLowerCase();
-      if (!surname.contains(lastName.toLowerCase())) {
+      // Locale.ROOT, not the server default: a Turkish or Azeri default folds "I" to the dotless
+      // "ı", so a surname search would silently stop matching any name containing an I. The
+      // fold is for comparison only, never displayed, so it wants fixed rules rather than the
+      // server's.
+      String surname =
+          row.getLastName() == null ? "" : row.getLastName().toLowerCase(Locale.ROOT);
+      if (!surname.contains(lastName.toLowerCase(Locale.ROOT))) {
         return false;
       }
     }
