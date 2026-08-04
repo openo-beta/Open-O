@@ -56,8 +56,10 @@ import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.OperationOutcome;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
+import org.apache.struts2.ServletActionContext;
 
 import javax.net.ssl.SSLContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
@@ -181,6 +183,64 @@ public class OmdGateway {
 	/** Generates a unique X-Request-Id for a single gateway transaction. */
 	protected static String newRequestId() {
 		return UUID.randomUUID().toString();
+	}
+
+	/**
+	 * Resolves the base URL of this OpenO instance, used to compose the OAuth2 redirect URI and the
+	 * post-logout redirect URI. The configured {@code clinic.url} property wins whenever it holds a
+	 * value; when it is absent the address is derived from the request being served, so a stock
+	 * installation works without the property being set.
+	 *
+	 * @return String the base URL ending in a slash, for example {@code https://emr.example.ca/oscar/}
+	 * @throws IllegalStateException when {@code clinic.url} is unset and there is no request to derive from
+	 * @since 2026-08-04
+	 */
+	static String resolveBaseUrl() {
+		String configured = OscarProperties.getInstance().getProperty("clinic.url");
+		if (configured != null && !configured.trim().isEmpty()) {
+			return PathUtils.addTrailingSlash(configured.trim());
+		}
+		HttpServletRequest request = currentRequest();
+		if (request == null) {
+			throw new IllegalStateException("The OpenO address could not be determined: clinic.url is not "
+					+ "configured and this call is not serving a request. Set clinic.url in the properties file.");
+		}
+		return PathUtils.addTrailingSlash(baseUrlFromRequest(request));
+	}
+
+	/** Returns the request being served, or null outside a request. */
+	private static HttpServletRequest currentRequest() {
+		try {
+			return ServletActionContext.getRequest();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Builds the base URL from the address the servlet container reports for the request. The
+	 * X-Forwarded headers are deliberately not read here: they are set by the client and would let a
+	 * crafted request choose the redirect URI. A proxied installation supplies its public address one
+	 * of two ways, both of which land in the values read below: configure the container's
+	 * {@code RemoteIpValve} (or {@code RemoteIpFilter}), which resolves those headers only for
+	 * requests arriving from a trusted proxy, or set {@code clinic.url}, which takes precedence over
+	 * this method entirely.
+	 *
+	 * @param request HttpServletRequest the request being served
+	 * @return String the scheme, authority and context path, with no trailing slash
+	 */
+	private static String baseUrlFromRequest(HttpServletRequest request) {
+		String scheme = request.getScheme();
+		int port = request.getServerPort();
+		StringBuilder url = new StringBuilder(scheme).append("://").append(request.getServerName());
+		if (port > 0 && port != defaultPort(scheme)) {
+			url.append(':').append(port);
+		}
+		return url.append(request.getContextPath()).toString();
+	}
+
+	private static int defaultPort(String scheme) {
+		return "https".equalsIgnoreCase(scheme) ? 443 : 80;
 	}
 
 	protected List<OperationOutcome> hasOperationOutcome(Bundle bundle)  {
@@ -516,7 +576,7 @@ public class OmdGateway {
 		String externalSystem = "OIDC";
 		String transactionType = "TOKENS";
 		String tokenUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_access_token).getValue();
-		String callbackUrl = PathUtils.addTrailingSlash(OscarProperties.getInstance().getProperty("clinic.url"))
+		String callbackUrl = resolveBaseUrl()
 				+ systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_callback).getValue();
 
 		String requestId = newRequestId();
@@ -611,7 +671,7 @@ public class OmdGateway {
 	 */
 	public String buildAuthorizeUrl(OneIdGatewayData oneIdGatewayData, String state, String nonce, String verifier) throws Exception {
 		String authorizeUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_authorize).getValue();
-		String callbackUrl = PathUtils.addTrailingSlash(OscarProperties.getInstance().getProperty("clinic.url"))
+		String callbackUrl = resolveBaseUrl()
 				+ systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_callback).getValue();
 		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
 		String aud = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_audience).getValue();
@@ -659,7 +719,7 @@ public class OmdGateway {
 
 
 		String authorizeUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_authorize).getValue();
-		String callbackUrl = PathUtils.addTrailingSlash(OscarProperties.getInstance().getProperty("clinic.url"))
+		String callbackUrl = resolveBaseUrl()
 				+ systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_callback).getValue();
 		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
 
@@ -853,7 +913,7 @@ public class OmdGateway {
 	public String buildEndSessionUrl(String idTokenHint, boolean showPrivacyNotice) {
 		String endSessionUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_end_session).getValue();
 		String landingPage = showPrivacyNotice ? "oneIdLoggedOut.jsp" : "index.jsp";
-		String postLogout = PathUtils.addTrailingSlash(OscarProperties.getInstance().getProperty("clinic.url")) + landingPage;
+		String postLogout = resolveBaseUrl() + landingPage;
 		UriBuilder uriBuilder = UriBuilder.fromUri(endSessionUrl).queryParam("post_logout_redirect_uri", postLogout);
 		if (idTokenHint != null && !idTokenHint.isEmpty()) {
 			uriBuilder.queryParam("id_token_hint", idTokenHint);
