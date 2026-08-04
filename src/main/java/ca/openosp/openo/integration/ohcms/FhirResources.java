@@ -108,7 +108,9 @@ public class FhirResources {
       return null;
     }
     Location location = new Location();
-    location.setId(String.valueOf(clinic.getId()));
+    if (clinic.getId() != null) {
+      location.setId(String.valueOf(clinic.getId()));
+    }
     location.getMeta().addProfile(
         "http://ehealthontario.ca/fhir/StructureDefinition/ca-on-cms-profile-Location|1.0.0");
     location.setStatus(Location.LocationStatus.ACTIVE);

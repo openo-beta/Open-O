@@ -145,6 +145,32 @@ function showMultiWindowNotice(ctx, proceed) {
     document.body.appendChild(overlay);
 }
 
+// Options declared once per EHR service, by key. A page can pass them to launchViewlet instead,
+// but a launch that goes through the ONE ID sign-in is remembered in session storage and resumed
+// afterwards, and a callback cannot be stored there. Registering survives that round trip.
+var oneIdViewletOptions = {};
+
+function registerViewletOptions(key, options) {
+    if (key) {
+        oneIdViewletOptions[key] = options;
+    }
+}
+
+// Options passed to the call win over registered ones, field by field.
+function resolveViewletOptions(key, options) {
+    var registered = key ? oneIdViewletOptions[key] : null;
+    if (!registered) {
+        return options || null;
+    }
+    if (!options) {
+        return registered;
+    }
+    return {
+        service: options.service || registered.service,
+        onOutcome: options.onOutcome || registered.onOutcome
+    };
+}
+
 // options is optional; the eChart navbar calls this with four arguments. It carries:
 //   service    the line of business this launch is for, e.g. 'DHDR'. A Viewlet can serve several,
 //              and its reply names the one each result belongs to. Give the name here and the
@@ -209,6 +235,7 @@ function postViewletRequest(url, onDone, onFail) {
 }
 
 function doLaunchViewlet(ctx, demographicNo, key, displayMode, options) {
+    options = resolveViewletOptions(key, options);
     var url = ctx + '/viewletLaunch.do?demographicNo=' + encodeURIComponent(demographicNo)
         + '&key=' + encodeURIComponent(key);
     postViewletRequest(url, function (status, data, contentType) {
