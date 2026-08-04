@@ -242,6 +242,23 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
     }
 
     @Test
+    @DisplayName("should print a partial FHIR date verbatim rather than as 1970")
+    void shouldPrintVerbatim_whenValueIsPartialFhirDate() {
+      // FHIR `date` permits yyyy and yyyy-MM, and computeAge accepts both. Parsing any all-digit
+      // string as epoch millis turned a birthDate of "1984" into new Date(1984L) -> "Jan 1, 1970",
+      // printed directly above an Age cell derived correctly from the same value.
+      assertThat(print.displayDate("1984")).isEqualTo("1984");
+      assertThat(print.displayDate("1984-08")).isEqualTo("1984-08");
+      // The header must not contradict itself: the age is still derivable from the same string.
+      // Assert a whole number of years rather than merely non-empty, so a computeAge that returned
+      // "0" or "-" beside a 1984 birthDate would still fail. Bounded below rather than pinned, since
+      // the value moves with the clock.
+      String age = print.computeAge("1984");
+      assertThat(age).matches("\\d+");
+      assertThat(Integer.parseInt(age)).isGreaterThan(40);
+    }
+
+    @Test
     @DisplayName("should return an empty string for an absent, blank or stringified-null value")
     void shouldReturnEmpty_whenValueIsAbsentOrNull() {
       assertThat(print.displayDate(null)).isEmpty();

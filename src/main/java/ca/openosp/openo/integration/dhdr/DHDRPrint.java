@@ -768,16 +768,26 @@ public class DHDRPrint {
     if (value.isEmpty() || "null".equalsIgnoreCase(value)) {
       return "";
     }
-    try {
-      return mediumDate.format(new Date(Long.parseLong(value)));
-    } catch (NumberFormatException notEpoch) {
-      // Not epoch millis, so treat it as ISO. A date-time carries a 'T'; take the date part.
-      String datePart = value.length() > 10 && value.charAt(10) == 'T' ? value.substring(0, 10) : value;
+    // Epoch millis only when the digits are actually timestamp-length. Parsing any all-digit value
+    // as epoch turned a FHIR date of "1984" into new Date(1984L) and printed "Jan 1, 1970" - beside
+    // an Age cell that computeAge derives correctly from the same string, since it accepts yyyy and
+    // yyyy-MM. The two are adjacent in the header block, so the header contradicted itself.
+    if (value.matches("\\d{12,}")) {
       try {
-        return mediumDate.format(java.sql.Date.valueOf(LocalDate.parse(datePart)));
-      } catch (Exception notIso) {
+        return mediumDate.format(new Date(Long.parseLong(value)));
+      } catch (NumberFormatException tooLargeForLong) {
         return value;
       }
+    }
+    // A date-time carries a 'T'; take the date part.
+    String datePart = value.length() > 10 && value.charAt(10) == 'T' ? value.substring(0, 10) : value;
+    try {
+      return mediumDate.format(java.sql.Date.valueOf(LocalDate.parse(datePart)));
+    } catch (Exception notIso) {
+      // A partial FHIR date (yyyy, yyyy-MM) reaches here. Print it verbatim rather than filling in a
+      // month and day the source did not give: on a medication history an invented precision reads
+      // as recorded fact.
+      return value;
     }
   }
 

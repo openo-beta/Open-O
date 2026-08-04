@@ -2790,18 +2790,35 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 
 			}
 
-			if (angular.isDefined(this.med.resource.dosageInstruction)) {
-				let dosageInstruction = this.med.resource.dosageInstruction[0];
-				if (angular.isDefined(dosageInstruction.doseAndRate)) {
-					this.dose = angular.isDefined(dosageInstruction.doseAndRate[0]) ? dosageInstruction.doseAndRate[0].doseQuantity.value : "";
+			// Every level here is optional in the consumer profile, and each one that was assumed
+			// present threw during construction. In the summary path processEntries catches that and
+			// counts the record as unreadable; in the comparative path (searchByDemographicNo2)
+			// nothing does, so the throw escapes the loop and takes every later entry with it - and
+			// because it throws inside a .then success handler, the sibling error callback never
+			// fires and the reader is told nothing. The three shapes that did it are all legal FHIR
+			// we simply had never been sent: an empty dosageInstruction array, a dose expressed as
+			// doseRange instead of doseQuantity (dose[x] is a choice type), and a timing with no
+			// repeat (Timing.repeat is 0..1). A missing dose or frequency must leave those cells
+			// blank, not lose the event.
+			// != null throughout: it rejects both null and undefined while still admitting a value of
+			// 0, which a truthiness test would drop.
+			var dosageInstruction = angular.isArray(this.med.resource.dosageInstruction)
+					? this.med.resource.dosageInstruction[0] : null;
+			if (dosageInstruction != null) {
+				var doseAndRate = angular.isArray(dosageInstruction.doseAndRate)
+						? dosageInstruction.doseAndRate[0] : null;
+				var doseQuantity = doseAndRate != null ? doseAndRate.doseQuantity : null;
+				if (doseQuantity != null) {
+					this.dose = doseQuantity.value != null ? doseQuantity.value : "";
 					// Guard first, then prepend the space inside the value: + binds tighter than ?:.
-					this.doseUnit = angular.isDefined(dosageInstruction.doseAndRate[0]) ? (" " + dosageInstruction.doseAndRate[0].doseQuantity.unit) : "";
+					this.doseUnit = doseQuantity.unit != null ? (" " + doseQuantity.unit) : "";
 				}
-				if (angular.isDefined(dosageInstruction.timing)) {
-					this.frequency = dosageInstruction.timing.repeat.frequency;
-					this.period = dosageInstruction.timing.repeat.period;
-					this.periodMax = dosageInstruction.timing.repeat.periodMax;
-					this.periodUnit = dosageInstruction.timing.repeat.periodUnit;
+				var repeat = dosageInstruction.timing != null ? dosageInstruction.timing.repeat : null;
+				if (repeat != null) {
+					this.frequency = repeat.frequency;
+					this.period = repeat.period;
+					this.periodMax = repeat.periodMax;
+					this.periodUnit = repeat.periodUnit;
 				}
 			}
 
