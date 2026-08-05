@@ -153,7 +153,7 @@ public class OmdGateway {
 			response2.bufferEntity();
 			body = response2.readEntity(String.class);
 		} catch (Exception e) {
-			logger.warn("Could not read gateway response body: " + e.getMessage());
+			logger.warn("Could not read gateway response body (" + e.getClass().getSimpleName() + ")");
 		}
 
 		String xRequestId = response2.getHeaderString("X-Request-Id");
@@ -199,6 +199,42 @@ public class OmdGateway {
 	/** Generates a unique X-Request-Id for a single gateway transaction. */
 	protected static String newRequestId() {
 		return UUID.randomUUID().toString();
+	}
+
+	/** How many nested causes to render before stopping. */
+	private static final int MAX_CAUSE_DEPTH = 10;
+
+	/**
+	 * Renders a throwable as its class names and stack frames, with every message dropped.
+	 *
+	 * <p>A failed gateway call raises an exception whose message embeds the request URI, and a
+	 * search URI carries the patient's health card number and date of birth. A stack frame holds
+	 * only a class, method, file and line, so it cannot carry request data; only the message can.
+	 * Keeping the frames and dropping the messages leaves the diagnostic value in the application
+	 * log and takes the patient data out of it.
+	 *
+	 * @param throwable Throwable the exception to render, which may be null
+	 * @return String the class names and stack frames, or "(none)" when there is no exception
+	 * @since 2026-08-05
+	 */
+	private static String stackTraceWithoutMessages(Throwable throwable) {
+		if (throwable == null) {
+			return "(none)";
+		}
+		StringBuilder rendered = new StringBuilder();
+		Throwable current = throwable;
+		for (int depth = 0; current != null && depth < MAX_CAUSE_DEPTH; depth++) {
+			if (depth > 0) {
+				rendered.append("Caused by: ");
+			}
+			rendered.append(current.getClass().getName()).append('\n');
+			for (StackTraceElement frame : current.getStackTrace()) {
+				rendered.append("\tat ").append(frame).append('\n');
+			}
+			// A throwable may report itself as its own cause; stop rather than loop.
+			current = current.getCause() == current ? null : current.getCause();
+		}
+		return rendered.toString();
 	}
 
 	private static final ObjectMapper auditObjectMapper = new ObjectMapper();
@@ -566,7 +602,7 @@ public class OmdGateway {
 			completeLog(omdGatewayTransactionLog,response2);
 			transactionLogDao.merge(omdGatewayTransactionLog);
 		}catch(Exception e) {
-			logger.error("ERROR OMD Gateway GET",e);
+			logger.error("OMD Gateway GET failed\n" + stackTraceWithoutMessages(e));
 			// The call threw before any response arrived, so completeLog never ran and the outcome
 			// is set here instead. A row left with a null success reads as one whose call is still
 			// in flight.
@@ -884,7 +920,7 @@ public class OmdGateway {
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			logger.info("Response Status from /Authorize =" + response2.getStatus());
 		}catch(Exception e) {
-			logger.error("Error calling Authorize "+omdGatewayTransactionLog,e);
+			logger.error("Authorize call failed\n" + stackTraceWithoutMessages(e));
 			omdGatewayTransactionLog.setError(ExceptionUtils.getStackTrace(e));
 			omdGatewayTransactionLog.setSuccess(false);
 			transactionLogDao.merge(omdGatewayTransactionLog);
@@ -962,7 +998,7 @@ public class OmdGateway {
 		}catch(TokenExpiredException e) {
 			throw e;
 		}catch(Exception e) {
-			logger.error("ONE ID token refresh failed", e);
+			logger.error("ONE ID token refresh failed\n" + stackTraceWithoutMessages(e));
 			throw new TokenExpiredException();
 		}
 	}
