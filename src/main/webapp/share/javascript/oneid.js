@@ -331,13 +331,23 @@ function parseViewletCompletion(data, service) {
         return null;
     }
     var codes = [];
+    function entryCodes(entry) {
+        var raw = entry.code;
+        if (raw === null || raw === undefined) {
+            return [];
+        }
+        var list = Array.isArray(raw) ? raw : [raw];
+        var out = [];
+        for (var i = 0; i < list.length; i++) {
+            out.push(String(list[i]));
+        }
+        return out;
+    }
     function collectCodes(entries) {
         for (var i = 0; i < entries.length; i++) {
-            var entry = entries[i] || {};
-            var entryCodes = Array.isArray(entry.code) ? entry.code
-                : (entry.code === null || entry.code === undefined ? [] : [entry.code]);
-            for (var j = 0; j < entryCodes.length; j++) {
-                codes.push(String(entryCodes[j]));
+            var list = entryCodes(entries[i] || {});
+            for (var j = 0; j < list.length; j++) {
+                codes.push(list[j]);
             }
         }
     }
@@ -364,11 +374,18 @@ function parseViewletCompletion(data, service) {
     // outcome counts as a success only if that service is among them; otherwise it is 'partial'.
     // A reply that names no service at all is taken at face value, which is how a single-service
     // Viewlet behaves.
+    //
+    // One code confirms the drug service on its own, whatever service label its entry carries:
+    // PCOI_CONSENT_SUCCESS_02 means the drug call succeeded, while PCOI_CONSENT_SUCCESS_01
+    // confirms only the consent call.
     var confirmedServices = [];
     for (var s = 0; s < successes.length; s++) {
-        var entryService = successes[s] && successes[s].microService;
-        if (entryService) {
-            confirmedServices.push(String(entryService));
+        var entry = successes[s] || {};
+        if (entry.microService) {
+            confirmedServices.push(String(entry.microService));
+        }
+        if (entryCodes(entry).indexOf('PCOI_CONSENT_SUCCESS_02') !== -1) {
+            confirmedServices.push('DHDR');
         }
     }
     var confirmed = true;

@@ -21,6 +21,7 @@ package ca.openosp.openo.integration.ohcms;
 import ca.openosp.openo.commn.Gender;
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.dao.ClinicDAO;
+import ca.openosp.openo.commn.dao.ContactDao;
 import ca.openosp.openo.commn.dao.DemographicContactDao;
 import ca.openosp.openo.commn.model.Clinic;
 import ca.openosp.openo.commn.model.Contact;
@@ -59,6 +60,7 @@ import java.util.List;
 public class FhirResources {
 
   ClinicDAO clinicDao = SpringUtils.getBean(ClinicDAO.class);
+  ContactDao contactDao = SpringUtils.getBean(ContactDao.class);
   ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
   DemographicContactDao demographicContactDao = SpringUtils.getBean(DemographicContactDao.class);
   private static final FhirContext fhirContext = FhirContext.forR4();
@@ -360,7 +362,7 @@ public class FhirResources {
       return contacts;
     }
     for (DemographicContact link : demographicContactDao.findActiveByDemographicNo(demographicNo)) {
-      Contact details = link.getDetails();
+      Contact details = contactFor(link);
       if (details == null) {
         continue;
       }
@@ -388,6 +390,32 @@ public class FhirResources {
       contacts.add(contact);
     }
     return contacts;
+  }
+
+  /**
+   * Loads the person a chart contact row points at.
+   *
+   * <p>The row's own {@code details} field is not a database column, so it is null on every row
+   * read back through the DAO and the person has to be fetched by the id the row holds. Only
+   * personal contacts are returned; a row pointing at a provider or a specialist is skipped.
+   *
+   * @param link DemographicContact the chart's contact row
+   * @return Contact the person named on the row, or null when there is none to return
+   * @since 2026-08-05
+   */
+  private Contact contactFor(DemographicContact link) {
+    if (link.getType() != DemographicContact.TYPE_CONTACT) {
+      return null;
+    }
+    String contactId = link.getContactId();
+    if (contactId == null || contactId.trim().isEmpty()) {
+      return null;
+    }
+    try {
+      return contactDao.find(Integer.valueOf(contactId.trim()));
+    } catch (NumberFormatException e) {
+      return null;
+    }
   }
 
   private static void addContactPoint(Patient.ContactComponent contact, ContactPointSystem system,

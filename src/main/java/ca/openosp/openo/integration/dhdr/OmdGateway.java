@@ -621,6 +621,7 @@ public class OmdGateway {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, "PCOI", "consentViewletLaunch");
 		omdGatewayTransactionLog.setDataSent(url);
 		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
+		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
 		transactionLogDao.persist(omdGatewayTransactionLog);
 		return url;
 	}
