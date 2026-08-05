@@ -253,8 +253,11 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
       // Assert a whole number of years rather than merely non-empty, so a computeAge that returned
       // "0" or "-" beside a 1984 birthDate would still fail. Bounded below rather than pinned, since
       // the value moves with the clock.
+      // Bounded to three digits rather than \d+: an age in years cannot be wider than that, so the
+      // assertion is tighter, and it also removes the only way the parse below could throw instead
+      // of failing with a readable message.
       String age = print.computeAge("1984");
-      assertThat(age).matches("\\d+");
+      assertThat(age).matches("\\d{1,3}");
       assertThat(Integer.parseInt(age)).isGreaterThan(40);
     }
 
