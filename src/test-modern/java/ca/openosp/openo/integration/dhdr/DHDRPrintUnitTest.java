@@ -383,6 +383,43 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
     }
 
     @Test
+    @DisplayName("should fall back to a countable drug form when the unit adds nothing")
+    void shouldFallBackToForm_whenUnitAddsNothing() throws Exception {
+      // The half the print used to omit. The screen resolves the unit in two steps and this stopped
+      // after the first, so the same prescription read "2 tablet" on screen and "2" on paper.
+      assertThat(print.emrDose(med("takeMin", "2", "form", "TABLET", "strengthUnit", "mg")))
+          .isEqualTo("2 tablet");
+      assertThat(print.emrDose(
+          med("takeMin", "1", "unit", "mg", "strengthUnit", "MG", "form", "Capsule, Extended")))
+          .isEqualTo("1 capsule");
+    }
+
+    @Test
+    @DisplayName("should match a countable form recorded with either globule spelling")
+    void shouldMatchForm_whenSpelledEitherWay() throws Exception {
+      // "globule" was inherited as "grobule". Both are listed, so correcting the typo in a record
+      // does not silently cost it its unit.
+      assertThat(print.emrDoseUnit(med("form", "grobule"))).isEqualTo("grobule");
+      assertThat(print.emrDoseUnit(med("form", "globule"))).isEqualTo("globule");
+    }
+
+    @Test
+    @DisplayName("should lower-case the dose unit so print and screen read alike")
+    void shouldLowerCaseUnit_soPrintMatchesScreen() throws Exception {
+      // The screen compares in lower case and returns what it compared; returning it raw here
+      // printed "MG" for a drug the screen showed as "mg".
+      assertThat(print.emrDoseUnit(med("unit", "TAB"))).isEqualTo("tab");
+    }
+
+    @Test
+    @DisplayName("should render no unit when neither the unit nor the form names one")
+    void shouldRenderNoUnit_whenNothingNamesOne() throws Exception {
+      assertThat(print.emrDoseUnit(med("form", "solution", "strengthUnit", "mg"))).isEmpty();
+      assertThat(print.emrDoseUnit(med())).isEmpty();
+      assertThat(print.emrDose(med("takeMin", "5", "form", "cream"))).isEqualTo("5");
+    }
+
+    @Test
     @DisplayName("should append the duration to the first fill quantity when one is recorded")
     void shouldAppendDuration_whenRecorded() throws Exception {
       assertThat(print.emrQuantityAndDuration(

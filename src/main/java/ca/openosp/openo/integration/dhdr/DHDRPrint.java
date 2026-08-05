@@ -57,6 +57,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Function;
 
 public class DHDRPrint {
@@ -909,11 +910,53 @@ public class DHDRPrint {
   }
 
   /**
-   * Renders the prescribed dose for DHDR05.02(e), as a single value or a min-max range.
+   * Dosage forms that name a countable unit, so the form itself can stand in as the dose unit.
    *
-   * <p>The unit is appended only when it differs from the strength unit already in its own column,
-   * mirroring the screen's {@code emrDoseUnit()}: OpenO stores the dosage unit as free text and a
-   * record often repeats the strength there, which would print "50 mg" under both headings.
+   * <p>Transcribed from {@code DemographicExportHelper:184-192}, which holds the same list as an
+   * if/else chain and is the origin of both this copy and the screen's. Order matters only in that
+   * the first match wins, as it does there.
+   *
+   * <p>"globule" was inherited as "grobule"; the screen lists both so a form recorded with the
+   * original typo still matches, and this list follows it rather than the export helper, which
+   * carries only the typo. A form spelled correctly would otherwise lose its unit here while
+   * keeping it on screen - the divergence this method exists to close.
+   */
+  private static final List<String> COUNTABLE_DOSE_FORMS = List.of("capsule", "drop", "dosing",
+      "globule", "grobule", "granule", "patch", "pellet", "pill", "tablet");
+
+  /**
+   * Resolves the dose unit for an EMR medication, mirroring the screen's {@code emrDoseUnit()}.
+   *
+   * <p>Two steps, and the second is the one this used to omit. The recorded unit is preferred, but
+   * only when it differs from the strength unit already in its own column - OpenO stores the dosage
+   * unit as free text and a record often repeats the strength there, which would print "50 mg" under
+   * both headings. Where it does repeat, or is absent, the drug form stands in if it names something
+   * countable. Anything else has no unit to show, and DHDR05.02 asks for these "if available".
+   *
+   * <p>Lower-cased on the way out, as the screen's is: it compares in lower case and returns what it
+   * compared, so a unit recorded as "MG" reads "mg" on screen. Returning it raw here printed the two
+   * differently for the same drug.
+   *
+   * @param med JSONObject one EMR medication from the comparative payload
+   * @return String the unit to print, or an empty string when none adds information
+   */
+  String emrDoseUnit(JSONObject med) {
+    String unit = optText(med, "unit").toLowerCase(Locale.ROOT);
+    String strengthUnit = optText(med, "strengthUnit").toLowerCase(Locale.ROOT);
+    if (!unit.isEmpty() && !unit.equals(strengthUnit)) {
+      return unit;
+    }
+    String form = optText(med, "form").toLowerCase(Locale.ROOT);
+    for (String countable : COUNTABLE_DOSE_FORMS) {
+      if (form.contains(countable)) {
+        return countable;
+      }
+    }
+    return "";
+  }
+
+  /**
+   * Renders the prescribed dose for DHDR05.02(e), as a single value or a min-max range.
    *
    * @param med JSONObject one EMR medication from the comparative payload
    * @return String the dose, possibly a range, with a unit where one adds information
@@ -926,11 +969,8 @@ public class DHDRPrint {
       return "";
     }
     String dose = (!max.isEmpty() && !max.equals(min)) ? (min + " - " + max) : min;
-    String unit = optText(med, "unit");
-    if (unit.isEmpty() || unit.equalsIgnoreCase(optText(med, "strengthUnit"))) {
-      return dose;
-    }
-    return dose + " " + unit;
+    String unit = emrDoseUnit(med);
+    return unit.isEmpty() ? dose : (dose + " " + unit);
   }
 
   /**
