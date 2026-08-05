@@ -1162,11 +1162,16 @@
                                The SADIE default is ontario.ca, not the v3.0 Related Documents
                                address, whose certificate expired 2024-10-23 - see divergence D3. --%>
                           <div class="dhdr-formulary-links" style="margin:4px 0;">
-                              <a target="_new"
+                              <%-- rel on both: these open a third-party site in a named window, so
+                                   without it the opened page holds a window.opener handle back into
+                                   an authenticated EMR session and can navigate it. The URLs are
+                                   admin-configurable, so the destination is not guaranteed to stay
+                                   ontario.ca. --%>
+                              <a target="_new" rel="noopener noreferrer"
                                  href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.odb_formulary_url", "https://www.ontario.ca/check-medication-coverage/"))%>">ODB
                                   lookup</a>
                               &nbsp;|&nbsp;
-                              <a target="_new"
+                              <a target="_new" rel="noopener noreferrer"
                                  href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.eap_url", "https://www.ontario.ca/page/sadie-special-authorization-digital-information-exchange"))%>">EAP
                                   (SADIE)</a>
                           </div>

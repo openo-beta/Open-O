@@ -41,7 +41,6 @@
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.OscarProperties" %>
 
 <%long start = System.currentTimeMillis();%>
 

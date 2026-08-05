@@ -32,13 +32,18 @@ angular.module("dhdrServices", [])
     .service("dhdrService", function ($http, $q, $log) {
         return {
             apiPath: '../ws/rs',
-            configHeaders: {headers: {"Content-Type": "application/json", "Accept": "application/json"}},
-            configHeadersWithCache: {headers: {"Content-Type": "application/json", "Accept": "application/json"}, cache: true},
+            // A header name/value map, not a whole $http config. It is spread into config.headers
+            // below, and the extra {headers: ...} wrapper this used to carry meant every DHDR
+            // request went out with a literal header named "headers" whose value stringified to
+            // [object Object]. Angular's own defaults still supplied Content-Type, so the requests
+            // worked and the junk header simply rode along.
+            configHeaders: {"Content-Type": "application/json", "Accept": "application/json"},
 
             searchByDemographicNo2: function (demographicNo, searchConfig) {
                 var deferred = $q.defer();
                 $http({
-                    url: this.apiPath + '/dhdr/searchByDemographicNo2?demographicNo=' + demographicNo,
+                    url: this.apiPath + '/dhdr/searchByDemographicNo2?demographicNo='
+                        + encodeURIComponent(demographicNo),
                     method: "POST",
                     data: searchConfig,
                     headers: this.configHeaders,
@@ -56,7 +61,12 @@ angular.module("dhdrServices", [])
                             ? "The DHDR EHR Service did not respond."
                             : "Drug and pharmacy service information could not be retrieved.",
                         severity: "error",
-                        dateTime: new Date().toLocaleString(),
+                        // DHDR03.06: a Date, for the same reason the two notices raised in
+                        // index.jsp are. The viewer renders this through date:'medium'; Angular's
+                        // date filter returns a non-ISO string untouched, so toLocaleString() here
+                        // both skipped the shared format and followed the workstation locale,
+                        // leaving one ambiguous timestamp beside notices that were already fixed.
+                        dateTime: new Date(),
                         moreInformation: "Retry the search; if the problem persists, contact your EMR support desk."
                     });
                 });
@@ -68,7 +78,8 @@ angular.module("dhdrServices", [])
             getConsentOveride: function (demographicNo, key) {
                 var deferred = $q.defer();
                 $http({
-                    url: this.apiPath + '/dhdr/getConsentOveride?demographicNo=' + demographicNo,
+                    url: this.apiPath + '/dhdr/getConsentOveride?demographicNo='
+                        + encodeURIComponent(demographicNo),
                     method: "GET",
                     headers: this.configHeaders,
                 }).then(function (response) {
@@ -83,7 +94,12 @@ angular.module("dhdrServices", [])
             logConsentOverride: function (demographicNo, uniqueToken, dataReceived, status) {
                 var deferred = $q.defer();
                 $http({
-                    url: this.apiPath + '/dhdr/logConsentOverride/' + demographicNo + '/' + uniqueToken + '?status=' + status,
+                    // Encoded per segment: these are a number and a server-generated UUID today, so
+                    // nothing here needs escaping, but a path segment that ever carries a / or ?
+                    // would otherwise reshape the request rather than be rejected by it.
+                    url: this.apiPath + '/dhdr/logConsentOverride/' + encodeURIComponent(demographicNo)
+                        + '/' + encodeURIComponent(uniqueToken)
+                        + '?status=' + encodeURIComponent(status),
                     method: "POST",
                     data: dataReceived,
                     headers: this.configHeaders,

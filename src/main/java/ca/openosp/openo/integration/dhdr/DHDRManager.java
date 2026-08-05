@@ -76,7 +76,7 @@ public class DHDRManager extends OmdGateway {
 
     wc.query("patient.identifier",
         "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-patient-hcn|"
-            + demographic.getHin());//"5365837912");
+            + demographic.getHin());
 
     // Date of birth is required, not optional, and is sent whenever the demographic holds one that
     // renders as a valid FHIR date - a malformed one invites the service to reject the whole search.
