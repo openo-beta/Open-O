@@ -773,8 +773,8 @@ public class ProviderProperty2Action extends ActionSupport {
 
     /**
      * Stores this provider's default search window for the DHDR medication viewer (DHDR02.03).
-     * Only a positive whole number is kept; anything else, including an empty field, clears the
-     * preference so the instance-wide dhdr.default_search_days property applies again.
+     * An empty field clears the preference so the instance-wide dhdr.default_search_days property
+     * applies again; a value that is not a usable number is reported back rather than stored.
      *
      * @return String the Struts result name resolving to /provider/setDhdrSearchDays.jsp
      */
@@ -784,8 +784,17 @@ public class ProviderProperty2Action extends ActionSupport {
 
         UserProperty submitted = this.getDhdrSearchDaysProperty();
         String searchDays = StringUtils.trimToNull(submitted != null ? submitted.getValue() : null);
-        if (searchDays != null && !isPositiveInteger(searchDays)) {
-            searchDays = null;
+        // An empty field is a deliberate "go back to the clinic default"; a value that is not a
+        // usable number is a mistake. Both used to clear the preference and then report success, so
+        // a provider who entered a number too large for an int was told their setting was saved
+        // while it had been discarded - and the page-level validation does not catch that case,
+        // since the value is all digits and greater than zero. Report it and leave the stored value
+        // untouched.
+        if (searchDays != null && !isValidSearchDays(searchDays)) {
+            request.setAttribute("inputError", Boolean.TRUE);
+            request.setAttribute("dhdrSearchDays", submitted);
+            setDhdrSearchDaysLabels();
+            return "genDhdrSearchDays";
         }
 
         UserProperty prop = this.userPropertyDAO.getProp(providerNo, UserProperty.DHDR_DEFAULT_SEARCH_DAYS);
@@ -809,8 +818,7 @@ public class ProviderProperty2Action extends ActionSupport {
      * shared by the view and save paths so both show the same page.
      */
     private void setDhdrSearchDaysLabels() {
-        request.setAttribute("dhdrClinicDefault", OscarProperties.getInstance()
-                .getProperty("dhdr.default_search_days", "120").trim());
+        request.setAttribute("dhdrClinicDefault", clinicDefaultSearchDays());
         request.setAttribute("providertitle", "provider.setDhdrSearchDays.title");
         request.setAttribute("providermsgPrefs", "provider.setDhdrSearchDays.msgPrefs");
         request.setAttribute("providermsgProvider", "provider.setDhdrSearchDays.msgSearchDays");
@@ -820,10 +828,76 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("method", "saveDhdrSearchDays");
     }
 
-    private static boolean isPositiveInteger(String value) {
+    /**
+     * The search window the viewer falls back to when nothing usable is configured. DHDR02.03 names
+     * 120 days as the suggested default.
+     */
+    private static final String SUGGESTED_SEARCH_DAYS = "120";
+
+    /**
+     * Returns the instance-wide fallback window exactly as the viewer will apply it, for display as
+     * the field's placeholder.
+     *
+     * <p>The placeholder is a promise about what happens when the provider leaves the field empty,
+     * so it has to be read through the same rule the viewer uses rather than shown raw. dhdr/index.jsp
+     * parses dhdr.default_search_days and keeps 120 whenever the value is missing, non-numeric or
+     * not positive; showing the raw property here meant a misconfigured instance advertised one
+     * fallback while the viewer silently used another.
+     *
+     * <p>Note this deliberately applies the viewer's rule and not {@code isValidSearchDays}, which is
+     * stricter. Rejecting a configured value the viewer would still honour - anything above
+     * MAX_DHDR_SEARCH_DAYS - would recreate the same disagreement in the other direction. The
+     * property is edited in oscar_mcmaster.properties rather than through this form, so this method
+     * only reports it; bounding it belongs with the viewer that reads it.
+     *
+     * @return String the fallback window in days, always a positive whole number
+     */
+    private static String clinicDefaultSearchDays() {
+        return normalizeClinicDefault(OscarProperties.getInstance()
+                .getProperty("dhdr.default_search_days", SUGGESTED_SEARCH_DAYS));
+    }
+
+    /**
+     * Applies the viewer's fallback rule to a configured search window. Split out from the property
+     * read so it can be exercised without the OscarProperties singleton.
+     *
+     * @param configured String the raw dhdr.default_search_days value, possibly null or untrimmed
+     * @return String the value the viewer will use, or 120 when the configured one is unusable
+     */
+    static String normalizeClinicDefault(String configured) {
+        String trimmed = configured == null ? "" : configured.trim();
         try {
-            return Integer.parseInt(value) > 0;
-        } catch (NumberFormatException e) {
+            if (Integer.parseInt(trimmed) > 0) {
+                return trimmed;
+            }
+        } catch (NumberFormatException notAWholeNumber) {
+            // fall through to the suggested default, as the viewer does
+        }
+        return SUGGESTED_SEARCH_DAYS;
+    }
+
+    /**
+     * The largest DHDR search window accepted, in days - a century. Chosen as an outer bound rather
+     * than a clinical one: it is longer than any medication history can be, so it cannot exclude a
+     * value a provider might really want, while keeping the viewer's date arithmetic in range. The
+     * viewer derives the range as {@code start.setDate(end.getDate() - days)}, which on an
+     * unbounded value yields an Invalid Date and a search that silently loses its start bound.
+     */
+    private static final int MAX_DHDR_SEARCH_DAYS = 36500;
+
+    /**
+     * Reports whether the submitted DHDR search window is a whole number of days the viewer can
+     * actually use.
+     *
+     * @param value String the submitted field value, already trimmed and known non-empty
+     * @return boolean true if the value is a positive integer no greater than a century of days
+     */
+    static boolean isValidSearchDays(String value) {
+        try {
+            int days = Integer.parseInt(value);
+            return days > 0 && days <= MAX_DHDR_SEARCH_DAYS;
+        } catch (NumberFormatException notAWholeNumber) {
+            // Anything wider than an int lands here, which is the case the page-level check misses.
             return false;
         }
     }

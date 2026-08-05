@@ -5,8 +5,13 @@
 
     Leaving the field empty clears the provider's own value so the instance-wide
     dhdr.default_search_days property applies again; that fallback is shown as the
-    placeholder. Numeric validation is shared with the other provider preference pages
-    via provider_form_validations.js, which keys off the numericFormField id.
+    placeholder. A non-empty value that cannot be used is reported rather than stored.
+
+    Numeric validation is shared with the other provider preference pages via
+    provider_form_validations.js, which keys off the numericFormField id. That check is
+    necessary but not sufficient here - it accepts any run of digits above zero, including
+    values wider than an int - so the action validates again and re-renders this page with
+    the same error element when it rejects.
 
     @since 2026-07-27
 --%>
@@ -36,6 +41,11 @@
         <title><%=Encode.forHtml(String.valueOf(bundle.getString(providertitle)))%></title>
 
         <script src="<c:out value="${ctx}"/>/js/global.js"></script>
+        <%-- Injects the CSRF token into the form below. This page POSTs a change to a stored
+             provider preference, and CsrfGuard's ProtectedMethods covers POST, but the token has
+             to be added per page - there is no filter that does it, and ~50 other form-bearing
+             JSPs include this the same way. Without it the form submits no token at all. --%>
+        <script src="<c:out value="${ctx}"/>/csrfguard" type="text/javascript"></script>
         <script src="<c:out value="${ctx}"/>/share/javascript/provider_form_validations.js"></script>
         <link href="<c:out value="${ctx}"/>/css/bootstrap.css" rel="stylesheet" type="text/css"><!-- Bootstrap 2.3.1 -->
 
@@ -57,7 +67,13 @@
                     <input type="text" id="numericFormField" name="dhdrSearchDaysProperty.value"
                            value="<c:out value='${dhdrSearchDays.value}'/>"
                            placeholder="<c:out value='${dhdrClinicDefault}'/>"/>
-                    <p id="errorMessage" class="alert alert-danger" style="display: none; color: red;">
+                    <%-- Shown by provider_form_validations.js on a client-side rejection, and
+                         rendered visible here when the server rejected the submission - a value
+                         can pass the page check and still be unusable (all digits, greater than
+                         zero, but wider than an int). Same element and wording either way, so the
+                         two paths cannot disagree about what the provider is told. --%>
+                    <p id="errorMessage" class="alert alert-danger"
+                       style="display: <%= request.getAttribute("inputError") != null ? "block" : "none" %>; color: red;">
                         Invalid input.
                     </p>
                     <br>
