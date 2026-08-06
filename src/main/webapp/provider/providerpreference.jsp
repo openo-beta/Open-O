@@ -609,6 +609,30 @@
                     <td align="center"><a href=#
                                           onClick="popupPage(500,860,'providerPrinter.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetDefaultPrinter"/></a></td>
                 </tr>
+                <security:oscarSec roleName="<%=roleName$%>" objectName="_ehr.connectivity" rights="w">
+                    <% if (loggedInInfo.hasOneIdKey()) { %>
+                    <tr>
+                        <td align="center"><a href="#"
+                                              onClick="document.location='<%=request.getContextPath()%>/uaoSelect.do';return false;">Switch ONE ID authority (UAO)</a></td>
+                    </tr>
+                    <tr>
+                        <td align="center"><a href=#
+                                              onClick="if(confirm('Sign out of ONE ID? You stay signed into OpenO and EHR services will ask you to sign in again.')){var signOutXhr=new XMLHttpRequest();signOutXhr.open('POST','<%=request.getContextPath()%>/oneIdSignOut.do');signOutXhr.onload=function(){document.location.reload();};signOutXhr.send();}return false;">Sign out of ONE ID</a></td>
+                    </tr>
+                    <tr>
+                        <td align="center"><a href=#
+                                              onClick="if(confirm('Unlink your ONE ID account from OpenO?')){var unlinkXhr=new XMLHttpRequest();unlinkXhr.open('POST','<%=request.getContextPath()%>/oneIdUnlink.do');unlinkXhr.onload=function(){document.location.reload();};unlinkXhr.send();}return false;">Unlink ONE ID</a></td>
+                    </tr>
+                    <% ca.openosp.openo.managers.EhrConnectivityManager ehrConnectivityManager =
+                            ca.openosp.openo.utility.SpringUtils.getBean(ca.openosp.openo.managers.EhrConnectivityManager.class);
+                       boolean multiWindowNotice = ehrConnectivityManager.isMultiWindowNoticeEnabled(
+                            loggedInInfo, loggedInInfo.getLoggedInProviderNo()); %>
+                    <tr>
+                        <td align="center"><a href=#
+                                              onClick="if(confirm('Turn the multiple EHR service window warning <%=multiWindowNotice ? "off" : "on"%>?')){var noticeXhr=new XMLHttpRequest();noticeXhr.open('POST','<%=request.getContextPath()%>/viewletNoticeToggle.do?enabled=<%=!multiWindowNotice%>');noticeXhr.onload=function(){document.location.reload();};noticeXhr.send();}return false;">EHR service multi-window warning: <%=multiWindowNotice ? "On" : "Off"%></a></td>
+                    </tr>
+                    <% } %>
+                </security:oscarSec>
                 <tr>
                     <td align="center"><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewRxPageSize');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetRxPageSize"/></a></td>

@@ -51,19 +51,27 @@
 	String odbUrl = OscarProperties.getInstance().getProperty("dhdr.odb_formulary_url", "https://www.ontario.ca/check-medication-coverage/");
 	String eapUrl = OscarProperties.getInstance().getProperty("dhdr.eap_url", "https://www.ontario.ca/page/sadie-special-authorization-digital-information-exchange");
 
-	// DHDR-04: PCOI viewlet "not responding" timeout in milliseconds, configurable via the
-	// oneid_viewlet_timeout system preference; default 300000 (5 minutes) when unset or invalid.
+	// DHDR-04: PCOI viewlet "not responding" timeout in milliseconds, derived from the shared
+	// viewlet_timeout system preference, which is held in seconds; default 300000 (5 minutes) when
+	// unset or invalid.
+	// The preference is seeded at 65 seconds, which is a sensible wait for an HTTP round trip. This
+	// timer instead waits on a clinician filling in a consent-override form, so the modal applies
+	// its own multiple rather than the raw value: at the seeded 65 s the notice appears after 325 s,
+	// near the 5 minutes this timer used before.
 	// Zero and negative are unusable rather than merely unusual: the timer they produce fires
 	// immediately, so every override would be reported as not responding while the viewlet is still
-	// on screen. They fall back to the default alongside a non-numeric value.
+	// on screen. They fall back to the default alongside a non-numeric value, as does a value large
+	// enough to overflow the millisecond conversion.
+	final int MODAL_TIMEOUT_MULTIPLE = 5;
 	int viewletTimeout = 300000;
 	SystemPreferencesDao systemPreferencesDao = SpringUtils.getBean(SystemPreferencesDao.class);
-	SystemPreferences viewletTimeoutPref = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oneid_viewlet_timeout);
+	SystemPreferences viewletTimeoutPref = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.viewlet_timeout);
 	if (viewletTimeoutPref != null && viewletTimeoutPref.getValue() != null && !viewletTimeoutPref.getValue().trim().isEmpty()) {
 		try {
-			int configuredTimeout = Integer.parseInt(viewletTimeoutPref.getValue().trim());
-			if (configuredTimeout > 0) {
-				viewletTimeout = configuredTimeout;
+			int configuredSeconds = Integer.parseInt(viewletTimeoutPref.getValue().trim());
+			long configuredMillis = (long) configuredSeconds * 1000L * MODAL_TIMEOUT_MULTIPLE;
+			if (configuredSeconds > 0 && configuredMillis <= Integer.MAX_VALUE) {
+				viewletTimeout = (int) configuredMillis;
 			}
 		} catch (NumberFormatException e) {
 			// keep the 300000 default
@@ -3161,7 +3169,7 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 
 			$timeout(function() {
 				$scope.viewletNotResponding = true;
-			}, <%= viewletTimeout %>); <%-- DHDR-04: PCOI viewlet not-responding timeout, oneid_viewlet_timeout pref (default 300000) --%>
+			}, <%= viewletTimeout %>); <%-- DHDR-04: PCOI viewlet not-responding timeout, viewlet_timeout pref in seconds times the modal multiple (default 300000) --%>
 			
 			
 			

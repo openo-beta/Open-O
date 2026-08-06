@@ -2,8 +2,6 @@ package ca.openosp.openo.integration.dhdr;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import javax.ws.rs.core.MultivaluedHashMap;
@@ -116,27 +114,30 @@ class OmdGatewayCompleteLogUnitTest {
     }
 
     @Test
-    @DisplayName("should not read the response body when the caller does not opt in")
-    void shouldNotReadBody_whenCallerDoesNotOptIn() {
+    @DisplayName("should not persist the response body when the caller does not opt in")
+    void shouldNotPersistBody_whenCallerDoesNotOptIn() {
       OMDGatewayTransactionLog log = new OMDGatewayTransactionLog();
       Response response = response(200, "req-1");
 
       OmdGateway.completeLog(log, response, false);
 
-      // The OAuth token endpoints reach completeLog through the two-argument overload; their bodies
-      // carry access and refresh tokens, which must never be persisted to the audit table.
+      // The OAuth token endpoints opt out explicitly; their bodies carry access and refresh tokens,
+      // which must never be persisted to the audit table. The body is still read into a local so the
+      // EHR result code can be extracted from it, so what matters here is that it is not stored.
       assertThat(log.getDataRecieved()).isNull();
-      verify(response, never()).readEntity(String.class);
     }
 
     @Test
-    @DisplayName("should not capture a body into the audit row by default")
-    void shouldNotCaptureBody_whenUsingTheDefaultOverload() {
+    @DisplayName("should capture the response body by default, which the gateway GET and POST rely on")
+    void shouldCaptureBody_whenUsingTheDefaultOverload() {
       OMDGatewayTransactionLog log = new OMDGatewayTransactionLog();
 
       OmdGateway.completeLog(log, response(200, "req-1"));
 
-      assertThat(log.getDataRecieved()).isNull();
+      // doGet and doPost use the two-argument form and depend on this default to record the DHDR
+      // response body (DHDR15.01). The four credential-bearing callers pass false explicitly, so
+      // flipping this default would silently stop the audit table holding that evidence.
+      assertThat(log.getDataRecieved()).isEqualTo(BODY);
     }
 
     @Test

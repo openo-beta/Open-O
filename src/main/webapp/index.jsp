@@ -480,6 +480,25 @@
                 padding-left: 10px
             }
 
+            .oneid-or-divider {
+                display: flex;
+                align-items: center;
+                text-align: center;
+                color: #6c757d;
+                margin: 12px 0;
+            }
+
+            .oneid-or-divider::before,
+            .oneid-or-divider::after {
+                content: "";
+                flex: 1 1 0;
+                border-top: 1px solid #ced4da;
+            }
+
+            .oneid-or-divider span {
+                padding: 0 12px;
+            }
+
             footer {
                 padding: 5px 10px;
                 margin-top: 50px;
@@ -619,6 +638,12 @@
                     </div>
                 </c:if>
 
+                <c:if test="${not empty oneIdSubject}">
+                    <div class="alert">
+                        Sign in once with your OpenO username and password to link your ONE ID account.
+                    </div>
+                </c:if>
+
                 <div class="panel-body">
                     <div class="leftinput">
                         <%--
@@ -683,8 +708,9 @@
                         </form>
 
                         <oscar:oscarPropertiesCheck property="oneid.enabled" value="true" defaultVal="false">
-                            <a href="${ LoginResourceBean.econsultURL }"
-                               id="oneIdLogin" onclick="addStartTime()" class="btn btn-primary btn-block oneIDLogin">
+                            <!-- <div class="oneid-or-divider"><span>or</span></div> -->
+                            <a href="${pageContext.request.contextPath}/oneIdLogin.do"
+                               id="oneIdLogin" class="btn btn-primary btn-block oneIDLogin">
                                 <span class="oneIDLogo"></span>
                                 <span class="oneIdText">
     									<fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.oneid"/>

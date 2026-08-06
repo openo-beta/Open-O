@@ -394,7 +394,9 @@ public final class Login2Action extends ActionSupport {
 
             // invalidate the existing session
             HttpSession session = request.getSession(false);
+            String verifiedOneIdSubject = null;
             if (session != null) {
+                verifiedOneIdSubject = (String) session.getAttribute("oneIdSubject");
                 if (request.getParameter("invalidate_session") != null
                         && request.getParameter("invalidate_session").equals("false")) {
                     // don't invalidate in this case it messes up authenticity of OAUTH
@@ -410,7 +412,9 @@ public final class Login2Action extends ActionSupport {
             }
 
             // Process ONE ID if present
-            String oneIdKey = request.getParameter("nameId");
+            String oneIdKey = (verifiedOneIdSubject != null && !verifiedOneIdSubject.isEmpty())
+                    ? verifiedOneIdSubject
+                    : request.getParameter("nameId");
             String oneIdEmail = request.getParameter("email");
             
             // If the oneIdKey parameter is not null and is not an empty string
