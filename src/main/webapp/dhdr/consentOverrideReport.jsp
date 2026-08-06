@@ -46,15 +46,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
-    boolean authed = true;
+    String missingObject = null;
 %><security:oscarSec roleName="<%=roleName$%>" objectName="_rx" rights="r" reverse="<%=true%>">
-    <%authed = false;%>
-    <%response.sendRedirect("../securityError.jsp?type=_rx");%>
+    <%missingObject = "_rx";%>
 </security:oscarSec><security:oscarSec roleName="<%=roleName$%>" objectName="_report" rights="r" reverse="<%=true%>">
-    <%authed = false;%>
-    <%response.sendRedirect("../securityError.jsp?type=_report");%>
+    <%if (missingObject == null) { missingObject = "_report"; }%>
 </security:oscarSec><%
-    if (!authed) {
+    // Both objects are required, so a session can be missing both. Redirecting from inside each
+    // block sent two: the first commits the response, so the second threw IllegalStateException and
+    // the user got a container error page in place of securityError.jsp. Which object is named
+    // matters less than arriving there, so the first missing one is reported and the page stops.
+    if (missingObject != null) {
+        response.sendRedirect("../securityError.jsp?type=" + missingObject);
         return;
     }
 %>

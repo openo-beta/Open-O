@@ -16,6 +16,7 @@
     @since 2026-07-27
 --%>
 
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="org.owasp.encoder.Encode" %>

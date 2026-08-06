@@ -53,12 +53,18 @@
 
 	// DHDR-04: PCOI viewlet "not responding" timeout in milliseconds, configurable via the
 	// oneid_viewlet_timeout system preference; default 300000 (5 minutes) when unset or invalid.
+	// Zero and negative are unusable rather than merely unusual: the timer they produce fires
+	// immediately, so every override would be reported as not responding while the viewlet is still
+	// on screen. They fall back to the default alongside a non-numeric value.
 	int viewletTimeout = 300000;
 	SystemPreferencesDao systemPreferencesDao = SpringUtils.getBean(SystemPreferencesDao.class);
 	SystemPreferences viewletTimeoutPref = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oneid_viewlet_timeout);
 	if (viewletTimeoutPref != null && viewletTimeoutPref.getValue() != null && !viewletTimeoutPref.getValue().trim().isEmpty()) {
 		try {
-			viewletTimeout = Integer.parseInt(viewletTimeoutPref.getValue().trim());
+			int configuredTimeout = Integer.parseInt(viewletTimeoutPref.getValue().trim());
+			if (configuredTimeout > 0) {
+				viewletTimeout = configuredTimeout;
+			}
 		} catch (NumberFormatException e) {
 			// keep the 300000 default
 		}
@@ -69,6 +75,13 @@
 	// oscar_mcmaster.properties key dhdr.default_search_days applies, and the requirement's suggested
 	// 120 when neither is set or either is invalid. Read once here, and only ever read — nothing on
 	// this page writes back into the default, which DHDR02.03 forbids.
+	//
+	// "Invalid" includes anything above a century of days. The range is derived below as
+	// start.setDate(end.getDate() - days), which on an unbounded value yields an Invalid Date: the
+	// search then runs with no start bound at all and reports no error. A provider's own value is
+	// already held to this bound when it is saved; the instance-wide property is not edited through
+	// a form, so it is bounded on the way in here instead.
+	int maxSearchDays = 36500;
 	int defaultSearchDays = 120;
 	String configuredSearchDays = OscarProperties.getInstance()
 		.getProperty("dhdr.default_search_days", String.valueOf(defaultSearchDays));
@@ -80,7 +93,7 @@
 	}
 	try {
 		int configured = Integer.parseInt(configuredSearchDays.trim());
-		if (configured > 0) {
+		if (configured > 0 && configured <= maxSearchDays) {
 			defaultSearchDays = configured;
 		}
 	} catch (NumberFormatException e) {
@@ -1294,6 +1307,9 @@
 			// DHDR02.03: the provider's default search window, resolved server-side. Read-only here:
 			// editing the range on screen must never write back into the default.
 			defaultDaysToSearch = <%= defaultSearchDays %>;
+			// The widest window the range arithmetic below can express. Past it the subtraction
+			// yields an Invalid Date and the search loses its start bound silently.
+			maxDaysToSearch = <%= maxSearchDays %>;
 			// The bounds are yyyy-MM-dd strings, never Dates: a Date is an instant, and converting a
 			// zone-less calendar date to one shifts it a day behind UTC. Convert once, here.
 			asSearchDate = function(d){ return $filter('date')(d, "yyyy-MM-dd"); };
@@ -1370,7 +1386,9 @@
 			// the range while searching must not change the configured default.
 			$scope.applySearchDays = function(){
 				let days = parseInt($scope.searchDays, 10);
-				if (isNaN(days) || days < 1) { return; }
+				// Leave the range untouched rather than rewrite it from a number that cannot
+				// produce one - the same answer a blank or non-numeric entry gets.
+				if (isNaN(days) || days < 1 || days > maxDaysToSearch) { return; }
 				let end = new Date();
 				let start = new Date(end);
 				start.setDate(end.getDate() - days);
@@ -2236,15 +2254,22 @@
 
 			search = function(demographicNo,searchConfig){
 				$scope.searching = true;
-				dhdrService.searchByDemographicNo2(demographicNo,searchConfig).then(function(response){
-
+				// Released once the whole page walk has ended, not once a page has arrived. A paged
+				// search fetches the next page from inside this handler, so re-enabling the controls
+				// here would leave them live between pages: a second search started in that gap
+				// resets searchId and pageId under the walk still running, and its entries land in
+				// arrays that are cleared per search rather than per page.
+				let walkFinished = function(){
 					$scope.buttonDisabled = false;
 					$scope.searching = false;
+				};
+				dhdrService.searchByDemographicNo2(demographicNo,searchConfig).then(function(response){
 
 					if(angular.isUndefined(response.entry)){
 						if(angular.isDefined(response.resourceType) && response.resourceType === "OperationOutcome"){
 							var o = new OperationOutcome(response);
 							$scope.outcomes.push(o);
+							walkFinished();
 							return;
 						} else if (angular.isDefined(response.httpCode)) {
 							// DHDR14.01: the service could not be reached. Render the notice rather
@@ -2252,6 +2277,7 @@
 							// empty-state message (DHDR02.04) would misreport the failure as "no
 							// records found".
 							$scope.serviceErrors.push(response);
+							walkFinished();
 							return;
 						}
 					}
@@ -2410,13 +2436,14 @@
 							$scope.searchConfig.pageId = $scope.searchConfig.pageId+1;
 						}
 						search($scope.demographicNo,$scope.searchConfig);
+					} else {
+						walkFinished();
 					}
 					
 					
 					
 				},function(reason){
-					$scope.searching = false;
-					$scope.buttonDisabled = false;
+					walkFinished();
 					$scope.serviceErrors.push(reason);
 				});
 			}
@@ -2622,7 +2649,8 @@
     						// unrecognised-but-successful response still surfaces the data, it just is not
     						// logged as a confirmed override.
     						var auditStatus = dhdrOverridden ? 'Overwrite' : (failed ? 'Failed' : (cancelled ? 'Cancelled' : 'Unknown'));
-    						dhdrService.logConsentOverride($scope.demographicNo, med.uuid, selectedItem.data, auditStatus);
+    						var overrideRecorded = dhdrService.logConsentOverride($scope.demographicNo,
+    							med.uuid, selectedItem.data, auditStatus);
 
     						if (failed) {
     							// DHDR11.01.b: the override did not complete - leave the existing block shown and inform the user.
@@ -2636,7 +2664,18 @@
     						}
     						// DHDR11.02 + OAVF B.4.2.5 / B.5: on success (or an ambiguous / no-code response) re-load the
     						// DHDR query - it is the source of truth, returning data with the CONSENT_TEMP_UNBLOCK notice.
-    						$scope.callSearch();
+    						//
+    						// Waits on the audit write rather than firing alongside it. DHDR15.02 makes that row the
+    						// record that the unblock happened, so re-querying before it is written risks disclosing
+    						// temporarily unblocked data with nothing recording the decision that released it. The
+    						// decision messages above are deliberately left outside this - DHDR09.05 reports the user's
+    						// choice, which does not depend on the audit POST.
+    						overrideRecorded.then(function () {
+    							$scope.callSearch();
+    						}, function () {
+    							$scope.overrideResultMessage = "The temporary consent unblock could not be recorded, "
+    								+ "so Drug and Pharmacy Service Information was not re-loaded. Please try again.";
+    						});
     		    		    }, function () {
     		    		      // No resolving message (backdrop / esc close): per OAVF B.4.2.5, re-load in case the override succeeded.
     		    		      $scope.callSearch();

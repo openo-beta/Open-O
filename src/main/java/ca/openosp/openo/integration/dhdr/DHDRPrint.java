@@ -1319,7 +1319,8 @@ public class DHDRPrint {
    * Computes the age in whole years from a FHIR birthDate string (yyyy, yyyy-MM, or yyyy-MM-dd).
    *
    * @param dob String the FHIR birthDate value
-   * @return String the age in years, or an empty string when the value cannot be parsed
+   * @return String the age in years, or an empty string when the value cannot be parsed or is not
+   *     yet reached
    */
   String computeAge(String dob) {
     try {
@@ -1328,7 +1329,15 @@ public class DHDRPrint {
       int month = parts.length > 1 ? Integer.parseInt(parts[1]) : 1;
       int day = parts.length > 2 ? Integer.parseInt(parts[2]) : 1;
       LocalDate birth = LocalDate.of(year, month, day);
-      return String.valueOf(Period.between(birth, LocalDate.now()).getYears());
+      // A date of birth in the future is a data-quality case this method otherwise tolerates, and
+      // it has no age to report - so it is omitted the same way an unparseable date is. Tested on
+      // the date rather than on the computed years: a date less than a year ahead yields 0 years
+      // rather than a negative count, which would have printed as a plausible "Age: 0".
+      LocalDate today = LocalDate.now();
+      if (birth.isAfter(today)) {
+        return "";
+      }
+      return String.valueOf(Period.between(birth, today).getYears());
     } catch (Exception e) {
       return "";
     }

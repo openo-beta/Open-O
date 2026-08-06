@@ -123,7 +123,19 @@ public class ConsentOverrideReportService {
   }
 
   /**
-   * Loads every distinct patient referenced by the given decision records in one query.
+   * The most demographic numbers {@link DemographicDao#getDemographics(List)} accepts in one call.
+   * It rejects a longer list outright rather than truncating it, so the caller must chunk.
+   */
+  private static final int DEMOGRAPHIC_LOOKUP_BATCH = 500;
+
+  /**
+   * Loads every distinct patient referenced by the given decision records, in as few queries as the
+   * DAO's per-call limit allows.
+   *
+   * <p>The report's date range is unbounded by default (DHDR13.02 asks for all temporary consent
+   * unblock requests), so the number of distinct patients in one report is not something this
+   * service can cap. Batching keeps the query count proportional to that number rather than to the
+   * row count, without handing the DAO a list it refuses.
    *
    * @param logs List&lt;OMDGatewayTransactionLog&gt; the decision records to be rendered
    * @return Map&lt;Integer, Demographic&gt; the patients by demographic number; a number with no
@@ -140,10 +152,13 @@ public class ConsentOverrideReportService {
     if (demographicNos.isEmpty()) {
       return byDemographicNo;
     }
-    for (Demographic demographic
-        : demographicDao.getDemographics(new ArrayList<Integer>(demographicNos))) {
-      if (demographic != null && demographic.getDemographicNo() != null) {
-        byDemographicNo.put(demographic.getDemographicNo(), demographic);
+    List<Integer> ids = new ArrayList<Integer>(demographicNos);
+    for (int start = 0; start < ids.size(); start += DEMOGRAPHIC_LOOKUP_BATCH) {
+      int end = Math.min(start + DEMOGRAPHIC_LOOKUP_BATCH, ids.size());
+      for (Demographic demographic : demographicDao.getDemographics(ids.subList(start, end))) {
+        if (demographic != null && demographic.getDemographicNo() != null) {
+          byDemographicNo.put(demographic.getDemographicNo(), demographic);
+        }
       }
     }
     return byDemographicNo;

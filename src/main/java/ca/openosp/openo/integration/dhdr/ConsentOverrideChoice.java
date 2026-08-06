@@ -97,8 +97,13 @@ public enum ConsentOverrideChoice {
   }
 
   /**
-   * Renders a stored {@code transactionType} for display. An unrecognised value is passed through
-   * unchanged rather than hidden, so an override written by a future code path still shows up.
+   * Renders a stored {@code transactionType} for display.
+   *
+   * <p>An unrecognised value is passed through unchanged rather than blanked. Note this is a
+   * defensive fallback and not a route by which a new decision reaches the report: the query's
+   * whitelist is {@link #storedValues()}, built from this same enum, so a value the enum does not
+   * carry is never selected in the first place. Adding the constant here is what makes a decision
+   * visible; this method only stops one that did arrive from rendering as an empty cell.
    *
    * @param storedValue String the raw stored value, may be {@code null}
    * @return String the label, the raw value if unrecognised, or {@code ""} if {@code null}

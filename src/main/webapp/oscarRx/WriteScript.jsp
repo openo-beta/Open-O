@@ -1070,8 +1070,11 @@ Outside ProOhip: <%=Encode.forHtml(String.valueOf(thisForm.getOutsideProviderOhi
                                         </b>
                                         <oscar:oscarPropertiesCheck property="SHOW_ODB_LINK" value="yes">
                                             <%-- DHDR12.01: link to the OMD "Check Medication Coverage" formulary the DHDR
-                                                 viewer uses (dhdr.odb_formulary_url), not the dead raw-IP MOH SearchServlet. --%>
-                                            <a target="_new"
+                                                 viewer uses (dhdr.odb_formulary_url), not the dead raw-IP MOH SearchServlet.
+                                                 rel: the URL is admin-configurable, so the opened page is not guaranteed to
+                                                 stay on ontario.ca, and without it it holds a window.opener handle back into
+                                                 an authenticated EMR session. --%>
+                                            <a target="_new" rel="noopener noreferrer"
                                                href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.odb_formulary_url", "https://www.ontario.ca/check-medication-coverage/"))%>">ODB
                                                 info</a>
                                         </oscar:oscarPropertiesCheck>
@@ -1355,8 +1358,11 @@ Outside ProOhip: <%=Encode.forHtml(String.valueOf(thisForm.getOutsideProviderOhi
                                                         </ul>
                                                     </div>
                                                     <oscar:oscarPropertiesCheck property="billregion" value="ON">
-                                                        <%-- DHDR12.01: OMD "Check Medication Coverage" formulary the DHDR viewer uses. --%>
-                                                        <a target="_new"
+                                                        <%-- DHDR12.01: OMD "Check Medication Coverage" formulary the DHDR viewer uses.
+                                                             rel on both links below: the URLs are admin-configurable, so without it the
+                                                             opened third-party page holds a window.opener handle into an authenticated
+                                                             EMR session and can navigate it. --%>
+                                                        <a target="_new" rel="noopener noreferrer"
                                                            href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.odb_formulary_url", "https://www.ontario.ca/check-medication-coverage/"))%>">ODB
                                                             lookup</a>
                                                         &nbsp;|&nbsp;
@@ -1365,7 +1371,7 @@ Outside ProOhip: <%=Encode.forHtml(String.valueOf(thisForm.getOutsideProviderOhi
                                                              the link targets SADIE. The URL is admin-configurable in oscar_mcmaster.properties
                                                              (dhdr.eap_url, shared with the DHDR viewer); the OMD-published SADIE address is
                                                              used when unset. --%>
-                                                        <a target="_new"
+                                                        <a target="_new" rel="noopener noreferrer"
                                                            href="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("dhdr.eap_url", "https://www.ontario.ca/page/sadie-special-authorization-digital-information-exchange"))%>">EAP
                                                             (SADIE)</a>
                                                         <%

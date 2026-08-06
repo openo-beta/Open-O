@@ -74,11 +74,13 @@ class ProviderPropertyDhdrSearchDaysUnitTest {
   }
 
   @Test
-  @DisplayName("should still advertise a configured value above the provider maximum")
-  void shouldAdvertiseConfiguredDefault_whenAboveTheProviderMaximum() {
-    // Deliberately looser than isValidSearchDays. The viewer accepts any positive value, so
-    // substituting 120 here would recreate the same page-disagrees-with-viewer defect in reverse.
-    assertThat(ProviderProperty2Action.isValidSearchDays("50000")).isFalse();
-    assertThat(ProviderProperty2Action.normalizeClinicDefault("50000")).isEqualTo("50000");
+  @DisplayName("should advertise 120 for a clinic default the viewer will not honour either")
+  void shouldAdvertiseSuggestedDefault_whenConfiguredValueExceedsTheMaximum() {
+    // The placeholder and the viewer have to agree on the whole rule, not only its lower half:
+    // dhdr/index.jsp bounds this property at the same century of days, so advertising a wider value
+    // would state a fallback the viewer refuses to apply.
+    assertThat(ProviderProperty2Action.normalizeClinicDefault("36500")).isEqualTo("36500");
+    assertThat(ProviderProperty2Action.normalizeClinicDefault("36501")).isEqualTo("120");
+    assertThat(ProviderProperty2Action.normalizeClinicDefault("2147483647")).isEqualTo("120");
   }
 }

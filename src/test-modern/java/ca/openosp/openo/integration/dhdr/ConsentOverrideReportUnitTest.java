@@ -15,12 +15,14 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -274,6 +276,31 @@ class ConsentOverrideReportUnitTest {
 
       assertThat(rows).hasSize(2);
       verify(providerManager, times(1)).getProvider(loggedInInfo, "101");
+    }
+
+    @Test
+    @DisplayName("should batch the patient lookup so the report survives past the DAO's id limit")
+    @SuppressWarnings("unchecked")
+    void shouldBatchDemographicLookup_whenRangeHoldsMoreThanTheDaoLimit() {
+      // DemographicDao.getDemographics rejects a list longer than 500 outright rather than
+      // truncating it, so resolving every patient in one call made the report throw as soon as an
+      // unbounded DHDR13.02 range covered more than 500 of them.
+      List<OMDGatewayTransactionLog> logs = new ArrayList<OMDGatewayTransactionLog>();
+      for (int demographicNo = 1; demographicNo <= 501; demographicNo++) {
+        logs.add(log("Overwrite", "101", demographicNo));
+      }
+      when(transactionLogDao.findByExternalSystemAndTransactionTypes(
+              anyString(), anyCollection(), any(Date.class), any(Date.class)))
+          .thenReturn(logs);
+      when(providerManager.getProvider(loggedInInfo, "101")).thenReturn(provider("Who", "Doctor"));
+      when(demographicDao.getDemographics(anyList())).thenReturn(List.of());
+
+      List<Row> rows = service.findRows(loggedInInfo, null, null, new Date(0L), new Date());
+
+      assertThat(rows).hasSize(501);
+      ArgumentCaptor<List<Integer>> batches = ArgumentCaptor.forClass(List.class);
+      verify(demographicDao, times(2)).getDemographics(batches.capture());
+      assertThat(batches.getAllValues()).extracting(List::size).containsExactly(500, 1);
     }
 
     @Test

@@ -844,11 +844,10 @@ public class ProviderProperty2Action extends ActionSupport {
      * not positive; showing the raw property here meant a misconfigured instance advertised one
      * fallback while the viewer silently used another.
      *
-     * <p>Note this deliberately applies the viewer's rule and not {@code isValidSearchDays}, which is
-     * stricter. Rejecting a configured value the viewer would still honour - anything above
-     * MAX_DHDR_SEARCH_DAYS - would recreate the same disagreement in the other direction. The
-     * property is edited in oscar_mcmaster.properties rather than through this form, so this method
-     * only reports it; bounding it belongs with the viewer that reads it.
+     * <p>The upper bound is part of that rule, not an extra check layered on top of it: the viewer
+     * applies MAX_DHDR_SEARCH_DAYS to this property too. Reporting a value the viewer would refuse
+     * to honour would recreate the same disagreement in the other direction, so the two have to
+     * agree on the whole rule rather than only on its lower half.
      *
      * @return String the fallback window in days, always a positive whole number
      */
@@ -867,7 +866,8 @@ public class ProviderProperty2Action extends ActionSupport {
     static String normalizeClinicDefault(String configured) {
         String trimmed = configured == null ? "" : configured.trim();
         try {
-            if (Integer.parseInt(trimmed) > 0) {
+            int days = Integer.parseInt(trimmed);
+            if (days > 0 && days <= MAX_DHDR_SEARCH_DAYS) {
                 return trimmed;
             }
         } catch (NumberFormatException notAWholeNumber) {

@@ -15,7 +15,10 @@ angular.module('oscarFilters', [])
                     return input.days + "d";
                 }
                 if (input.years < 2) {
-                    return input.months + "m";
+                    // years holds whole years and months only the remainder, so the year has to be
+                    // added back in here. Printing months alone rendered a one-year-old as "0m" and
+                    // an eighteen-month-old as "6m", each about a year younger than they are.
+                    return (input.years * 12 + input.months) + "m";
                 }
                 return input.years + "y";
             }

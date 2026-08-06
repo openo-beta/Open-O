@@ -101,17 +101,31 @@ public class ConsentOverrideReport2Action extends ActionSupport {
       }
     }
 
-    List<Row> rows = reportService.findRows(loggedInInfo, searchLastName, searchUniqueId, from, to);
+    // A window whose start is after its end is not a filter that happens to match nothing - it is a
+    // window nothing can fall inside. Querying it produces an empty report indistinguishable from
+    // "no overrides were requested in this range", so the user is told instead.
+    boolean reversedRange = from.after(to);
+
+    List<Row> rows = reversedRange
+        ? new ArrayList<Row>()
+        : reportService.findRows(loggedInInfo, searchLastName, searchUniqueId, from, to);
 
     // The report discloses names and Health Card Numbers across patients, so the read is audited.
     // demographicNo is null: the row records the report as a whole, not one patient (DHDR15.01).
     new OmdGateway().logInteraction(loggedInInfo, AuditInfo.DHDR, AuditInfo.VIEW, null);
 
     request.setAttribute("rows", rows);
+    List<String> warnings = new ArrayList<String>();
     if (!invalidDates.isEmpty()) {
-      request.setAttribute("dateWarning",
-          "Ignored invalid date filter: " + String.join(", ", invalidDates)
-              + ". Showing the unrestricted range for that bound.");
+      warnings.add("Ignored invalid date filter: " + String.join(", ", invalidDates)
+          + ". Showing the unrestricted range for that bound.");
+    }
+    if (reversedRange) {
+      warnings.add("The From date is after the To date, so the search window is empty."
+          + " Swap the dates to search.");
+    }
+    if (!warnings.isEmpty()) {
+      request.setAttribute("dateWarning", String.join(" ", warnings));
     }
     // Echo the raw search inputs so the form stays populated; the JSP encodes them on output.
     request.setAttribute("searchLastName", searchLastName);

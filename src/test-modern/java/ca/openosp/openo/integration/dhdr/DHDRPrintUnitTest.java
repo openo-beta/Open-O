@@ -6,7 +6,10 @@ import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
 import java.util.List;
+import java.util.Locale;
 import org.codehaus.jettison.json.JSONObject;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -37,6 +40,31 @@ import org.junit.jupiter.api.Test;
 class DHDRPrintUnitTest extends OpenOUnitTestBase {
 
   private DHDRPrint print;
+
+  private static Locale defaultLocale;
+
+  /**
+   * Pins the default locale for the date assertions in this class.
+   *
+   * <p>{@code displayDate} and {@code searchPeriodText} format through
+   * {@code SimpleDateFormat("MMM d, yyyy")}, which resolves month names against the JVM default
+   * locale. Every date assertion below names an English month, so on a French or Polish default they
+   * would fail while the rendering itself was correct.
+   *
+   * <p>Pinned in the test rather than in {@code DHDRPrint}: on a bilingual EMR a French install
+   * arguably should print French month names, so the fixed language is a property of these
+   * assertions and not a requirement on the printed output.
+   */
+  @BeforeAll
+  static void pinDefaultLocaleForDateAssertions() {
+    defaultLocale = Locale.getDefault();
+    Locale.setDefault(Locale.ENGLISH);
+  }
+
+  @AfterAll
+  static void restoreDefaultLocale() {
+    Locale.setDefault(defaultLocale);
+  }
 
   @BeforeEach
   void createPrinter() {
@@ -535,6 +563,17 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
       assertThat(print.computeAge("")).isEmpty();
       assertThat(print.computeAge("N/A")).isEmpty();
       assertThat(print.computeAge("1984-13-45")).isEmpty();
+    }
+
+    @Test
+    @DisplayName("should return an empty string when the birth date has not happened yet")
+    void shouldReturnEmpty_whenBirthDateIsInTheFuture() {
+      // A well-formed but future date parses, so it reached the period arithmetic and printed an
+      // age beside the DOB. Both distances matter and they fail differently: years ahead gives a
+      // negative count, months ahead gives 0 - the second reads as a newborn rather than as bad data.
+      java.time.LocalDate today = java.time.LocalDate.now();
+      assertThat(print.computeAge(today.plusYears(2).toString())).isEmpty();
+      assertThat(print.computeAge(today.plusDays(1).toString())).isEmpty();
     }
 
     @Test
