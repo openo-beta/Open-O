@@ -250,8 +250,8 @@ class TicklerList2ActionTest extends OpenOWebTestBase {
 
         stubPaginatedResults(1, List.of(createTestTickler(5, "Form attached")));
         stubAttachments(ticklerDoc(5, 7, TicklerDocs.DOCTYPE_FORM));
-        when(mockDocumentAttachmentManager.getFormNamesByFormId(any(LoggedInInfo.class), eq(1001)))
-                .thenReturn(Map.of("7", "Annual"));
+        when(mockDocumentAttachmentManager.getFormNamesByDemographic(any(LoggedInInfo.class), anyCollection()))
+                .thenReturn(Map.of(1001, Map.of("7", "Annual")));
 
         executeAction(action);
 
@@ -267,8 +267,8 @@ class TicklerList2ActionTest extends OpenOWebTestBase {
 
         stubPaginatedResults(1, List.of(createTestTickler(5, "Deleted form attached")));
         stubAttachments(ticklerDoc(5, 7, TicklerDocs.DOCTYPE_FORM));
-        when(mockDocumentAttachmentManager.getFormNamesByFormId(any(LoggedInInfo.class), anyInt()))
-                .thenReturn(Map.of("42", "Annual"));
+        when(mockDocumentAttachmentManager.getFormNamesByDemographic(any(LoggedInInfo.class), anyCollection()))
+                .thenReturn(Map.of(1001, Map.of("42", "Annual")));
 
         executeAction(action);
 
@@ -286,7 +286,7 @@ class TicklerList2ActionTest extends OpenOWebTestBase {
         stubPaginatedResults(1, List.of(createTestTickler(5, "Form attached")));
         stubAttachments(ticklerDoc(5, 7, TicklerDocs.DOCTYPE_FORM));
         // Missing "_form" read makes the lookup return nothing rather than throwing
-        when(mockDocumentAttachmentManager.getFormNamesByFormId(any(LoggedInInfo.class), anyInt()))
+        when(mockDocumentAttachmentManager.getFormNamesByDemographic(any(LoggedInInfo.class), anyCollection()))
                 .thenReturn(Collections.emptyMap());
 
         executeAction(action);
@@ -315,10 +315,10 @@ class TicklerList2ActionTest extends OpenOWebTestBase {
                 ticklerDoc(1, 7, TicklerDocs.DOCTYPE_FORM),
                 ticklerDoc(2, 7, TicklerDocs.DOCTYPE_FORM));
 
-        when(mockDocumentAttachmentManager.getFormNamesByFormId(any(LoggedInInfo.class), eq(1001)))
-                .thenReturn(Map.of("7", "Annual"));
-        when(mockDocumentAttachmentManager.getFormNamesByFormId(any(LoggedInInfo.class), eq(2002)))
-                .thenReturn(Map.of("7", "Rourke2020"));
+        when(mockDocumentAttachmentManager.getFormNamesByDemographic(any(LoggedInInfo.class), anyCollection()))
+                .thenReturn(Map.of(
+                        1001, Map.of("7", "Annual"),
+                        2002, Map.of("7", "Rourke2020")));
 
         executeAction(action);
 
@@ -338,27 +338,35 @@ class TicklerList2ActionTest extends OpenOWebTestBase {
         executeAction(action);
 
         verify(mockDocumentAttachmentManager, never())
-                .getFormNamesByFormId(any(LoggedInInfo.class), anyInt());
+                .getFormNamesByDemographic(any(LoggedInInfo.class), anyCollection());
     }
 
     @Test
-    @DisplayName("Should look up form names once per patient regardless of tickler count")
-    void shouldLookUpFormNamesOncePerPatient_whenPatientHasSeveralTicklers() throws Exception {
+    @DisplayName("Should resolve every patient on the page in a single batched call")
+    void shouldLookUpFormNamesInOneCall_whenPageSpansPatients() throws Exception {
         allowPrivilege("_tickler", "r");
 
-        stubPaginatedResults(2, List.of(
-                createTestTickler(1, "First"),
-                createTestTickler(2, "Second")));
+        TicklerListDTO other = new TicklerListDTO(
+                2, "Second", new Date(), new Date(),
+                Tickler.STATUS.A, Tickler.PRIORITY.Normal,
+                2002, "Jones", "Mary",
+                "Doctor", "Jane",
+                "Nurse", "Bob");
+        stubPaginatedResults(2, List.of(createTestTickler(1, "First"), other));
         stubAttachments(
                 ticklerDoc(1, 7, TicklerDocs.DOCTYPE_FORM),
                 ticklerDoc(2, 8, TicklerDocs.DOCTYPE_FORM));
-        when(mockDocumentAttachmentManager.getFormNamesByFormId(any(LoggedInInfo.class), anyInt()))
-                .thenReturn(Map.of("7", "Annual", "8", "Annual"));
+        when(mockDocumentAttachmentManager.getFormNamesByDemographic(any(LoggedInInfo.class), anyCollection()))
+                .thenReturn(Map.of(1001, Map.of("7", "Annual"), 2002, Map.of("8", "Annual")));
 
         executeAction(action);
 
+        // One call for the whole page, carrying both patients: reading the form config per patient
+        // is what made this path slow.
+        ArgumentCaptor<java.util.Collection<Integer>> captor = ArgumentCaptor.forClass(java.util.Collection.class);
         verify(mockDocumentAttachmentManager, times(1))
-                .getFormNamesByFormId(any(LoggedInInfo.class), eq(1001));
+                .getFormNamesByDemographic(any(LoggedInInfo.class), captor.capture());
+        assertThat(captor.getValue()).containsExactlyInAnyOrder(1001, 2002);
     }
 
     // ── Paging Parameters ──────────────────────────────────────────────

@@ -205,8 +205,8 @@ public class DocumentAttachmentManagerUnitTest extends OpenOUnitTestBase {
             EctFormData.PatientForm patientForm = mock(EctFormData.PatientForm.class);
             when(patientForm.getFormId()).thenReturn("55");
             when(patientForm.getFormName()).thenReturn("Rourke Baby Record");
-            when(mockFormsManager.getEncounterFormsbyDemographicNumber(mockLoggedInInfo, DEMOGRAPHIC_NO, true, true))
-                    .thenReturn(Collections.singletonList(patientForm));
+            when(mockFormsManager.getEncounterFormsByDemographicNumbers(eq(mockLoggedInInfo), anyCollection(), eq(true), eq(true)))
+                    .thenReturn(Map.of(DEMOGRAPHIC_NO, Collections.singletonList(patientForm)));
 
             // When
             List<TicklerAttachmentData> details = manager.getTicklerAttachmentDetails(mockLoggedInInfo, TICKLER_ID, DEMOGRAPHIC_NO);
@@ -288,8 +288,8 @@ public class DocumentAttachmentManagerUnitTest extends OpenOUnitTestBase {
             // Given
             List<EctFormData.PatientForm> forms =
                     List.of(patientForm("7", "Annual"), patientForm("9", "Rourke2020"));
-            when(mockFormsManager.getEncounterFormsbyDemographicNumber(mockLoggedInInfo, DEMOGRAPHIC_NO, true, true))
-                    .thenReturn(forms);
+            when(mockFormsManager.getEncounterFormsByDemographicNumbers(eq(mockLoggedInInfo), anyCollection(), eq(true), eq(true)))
+                    .thenReturn(Map.of(DEMOGRAPHIC_NO, forms));
 
             // When
             Map<String, String> formNames = manager.getFormNamesByFormId(mockLoggedInInfo, DEMOGRAPHIC_NO);
@@ -303,15 +303,32 @@ public class DocumentAttachmentManagerUnitTest extends OpenOUnitTestBase {
         @DisplayName("should request every version so a superseded form still resolves")
         void shouldRequestAllVersions_whenResolvingFormNames() {
             // Given
-            when(mockFormsManager.getEncounterFormsbyDemographicNumber(any(), anyInt(), anyBoolean(), anyBoolean()))
-                    .thenReturn(Collections.emptyList());
+            when(mockFormsManager.getEncounterFormsByDemographicNumbers(any(), anyCollection(), anyBoolean(), anyBoolean()))
+                    .thenReturn(Collections.emptyMap());
 
             // When
             manager.getFormNamesByFormId(mockLoggedInInfo, DEMOGRAPHIC_NO);
 
             // Then
-            verify(mockFormsManager).getEncounterFormsbyDemographicNumber(
-                    mockLoggedInInfo, DEMOGRAPHIC_NO, true, true);
+            verify(mockFormsManager).getEncounterFormsByDemographicNumbers(
+                    eq(mockLoggedInInfo), anyCollection(), eq(true), eq(true));
+        }
+
+        @Test
+        @DisplayName("should omit a form id shared by two form types rather than guess")
+        void shouldOmitFormId_whenTwoFormTypesShareIt() {
+            // Given
+            List<EctFormData.PatientForm> forms =
+                    List.of(patientForm("7", "Annual"), patientForm("7", "Rourke2020"),
+                            patientForm("9", "Annual"));
+            when(mockFormsManager.getEncounterFormsByDemographicNumbers(eq(mockLoggedInInfo), anyCollection(), eq(true), eq(true)))
+                    .thenReturn(Map.of(DEMOGRAPHIC_NO, forms));
+
+            // When
+            Map<String, String> formNames = manager.getFormNamesByFormId(mockLoggedInInfo, DEMOGRAPHIC_NO);
+
+            // Then
+            assertThat(formNames).containsExactlyInAnyOrderEntriesOf(Map.of("9", "Annual"));
         }
 
         @Test

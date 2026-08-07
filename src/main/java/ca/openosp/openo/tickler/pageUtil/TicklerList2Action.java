@@ -7,7 +7,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -263,7 +262,9 @@ public class TicklerList2Action extends ActionSupport {
      *
      * <p>Keyed by demographic, not by document number like {@link #loadLabTypesByDocumentNo}: form
      * ids are unique only within one form's table, so a flat map would label one patient's form
-     * with another patient's form name. Skipped entirely when the page has no form attachments.</p>
+     * with another patient's form name. Resolved in one batched call, since reading the encounter
+     * form configuration per patient measured ~100x slower across a full page. Skipped entirely
+     * when the page has no form attachments.</p>
      *
      * @param loggedInInfo LoggedInInfo the current user's session information
      * @param ticklers List&lt;TicklerListDTO&gt; the page of ticklers being rendered
@@ -281,12 +282,10 @@ public class TicklerList2Action extends ActionSupport {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
-        Map<Integer, Map<String, String>> formNamesByDemographic = new HashMap<>();
-        for (Integer demographicNo : demographicNos) {
-            formNamesByDemographic.put(demographicNo,
-                    documentAttachmentManager.getFormNamesByFormId(loggedInInfo, demographicNo));
+        if (demographicNos.isEmpty()) {
+            return Collections.emptyMap();
         }
-        return formNamesByDemographic;
+        return documentAttachmentManager.getFormNamesByDemographic(loggedInInfo, demographicNos);
     }
 
     /**
