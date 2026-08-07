@@ -195,20 +195,52 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
      */
     @Override
     public Map<String, String> getFormNamesByFormId(LoggedInInfo loggedInInfo, Integer demographicNo) {
+        if (demographicNo == null) {
+            return Collections.emptyMap();
+        }
+        return getFormNamesByDemographic(loggedInInfo, Collections.singletonList(demographicNo))
+                .getOrDefault(demographicNo, Collections.emptyMap());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Integer, Map<String, String>> getFormNamesByDemographic(LoggedInInfo loggedInInfo,
+                                                                       Collection<Integer> demographicNos) {
         // FormsManager throws when "_form" read is missing, which would abort whatever list is
         // being rendered. Degrade to unresolved names instead, checking the same way it does.
-        if (demographicNo == null
+        if (demographicNos == null || demographicNos.isEmpty()
                 || !securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
             return Collections.emptyMap();
         }
 
-        Map<String, String> formNames = new HashMap<>();
         // getAllVersions must stay true: an attached form stops being the patient's latest as soon
         // as a newer one of the same type is created, and it still has to resolve.
-        for (EctFormData.PatientForm form
-                : formsManager.getEncounterFormsbyDemographicNumber(loggedInInfo, demographicNo, true, true)) {
-            formNames.put(form.getFormId(), form.getFormName());
+        Map<Integer, List<EctFormData.PatientForm>> formsByDemographic =
+                formsManager.getEncounterFormsByDemographicNumbers(loggedInInfo, demographicNos, true, true);
+
+        Map<Integer, Map<String, String>> formNamesByDemographic = new HashMap<>();
+        for (Map.Entry<Integer, List<EctFormData.PatientForm>> entry : formsByDemographic.entrySet()) {
+            formNamesByDemographic.put(entry.getKey(), toFormNamesByFormId(entry.getValue()));
         }
+        return formNamesByDemographic;
+    }
+
+    /**
+     * Keys one patient's forms by form id, dropping ids claimed by more than one form type.
+     */
+    private Map<String, String> toFormNamesByFormId(List<EctFormData.PatientForm> forms) {
+        Map<String, String> formNames = new HashMap<>();
+        Set<String> ambiguousFormIds = new HashSet<>();
+        for (EctFormData.PatientForm form : forms) {
+            // A repeated id means two form types claim it and the attachment cannot say which.
+            // Dropping both is safer than linking to another form's record.
+            if (formNames.put(form.getFormId(), form.getFormName()) != null) {
+                ambiguousFormIds.add(form.getFormId());
+            }
+        }
+        formNames.keySet().removeAll(ambiguousFormIds);
         return formNames;
     }
 

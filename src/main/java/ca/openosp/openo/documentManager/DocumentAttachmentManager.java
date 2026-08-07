@@ -95,7 +95,8 @@ public interface DocumentAttachmentManager {
      * Maps every encounter form belonging to a patient to its form name, keyed by form id.
      *
      * <p>Attachment tables store only {@code (document_no, doctype)}, which cannot identify a form
-     * because encounter forms span roughly forty tables with independent id sequences.</p>
+     * because encounter forms span roughly forty tables with independent id sequences. Ids shared
+     * by two form types are therefore omitted rather than resolved to one of them at random.</p>
      *
      * @param loggedInInfo LoggedInInfo the current user's session information
      * @param demographicNo Integer the patient's unique demographic identifier
@@ -103,6 +104,19 @@ public interface DocumentAttachmentManager {
      *         the user lacks "_form" read, so callers should render the attachment as non-clickable
      */
     public Map<String, String> getFormNamesByFormId(LoggedInInfo loggedInInfo, Integer demographicNo);
+
+    /**
+     * Batched form of {@link #getFormNamesByFormId}, for rendering lists spanning many patients.
+     *
+     * <p>Reads the encounter form configuration once for the whole batch rather than once per
+     * patient, which is where nearly all of the per-patient cost otherwise goes.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @param demographicNos Collection&lt;Integer&gt; the patients to resolve; may be empty
+     * @return Map&lt;Integer, Map&lt;String, String&gt;&gt; demographic number to that patient's form
+     *         id to form name lookup; empty when the user lacks "_form" read
+     */
+    public Map<Integer, Map<String, String>> getFormNamesByDemographic(LoggedInInfo loggedInInfo, Collection<Integer> demographicNos);
 
     /**
      * This method is responsible for lab version sorting and is intended for use in the attachment window (attachDocument.jsp).
