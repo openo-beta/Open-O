@@ -90,6 +90,10 @@
 
     ca.openosp.openo.commn.dao.TicklerDocsDao ticklerDocsDao = SpringUtils.getBean(ca.openosp.openo.commn.dao.TicklerDocsDao.class);
     ca.openosp.openo.commn.dao.PatientLabRoutingDao patientLabRoutingDao = SpringUtils.getBean(ca.openosp.openo.commn.dao.PatientLabRoutingDao.class);
+    ca.openosp.openo.documentManager.DocumentAttachmentManager documentAttachmentManager = SpringUtils.getBean(ca.openosp.openo.documentManager.DocumentAttachmentManager.class);
+
+    // Encounter form names, resolved lazily per patient the first time a form attachment is seen.
+    java.util.Map<Integer, java.util.Map<String, String>> formNamesByDemographic = new java.util.HashMap<Integer, java.util.Map<String, String>>();
 %>
 
 
@@ -953,7 +957,23 @@
                                         } else if (ca.openosp.openo.commn.model.TicklerDocs.DOCTYPE_EFORM.equals(dtype)) {
                                             href = request.getContextPath() + "/eform/efmshowform_data.jsp?fdid=" + Encode.forUriComponent(docNoStr);
                                         } else if (ca.openosp.openo.commn.model.TicklerDocs.DOCTYPE_FORM.equals(dtype)) {
-                                            href = null;
+                                            // Encounter forms span many tables, so the id alone cannot address one.
+                                            // Recover the name from the patient's forms to build a URL
+                                            // When it no longer resolves, fall through to the unlinked marker.
+                                            Integer formDemographicNo = t.getDemographicNo();
+                                            if (!formNamesByDemographic.containsKey(formDemographicNo)) {
+                                                formNamesByDemographic.put(formDemographicNo,
+                                                        documentAttachmentManager.getFormNamesByFormId(loggedInInfo, formDemographicNo));
+                                            }
+                                            String formName = formNamesByDemographic.get(formDemographicNo).get(docNoStr);
+                                            if (formName == null) {
+                                                href = null;
+                                            } else {
+                                                href = request.getContextPath() + "/form/forwardshortcutname.do?formname="
+                                                        + Encode.forUriComponent(formName)
+                                                        + "&demographic_no=" + Encode.forUriComponent(String.valueOf(formDemographicNo))
+                                                        + "&formId=" + Encode.forUriComponent(docNoStr);
+                                            }
                                         } else {
                                             ca.openosp.openo.commn.model.PatientLabRouting plr =
                                                     patientLabRoutingDao.findByLabNo(td.getDocumentNo());

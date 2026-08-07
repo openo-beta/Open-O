@@ -120,6 +120,28 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> getFormNamesByFormId(LoggedInInfo loggedInInfo, Integer demographicNo) {
+        // FormsManager throws when "_form" read is missing, which would abort whatever list is
+        // being rendered. Degrade to unresolved names instead, checking the same way it does.
+        if (demographicNo == null
+                || !securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
+            return Collections.emptyMap();
+        }
+
+        Map<String, String> formNames = new HashMap<>();
+        // getAllVersions must stay true: an attached form stops being the patient's latest as soon
+        // as a newer one of the same type is created, and it still has to resolve.
+        for (EctFormData.PatientForm form
+                : formsManager.getEncounterFormsbyDemographicNumber(loggedInInfo, demographicNo, true, true)) {
+            formNames.put(form.getFormId(), form.getFormName());
+        }
+        return formNames;
+    }
+
+    /**
      * This method is responsible for lab version sorting and is intended for use in the attachment window (attachDocument.jsp).
      * In other parts of the application, developers should utilize CommonLabResultData.populateLabResultsData() to access all available lab data.
      */
@@ -283,7 +305,7 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
         List<TicklerAttachmentData> attachmentDetails = new ArrayList<>();
         Map<String, String> labNamesBySegmentId = null;
         ArrayList<HashMap<String, ? extends Object>> allHrmDocuments = null;
-        List<EctFormData.PatientForm> allForms = null;
+        Map<String, String> formNamesByFormId = null;
 
         for (TicklerDocs ticklerDoc : ticklerDocsDao.findByTicklerId(ticklerId)) {
             DocumentType documentType = DocumentType.fromType(ticklerDoc.getDocType());
@@ -324,15 +346,10 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
                     }
                     break;
                 case FORM:
-                    if (allForms == null) {
-                        allForms = formsManager.getEncounterFormsbyDemographicNumber(loggedInInfo, demographicNo, false, true);
+                    if (formNamesByFormId == null) {
+                        formNamesByFormId = getFormNamesByFormId(loggedInInfo, demographicNo);
                     }
-                    for (EctFormData.PatientForm form : allForms) {
-                        if (documentId.equals(form.getFormId())) {
-                            displayName = form.getFormName();
-                            break;
-                        }
-                    }
+                    displayName = formNamesByFormId.get(documentId);
                     break;
             }
 
