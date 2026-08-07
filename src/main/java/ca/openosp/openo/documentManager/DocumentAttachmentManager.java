@@ -92,6 +92,19 @@ public interface DocumentAttachmentManager {
     public List<EctFormData.PatientForm> getFormsAttachedToEForms(LoggedInInfo loggedInInfo, Integer fdid, DocumentType documentType, Integer demographicNo);
 
     /**
+     * Maps every encounter form belonging to a patient to its form name, keyed by form id.
+     *
+     * <p>Attachment tables store only {@code (document_no, doctype)}, which cannot identify a form
+     * because encounter forms span roughly forty tables with independent id sequences.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @param demographicNo Integer the patient's unique demographic identifier
+     * @return Map&lt;String, String&gt; form id to form name; empty when the demographic is null or
+     *         the user lacks "_form" read, so callers should render the attachment as non-clickable
+     */
+    public Map<String, String> getFormNamesByFormId(LoggedInInfo loggedInInfo, Integer demographicNo);
+
+    /**
      * This method is responsible for lab version sorting and is intended for use in the attachment window (attachDocument.jsp).
      * In other parts of the application, developers should utilize CommonLabResultData.populateLabResultsData() to access all available lab data.
      */

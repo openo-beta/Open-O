@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -106,6 +107,9 @@ public class DocumentAttachmentManagerUnitTest extends OpenOUnitTestBase {
 
         // Security manager grants the "_tickler" read privilege by default
         lenient().when(mockSecurityInfoManager.hasPrivilege(any(), anyString(), anyString(), anyInt()))
+                .thenReturn(true);
+        // The "_form" check passes a null demographic, so stub the String overload as well
+        lenient().when(mockSecurityInfoManager.hasPrivilege(any(), anyString(), anyString(), nullable(String.class)))
                 .thenReturn(true);
 
         manager = new DocumentAttachmentManagerImpl();
@@ -201,7 +205,7 @@ public class DocumentAttachmentManagerUnitTest extends OpenOUnitTestBase {
             EctFormData.PatientForm patientForm = mock(EctFormData.PatientForm.class);
             when(patientForm.getFormId()).thenReturn("55");
             when(patientForm.getFormName()).thenReturn("Rourke Baby Record");
-            when(mockFormsManager.getEncounterFormsbyDemographicNumber(mockLoggedInInfo, DEMOGRAPHIC_NO, false, true))
+            when(mockFormsManager.getEncounterFormsbyDemographicNumber(mockLoggedInInfo, DEMOGRAPHIC_NO, true, true))
                     .thenReturn(Collections.singletonList(patientForm));
 
             // When
@@ -267,6 +271,80 @@ public class DocumentAttachmentManagerUnitTest extends OpenOUnitTestBase {
 
             // Then
             assertThat(details).isEmpty();
+        }
+    }
+
+    /**
+     * Covers the shared form-name recovery that makes attached encounter forms addressable.
+     * Attachment tables store only {@code (document_no, doctype)}, which cannot identify a form.
+     */
+    @Nested
+    @DisplayName("Form Name Recovery")
+    class FormNameRecovery {
+
+        @Test
+        @DisplayName("should map form ids to form names for the patient")
+        void shouldMapFormIdsToNames_whenPatientHasForms() {
+            // Given
+            List<EctFormData.PatientForm> forms =
+                    List.of(patientForm("7", "Annual"), patientForm("9", "Rourke2020"));
+            when(mockFormsManager.getEncounterFormsbyDemographicNumber(mockLoggedInInfo, DEMOGRAPHIC_NO, true, true))
+                    .thenReturn(forms);
+
+            // When
+            Map<String, String> formNames = manager.getFormNamesByFormId(mockLoggedInInfo, DEMOGRAPHIC_NO);
+
+            // Then
+            assertThat(formNames).containsExactlyInAnyOrderEntriesOf(
+                    Map.of("7", "Annual", "9", "Rourke2020"));
+        }
+
+        @Test
+        @DisplayName("should request every version so a superseded form still resolves")
+        void shouldRequestAllVersions_whenResolvingFormNames() {
+            // Given
+            when(mockFormsManager.getEncounterFormsbyDemographicNumber(any(), anyInt(), anyBoolean(), anyBoolean()))
+                    .thenReturn(Collections.emptyList());
+
+            // When
+            manager.getFormNamesByFormId(mockLoggedInInfo, DEMOGRAPHIC_NO);
+
+            // Then
+            verify(mockFormsManager).getEncounterFormsbyDemographicNumber(
+                    mockLoggedInInfo, DEMOGRAPHIC_NO, true, true);
+        }
+
+        @Test
+        @DisplayName("should return empty map when user lacks form read privilege")
+        void shouldReturnEmptyMap_whenFormPrivilegeDenied() {
+            // Given
+            when(mockSecurityInfoManager.hasPrivilege(any(), eq("_form"), anyString(), nullable(String.class)))
+                    .thenReturn(false);
+
+            // When
+            Map<String, String> formNames = manager.getFormNamesByFormId(mockLoggedInInfo, DEMOGRAPHIC_NO);
+
+            // Then
+            assertThat(formNames).isEmpty();
+            verifyNoInteractions(mockFormsManager);
+        }
+
+        @Test
+        @DisplayName("should return empty map when demographic is null")
+        void shouldReturnEmptyMap_whenDemographicIsNull() {
+            // When
+            Map<String, String> formNames = manager.getFormNamesByFormId(mockLoggedInInfo, null);
+
+            // Then
+            assertThat(formNames).isEmpty();
+            verifyNoInteractions(mockFormsManager);
+        }
+
+        private EctFormData.PatientForm patientForm(String formId, String formName) {
+            EctFormData.PatientForm form = mock(EctFormData.PatientForm.class);
+            when(form.getFormId()).thenReturn(formId);
+            when(form.getFormName()).thenReturn(formName);
+            return form;
         }
     }
 

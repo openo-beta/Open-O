@@ -7,9 +7,12 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +31,7 @@ import ca.openosp.openo.commn.dao.TicklerDocsDao;
 import ca.openosp.openo.commn.model.CustomFilter;
 import ca.openosp.openo.commn.model.PatientLabRouting;
 import ca.openosp.openo.commn.model.TicklerDocs;
+import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.managers.SecurityInfoManager;
@@ -53,6 +57,7 @@ public class TicklerList2Action extends ActionSupport {
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
     private TicklerDocsDao ticklerDocsDao = SpringUtils.getBean(TicklerDocsDao.class);
     private PatientLabRoutingDao patientLabRoutingDao = SpringUtils.getBean(PatientLabRoutingDao.class);
+    private DocumentAttachmentManager documentAttachmentManager = SpringUtils.getBean(DocumentAttachmentManager.class);
 
     /**
      * Handles DataTables server-side processing requests. Accepts standard
@@ -111,6 +116,8 @@ public class TicklerList2Action extends ActionSupport {
 
         Map<Integer, List<TicklerDocs>> ticklerDocsByTicklerId = loadTicklerDocsByTicklerId(ticklers);
         Map<Integer, String> labTypeByDocumentNo = loadLabTypesByDocumentNo(ticklerDocsByTicklerId);
+        Map<Integer, Map<String, String>> formNamesByDemographic =
+                loadFormNamesByDemographic(loggedInInfo, ticklers, ticklerDocsByTicklerId);
 
         ArrayNode dataArray = objectMapper.createArrayNode();
         ObjectNode commentsMap = objectMapper.createObjectNode();
@@ -118,7 +125,9 @@ public class TicklerList2Action extends ActionSupport {
         for (TicklerListDTO tickler : ticklers) {
             boolean warning = isWarning(tickler.getServiceDate(), ticklerWarnDays);
             List<TicklerDocs> ticklerDocs = ticklerDocsByTicklerId.getOrDefault(tickler.getId(), Collections.emptyList());
-            dataArray.add(buildTicklerRow(tickler, warning, datetimeFormat, dateOnlyFormat, locale, ticklerDocs, labTypeByDocumentNo));
+            Map<String, String> formNames = formNamesByDemographic
+                    .getOrDefault(tickler.getDemographicNo(), Collections.emptyMap());
+            dataArray.add(buildTicklerRow(tickler, warning, datetimeFormat, dateOnlyFormat, locale, ticklerDocs, labTypeByDocumentNo, formNames));
 
             List<TicklerCommentDTO> tcomments = tickler.getComments();
             if (tcomments != null && !tcomments.isEmpty()) {
@@ -170,12 +179,15 @@ public class TicklerList2Action extends ActionSupport {
      *        {@link #loadTicklerDocsByTicklerId}
      * @param labTypeByDocumentNo Map&lt;Integer, String&gt; lab document number to lab sub-type,
      *        pre-fetched in bulk by {@link #loadLabTypesByDocumentNo}
+     * @param formNames Map&lt;String, String&gt; form id to form name for <em>this tickler's patient</em>,
+     *        pre-fetched by {@link #loadFormNamesByDemographic}
      * @return ObjectNode the JSON row
      */
     private ObjectNode buildTicklerRow(TicklerListDTO tickler, boolean warning,
                                        DateFormat datetimeFormat, DateFormat dateOnlyFormat,
                                        Locale locale, List<TicklerDocs> ticklerDocs,
-                                       Map<Integer, String> labTypeByDocumentNo) {
+                                       Map<Integer, String> labTypeByDocumentNo,
+                                       Map<String, String> formNames) {
         ObjectNode row = objectMapper.createObjectNode();
         row.put("id", tickler.getId());
         row.put("demoNo", tickler.getDemographicNo());
@@ -197,6 +209,14 @@ public class TicklerList2Action extends ActionSupport {
             ObjectNode linkNode = objectMapper.createObjectNode();
             linkNode.put("tableName", resolveAttachmentType(td, labTypeByDocumentNo));
             linkNode.put("tableId", td.getDocumentNo());
+            if (TicklerDocs.DOCTYPE_FORM.equals(td.getDocType())) {
+                // Left absent when the form no longer resolves; the client then renders an
+                // unlinked icon rather than a URL that cannot identify a form.
+                String formName = formNames.get(String.valueOf(td.getDocumentNo()));
+                if (formName != null) {
+                    linkNode.put("formName", formName);
+                }
+            }
             linksArray.add(linkNode);
         }
         row.set("links", linksArray);
@@ -236,6 +256,48 @@ public class TicklerList2Action extends ActionSupport {
         List<PatientLabRouting> routings = patientLabRoutingDao.findByLabNos(labDocumentNos);
         return routings.stream().collect(Collectors.toMap(
                 PatientLabRouting::getLabNo, PatientLabRouting::getLabType, (first, second) -> first));
+    }
+
+    /**
+     * Loads encounter form names for every patient on this page that has a form attachment.
+     *
+     * <p>Keyed by demographic, not by document number like {@link #loadLabTypesByDocumentNo}: form
+     * ids are unique only within one form's table, so a flat map would label one patient's form
+     * with another patient's form name. Skipped entirely when the page has no form attachments.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @param ticklers List&lt;TicklerListDTO&gt; the page of ticklers being rendered
+     * @param ticklerDocsByTicklerId Map&lt;Integer, List&lt;TicklerDocs&gt;&gt; attachments grouped by
+     *        tickler id, as returned by {@link #loadTicklerDocsByTicklerId}
+     * @return Map&lt;Integer, Map&lt;String, String&gt;&gt; demographic number to that patient's form
+     *         id to form name lookup
+     */
+    private Map<Integer, Map<String, String>> loadFormNamesByDemographic(
+            LoggedInInfo loggedInInfo, List<TicklerListDTO> ticklers,
+            Map<Integer, List<TicklerDocs>> ticklerDocsByTicklerId) {
+        Set<Integer> demographicNos = ticklers.stream()
+                .filter(tickler -> hasFormAttachment(ticklerDocsByTicklerId.get(tickler.getId())))
+                .map(TicklerListDTO::getDemographicNo)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        Map<Integer, Map<String, String>> formNamesByDemographic = new HashMap<>();
+        for (Integer demographicNo : demographicNos) {
+            formNamesByDemographic.put(demographicNo,
+                    documentAttachmentManager.getFormNamesByFormId(loggedInInfo, demographicNo));
+        }
+        return formNamesByDemographic;
+    }
+
+    /**
+     * Checks whether any of a tickler's attachments is an encounter form.
+     *
+     * @param ticklerDocs List&lt;TicklerDocs&gt; the tickler's attachments, may be null
+     * @return boolean true if at least one attachment is an encounter form
+     */
+    private boolean hasFormAttachment(List<TicklerDocs> ticklerDocs) {
+        return ticklerDocs != null && ticklerDocs.stream()
+                .anyMatch(td -> TicklerDocs.DOCTYPE_FORM.equals(td.getDocType()));
     }
 
     /**
