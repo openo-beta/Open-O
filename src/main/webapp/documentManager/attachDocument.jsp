@@ -47,6 +47,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
 <!DOCTYPE html >
 <html>
@@ -204,6 +205,12 @@
         .attachmentContainer .caret-down {
             transform: rotate(45deg) !important;
         }
+
+        .deleted-doc label,
+        .foreign-doc label {
+            color: #888 !important;
+            font-style: italic;
+        }
     </style>
 
     <script type="text/javascript">
@@ -305,6 +312,65 @@
             showButton.classList.add('hide');
             showButton.parentNode.classList.remove('flex');
         }
+
+        /**
+         * Helpers shared by consult and eForm attach flows. Defined here so both
+         * parents can call them from their beforeClose handlers without needing
+         * a separate script include. Safe because the dialog is guaranteed loaded
+         * when beforeClose fires.
+         */
+
+        /** Warn on new (not pre-attached) private eDoc selections; returns false to abort the close. */
+        function confirmPrivateDocsIfAny(formSelector) {
+            var newPrivate = jQuery(formSelector)
+                .find(".providerPrivateDocument_check:checked:not(input[disabled='disabled'])")
+                .not('[data-pre-attached="true"]');
+            if (newPrivate.length === 0) return true;
+            return confirm("You have selected " + newPrivate.length +
+                " private eDoc(s) for attachment.\n\n" +
+                "Private documents are personal to your account. " +
+                "Attaching them will make them visible to anyone with access to this patient's record.\n\n" +
+                "Select OK to confirm, or Cancel to go back.");
+        }
+
+        /** Build a hidden delegate input from a checked attachment checkbox. */
+        function buildDelegateInput($element) {
+            var input = jQuery("<input />", {
+                type: 'hidden',
+                name: $element.attr('name'),
+                value: $element.val(),
+                id: "delegate_" + $element.attr('id'),
+                class: 'delegateAttachment'
+            });
+            if ($element.attr('name') === 'docNo') input.attr('data-delegate-type', 'doc');
+            return input;
+        }
+
+        /**
+         * Uncheck server-pre-checked boxes whose delegate was removed in an earlier
+         * dialog session. The delegate container (#attachDocumentList for eForm,
+         * $mainForm for consult) is the source of truth for unsaved changes.
+         * Pass swapClass=true for the consult flow which tracks state via
+         * <type>_check vs <type>_pre_check class pairs.
+         */
+        function syncPreCheckedToDelegates(delegateContainer, swapClass) {
+            jQuery('#attachDocumentsForm').find('[data-pre-attached="true"]').each(function () {
+                var $cb = jQuery(this);
+                var hasDelegate = jQuery(delegateContainer).find(
+                    '.delegateAttachment[name="' + this.name + '"][value="' + this.value + '"]'
+                ).length > 0;
+                if (hasDelegate) return;
+                $cb.prop('checked', false).removeAttr('data-pre-attached');
+                if (!swapClass) return;
+                var tokens = ($cb.attr('class') || '').split(' ');
+                for (var i = 0; i < tokens.length; i++) {
+                    if (tokens[i].indexOf('_pre_check') > 0) {
+                        $cb.removeClass(tokens[i]).addClass(tokens[i].split('_')[0] + '_check');
+                        break;
+                    }
+                }
+            });
+        }
     </script>
 
 </head>
@@ -332,8 +398,8 @@
                                 </li>
                                 <c:forEach items="${ allEForms }" var="eForm" varStatus="loop">
                                     <li class="eForm ${loop.index > 4 ? 'hide' : ''}">
-                                        <input class="eForm_check" type="checkbox" name="eFormNo"
-                                               id="eFormNo${ eForm.id }" value="${eForm.id}" title="${eForm.formName}"/>
+                                        <input class="eForm_check attachable_check" type="checkbox" name="eFormNo"
+                                               id="eFormNo${ eForm.id }" value="${eForm.id}" title="${e:forHtmlAttribute(eForm.formName)}"/>
                                         <label for="eFormNo${eForm.id}">
                                             <c:out value="${eForm.subject.length() > 0 ? eForm.subject : eForm.formName} ${ eForm.getFormDate() }"/>
                                         </label>
@@ -350,7 +416,7 @@
 
                 <c:if test="${not empty allDocuments }">
                     <tr>
-                        <td><h2>Documents</h2></td>
+                        <td><h2>Patient Documents</h2></td>
                     </tr>
                     <tr>
                         <td>
@@ -358,21 +424,24 @@
                                 <li class="selectAllHeading ${allDocuments.size() > 20 ? 'flex' : ''}">
                                     <input id="selectAllDocuments" type="checkbox"
                                            onclick="toggleSelectAll(this, 'document_');" value="document_check"
-                                           title="Select/un-select all documents."/>
+                                           title="Select/un-select all patient documents."/>
                                     <label for="selectAllDocuments">Select all</label>
                                     <button class="show-all-button ${allDocuments.size() > 20 ? '' : 'hide'}"
-                                            type="button" title="Show ${allDocuments.size() - 20} More Documents"
+                                            type="button" title="Show ${allDocuments.size() - 20} More Patient Documents"
                                             onclick="showAll(this, 'doc')">Show ${allDocuments.size() - 20} More
-                                        Documents
+                                        Patient Documents
                                     </button>
                                 </li>
                                 <c:forEach items="${ allDocuments }" var="document" varStatus="loop">
-                                    <li class="doc ${loop.index > 19 ? 'hide' : ''}">
-                                        <input class="document_check" type="checkbox" name="docNo"
+                                    <c:set var="isDeleted" value="${fn:contains(document.status, 'D')}"/>
+                                    <c:set var="isAttached" value="${not empty attachedDocumentIds and attachedDocumentIds.contains(document.docId)}"/>
+                                    <li class="doc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''}">
+                                        <input class="document_${isAttached ? 'pre_check' : 'check'} attachable_check" type="checkbox" name="docNo"
                                                id="docNo${document.docId}" value="${document.docId}"
-                                               title="${ document.description }"/>
+                                               ${isAttached ? 'checked="checked" data-pre-attached="true"' : ''}
+                                               title="${e:forHtmlAttribute(document.description)}"/>
                                         <label for="docNo${document.docId}"><c:out
-                                                value="${ document.description } ${ document.observationDate }"/></label>
+                                                value="${ document.description } ${ document.observationDate }"/><c:if test="${isDeleted}"> (deleted)</c:if></label>
                                         <button class="preview-button" type="button" title="Preview"
                                                 onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
                                             Preview
@@ -405,7 +474,7 @@
                                     <c:set var="labName" value="${fn:substring(lab.labName, 0, 30)}"/>
                                     <c:set var="totalVersions" value="${fn:length(lab.labVersionIds)}"/>
                                     <li class="lab ${loop.index > 19 ? 'hide' : ''}">
-                                        <input class="lab_check" type="checkbox" name="labNo"
+                                        <input class="lab_check attachable_check" type="checkbox" name="labNo"
                                                id="labNo${ lab.segmentID }" value="${lab.segmentID}"
                                                title="<c:out value='${ labName }' />"/>
                                         <label for="labNo${lab.segmentID}" title="<c:out value='${ labName }' />"><c:out
@@ -423,7 +492,7 @@
                                             <c:forEach items="${ lab.labVersionIds }" var="version"
                                                        varStatus="versionLoop">
                                                 <li>
-                                                    <input class="lab_check"
+                                                    <input class="lab_check attachable_check"
                                                            data-version="${totalVersions - versionLoop.index}"
                                                            type="checkbox" name="labNo" id="labNo${ version.key }"
                                                            value="${version.key}"
@@ -468,8 +537,8 @@
                                 </li>
                                 <c:forEach items="${ allHRMDocuments }" var="hrm" varStatus="loop">
                                     <li class="hrm ${loop.index > 19 ? 'hide' : ''}">
-                                        <input class="hrm_check" type="checkbox" name="hrmNo" id="hrmNo${ hrm['id'] }"
-                                               value="${hrm['id']}" title="${hrm['name']}"/>
+                                        <input class="hrm_check attachable_check" type="checkbox" name="hrmNo" id="hrmNo${ hrm['id'] }"
+                                               value="${hrm['id']}" title="${e:forHtmlAttribute(hrm['name'])}"/>
                                         <label for="hrmNo${hrm['id']}">
                                             <c:out value="${ hrm['name'] } ${ hrm['report_date'] }"/>
                                         </label>
@@ -502,14 +571,93 @@
                                 </li>
                                 <c:forEach items="${ allForms }" var="form" varStatus="loop">
                                     <li class="form ${loop.index > 19 ? 'hide' : ''}">
-                                        <input class="form_check" type="checkbox" name="formNo"
+                                        <input class="form_check attachable_check" type="checkbox" name="formNo"
                                                id="formNo${ form.formId }" value="${form.formId}"
-                                               title="${form.formName}"/>
+                                               title="${e:forHtmlAttribute(form.formName)}"/>
                                         <label for="formNo${form.formId}">
                                             <c:out value="${ form.formName } ${ form.getEdited() }"/>
                                         </label>
                                         <button class="preview-button" type="button" title="Preview"
                                                 onclick="getPdf('FORM', '${form.formId}', 'method=renderFormPDF&formId=${form.formId}&formName=${form.formName}&demographicNo=${form.getDemoNo()}')">
+                                            Preview
+                                        </button>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </td>
+                    </tr>
+                </c:if>
+
+                <c:if test="${not empty providerPublicDocs }">
+                    <tr>
+                        <td><h2>Public eDocs</h2></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul id="providerPublicDocumentList" style="list-style-type: none;padding:0px;">
+                                <li class="selectAllHeading ${providerPublicDocs.size() > 20 ? 'flex' : ''}">
+                                    <input id="selectAllProviderPublicDocuments" type="checkbox"
+                                           onclick="toggleSelectAll(this, 'providerPublicDocument_');" value="providerPublicDocument_check"
+                                           title="Select/un-select all public eDocs."/>
+                                    <label for="selectAllProviderPublicDocuments">Select all</label>
+                                    <button class="show-all-button ${providerPublicDocs.size() > 20 ? '' : 'hide'}"
+                                            type="button" title="Show ${providerPublicDocs.size() - 20} More Public eDocs"
+                                            onclick="showAll(this, 'providerPublicDoc')">Show ${providerPublicDocs.size() - 20} More
+                                        Public eDocs
+                                    </button>
+                                </li>
+                                <c:forEach items="${ providerPublicDocs }" var="document" varStatus="loop">
+                                    <c:set var="isDeleted" value="${fn:contains(document.status, 'D')}"/>
+                                    <c:set var="isAttached" value="${not empty attachedDocumentIds and attachedDocumentIds.contains(document.docId)}"/>
+                                    <li class="providerPublicDoc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''}">
+                                        <input class="providerPublicDocument_${isAttached ? 'pre_check' : 'check'} attachable_check" type="checkbox" name="docNo"
+                                               id="publicDocNo${document.docId}" value="${document.docId}"
+                                               ${isAttached ? 'checked="checked" data-pre-attached="true"' : ''}
+                                               title="${e:forHtmlAttribute(document.description)}"/>
+                                        <label for="publicDocNo${document.docId}"><c:out
+                                                value="${ document.description } ${ document.observationDate }"/><c:if test="${isDeleted}"> (deleted)</c:if></label>
+                                        <button class="preview-button" type="button" title="Preview"
+                                                onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
+                                            Preview
+                                        </button>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </td>
+                    </tr>
+                </c:if>
+
+                <c:if test="${not empty providerPrivateDocs }">
+                    <tr>
+                        <td><h2>Private eDocs</h2></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul id="providerPrivateDocumentList" style="list-style-type: none;padding:0px;">
+                                <li class="selectAllHeading ${providerPrivateDocs.size() > 20 ? 'flex' : ''}">
+                                    <input id="selectAllProviderPrivateDocuments" type="checkbox"
+                                           onclick="toggleSelectAll(this, 'providerPrivateDocument_');" value="providerPrivateDocument_check"
+                                           title="Select/un-select all private eDocs."/>
+                                    <label for="selectAllProviderPrivateDocuments">Select all</label>
+                                    <button class="show-all-button ${providerPrivateDocs.size() > 20 ? '' : 'hide'}"
+                                            type="button" title="Show ${providerPrivateDocs.size() - 20} More Private eDocs"
+                                            onclick="showAll(this, 'providerPrivateDoc')">Show ${providerPrivateDocs.size() - 20} More
+                                        Private eDocs
+                                    </button>
+                                </li>
+                                <c:forEach items="${ providerPrivateDocs }" var="document" varStatus="loop">
+                                    <c:set var="isDeleted" value="${fn:contains(document.status, 'D')}"/>
+                                    <c:set var="isAttached" value="${not empty attachedDocumentIds and attachedDocumentIds.contains(document.docId)}"/>
+                                    <c:set var="isForeign" value="${not empty foreignPrivateDocIds and foreignPrivateDocIds.contains(document.docId)}"/>
+                                    <li class="providerPrivateDoc ${loop.index > 19 ? 'hide' : ''} ${isDeleted ? 'deleted-doc' : ''} ${isForeign ? 'foreign-doc' : ''}">
+                                        <input class="providerPrivateDocument_${isAttached ? 'pre_check' : 'check'} attachable_check" type="checkbox" name="docNo"
+                                               id="privateDocNo${document.docId}" value="${document.docId}"
+                                               ${isAttached ? 'checked="checked" data-pre-attached="true"' : ''}
+                                               title="${e:forHtmlAttribute(document.description)}"/>
+                                        <label for="privateDocNo${document.docId}"><c:out
+                                                value="${ document.description } ${ document.observationDate }"/><c:if test="${isDeleted}"> (deleted)</c:if><c:if test="${isForeign}"> (attached by another provider)</c:if></label>
+                                        <button class="preview-button" type="button" title="Preview"
+                                                onclick="getPdf('DOC', '${document.docId}', 'method=renderEDocPDF&eDocId=${document.docId}')">
                                             Preview
                                         </button>
                                     </li>

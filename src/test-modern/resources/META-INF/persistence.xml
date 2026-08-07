@@ -29,6 +29,13 @@
         <class>ca.openosp.openo.commn.model.Facility</class>
         <class>ca.openosp.openo.commn.model.DemographicMerged</class>
         <class>ca.openosp.openo.PMmodule.model.ProgramQueue</class>
+        <!-- Document attachment entities (DocumentDao integration tests) -->
+        <class>ca.openosp.openo.commn.model.Document</class>
+        <class>ca.openosp.openo.commn.model.DocumentReview</class>
+        <class>ca.openosp.openo.commn.model.CtlDocument</class>
+        <class>ca.openosp.openo.commn.model.ConsultDocs</class>
+        <class>ca.openosp.openo.commn.model.EFormDocs</class>
+        <class>ca.openosp.openo.commn.model.ConsultResponseDoc</class>
         <class>ca.openosp.openo.commn.model.ProfessionalSpecialist</class>
         <!-- HBM.XML mapped entities -->
         <mapping-file>ca/openosp/openo/commn/model/Provider.hbm.xml</mapping-file>

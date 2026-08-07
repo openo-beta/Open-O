@@ -368,6 +368,53 @@ public interface DocumentAttachmentManager {
      * @return {@code true} if every document belongs to the patient; {@code false} otherwise
      */
     public boolean validateDocumentsBelongToPatient(LoggedInInfo loggedInInfo, Integer demographicNo, String[] documents);
+
+    /**
+     * Classifies the supplied attached docs into the three section lists
+     * (patient documents, provider public eDocs, provider private eDocs) and
+     * populates the two ID sets the view needs for pre-checking and foreign-owner
+     * labelling. The three section lists are mutated in place — deleted docs and
+     * foreign private docs are appended to the matching list so the view still
+     * renders them. {@code allDocuments}, {@code providerPrivateDocs}, and
+     * {@code providerPublicDocs} may be {@code null}: in that case only
+     * {@code attachedDocumentIds} is populated (for pre-checking) and the
+     * section merge is skipped.
+     *
+     * @param loggedInInfo        LoggedInInfo the current user's session (for current-provider comparison)
+     * @param attachedDocs        List&lt;EDoc&gt; the docs attached to the current consult/eForm; may be null/empty
+     * @param allDocuments        List&lt;EDoc&gt; mutable list of patient documents; may be null
+     * @param providerPrivateDocs List&lt;EDoc&gt; mutable list of the current provider's private eDocs; may be null
+     * @param providerPublicDocs  List&lt;EDoc&gt; mutable list of public provider eDocs; may be null
+     * @param attachedDocumentIds Set&lt;String&gt; populated with the doc IDs of every attached doc
+     * @param foreignPrivateDocIds Set&lt;String&gt; populated with the doc IDs of attached private docs not owned by the current provider
+     */
+    public void mergeAttachedIntoSections(LoggedInInfo loggedInInfo, List<EDoc> attachedDocs, List<EDoc> allDocuments, List<EDoc> providerPrivateDocs, List<EDoc> providerPublicDocs, Set<String> attachedDocumentIds, Set<String> foreignPrivateDocIds);
+
+    /**
+     * Returns the EDocs currently attached to a consultation request, or an empty
+     * list when {@code requestId} is absent. Used by the attachment-dialog flow
+     * to render pre-checked and cross-provider markers alongside the patient's
+     * document library.
+     *
+     * @param loggedInInfo  LoggedInInfo the current user's session
+     * @param demographicNo String the patient's demographic number
+     * @param requestId     String the consultation request id; {@code null} short-circuits to an empty list
+     * @return List&lt;EDoc&gt; attached EDocs, or empty list when {@code requestId} is {@code null}
+     */
+    public List<EDoc> getAttachedDocsForConsult(LoggedInInfo loggedInInfo, String demographicNo, String requestId);
+
+    /**
+     * Returns the EDocs currently attached to an eForm instance, or an empty
+     * list when {@code fdid} is absent. Used by the attachment-dialog flow to
+     * render pre-checked and cross-provider markers alongside the patient's
+     * document library.
+     *
+     * @param loggedInInfo  LoggedInInfo the current user's session
+     * @param demographicNo String the patient's demographic number
+     * @param fdid          String the form-data id; {@code null} short-circuits to an empty list
+     * @return List&lt;EDoc&gt; attached EDocs, or empty list when {@code fdid} is {@code null}
+     */
+    public List<EDoc> getAttachedDocsForEForm(LoggedInInfo loggedInInfo, String demographicNo, String fdid);
 }
 
 	

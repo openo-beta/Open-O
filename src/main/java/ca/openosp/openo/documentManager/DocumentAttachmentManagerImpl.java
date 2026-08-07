@@ -868,7 +868,7 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
         }
 
         if (!docIds.isEmpty()) {
-            List<Integer> found = documentDao.findDocumentNosForDemographic(demographicNo, new ArrayList<>(docIds));
+            List<Integer> found = documentDao.findValidAttachmentDocNos(demographicNo, new ArrayList<>(docIds));
             if (!found.containsAll(docIds)) return false;
         }
         if (!labIds.isEmpty()) {
@@ -885,5 +885,57 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
         }
 
         return true;
+    }
+
+    @Override
+    public void mergeAttachedIntoSections(LoggedInInfo loggedInInfo, List<EDoc> attachedDocs, List<EDoc> allDocuments, List<EDoc> providerPrivateDocs, List<EDoc> providerPublicDocs, Set<String> attachedDocumentIds, Set<String> foreignPrivateDocIds) {
+        if (attachedDocs == null || attachedDocs.isEmpty()) {
+            return;
+        }
+
+        // attachedDocumentIds drives view pre-checking and is useful even when the
+        // per-section lists aren't loaded — populate it unconditionally.
+        for (EDoc attachedDoc : attachedDocs) {
+            attachedDocumentIds.add(attachedDoc.getDocId());
+        }
+
+        if (allDocuments == null || providerPrivateDocs == null || providerPublicDocs == null) {
+            return;
+        }
+
+        String currentProviderNo = loggedInInfo.getLoggedInProviderNo();
+
+        for (EDoc attachedDoc : attachedDocs) {
+            boolean isDeleted = attachedDoc.getStatus() == 'D';
+            boolean isPublic = "1".equals(attachedDoc.getDocPublic());
+            boolean ownedByCurrent = attachedDoc.isOwnedBy(currentProviderNo);
+
+            // Patient doc: only deleted ones need re-injecting.
+            if (!attachedDoc.isProviderScoped()) {
+                if (isDeleted) allDocuments.add(attachedDoc);
+                continue;
+            }
+            // Public provider doc: only deleted ones need re-injecting.
+            if (isPublic) {
+                if (isDeleted) providerPublicDocs.add(attachedDoc);
+                continue;
+            }
+            // Private provider doc: skip active-own (already listed); merge everything else.
+            if (!isDeleted && ownedByCurrent) continue;
+            providerPrivateDocs.add(attachedDoc);
+            if (!ownedByCurrent) foreignPrivateDocIds.add(attachedDoc.getDocId());
+        }
+    }
+
+    @Override
+    public List<EDoc> getAttachedDocsForConsult(LoggedInInfo loggedInInfo, String demographicNo, String requestId) {
+        if (requestId == null) return Collections.emptyList();
+        return EDocUtil.listDocs(loggedInInfo, demographicNo, requestId, EDocUtil.ATTACHED);
+    }
+
+    @Override
+    public List<EDoc> getAttachedDocsForEForm(LoggedInInfo loggedInInfo, String demographicNo, String fdid) {
+        if (fdid == null) return Collections.emptyList();
+        return EDocUtil.listDocsAttachedToEForm(loggedInInfo, demographicNo, fdid, EDocUtil.ATTACHED);
     }
 }
