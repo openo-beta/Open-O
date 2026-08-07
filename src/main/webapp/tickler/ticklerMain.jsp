@@ -282,7 +282,7 @@
                     href = "javascript:reportWindow('" + ctx + "/hospitalReportManager/Display.do?id=" + safeTableId +
                         "&segmentID=" + safeTableId + "')";
                 } else if (type === 'EFORM') {
-                    href = ctx + "/eform/efmshowform_data.jsp?fdid=" + safeTableId;
+                    href = "javascript:reportWindow('" + ctx + "/eform/efmshowform_data.jsp?fdid=" + safeTableId + "')";
                 } else if (type === 'FORM') {
                     return ' <i class="glyphicon glyphicon-paperclip" title="Attached form"></i>';
                 } else {

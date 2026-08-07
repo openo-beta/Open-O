@@ -472,7 +472,7 @@
                 </tr>
 
                 <tr>
-                    <td colspan="2" rowspan="6" style="border: none;">
+                    <td colspan="2" rowspan="8" style="border: none;">
                         <textarea class="form-control" rows="23" style="width:100%;" id="newMessage"
                                   name="newMessage"></textarea>
                         <input type="button" class="btn" name="pasteMessage" onclick="pasteMessageText()"
@@ -588,10 +588,10 @@
                     int attachmentCount = ticklerAttachments.size();
                 %>
                 <tr>
-                    <th colspan="4" style="background-color: #666699;color:white;">Attachments</th>
+                    <th colspan="2" style="background-color: #666699;color:white;">Attachments</th>
                 </tr>
                 <tr>
-                    <td colspan="4">
+                    <td colspan="2">
                         <span class="attachments-cell">
                             <button type="button" class="btn" id="manageAttachmentsBtn"
                                     title="Manage Attachments"
