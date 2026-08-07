@@ -38,6 +38,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -415,7 +416,10 @@ public class DocumentPreview2Action extends ActionSupport {
             throw new SecurityException("missing required sec object (_tickler)");
         }
 
-        populateCommonDocs(loggedInInfo, demographicNo);
+        // No tickler equivalent of getAttachedDocsForConsult/getAttachedDocsForEForm yet, so the
+        // picker shows the patient's documents only. A document attached by another provider from
+        // their private set is therefore not listed here.
+        populateCommonDocs(loggedInInfo, demographicNo, Collections.emptyList());
         List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
         request.setAttribute("allEForms", allEForms);
 
