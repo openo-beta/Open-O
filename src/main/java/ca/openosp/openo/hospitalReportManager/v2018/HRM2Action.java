@@ -352,6 +352,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         }
         SFTPConnector connector = null;
         String error = null;
+        String message = null;
         try {
 
             String hostname = getUserPropertyValueOrNull("hrm_hostname");
@@ -389,9 +390,14 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
             SFTPConnector.setDecryptionKey(decryptionKey);
 
             System.out.println(String.format("[HRM-DEBUG] starting fetch, remote folder %s", remoteDir));
-            connector.startAutoFetch(LoggedInInfo.getLoggedInInfoFromSession(request), remoteDir);
-            connector.close();
+            boolean fetched = connector.startAutoFetch(LoggedInInfo.getLoggedInInfoFromSession(request), remoteDir);
             System.out.println("[HRM-DEBUG] fetch completed with no exception");
+            if (fetched) {
+                message = buildFetchSummary(hostname, connector.getTotalDownloaded(), connector.getDownloadedByFolder());
+            } else {
+                error = "The fetch did not complete. See the HRM log for the reports and errors it recorded.";
+            }
+            connector.close();
         } catch (Exception e) {
             error = e.getMessage();
             System.out.println(String.format("[HRM-DEBUG] FAILED %s: %s", e.getClass().getName(), e.getMessage()));
@@ -399,9 +405,35 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
             SFTPConnector.notifyHrmError(LoggedInInfo.getLoggedInInfoFromSession(request), error);
         }
 
-        writeFetchResult(error);
+        writeFetchResult(error, message);
 
         return null;
+    }
+
+    /**
+     * Describes the outcome of a successful fetch: the server connected to, how many files were
+     * downloaded, and how many came from each folder that was walked.
+     *
+     * @param hostname           String the sFTP server the fetch connected to
+     * @param totalDownloaded    int the number of files downloaded across every folder
+     * @param downloadedByFolder Map<String, Integer> the file count of each folder walked
+     * @return String the message shown to the user
+     */
+    private String buildFetchSummary(String hostname, int totalDownloaded, Map<String, Integer> downloadedByFolder) {
+        StringBuilder summary = new StringBuilder();
+        summary.append("Connection successful (").append(hostname).append(").");
+
+        if (totalDownloaded == 0) {
+            summary.append("\nNo new files to download.");
+            return summary.toString();
+        }
+
+        summary.append("\nDownloaded ").append(totalDownloaded).append(" file(s).");
+        for (Map.Entry<String, Integer> folder : downloadedByFolder.entrySet()) {
+            summary.append("\n  ").append(folder.getKey()).append(": ").append(folder.getValue());
+        }
+
+        return summary.toString();
     }
 
     /**
@@ -411,8 +443,20 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
      * @throws Exception if the response cannot be written
      */
     private void writeFetchResult(String error) throws Exception {
+        writeFetchResult(error, null);
+    }
+
+    /**
+     * Writes the outcome of a fetch request as JSON so the caller always receives a parseable body.
+     *
+     * @param error   String the message to report to the user, or null when the fetch succeeded
+     * @param message String what the fetch downloaded, or null when it failed
+     * @throws Exception if the response cannot be written
+     */
+    private void writeFetchResult(String error, String message) throws Exception {
         JSONObject obj = new JSONObject();
         obj.put("error", error);
+        obj.put("message", message);
 
         response.setContentType("application/json");
         obj.write(response.getWriter());

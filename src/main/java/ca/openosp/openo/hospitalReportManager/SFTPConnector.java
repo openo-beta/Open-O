@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
@@ -75,6 +77,9 @@ public class SFTPConnector {
     /** CBC ciphers, offered in addition to the JSch defaults. */
     private static final String CBC_CIPHERS = "aes256-cbc,aes192-cbc,aes128-cbc";
 
+    /** How many levels of subfolders below the configured folder are fetched. */
+    private static final int MAX_FOLDER_DEPTH = 5;
+
     private static final String OMD_HRM_USER = OscarProperties.getInstance().getProperty("OMD_HRM_USER");
     private static final String OMD_HRM_IP = OscarProperties.getInstance().getProperty("OMD_HRM_IP");
     private static final int OMD_HRM_PORT = Integer.parseInt(OscarProperties.getInstance().getProperty("OMD_HRM_PORT"));
@@ -107,6 +112,9 @@ public class SFTPConnector {
     private static HashSet<String> doNotSentMsgForOuttage = new HashSet<String>();
 
     private HrmLog hrmLog;
+
+    /** Number of files downloaded in the last fetch, keyed by the folder they came from. */
+    private Map<String, Integer> downloadedByFolder = new LinkedHashMap<String, Integer>();
 
     /**
      * This is called for MANUAL download
@@ -240,27 +248,117 @@ public class SFTPConnector {
     }
 
     /**
+     * Reduce a configured folder path to the form used against the server. Paths are relative to the
+     * home directory of the sFTP account, so "Clinic1", "/Clinic1" and "/Clinic1/" all name the same
+     * folder. The home directory itself is returned as ".".
+     *
+     * @param folder String the folder path as entered on the HRM Configuration page
+     * @return String the folder path without leading, trailing or repeated slashes
+     */
+    public static String normalizeRemoteDir(String folder) {
+        if (folder == null) {
+            return ".";
+        }
+        String normalized = folder.trim().replaceAll("/+", "/");
+        while (normalized.startsWith("/")) {
+            normalized = normalized.substring(1);
+        }
+        while (normalized.endsWith("/")) {
+            normalized = normalized.substring(0, normalized.length() - 1);
+        }
+        return normalized.isEmpty() ? "." : normalized;
+    }
+
+    /**
+     * Join a folder path and one of its entries.
+     *
+     * @param folder String the folder path, or "." for the home directory
+     * @param name   String the entry listed in that folder
+     * @return String the path of the entry relative to the home directory
+     */
+    private static String remotePath(String folder, String name) {
+        return ".".equals(folder) ? name : folder + "/" + name;
+    }
+
+    /**
+     * Issue an 'ls' command and return the subdirectories of the folder.
+     *
+     * @param folder String the folder to list
+     * @return String[] the names of the subdirectories, without "." and ".."
+     * @throws SftpException
+     */
+    public String[] lsDirectories(String folder) throws SftpException {
+        List fileList = cmd.ls(folder);
+        List<String> directories = new ArrayList<String>();
+
+        if (fileList != null) {
+            for (Object obj : fileList) {
+                if (obj instanceof com.jcraft.jsch.ChannelSftp.LsEntry) {
+                    LsEntry lsEntry = (LsEntry) obj;
+                    String fn = lsEntry.getFilename();
+
+                    if (fn == null || fn.equals(".") || fn.equals("..") || !lsEntry.getAttrs().isDir()) {
+                        continue;
+                    }
+                    // A name carrying a separator would climb out of the folder being walked.
+                    if (fn.contains("/") || fn.contains("\\")) {
+                        logger.warn("HRM: ignoring subdirectory with a separator in its name: " + fn);
+                        continue;
+                    }
+                    directories.add(fn);
+                }
+            }
+        }
+
+        return directories.toArray(new String[directories.size()]);
+    }
+
+    /**
+     * Walk a folder and its subdirectories, deepest folders last.
+     *
+     * @param root     String the configured folder path to start from
+     * @param maxDepth int how many levels below the root to descend into
+     * @return List<String> the root followed by every subdirectory found under it
+     * @throws SftpException
+     */
+    public List<String> listFoldersToFetch(String root, int maxDepth) throws SftpException {
+        List<String> folders = new ArrayList<String>();
+        folders.add(root);
+
+        int firstOfLevel = 0;
+        for (int depth = 0; depth < maxDepth; depth++) {
+            int lastOfLevel = folders.size();
+            if (firstOfLevel == lastOfLevel) {
+                break;
+            }
+            for (int i = firstOfLevel; i < lastOfLevel; i++) {
+                String folder = folders.get(i);
+                for (String child : lsDirectories(folder)) {
+                    folders.add(remotePath(folder, child));
+                }
+            }
+            firstOfLevel = lastOfLevel;
+        }
+
+        return folders;
+    }
+
+    /**
      * Issue an 'ls' command on remote server and exclussively print the values or return them in a String array.
+     * Subdirectories are left out of the returned array.
      *
      * @param folder    to issue the 'ls' command on
      * @param printInfo
-     * @return
+     * @return String[] the names of the files in the folder, without subdirectories
      * @throws SftpException
      */
     public String[] ls(String folder, boolean printInfo) throws SftpException {
         List fileList = cmd.ls(folder);
-        String[] filenames = null;
         List<String> files = new ArrayList<String>();
 
         if (fileList != null) {
 
-            //only instantiate array to hold ls results if user is not printing info
-            if (!printInfo) {
-                filenames = new String[fileList.size()];
-            }
-
             logger.debug("ls " + folder);
-            int i = 0;
             for (Object obj : fileList) {
 
                 if (obj instanceof com.jcraft.jsch.ChannelSftp.LsEntry) {
@@ -271,10 +369,16 @@ public class SFTPConnector {
                         logger.debug(lsEntry.getFilename());
                     } else {
                         String fn = lsEntry.getFilename(); //filename
-                        if (fn != null && !fn.equals(".") && !fn.equals("..")) {
-                            filenames[i++] = fn;
-                            files.add(fn);
+                        if (fn == null || fn.equals(".") || fn.equals("..")) {
+                            continue;
                         }
+                        // Only the reports in the configured folder are fetched. A subdirectory is
+                        // skipped rather than downloaded, which would fail and end the whole fetch.
+                        if (lsEntry.getAttrs().isDir()) {
+                            logger.info("HRM: skipping subdirectory " + fn + " in " + folder);
+                            continue;
+                        }
+                        files.add(fn);
                     }
                 }
             }
@@ -298,20 +402,19 @@ public class SFTPConnector {
         String[] files = ls(serverDirectory);
         String[] fullPathFilenames = new String[files.length];
 
-        //go into the server directory
-        cmd.cd("./" + serverDirectory);
-        //and fetch each file into the source folder
-
         String todaysFolderName = SFTPConnector.getDayMonthYearTimestamp();
-
-        //ensure today's folder exists
-        String fullPath = prepareForDownload(todaysFolderName);
 
         fLogger.info("About to download all contents of directory: " + serverDirectory);
         if (files.length == 0) {
             fLogger.info("No files to download from server folder: " + serverDirectory);
             return null;
         }
+
+        // Downloads keep the folder they came from, so two folders holding the same filename do not
+        // overwrite one another on the way down.
+        String localFolder = ".".equals(serverDirectory)
+                ? todaysFolderName : todaysFolderName + File.separator + serverDirectory;
+        String fullPath = prepareForDownload(localFolder);
 
         int i = 0;
         //not too sure whether multiple connections are handled by the JSch library
@@ -320,7 +423,7 @@ public class SFTPConnector {
         for (String file : files) {
             if (file != null) {
                 String fullFilePath = fullPath + file;
-                cmd.get(file, fullFilePath);
+                cmd.get(remotePath(serverDirectory, file), fullFilePath);
                 fullPathFilenames[i++] = fullFilePath;
                 fLogger.info("Downloaded File: " + fullFilePath);
                 logger.debug("SFTP::Downloaded file: " + fullFilePath);
@@ -350,11 +453,8 @@ public class SFTPConnector {
      * @throws SftpException
      */
     public void deleteDirectoryContents(String serverDirectory, String[] filenames) throws SftpException {
-        cmd.cd("/");
-
         fLogger.info("About to delete all contents from server directory: " + serverDirectory);
         logger.debug("Deleting contents from directory: " + serverDirectory);
-        cmd.cd(serverDirectory);
         for (String file : filenames) {
             if (file != null) {
                 logger.debug("About to delete server file " + file);
@@ -363,7 +463,7 @@ public class SFTPConnector {
                     logger.debug("file to delete is now " + file);
                 }
                 try {
-                    cmd.rm(file);
+                    cmd.rm(remotePath(serverDirectory, file));
                 } catch (SftpException e) {
                     logger.error("Error deleting file", e);
                 }
@@ -532,7 +632,7 @@ public class SFTPConnector {
     public static String ensureFolderExists(String fullPath) throws Exception {
         File tmpFolder = new File(fullPath);
         if (!tmpFolder.exists()) {
-            boolean res = tmpFolder.mkdir();
+            boolean res = tmpFolder.mkdirs();
             if (!res)
                 throw new Exception("Unable to create folder " + tmpFolder.getAbsolutePath()
                         + " required for SFTP operations. Please check permissions.");
@@ -581,9 +681,6 @@ public class SFTPConnector {
             throw new IllegalStateException("HRM remote folder path is not configured. Set it on the HRM Configuration page.");
         }
 
-        String[] localFilePaths = null;
-        String[] paths = null;
-
         boolean seenError = false;
 
         if (!isAutoFetchRunning) {
@@ -592,35 +689,57 @@ public class SFTPConnector {
 
             logger.info("HRM: remoteDir:" + remoteDir);
 
+            downloadedByFolder = new LinkedHashMap<String, Integer>();
+
             try {
 
-                String[] files = ls(remoteDir);
-                System.out.println(String.format("[HRM-DEBUG] listing %s returned %d entries",
-                        remoteDir, files == null ? -1 : files.length));
+                String root = normalizeRemoteDir(remoteDir);
+                List<String> folders = listFoldersToFetch(root, MAX_FOLDER_DEPTH);
+                System.out.println(String.format("[HRM-DEBUG] walking %s found %d folder(s): %s",
+                        root, folders.size(), folders));
 
-                localFilePaths = downloadDirectoryContents(remoteDir);
-                System.out.println(String.format("[HRM-DEBUG] downloaded %d files locally",
-                        localFilePaths == null ? -1 : localFilePaths.length));
+                // The folder each downloaded file came from, so it can be deleted from that folder
+                // once it has been stored.
+                Map<String, String> folderByLocalFile = new LinkedHashMap<String, String>();
+
+                for (String folder : folders) {
+                    String[] downloaded = downloadDirectoryContents(folder);
+
+                    int downloadedFromFolder = 0;
+                    if (downloaded != null) {
+                        for (String localFilePath : downloaded) {
+                            if (localFilePath != null) {
+                                folderByLocalFile.put(localFilePath, folder);
+                                downloadedFromFolder++;
+                            }
+                        }
+                    }
+
+                    downloadedByFolder.put(folder, downloadedFromFolder);
+                    fLogger.info("Downloaded " + downloadedFromFolder + " file(s) from " + folder);
+                    logger.info("HRM: downloaded " + downloadedFromFolder + " file(s) from " + folder);
+                }
+
+                System.out.println(String.format("[HRM-DEBUG] downloaded %d file(s) in total", getTotalDownloaded()));
 
                 hrmLog.setDownloadedFiles(true);
-                hrmLog.setNumFilesDownloaded(files.length);
+                hrmLog.setNumFilesDownloaded(getTotalDownloaded());
                 hrmLogDao.merge(hrmLog);
 
-                if (files == null || files.length == 0) {
+                if (folderByLocalFile.isEmpty()) {
                     System.out.println("[HRM-DEBUG] nothing on the server, finishing");
                     return true;
                 }
 
-                if (localFilePaths == null || localFilePaths.length == 0) {
-                    return true;
-                }
+                // Remote filenames of the reports that reached the document directory, kept against
+                // the folder they came from. These are the only files removed from the server;
+                // anything that failed earlier is left for the next fetch to retry.
+                Map<String, List<String>> storedByFolder = new LinkedHashMap<String, List<String>>();
 
-                // Remote filenames of the reports that reached the document directory. These are the
-                // only files removed from the server; anything that failed earlier is left for the
-                // next fetch to retry.
-                List<String> storedRemoteFilenames = new ArrayList<String>();
+                for (Map.Entry<String, String> download : folderByLocalFile.entrySet()) {
 
-                for (String encryptedFile : localFilePaths) {
+                    String encryptedFile = download.getKey();
+                    String sourceFolder = download.getValue();
 
                     HrmLogEntry hrmLogEntry = new HrmLogEntry();
                     hrmLogEntry.setHrmLogId(hrmLog.getId());
@@ -643,7 +762,12 @@ public class SFTPConnector {
 
                         if (filename != null) {
 
-                            storedRemoteFilenames.add(new File(encryptedFile).getName());
+                            List<String> stored = storedByFolder.get(sourceFolder);
+                            if (stored == null) {
+                                stored = new ArrayList<String>();
+                                storedByFolder.put(sourceFolder, stored);
+                            }
+                            stored.add(new File(encryptedFile).getName());
 
                             List<Throwable> errors = new ArrayList<Throwable>();
                             HRMReport report = HRMReportParser.parseReport(loggedInInfo, filename, errors);
@@ -684,10 +808,15 @@ public class SFTPConnector {
 
                 }
 
-                if (!storedRemoteFilenames.isEmpty()) {
-                    deleteDirectoryContents(remoteDir, storedRemoteFilenames.toArray(new String[0]));
-                    System.out.println("[HRM-DEBUG] server cleanup: " + storedRemoteFilenames.size()
-                            + " removed, " + (localFilePaths.length - storedRemoteFilenames.size()) + " kept for retry");
+                int removed = 0;
+                for (Map.Entry<String, List<String>> stored : storedByFolder.entrySet()) {
+                    deleteDirectoryContents(stored.getKey(), stored.getValue().toArray(new String[0]));
+                    removed += stored.getValue().size();
+                }
+
+                if (removed > 0) {
+                    System.out.println("[HRM-DEBUG] server cleanup: " + removed
+                            + " removed, " + (folderByLocalFile.size() - removed) + " kept for retry");
 
                     hrmLog.setDeleted(true);
                     hrmLogDao.merge(hrmLog);
@@ -697,6 +826,7 @@ public class SFTPConnector {
                 logger.debug("Clearing doNotSend list");
                 doNotSentMsgForOuttage.clear();
             } catch (Exception e) {
+                seenError = true;
                 logger.error("Couldn't perform SFTP fetch for HRM - notifying user of failure", e);
                 notifyHrmError(loggedInInfo, e.getMessage());
             } finally {
@@ -708,6 +838,30 @@ public class SFTPConnector {
             logger.warn("There is currently an HRM fetch running -- will not run another until it has completed or timed out.");
         }
         return !seenError;
+    }
+
+    /**
+     * Number of files downloaded by the last fetch, keyed by the folder they were downloaded from.
+     * Folders that held no files are listed with a count of zero.
+     *
+     * @return Map<String, Integer> the folders walked, each with the number of files taken from it
+     */
+    public Map<String, Integer> getDownloadedByFolder() {
+        if (downloadedByFolder == null) {
+            return java.util.Collections.emptyMap();
+        }
+        return java.util.Collections.unmodifiableMap(downloadedByFolder);
+    }
+
+    /**
+     * @return int the number of files downloaded by the last fetch across every folder
+     */
+    public int getTotalDownloaded() {
+        int total = 0;
+        for (Integer count : getDownloadedByFolder().values()) {
+            total += count;
+        }
+        return total;
     }
 
     protected String saveDecryptedData(String encryptedFilePath, String decryptedFileContents) throws IOException {

@@ -177,6 +177,8 @@
                     success: function (data) {
                         if (data && data.error) {
                             alert('An error occured. Please check the HRM log for more information\n' + data.error);
+                        } else if (data && data.message) {
+                            alert(data.message);
                         }
                         window.location.reload();
                     },

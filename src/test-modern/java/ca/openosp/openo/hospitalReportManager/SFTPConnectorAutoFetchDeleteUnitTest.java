@@ -30,6 +30,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -89,6 +90,8 @@ class SFTPConnectorAutoFetchDeleteUnitTest {
         loggedInInfo = mock(LoggedInInfo.class);
 
         inject("hrmLog", persistedHrmLog());
+        // The daily file log is opened by the constructor, which a mock built this way never runs.
+        inject("fLogger", java.util.logging.Logger.getLogger(SFTPConnectorAutoFetchDeleteUnitTest.class.getName()));
         inject("hrmLogDao", mock(HrmLogDao.class));
         inject("hrmLogEntryDao", mock(HrmLogEntryDao.class));
         inject("hrmSendingFacilityDao", mock(HRMSendingFacilityDao.class));
@@ -96,6 +99,7 @@ class SFTPConnectorAutoFetchDeleteUnitTest {
         doNothing().when(connector).close();
         doNothing().when(connector).deleteDirectoryContents(anyString(), any(String[].class));
 
+        doReturn(List.of(REMOTE_DIR)).when(connector).listFoldersToFetch(anyString(), anyInt());
         doReturn(new String[]{REMOTE_1, REMOTE_2, REMOTE_3}).when(connector).ls(REMOTE_DIR);
         doReturn(new String[]{LOCAL_1, LOCAL_2, LOCAL_3})
                 .when(connector).downloadDirectoryContents(REMOTE_DIR);
@@ -186,6 +190,73 @@ class SFTPConnectorAutoFetchDeleteUnitTest {
         order.verify(connector).copyFileToDocumentDir(any(), eq(LOCAL_1));
         order.verify(connector).copyFileToDocumentDir(any(), eq(LOCAL_3));
         order.verify(connector).deleteDirectoryContents(anyString(), any(String[].class));
+    }
+
+    @Test
+    @DisplayName("should report success when every file is processed")
+    void shouldReportSuccess_whenEveryFileIsProcessed() {
+        assertThat(connector.startAutoFetch(loggedInInfo, REMOTE_DIR)).isTrue();
+    }
+
+    @Test
+    @DisplayName("should report failure when the download step fails")
+    void shouldReportFailure_whenDownloadFails() throws Exception {
+        doThrow(new Exception("no such folder")).when(connector).downloadDirectoryContents(REMOTE_DIR);
+
+        assertThat(connector.startAutoFetch(loggedInInfo, REMOTE_DIR)).isFalse();
+    }
+
+    @Test
+    @DisplayName("should download from a subfolder and delete each file from the folder it came from")
+    void shouldDownloadFromSubfolder_andDeleteFromItsOwnFolder() throws Exception {
+        String subFolder = REMOTE_DIR + "/2026";
+        String remoteInSub = "20260731_MIS1_004_encrypted.xml";
+        String localInSub = "/tmp/oscar-sftp/31072026/" + subFolder + "/" + remoteInSub;
+
+        doReturn(List.of(REMOTE_DIR, subFolder)).when(connector).listFoldersToFetch(anyString(), anyInt());
+        doReturn(new String[]{localInSub}).when(connector).downloadDirectoryContents(subFolder);
+        doReturn(localInSub).when(connector).saveDecryptedData(eq(localInSub), anyString());
+        doReturn(localInSub).when(connector).copyFileToDocumentDir(any(), eq(localInSub));
+
+        connector.startAutoFetch(loggedInInfo, REMOTE_DIR);
+
+        ArgumentCaptor<String[]> captor = ArgumentCaptor.forClass(String[].class);
+        verify(connector).deleteDirectoryContents(eq(REMOTE_DIR), captor.capture());
+        assertThat(captor.getValue()).containsExactly(REMOTE_1, REMOTE_2, REMOTE_3);
+
+        verify(connector).deleteDirectoryContents(eq(subFolder), captor.capture());
+        assertThat(captor.getValue()).containsExactly(remoteInSub);
+    }
+
+    @Test
+    @DisplayName("should count the files downloaded from each folder")
+    void shouldCountFiles_downloadedFromEachFolder() throws Exception {
+        String subFolder = REMOTE_DIR + "/2026";
+        String localInSub = "/tmp/oscar-sftp/31072026/" + subFolder + "/20260731_MIS1_004_encrypted.xml";
+
+        doReturn(List.of(REMOTE_DIR, subFolder)).when(connector).listFoldersToFetch(anyString(), anyInt());
+        doReturn(new String[]{localInSub}).when(connector).downloadDirectoryContents(subFolder);
+
+        connector.startAutoFetch(loggedInInfo, REMOTE_DIR);
+
+        assertThat(connector.getTotalDownloaded()).isEqualTo(4);
+        assertThat(connector.getDownloadedByFolder()).containsExactly(
+                org.assertj.core.api.Assertions.entry(REMOTE_DIR, 3),
+                org.assertj.core.api.Assertions.entry(subFolder, 1));
+    }
+
+    @Test
+    @DisplayName("should count a walked folder that holds no files as zero")
+    void shouldCountEmptyFolder_asZero() throws Exception {
+        String emptyFolder = REMOTE_DIR + "/archive";
+
+        doReturn(List.of(REMOTE_DIR, emptyFolder)).when(connector).listFoldersToFetch(anyString(), anyInt());
+        doReturn(null).when(connector).downloadDirectoryContents(emptyFolder);
+
+        connector.startAutoFetch(loggedInInfo, REMOTE_DIR);
+
+        assertThat(connector.getDownloadedByFolder()).containsEntry(emptyFolder, 0);
+        assertThat(connector.getTotalDownloaded()).isEqualTo(3);
     }
 
     /**
