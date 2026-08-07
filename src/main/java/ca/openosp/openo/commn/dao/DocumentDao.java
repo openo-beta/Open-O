@@ -91,5 +91,16 @@ public interface DocumentDao extends AbstractDao<Document> {
 
     public Document findByDemographicAndFilename(int demographicId, String fileName);
 
-    public List<Integer> findDocumentNosForDemographic(Integer demographicNo, List<Integer> docNos);
+    /**
+     * Returns the subset of {@code docNos} whose {@code ctl_document} row makes
+     * them attachable to this patient's chart — either demographic-scoped to
+     * {@code demographicNo}, or provider-library scoped (module
+     * IN ('provider','providers')). Soft-deleted ctl rows
+     * ({@code status = 'D'}) are excluded from both branches.
+     *
+     * @param demographicNo Integer patient demographic number for the demographic branch
+     * @param docNos List&lt;Integer&gt; doc IDs to check; null or empty yields an empty list
+     * @return List&lt;Integer&gt; the subset of {@code docNos} attachable to this patient's chart
+     */
+    public List<Integer> findValidAttachmentDocNos(Integer demographicNo, List<Integer> docNos);
 }
