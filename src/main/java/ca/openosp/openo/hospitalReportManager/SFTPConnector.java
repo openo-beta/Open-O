@@ -72,6 +72,9 @@ public class SFTPConnector {
     /** Interval between keepalive messages sent while the connection is idle. */
     private static final int SERVER_ALIVE_INTERVAL_MS = 60000;
 
+    /** CBC ciphers, offered in addition to the JSch defaults. */
+    private static final String CBC_CIPHERS = "aes256-cbc,aes192-cbc,aes128-cbc";
+
     private static final String OMD_HRM_USER = OscarProperties.getInstance().getProperty("OMD_HRM_USER");
     private static final String OMD_HRM_IP = OscarProperties.getInstance().getProperty("OMD_HRM_IP");
     private static final int OMD_HRM_PORT = Integer.parseInt(OscarProperties.getInstance().getProperty("OMD_HRM_PORT"));
@@ -153,6 +156,10 @@ public class SFTPConnector {
 
         java.util.Properties confProp = new java.util.Properties();
         confProp.put("StrictHostKeyChecking", "no");
+        // The HRM sFTP server offers only CBC ciphers, which JSch leaves out of its defaults. They are
+        // appended after the defaults so a server that offers CTR or GCM still gets one of those.
+        confProp.put("cipher.c2s", JSch.getConfig("cipher.c2s") + "," + CBC_CIPHERS);
+        confProp.put("cipher.s2c", JSch.getConfig("cipher.s2c") + "," + CBC_CIPHERS);
         sess.setConfig(confProp);
 
         // Keeps the session open while downloaded reports are decrypted and parsed, which happens
