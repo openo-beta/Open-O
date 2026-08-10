@@ -420,8 +420,16 @@ function parseViewletCompletion(data, service) {
 
 // Records the outcome of a launch (success or failure) in the gateway log. Best-effort:
 // a logging failure never disrupts the clinician.
-function reportViewletResult(ctx, demographicNo, key, uuid, status, message) {
+//
+// onRecorded is optional. When given it runs once the audit write has been answered, with true
+// when the row was written and false otherwise. A caller that reveals data the outcome released
+// can wait on it, so nothing is disclosed with nothing recording the decision that released it.
+// Callers with no such data omit it and the call stays fire-and-forget as before.
+function reportViewletResult(ctx, demographicNo, key, uuid, status, message, onRecorded) {
     if (!demographicNo || !key) {
+        if (onRecorded) {
+            onRecorded(false);
+        }
         return;
     }
     var url = ctx + '/viewletResult.do?demographicNo=' + encodeURIComponent(demographicNo)
@@ -429,7 +437,17 @@ function reportViewletResult(ctx, demographicNo, key, uuid, status, message) {
         + '&uuid=' + encodeURIComponent(uuid || '')
         + '&status=' + encodeURIComponent(status)
         + '&message=' + encodeURIComponent(message || '');
-    postViewletRequest(url, null, null);
+    if (!onRecorded) {
+        postViewletRequest(url, null, null);
+        return;
+    }
+    postViewletRequest(url, function (httpStatus) {
+        // A launch failure answers 268 with a summary rather than an error status, so the
+        // audit row is only known to exist on a 2xx.
+        onRecorded(httpStatus >= 200 && httpStatus < 300);
+    }, function () {
+        onRecorded(false);
+    });
 }
 
 function popupEHRService(url, demographicNo, ctx, timeout, key, uuid, options) {

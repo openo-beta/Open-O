@@ -268,12 +268,18 @@ public class DHDRService extends AbstractServiceImpl {
   }
 
   /**
-   * Records a PCOI consent-override event against the patient in the gateway transaction log.
+   * Records the clinician's decision on a consent override against the patient in the gateway
+   * transaction log.
+   *
+   * <p>This records a decision taken in the EMR - the clinician declining to attempt the override.
+   * The outcome of an override that was attempted comes back from the consent viewlet itself and is
+   * recorded through the shared viewlet result endpoint, not here.
    *
    * @param demographicNo Integer the patient's demographic number
    * @param uniqueToken String the correlation token issued by {@link #getConsentOveride(int)};
    *     a caller with none sends a placeholder, which {@link #correlationId(String)} maps back to null
-   * @param status String the consent-override outcome status
+   * @param status String the consent-override decision: {@code Overwrite}, {@code Refused} or
+   *     {@code Cancelled}
    * @param message String the raw JSON payload describing the consent-override event
    * @return Response indicating the event was logged
    */
@@ -290,9 +296,15 @@ public class DHDRService extends AbstractServiceImpl {
     if (!securityInfoManager.hasPrivilege(loggedInInfo, SECURITY_OBJECT, "w", demographicNo)) {
       throw new AccessDeniedException(SECURITY_OBJECT, "w", demographicNo);
     }
+
+    // DHDR15.02: the success flag says whether access to the blocked information was released, not
+    // whether the row was written. A clinician who refuses or cancels released nothing, and an
+    // auditor filtering the log for overrides must not find those decisions among them. The
+    // shorter overload hardcodes true, which is what put refusals there.
+    boolean accessReleased = "Overwrite".equalsIgnoreCase(StringUtils.trimToEmpty(status));
     OmdGateway omdGateway = new OmdGateway();
     omdGateway.logDataReceived(loggedInInfo, "PCOI", status, message,
-        demographicNo, correlationId(uniqueToken));
+        demographicNo, correlationId(uniqueToken), accessReleased);
     return Response.ok(true).build();
   }
 

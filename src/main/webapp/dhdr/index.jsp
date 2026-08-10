@@ -122,6 +122,11 @@
 	<script src="<%=request.getContextPath() %>/web/common/dhdrServices.js"></script>	
 	<script src="<%=request.getContextPath() %>/web/common/rxServices.js"></script>	
 	<script src="<%=request.getContextPath() %>/web/filters.js"></script>
+	<%-- DHDR11.01: the shared ONE ID viewlet helpers. parseViewletCompletion reads the ONE Access
+	     Viewlet Framework completion message and reportViewletResult records the outcome, so the
+	     consent viewlet is read and audited by the same code as every other EHR service rather than
+	     by a second implementation maintained here. --%>
+	<script src="<%=request.getContextPath() %>/share/javascript/oneid.js"></script>
 	<style>
 		.modal-lg{
 			width:1700px;
@@ -2621,72 +2626,83 @@
     		    		        		}
     		    		      }
     		    		    });
-    					//pcoi message back 
-    					//message { target: Window, isTrusted: true, data: "{\"status\":\"completed\"}", origin: "https://pcoi-pst.apps.dev.ehealthontario.ca", lastEventId: "", source: Restricted https://pcoi-pst.apps.dev.ehealthontario.ca/main, ports: Restricted, srcElement: Window, currentTarget: Window, eventPhase: 2,  }
-    					modalInstance.result.then(function (selectedItem) {
-    						// DHDR11.01: process the PCOI viewlet response per the ONE Access Viewlet Framework
-    						// Appendix A format - errors[] / successes[] / utility.code arrays (multi-LOB), not a
-    						// flat status field. Each success/error entry names the microService (LOB) it is for.
-    						var pcoiResult = {};
-    						try {
-    							pcoiResult = (selectedItem && typeof selectedItem.data === 'string')
-    								? JSON.parse(selectedItem.data)
-    								: ((selectedItem && selectedItem.data) || {});
-    						} catch (err) {
-    							pcoiResult = {};
+    					// DHDR11.01, DHDR15.02: record the outcome of the consent viewlet through the shared
+    					// ONE ID reporting endpoint, the same one every other EHR service launch reports to.
+    					//
+    					// onRecorded runs once the audit write has been answered. DHDR15.02 makes that row the
+    					// record that the unblock happened, so a caller that re-queries on the strength of the
+    					// outcome waits for it: re-querying first risks disclosing temporarily unblocked data
+    					// with nothing recording the decision that released it.
+    					//
+    					// The callback arrives from a plain XMLHttpRequest, outside AngularJS, so anything it
+    					// touches on the scope is applied through $timeout. The old path was an $http promise
+    					// and was inside the digest for free.
+    					var reportOutcome = function(status, message, onRecorded) {
+    						reportViewletResult('<%=request.getContextPath()%>', $scope.demographicNo, 'PCOI',
+    							med.uuid, status, message, function(recorded) {
+    								$timeout(function() { onRecorded(recorded); });
+    							});
+    					};
+
+    					modalInstance.result.then(function (completion) {
+    						// The viewlet answered nothing: the clinician gave up on it through the "not
+    						// responding" link. Reported as 'noresponse' rather than left unlogged - silence is
+    						// not refusal, and the override may well have gone through at Ontario Health.
+    						if (!completion) {
+    							reportOutcome('noresponse', 'The consent viewlet was closed without a response.',
+    								function() { $scope.callSearch(); });
+    							return;
     						}
-    						var successes = angular.isArray(pcoiResult.successes) ? pcoiResult.successes : [];
-    						var errors = angular.isArray(pcoiResult.errors) ? pcoiResult.errors : [];
-    						var utilityCodes = (pcoiResult.utility && angular.isArray(pcoiResult.utility.code))
-    							? pcoiResult.utility.code : [];
 
-    						// DHDR override confirmed = a successes[] entry for the DHDR LOB (PCOI_CONSENT_SUCCESS_02
-    						// / 201). PCOI_CONSENT_SUCCESS_01 alone only confirms the PCOI call, not the DHDR override.
-    						var dhdrOverridden = successes.some(function (s) {
-    							return s && (s.microService === 'DHDR'
-    								|| (angular.isArray(s.code) && s.code.indexOf('PCOI_CONSENT_SUCCESS_02') !== -1));
+    						// DHDR11.01.a/b, DHDR15.02: audit the outcome that was observed, never a blanket
+    						// successful override. The audit row is the evidence that an override happened, so
+    						// asserting a success nobody observed is the one wrong answer here.
+    						//
+    						// Deliberately not a list of known statuses. Only 'success' means the DHDR override
+    						// was confirmed; everything else is reported as it came back and claims nothing. The
+    						// shared parser gains outcomes over time - a reply naming no service at all is moving
+    						// out of 'success' into its own - and a status this page has not heard of must fall
+    						// through to the cautious branch, not the confirmed one.
+    						var cancelled = completion.cancelled;
+    						// An error entry makes the whole reply a failure, even alongside a DHDR success
+    						// entry. That is the shared parser's reading rather than the one this page used,
+    						// and it is the more cautious of the two.
+    						var failed = !cancelled && completion.status === 'failure';
+
+    						reportOutcome(completion.status, completion.message, function(recorded) {
+    							if (cancelled || failed) {
+    								// The block stays on screen and there is nothing new to load.
+    								return;
+    							}
+    							if (!recorded) {
+    								$scope.overrideResultMessage = "The temporary consent unblock could not be "
+    									+ "recorded, so Drug and Pharmacy Service Information was not re-loaded. "
+    									+ "Please try again.";
+    								return;
+    							}
+    							// DHDR11.02 + OAVF B.4.2.5 / B.5: re-load the DHDR query - it is the source of
+    							// truth for whether access opened, and answers with the CONSENT_TEMP_UNBLOCK
+    							// notice. An unrecognised-but-successful response still surfaces the data here,
+    							// it just was not logged as a confirmed override.
+    							$scope.callSearch();
     						});
-    						var cancelled = utilityCodes.indexOf('PCOI_CONSENT_CANCELLED') !== -1;
-    						var failed = !dhdrOverridden && errors.length > 0;
 
-    						// DHDR11.01.a/b, DHDR15.02: audit the actual outcome, not a blanket successful override.
-    						// A response carrying no code we recognise is recorded as 'Unknown' rather than
-    						// 'Overwrite': the audit row is the evidence that an override happened, so asserting
-    						// a success we did not observe is the one wrong answer here. The re-search below
-    						// still runs - DHDR is the source of truth for whether access opened - so an
-    						// unrecognised-but-successful response still surfaces the data, it just is not
-    						// logged as a confirmed override.
-    						var auditStatus = dhdrOverridden ? 'Overwrite' : (failed ? 'Failed' : (cancelled ? 'Cancelled' : 'Unknown'));
-    						var overrideRecorded = dhdrService.logConsentOverride($scope.demographicNo,
-    							med.uuid, selectedItem.data, auditStatus);
-
+    						if (cancelled) {
+    							// Cancelled inside the viewlet (OAVF utility PCOI_CONSENT_CANCELLED); the
+    							// existing block stays shown.
+    							return;
+    						}
     						if (failed) {
-    							// DHDR11.01.b: the override did not complete - leave the existing block shown and inform the user.
+    							// DHDR11.01.b: the override did not complete - leave the existing block shown
+    							// and inform the user.
     							$scope.overrideResultMessage = "The temporary consent unblock did not complete. "
     								+ "Access to Drug and Pharmacy Service Information remains blocked.";
-    							return;
     						}
-    						if (cancelled) {
-    							// User cancelled inside the PCOI viewlet (OAVF utility PCOI_CONSENT_CANCELLED); the existing block remains shown.
-    							return;
-    						}
-    						// DHDR11.02 + OAVF B.4.2.5 / B.5: on success (or an ambiguous / no-code response) re-load the
-    						// DHDR query - it is the source of truth, returning data with the CONSENT_TEMP_UNBLOCK notice.
-    						//
-    						// Waits on the audit write rather than firing alongside it. DHDR15.02 makes that row the
-    						// record that the unblock happened, so re-querying before it is written risks disclosing
-    						// temporarily unblocked data with nothing recording the decision that released it. The
-    						// decision messages above are deliberately left outside this - DHDR09.05 reports the user's
-    						// choice, which does not depend on the audit POST.
-    						overrideRecorded.then(function () {
-    							$scope.callSearch();
-    						}, function () {
-    							$scope.overrideResultMessage = "The temporary consent unblock could not be recorded, "
-    								+ "so Drug and Pharmacy Service Information was not re-loaded. Please try again.";
-    						});
     		    		    }, function () {
-    		    		      // No resolving message (backdrop / esc close): per OAVF B.4.2.5, re-load in case the override succeeded.
-    		    		      $scope.callSearch();
+    		    		      // No resolving message (backdrop / esc close): nothing was observed, so nothing is
+    		    		      // claimed. Per OAVF B.4.2.5 the search still re-runs in case the override succeeded.
+    		    		      reportOutcome('noresponse', 'The consent viewlet was dismissed without a response.',
+    		    		        function() { $scope.callSearch(); });
     		    		    });
     					
     				},function(reason){
@@ -3152,8 +3168,16 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 			})(med.referenceURL);
 
 			var onPcoiMessage = function(e) {
-				if (e.origin === PCOI_ORIGIN_URL) {
-					$modalInstance.close(e);
+				if (e.origin !== PCOI_ORIGIN_URL) {
+					return;
+				}
+				// Only a completion message ends the launch. The viewlet's own origin can post
+				// other messages, and closing on the first of those would end the override while
+				// the clinician was still working through it. parseViewletCompletion answers null
+				// for anything that is not a completion, which is the test used here.
+				var completion = parseViewletCompletion(e.data, 'DHDR');
+				if (completion) {
+					$modalInstance.close(completion);
 				}
 			};
 			$window.addEventListener('message', onPcoiMessage);
