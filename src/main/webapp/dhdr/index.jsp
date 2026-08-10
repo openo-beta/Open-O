@@ -3223,8 +3223,14 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 	                callback: "&ngOnload"
 	            },
 	            link: function link(scope, element, attrs) {
-	                // hooking up the onload event - calling the callback on load event
-	                element.one("load", function (state,message) {
+	                // hooking up the onload event - calling the callback on load event.
+	                //
+	                // bind, not one: jqLite gained one() in AngularJS 1.4 and this page is on 1.2.3, so
+	                // one() threw "element.one is not a function" out of link and the handler was never
+	                // attached at all - which is why the "Failed to load? click here" link never cleared
+	                // once the viewlet had plainly loaded. Firing on every load is right here anyway,
+	                // since reload() re-points the frame and clearing the notice again is harmless.
+	                element.bind("load", function (state,message) {
 	                	
 	                    var contentLocation = element.length > 0 && element[0].contentWindow ? element[0].contentWindow.location : undefined;
 	                    scope.callback({

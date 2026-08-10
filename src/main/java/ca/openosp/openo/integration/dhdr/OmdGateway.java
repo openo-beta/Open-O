@@ -386,7 +386,23 @@ public class OmdGateway {
 	public void logInteraction(LoggedInInfo loggedInInfo, String externalSystem, String transactionType, Integer demographicNo) {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, externalSystem, transactionType);
 		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
-		transactionLogDao.persist(omdGatewayTransactionLog);
+		persistCompleted(omdGatewayTransactionLog);
+	}
+
+	/**
+	 * Stores a transaction-log row that records an event rather than a call made over the wire.
+	 *
+	 * <p>A row with no {@code ended} timestamp reads as a transaction still in flight, and telling a
+	 * finished transaction from an unfinished one is what that column exists for (DHDR15.01 h). These
+	 * rows have no HTTP call to wait on - the event is complete at the moment it is written - so the
+	 * start and end coincide rather than the end being absent. Calls that do go over the wire are
+	 * stamped by {@link #completeLog} instead.
+	 *
+	 * @param log OMDGatewayTransactionLog the row to finish and store
+	 */
+	private void persistCompleted(OMDGatewayTransactionLog log) {
+		log.setEnded(new Date());
+		transactionLogDao.persist(log);
 	}
 
 	protected List<OperationOutcome> hasOperationOutcome(Bundle bundle)  {
@@ -443,7 +459,7 @@ public class OmdGateway {
 			OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, null, "GATEWAY" , "Configuration Error");
 			omdGatewayTransactionLog.setStarted(new Date());
 			omdGatewayTransactionLog.setError(sb.toString());
-			transactionLogDao.persist(omdGatewayTransactionLog);
+			persistCompleted(omdGatewayTransactionLog);
 			throw(new Exception("Gateway Configuration Error"));
 		}
     logger.info("has props out " + sb);
@@ -465,7 +481,7 @@ public class OmdGateway {
 		if(uniqueToken != null) {
 			omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
 		}
-		transactionLogDao.persist(omdGatewayTransactionLog);
+		persistCompleted(omdGatewayTransactionLog);
 	}
 	
 	public void logDataReceived(LoggedInInfo loggedInInfo,String externalSystem, String transactionType,String dataReceived,Integer demographicNo) {
@@ -504,7 +520,7 @@ public class OmdGateway {
 		if(uniqueToken != null) {
 			omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
 		}
-		transactionLogDao.persist(omdGatewayTransactionLog);
+		persistCompleted(omdGatewayTransactionLog);
 	}
 
 	public WebClient getWebClientWholeURL(LoggedInInfo loggedInInfo,String url) throws Exception {
@@ -639,7 +655,7 @@ public class OmdGateway {
 		omdGatewayTransactionLog.setDataSent(url);
 		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
 		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
-		transactionLogDao.persist(omdGatewayTransactionLog);
+		persistCompleted(omdGatewayTransactionLog);
 		return url;
 	}
 
@@ -670,7 +686,7 @@ public class OmdGateway {
 		omdGatewayTransactionLog.setDataSent(url);
 		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
 		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
-		transactionLogDao.persist(omdGatewayTransactionLog);
+		persistCompleted(omdGatewayTransactionLog);
 		return url;
 	}
 
