@@ -370,10 +370,11 @@ function parseViewletCompletion(data, service) {
     // call was accepted, but no entry for DHDR. The drug override did not happen. Reading that as
     // an outright success would write an audit row claiming an override nobody performed.
     //
-    // So when the caller names the service it launched for and the reply names services, the
-    // outcome counts as a success only if that service is among them; otherwise it is 'partial'.
-    // A reply that names no service at all is taken at face value, which is how a single-service
-    // Viewlet behaves.
+    // So when the caller names the service it launched for, the outcome counts as a success only
+    // if that service is among the ones the reply confirms. A reply naming no service at all
+    // confirms nothing either, so it is 'partial' on the same grounds: the launch did not fail,
+    // and nothing observed says it did what was asked. Where the caller named no service there is
+    // nothing to match against and the reply is taken at face value.
     //
     // One code confirms the drug service on its own, whatever service label its entry carries:
     // PCOI_CONSENT_SUCCESS_02 means the drug call succeeded, while PCOI_CONSENT_SUCCESS_01
@@ -389,7 +390,7 @@ function parseViewletCompletion(data, service) {
         }
     }
     var confirmed = true;
-    if (service && confirmedServices.length > 0) {
+    if (service) {
         confirmed = false;
         for (var c = 0; c < confirmedServices.length; c++) {
             if (confirmedServices[c].toUpperCase() === String(service).toUpperCase()) {

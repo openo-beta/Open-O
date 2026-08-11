@@ -75,7 +75,7 @@ public class FhirResources {
     CodeableConcept codeableConcept = new CodeableConcept();
     codeableConcept.addCoding().setSystem("http://hl7.org/fhir/v2/0203").setCode("RRI");
     identifier.setType(codeableConcept);
-    identifier.setSystem("https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-provider-upi")
+    identifier.setSystem(PROVIDER_UPI_SYSTEM)
         .setValue(oneIdGatewayData.getProviderUPI());
     organization.addIdentifier(identifier);
     Clinic clinic = clinicDao.getClinic();
@@ -147,6 +147,22 @@ public class FhirResources {
     }
     if (clinic.getClinicFax() != null && clinic.getClinicFax().trim().length() > 4) {
       location.addTelecom().setSystem(ContactPointSystem.FAX).setValue(clinic.getClinicFax().trim());
+    }
+    // The custodian this clinic is operating under, which is what ties the two resources
+    // together: one custodian covers many clinics, so a Location arriving on its own leaves
+    // nothing to say whose it is. Named by identifier rather than by a pointer to the
+    // Organization's resource id, because that id is the UAO value and carries a colon, which a
+    // FHIR resource id may not.
+    OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
+    String custodianUpi = oneIdGatewayData == null ? null : oneIdGatewayData.getProviderUPI();
+    if (custodianUpi != null && !custodianUpi.trim().isEmpty()) {
+      location.getManagingOrganization().getIdentifier()
+          .setSystem(PROVIDER_UPI_SYSTEM)
+          .setValue(custodianUpi.trim());
+      String custodianName = oneIdGatewayData.getUaoFriendlyName();
+      if (custodianName != null && !custodianName.trim().isEmpty()) {
+        location.getManagingOrganization().setDisplay(custodianName.trim());
+      }
     }
     return location;
   }
@@ -302,6 +318,10 @@ public class FhirResources {
     }
     return null;
   }
+
+  /** The naming system OpenO asserts for the custodian a provider acts under. */
+  private static final String PROVIDER_UPI_SYSTEM =
+      "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-provider-upi";
 
   /** The naming system OpenO asserts for a practitioner's licence number. */
   private static final String PHYSICIAN_LICENCE_SYSTEM =
