@@ -627,10 +627,28 @@ public class OmdGateway {
 		return response2;
 	}
 
+	/**
+	 * Builds the launch URL for the consent Viewlet: sets the consent target in CMS context (with
+	 * the bounded retry), takes the PCOI service address resolved from the ONE ID toolbar, and
+	 * appends the launch topic, FHIR issuer and authorization reference. One transaction-log row is
+	 * written per launch.
+	 *
+	 * @param loggedInInfo  LoggedInInfo the acting provider session
+	 * @param demographicNo int the patient the Viewlet is launched for
+	 * @param target        String the consent target the override applies to
+	 * @param uniqueToken   String correlation token recorded on the transaction-log row
+	 * @return String the consent Viewlet launch URL
+	 * @throws Exception CMSException when the context is not acknowledged or the toolbar carries no
+	 *                   PCOI address
+	 */
 	public String getConsentViewletURL(LoggedInInfo loggedInInfo, int demographicNo, String target,String uniqueToken) throws Exception {
 		setContextWithRetry(() -> CMSManager.consentTargetChange(loggedInInfo, demographicNo, target));
 		OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
-		String url = oneIdGatewayData.getPcoiUrl()+"?launch="+oneIdGatewayData.getHubTopic()+"&iss="+oneIdGatewayData.getFhirIss()+"&inheritanceID="+oneIdGatewayData.getAuthorizationId();
+		String pcoiUrl = oneIdGatewayData.getPcoiUrl();
+		if (pcoiUrl == null || pcoiUrl.trim().isEmpty()) {
+			throw new CMSException("No consent service address was found in the ONE ID toolbar. Check the PCOI Key setting names a registered Viewlet.");
+		}
+		String url = pcoiUrl+"?launch="+oneIdGatewayData.getHubTopic()+"&iss="+oneIdGatewayData.getFhirIss()+"&inheritanceID="+oneIdGatewayData.getAuthorizationId();
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, "PCOI", "consentViewletLaunch");
 		omdGatewayTransactionLog.setDataSent(url);
 		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
