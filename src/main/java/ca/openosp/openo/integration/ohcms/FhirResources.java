@@ -41,6 +41,7 @@ import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.ContactPoint;
 import org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r4.model.ContactPoint.ContactPointUse;
+import org.hl7.fhir.r4.model.Enumerations.AdministrativeGender;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.HumanName.NameUse;
 import org.hl7.fhir.r4.model.IdType;
@@ -201,7 +202,46 @@ public class FhirResources {
     if (title != null && !title.trim().isEmpty()) {
       practitionerName.addPrefix(title.trim());
     }
+    // The clinician's own contact details, not the clinic's. The business number and address
+    // belong to the Organization and the Location, so the provider's work phone is not sent here.
+    addPractitionerContact(practitioner, ContactPointSystem.PHONE,
+        loggedInInfo.getLoggedInProvider().getPhone());
+    addPractitionerContact(practitioner, ContactPointSystem.EMAIL,
+        loggedInInfo.getLoggedInProvider().getEmail());
+    practitioner.setGender(administrativeGender(loggedInInfo.getLoggedInProvider().getSex()));
     return practitioner;
+  }
+
+  /**
+   * Adds a contact point to the Practitioner where the provider record carries one.
+   *
+   * @param practitioner Practitioner the resource being built
+   * @param system       ContactPointSystem the kind of contact point
+   * @param value        String the recorded value, which may be absent
+   */
+  private static void addPractitionerContact(Practitioner practitioner, ContactPointSystem system,
+      String value) {
+    if (value == null || value.trim().length() <= 4) {
+      return;
+    }
+    practitioner.addTelecom().setSystem(system).setValue(value.trim());
+  }
+
+  /**
+   * Maps a provider's recorded sex to the FHIR administrative gender.
+   *
+   * @param sex String the sex held on the provider record, which may be absent or unrecognized
+   * @return AdministrativeGender the mapped gender, or null where there is nothing to map
+   */
+  private static AdministrativeGender administrativeGender(String sex) {
+    if (sex == null || sex.trim().isEmpty()) {
+      return null;
+    }
+    try {
+      return EnumMappingUtil.genderToAdministrativeGender(Gender.valueOf(sex.trim().toUpperCase()));
+    } catch (IllegalArgumentException e) {
+      return null;
+    }
   }
 
   public Patient getPatient(Demographic demographic) throws CMSException {
