@@ -77,6 +77,18 @@
                     <div class="col-md-4">
                         <input type="text" class="form-control" name="friendlyName" placeholder="Friendly name"/>
                     </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" name="address" placeholder="Street address"/>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="city" placeholder="City"/>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="province" placeholder="Province"/>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" name="postal" placeholder="Postal code"/>
+                    </div>
                     <div class="col-auto form-check">
                         <input type="checkbox" class="form-check-input" name="defaultUAO" value="true" id="defaultUAO"/>
                         <label class="form-check-label" for="defaultUAO">Default</label>
@@ -93,6 +105,7 @@
             <tr>
                 <th>UAO value</th>
                 <th>Friendly name</th>
+                <th>Address</th>
                 <th>Default</th>
                 <th>Added by</th>
                 <th class="text-end">Actions</th>
@@ -103,6 +116,12 @@
                 <tr>
                     <td>${e:forHtmlContent(uao.name)}</td>
                     <td>${e:forHtmlContent(uao.friendlyName)}</td>
+                    <td>
+                        ${e:forHtmlContent(uao.address)}
+                        <c:if test="${not empty uao.city}">, ${e:forHtmlContent(uao.city)}</c:if>
+                        <c:if test="${not empty uao.province}">, ${e:forHtmlContent(uao.province)}</c:if>
+                        <c:if test="${not empty uao.postal}">, ${e:forHtmlContent(uao.postal)}</c:if>
+                    </td>
                     <td>
                         <c:choose>
                             <c:when test="${uao.defaultUAO}"><span class="badge bg-primary">Default</span></c:when>

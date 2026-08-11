@@ -47,6 +47,10 @@ public class UAO extends AbstractModel<Integer> {
     private String providerNo;
     private String friendlyName;
     private String name;
+    private String address;
+    private String city;
+    private String province;
+    private String postal;
     private Boolean defaultUAO;
     private Boolean active;
     private String addedBy;
@@ -86,6 +90,38 @@ public class UAO extends AbstractModel<Integer> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getPostal() {
+        return postal;
+    }
+
+    public void setPostal(String postal) {
+        this.postal = postal;
     }
 
     public Boolean getDefaultUAO() {

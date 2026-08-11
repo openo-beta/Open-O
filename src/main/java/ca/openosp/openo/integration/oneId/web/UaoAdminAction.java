@@ -78,6 +78,10 @@ public class UaoAdminAction extends ActionSupport {
         String providerNo = trimToNull(request.getParameter("providerNo"));
         String name = trimToNull(request.getParameter("name"));
         String friendlyName = trimToNull(request.getParameter("friendlyName"));
+        String address = trimToNull(request.getParameter("address"));
+        String city = trimToNull(request.getParameter("city"));
+        String province = trimToNull(request.getParameter("province"));
+        String postal = trimToNull(request.getParameter("postal"));
         boolean makeDefault = "true".equals(request.getParameter("defaultUAO"));
 
         if (providerNo != null && name != null) {
@@ -85,6 +89,10 @@ public class UaoAdminAction extends ActionSupport {
             uao.setProviderNo(providerNo);
             uao.setName(name);
             uao.setFriendlyName(friendlyName);
+            uao.setAddress(address);
+            uao.setCity(city);
+            uao.setProvince(province);
+            uao.setPostal(postal);
             uao.setActive(true);
             uao.setDefaultUAO(makeDefault);
             uao.setAddedBy(loggedInInfo.getLoggedInProviderNo());
@@ -95,7 +103,10 @@ public class UaoAdminAction extends ActionSupport {
                 ehrConnectivityManager.setDefaultUao(loggedInInfo, uao, providerNo);
             }
             audit(loggedInInfo, LogConst.ADD, providerNo,
-                    "after={name=" + name + ", friendly=" + friendlyName + ", default=" + makeDefault + "}");
+                    "after={name=" + name + ", friendly=" + friendlyName
+                            + ", address=" + address + ", city=" + city
+                            + ", province=" + province + ", postal=" + postal
+                            + ", default=" + makeDefault + "}");
         }
         redirectToList(providerNo);
         return NONE;
