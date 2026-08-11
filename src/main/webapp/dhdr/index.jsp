@@ -1830,8 +1830,17 @@
 			}
 			
 			$scope.getRowClass = function(med){
-				// Highlight rows when the DHDR patient does not match the EMR demographic.
-				if($scope.dhdrPatientDataUnmatched){
+				// Highlight the events whose own patient metadata disagrees with the EMR, not every
+				// event in a result set that happens to contain one (BP14 clause 2).
+				//
+				// This read the aggregate flag, which was right when the aggregate was the only
+				// comparison there was. Once the per-event decoration landed it painted every row
+				// while only the differing rows carried the badge, so one row carried two signals
+				// saying different things and the badge stopped meaning anything.
+				//
+				// Narrowing it loses no warning: every value in the aggregate came from some event,
+				// so anything the aggregate flags is flagged by the event it came from.
+				if(med && med.eventPatient && med.eventPatient.anyUnmatched){
 					return "warning";
 				}
 			}
