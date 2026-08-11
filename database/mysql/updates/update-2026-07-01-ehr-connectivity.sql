@@ -120,3 +120,5 @@ INSERT INTO `secObjPrivilege` VALUES ('admin','_admin.ehrConnectivity','x',0,999
 INSERT INTO `secObjPrivilege` VALUES ('admin','_ehr.connectivity','x',0,999998);
 INSERT INTO `secObjPrivilege` VALUES ('doctor','_ehr.connectivity','x',0,999998);
 INSERT INTO `secObjPrivilege` VALUES ('nurse','_ehr.connectivity','x',0,999998);
+INSERT INTO `secObjPrivilege` VALUES ('locum','_ehr.connectivity','x',0,999998);
+INSERT INTO `secObjPrivilege` VALUES ('psychiatrist','_ehr.connectivity','x',0,999998);
