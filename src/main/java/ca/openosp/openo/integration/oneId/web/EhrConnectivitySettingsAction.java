@@ -75,6 +75,7 @@ public class EhrConnectivitySettingsAction extends ActionSupport {
             ONEID_KEYS.pcoi_key, ONEID_KEYS.timeout, ONEID_KEYS.viewlet_timeout
     };
 
+    @Override
     public String execute() {
         if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), SEC_OBJECT, "r", null)) {
             throw new SecurityException("missing required sec object (" + SEC_OBJECT + ")");

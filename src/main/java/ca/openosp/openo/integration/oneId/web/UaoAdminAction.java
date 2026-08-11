@@ -59,6 +59,7 @@ public class UaoAdminAction extends ActionSupport {
     private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
     private final EhrConnectivityManager ehrConnectivityManager = SpringUtils.getBean(EhrConnectivityManager.class);
 
+    @Override
     public String execute() {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "r");

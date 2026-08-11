@@ -65,6 +65,7 @@ public class ViewletAdminAction extends ActionSupport {
     private final EhrConnectivityManager ehrConnectivityManager = SpringUtils.getBean(EhrConnectivityManager.class);
     private final ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 
+    @Override
     public String execute() {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "r");
