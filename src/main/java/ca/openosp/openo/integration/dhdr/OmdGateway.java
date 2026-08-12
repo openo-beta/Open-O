@@ -419,9 +419,12 @@ public class OmdGateway {
 	}
 	
 	public boolean hasGatewayPropertiesSet(LoggedInInfo loggedInInfo) throws Exception{
-		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
-		Path keystorePath = Paths.get(systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_path).getValue());
-		String keystorePassword = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getValue();
+		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
+		String keystoreLocation = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_path);
+		Path keystorePath = keystoreLocation == null || keystoreLocation.trim().isEmpty()
+				? null
+				: Paths.get(keystoreLocation);
+		String keystorePassword = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_password);
 		OneIdSession oneIdSession = oneIdSessionDao.find(loggedInInfo.getLoggedInProviderNo());
 		String endPoint = oneIdSession == null ? "" : oneIdSession.getUrlFromToolbar(ToolbarKeys.FHIR_ISS.key);
 
@@ -435,15 +438,16 @@ public class OmdGateway {
 
 
 
-		if(keystorePath.toString().trim().isEmpty()) {
+		if(keystorePath == null) {
 			sb.append("Public Keystore has not been configured. Use OSCAR property 'oneid.gateway.keystore' to configure.\n");
-		}
-		try {
-			if(Files.notExists(keystorePath)) {
+		} else {
+			try {
+				if(Files.notExists(keystorePath)) {
+					sb.append("Public Keystore can not be found at: ").append(keystorePath).append("\n");
+				}
+			}catch(Exception e) {
 				sb.append("Public Keystore can not be found at: ").append(keystorePath).append("\n");
 			}
-		}catch(Exception e) {
-			sb.append("Public Keystore can not be found at: ").append(keystorePath).append("\n");
 		}
 
 		if(keystorePassword == null || keystorePassword.trim().isEmpty()) {
@@ -550,12 +554,12 @@ public class OmdGateway {
 	/** Gateway connection/receive timeout in milliseconds, from the configurable timeout preference (in seconds). */
 	protected long getTimeoutMillis() {
 		long seconds = 65;
-		SystemPreferences pref = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.timeout);
-		if (pref != null && !pref.getValue().trim().isEmpty()) {
+		String configured = getPreferenceValue(SystemPreferences.ONEID_KEYS.timeout);
+		if (configured != null && !configured.trim().isEmpty()) {
 			try {
-				seconds = Long.parseLong(pref.getValue().trim());
+				seconds = Long.parseLong(configured.trim());
 			} catch (NumberFormatException e) {
-				logger.warn("Invalid ONE ID gateway timeout '" + pref.getValue() + "'; using " + seconds + "s");
+				logger.warn("Invalid ONE ID gateway timeout '" + configured + "'; using " + seconds + "s");
 			}
 		}
 		return seconds * 1000;
@@ -565,11 +569,11 @@ public class OmdGateway {
 			hasGatewayPropertiesSet(loggedInInfo);
 			KeyStore ks = KeyStore.getInstance("JKS");
 			ks.load( new FileInputStream(
-                    Paths.get(systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_path).getValue()).toFile()
+                    Paths.get(getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_path)).toFile()
                 ),
-                systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getValue().toCharArray()
+                getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_password).toCharArray()
                 );
-			SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(ks, systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getValue().toCharArray()).build();
+			SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(ks, getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_password).toCharArray()).build();
 			sslcontext.getDefaultSSLParameters().setNeedClientAuth(true);
 			sslcontext.getDefaultSSLParameters().setWantClientAuth(true);
 
@@ -587,14 +591,23 @@ public class OmdGateway {
 		return doGet(loggedInInfo,wc,null);
 	}
 
+	/**
+	 * Reads a ONE ID gateway setting.
+	 *
+	 * @param key ONEID_KEYS the setting to read
+	 * @return String the configured value, or null where the setting has no row or holds no value
+	 */
+	private String getPreferenceValue(SystemPreferences.ONEID_KEYS key) {
+		SystemPreferences preference = systemPreferencesDao.findPreferenceByName(key);
+		return preference == null ? null : preference.getValue();
+	}
+
 	protected String getConsumerKey() {
-		SystemPreferences consumerKey = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id);
-		return consumerKey == null ? null : consumerKey.getValue();
+		return getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
 	}
 
 	protected String getConsumerSecret() {
-		SystemPreferences consumerSecret = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_secret);
-		return consumerSecret == null ? null : consumerSecret.getValue();
+		return getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_secret);
 	}
 	
 	protected String getEndpointURL(String providerNumber) {
@@ -647,10 +660,28 @@ public class OmdGateway {
 		return response2;
 	}
 
+	/**
+	 * Builds the launch URL for the consent Viewlet: sets the consent target in CMS context (with
+	 * the bounded retry), takes the PCOI service address resolved from the ONE ID toolbar, and
+	 * appends the launch topic, FHIR issuer and authorization reference. One transaction-log row is
+	 * written per launch.
+	 *
+	 * @param loggedInInfo  LoggedInInfo the acting provider session
+	 * @param demographicNo int the patient the Viewlet is launched for
+	 * @param target        String the consent target the override applies to
+	 * @param uniqueToken   String correlation token recorded on the transaction-log row
+	 * @return String the consent Viewlet launch URL
+	 * @throws Exception CMSException when the context is not acknowledged or the toolbar carries no
+	 *                   PCOI address
+	 */
 	public String getConsentViewletURL(LoggedInInfo loggedInInfo, int demographicNo, String target,String uniqueToken) throws Exception {
 		setContextWithRetry(() -> CMSManager.consentTargetChange(loggedInInfo, demographicNo, target));
 		OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
-		String url = oneIdGatewayData.getPcoiUrl()+"?launch="+oneIdGatewayData.getHubTopic()+"&iss="+oneIdGatewayData.getFhirIss()+"&inheritanceID="+oneIdGatewayData.getAuthorizationId();
+		String pcoiUrl = oneIdGatewayData.getPcoiUrl();
+		if (pcoiUrl == null || pcoiUrl.trim().isEmpty()) {
+			throw new CMSException("No consent service address was found in the ONE ID toolbar. Check the PCOI Key setting names a registered Viewlet.");
+		}
+		String url = pcoiUrl+"?launch="+oneIdGatewayData.getHubTopic()+"&iss="+oneIdGatewayData.getFhirIss()+"&inheritanceID="+oneIdGatewayData.getAuthorizationId();
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, "PCOI", "consentViewletLaunch");
 		omdGatewayTransactionLog.setDataSent(url);
 		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
@@ -726,8 +757,8 @@ public class OmdGateway {
 		if (gatewayData == null || gatewayData.getUao() == null || gatewayData.getUao().trim().isEmpty()) {
 			throw new IllegalStateException("A ONE ID Under Authority Of (UAO) value must be selected before submitting context to the gateway.");
 		}
-		String consumerKey = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
-		String consumerSecret =systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_secret).getValue();
+		String consumerKey = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
+		String consumerSecret =getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_secret);
 		// Refresh the access token if it has expired (throws when the refresh token is dead too).
 		OneIDTokenUtils.verifyAccessTokenIsValid(loggedInInfo, loggedInInfo.getOneIdGatewayData());
 		String accessToken = loggedInInfo.getOneIdGatewayData().getAccessToken();
@@ -769,9 +800,9 @@ public class OmdGateway {
 	public Response getTokens(LoggedInInfo loggedInInfo,String code,String clientId, String codeVerifier,String jwt)  {
 		String externalSystem = "OIDC";
 		String transactionType = "TOKENS";
-		String tokenUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_access_token).getValue();
+		String tokenUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_access_token);
 		String callbackUrl = resolveBaseUrl()
-				+ systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_callback).getValue();
+				+ getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_callback);
 
 		String requestId = newRequestId();
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, null, externalSystem, transactionType);
@@ -819,11 +850,11 @@ public class OmdGateway {
 	 * @throws Exception when the keystore cannot be read or holds no usable private key
 	 */
 	protected String buildClientAssertion(LoggedInInfo loggedInInfo) throws Exception {
-		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
-		String audURL = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_audience).getValue();
-		String alias = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_alias).getValue();
-		String keystoreLocation = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_path).getValue();
-		String keystorePassword = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getValue();
+		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
+		String audURL = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_audience);
+		String alias = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_alias);
+		String keystoreLocation = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_path);
+		String keystorePassword = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_password);
 
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, 10);
@@ -852,7 +883,7 @@ public class OmdGateway {
 	 * @throws Exception when the client assertion cannot be built or the call fails
 	 */
 	public Response exchangeCodeForTokens(LoggedInInfo loggedInInfo, String code, String codeVerifier) throws Exception {
-		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
+		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
 		return getTokens(loggedInInfo, code, clientId, codeVerifier, buildClientAssertion(loggedInInfo));
 	}
 
@@ -868,11 +899,11 @@ public class OmdGateway {
 	 * @throws Exception when the PKCE challenge cannot be generated
 	 */
 	public String buildAuthorizeUrl(OneIdGatewayData oneIdGatewayData, String state, String nonce, String verifier) throws Exception {
-		String authorizeUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_authorize).getValue();
+		String authorizeUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_authorize);
 		String callbackUrl = resolveBaseUrl()
-				+ systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_callback).getValue();
-		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
-		String aud = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_audience).getValue();
+				+ getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_callback);
+		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
+		String aud = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_audience);
 		String challenge = PKCEUtils.generateChallengeS256(verifier);
 
 		UriBuilder uriBuilder = UriBuilder.fromUri(authorizeUrl)
@@ -916,12 +947,12 @@ public class OmdGateway {
 	    logger.debug("challenge = "+challenge);
 
 
-		String authorizeUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_authorize).getValue();
+		String authorizeUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_authorize);
 		String callbackUrl = resolveBaseUrl()
-				+ systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_callback).getValue();
-		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
+				+ getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_callback);
+		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
 
-		String aud = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_audience).getValue();
+		String aud = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_audience);
 
 		WebClient wc = WebClient.create(authorizeUrl);
 
@@ -968,13 +999,13 @@ public class OmdGateway {
 		cal.add(Calendar.MINUTE, 10);
 		Date expiryDate = cal.getTime();
 
-		String tokenUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_access_token).getValue();
-		String audURL = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_audience).getValue();
+		String tokenUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_access_token);
+		String audURL = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_audience);
 
-		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
-		String alias = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_alias).getValue();
-		String keystoreLocation = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_path).getValue();
-		String keystorePassword= systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.keystore_password).getValue();
+		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
+		String alias = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_alias);
+		String keystoreLocation = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_path);
+		String keystorePassword= getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_password);
 
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("grant_type", "refresh_token");
@@ -1077,8 +1108,8 @@ public class OmdGateway {
 	 * @throws Exception when the client assertion cannot be built or the call fails
 	 */
 	public void revokeToken(LoggedInInfo loggedInInfo, OneIdGatewayData oneIdGatewayData) throws Exception {
-		String revokeUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_revocation).getValue();
-		String clientId = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.oag_client_id).getValue();
+		String revokeUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_revocation);
+		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
 		String jwt = buildClientAssertion(loggedInInfo);
 		String requestId = newRequestId();
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, null, "Auth", "REVOKE");
@@ -1113,7 +1144,7 @@ public class OmdGateway {
 	 * @return String the End Session URL
 	 */
 	public String buildEndSessionUrl(String idTokenHint, boolean showPrivacyNotice) {
-		String endSessionUrl = systemPreferencesDao.findPreferenceByName(SystemPreferences.ONEID_KEYS.endpoint_end_session).getValue();
+		String endSessionUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_end_session);
 		String landingPage = showPrivacyNotice ? "oneIdLoggedOut.jsp" : "index.jsp";
 		String postLogout = resolveBaseUrl() + landingPage;
 		UriBuilder uriBuilder = UriBuilder.fromUri(endSessionUrl).queryParam("post_logout_redirect_uri", postLogout);

@@ -62,6 +62,7 @@ public class OneIdLoginAction extends ActionSupport {
     private final HttpServletRequest request = ServletActionContext.getRequest();
     private final HttpServletResponse response = ServletActionContext.getResponse();
 
+    @Override
     public String execute() {
         try {
             OmdGateway omdGateway = new OmdGateway();

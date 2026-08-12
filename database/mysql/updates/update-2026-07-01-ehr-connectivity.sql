@@ -17,6 +17,12 @@ CREATE TABLE IF NOT EXISTS `OMDGatewayTransactionLog` (
   -- the HTTP status, which says a call was refused but not why; this holds the reason as a value
   -- that can be filtered on. Values come from the published ca.on.ehr.r4 CodeSystem-ErrorCode.
   `ehrResultCode` varchar(255) DEFAULT NULL,
+  -- Resource ids from the FHIR message an interaction carried. 64 characters is the FHIR id
+  -- primitive's own limit, so no conformant id can be longer. One transaction covers a search
+  -- that returns many dispenses, so those are held as a comma separated list, which is how they
+  -- are read: nothing queries or counts on them.
+  `messageHeaderId` varchar(64) DEFAULT NULL,
+  `medicationDispenseIds` text,
   `success` tinyint(1) DEFAULT NULL,
   `error` longtext,
   `headers` longtext,
@@ -77,6 +83,10 @@ CREATE TABLE IF NOT EXISTS `UAO` (
   `providerNo` varchar(25) DEFAULT NULL,
   `friendlyName` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `province` varchar(255) DEFAULT NULL,
+  `postal` varchar(25) DEFAULT NULL,
   `defaultUAO` tinyint(1) DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   `addedBy` varchar(25) DEFAULT NULL,
@@ -120,3 +130,5 @@ INSERT INTO `secObjPrivilege` VALUES ('admin','_admin.ehrConnectivity','x',0,999
 INSERT INTO `secObjPrivilege` VALUES ('admin','_ehr.connectivity','x',0,999998);
 INSERT INTO `secObjPrivilege` VALUES ('doctor','_ehr.connectivity','x',0,999998);
 INSERT INTO `secObjPrivilege` VALUES ('nurse','_ehr.connectivity','x',0,999998);
+INSERT INTO `secObjPrivilege` VALUES ('locum','_ehr.connectivity','x',0,999998);
+INSERT INTO `secObjPrivilege` VALUES ('psychiatrist','_ehr.connectivity','x',0,999998);

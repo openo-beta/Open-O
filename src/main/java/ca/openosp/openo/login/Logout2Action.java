@@ -54,6 +54,7 @@ public class Logout2Action extends ActionSupport {
     private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
 
+    @Override
     public String execute() {
         String method = request.getParameter("method");
 

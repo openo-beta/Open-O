@@ -73,6 +73,7 @@ public class OneIdCallbackAction extends ActionSupport {
     private final EhrConnectivityManager ehrConnectivityManager = SpringUtils.getBean(EhrConnectivityManager.class);
     private final SsoAuthenticationManager ssoAuthenticationManager = SpringUtils.getBean(SsoAuthenticationManager.class);
 
+    @Override
     public String execute() {
         HttpSession session = request.getSession(false);
         // A live authenticated session means this callback is a mid-session step-up, not a login.

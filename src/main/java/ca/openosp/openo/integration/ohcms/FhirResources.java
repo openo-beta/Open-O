@@ -23,16 +23,19 @@ import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.dao.ClinicDAO;
 import ca.openosp.openo.commn.dao.ContactDao;
 import ca.openosp.openo.commn.dao.DemographicContactDao;
+import ca.openosp.openo.commn.dao.UAODao;
 import ca.openosp.openo.commn.model.Clinic;
 import ca.openosp.openo.commn.model.Contact;
 import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.DemographicContact;
 import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.commn.model.UAO;
 import ca.openosp.openo.integration.fhir.r4.utils.EnumMappingUtil;
 import ca.openosp.openo.integration.oneId.OneIdGatewayData;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.uhn.fhir.context.FhirContext;
+import org.hl7.fhir.r4.model.Address;
 import org.hl7.fhir.r4.model.Address.AddressType;
 import org.hl7.fhir.r4.model.Address.AddressUse;
 import org.hl7.fhir.r4.model.BaseResource;
@@ -41,6 +44,7 @@ import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.ContactPoint;
 import org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r4.model.ContactPoint.ContactPointUse;
+import org.hl7.fhir.r4.model.Enumerations.AdministrativeGender;
 import org.hl7.fhir.r4.model.HumanName;
 import org.hl7.fhir.r4.model.HumanName.NameUse;
 import org.hl7.fhir.r4.model.IdType;
@@ -63,6 +67,7 @@ public class FhirResources {
   ContactDao contactDao = SpringUtils.getBean(ContactDao.class);
   ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
   DemographicContactDao demographicContactDao = SpringUtils.getBean(DemographicContactDao.class);
+  UAODao uaoDao = SpringUtils.getBean(UAODao.class);
   private static final FhirContext fhirContext = FhirContext.forR4();
 
   public Organization getOrganization(LoggedInInfo loggedInInfo) throws CMSException {
@@ -89,10 +94,25 @@ public class FhirResources {
           "Organization name can not be blank. Select an authority (UAO) or edit Clinic details in the administration section.");
     }
     organization.setName(organizationName);
-    // No address here. The Organization is the Health Information Custodian the provider acts for,
-    // and the clinic's address is the Location's, which getLocation sends. The two are separate
-    // entities: one custodian covers many clinics. OpenO holds no address for a custodian, so the
-    // Organization goes out identified by name and UAO alone.
+    // The custodian's own address, recorded against the authority the provider is acting under.
+    // It is not the clinic's address, which getLocation sends: one custodian covers many clinics.
+    UAO authority = selectedAuthority(loggedInInfo);
+    if (authority != null && authority.getAddress() != null
+        && !authority.getAddress().trim().isEmpty()) {
+      Address custodianAddress = organization.addAddress()
+          .setUse(AddressUse.WORK)
+          .setType(AddressType.PHYSICAL)
+          .addLine(authority.getAddress().trim());
+      if (authority.getCity() != null && !authority.getCity().trim().isEmpty()) {
+        custodianAddress.setCity(authority.getCity().trim());
+      }
+      if (authority.getProvince() != null && !authority.getProvince().trim().isEmpty()) {
+        custodianAddress.setState(authority.getProvince().trim());
+      }
+      if (authority.getPostal() != null && !authority.getPostal().trim().isEmpty()) {
+        custodianAddress.setPostalCode(authority.getPostal().trim());
+      }
+    }
     if (clinic.getWorkPhone() != null && clinic.getWorkPhone().trim().length() > 4) {
       organization.addTelecom().setSystem(ContactPointSystem.PHONE)
           .setUse(ContactPointUse.WORK).setValue(clinic.getWorkPhone());
@@ -201,7 +221,66 @@ public class FhirResources {
     if (title != null && !title.trim().isEmpty()) {
       practitionerName.addPrefix(title.trim());
     }
+    // The clinician's own contact details, not the clinic's. The business number and address
+    // belong to the Organization and the Location, so the provider's work phone is not sent here.
+    addPractitionerContact(practitioner, ContactPointSystem.PHONE,
+        loggedInInfo.getLoggedInProvider().getPhone());
+    addPractitionerContact(practitioner, ContactPointSystem.EMAIL,
+        loggedInInfo.getLoggedInProvider().getEmail());
+    practitioner.setGender(administrativeGender(loggedInInfo.getLoggedInProvider().getSex()));
     return practitioner;
+  }
+
+  /**
+   * Returns the authority the provider is currently acting under, matched by its UAO value against
+   * the provider's active authorities.
+   *
+   * @param loggedInInfo LoggedInInfo the acting provider session
+   * @return UAO the selected authority, or null where none is selected or none matches
+   */
+  private UAO selectedAuthority(LoggedInInfo loggedInInfo) {
+    String selected = loggedInInfo.getOneIdGatewayData().getUao();
+    if (selected == null || selected.trim().isEmpty()) {
+      return null;
+    }
+    for (UAO candidate : uaoDao.findByProvider(loggedInInfo.getLoggedInProviderNo())) {
+      if (selected.trim().equals(candidate.getName())) {
+        return candidate;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Adds a contact point to the Practitioner where the provider record carries one.
+   *
+   * @param practitioner Practitioner the resource being built
+   * @param system       ContactPointSystem the kind of contact point
+   * @param value        String the recorded value, which may be absent
+   */
+  private static void addPractitionerContact(Practitioner practitioner, ContactPointSystem system,
+      String value) {
+    if (value == null || value.trim().length() <= 4) {
+      return;
+    }
+    practitioner.addTelecom().setSystem(system).setValue(value.trim());
+  }
+
+  /**
+   * Maps a provider's recorded sex to the FHIR administrative gender.
+   *
+   * @param sex String the sex held on the provider record, which may be absent or unrecognized
+   * @return AdministrativeGender the mapped gender, or null where there is nothing to map
+   */
+  private static AdministrativeGender administrativeGender(String sex) {
+    if (sex == null || sex.trim().isEmpty()) {
+      return null;
+    }
+    try {
+      return EnumMappingUtil.genderToAdministrativeGender(Gender.valueOf(sex.trim().toUpperCase()));
+    } catch (IllegalArgumentException e) {
+      return null;
+    }
   }
 
   public Patient getPatient(Demographic demographic) throws CMSException {

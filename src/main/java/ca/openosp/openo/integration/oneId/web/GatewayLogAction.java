@@ -51,6 +51,7 @@ public class GatewayLogAction extends ActionSupport {
     private static final String SEC_OBJECT = "_admin.ehrConnectivity";
     private static final int MAX_ROWS = 500;
 
+    @Override
     public String execute() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, SEC_OBJECT, "r", null)) {
