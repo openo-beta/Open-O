@@ -89,6 +89,12 @@ public class EhrConnectivitySettingsAction extends ActionSupport {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, SEC_OBJECT, "w", null)) {
             throw new SecurityException("missing required sec object (" + SEC_OBJECT + ")");
         }
+        // Settings only change on a POST, so a crafted link or image cannot rewrite the client
+        // secret, the keystore password or an endpoint. A plain GET renders the screen unchanged.
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+            loadSettingsForDisplay();
+            return "success";
+        }
 
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         String ip = request.getRemoteAddr();
