@@ -79,14 +79,26 @@ public class OneIdSignOutAction extends ActionSupport {
         }
 
         OneIdSessionTeardown.endRemoteSession(loggedInInfo, gatewayData);
+        boolean removed = true;
         try {
             ehrConnectivityManager.removeOneIdSession(loggedInInfo, providerNo);
         } catch (Exception e) {
+            removed = false;
             logger.error("ONE ID session removal on sign out failed", e);
         }
 
         clearGatewayData(loggedInInfo, gatewayData);
-        LogAction.addLog(providerNo, LogConst.LOGOUT, "ONE ID", "", request.getRemoteAddr());
+        if (removed) {
+            LogAction.addLog(providerNo, LogConst.LOGOUT, "ONE ID", "", request.getRemoteAddr());
+        } else {
+            // The stored session outlived the attempt to delete it, so the next request restores
+            // it and the provider is signed in again. The grant was already withdrawn, so what
+            // comes back is a session whose tokens no longer work. Recording a sign-out here
+            // would say something happened that did not.
+            LogAction.addLog(providerNo, LogConst.NORIGHT, "ONE ID",
+                    "sign out did not complete: the stored session could not be removed",
+                    request.getRemoteAddr());
+        }
         redirectToPreferences();
         return NONE;
     }
