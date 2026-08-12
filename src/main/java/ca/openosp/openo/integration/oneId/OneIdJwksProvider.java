@@ -133,8 +133,11 @@ public class OneIdJwksProvider {
         if (keys == null) {
             return null;
         }
+        if (kid == null || kid.trim().isEmpty()) {
+            return soleKey(keys);
+        }
         for (Jwk<?> jwk : keys.getKeys()) {
-            if (kid == null || kid.equals(jwk.getId())) {
+            if (kid.equals(jwk.getId())) {
                 Key key = jwk.toKey();
                 if (key instanceof PublicKey) {
                     return (PublicKey) key;
@@ -142,6 +145,31 @@ public class OneIdJwksProvider {
             }
         }
         return null;
+    }
+
+    /**
+     * The only public key in the set, or null when the set holds more than one.
+     *
+     * <p>A token may leave the key id out where the issuer publishes a single key, since there is
+     * nothing to choose between. Where it publishes several, which is what a key rotation looks
+     * like, choosing one would make verification depend on the order they happened to be listed in.
+     *
+     * @param keys JwkSet the published keys
+     * @return PublicKey the single public key, or null when there is not exactly one
+     */
+    private static PublicKey soleKey(JwkSet keys) {
+        PublicKey only = null;
+        for (Jwk<?> jwk : keys.getKeys()) {
+            Key key = jwk.toKey();
+            if (key instanceof PublicKey) {
+                if (only != null) {
+                    logger.warn("id_token carries no key id and the JWKS publishes more than one");
+                    return null;
+                }
+                only = (PublicKey) key;
+            }
+        }
+        return only;
     }
 
     private synchronized JwkSet currentKeys(String jwksUri, boolean forceRefresh) {
