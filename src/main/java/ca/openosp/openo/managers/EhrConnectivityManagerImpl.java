@@ -278,12 +278,12 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
                 || securityInfoManager.hasPrivilege(loggedInInfo, "_ehr.connectivity", privilege, null)) {
             return;
         }
-        throw new RuntimeException("missing required sec object (_ehr.connectivity or _admin.ehrConnectivity)");
+        throw new SecurityException("missing required sec object (_ehr.connectivity or _admin.ehrConnectivity)");
     }
 
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.ehrConnectivity", privilege, null)) {
-            throw new RuntimeException("missing required sec object (_admin.ehrConnectivity)");
+            throw new SecurityException("missing required sec object (_admin.ehrConnectivity)");
         }
     }
 
@@ -316,7 +316,7 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
                 && securityInfoManager.hasPrivilege(loggedInInfo, "_ehr.connectivity", privilege, null)) {
             return;
         }
-        throw new RuntimeException(
+        throw new SecurityException(
                 "missing required sec object (_admin.ehrConnectivity, or _ehr.connectivity on own provider)");
     }
 }
