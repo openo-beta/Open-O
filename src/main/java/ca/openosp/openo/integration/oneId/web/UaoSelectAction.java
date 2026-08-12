@@ -87,13 +87,40 @@ public class UaoSelectAction extends ActionSupport {
         checkPrivilege(loggedInInfo, "w");
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        Integer id = parseId(request.getParameter("id"));
-        UAO uao = (id == null) ? null : ehrConnectivityManager.findUao(loggedInInfo, id);
+        UAO uao = ownActiveUao(loggedInInfo, providerNo, parseId(request.getParameter("id")));
         if (uao != null) {
             applyUao(loggedInInfo, providerNo, uao);
         }
         redirectHome();
         return NONE;
+    }
+
+    /**
+     * Finds one of the acting provider's own values that is still in use.
+     *
+     * <p>The id arrives on the request, so it is matched against the same list the picker was built
+     * from rather than fetched on its own. Only a value that list offered can be applied: not one
+     * belonging to another provider, and not one that has been taken out of use.
+     *
+     * @param loggedInInfo LoggedInInfo the acting provider's session information
+     * @param providerNo   String the acting provider
+     * @param id           Integer the submitted value's id, which may be absent or unparseable
+     * @return UAO the matching value, or null when the id names none of theirs
+     */
+    private UAO ownActiveUao(LoggedInInfo loggedInInfo, String providerNo, Integer id) {
+        if (id == null) {
+            return null;
+        }
+        List<UAO> uaoList = ehrConnectivityManager.findUaosByProvider(loggedInInfo, providerNo);
+        if (uaoList == null) {
+            return null;
+        }
+        for (UAO candidate : uaoList) {
+            if (id.equals(candidate.getId())) {
+                return candidate;
+            }
+        }
+        return null;
     }
 
     private void applyUao(LoggedInInfo loggedInInfo, String providerNo, UAO uao) {
