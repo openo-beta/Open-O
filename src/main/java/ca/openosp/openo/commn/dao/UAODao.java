@@ -8,6 +8,11 @@ import java.util.List;
 
 /**
  * Data access for a provider's "Under Authority Of" (UAO) values.
+ *
+ * <p>A UAO names the Health Information Custodian a provider is acting for. A provider can hold
+ * several and one of them is their default, which is the one a session starts under.
+ *
+ * @since 2026-07-02
  */
 public interface UAODao extends AbstractDao<UAO> {
 
