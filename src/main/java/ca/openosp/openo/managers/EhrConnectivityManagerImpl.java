@@ -150,11 +150,9 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
 
     @Override
     public void saveOneIdSession(OneIdSession oneIdSession) {
-        if (oneIdSessionDao.find(oneIdSession.getProviderNo()) == null) {
-            oneIdSessionDao.persist(oneIdSession);
-        } else {
-            oneIdSessionDao.merge(oneIdSession);
-        }
+        // The provider number is the assigned id, so this writes a provider's first session and
+        // replaces a later one without needing to know which it is.
+        oneIdSessionDao.merge(oneIdSession);
     }
 
     @Override
