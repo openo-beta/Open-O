@@ -25,6 +25,7 @@ package ca.openosp.openo.integration.oneId;
 
 import ca.openosp.openo.commn.model.SystemPreferences.ONEID_KEYS;
 import ca.openosp.openo.managers.EhrConnectivityManager;
+import ca.openosp.openo.test.unit.OpenOUnitTestBase;
 import com.sun.net.httpserver.HttpServer;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -60,7 +61,7 @@ import static org.mockito.Mockito.when;
  * @since 2026-07-02
  */
 @Tag("unit")
-class OneIdJwksProviderUnitTest {
+class OneIdJwksProviderUnitTest extends OpenOUnitTestBase {
 
     private static final String ISSUER = "https://oneid.example.ontariohealth.ca";
     private static final String AUDIENCE = "openo-test-client";
