@@ -97,8 +97,8 @@ public class ViewletLaunchAction extends ActionSupport {
             writeFailure("This EHR service is not configured.");
             return NONE;
         }
+        String uniqueToken = Base64.getUrlEncoder().encodeToString(UUID.randomUUID().toString().getBytes());
         try {
-            String uniqueToken = Base64.getUrlEncoder().encodeToString(UUID.randomUUID().toString().getBytes());
             String url = new OmdGateway().getViewletLaunchURL(loggedInInfo, demographicNo, viewlet.getKeyValue(), uniqueToken);
             ObjectNode node = objectMapper.createObjectNode();
             node.put("viewletUrl", url);
@@ -106,11 +106,15 @@ public class ViewletLaunchAction extends ActionSupport {
             node.put("timeoutMillis", viewletTimeoutMillis());
             writeJson(HttpServletResponse.SC_OK, node);
         } catch (CMSException | IllegalStateException e) {
-            new OmdGateway().logError(loggedInInfo, viewlet.getKeyValue(), "viewletLaunch", e.getMessage(), demographicNo, null);
-            writeFailure(e.getMessage());
+            // When the CMS refuses a context change it is its response body that becomes the
+            // exception message, and that body quotes back the patient just sent, so neither the
+            // audit row nor the reply repeats it. The correlation id ties this row to the launch.
+            new OmdGateway().logError(loggedInInfo, viewlet.getKeyValue(), "viewletLaunch",
+                    "The EHR service did not accept the patient context.", demographicNo, uniqueToken);
+            writeFailure("The EHR service could not be launched. Please try again.");
         } catch (Exception e) {
             logger.error("Viewlet launch failed", e);
-            new OmdGateway().logError(loggedInInfo, viewlet.getKeyValue(), "viewletLaunch", "The EHR service could not be launched.", demographicNo, null);
+            new OmdGateway().logError(loggedInInfo, viewlet.getKeyValue(), "viewletLaunch", "The EHR service could not be launched.", demographicNo, uniqueToken);
             writeFailure("The EHR service could not be launched. Please try again.");
         }
         return NONE;
