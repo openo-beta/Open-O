@@ -204,4 +204,127 @@ class OmdGatewayCompleteLogUnitTest {
       assertThat(log.getxLobTxId()).isEqualTo("lob-1");
     }
   }
+
+  /**
+   * Resource ids the interaction carried (DHDR15.01 j, DHDR15.02 d).
+   *
+   * <p>The shapes here are taken from OntarioMD's own captures: a searchset {@code Bundle} whose id
+   * is a lowercase dashed UUID, carrying {@code MedicationDispense} entries whose ids are bare
+   * 32-character uppercase hex - no {@code urn:uuid:} prefix and no full reference.
+   *
+   * <p>{@code messageHeaderId} is filled from {@code Bundle.id}. DHDR15.01(j) names
+   * {@code MessageHeader.id}, but a DHDR retrieval carries no {@code MessageHeader}; see
+   * {@link OmdGateway#extractBundleId} for why {@code Bundle.id} is the value the requirement's own
+   * cross-reference resolves to.
+   */
+  @Nested
+  @DisplayName("resource ids the interaction carried (DHDR15.01 j, DHDR15.02 d)")
+  class ResourceIds {
+
+    private static final String DISPENSE_ONE = "5ED4D6C1668D41A0E05400144FF8F552";
+    private static final String DISPENSE_TWO = "93F05B0FF74D525FE05400144FF9F54A";
+    private static final String BUNDLE_ID = "e72bc3b0-2c91-40d7-bffe-b690fd65fdce";
+
+    /**
+     * Builds a searchset body carrying the given MedicationDispense ids.
+     *
+     * @param ids String[] the dispense ids the bundle should carry, possibly none
+     * @return String the response body as the service would return it
+     */
+    private String searchset(String... ids) {
+      StringBuilder body = new StringBuilder("{\"resourceType\":\"Bundle\",\"id\":\"")
+          .append(BUNDLE_ID).append("\",\"type\":\"searchset\",\"entry\":[");
+      for (int i = 0; i < ids.length; i++) {
+        if (i > 0) {
+          body.append(',');
+        }
+        body.append("{\"resource\":{\"resourceType\":\"MedicationDispense\",\"id\":\"")
+            .append(ids[i]).append("\"}}");
+      }
+      return body.append("]}").toString();
+    }
+
+    /**
+     * Stamps a 200 response carrying the given body onto a fresh audit row.
+     *
+     * @param body String the response body
+     * @return OMDGatewayTransactionLog the completed row
+     */
+    private OMDGatewayTransactionLog complete(String body) {
+      OMDGatewayTransactionLog log = new OMDGatewayTransactionLog();
+      Response response = response(200, "req-1");
+      when(response.readEntity(String.class)).thenReturn(body);
+      OmdGateway.completeLog(log, response, true);
+      return log;
+    }
+
+    @Test
+    @DisplayName("should record the bundle id and every dispense id a search returns")
+    void shouldRecordResourceIds_whenSearchReturnsDispenses() {
+      OMDGatewayTransactionLog log = complete(searchset(DISPENSE_ONE, DISPENSE_TWO));
+
+      assertThat(log.getMessageHeaderId()).isEqualTo(BUNDLE_ID);
+      assertThat(log.getMedicationDispenseIds()).isEqualTo(DISPENSE_ONE + "," + DISPENSE_TWO);
+    }
+
+    @Test
+    @DisplayName("should keep the order the service returned, which is the sort the search asked for")
+    void shouldPreserveOrder_whenSearchReturnsDispenses() {
+      OMDGatewayTransactionLog log = complete(searchset(DISPENSE_TWO, DISPENSE_ONE));
+
+      assertThat(log.getMedicationDispenseIds()).isEqualTo(DISPENSE_TWO + "," + DISPENSE_ONE);
+    }
+
+    @Test
+    @DisplayName("should record the bundle id when a search returns no dispenses")
+    void shouldRecordBundleIdOnly_whenSearchReturnsNothing() {
+      OMDGatewayTransactionLog log = complete(searchset());
+
+      assertThat(log.getMessageHeaderId()).isEqualTo(BUNDLE_ID);
+      assertThat(log.getMedicationDispenseIds()).isNull();
+    }
+
+    @Test
+    @DisplayName("should record no resource ids when the service returns an OperationOutcome")
+    void shouldRecordNoResourceIds_whenServiceReturnsOperationOutcome() {
+      OMDGatewayTransactionLog log = complete(
+          "{\"resourceType\":\"OperationOutcome\",\"id\":\"outcome-1\",\"issue\":[]}");
+
+      assertThat(log.getMessageHeaderId()).isNull();
+      assertThat(log.getMedicationDispenseIds()).isNull();
+    }
+
+    @Test
+    @DisplayName("should record no resource ids when the body is not FHIR, as on the OAuth calls")
+    void shouldRecordNoResourceIds_whenBodyIsNotFhir() {
+      OMDGatewayTransactionLog log = complete("{\"access_token\":\"secret\"}");
+
+      assertThat(log.getMessageHeaderId()).isNull();
+      assertThat(log.getMedicationDispenseIds()).isNull();
+    }
+
+    @Test
+    @DisplayName("should ignore entries that are not dispenses, such as an included OperationOutcome")
+    void shouldIgnoreOtherEntries_whenBundleCarriesThem() {
+      String body = "{\"resourceType\":\"Bundle\",\"id\":\"" + BUNDLE_ID + "\",\"type\":\"searchset\","
+          + "\"entry\":[{\"resource\":{\"resourceType\":\"OperationOutcome\",\"id\":\"skip-me\"}},"
+          + "{\"resource\":{\"resourceType\":\"MedicationDispense\",\"id\":\"" + DISPENSE_ONE + "\"}}]}";
+
+      OMDGatewayTransactionLog log = complete(body);
+
+      assertThat(log.getMedicationDispenseIds()).isEqualTo(DISPENSE_ONE);
+    }
+
+    @Test
+    @DisplayName("should bound a malformed bundle id rather than fail the whole audit row")
+    void shouldBoundBundleId_whenServiceReturnsAnOverlongId() {
+      String overlong = "x".repeat(80);
+      OMDGatewayTransactionLog log = complete(
+          "{\"resourceType\":\"Bundle\",\"id\":\"" + overlong + "\",\"type\":\"searchset\"}");
+
+      // 64 is the FHIR id primitive's own limit and the column's width, so no conformant id can
+      // reach this - but a row that cannot be inserted loses the whole audit record.
+      assertThat(log.getMessageHeaderId()).hasSize(64);
+    }
+  }
 }

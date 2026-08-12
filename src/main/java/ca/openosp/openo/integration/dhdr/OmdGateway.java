@@ -169,9 +169,18 @@ public class OmdGateway {
 			log.setxCorrelationId(xCorrelationId);
 		}
 
+		// Parsed once and read three times: every call reaches here, including the OAuth ones whose
+		// bodies are not FHIR at all, so this is not a place to parse the same string repeatedly.
+		JsonNode responseJson = readJson(body);
+
 		// Stored for any status: a refusal carries the code that explains it, and a 200 can still
 		// carry one, for example the notice that a temporary consent unblock is in effect.
-		log.setEhrResultCode(extractEhrResultCode(body));
+		log.setEhrResultCode(extractEhrResultCode(responseJson));
+
+		// DHDR15.01(j) and 15.02(d): the resource ids the interaction carried. Both are null on any
+		// call whose body is not a searchset, which is every call but the drug history search.
+		log.setMessageHeaderId(extractBundleId(responseJson));
+		log.setMedicationDispenseIds(extractMedicationDispenseIds(responseJson));
 
 		if (response2.getStatus() >= 300) {
 			log.setSuccess(false);
@@ -239,6 +248,29 @@ public class OmdGateway {
 
 	private static final ObjectMapper auditObjectMapper = new ObjectMapper();
 	private static final int MAX_EHR_RESULT_CODE_LENGTH = 255;
+	private static final int MAX_MESSAGE_ID_LENGTH = 64;
+
+	/**
+	 * Parses a response body for the audit row, or reports that there is nothing to read.
+	 *
+	 * <p>Every gateway call reaches {@link #completeLog}, including the OAuth ones whose bodies are
+	 * not FHIR and not necessarily JSON. Parsing once here keeps that cost to one pass and lets each
+	 * extractor below stay a pure read of the tree.</p>
+	 *
+	 * @param body String the raw response body, which may be empty or may not be JSON at all
+	 * @return JsonNode the parsed body, or null where there is nothing to parse
+	 */
+	private static JsonNode readJson(String body) {
+		if (body == null || body.trim().isEmpty()) {
+			return null;
+		}
+		try {
+			return auditObjectMapper.readTree(body);
+		} catch (Exception e) {
+			// A body that is not JSON carries none of what the extractors below look for.
+			return null;
+		}
+	}
 
 	/**
 	 * Reads the EHR service's own outcome codes out of a response body, for example IN_0045 or
@@ -246,17 +278,17 @@ public class OmdGateway {
 	 * returned Bundle, and they are the only thing that says why a call was refused: the HTTP status
 	 * records that it was.
 	 *
-	 * @param body String the raw response body, which may be empty or may not be JSON at all
+	 * @param body JsonNode the parsed response body, which may be null or may not be FHIR
 	 * @return String the codes found, comma separated, or null when the body carries none
 	 * @since 2026-08-04
 	 */
-	static String extractEhrResultCode(String body) {
-		if (body == null || body.trim().isEmpty()) {
+	static String extractEhrResultCode(JsonNode body) {
+		if (body == null) {
 			return null;
 		}
 		try {
 			List<String> codes = new ArrayList<String>();
-			collectOutcomeCodes(auditObjectMapper.readTree(body), codes);
+			collectOutcomeCodes(body, codes);
 			if (codes.isEmpty()) {
 				return null;
 			}
@@ -312,6 +344,85 @@ public class OmdGateway {
 		}
 		for (JsonNode child : node) {
 			collectOutcomeCodes(child, codes);
+		}
+	}
+
+	/**
+	 * Reads the id of a returned searchset {@code Bundle}.
+	 *
+	 * <p>This is what fills {@code messageHeaderId}. DHDR15.01(j) names {@code MessageHeader.id},
+	 * but a DHDR retrieval returns {@code type: searchset} and carries no {@code MessageHeader} -
+	 * it is absent from every OMD capture and from the DHDR IG. DHDR15.02(d) resolves the same
+	 * value by its own cross-reference: FHIR R4 "Resource - Base Resource Definitions" defines
+	 * {@code Resource.id} as the logical id used in the URL for the resource, and for a retrieval
+	 * that resource is the Bundle.</p>
+	 *
+	 * @param body JsonNode the parsed response body, which may be null or may not be FHIR
+	 * @return String the Bundle id, or null where the body carries none
+	 */
+	static String extractBundleId(JsonNode body) {
+		if (body == null) {
+			return null;
+		}
+		try {
+			JsonNode resourceType = body.get("resourceType");
+			if (resourceType == null || !"Bundle".equals(resourceType.asText())) {
+				return null;
+			}
+			JsonNode id = body.get("id");
+			if (id == null || !id.isTextual() || id.asText().trim().isEmpty()) {
+				return null;
+			}
+			String value = id.asText().trim();
+			// No conformant id can exceed the FHIR id primitive's 64 characters, so this only bites
+			// on a malformed one - where recording a bounded value beats failing the whole row.
+			return value.length() > MAX_MESSAGE_ID_LENGTH
+					? value.substring(0, MAX_MESSAGE_ID_LENGTH) : value;
+		} catch (Exception e) {
+			// A body that is not JSON, or not shaped like FHIR, simply has no id to record.
+			return null;
+		}
+	}
+
+	/**
+	 * Collects the ids of every {@code MedicationDispense} a returned searchset {@code Bundle}
+	 * carries, in the order they arrive.
+	 *
+	 * <p>One transaction row covers a search that returns many dispenses, so DHDR15.01(j)'s
+	 * dispense ids are a list rather than a value. Nothing is truncated here: the column's own
+	 * setter bounds an over-long list to whole ids and marks how many it left out.</p>
+	 *
+	 * @param body JsonNode the parsed response body, which may be null or may not be FHIR
+	 * @return String the ids comma separated, or null where the body carries none
+	 */
+	static String extractMedicationDispenseIds(JsonNode body) {
+		if (body == null) {
+			return null;
+		}
+		try {
+			JsonNode entries = body.get("entry");
+			if (entries == null || !entries.isArray()) {
+				return null;
+			}
+			List<String> ids = new ArrayList<String>();
+			for (JsonNode entry : entries) {
+				JsonNode resource = entry.get("resource");
+				if (resource == null) {
+					continue;
+				}
+				JsonNode resourceType = resource.get("resourceType");
+				if (resourceType == null || !"MedicationDispense".equals(resourceType.asText())) {
+					continue;
+				}
+				JsonNode id = resource.get("id");
+				if (id != null && id.isTextual() && !id.asText().trim().isEmpty()) {
+					ids.add(id.asText().trim());
+				}
+			}
+			return ids.isEmpty() ? null : String.join(",", ids);
+		} catch (Exception e) {
+			// A body that is not JSON, or not shaped like FHIR, simply has no ids to record.
+			return null;
 		}
 	}
 
