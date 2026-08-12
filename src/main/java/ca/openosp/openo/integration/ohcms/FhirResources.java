@@ -83,10 +83,12 @@ public class FhirResources {
     identifier.setSystem(PROVIDER_UPI_SYSTEM)
         .setValue(oneIdGatewayData.getProviderUPI());
     organization.addIdentifier(identifier);
+    // There is not always a clinic on file. The authority can still name the organization,
+    // and the clinic only supplies the fallback name and the contact numbers.
     Clinic clinic = clinicDao.getClinic();
     // name the organization by the selected authority, falling back to the clinic
     String organizationName = oneIdGatewayData.getUaoFriendlyName();
-    if (organizationName == null || organizationName.trim().isEmpty()) {
+    if ((organizationName == null || organizationName.trim().isEmpty()) && clinic != null) {
       organizationName = clinic.getOrganizationName();
     }
     if (organizationName == null || organizationName.trim().isEmpty()) {
@@ -113,11 +115,12 @@ public class FhirResources {
         custodianAddress.setPostalCode(authority.getPostal().trim());
       }
     }
-    if (clinic.getWorkPhone() != null && clinic.getWorkPhone().trim().length() > 4) {
+    if (clinic != null && clinic.getWorkPhone() != null
+        && clinic.getWorkPhone().trim().length() > 4) {
       organization.addTelecom().setSystem(ContactPointSystem.PHONE)
           .setUse(ContactPointUse.WORK).setValue(clinic.getWorkPhone());
     }
-    if (clinic.getFax() != null && clinic.getFax().trim().length() > 4) {
+    if (clinic != null && clinic.getFax() != null && clinic.getFax().trim().length() > 4) {
       organization.addTelecom().setSystem(ContactPointSystem.FAX)
           .setUse(ContactPointUse.WORK).setValue(clinic.getFax());
     }
