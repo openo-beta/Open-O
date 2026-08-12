@@ -46,6 +46,12 @@ public class OMDGatewayTransactionLog extends AbstractModel<Integer> {
   // resultCode holds the HTTP status, which says the call was rejected but not why; this holds
   // the reason, as a value that can be filtered on rather than text buried in the error body.
   private String ehrResultCode;
+
+  // Resource ids from the FHIR message the interaction carried. The message id is one value; a
+  // search returns many dispenses under a single transaction, so those are held as a comma
+  // separated list. They are a record rather than a lookup: nothing queries or counts on them.
+  private String messageHeaderId;
+  private String medicationDispenseIds;
   private Boolean success;
   private String error;
   private String dataSent;
@@ -127,6 +133,55 @@ public class OMDGatewayTransactionLog extends AbstractModel<Integer> {
 
   public void setEhrResultCode(String ehrResultCode) {
     this.ehrResultCode = ehrResultCode;
+  }
+
+  public String getMessageHeaderId() {
+    return messageHeaderId;
+  }
+
+  public void setMessageHeaderId(String messageHeaderId) {
+    this.messageHeaderId = messageHeaderId;
+  }
+
+  public String getMedicationDispenseIds() {
+    return medicationDispenseIds;
+  }
+
+  /**
+   * Records the dispense ids an interaction returned, as a comma separated list.
+   *
+   * <p>A list longer than the column holds is cut back to whole ids and ends with a count of the
+   * ones left out, so a row never carries half an id and never reads as complete when it is not.
+   *
+   * @param medicationDispenseIds String the comma separated ids, which may be absent
+   */
+  public void setMedicationDispenseIds(String medicationDispenseIds) {
+    this.medicationDispenseIds = boundedIdList(medicationDispenseIds);
+  }
+
+  /** Longest id list the column holds, in characters. */
+  private static final int MAX_DISPENSE_IDS_LENGTH = 16000;
+
+  private static String boundedIdList(String ids) {
+    if (ids == null || ids.length() <= MAX_DISPENSE_IDS_LENGTH) {
+      return ids;
+    }
+    String[] all = ids.split(",");
+    StringBuilder kept = new StringBuilder();
+    int keptCount = 0;
+    for (String id : all) {
+      String candidate = keptCount == 0 ? id : kept + "," + id;
+      // leave room for the marker that says how many were left out
+      if (candidate.length() > MAX_DISPENSE_IDS_LENGTH - 32) {
+        break;
+      }
+      if (keptCount > 0) {
+        kept.append(',');
+      }
+      kept.append(id);
+      keptCount++;
+    }
+    return kept + ",(" + (all.length - keptCount) + " more not recorded)";
   }
 
   public Boolean getSuccess() {

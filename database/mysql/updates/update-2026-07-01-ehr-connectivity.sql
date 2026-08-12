@@ -17,6 +17,12 @@ CREATE TABLE IF NOT EXISTS `OMDGatewayTransactionLog` (
   -- the HTTP status, which says a call was refused but not why; this holds the reason as a value
   -- that can be filtered on. Values come from the published ca.on.ehr.r4 CodeSystem-ErrorCode.
   `ehrResultCode` varchar(255) DEFAULT NULL,
+  -- Resource ids from the FHIR message an interaction carried. 64 characters is the FHIR id
+  -- primitive's own limit, so no conformant id can be longer. One transaction covers a search
+  -- that returns many dispenses, so those are held as a comma separated list, which is how they
+  -- are read: nothing queries or counts on them.
+  `messageHeaderId` varchar(64) DEFAULT NULL,
+  `medicationDispenseIds` text,
   `success` tinyint(1) DEFAULT NULL,
   `error` longtext,
   `headers` longtext,
