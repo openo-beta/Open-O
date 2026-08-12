@@ -68,6 +68,7 @@ public class UaoSelectAction extends ActionSupport {
 
         List<UAO> uaoList = ehrConnectivityManager.findUaosByProvider(loggedInInfo, providerNo);
         if (uaoList == null || uaoList.isEmpty()) {
+            clearUao(loggedInInfo, providerNo);
             redirectHome();
             return NONE;
         }
@@ -121,6 +122,26 @@ public class UaoSelectAction extends ActionSupport {
             }
         }
         return null;
+    }
+
+    /**
+     * Drops the authority a provider was acting under, from the request and from the stored session.
+     *
+     * <p>Withdrawing a provider's last authority only deactivates the row. The value they last
+     * selected stays on their session, where it still names a custodian to the CMS and still
+     * satisfies the check that lets an EHR service launch, so it is cleared as soon as this screen
+     * finds nothing left to offer them.
+     *
+     * @param loggedInInfo LoggedInInfo the acting provider's session information
+     * @param providerNo   String the acting provider
+     */
+    private void clearUao(LoggedInInfo loggedInInfo, String providerNo) {
+        OneIdGatewayData gatewayData = loggedInInfo.getOneIdGatewayData();
+        if (gatewayData != null) {
+            gatewayData.setUao(null);
+            gatewayData.setUaoFriendlyName(null);
+        }
+        ehrConnectivityManager.setSessionUao(loggedInInfo, providerNo, null, null);
     }
 
     private void applyUao(LoggedInInfo loggedInInfo, String providerNo, UAO uao) {
