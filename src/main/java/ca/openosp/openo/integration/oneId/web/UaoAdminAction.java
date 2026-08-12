@@ -76,6 +76,9 @@ public class UaoAdminAction extends ActionSupport {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "w");
         String providerNo = trimToNull(request.getParameter("providerNo"));
+        if (rejectNonPost(providerNo)) {
+            return NONE;
+        }
         String name = trimToNull(request.getParameter("name"));
         String friendlyName = trimToNull(request.getParameter("friendlyName"));
         String address = trimToNull(request.getParameter("address"));
@@ -116,6 +119,9 @@ public class UaoAdminAction extends ActionSupport {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "w");
         String providerNo = trimToNull(request.getParameter("providerNo"));
+        if (rejectNonPost(providerNo)) {
+            return NONE;
+        }
         UAO uao = findOwned(loggedInInfo, request.getParameter("id"), providerNo);
         if (uao != null) {
             String uaoName = uao.getName();
@@ -135,6 +141,9 @@ public class UaoAdminAction extends ActionSupport {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "w");
         String providerNo = trimToNull(request.getParameter("providerNo"));
+        if (rejectNonPost(providerNo)) {
+            return NONE;
+        }
         UAO uao = findOwned(loggedInInfo, request.getParameter("id"), providerNo);
         if (uao != null) {
             String previousDefault = currentDefaultName(loggedInInfo, providerNo);
@@ -173,6 +182,20 @@ public class UaoAdminAction extends ActionSupport {
             }
         }
         return "none";
+    }
+
+    /**
+     * Refuses a state change that did not arrive as a POST, sending the caller back to the list.
+     *
+     * @param providerNo String the provider whose list to return to, which may be absent
+     * @return boolean true when the request was refused and a redirect written
+     */
+    private boolean rejectNonPost(String providerNo) {
+        if ("POST".equalsIgnoreCase(request.getMethod())) {
+            return false;
+        }
+        redirectToList(providerNo);
+        return true;
     }
 
     private void redirectToList(String providerNo) {
