@@ -23,8 +23,6 @@
  */
 package ca.openosp.openo.integration.oneId.web;
 
-import ca.openosp.openo.integration.dhdr.OmdGateway;
-import ca.openosp.openo.integration.ohcms.CMSManager;
 import ca.openosp.openo.integration.oneId.OneIdGatewayData;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
@@ -80,16 +78,7 @@ public class OneIdSignOutAction extends ActionSupport {
             return NONE;
         }
 
-        try {
-            CMSManager.userLogout(loggedInInfo);
-        } catch (Exception e) {
-            logger.error("ONE ID CMS context clear on sign out failed", e);
-        }
-        try {
-            new OmdGateway().revokeToken(loggedInInfo, gatewayData);
-        } catch (Exception e) {
-            logger.error("ONE ID token revoke on sign out failed", e);
-        }
+        OneIdSessionTeardown.endRemoteSession(loggedInInfo, gatewayData);
         try {
             ehrConnectivityManager.removeOneIdSession(loggedInInfo, providerNo);
         } catch (Exception e) {
