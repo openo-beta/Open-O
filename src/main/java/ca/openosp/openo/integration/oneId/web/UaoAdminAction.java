@@ -34,10 +34,10 @@ import ca.openosp.openo.utility.SpringUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.owasp.encoder.Encode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -202,7 +202,7 @@ public class UaoAdminAction extends ActionSupport {
         try {
             String url = request.getContextPath() + "/admin/uaoAdmin.do";
             if (providerNo != null) {
-                url += "?providerNo=" + URLEncoder.encode(providerNo, "UTF-8");
+                url += "?providerNo=" + Encode.forUriComponent(providerNo);
             }
             response.sendRedirect(url);
         } catch (Exception e) {

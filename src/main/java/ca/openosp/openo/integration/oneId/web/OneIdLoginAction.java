@@ -31,11 +31,11 @@ import ca.openosp.openo.utility.MiscUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.owasp.encoder.Encode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.net.URLEncoder;
 import java.util.UUID;
 
 /**
@@ -95,7 +95,7 @@ public class OneIdLoginAction extends ActionSupport {
             LogAction.addLog("", LogConst.LOGIN, "failed", error.getUserMessage(), request.getRemoteAddr());
             try {
                 response.sendRedirect(request.getContextPath() + "/loginfailed.jsp?errormsg="
-                        + URLEncoder.encode(error.getUserMessage() + " " + error.getNextStep(), "UTF-8"));
+                        + Encode.forUriComponent(error.getUserMessage() + " " + error.getNextStep()));
             } catch (Exception ignored) {
                 // response already committed
             }
