@@ -98,6 +98,13 @@ public class OneIdJwksProvider {
             throw new IdTokenValidationException("id_token verification failed", e);
         }
 
+        // The parser only compares an expiry it can find, so a token that carries none is not
+        // rejected by it. OpenID Connect requires the claim, and without it the token never
+        // stops being valid.
+        if (claims.getExpiration() == null) {
+            throw new IdTokenValidationException("id_token has no expiry");
+        }
+
         String nonce = claims.get("nonce", String.class);
         if (expectedNonce == null || !expectedNonce.equals(nonce)) {
             throw new IdTokenValidationException("id_token nonce mismatch");
