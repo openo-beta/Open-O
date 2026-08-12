@@ -573,6 +573,10 @@ public class OmdGateway {
 		if(sb.length() > 0) {
 			OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, null, "GATEWAY" , "Configuration Error");
 			omdGatewayTransactionLog.setStarted(new Date());
+			// This row records an attempt that failed, so it says so (DHDR15.01 h). It sits on the
+			// search path - getWebClient calls this before every call - and a row left with a null
+			// success reads as a transaction still in flight rather than one that never left.
+			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
 			omdGatewayTransactionLog.setError(sb.toString());
 			persistCompleted(omdGatewayTransactionLog);
 			throw(new Exception("Gateway Configuration Error"));
