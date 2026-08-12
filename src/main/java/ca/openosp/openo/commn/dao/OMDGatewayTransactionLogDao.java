@@ -47,26 +47,66 @@ public class OMDGatewayTransactionLogDao extends AbstractDaoImpl<OMDGatewayTrans
     return (List<OMDGatewayTransactionLog>) query.getResultList();
   }
 
-  @SuppressWarnings("unchecked")
   public List<OMDGatewayTransactionLog> findByProviderNo(String id) {
+    return findByProviderNo(id, 0);
+  }
+
+  /**
+   * Finds the interactions a provider started, newest first.
+   *
+   * @param id      String the provider number
+   * @param maxRows int the most rows to return, or 0 for all of them
+   * @return List&lt;OMDGatewayTransactionLog&gt; the matching rows
+   */
+  @SuppressWarnings("unchecked")
+  public List<OMDGatewayTransactionLog> findByProviderNo(String id, int maxRows) {
     Query query = entityManager.createQuery(
         "select x from OMDGatewayTransactionLog x where x.initiatingProviderNo=? ORDER BY x.started desc");
     query.setParameter(1, id);
-    return (List<OMDGatewayTransactionLog>) query.getResultList();
+    return (List<OMDGatewayTransactionLog>) bounded(query, maxRows).getResultList();
   }
 
-  @SuppressWarnings("unchecked")
   public List<OMDGatewayTransactionLog> getAll() {
+    return getAll(0);
+  }
+
+  /**
+   * Finds every interaction, newest first.
+   *
+   * @param maxRows int the most rows to return, or 0 for all of them
+   * @return List&lt;OMDGatewayTransactionLog&gt; the rows
+   */
+  @SuppressWarnings("unchecked")
+  public List<OMDGatewayTransactionLog> getAll(int maxRows) {
     Query query = entityManager.createQuery(
         "select x from OMDGatewayTransactionLog x ORDER BY x.started desc");
-    return (List<OMDGatewayTransactionLog>) query.getResultList();
+    return (List<OMDGatewayTransactionLog>) bounded(query, maxRows).getResultList();
   }
 
-  @SuppressWarnings("unchecked")
   public List<OMDGatewayTransactionLog> findByExternalSystem(String systemType) {
+    return findByExternalSystem(systemType, 0);
+  }
+
+  /**
+   * Finds the interactions with one EHR service, newest first.
+   *
+   * @param systemType String the external system the interaction was with
+   * @param maxRows    int the most rows to return, or 0 for all of them
+   * @return List&lt;OMDGatewayTransactionLog&gt; the matching rows
+   */
+  @SuppressWarnings("unchecked")
+  public List<OMDGatewayTransactionLog> findByExternalSystem(String systemType, int maxRows) {
     Query query = entityManager.createQuery(
         "select x from OMDGatewayTransactionLog x  where x.externalSystem=? ORDER BY x.started desc");
     query.setParameter(1, systemType);
-    return (List<OMDGatewayTransactionLog>) query.getResultList();
+    return (List<OMDGatewayTransactionLog>) bounded(query, maxRows).getResultList();
+  }
+
+  /** Applies a row cap to an ordered query, so the database returns only what is displayed. */
+  private static Query bounded(Query query, int maxRows) {
+    if (maxRows > 0) {
+      query.setMaxResults(maxRows);
+    }
+    return query;
   }
 }
