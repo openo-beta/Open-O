@@ -40,12 +40,16 @@ public class UAODaoImpl extends AbstractDaoImpl<UAO> implements UAODao {
      * each other and the last one wins; working from a list read earlier let both proceed from the
      * same starting point and leave two rows flagged default.
      *
-     * <p>A value belonging to another provider, or one taken out of use, matches neither statement's
-     * conditions, so it clears the provider's existing default without setting a new one. Callers
-     * are expected to have resolved the value against this provider first.
+     * <p>A value that is not this provider's, or has been taken out of use, changes nothing at all.
+     * Clearing first and discovering afterwards that there was nothing to set would leave the
+     * provider with no default, so ownership decides whether either statement runs.
      */
     @Override
     public void setAsDefault(UAO uao, String providerNo) {
+        if (!isOwnedAndActive(uao.getId(), providerNo)) {
+            return;
+        }
+
         Query clearOthers = entityManager.createQuery(
                 "update UAO u set u.defaultUAO = false"
                         + " where u.providerNo = :providerNo and u.active = true and u.id <> :id");
@@ -59,5 +63,27 @@ public class UAODaoImpl extends AbstractDaoImpl<UAO> implements UAODao {
         setChosen.setParameter("id", uao.getId());
         setChosen.setParameter("providerNo", providerNo);
         setChosen.executeUpdate();
+    }
+
+    /**
+     * Whether a value is one this provider holds and still in use.
+     *
+     * <p>Asked as its own statement rather than folded into the updates, because MySQL will not
+     * accept a subquery against the table an UPDATE is writing.
+     *
+     * @param id         Integer the value's id, which may be absent
+     * @param providerNo String the provider the value must belong to
+     * @return boolean true when the value is this provider's and active
+     */
+    private boolean isOwnedAndActive(Integer id, String providerNo) {
+        if (id == null || providerNo == null) {
+            return false;
+        }
+        Query query = entityManager.createQuery(
+                "select count(u) from UAO u"
+                        + " where u.id = :id and u.providerNo = :providerNo and u.active = true");
+        query.setParameter("id", id);
+        query.setParameter("providerNo", providerNo);
+        return ((Number) query.getSingleResult()).longValue() > 0;
     }
 }
