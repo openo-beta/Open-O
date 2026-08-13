@@ -250,6 +250,7 @@ public class RxPharmacyData {
      *
      * @param pharmacy PharmacyInfo the pharmacy, may be null
      * @return String the joined phone numbers, or "" if none are on file
+     * @since 2026-08-13
      */
     public static String composePharmacyPhone(PharmacyInfo pharmacy) {
         if (pharmacy == null) {
