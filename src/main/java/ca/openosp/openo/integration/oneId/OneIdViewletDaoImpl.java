@@ -20,6 +20,7 @@ public class OneIdViewletDaoImpl extends AbstractDaoImpl<OneIdViewlet>  implemen
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public OneIdViewlet queryOneIdViewletForKey(final String key) {
         Query query = entityManager.createQuery(
                 "SELECT o FROM OneIdViewlet o WHERE o.keyValue = ?1 ORDER BY o.deleted ASC, o.id ASC");
@@ -30,12 +31,14 @@ public class OneIdViewletDaoImpl extends AbstractDaoImpl<OneIdViewlet>  implemen
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public List<OneIdViewlet> findAllOrderByName() {
         Query query = entityManager.createQuery("SELECT o FROM OneIdViewlet o ORDER BY o.name");
         return query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public List<OneIdViewlet> findAllActiveAndShowInEchartTrue() {
         Query query = entityManager.createQuery(
                 "SELECT o FROM OneIdViewlet o WHERE o.deleted = false AND o.showInEchart = true");
