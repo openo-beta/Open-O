@@ -77,6 +77,7 @@
             <th>System</th>
             <th>Transaction</th>
             <th>Status</th>
+            <th>EHR Outcome</th>
             <th>UAO</th>
             <th>X-Request-Id</th>
             <th>X-Correlation-Id</th>
@@ -98,6 +99,7 @@
                     </c:choose>
                     ${e:forHtmlContent(log.resultCode)}
                 </td>
+                <td>${e:forHtmlContent(log.ehrResultCode)}</td>
                 <td>${e:forHtmlContent(log.uao)}</td>
                 <td>${e:forHtmlContent(log.xRequestId)}</td>
                 <td>${e:forHtmlContent(log.xCorrelationId)}</td>
@@ -106,7 +108,7 @@
             </tr>
         </c:forEach>
         <c:if test="${empty logs}">
-            <tr><td colspan="10" class="text-center text-muted">No gateway transactions recorded.</td></tr>
+            <tr><td colspan="11" class="text-center text-muted">No gateway transactions recorded.</td></tr>
         </c:if>
         </tbody>
     </table>
