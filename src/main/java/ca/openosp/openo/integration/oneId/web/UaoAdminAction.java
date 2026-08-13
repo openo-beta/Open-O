@@ -155,13 +155,27 @@ public class UaoAdminAction extends ActionSupport {
         return NONE;
     }
 
+    /**
+     * Finds one of a provider's authorities that is still in use.
+     *
+     * <p>A withdrawn value is not returned. The list this screen works from only shows active
+     * values, so an id naming a withdrawn one comes from a page left open while someone else
+     * changed it, and acting on it would remove what is already removed or record a default that
+     * was never set.
+     *
+     * @param loggedInInfo LoggedInInfo the acting administrator's session information
+     * @param idValue      String the submitted id, which may be absent or unparseable
+     * @param providerNo   String the provider the value must belong to
+     * @return UAO the matching value, or null when the id names none of theirs
+     */
     private UAO findOwned(LoggedInInfo loggedInInfo, String idValue, String providerNo) {
         Integer id = parseId(idValue);
         if (id == null || providerNo == null) {
             return null;
         }
         UAO uao = ehrConnectivityManager.findUao(loggedInInfo, id);
-        if (uao != null && providerNo.equals(uao.getProviderNo())) {
+        if (uao != null && providerNo.equals(uao.getProviderNo())
+                && Boolean.TRUE.equals(uao.getActive())) {
             return uao;
         }
         return null;
