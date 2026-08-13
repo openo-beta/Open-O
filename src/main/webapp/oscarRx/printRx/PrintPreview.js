@@ -420,7 +420,7 @@ function printPaste2Parent(ctx, print, fax, pasteRx, rxPasteAsterisk, prefPharma
 
             text += " prescribed by " + prescribedBy;
 
-            text += "," + timeStamp + "]\n";
+            text += ", " + timeStamp + "]\n";
         }
 
         if (pasteRx) {
