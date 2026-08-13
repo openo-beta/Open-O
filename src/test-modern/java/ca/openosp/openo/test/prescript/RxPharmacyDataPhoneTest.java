@@ -50,6 +50,15 @@ class RxPharmacyDataPhoneTest {
     }
 
     @Test
+    @DisplayName("should trim both numbers and still join them with a single space")
+    void shouldTrimBothNumbers_whenBothArePadded() {
+        String phone = RxPharmacyData.composePharmacyPhone(
+                pharmacyWithPhones("  (416) 269-4820  ", "  416-555-0000  "));
+
+        assertThat(phone).isEqualTo("(416) 269-4820 416-555-0000");
+    }
+
+    @Test
     @DisplayName("should return phone1 alone when phone2 is absent")
     void shouldReturnPhone1Alone_whenPhone2Absent() {
         assertThat(RxPharmacyData.composePharmacyPhone(pharmacyWithPhones("(416) 269-4820", null)))
