@@ -251,6 +251,7 @@ public class TicklerList2Action extends ActionSupport {
                 .flatMap(List::stream)
                 .filter(td -> isLabDocType(td.getDocType()))
                 .map(TicklerDocs::getDocumentNo)
+                .distinct()
                 .collect(Collectors.toList());
         List<PatientLabRouting> routings = patientLabRoutingDao.findByLabNos(labDocumentNos);
         return routings.stream().collect(Collectors.toMap(

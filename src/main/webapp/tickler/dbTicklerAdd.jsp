@@ -142,8 +142,10 @@
                     ids.add(docId.trim());
                 }
 
+                // Audit the authenticated provider, not the submitted user_no, which reaches us
+                // through a hidden field and so is client-controlled. Matches EditTickler2Action.
                 documentAttachmentManager.attachToTickler(loggedInInfo, attachmentType,
-                        ids.toArray(new String[0]), doccreator, ticklerNo, tickler.getDemographicNo());
+                        ids.toArray(new String[0]), loggedInInfo.getLoggedInProviderNo(), ticklerNo, tickler.getDemographicNo());
             }
         } catch (Exception e) {
             MiscUtils.getLogger().error("Unable to attach documents to tickler " + ticklerNo, e);
