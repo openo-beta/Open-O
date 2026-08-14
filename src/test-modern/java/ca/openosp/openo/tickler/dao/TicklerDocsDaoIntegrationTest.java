@@ -40,8 +40,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Integration tests for {@link TicklerDocsDao}, the data access layer behind the modern
  * Tickler document attachment component (issue #2476).
  *
- * <p>Verifies the three finders and confirms that soft-deleted rows ({@code deleted = 'Y'})
- * are excluded from query results.</p>
+ * <p>Verifies the finders, including the batched {@code findByTicklerIds} used to render the
+ * tickler list, and confirms that soft-deleted rows ({@code deleted = 'Y'}) are excluded from
+ * query results.</p>
  *
  * @since 2026-06-12
  * @see TicklerDocsDao
@@ -124,6 +125,55 @@ class TicklerDocsDaoIntegrationTest extends OpenOTestBase {
 
         assertThat(results).hasSize(1);
         assertThat(results.get(0).getDocType()).isEqualTo(TicklerDocs.DOCTYPE_DOC);
+    }
+
+    @Test
+    @DisplayName("should return attachments for every requested tickler in one query")
+    @Tag("read")
+    @Tag("query")
+    void shouldReturnAttachmentsForEveryTickler_whenFindingByTicklerIds() {
+        persistAttachment(TICKLER_ID, 11, TicklerDocs.DOCTYPE_DOC);
+        persistAttachment(TICKLER_ID, 22, TicklerDocs.DOCTYPE_LAB);
+        persistAttachment(TICKLER_ID + 1, 33, TicklerDocs.DOCTYPE_DOC);
+        // Not requested below, so it must not leak into the results
+        persistAttachment(TICKLER_ID + 2, 44, TicklerDocs.DOCTYPE_DOC);
+
+        List<TicklerDocs> results = ticklerDocsDao.findByTicklerIds(List.of(TICKLER_ID, TICKLER_ID + 1));
+
+        assertThat(results).hasSize(3);
+        assertThat(results).extracting(TicklerDocs::getDocumentNo).containsExactlyInAnyOrder(11, 22, 33);
+        // Callers group by tickler id, so each row must carry the tickler it belongs to
+        assertThat(results).extracting(TicklerDocs::getTicklerId)
+                .containsExactlyInAnyOrder(TICKLER_ID, TICKLER_ID, TICKLER_ID + 1);
+    }
+
+    @Test
+    @DisplayName("should exclude soft-deleted attachments when finding by tickler ids")
+    @Tag("read")
+    @Tag("delete")
+    void shouldExcludeSoftDeleted_whenFindingByTicklerIds() {
+        TicklerDocs attachment = persistAttachment(TICKLER_ID, 11, TicklerDocs.DOCTYPE_DOC);
+        persistAttachment(TICKLER_ID + 1, 33, TicklerDocs.DOCTYPE_DOC);
+
+        attachment.setDeleted(TicklerDocs.DELETED);
+        ticklerDocsDao.merge(attachment);
+        entityManager.flush();
+
+        List<TicklerDocs> results = ticklerDocsDao.findByTicklerIds(List.of(TICKLER_ID, TICKLER_ID + 1));
+
+        assertThat(results).extracting(TicklerDocs::getDocumentNo).containsExactly(33);
+    }
+
+    @Test
+    @DisplayName("should return an empty list when no tickler ids are requested")
+    @Tag("read")
+    void shouldReturnEmptyList_whenTicklerIdsAreEmptyOrNull() {
+        persistAttachment(TICKLER_ID, 11, TicklerDocs.DOCTYPE_DOC);
+
+        // A page with no ticklers reaches this finder with an empty list; an unguarded
+        // "in ()" would not be valid SQL
+        assertThat(ticklerDocsDao.findByTicklerIds(List.of())).isEmpty();
+        assertThat(ticklerDocsDao.findByTicklerIds(null)).isEmpty();
     }
 
     @Test

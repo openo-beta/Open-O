@@ -241,6 +241,26 @@ class TicklerList2ActionTest extends OpenOWebTestBase {
         assertThat(links.get(0).get("tableId").asLong()).isEqualTo(999L);
     }
 
+    @Test
+    @DisplayName("Should not repeat a lab number when the same lab is attached to several ticklers")
+    void shouldDeduplicateLabNumbers_whenLabAttachedToSeveralTicklers() throws Exception {
+        allowPrivilege("_tickler", "r");
+
+        stubPaginatedResults(2, List.of(
+                createTestTickler(1, "First"),
+                createTestTickler(2, "Second")));
+        stubAttachments(
+                ticklerDoc(1, 999, TicklerDocs.DOCTYPE_LAB),
+                ticklerDoc(2, 999, TicklerDocs.DOCTYPE_LAB));
+
+        executeAction(action);
+
+        // The same lab on two ticklers would otherwise pad the IN (:labNos) list
+        ArgumentCaptor<List<Integer>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mockPatientLabRoutingDao).findByLabNos(captor.capture());
+        assertThat(captor.getValue()).containsExactly(999);
+    }
+
     // ── Form Attachments ───────────────────────────────────────────────
 
     @Test

@@ -25,16 +25,31 @@ CREATE TABLE IF NOT EXISTS `ticklerdocs` (
 CREATE INDEX IF NOT EXISTS `idx_ticklerdocs_tickler_id` ON `ticklerdocs` (`tickler_id`);
 
 -- Backfill existing attachments from tickler_link.
+-- The match deliberately ignores `deleted`: an attachment that was backfilled and later
+-- detached must not be resurrected by a second run.
 INSERT INTO `ticklerdocs` (`tickler_id`, `document_no`, `doctype`, `deleted`, `attach_date`, `provider_no`)
 SELECT
-  tl.`tickler_no`,
-  tl.`table_id`,
-  CASE
-    WHEN tl.`table_name` = 'DOC' THEN 'D'
-    WHEN tl.`table_name` = 'HRM' THEN 'H'
-    ELSE 'L'
-  END,
+  src.`tickler_no`,
+  src.`table_id`,
+  src.`doctype`,
   NULL,
   CURDATE(),
   ''
-FROM `tickler_link` tl;
+FROM (
+  SELECT DISTINCT
+    tl.`tickler_no`,
+    tl.`table_id`,
+    CASE
+      WHEN tl.`table_name` = 'DOC' THEN 'D'
+      WHEN tl.`table_name` = 'HRM' THEN 'H'
+      ELSE 'L'
+    END AS `doctype`
+  FROM `tickler_link` tl
+) src
+WHERE NOT EXISTS (
+  SELECT 1
+  FROM `ticklerdocs` td
+  WHERE td.`tickler_id`  = src.`tickler_no`
+    AND td.`document_no` = src.`table_id`
+    AND td.`doctype`     = src.`doctype`
+);
