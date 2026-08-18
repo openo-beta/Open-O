@@ -296,12 +296,12 @@
     <script type="text/javascript">
         //<!--
         function last() {
-            document.nextform.action = "<%= request.getContextPath() %>/demographic/procontactSearch.jsp?form=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(form,"UTF-8")))%>&elementName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(elementName,"UTF-8")))%>&elementId=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(elementId,"UTF-8")))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nLastPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
+            document.nextform.action = "<%= request.getContextPath() %>/demographic/procontactSearch.jsp?form=<%=Encode.forUriComponent(String.valueOf(form))%>&elementName=<%=Encode.forUriComponent(String.valueOf(elementName))%>&elementId=<%=Encode.forUriComponent(String.valueOf(elementId))%>&keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>";
             document.nextform.submit();
         }
 
         function next() {
-            document.nextform.action = "<%= request.getContextPath() %>/demographic/procontactSearch.jsp?form=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(form,"UTF-8")))%>&elementName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(elementName,"UTF-8")))%>&elementId=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(elementId,"UTF-8")))%>&keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nNextPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>";
+            document.nextform.action = "<%= request.getContextPath() %>/demographic/procontactSearch.jsp?form=<%=Encode.forUriComponent(String.valueOf(form))%>&elementName=<%=Encode.forUriComponent(String.valueOf(elementName))%>&elementId=<%=Encode.forUriComponent(String.valueOf(elementId))%>&keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>";
             document.nextform.submit();
         }
 

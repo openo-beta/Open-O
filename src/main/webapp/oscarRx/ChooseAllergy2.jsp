@@ -334,7 +334,7 @@
 <%--								%><div id="11_content"><%--%>
 <%--								for(Allergy allergy:allergyResults.get(11)) {--%>
 <%--									%>--%>
-<%--									<a href="addReaction.do?ID=<%=Encode.forUriComponent(String.valueOf(allergy.getDrugrefId()))%>&name=<%=Encode.forUriComponent(String.valueOf(java.net.URLEncoder.encode(allergy.getDescription())))%>&type=<%=Encode.forUriComponent(String.valueOf(allergy.getTypeCode()))%>"><%=Encode.forHtml(String.valueOf(allergy.getDescription()))%></a>--%>
+<%--									<a href="addReaction.do?ID=<%=Encode.forUriComponent(String.valueOf(allergy.getDrugrefId()))%>&name=<%=Encode.forUriComponent(String.valueOf(allergy.getDescription()))%>&type=<%=Encode.forUriComponent(String.valueOf(allergy.getTypeCode()))%>"><%=Encode.forHtml(String.valueOf(allergy.getDescription()))%></a>--%>
 <%--									<br/>--%>
 <%--									<%--%>
 <%--								}--%>
@@ -346,7 +346,7 @@
 <%--								%><div id="12_content" style="display:none"><%--%>
 <%--								for(Allergy allergy:allergyResults.get(12)) {--%>
 <%--									%>--%>
-<%--									<a href="addReaction.do?ID=<%=Encode.forUriComponent(String.valueOf(allergy.getDrugrefId()))%>&name=<%=Encode.forUriComponent(String.valueOf(java.net.URLEncoder.encode(allergy.getDescription())))%>&type=<%=Encode.forUriComponent(String.valueOf(allergy.getTypeCode()))%>"><%=Encode.forHtml(String.valueOf(allergy.getDescription()))%></a>--%>
+<%--									<a href="addReaction.do?ID=<%=Encode.forUriComponent(String.valueOf(allergy.getDrugrefId()))%>&name=<%=Encode.forUriComponent(String.valueOf(allergy.getDescription()))%>&type=<%=Encode.forUriComponent(String.valueOf(allergy.getTypeCode()))%>"><%=Encode.forHtml(String.valueOf(allergy.getDescription()))%></a>--%>
 <%--									<br/>--%>
 <%--									<%--%>
 <%--								}--%>
@@ -359,7 +359,7 @@
 <%--								%><div id="14_content"><%--%>
 <%--								for(Allergy allergy:allergyResults.get(14)) {--%>
 <%--									%>--%>
-<%--									<a href="addReaction.do?ID=<%=Encode.forUriComponent(String.valueOf(allergy.getDrugrefId()))%>&name=<%=Encode.forUriComponent(String.valueOf(java.net.URLEncoder.encode(allergy.getDescription())))%>&type=<%=Encode.forUriComponent(String.valueOf(allergy.getTypeCode()))%>"><%=Encode.forHtml(String.valueOf(allergy.getDescription()))%></a>--%>
+<%--									<a href="addReaction.do?ID=<%=Encode.forUriComponent(String.valueOf(allergy.getDrugrefId()))%>&name=<%=Encode.forUriComponent(String.valueOf(allergy.getDescription()))%>&type=<%=Encode.forUriComponent(String.valueOf(allergy.getTypeCode()))%>"><%=Encode.forHtml(String.valueOf(allergy.getDescription()))%></a>--%>
 <%--									<br/>--%>
 <%--									<%--%>
 <%--								}--%>

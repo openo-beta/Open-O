@@ -72,7 +72,7 @@
                     if (bsList.size() >= 0) {
                         bs = bsList.get(0);
                     } else {
-                        msg = serviceCode + " is not updated. Action failed! Try edit it again.";
+                        msg = Encode.forHtmlContent(serviceCode) + " is not updated. Action failed! Try edit it again.";
                         action = "search";
                         alert = "error";
                     }
@@ -117,12 +117,12 @@
                     }
 
                     billingServiceDao.merge(bs);
-                    msg = serviceCode + " is updated.<br>" + "Type in a service code and search first to see if it is available.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is updated.<br>" + "Type in a service code and search first to see if it is available.";
                     alert = "success";
                     action = "search";
                     prop.setProperty("service_code", serviceCode);
                 } else {
-                    msg = serviceCode + " is not updated. Action failed! Try edit it again.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is not updated. Action failed! Try edit it again.";
                     alert = "error";
                     action = "edit" + serviceCode;
                     prop.setProperty("service_code", serviceCode);
@@ -134,7 +134,7 @@
                 }
 
             } else {
-                msg = "You can not save the service code - " + serviceCode + ". Please search the service code first.";
+                msg = "You can not save the service code - " + Encode.forHtmlContent(serviceCode) + ". Please search the service code first.";
                 alert = "error";
                 action = "search";
                 prop.setProperty("service_code", serviceCode);
@@ -191,14 +191,14 @@
                 } else {
                     billingServiceDao.persist(bs);
 
-                    msg = serviceCode + " is added.<br>" + "Type in a service code and search first to see if it is available.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is added.<br>" + "Type in a service code and search first to see if it is available.";
                     alert = "success";
                     action = "search";
                     prop.setProperty("service_code", serviceCode);
                 }
 
             } else {
-                msg = "You can not save the service code - " + serviceCode + ". Please search the service code first.";
+                msg = "You can not save the service code - " + Encode.forHtmlContent(serviceCode) + ". Please search the service code first.";
                 alert = "error";
                 action = "search";
                 prop.setProperty("service_code", serviceCode);
@@ -456,7 +456,7 @@
     <div class="container-fluid well">
 
         <div class="alert alert-<%=Encode.forHtmlAttribute(String.valueOf(alert))%>">
-            <%=Encode.forHtml(String.valueOf(msg))%>
+            <%=msg%>
         </div>
 
         <form method="post" id="baseurl" name="baseurl" action="addEditServiceCode.jsp">

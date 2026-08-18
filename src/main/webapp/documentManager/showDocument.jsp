@@ -276,7 +276,7 @@
     <body>
 </c:if>
 <script type="text/javascript">
-    var _in_window = <%=Encode.forJavaScript(( "true".equals(request.getParameter("inWindow")) ? "true" : "false" ))%>;
+    var _in_window = <%="true".equals(request.getParameter("inWindow"))%>;
     var contextpath = "<%=request.getContextPath()%>";
 </script>
 <div id="labdoc_<%=Encode.forHtmlAttribute(String.valueOf(docId))%>" class="content">
@@ -358,7 +358,7 @@
 
         <input type="button" id="mainEchart_<%=Encode.forHtmlAttribute(String.valueOf(docId))%>"
                value=" <fmt:message key="oscarMDS.segmentDisplay.btnEChart"/> "
-               onClick="popupPatient(710, 1024,'${pageContext.servletContext.contextPath}/oscarEncounter/IncomingEncounter.do?reason=<fmt:message key="oscarMDS.segmentDisplay.labResults"/>&curDate=<%=Encode.forJavaScript(String.valueOf(currentDate))%>>&appointmentNo=&appointmentDate=&startTime=&status=&demographicNo=', 'encounter', '<%=Encode.forJavaScript(String.valueOf(docId))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
+               onClick="popupPatient(710, 1024,'${pageContext.servletContext.contextPath}/oscarEncounter/IncomingEncounter.do?reason=<fmt:message key="oscarMDS.segmentDisplay.labResults"/>&curDate=<%=Encode.forUriComponent(String.valueOf(currentDate))%>>&appointmentNo=&appointmentDate=&startTime=&status=&demographicNo=', 'encounter', '<%=Encode.forJavaScript(String.valueOf(docId))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
         <input type="button" id="mainMaster_<%=Encode.forHtmlAttribute(String.valueOf(docId))%>" value=" <fmt:message key="oscarMDS.segmentDisplay.btnMaster"/>"
                onClick="popupPatient(710,1024,'${pageContext.servletContext.contextPath}/demographic/demographiccontrol.jsp?displaymode=edit&dboperation=search_detail&demographic_no=','master','<%=Encode.forJavaScript(String.valueOf(docId))%>')" <%=Encode.forHtmlAttribute(String.valueOf(btnDisabled))%>>
         <input type="button" id="mainApptHistory_<%=Encode.forHtmlAttribute(String.valueOf(docId))%>"

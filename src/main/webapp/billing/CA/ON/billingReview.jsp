@@ -85,8 +85,9 @@
 </head>
 
 <%
-    String errorMsg = "", errorFlag = "";
-    String warningMsg = "";
+    String errorFlag = "";
+    List<String> errorMsgs = new ArrayList<String>();
+    List<String> warningMsgs = new ArrayList<String>();
     String proNO = request.getParameter("xml_provider");
     String temp2 = null, content = "", location2 = "", desc3 = "", desc2 = "", scode2 = null, scode3 = null, dsfee = "", fee2 = "", fee3 = "", flag = "", flag1 = "", flag2 = "";
     String pValue = "", pCode = "", pDesc = "", pPerc = "", pUnit = "";
@@ -96,7 +97,7 @@
 
     if (proNO.compareTo("000000") == 0) {
         errorFlag = "1";
-        errorMsg = errorMsg + "Error: Please select a valid Provider. <br>";
+        errorMsgs.add("Please select a valid Provider.");
     }
 %>
 
@@ -132,7 +133,7 @@
                         billing_pCode = billing_E078A;
                         if (" ".equals(billing_E078A)) {
                             errorFlag = "1";
-                            errorMsg += "Error: Diagnostic code error for E078A<br>";
+                            errorMsgs.add("Diagnostic code error for E078A");
                         }
                         break;
                     }
@@ -181,7 +182,7 @@
     }
     if (diagcode.compareTo("000") == 0) {
         errorFlag = "1";
-        errorMsg = errorMsg + "Error: Please enter a valid Diagnostic Code. <br>";
+        errorMsgs.add("Please enter a valid Diagnostic Code.");
     }
 
 
@@ -225,16 +226,16 @@
 
         if (d.getHin() == null) {
             errorFlag = "1";
-            errorMsg = errorMsg + "Error: The patient does not have a valid HIN. <br>";
+            errorMsgs.add("The patient does not have a valid HIN.");
         } else if (d.getHin().equals("")) {
-            warningMsg += "Warning: The patient does not have a valid HIN. <br>";
+            warningMsgs.add("The patient does not have a valid HIN.");
         }
         if (r_doctor_ohip != null && r_doctor_ohip.length() > 0 && r_doctor_ohip.length() != 6) {
-            warningMsg += "Warning: the referral doctor's no is wrong. <br>";
+            warningMsgs.add("The referral doctor's no is wrong.");
         }
         if (demoDOB.length() != 8) {
             errorFlag = "1";
-            errorMsg = errorMsg + "Error: The patient does not have a valid DOB. <br>";
+            errorMsgs.add("The patient does not have a valid DOB.");
         }
 
     }
@@ -982,7 +983,7 @@
 
             if (counter == 0) {
                 errorFlag = "1";
-                errorMsg = errorMsg + "Error: No Service/Procedure Code selected. <br>";
+                errorMsgs.add("No Service/Procedure Code selected.");
             }
 
             if (errorFlag.compareTo("1") == 0) {
@@ -990,11 +991,14 @@
 
     </table>
 
-    <p bgcolor="orange"><%=Encode.forHtml(String.valueOf(errorMsg))%>
+    <p bgcolor="orange">
+        <% for (String errorText : errorMsgs) { %>
+            <span style="color: red;">Error: <%=Encode.forHtmlContent(errorText)%></span><br/>
+        <% } %>
     </p>
     <% session.setAttribute("content", content); %>
     <form><input type=button name=back value='Go Back and Change'
-                 onClick='javascript:location.href="billingOB.jsp?billForm=<%=Encode.forJavaScript(request.getParameter("billForm"))%>&hotclick=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode("", StandardCharsets.UTF_8)))%>&appointment_no=<%=Encode.forJavaScript(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(demoname, StandardCharsets.UTF_8)))%>&demographic_no=<%=Encode.forJavaScript(request.getParameter("demographic_no"))%>&user_no=<%=Encode.forJavaScript(request.getParameter("user_no"))%>&providerview=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&apptProvider_no=<%=Encode.forJavaScript(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forJavaScript(request.getParameter("xml_appointment_date"))%>&status=<%=Encode.forJavaScript(request.getParameter("status"))%>&start_time=<%=Encode.forJavaScript(request.getParameter("start_time"))%>&bNewForm=0"'>
+                 onClick='javascript:location.href="billingOB.jsp?billForm=<%=Encode.forUriComponent(request.getParameter("billForm"))%>&hotclick=<%=Encode.forUriComponent(String.valueOf(""))%>&appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demoname))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&user_no=<%=Encode.forUriComponent(request.getParameter("user_no"))%>&providerview=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&apptProvider_no=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forUriComponent(request.getParameter("xml_appointment_date"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&start_time=<%=Encode.forUriComponent(request.getParameter("start_time"))%>&bNewForm=0"'>
     </form>
 
     <%
@@ -1101,10 +1105,13 @@
             href="billingOB.jsp?billForm=<%=Encode.forUriComponent(request.getParameter("billForm"))%>&hotclick=<%=Encode.forUriComponent(String.valueOf(""))%>&appointment_no=<%=Encode.forUriComponent(request.getParameter("appointment_no"))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(demoname))%>&demographic_no=<%=Encode.forUriComponent(request.getParameter("demographic_no"))%>&user_no=<%=Encode.forUriComponent(request.getParameter("user_no"))%>&providerview=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&apptProvider_no=<%=Encode.forUriComponent(request.getParameter("apptProvider_no"))%>&appointment_date=<%=Encode.forUriComponent(request.getParameter("xml_appointment_date"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>&start_time=<%=Encode.forUriComponent(request.getParameter("start_time"))%>&bNewForm=0">edit</a>
 
             <%
-	if (warningMsg.length() > 0) {
+	if (!warningMsgs.isEmpty()) {
 %>
 
-    <p bgcolor="yellow"><%=Encode.forHtml(String.valueOf(warningMsg))%>
+    <p bgcolor="yellow">
+        <% for (String warningText : warningMsgs) { %>
+            <span style="color: orange;">Warning: <%=Encode.forHtmlContent(warningText)%></span><br/>
+        <% } %>
     </p>
     <%
             }

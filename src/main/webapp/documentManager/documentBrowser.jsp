@@ -376,11 +376,11 @@ Remote documents not supported
         }
 
         function AddTickler() {
-            popup(450, 600, '<%=request.getContextPath()%>/tickler/ForwardDemographicTickler.do?docType=DOC&docId=' + docid + '&demographic_no=<%=Encode.forJavaScript(String.valueOf(demographicID))%>', 'tickler');
+            popup(450, 600, '<%=request.getContextPath()%>/tickler/ForwardDemographicTickler.do?docType=DOC&docId=' + docid + '&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', 'tickler');
         }
 
         function DocAnnotation() {
-            popup(350, 500, '<%= request.getContextPath() %>/annotation/annotation.jsp?display=Documents&table_id=' + docid + '&demo=<%=Encode.forJavaScript(String.valueOf(demographicID))%>', 'anwin');
+            popup(350, 500, '<%= request.getContextPath() %>/annotation/annotation.jsp?display=Documents&table_id=' + docid + '&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', 'anwin');
         }
 
         function DocEdit() {
@@ -392,10 +392,10 @@ Remote documents not supported
             var doctype = selected[0].value.substring(docidindexend + 1, selected[0].value.length);
 
             if (doctype == 'text/html') {
-                popup(450, 600, 'addedithtmldocument.jsp?editDocumentNo=' + docid + '&function=<%=Encode.forJavaScript(String.valueOf(module))%>&functionid=<%=Encode.forJavaScript(String.valueOf(demographicID))%>', 'EditDoc');
+                popup(450, 600, 'addedithtmldocument.jsp?editDocumentNo=' + docid + '&function=<%=Encode.forUriComponent(String.valueOf(module))%>&functionid=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', 'EditDoc');
             } else {
 
-                popup(350, 500, 'editDocument.jsp?editDocumentNo=' + docid + '&function=<%=Encode.forJavaScript(String.valueOf(module))%>&functionid=<%=Encode.forJavaScript(String.valueOf(demographicID))%>', 'EditDoc');
+                popup(350, 500, 'editDocument.jsp?editDocumentNo=' + docid + '&function=<%=Encode.forUriComponent(String.valueOf(module))%>&functionid=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', 'EditDoc');
             }
         }
 

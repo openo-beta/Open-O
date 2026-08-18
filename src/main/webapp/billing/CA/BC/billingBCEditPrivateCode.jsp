@@ -59,11 +59,11 @@
             serviceCode = "A" + serviceCode;
             if (serviceCode.equals(action.substring("edit".length()))) {
                 if (jdbc.updateCodeByName(serviceCode, description, value, percentage, request.getParameter("billingservice_date"), gstFlag)) {
-                    msg = serviceCode + " is updated.<br>" + "Type in a service code and search first to see if it is available.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is updated.<br>" + "Type in a service code and search first to see if it is available.";
                     action = "search";
                     prop.setProperty("service_code", serviceCode);
                 } else {
-                    msg = serviceCode + " is <font color='red'>NOT</font> updated. Action failed! Try edit it again.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is <font color='red'>NOT</font> updated. Action failed! Try edit it again.";
                     action = "edit" + serviceCode;
                     prop.setProperty("service_code", serviceCode);
                     prop.setProperty("description", description);
@@ -72,7 +72,7 @@
                     prop.setProperty("gstFlag", gstFlag);
                 }
             } else {
-                msg = "You can <font color='red'>NOT</font> save the service code - " + serviceCode + ". Please search the service code first.";
+                msg = "You can <font color='red'>NOT</font> save the service code - " + Encode.forHtmlContent(serviceCode) + ". Please search the service code first.";
                 action = "search";
                 prop.setProperty("service_code", serviceCode);
             }
@@ -80,11 +80,11 @@
             serviceCode = "A" + serviceCode;
             if (serviceCode.equals(action.substring("add".length()))) {
                 if (bcds.addBillingCode(serviceCode, description, value)) {
-                    msg = serviceCode + " is added.<br>" + "Type in a service code and search first to see if it is available.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is added.<br>" + "Type in a service code and search first to see if it is available.";
                     action = "search";
                     prop.setProperty("service_code", serviceCode);
                 } else {
-                    msg = serviceCode + " is not added. Action failed! Try edit it again.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is not added. Action failed! Try edit it again.";
                     action = "add" + serviceCode;
                     prop.setProperty("service_code", serviceCode);
                     prop.setProperty("description", description);
@@ -94,7 +94,7 @@
                     alert = "error";
                 }
             } else {
-                msg = "You can not save the service code - " + serviceCode + ". Please search the service code first.";
+                msg = "You can not save the service code - " + Encode.forHtmlContent(serviceCode) + ". Please search the service code first.";
                 action = "search";
                 prop.setProperty("service_code", serviceCode);
                 alert = "error";
@@ -133,11 +133,11 @@
         } else {
             serviceCode = "A" + serviceCode;
             if (jdbc.deletePrivateCode(serviceCode)) {
-                msg = serviceCode + " is deleted.<br>" + "Type in a service code and search first to see if it is available.";
+                msg = Encode.forHtmlContent(serviceCode) + " is deleted.<br>" + "Type in a service code and search first to see if it is available.";
                 action = "search";
                 prop.setProperty("service_code", "A");
             } else {
-                msg = serviceCode + " could not be deleted, please try again.<br>" + "Type in a service code and search first to see if it is available.";
+                msg = Encode.forHtmlContent(serviceCode) + " could not be deleted, please try again.<br>" + "Type in a service code and search first to see if it is available.";
                 action = "search";
                 prop.setProperty("service_code", "A");
             }
@@ -187,7 +187,7 @@
         <div class="manage-code well">
             <form method="post" name="baseurl" action="billingBCEditPrivateCode.jsp">
                 <div class="alert alert-<%=Encode.forHtmlAttribute(String.valueOf(alert))%>">
-                    <%=Encode.forHtml(String.valueOf(msg))%>
+                    <%=msg%>
                 </div>
 
                 <label for="service_code">

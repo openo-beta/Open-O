@@ -240,7 +240,7 @@
         <input type="hidden" name="ID"
                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
         <input type="hidden" name="provider_no"
-               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
+               value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
         <input type="hidden" name="formCreated"
                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
@@ -263,7 +263,7 @@
                                                                           onclick="javascript:return onPrint();"/>
                     <input type="button"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnPrintPage"/>"
-                           onclick="javascript: popupPage(700,950,'formannualfemaleprint.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(demoNo))%>&formId=<%=Encode.forJavaScript(String.valueOf(formId))%>&provNo=<%=Encode.forJavaScript(String.valueOf(provNo))%>')"/>
+                           onclick="javascript: popupPage(700,950,'formannualfemaleprint.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>')"/>
                 </td>
                 <td align='right'><a
                         href="javascript: popupPage(700,950,'<%= request.getContextPath() %>/decision/annualreview/annualreviewplanner.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnual.btnAnnualReview"/></a></td>

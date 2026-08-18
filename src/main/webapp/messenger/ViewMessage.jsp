@@ -659,7 +659,7 @@
 
                                                         %>
                                                         <a href="javascript:void(0)"
-                                                           onclick="popupViewAttach(700,960,'<%=request.getContextPath()%>/oscarEncounter/IncomingEncounter.do?demographicNo=${ demographic.key }&curProviderNo=<%=Encode.forJavaScript(String.valueOf(session.getAttribute("providerNo")))%>
+                                                           onclick="popupViewAttach(700,960,'<%=request.getContextPath()%>/oscarEncounter/IncomingEncounter.do?demographicNo=${ demographic.key }&curProviderNo=<%=Encode.forUriComponent(String.valueOf(session.getAttribute("providerNo")))%>
                                                                    <%=Encode.forHtml(String.valueOf(params))%>');return false;">E</a>
                                                         <%} %>
 
@@ -701,7 +701,7 @@
     </form>
     <% String bodyTextAsHTML = (String) session.getAttribute("viewMessageMessage");
         bodyTextAsHTML = bodyTextAsHTML.replaceAll("\n|\r\n?", "<br/>"); %>
-    <p class="NotDisplayable Printable"><%=Encode.forHtml(String.valueOf(bodyTextAsHTML))%>
+    <p class="NotDisplayable Printable"><%=bodyTextAsHTML%>
     </p>
 
 

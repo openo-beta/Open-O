@@ -20,7 +20,7 @@ public class MdsMSHDaoImpl extends AbstractDaoImpl<MdsMSH> implements MdsMSHDao 
 
     @Override
     public List<Object[]> findLabsByAccessionNumAndId(Integer id, String controlId) {
-        String sql = "FROM MdsMSH a, MdsMSH b " + "WHERE a.controlId like :controlId " + "AND b.id = :id" + "ORDER BY a.controlId";
+        String sql = "FROM MdsMSH a, MdsMSH b " + "WHERE a.controlId like :controlId " + "AND b.id = :id " + "ORDER BY a.controlId";
         Query query = entityManager.createQuery(sql);
         query.setParameter("id", id);
         query.setParameter("controlId", controlId);
@@ -32,10 +32,10 @@ public class MdsMSHDaoImpl extends AbstractDaoImpl<MdsMSH> implements MdsMSHDao 
         String sql = "select mdsMSH.dateTime, mdsMSH.controlId, min(mdsZFR.reportFormStatus) " +
                 "FROM MdsMSH mdsMSH, MdsZFR mdsZFR " +
                 "WHERE mdsMSH.id = mdsZFR.id " +
-                "AND mdsMSH.id = :segmentID" +
+                "AND mdsMSH.id = :segmentID " +
                 "GROUP BY mdsMSH.id";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("id", id);
+        query.setParameter("segmentID", id);
         return query.getResultList();
     }
 

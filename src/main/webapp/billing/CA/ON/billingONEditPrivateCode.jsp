@@ -49,12 +49,12 @@
             if (serviceCode.equals(request.getParameter("action").substring("edit".length()))) {
                 if (dbObj.updateCodeByName(serviceCode, request.getParameter("description"), valuePara, "0.00",
                         request.getParameter("billingservice_date"), request.getParameter("gstFlag"))) {
-                    msg = serviceCode + " is updated.<br>"
+                    msg = Encode.forHtmlContent(serviceCode) + " is updated.<br>"
                             + "Type in a service code and search first to see if it is available.";
                     action = "search";
                     prop.setProperty("service_code", serviceCode);
                 } else {
-                    msg = serviceCode
+                    msg = Encode.forHtmlContent(serviceCode)
                             + " is <font color='red'>NOT</font> updated. Action failed! Try edit it again.";
                     action = "edit" + serviceCode;
                     prop.setProperty("service_code", serviceCode);
@@ -67,7 +67,7 @@
                     prop.setProperty("gstFlag", request.getParameter("gstFlag"));
                 }
             } else {
-                msg = "You can <font color='red'>NOT</font> save the service code - " + serviceCode
+                msg = "You can <font color='red'>NOT</font> save the service code - " + Encode.forHtmlContent(serviceCode)
                         + ". Please search the service code first.";
                 action = "search";
                 prop.setProperty("service_code", serviceCode);
@@ -80,12 +80,12 @@
             if (serviceCode.equals(request.getParameter("action").substring("add".length()))) {
                 if (dbObj.addCodeByStr(serviceCode, request.getParameter("description"), valuePara, "0.00",
                         request.getParameter("billingservice_date"), request.getParameter("gstFlag")) > 0) {
-                    msg = serviceCode + " is added.<br>"
+                    msg = Encode.forHtmlContent(serviceCode) + " is added.<br>"
                             + "Type in a service code and search first to see if it is available.";
                     action = "search";
                     prop.setProperty("service_code", serviceCode);
                 } else {
-                    msg = serviceCode
+                    msg = Encode.forHtmlContent(serviceCode)
                             + " is not added. Action failed! Try edit it again.";
                     action = "add" + serviceCode;
                     prop.setProperty("service_code", serviceCode);
@@ -99,7 +99,7 @@
                     alert = "error";
                 }
             } else {
-                msg = "You can not save the service code - " + serviceCode
+                msg = "You can not save the service code - " + Encode.forHtmlContent(serviceCode)
                         + ". Please search the service code first.";
                 action = "search";
                 prop.setProperty("service_code", serviceCode);
@@ -146,7 +146,7 @@
                 serviceCode = "";
             serviceCode = "_" + serviceCode;
             if (dbObj.deletePrivateCode(serviceCode)) {
-                msg = serviceCode + " is deleted.<br>"
+                msg = Encode.forHtmlContent(serviceCode) + " is deleted.<br>"
                         + "Type in a service code and search first to see if it is available.";
                 action = "search";
                 prop.setProperty("service_code", "_");
@@ -318,7 +318,7 @@
             <form method="post" name="baseurl" action="billingONEditPrivateCode.jsp">
 
                 <div class="alert alert-<%=Encode.forHtmlAttribute(String.valueOf(alert))%>">
-                    <%=Encode.forHtml(String.valueOf(msg))%>
+                    <%=msg%>
                 </div>
 
                 Private Code_ <small>(e.g. O001A)</small><br>

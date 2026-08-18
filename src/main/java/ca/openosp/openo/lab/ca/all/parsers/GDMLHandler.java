@@ -470,11 +470,11 @@ public class GDMLHandler implements MessageHandler {
     }
 
     public String getFirstName() {
-        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName().getGivenName().getValue()));
+        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName(0).getGivenName().getValue()));
     }
 
     public String getLastName() {
-        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName().getFamilyName().getValue()));
+        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName(0).getFamilyName().getValue()));
     }
 
     public String getDOB() {
@@ -555,7 +555,7 @@ public class GDMLHandler implements MessageHandler {
             if (msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getObr39_CollectorSCommentReps() != 0) {
                 return (getString(msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getObr39_CollectorSComment(0).getCe1_Identifier().getValue()));
             }
-        } catch (HL7Exception e) {
+        } catch (Exception e) {
             logger.error("Error", e);
         }
         return (getString(msg.getMSH().getSendingFacility().getNamespaceID().getValue()));

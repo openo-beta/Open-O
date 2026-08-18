@@ -84,7 +84,7 @@
 <body>
     <div topmargin="0" leftmargin="0" vlink="#0000FF" id="printableContent">
 
-    <form action="/form/formname" styleId="preview2Form">
+    <form action="${pageContext.request.contextPath}/form/formname.do" method="post" id="preview2Form">
         <input type="hidden" name="demographic_no" value="${sessionScope.RxSessionBean.demographicNo}"/>
         <table>
             <tr>
@@ -119,8 +119,9 @@
                                        value="<%= Encode.forHtml(((RxPatientData.Patient)request.getAttribute("patient")).getFirstName())+ " " +Encode.forHtml(((RxPatientData.Patient)request.getAttribute("patient")).getSurname()) %>"/>
                                 <input type="hidden" name="patientDOB"
                                        value="<%= Encode.forHtml((String)request.getAttribute("patientDOBStr")) %>"/>
-                                <input type="hidden" name="pharmaFax" value="${requestScope.pharmacyFax}"/>
-                                <input type="hidden" name="pharmaName" value="${requestScope.pharmacyName}"/>
+                                <input type="hidden" name="pharmaFax" value="<%= Encode.forHtmlAttribute(request.getAttribute("pharmacyFax") != null ? request.getAttribute("pharmacyFax").toString() : "") %>"/>
+                                <input type="hidden" name="pharmaName" value="<%= Encode.forHtmlAttribute(request.getAttribute("pharmacyName") != null ? request.getAttribute("pharmacyName").toString() : "") %>"/>
+                                <input type="hidden" name="pharmacyInfo" value="<%= Encode.forHtmlAttribute(request.getAttribute("prefPharmacyId") != null ? request.getAttribute("prefPharmacyId").toString() : "") %>"/>
                                 <input type="hidden" name="pracNo"
                                        value="<%= Encode.forHtml((String)request.getAttribute("pracNo")) %>"/>
                                 <input type="hidden" name="showPatientDOB" value="${requestScope.showPatientDOB}"/>
@@ -135,7 +136,7 @@
                                        value="<%=Encode.forHtml((String)request.getAttribute("patientChartNo"))%>"/>
                                 <input type="hidden" name="bandNumber" value="${requestScope.bandNumber}"/>
                                 <input type="hidden" name="patientPhone"
-                                       value="<fmt:message key="RxPreview.msgTel"/><%=Encode.forHtml((String)request.getAttribute("patientPhone")) %>"/>
+                                       value="<fmt:message key="RxPreview.msgTel"/>: <%=Encode.forHtml((String)request.getAttribute("patientPhone")) %>"/>
                                 <input type="hidden" name="rxDate"
                                        value="<%= Encode.forHtml((String)request.getAttribute("rxDateFormatted")) %>"/>
                                 <input type="hidden" name="sigDoctorName"
@@ -153,14 +154,12 @@
                                         <%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicCity()))%>&nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicProvince()))%>&nbsp;&nbsp;
                                         <%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicPostal()))%>
                                         <% if (((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getPractitionerNo() != null && !((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getPractitionerNo().equals("")) { %>
-                                        <br><bean:message
-                                            key="RxPreview.PractNo"/>:<%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getPractitionerNo()))%>
+                                        <br><fmt:message key="RxPreview.PractNo"/>:<%= Encode.forHtml(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getPractitionerNo()) %>
                                         <% } %>
                                         <br>
                                         <fmt:message key="RxPreview.msgTel"/>: ${requestScope.phone}<br>
                                         <oscar:oscarPropertiesCheck property="RXFAX" value="yes">
-                                            <bean:message
-                                                    key="RxPreview.msgFax"/>: <%=Encode.forHtml(String.valueOf(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicFax()))%>
+                                            <fmt:message key="RxPreview.msgFax"/>: <%= Encode.forHtml(((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicFax()) %>
                                             <br>
                                         </oscar:oscarPropertiesCheck>
                                     </c:when>
@@ -221,7 +220,8 @@
                                        value="${requestScope.signatureRequestId}"/>
                                 <img id="signature" style="width:260px; height:130px; object-fit: contain;"
                                      src="${requestScope.startimageUrl}" alt="digital_signature"/>
-                                <input type="hidden" name="imgFile" id="imgFile" value=""/>
+                                <input type="hidden" name="imgFile" id="imgFile" value=""
+                                       data-temp-path="<%= Encode.forHtmlAttribute(request.getAttribute("tempPath") != null ? request.getAttribute("tempPath").toString() : "") %>"/>
 
                                 <script type="text/javascript">
                                     var POLL_TIME = 2500;

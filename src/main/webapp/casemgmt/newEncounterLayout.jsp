@@ -375,11 +375,7 @@
             }
 
 
-            <%if(request.getParameter("appointmentNo") != null && request.getParameter("appointmentNo").length()>0) { %>
-            var appointmentNo = <%=Encode.forJavaScript(request.getParameter("appointmentNo"))%>;
-            <% } else { %>
-            var appointmentNo = 0;
-            <%}%>
+            var appointmentNo = <%=(request.getParameter("appointmentNo") != null && request.getParameter("appointmentNo").matches("\\d+")) ? request.getParameter("appointmentNo") : "0"%>;
 
             var savedNoteId = 0;
         </script>
@@ -442,7 +438,7 @@
             assignObservationDateError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.assignObservationDateError.msg"/>";
 
             encTimeMandatoryMsg = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterTimeMandatory.msg"/>";
-            encTimeMandatory = <%=Encode.forJavaScript(String.valueOf(encTimeMandatoryValue))%>;
+            encTimeMandatory = <%="true".equalsIgnoreCase(encTimeMandatoryValue)%>;
 
             assignEncTypeError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.assignEncTypeError.msg"/>";
             savingNoteError = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.savingNoteError.msg"/>";

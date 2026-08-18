@@ -187,7 +187,7 @@
                 <div ><input type="text" name="xml_vdate"
                 value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>"> <font size="1"
                         face="Arial, Helvetica, sans-serif"><a href="#"
-                    onClick="openBrWindow('billingCalendarPopup.jsp?type=&returnItem=xml_vdate&returnForm=serviceform&year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')">Begin:</a></font>
+                    onClick="openBrWindow('billingCalendarPopup.jsp?type=&returnItem=xml_vdate&returnForm=serviceform&year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>','','width=300,height=300')">Begin:</a></font>
                 </div>
             </td>
             <td width="25%">
@@ -227,7 +227,7 @@
             <td width="25%"><input type="text" name="xml_appointment_date"
                                            value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>"> <font size="1"
                                                                          face="Arial, Helvetica, sans-serif"><a href="#"
-                                                                                                                onClick="openBrWindow('billingCalendarPopup.jsp?type=&returnItem=xml_appointment_date&returnForm=serviceform&year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>','','width=300,height=300')">End:</a></font>
+                                                                                                                onClick="openBrWindow('billingCalendarPopup.jsp?type=&returnItem=xml_appointment_date&returnForm=serviceform&year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>','','width=300,height=300')">End:</a></font>
                 </td>
             <td width="25%">
                                     <font color="#333333" size="2"

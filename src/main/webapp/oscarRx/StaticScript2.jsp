@@ -76,12 +76,16 @@
         %>
         <%
             if (request.getParameter("demographicNo") != null) {
-                rxBean = new RxSessionBean();
+                // Reuse existing per-patient bean so opening a script link doesn't wipe the stash.
+                int demoInt = Integer.parseInt(request.getParameter("demographicNo"));
+                rxBean = RxSessionBean.getFromSession(request.getSession(), demoInt);
+                if (rxBean == null) {
+                    rxBean = new RxSessionBean();
+                    rxBean.setProviderNo((String) session.getAttribute("user"));
+                    rxBean.setDemographicNo(demoInt);
+                }
 
-                rxBean.setProviderNo((String) session.getAttribute("user"));
-                rxBean.setDemographicNo(Integer.parseInt(request.getParameter("demographicNo")));
-
-                request.getSession().setAttribute("RxSessionBean", rxBean);
+                RxSessionBean.saveToSession(request.getSession(), rxBean);
             }
         %>
 
@@ -245,7 +249,7 @@
                                     <td>
                                         <%if (drug.localDrugId != null) { %>
                                         <a href="javascript:void(0);"
-                                           onclick="popup(600, 425,'<%= request.getContextPath() %>/oscarRx/DisplayRxRecord.jsp?id=<%=Encode.forJavaScript(String.valueOf(drug.localDrugId))%>','displayRxWindow')">
+                                           onclick="popup(600, 425,'<%= request.getContextPath() %>/oscarRx/DisplayRxRecord.jsp?id=<%=Encode.forUriComponent(String.valueOf(drug.localDrugId))%>','displayRxWindow')">
                                             <%}%>
                                             <%=Encode.forHtml(String.valueOf(drug.prescriptionDetails))%>
                                             <%if (drug.localDrugId != null) { %>
@@ -301,7 +305,7 @@
                                 if (drug.isLocal) {
                             %>
                             <input type="button" value="Annotation" title="Annotation" class="ControlPushButton"
-                                   onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forJavaScript(String.valueOf(annotation_display))%>&table_id=<%=Encode.forJavaScript(String.valueOf(drug.localDrugId))%>&demo=<%=Encode.forJavaScript(String.valueOf(currentDemographicNo))%>','anwin','width=400,height=500');">
+                                   onclick="window.open('<%= request.getContextPath() %>/annotation/annotation.jsp?display=<%=Encode.forUriComponent(String.valueOf(annotation_display))%>&table_id=<%=Encode.forUriComponent(String.valueOf(drug.localDrugId))%>&demo=<%=Encode.forUriComponent(String.valueOf(currentDemographicNo))%>','anwin','width=400,height=500');">
                             <%
                                 }
                             %>

@@ -138,7 +138,7 @@
 
     <script>
         function confirmGroupNote() {
-            var update =<%=Encode.forJavaScript(String.valueOf(isUpdate))%>;
+            var update = <%=isUpdate%>;
             if (update == true) {
                 return confirm('This will cause all previously associated clients to be disassociated with group note, and all previously associated anonymous clients to be set inactive');
             }

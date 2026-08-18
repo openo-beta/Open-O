@@ -210,7 +210,7 @@
                 document.docDescriptionForm.deleteDescription.style.visibility = 'hidden';
                 document.docDescriptionForm.addDescription.style.visibility = 'hidden';
                 var url = "<%=request.getContextPath()%>/DocumentDescriptionTemplate.do";
-                var data = 'method=saveDocumentDescriptionTemplatePreference&defaultShortcut=<%=Encode.forJavaScript(String.valueOf(UserProperty.CLINIC))%>';
+                var data = 'method=saveDocumentDescriptionTemplatePreference&defaultShortcut=<%=Encode.forUriComponent(String.valueOf(UserProperty.CLINIC))%>';
                 new Ajax.Request(url, {
                     method: 'post', parameters: data, onSuccess: function (transport) {
                     }

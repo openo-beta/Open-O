@@ -344,7 +344,7 @@
 
             function deleteDispensingEvent(id) {
                 if (confirm("Are you sure you want to delete this record?")) {
-                    location.href = "<%=request.getContextPath()%>/oscarRx/Dispense.do?method=delete&eventId=" + id + "&id=" + <%=Encode.forJavaScript(String.valueOf(request.getAttribute("id")))%>;
+                    location.href = "<%=request.getContextPath()%>/oscarRx/Dispense.do?method=delete&eventId=" + id + "&id=<%=Encode.forUriComponent(String.valueOf(request.getAttribute("id")))%>";
                 }
             }
         </script>

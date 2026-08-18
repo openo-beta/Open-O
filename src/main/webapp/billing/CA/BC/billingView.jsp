@@ -200,7 +200,7 @@
         }
 
         function gotoPrintReceipt() {
-            document.location.href = "<%=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath() %>/billing/CA/BC/billingView.do?billing_no=<%=Encode.forJavaScript(String.valueOf(bean.getBillingNo()))%>&receipt=yes";
+            document.location.href = "<%=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath() %>/billing/CA/BC/billingView.do?billing_no=<%=Encode.forUriComponent(String.valueOf(bean.getBillingNo()))%>&receipt=yes";
         }
 
         //-->

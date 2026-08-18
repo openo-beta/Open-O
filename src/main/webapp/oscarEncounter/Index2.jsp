@@ -288,11 +288,11 @@
             autoCompList.push("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.bodyMass"/>");
             itemColours["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.bodyMass"/>"] = calculatorColour;
 
-            autoCompleted["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.coronary"/>"] = "popupPage(525,775,'CoronaryArteryDiseaseRisk','calculators/CoronaryArteryDiseaseRiskPrediction.jsp?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>')";
+            autoCompleted["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.coronary"/>"] = "popupPage(525,775,'CoronaryArteryDiseaseRisk','calculators/CoronaryArteryDiseaseRiskPrediction.jsp?sex=<%=Encode.forUriComponent(String.valueOf(bean.patientSex))%>&age=<%=Encode.forUriComponent(String.valueOf(pAge))%>')";
             autoCompList.push("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.coronary"/>");
             itemColours["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.coronary"/>"] = calculatorColour;
 
-            autoCompleted["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOsteoporotic"/>"] = "popupPage(525,775,'OsteoporoticFracture','calculators/OsteoporoticFracture.jsp?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>')";
+            autoCompleted["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOsteoporotic"/>"] = "popupPage(525,775,'OsteoporoticFracture','calculators/OsteoporoticFracture.jsp?sex=<%=Encode.forUriComponent(String.valueOf(bean.patientSex))%>&age=<%=Encode.forUriComponent(String.valueOf(pAge))%>')";
             autoCompList.push("<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOsteoporotic"/>");
             itemColours["<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.msgOsteoporotic"/>"] = calculatorColour;
 
@@ -1184,7 +1184,7 @@
                 <div class="Title" style="margin: 0 auto; text-align: center"><a
                         href="javascript: function myFunction() {return false; }"
                         title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.calculators"/>"
-                        onClick="popupPage(150,200,'calculatorWin','calculators.jsp?sex=<%=Encode.forJavaScript(String.valueOf(bean.patientSex))%>&age=<%=Encode.forJavaScript(String.valueOf(pAge))%>'); return false;"><img
+                        onClick="popupPage(150,200,'calculatorWin','calculators.jsp?sex=<%=Encode.forUriComponent(String.valueOf(bean.patientSex))%>&age=<%=Encode.forUriComponent(String.valueOf(pAge))%>'); return false;"><img
                         alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.calculators"/>"
                         src="graphics/calculator.gif"></a></div>
             </td>
@@ -1407,7 +1407,7 @@
                                         <!--hr style="border-bottom: 0pt solid #888888; background-color: #888888;"-->
                                         <td valign="top">
                                             <div class="RowTop"><a href=#
-                                                                   onClick="popupPage(700,960,'allergy','<%=request.getContextPath()%>/oscarRx/showAllergy.do?demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.allergies"/></a>:&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;
+                                                                   onClick="popupPage(700,960,'allergy','<%=request.getContextPath()%>/oscarRx/showAllergy.do?demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.allergies"/></a>:&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;
                                             </div>
                                             <div class="presBox" id="allergyBox">
                                                 <ul>
@@ -1433,7 +1433,7 @@
                                                     <td>
                                                         <div class="RowTop">
                                                             <div class="RowTop"><a href=#
-                                                                                   onClick="popupPage(700,1027,'Rx','<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forJavaScript(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a></div>
+                                                                                   onClick="popupPage(700,1027,'Rx','<%=request.getContextPath()%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.prescriptions"/></a></div>
                                                         </div>
                                                     </td>
                                                     <td align=right>
@@ -1516,7 +1516,7 @@
                                                 <tr>
                                                     <td width='75%'>
                                                         <div class="RowTop"><a href=#
-                                                                               onClick="popupPage(600,700,'<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>','<%= request.getContextPath() %>/report/reportecharthistory.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">
+                                                                               onClick="popupPage(600,700,'<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>','<%= request.getContextPath() %>/report/reportecharthistory.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">
                                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="global.encounter"/>: <%=Encode.forHtml(String.valueOf(bean.patientLastName))%>
                                                             ,
                                                             <%=Encode.forHtml(String.valueOf(bean.patientFirstName))%>
@@ -1748,7 +1748,7 @@
                 String[] s = (String[]) splitChart.get(i);%>
             <tr class="background-color : #ccccff;">
                 <td class="wcblayerTitle"><a href=#
-                                             onClick="hidepic('splitChartLayer');popupPage(600,700,'<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>','echarthistoryprint.jsp?echartid=<%=Encode.forJavaScript(String.valueOf(s[0]))%>&demographic_no=<%=Encode.forJavaScript(String.valueOf(bean.demographicNo))%>');return false;">
+                                             onClick="hidepic('splitChartLayer');popupPage(600,700,'<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>','echarthistoryprint.jsp?echartid=<%=Encode.forUriComponent(String.valueOf(s[0]))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">
                     <%=Encode.forHtml(String.valueOf(s[1]))%>
                 </a></td>
                 <td class="wcblayerItem">&nbsp;</td>

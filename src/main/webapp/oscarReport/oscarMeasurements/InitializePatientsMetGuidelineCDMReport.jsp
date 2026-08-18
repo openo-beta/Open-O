@@ -137,12 +137,12 @@
                                                 type="text" name='startDateA'
                                                 value='<c:out value="${lastYear}"/>' size="10"> <img
                                                 src="<%= request.getContextPath() %>/img/calendar.gif" border="0"
-                                                onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=startDateA&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>&amp;form=<%="RptInitializePatientsMetGuidelineCDMReportForm"%>','','width=300,height=300')"/>
+                                                onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=startDateA&amp;year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&amp;month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&amp;form=<%="RptInitializePatientsMetGuidelineCDMReportForm"%>','','width=300,height=300')"/>
                                         </td>
                                         <td width="120" class="fieldBox" bgcolor="#ddddff"><input
                                                 type="text" name='endDateA' value='<c:out value="${today}"/>'
                                                 size="10"> <img src="<%= request.getContextPath() %>/img/calendar.gif" border="0"
-                                                                onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=endDateA&amp;year=<%=Encode.forJavaScript(String.valueOf(curYear))%>&amp;month=<%=Encode.forJavaScript(String.valueOf(curMonth))%>&amp;form=<%="RptInitializePatientsMetGuidelineCDMReportForm"%>','','width=300,height=300')"/>
+                                                                onClick="window.open('<%= request.getContextPath() %>/oscarReport/oscarReportCalendarPopup.jsp?type=endDateA&amp;year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&amp;month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&amp;form=<%="RptInitializePatientsMetGuidelineCDMReportForm"%>','','width=300,height=300')"/>
                                         </td>
                                         <td width="450" class="fieldBox" bgcolor="#ddddff"></td>
                                     </tr>
