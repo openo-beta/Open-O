@@ -14,6 +14,17 @@ import io.woo.htmltopdf.PdfPageSize;
 
 public class InternalEDocConverter implements EDocConverterInterface {
     /**
+     * Resolution the page is laid out at.
+     * <p>
+     * The renderer rounds a font size, and the height of a line, to a whole device pixel before it
+     * measures anything. At the default 96 the rounding is large enough to change where text wraps
+     * and to shorten every line, so the page does not match what the browser drew. Ten device
+     * pixels to the CSS pixel puts every size the forms use on a whole number, so none of them is
+     * rounded.
+     */
+    private static final int LAYOUT_DPI = 960;
+
+    /**
      * Converts HTML to PDF using the internal io.woo.htmltopdf library.
      * Requires the required native .so file to be bundled (e.g.,
      * libwkhtmltox.ubuntu.noble.amd64.so).
@@ -42,6 +53,7 @@ public class InternalEDocConverter implements EDocConverterInterface {
         try (InputStream in = HtmlToPdf.create()
                 .object(HtmlToPdfObject.forHtml(document, htmlToPdfSettings))
                 .pageSize(PdfPageSize.Letter)
+                .dpi(LAYOUT_DPI)
                 .convert()) {
             IOUtils.copy(in, os);
         }
