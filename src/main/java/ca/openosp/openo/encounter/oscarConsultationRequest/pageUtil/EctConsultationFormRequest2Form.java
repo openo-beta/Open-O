@@ -450,6 +450,34 @@ public final class EctConsultationFormRequest2Form {
         this.patientHealthCardType = patientHealthCardType;
     }
 
+    /**
+     * Formats the health card for display as "number version (card type)", omitting whichever
+     * optional parts are not on file. The version code and the card type are both two characters
+     * drawn from the same alphabet, so the parentheses are what stop a version code such as AB
+     * from reading as a second province code.
+     * <p>
+     * The value is returned as raw text. Callers are responsible for encoding it at the output
+     * boundary; encoding here would double-encode.
+     *
+     * @return String the formatted health card, or an empty string when nothing is on file
+     */
+    public String getFormattedHealthCard() {
+        // Delegate to the getters rather than the fields: the fields are populated straight from
+        // the demographic and may be null, while the getters normalise null to an empty string.
+        String number = getPatientHealthNum();
+        String versionCode = getPatientHealthCardVersionCode();
+        String cardType = getPatientHealthCardType();
+
+        StringBuilder formatted = new StringBuilder(number);
+        if (!versionCode.isEmpty()) {
+            formatted.append(' ').append(versionCode);
+        }
+        if (!cardType.isEmpty()) {
+            formatted.append(" (").append(cardType).append(')');
+        }
+        return formatted.toString().trim();
+    }
+
     public Integer getHl7TextMessageId() {
         return hl7TextMessageId;
     }
