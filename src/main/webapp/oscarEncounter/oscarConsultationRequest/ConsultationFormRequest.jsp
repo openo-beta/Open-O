@@ -2470,7 +2470,18 @@ if (userAgent != null) {
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgHealthCard"/>
                                         </td>
-                                        <td class="tite1"><%=Encode.forHtml(String.valueOf(thisForm.getPatientHealthNum()))%><%=Encode.forHtml(String.valueOf(thisForm.getPatientHealthCardVersionCode()))%><%=Encode.forHtml(String.valueOf(thisForm.getPatientHealthCardType()))%>
+                                        <%
+                                            // Health card renders as "number version (card type)"; the version code
+                                            // and the card type are both two characters, so without the parentheses
+                                            // a version code such as AB is indistinguishable from a province code.
+                                            String hcNum = thisForm.getPatientHealthNum();
+                                            String hcVer = thisForm.getPatientHealthCardVersionCode();
+                                            String hcType = thisForm.getPatientHealthCardType();
+                                            StringBuilder healthCard = new StringBuilder(hcNum);
+                                            if (!hcVer.isEmpty()) healthCard.append(' ').append(hcVer);
+                                            if (!hcType.isEmpty()) healthCard.append(" (").append(hcType).append(')');
+                                        %>
+                                        <td class="tite1"><%=Encode.forHtml(healthCard.toString().trim())%>
                                         </td>
                                     </tr>
                                     <tr id="conReqSendTo">
