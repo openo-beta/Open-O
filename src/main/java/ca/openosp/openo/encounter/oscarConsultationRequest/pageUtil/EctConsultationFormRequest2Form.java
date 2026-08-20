@@ -31,7 +31,9 @@ import org.apache.commons.lang3.StringUtils;
 import ca.openosp.openo.utility.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public final class EctConsultationFormRequest2Form {
 
@@ -468,14 +470,19 @@ public final class EctConsultationFormRequest2Form {
         String versionCode = getPatientHealthCardVersionCode();
         String cardType = getPatientHealthCardType();
 
-        StringBuilder formatted = new StringBuilder(number);
+        // Collect only the parts that are on file, then join. Each part stands on its own, so no
+        // combination can produce a stray separator or an empty pair of parentheses.
+        List<String> parts = new ArrayList<String>();
+        if (!number.isEmpty()) {
+            parts.add(number);
+        }
         if (!versionCode.isEmpty()) {
-            formatted.append(' ').append(versionCode);
+            parts.add(versionCode);
         }
         if (!cardType.isEmpty()) {
-            formatted.append(" (").append(cardType).append(')');
+            parts.add("(" + cardType + ")");
         }
-        return formatted.toString().trim();
+        return String.join(" ", parts);
     }
 
     public Integer getHl7TextMessageId() {

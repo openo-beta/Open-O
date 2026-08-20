@@ -93,6 +93,31 @@ public class EctConsultationFormRequest2FormHealthCardTest {
         }
 
         @Test
+        @DisplayName("should render the version code and card type when the number is absent")
+        void shouldRenderVersionAndType_whenNumberAbsent() {
+            // Each part is rendered on its own merits, mirroring the demographic master file where
+            // HC Type occupies its own row regardless of whether a health number is on file.
+            assertThat(formWith(null, VERSION_CODE, CARD_TYPE).getFormattedHealthCard())
+                    .isEqualTo("AB (ON)");
+        }
+
+        @Test
+        @DisplayName("should render the card type alone when number and version code are absent")
+        void shouldRenderTypeOnly_whenNumberAndVersionAbsent() {
+            // Reachable in practice: the card type defaults to a province on new demographics,
+            // so it is commonly set before any health number has been entered.
+            assertThat(formWith(null, null, CARD_TYPE).getFormattedHealthCard())
+                    .isEqualTo("(ON)");
+        }
+
+        @Test
+        @DisplayName("should render the version code alone when number and card type are absent")
+        void shouldRenderVersionOnly_whenNumberAndTypeAbsent() {
+            assertThat(formWith("", VERSION_CODE, "").getFormattedHealthCard())
+                    .isEqualTo("AB");
+        }
+
+        @Test
         @DisplayName("should treat blank and whitespace-only parts as absent")
         void shouldTreatBlankAsAbsent_whenPartsAreEmptyOrWhitespace() {
             assertThat(formWith(NUMBER, "", "").getFormattedHealthCard()).isEqualTo("1234567890");
