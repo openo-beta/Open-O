@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function(){
     /**
      * Trigger these functions every time this page loads.
      */
+    addDejaVuFaces();
     removeElements();
     hideElements();
     addNavElement();
@@ -1352,4 +1353,67 @@ function HideSpin() {
 				document.getElementById('remoteEmailButton').style.display = 'none';
 			}
 		}
+	}
+
+	/**
+	 * The DejaVu Sans faces that ship with the application, with the weight and style each one draws.
+	 */
+	const DEJAVU_FACES = [
+		{file: "DejaVuSans.ttf", weight: "normal", style: "normal"},
+		{file: "DejaVuSans-Bold.ttf", weight: "bold", style: "normal"},
+		{file: "DejaVuSans-Oblique.ttf", weight: "normal", style: "italic"},
+		{file: "DejaVuSans-BoldOblique.ttf", weight: "bold", style: "italic"}
+	];
+
+	/**
+	 * Gives the browser every DejaVu Sans face the application ships, so a field styled bold or
+	 * italic is drawn with the real face instead of one the browser thickens or slants itself.
+	 * The document is drawn on the server with the real faces, and an invented face is a different
+	 * width in every browser and every browser version, so without this the page and the document
+	 * disagree about where a line wraps and a fixed height field drops what no longer fits.
+	 *
+	 * The faces are taken together or not at all, so a form is never left drawing a real bold beside
+	 * an invented italic.
+	 */
+	function addDejaVuFaces() {
+		if (!window.FontFace || !document.fonts) {
+			reportDejaVuFaces(false);
+			return;
+		}
+
+		const context = document.getElementById("context");
+		const path = (context ? context.value : "..") + "/library/eforms/dejavufonts/ttf/";
+
+		Promise.all(DEJAVU_FACES.map(function (face) {
+			return new FontFace("DejaVu Sans", "url('" + path + face.file + "') format('truetype')",
+				{weight: face.weight, style: face.style}).load();
+		})).then(function (faces) {
+			faces.forEach(function (face) {
+				document.fonts.add(face);
+			});
+			reportDejaVuFaces(true);
+		}, function () {
+			reportDejaVuFaces(false);
+		});
+	}
+
+	/**
+	 * Tells the provider whether this form is drawn with the DejaVu Sans fonts the document is drawn
+	 * with. A save, download or error result is worth more than this notice, so it keeps whichever
+	 * of those is already on screen.
+	 *
+	 * @param {boolean} added whether all four faces reached the browser
+	 */
+	function reportDejaVuFaces(added) {
+		const error = document.getElementById("error");
+		const autoclose = document.getElementById("isSuccess_Autoclose");
+		if ((error && error.value === "true") || (autoclose && autoclose.value === "true")
+			|| typeof createAndShowAlert !== "function" || oscarAlert) {
+			return;
+		}
+
+		createAndShowAlert("eform-font-alert", added
+			? "This form is using the DejaVu Sans fonts supplied with OpenO."
+			: "The DejaVu Sans fonts could not be loaded. Text may wrap differently in the saved document.",
+			added ? "info" : "danger", 5, undefined);
 	}
