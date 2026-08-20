@@ -231,7 +231,7 @@ class OscarAlert {
 
     getLabel() {
         const labels = {
-            danger: 'Error!', warning: 'Warning!', success: 'Success!'
+            danger: 'Error!', warning: 'Warning!', success: 'Success!', info: 'Note:'
         };
 
         return labels[this.alertType] || 'Unknown';
