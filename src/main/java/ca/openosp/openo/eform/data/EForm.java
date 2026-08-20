@@ -55,6 +55,7 @@ import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.util.StringBuilderUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -83,6 +84,52 @@ public class EForm extends EFormBase {
     private static final String TABLE_ID = "table_id";
     private static final String OTHER_KEY = "other_key";
     private static final String OPENER_VALUE = "link$eform";
+
+    /**
+     * The font the eForm is drawn in.
+     *
+     * Not called "DejaVu Sans" on purpose. Some eForms declare that family themselves with a path the
+     * converter cannot reach, and a family it cannot load is dropped whole, so none of its text is
+     * drawn. A name no eForm uses cannot be broken that way.
+     */
+    private static final String FIELD_FONT_FAMILY = "OpenO eForm Sans";
+
+    /**
+     * The DejaVu Sans files the application ships: weight, style, and the file each one is read from.
+     */
+    private static final String[][] FIELD_FONT_FACES = {
+            {"normal", "normal", "DejaVuSans.ttf"},
+            {"bold", "normal", "DejaVuSans-Bold.ttf"},
+            {"normal", "italic", "DejaVuSans-Oblique.ttf"},
+            {"bold", "italic", "DejaVuSans-BoldOblique.ttf"}
+    };
+
+    /** Where those files sit, relative to the deployed application. */
+    private static final String FIELD_FONT_DIRECTORY = "library/eforms/dejavufonts/ttf";
+
+    /**
+     * The text the font is applied to.
+     *
+     * The font is set on the body and inherited, so it reaches every label and heading as well as the
+     * fields. Inheritance loses to any direct declaration, so anything naming its own font keeps it.
+     * That is what leaves icons alone, with no list of icon fonts to maintain.
+     *
+     * "html body" beats a form that sets its own body font with !important. The controls are listed
+     * separately because a browser does not pass the body font into them.
+     *
+     * Option text cannot wrap, so a fixed-width select may show its longest option cut short.
+     *
+     * eform_floating_toolbar.js uses the same selector on the page being filled in. Keep the two
+     * identical.
+     */
+    private static final String FONT_SELECTOR =
+            "html body,"
+            + "input:not([type=button]):not([type=submit]):not([type=reset])"
+            + ":not([type=image]):not([type=checkbox]):not([type=radio]):not([type=file])"
+            + ":not([type=hidden]):not(#remote_eform_subject),"
+            + "select,"
+            + "textarea,"
+            + "[contenteditable]:not([contenteditable=false])";
 
     public EForm() {
     }
@@ -1035,6 +1082,47 @@ public class EForm extends EFormBase {
         String stringBuilder = "@font-face { font-family: dejavu; src: url('" + fontPath + "'); }";
         Element style = getDocument().createElement("style");
         style.text(stringBuilder);
+        addHeadElement(style);
+    }
+
+    /**
+     * Writes the font rule into this eForm so the document is drawn in the same font as the page.
+     *
+     * The page and the document are drawn by two different engines. Given different fonts they
+     * disagree about where a line wraps, and a box of a fixed height then drops what no longer fits
+     * with nothing to say so.
+     *
+     * Called when the form is saved, so the stored copy carries the rule. Forms saved before this
+     * existed keep the HTML they were saved with.
+     *
+     * Each source names the installed font before the file path, so a path that later stops resolving
+     * falls back instead of taking the whole document down. Nothing is added unless all four files
+     * are there to be read.
+     */
+    public void applyFieldFont() {
+        if (StringUtils.isBlank(getRealPath())) {
+            return;
+        }
+
+        Path directory = Paths.get(getRealPath(), FIELD_FONT_DIRECTORY);
+        StringBuilder css = new StringBuilder();
+        for (String[] face : FIELD_FONT_FACES) {
+            Path file = directory.resolve(face[2]);
+            if (!Files.isReadable(file)) {
+                log.warn("eForm field font not readable, leaving the form's own fonts in place: " + file);
+                return;
+            }
+            css.append("@font-face{font-family:'").append(FIELD_FONT_FAMILY)
+               .append("';font-weight:").append(face[0])
+               .append(";font-style:").append(face[1])
+               .append(";src:local('DejaVu Sans'), url('").append(file.toUri())
+               .append("') format('truetype');}");
+        }
+        css.append(FONT_SELECTOR).append("{font-family:'").append(FIELD_FONT_FAMILY)
+           .append("',sans-serif !important;}");
+
+        Element style = getDocument().createElement("style");
+        style.text(css.toString());
         addHeadElement(style);
     }
 

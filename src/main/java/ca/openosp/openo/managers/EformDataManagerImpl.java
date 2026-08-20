@@ -64,6 +64,8 @@ public class EformDataManagerImpl implements EformDataManager {
             throw new RuntimeException("missing required sec object (_eform)");
         }
 
+        eform.applyFieldFont();
+
         EFormData eFormData = EFormUtil.toEFormData(eform);
         eFormDataDao.persist(eFormData);
         formid = eFormData.getId();
