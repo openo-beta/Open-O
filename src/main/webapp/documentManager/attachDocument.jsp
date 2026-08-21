@@ -552,17 +552,36 @@
                                     </button>
                                 </li>
                                 <c:forEach items="${ allForms }" var="form" varStatus="loop">
+                                    <c:set var="formKey" value="${form.formId}"/>
+                                    <c:set var="formDomId" value="formNo${form.formId}"/>
+                                    <c:if test="${useQualifiedFormIds}">
+                                        <c:set var="formKey" value="${form.table}|${form.formId}"/>
+                                        <c:set var="formDomId" value="formNo_${form.table}_${form.formId}"/>
+                                    </c:if>
                                     <li class="form ${loop.index > 19 ? 'hide' : ''}">
                                         <input class="form_check attachable_check" type="checkbox" name="formNo"
-                                               id="formNo${ form.formId }" value="${form.formId}"
+                                               id="${e:forHtmlAttribute(formDomId)}"
+                                               value="${e:forHtmlAttribute(formKey)}"
+                                               data-form-id="${e:forHtmlAttribute(form.formId)}"
+                                               data-form-table="${e:forHtmlAttribute(form.table)}"
                                                title="${e:forHtmlAttribute(form.formName)}"/>
-                                        <label for="formNo${form.formId}">
+                                        <label for="${e:forHtmlAttribute(formDomId)}">
                                             <c:out value="${ form.formName } ${ form.getEdited() }"/>
                                         </label>
-                                        <button class="preview-button" type="button" title="Preview"
-                                                onclick="getPdf('FORM', '${form.formId}', 'method=renderFormPDF&formId=${form.formId}&formName=${form.formName}&demographicNo=${form.getDemoNo()}')">
-                                            Preview
-                                        </button>
+                                        <c:choose>
+                                            <c:when test="${useQualifiedFormIds}">
+                                                <button class="preview-button" type="button" title="Preview"
+                                                        onclick="getPdf('FORM', '${e:forJavaScript(formKey)}', 'method=renderFormPDF&formId=' + encodeURIComponent('${e:forJavaScript(form.formId)}') + '&formTable=' + encodeURIComponent('${e:forJavaScript(form.table)}') + '&demographicNo=' + encodeURIComponent('${e:forJavaScript(form.getDemoNo())}'))">
+                                                    Preview
+                                                </button>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button class="preview-button" type="button" title="Preview"
+                                                        onclick="getPdf('FORM', '${e:forJavaScript(form.formId)}', 'method=renderFormPDF&formId=' + encodeURIComponent('${e:forJavaScript(form.formId)}') + '&formName=' + encodeURIComponent('${e:forJavaScript(form.formName)}') + '&demographicNo=' + encodeURIComponent('${e:forJavaScript(form.getDemoNo())}'))">
+                                                    Preview
+                                                </button>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </li>
                                 </c:forEach>
                             </ul>

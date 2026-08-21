@@ -60,6 +60,9 @@ public class ConsultDocs extends AbstractModel<Integer> {
     @Column(name = "doctype")
     private String docType;
 
+    @Column(name = "form_table")
+    private String formTable;
+
     private String deleted;
 
     @Column(name = "attach_date")
@@ -110,6 +113,14 @@ public class ConsultDocs extends AbstractModel<Integer> {
 
     public void setDocType(String docType) {
         this.docType = docType;
+    }
+
+    public String getFormTable() {
+        return formTable;
+    }
+
+    public void setFormTable(String formTable) {
+        this.formTable = formTable;
     }
 
     public String getDeleted() {

@@ -671,14 +671,15 @@ public class ConsultationManagerImpl implements ConsultationManager {
          * Sure wish we didn't have to do this.  It's the only option without having to refactor a
          * whole string of dated code.
          */
-        List<EctFormData.PatientForm> allForms = formsManager.getEncounterFormsbyDemographicNumber(loggedInInfo, demographicNo, true, true);
         for (ConsultDocs attached : attachedForms) {
-            for (EctFormData.PatientForm form : allForms) {
-                if ((form.getFormId()).equals((attached.getDocumentNo() + ""))) {
-                    filteredForms.add(form);
-                    break;
-                }
+            String formTable = attached.getFormTable() == null ? "formAnnual" : attached.getFormTable();
+            EctFormData.PatientForm form = formsManager.getConsultForm(
+                    loggedInInfo, formTable, attached.getDocumentNo(), demographicNo);
+            if (form == null) {
+                throw new IllegalStateException("Attached encounter form could not be resolved: "
+                        + formTable + "|" + attached.getDocumentNo());
             }
+            filteredForms.add(form);
         }
 
         return filteredForms;

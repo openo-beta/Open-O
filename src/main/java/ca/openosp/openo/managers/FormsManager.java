@@ -42,6 +42,10 @@ public interface FormsManager {
 
     public List<PatientForm> getEncounterFormsbyDemographicNumber(LoggedInInfo loggedInInfo, Integer demographicId, boolean getAllVersions, boolean getOnlyPDFReadyForms);
 
+    public List<PatientForm> getConsultAttachableForms(LoggedInInfo loggedInInfo, Integer demographicId, boolean getAllVersions);
+
+    public PatientForm getConsultForm(LoggedInInfo loggedInInfo, String formTable, Integer formId, Integer demographicNo);
+
     public Integer saveFormDataAsEDoc(LoggedInInfo loggedInInfo, FormTransportContainer formTransportContainer);
 
     public Path renderForm(HttpServletRequest request, HttpServletResponse response, Integer formId, Integer demographicNo) throws PDFGenerationException;
@@ -50,6 +54,11 @@ public interface FormsManager {
 
     public Path renderForm(HttpServletRequest request, HttpServletResponse response, EctFormData.PatientForm form) throws PDFGenerationException;
 
+    public Path renderConsultForm(HttpServletRequest request, HttpServletResponse response,
+                                  EctFormData.PatientForm form) throws PDFGenerationException;
+
+    public Path renderConsultForm(HttpServletRequest request, HttpServletResponse response,
+                                  String formTable, Integer formId, Integer demographicNo) throws PDFGenerationException;
+
     public PatientForm getFormById(LoggedInInfo loggedInInfo, Integer formId, Integer demographicNo);
 }
-

@@ -2030,13 +2030,17 @@ if (userAgent != null) {
                                                     <td><h3>Forms</h3></td>
                                                 </tr>
                                                 <c:forEach items="${ attachedForms }" var="attachedForm">
-                                                    <tr id="entry_formNo${ attachedForm.formId }"
-                                                        data-formName="${ attachedForm.formName }"
-                                                        data-formDate="${ attachedForm.getEdited() }">
+                                                    <c:set var="attachedFormKey" value="${attachedForm.table}|${attachedForm.formId}"/>
+                                                    <c:set var="attachedFormDomId" value="formNo_${attachedForm.table}_${attachedForm.formId}"/>
+                                                    <tr id="entry_${e:forHtmlAttribute(attachedFormDomId)}"
+                                                        data-form-name="${e:forHtmlAttribute(attachedForm.formName)}"
+                                                        data-form-date="${e:forHtmlAttribute(attachedForm.getEdited())}"
+                                                        data-form-id="${e:forHtmlAttribute(attachedForm.formId)}"
+                                                        data-form-table="${e:forHtmlAttribute(attachedForm.table)}">
                                                         <td>
                                                             <c:out value="${ attachedForm.formName }"/>
-                                                            <input name="formNo" value="${ attachedForm.formId }"
-                                                                   id="delegate_formNo${ attachedForm.formId }"
+                                                            <input name="formNo" value="${e:forHtmlAttribute(attachedFormKey)}"
+                                                                   id="delegate_${e:forHtmlAttribute(attachedFormDomId)}"
                                                                    class="delegateAttachment" type="hidden">
                                                         </td>
                                                     </tr>
@@ -3122,21 +3126,26 @@ if (userAgent != null) {
             function addFormIfNotFound(form, demographicNo, delegate) {
                 const checkboxName = form.getAttribute('name');
                 const formValue = form.getAttribute('value');
-                const formId = "formNo" + formValue;
-                const formName = document.getElementById("entry_" + formId).getAttribute('data-formName');
-                const formDate = document.getElementById("entry_" + formId).getAttribute('data-formDate');
+                const formDomId = form.id.substring("delegate_".length);
+                const row = document.getElementById("entry_" + formDomId);
+                const formName = row.getAttribute('data-form-name');
+                const formDate = row.getAttribute('data-form-date');
+                const formId = row.getAttribute('data-form-id');
+                const formTable = row.getAttribute('data-form-table');
 
                 const checkbox = jQuery('<input>', {
                     class: 'form_check',
                     type: 'checkbox',
                     name: checkboxName,
-                    id: formId,
+                    id: formDomId,
                     value: formValue,
+                    'data-form-id': formId,
+                    'data-form-table': formTable,
                     title: formName
                 });
 
                 const label = jQuery('<label>', {
-                    for: formId,
+                    for: formDomId,
                     text: "(Not Latest Version) " + formName + " " + formDate
                 });
 
@@ -3146,7 +3155,9 @@ if (userAgent != null) {
                     text: 'Preview',
                     title: 'Preview'
                 }).click(function () {
-                    getPdf('FORM', formValue, 'method=renderFormPDF&formId=' + formValue + '&formName=' + formName + '&demographicNo=' + demographicNo);
+                    getPdf('FORM', formValue, 'method=renderFormPDF&formId=' + encodeURIComponent(formId)
+                        + '&formTable=' + encodeURIComponent(formTable)
+                        + '&demographicNo=' + encodeURIComponent(demographicNo));
                 });
 
                 const newLiFormElement = jQuery('<li>', {
@@ -3171,7 +3182,7 @@ if (userAgent != null) {
                 jQuery("#attachDocumentDisplay").load(trigger.data('poload'), function (response, status, xhr) {
                     if (status === "success") {
                         $mainForm.find(".delegateAttachment").each(function (index, data) {
-                            let delegateKey = this.id.split("_")[1];
+                            let delegateKey = this.id.substring("delegate_".length);
 
                             // DOC sections share name="docNo" with distinct ids; look up by name+value.
                             // Skip if server-pre-attached; else mark as unsaved client-side selection.
@@ -3249,8 +3260,14 @@ if (userAgent != null) {
                             if (seenDelegates[key]) return;
                             seenDelegates[key] = true;
                             var input = buildDelegateInput(element);
-                            // entry_ row id uses name+value (not checkbox id) so the three DOC sections share a row key.
-                            var row = jQuery("<tr>", {id: "entry_" + element.attr("name") + element.val()});
+                            // DOC sections use name+value to share a row key. Qualified form values use their safe DOM id.
+                            var rowId = element.hasClass("form_check")
+                                ? "entry_" + element.attr("id")
+                                : "entry_" + element.attr("name") + element.val();
+                            if (element.hasClass("form_check")) {
+                                jQuery(document.getElementById(rowId)).remove();
+                            }
+                            var row = jQuery("<tr>", {id: rowId});
                             var column = jQuery("<td>");
                             var target = "#attachedDocumentsTable";
 
@@ -3261,6 +3278,12 @@ if (userAgent != null) {
 
                             if (element.hasClass("form_check")) {
                                 target = "#attachedFormsTable";
+                                row.attr({
+                                    'data-form-name': element.attr("title"),
+                                    'data-form-date': '',
+                                    'data-form-id': element.attr("data-form-id"),
+                                    'data-form-table': element.attr("data-form-table")
+                                });
                             }
 
                             if (element.hasClass("eForm_check")) {
@@ -3283,7 +3306,10 @@ if (userAgent != null) {
 
                             if (!checkedElement.is(':checked')) {
                                 var oldType = checkedElement.attr("class").split(" ")[0];
-                                $mainForm.find("#entry_" + checkedElement.attr("name") + checkedElement.val()).remove();
+                                var oldRowId = checkedElement.hasClass("form_pre_check")
+                                    ? "entry_" + checkedElement.attr("id")
+                                    : "entry_" + checkedElement.attr("name") + checkedElement.val();
+                                jQuery(document.getElementById(oldRowId)).remove();
                                 checkedElement.removeClass(oldType).addClass(oldType.split("_")[0] + "_check");
                                 // Drop pre-attached so a subsequent re-check fires the private-doc warning.
                                 checkedElement.removeAttr("data-pre-attached");
@@ -3324,5 +3350,3 @@ if (userAgent != null) {
         return noteStr.toString();
     }
 %>
-
-

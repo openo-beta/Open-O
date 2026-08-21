@@ -49,6 +49,37 @@ public class DocumentAttach {
         attachToConsult(currentList, oldList, documentType, providerNo, requestId);
     }
 
+    /**
+     * Synchronizes encounter-form links for a consultation using table-qualified form IDs.
+     *
+     * @param attachments validated encounter-form attachment keys
+     * @param providerNo attaching provider
+     * @param requestId consultation request identifier
+     */
+    public void attachFormsToConsult(List<EncounterFormAttachmentKey> attachments, String providerNo, Integer requestId) {
+        List<ConsultDocs> existing = consultDocsDao.findByRequestIdDocType(requestId, ConsultDocs.DOCTYPE_FORM);
+        List<EncounterFormAttachmentKey> oldKeys = new ArrayList<>();
+        for (ConsultDocs consultDoc : existing) {
+            String table = consultDoc.getFormTable() == null ? "formAnnual" : consultDoc.getFormTable();
+            EncounterFormAttachmentKey oldKey = EncounterFormAttachmentKey.of(table, consultDoc.getDocumentNo());
+            oldKeys.add(oldKey);
+            if (!attachments.contains(oldKey)) {
+                consultDoc.setDeleted("Y");
+                consultDocsDao.merge(consultDoc);
+            }
+        }
+
+        for (EncounterFormAttachmentKey key : attachments) {
+            if (oldKeys.contains(key)) {
+                continue;
+            }
+            ConsultDocs consultDoc = new ConsultDocs(
+                    requestId, key.getFormId(), ConsultDocs.DOCTYPE_FORM, providerNo);
+            consultDoc.setFormTable(key.getFormTable());
+            consultDocsDao.persist(consultDoc);
+        }
+    }
+
     private void attachToConsult(List<String> currentList, List<String> oldList, DocumentType documentType, String providerNo, Integer requestId) {
         for (String docId : currentList) {
             if (oldList.contains(docId)) {

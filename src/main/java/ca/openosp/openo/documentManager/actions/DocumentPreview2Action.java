@@ -384,6 +384,9 @@ public class DocumentPreview2Action extends ActionSupport {
         String requestId = WebUtils.positiveIntParamOrNull(request.getParameter("requestId"));
 
         populateCommonDocs(loggedInInfo, demographicNo, documentAttachmentManager.getAttachedDocsForConsult(loggedInInfo, demographicNo, requestId));
+        request.setAttribute("allForms", formsManager.getConsultAttachableForms(
+                loggedInInfo, Integer.parseInt(demographicNo), false));
+        request.setAttribute("useQualifiedFormIds", true);
 		List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
         request.setAttribute("allEForms", allEForms);
 

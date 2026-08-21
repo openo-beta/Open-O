@@ -4,11 +4,14 @@ package ca.openosp.openo.managers;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.dao.EFormDao;
@@ -28,6 +31,7 @@ import org.springframework.stereotype.Service;
 import ca.openosp.openo.documentManager.ConvertToEdoc;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.form.util.FormTransportContainer;
+import ca.openosp.openo.form.pdfservlet.GrowthChartConsultPdfRenderer;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.encounter.data.EctFormData.PatientForm;
@@ -41,6 +45,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Service
 public class FormsManagerImpl implements FormsManager {
+    private static final Set<String> CONSULT_ATTACHABLE_FORM_TABLES =
+            Set.of("formAnnual", "formGrowthChart", "formGrowth0_36");
     private final Logger logger = MiscUtils.getLogger();
 
     @Autowired
@@ -60,6 +66,9 @@ public class FormsManagerImpl implements FormsManager {
 
     @Autowired
     private SecurityInfoManager securityInfoManager;
+
+    @Autowired
+    private GrowthChartConsultPdfRenderer growthChartConsultPdfRenderer;
 
 
     /**
@@ -168,6 +177,45 @@ public class FormsManagerImpl implements FormsManager {
         return patientFormList;
     }
 
+    @Override
+    public List<PatientForm> getConsultAttachableForms(LoggedInInfo loggedInInfo, Integer demographicId,
+                                                        boolean getAllVersions) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
+            throw new RuntimeException("missing required sec object (_form)");
+        }
+
+        List<PatientForm> forms = new ArrayList<>();
+        for (EncounterForm encounterForm : getAllEncounterForms()) {
+            if (!CONSULT_ATTACHABLE_FORM_TABLES.contains(encounterForm.getFormTable())) {
+                continue;
+            }
+            PatientForm[] patientForms = EctFormData.getPatientForms(
+                    String.valueOf(demographicId), encounterForm.getFormTable());
+            int count = getAllVersions ? patientForms.length : Math.min(1, patientForms.length);
+            for (int i = 0; i < count; i++) {
+                PatientForm form = patientForms[i];
+                form.setTable(encounterForm.getFormTable());
+                form.setFormName(encounterForm.getFormName());
+                forms.add(form);
+            }
+        }
+        return forms;
+    }
+
+    @Override
+    public PatientForm getConsultForm(LoggedInInfo loggedInInfo, String formTable, Integer formId,
+                                      Integer demographicNo) {
+        if (!CONSULT_ATTACHABLE_FORM_TABLES.contains(formTable) || formId == null || formId <= 0) {
+            return null;
+        }
+        for (PatientForm form : getConsultAttachableForms(loggedInInfo, demographicNo, true)) {
+            if (formTable.equals(form.getTable()) && String.valueOf(formId).equals(form.getFormId())) {
+                return form;
+            }
+        }
+        return null;
+    }
+
 
     private List<String> getPDFReadyFormNames() {
         List<String> pdfReadyFormList = new ArrayList<>();
@@ -267,16 +315,54 @@ public class FormsManagerImpl implements FormsManager {
         return path;
     }
 
+    @Override
+    public Path renderConsultForm(HttpServletRequest request, HttpServletResponse response,
+                                  EctFormData.PatientForm form) throws PDFGenerationException {
+        if (form == null) {
+            throw new PDFGenerationException("The encounter form attachment could not be found");
+        }
+        if ("formGrowthChart".equals(form.getTable()) || "formGrowth0_36".equals(form.getTable())) {
+            LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+            if (loggedInInfo != null && loggedInInfo.getLoggedInProvider() == null) {
+                loggedInInfo = LoggedInInfo.getLoggedInInfoFromRequest(request);
+            }
+            if (!securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
+                throw new SecurityException("missing required sec object (_form)");
+            }
+            LogAction.addLogSynchronous(loggedInInfo, "FormsManager.saveFormAsTempPdf",
+                    form.getTable() + "|" + form.getFormId());
+            return growthChartConsultPdfRenderer.render(request, form);
+        }
+        return renderForm(request, response, form);
+    }
+
+    @Override
+    public Path renderConsultForm(HttpServletRequest request, HttpServletResponse response,
+                                  String formTable, Integer formId, Integer demographicNo) throws PDFGenerationException {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (loggedInInfo != null && loggedInInfo.getLoggedInProvider() == null) {
+            loggedInInfo = LoggedInInfo.getLoggedInInfoFromRequest(request);
+        }
+        PatientForm form = getConsultForm(loggedInInfo, formTable, formId, demographicNo);
+        if (form == null) {
+            throw new SecurityException("Encounter form does not belong to the patient or is not attachable");
+        }
+        return renderConsultForm(request, response, form);
+    }
+
     private FormTransportContainer getFormTransportContainer(HttpServletRequest request, HttpServletResponse response,
                                                              EctFormData.PatientForm form) throws PDFGenerationException {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String formId = request.getParameter("formId") != null ? request.getParameter("formId") : form.getFormId();
-        String formName = request.getParameter("formName") != null ? request.getParameter("formName")
-                : form.getFormName();
-        String demographicNo = request.getParameter("demographicNo") != null ? request.getParameter("demographicNo")
-                : form.getDemoNo();
-        String formPath = "/form/forwardshortcutname.jsp?method=fetch&formname=" + formName + "&demographic_no="
-                + demographicNo + "&formId=" + formId;
+        String formId = form != null ? form.getFormId() : request.getParameter("formId");
+        String formName = form != null ? form.getFormName() : request.getParameter("formName");
+        String demographicNo = form != null ? form.getDemoNo() : request.getParameter("demographicNo");
+        if (formId == null || formName == null || demographicNo == null) {
+            throw new PDFGenerationException("The encounter form rendering identity is incomplete");
+        }
+        String formPath = "/form/forwardshortcutname.jsp?method=fetch&formname="
+                + URLEncoder.encode(formName, StandardCharsets.UTF_8) + "&demographic_no="
+                + URLEncoder.encode(demographicNo, StandardCharsets.UTF_8) + "&formId="
+                + URLEncoder.encode(formId, StandardCharsets.UTF_8);
         FormTransportContainer formTransportContainer = null;
         try {
             formTransportContainer = new FormTransportContainer(response, request, formPath);

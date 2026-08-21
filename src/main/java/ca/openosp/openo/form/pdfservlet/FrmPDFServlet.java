@@ -232,7 +232,7 @@ public class FrmPDFServlet extends HttpServlet {
                         cfgFile[idx2] = "";
                     }
 
-                    printCfg[idx2] = getCfgProp(cfgFile[idx2]);
+                    printCfg[idx2] = getCfgProp(cfgFile[idx2], ctx);
                 }
             }
 
@@ -256,7 +256,7 @@ public class FrmPDFServlet extends HttpServlet {
                     graphicCfg[idx] = new Properties[cfgGraphicFileNo];
                     for (int idx2 = 0; idx2 < cfgGraphicFileNo; ++idx2) {
                         cfgGraphicFile[idx2] += ".txt";
-                        graphicCfg[idx][idx2] = getCfgProp(cfgGraphicFile[idx2]);
+                        graphicCfg[idx][idx2] = getCfgProp(cfgGraphicFile[idx2], ctx);
                     }
                 }
             }
@@ -793,7 +793,7 @@ public class FrmPDFServlet extends HttpServlet {
         return baosPDF;
     }
 
-    protected Properties getCfgProp(String cfgFilename) {
+    protected Properties getCfgProp(String cfgFilename, ServletContext servletContext) {
         Properties ret = new Properties();
         
         // Input validation - reject null or empty
@@ -832,7 +832,7 @@ public class FrmPDFServlet extends HttpServlet {
         }
         
         // Try loading from classpath as fallback
-        Properties cpProps = loadFromClasspath(cleanFilename);
+        Properties cpProps = loadFromClasspath(cleanFilename, servletContext);
         if (cpProps != null) {
             return cpProps;
         }
@@ -863,7 +863,7 @@ public class FrmPDFServlet extends HttpServlet {
         }
     }
     
-    private Properties loadFromClasspath(String safeFilename) {
+    private Properties loadFromClasspath(String safeFilename, ServletContext servletContext) {
         try {
             // Build the resource path using only the safe filename
             String resourceBase = "/WEB-INF/classes/oscar/form/prop/";
@@ -878,7 +878,7 @@ public class FrmPDFServlet extends HttpServlet {
             }
             
             // Load from classpath
-            InputStream is = getServletContext().getResourceAsStream(fullResourcePath);
+            InputStream is = servletContext.getResourceAsStream(fullResourcePath);
             if (is != null) {
                 try (InputStream autoCloseIs = is) {
                     Properties props = new Properties();

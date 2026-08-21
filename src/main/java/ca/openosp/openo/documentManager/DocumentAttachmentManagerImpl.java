@@ -15,6 +15,7 @@ import ca.openosp.openo.documentManager.data.AttachmentLabResultData;
 import ca.openosp.openo.utility.DateUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.PDFGenerationException;
+import ca.openosp.openo.utility.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -316,7 +317,12 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
         }
 
         DocumentAttach documentAttach = new DocumentAttach();
-        documentAttach.attachToConsult(attachments, documentType, providerNo, requestId);
+        if (DocumentType.FORM == documentType) {
+            documentAttach.attachFormsToConsult(validateFormAttachmentKeys(
+                    loggedInInfo, attachments, demographicNo), providerNo, requestId);
+        } else {
+            documentAttach.attachToConsult(attachments, documentType, providerNo, requestId);
+        }
     }
 
     /**
@@ -344,7 +350,32 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
         }
 
         DocumentAttach documentAttach = new DocumentAttach(demographicNo, editOnOcean);
-        documentAttach.attachToConsult(attachments, documentType, providerNo, requestId);
+        if (DocumentType.FORM == documentType) {
+            documentAttach.attachFormsToConsult(validateFormAttachmentKeys(
+                    loggedInInfo, attachments, demographicNo), providerNo, requestId);
+        } else {
+            documentAttach.attachToConsult(attachments, documentType, providerNo, requestId);
+        }
+    }
+
+    private List<EncounterFormAttachmentKey> validateFormAttachmentKeys(
+            LoggedInInfo loggedInInfo, String[] attachments, Integer demographicNo) {
+        List<EncounterFormAttachmentKey> keys = new ArrayList<>();
+        if (attachments == null) {
+            return keys;
+        }
+        for (String attachment : attachments) {
+            EncounterFormAttachmentKey key = EncounterFormAttachmentKey.parse(attachment);
+            EctFormData.PatientForm form = formsManager.getConsultForm(
+                    loggedInInfo, key.getFormTable(), key.getFormId(), demographicNo);
+            if (form == null) {
+                throw new SecurityException("Encounter form does not belong to the patient or is not attachable");
+            }
+            if (!keys.contains(key)) {
+                keys.add(key);
+            }
+        }
+        return keys;
     }
 
     /**
@@ -595,8 +626,18 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
                 path = HRMUtil.renderHRM(loggedInInfo, documentId);
                 break;
             case FORM:
-                EctFormData.PatientForm patientForm = null;
-                path = formsManager.renderForm(request, response, patientForm);
+                String formTable = request.getParameter("formTable");
+                if (formTable == null) {
+                    path = formsManager.renderForm(request, response, (EctFormData.PatientForm) null);
+                    break;
+                }
+                String formId = WebUtils.positiveIntParamOrNull(request.getParameter("formId"));
+                String demographicNo = WebUtils.positiveIntParamOrNull(request.getParameter("demographicNo"));
+                if (formId == null || demographicNo == null) {
+                    throw new PDFGenerationException("A valid form and patient identifier are required");
+                }
+                path = formsManager.renderConsultForm(request, response,
+                        formTable, Integer.valueOf(formId), Integer.valueOf(demographicNo));
                 break;
         }
         return path;
@@ -632,7 +673,7 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
 
     private void attachFormPDFs(HttpServletRequest request, HttpServletResponse response, List<EctFormData.PatientForm> attachedForms, ArrayList<Object> pdfDocumentList) throws PDFGenerationException {
         for (EctFormData.PatientForm form : attachedForms) {
-            Path path = formsManager.renderForm(request, response, form);
+            Path path = formsManager.renderConsultForm(request, response, form);
             pdfDocumentList.add(path.toString());
         }
     }
