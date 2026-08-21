@@ -310,33 +310,33 @@
 		color = i == (aL.size()-1) ? "class='myYellow'" : color;
 %>
         <tr <%=color %>>
-            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("account", "&nbsp;")))%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("account", "\u00A0")))%>
             </td>
-            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("claimNo", "&nbsp;")))%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("claimNo", "\u00A0")))%>
             </td>
-            <!--  >td><%=Encode.forHtml(String.valueOf(prop.getProperty("demo_docname", "&nbsp;")))%></td -->
-            <td><%=Encode.forHtml(String.valueOf(prop.getProperty("demo_name", "&nbsp;")))%>
+            <!--  >td><%=Encode.forHtml(String.valueOf(prop.getProperty("demo_docname", "\u00A0")))%></td -->
+            <td><%=Encode.forHtml(String.valueOf(prop.getProperty("demo_name", "\u00A0")))%>
             </td>
-            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("demo_doc", "&nbsp;")))%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("demo_doc", "\u00A0")))%>
             </td>
-            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("demo_hin", "&nbsp;")))%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("demo_hin", "\u00A0")))%>
             </td>
-            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("servicedate", "&nbsp;")))%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("servicedate", "\u00A0")))%>
             </td>
-            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("servicecode", "&nbsp;")))%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(prop.getProperty("servicecode", "\u00A0")))%>
             </td>
             <!--<td width="8%"><%=Encode.forHtml(String.valueOf(serviceno))%></td>-->
-            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("amountsubmit", "&nbsp;")))%>
+            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("amountsubmit", "\u00A0")))%>
             </td>
-            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("amountpay", "&nbsp;")))%>
+            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("amountpay", "\u00A0")))%>
             </td>
-            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("clinicPay", "&nbsp;")))%>
+            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("clinicPay", "\u00A0")))%>
             </td>
-            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("hospitalPay", "&nbsp;")))%>
+            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("hospitalPay", "\u00A0")))%>
             </td>
-            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("obPay", "&nbsp;")))%>
+            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("obPay", "\u00A0")))%>
             </td>
-            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("explain", "&nbsp;")))%>
+            <td align=right><%=Encode.forHtml(String.valueOf(prop.getProperty("explain", "\u00A0")))%>
             </td>
             <td width="0" style="display:none"><%=Encode.forHtml(String.valueOf(prop.getProperty("site", "")))%>
             </td>

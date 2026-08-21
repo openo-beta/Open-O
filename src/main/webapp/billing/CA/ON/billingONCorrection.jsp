@@ -577,11 +577,11 @@
                 payer = "";
             } else {
                 htmlPaid = "Paid<br><input type='text' id='payment' name='payment' size=5 value='"
-                        + tProp.getProperty("payment", "0.00") + "' /><input type='hidden' id='oldPayment' name='oldPayment' value='"
-                        + tProp.getProperty("payment", "0.00") + "' /><input type='hidden' id='payDate' name='payDate' value='"
+                        + Encode.forHtmlAttribute(String.valueOf(tProp.getProperty("payment", "0.00"))) + "' /><input type='hidden' id='oldPayment' name='oldPayment' value='"
+                        + Encode.forHtmlAttribute(String.valueOf(tProp.getProperty("payment", "0.00"))) + "' /><input type='hidden' id='payDate' name='payDate' value='"
                         + UtilDateUtilities.getToday("yyyy-MM-dd HH:mm:ss") + "'/><br>";
                 htmlPaid += "Refund<br><input type='text' id='refund' name='refund' size=5 value='"
-                        + tProp.getProperty("refund") + "' /><br>";
+                        + Encode.forHtmlAttribute(String.valueOf(tProp.getProperty("refund"))) + "' /><br>";
                 payer = tProp.getProperty("billTo");
                 if (payer == null) {
                     payer = "";
@@ -640,9 +640,9 @@
                 payment = payment.subtract(credit);
 
                 htmlPaid = "<br/>&nbsp;&nbsp;<span style='font-size:large;font-weight:bold'>Paid:</span>&nbsp;&nbsp;&nbsp;<span id='payment' style='font-size:large;font-weight:bold'>"
-                        + ((payment.compareTo(BigDecimal.ZERO) == -1) ? "-" : "") + currency.format(payment) + "</span>";
+                        + ((payment.compareTo(BigDecimal.ZERO) == -1) ? "-" : "") + Encode.forHtmlContent(currency.format(payment)) + "</span>";
                 htmlPaid += "&nbsp;&nbsp;&nbsp;&nbsp;<span style='font-size:large;font-weight:bold'>Balance:</span>&nbsp;&nbsp;&nbsp;<span id='balance' style='font-size:large;font-weight:bold'>"
-                        + ((balance.compareTo(BigDecimal.ZERO) == -1) ? "-" : "") + currency.format(balance) + "</span>";
+                        + ((balance.compareTo(BigDecimal.ZERO) == -1) ? "-" : "") + Encode.forHtmlContent(currency.format(balance)) + "</span>";
                 htmlPaid += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:display3rdPartyPayments()'>Payments List</a>";
             }
             payer = tProp.getProperty("billTo");
@@ -753,7 +753,7 @@
                         </tr>
                         <tr>
                             <td style="width:54%"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgPatientName"/>: <a href=#
-                                                                                         onclick="popupPage(720,860,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forJavaScript(String.valueOf(DemoNo))%>&displaymode=edit&dboperation=search_detail');return false;">
+                                                                                         onclick="popupPage(720,860,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(DemoNo))%>&displaymode=edit&dboperation=search_detail');return false;">
                                 <%=Encode.forHtml(String.valueOf(DemoName))%>
                             </a> <input type="hidden" name="demo_name"
                                         value="<%=Encode.forHtmlAttribute(String.valueOf(DemoName))%>"></td>
@@ -1250,7 +1250,7 @@
 
                     <%if (billNo != null) {%>
 
-                    <a id="reprintLink" onclick="return sanityCheck('<%=Encode.forJavaScript(String.valueOf(nullToEmpty(billNo)))%>', <%=Encode.forJavaScript(String.valueOf(billNoErr))%>)" href="billingON3rdInv.jsp?billingNo=<%=Encode.forJavaScript(String.valueOf(billNo))%>" class="btn"><i
+                    <a id="reprintLink" onclick="return sanityCheck('<%=Encode.forJavaScript(String.valueOf(nullToEmpty(billNo)))%>', <%=Encode.forJavaScript(String.valueOf(billNoErr))%>)" href="billingON3rdInv.jsp?billingNo=<%=Encode.forUriComponent(String.valueOf(billNo))%>" class="btn"><i
                             class="icon icon-print"></i> Reprint</a>
                     <a id="rebillLink"
                        onclick="document.querySelector(&quot;select[name='status']&quot;).value = 'O'; document.getElementsByName(&quot;submit&quot;)[1].click();"
@@ -1321,7 +1321,7 @@
 
 
             <div id="thirdPartyPymnt" style="<%=thirdParty ? "" : "display:none"%>">
-                <%=Encode.forHtml(String.valueOf(htmlPaid))%>
+                <%=htmlPaid%>
             </div>
 
         </form>
@@ -1360,7 +1360,7 @@
         }, 5000);
 
         function display3rdPartyPayments() {
-            popupPage('800', '860', 'billingON3rdPayments.do?method=listPayments&billingNo=<%=Encode.forJavaScript(String.valueOf(billNo))%>');
+            popupPage('800', '860', 'billingON3rdPayments.do?method=listPayments&billingNo=<%=Encode.forUriComponent(String.valueOf(billNo))%>');
         }
 
         $(document).ready(function () {

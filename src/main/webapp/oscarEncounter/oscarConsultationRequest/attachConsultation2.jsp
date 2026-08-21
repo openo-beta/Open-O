@@ -121,15 +121,14 @@ else {
 		attachedDocs += (attachedDocs.equals("") ? "" : "|") + "H" + hrmDocumentToDemographic.getHrmDocumentId();  
 	}
 	for (EFormData eForm : eForms) {
-		attachedDocs += (attachedDocs.equals("") ? "" : "|") + "E" + eForm.getId();  
+		attachedDocs += (attachedDocs.equals("") ? "" : "|") + "E" + eForm.getId();
 	}
-	attachedDocs = "\"" + attachedDocs + "\""; 
 }
-%>  
+%>
 
 //if consultation has not been saved, load existing docs into proper select boxes
-function init() {	
-	var docs = <%=Encode.forJavaScript(String.valueOf(attachedDocs))%>; 
+function init() {
+	var docs = "<%=Encode.forJavaScript(String.valueOf(attachedDocs))%>";
 	docs = docs.split("|");
 	checkDocuments(docs);                             
 }

@@ -578,7 +578,7 @@ end broken -->
             <% for (int j = 0; j < vecHeader.size(); j++) {
                 prop = (Properties) vecValue.get(i);
             %>
-            <td style="text-align:center;"><%=Encode.forHtml(String.valueOf(prop.getProperty((String) vecHeader.get(j), "&nbsp;")))%>&nbsp;</td>
+            <td style="text-align:center;"><%=Encode.forHtml(String.valueOf(prop.getProperty((String) vecHeader.get(j), "\u00A0")))%>&nbsp;</td>
             <% } %>
         </tr>
         <% } %>

@@ -235,7 +235,7 @@ label.error {
 									
 							        <security:oscarSec roleName="<%=roleName$%>" objectName="_pref" rights="r">
 									<li>  
-										<a href=# onClick ="popupPage2('<%=request.getContextPath()%>/provider/providerpreference.jsp?provider_no=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' OnMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' ; return true"><i class="icon-user"></i> <fmt:setBundle basename="oscarResources"/><fmt:message key="global.pref"/></a>
+										<a href=# onClick ="popupPage2('<%=request.getContextPath()%>/provider/providerpreference.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' OnMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.msgSettings"/>' ; return true"><i class="icon-user"></i> <fmt:setBundle basename="oscarResources"/><fmt:message key="global.pref"/></a>
 									</li>
 									</security:oscarSec>
 									
@@ -306,7 +306,7 @@ label.error {
 			<security:oscarSec roleName="<%=roleName$%>" objectName="_billing" rights="r">
 			<li>
 			     
-				<a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/billing/CA/<%=Encode.forJavaScript(String.valueOf(prov))%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.genBillReport"/>' onMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.genBillReport"/>';return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a>
+				<a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/billing/CA/<%=Encode.forUriComponent(String.valueOf(prov))%>/billingReportCenter.jsp?displaymode=billreport&providerview=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.genBillReport"/>' onMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.genBillReport"/>';return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.billing"/></a>
 			    
 			</li>
 			</security:oscarSec>
@@ -314,14 +314,14 @@ label.error {
 			 			 
 			<security:oscarSec roleName="<%=roleName$%>" objectName="_con" rights="r">
 			<li id="con">
-			 <a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(userfirstname+" "+userlastname)))%>')" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewConReq"/>">
+			 <a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/oscarEncounter/IncomingConsultation.do?providerNo=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&userName=<%=Encode.forUriComponent(String.valueOf(userfirstname+" "+userlastname))%>')" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewConReq"/>">
 			 <span id="oscar_aged_consults"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.con"/></span></a>
 			</li>
 			</security:oscarSec>
 			
 			<security:oscarSec roleName="<%=roleName$%>" objectName="_edoc" rights="r">
 			<li>
-			   <a HREF="#" onclick="popupPage2('<%=request.getContextPath()%>/documentManager/documentReport.jsp?function=providers&functionid=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&curUser=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>', 'edocView');" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewEdoc"/>'><fmt:setBundle basename="oscarResources"/><fmt:message key="global.edoc"/></a>
+			   <a HREF="#" onclick="popupPage2('<%=request.getContextPath()%>/documentManager/documentReport.jsp?function=providers&functionid=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&curUser=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>', 'edocView');" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewEdoc"/>'><fmt:setBundle basename="oscarResources"/><fmt:message key="global.edoc"/></a>
 			</li>
 			</security:oscarSec>
 			 
@@ -332,7 +332,7 @@ label.error {
 			 <oscar:oscarPropertiesCheck property="NOT_FOR_CAISI" value="no" defaultVal="true">			
 			 <security:oscarSec roleName="<%=roleName$%>" objectName="_appointment.doctorLink" rights="r">
 			   <li>
-			       <a HREF="#" style="display:inline-block;padding-right:0px" onclick="popupInboxManager('<%=request.getContextPath()%>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>', 'Lab');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewLabReports"/>'>
+			       <a HREF="#" style="display:inline-block;padding-right:0px" onclick="popupInboxManager('<%=request.getContextPath()%>/documentManager/inboxManage.do?method=prepareForIndexPage&providerNo=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>', 'Lab');return false;" TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewLabReports"/>'>
 				   <span id="oscar_new_lab" ><fmt:setBundle basename="oscarResources"/><fmt:message key="global.lab"/></span>
 			       </a>
 			       <oscar:newUnclaimedLab>
@@ -344,7 +344,7 @@ label.error {
 			
 			 	<security:oscarSec roleName="<%=roleName$%>" objectName="_msg" rights="r">
 			     <li>
-				 <a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=Encode.forJavaScript(String.valueOf(curUser_no))%>&userName=<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode(userfirstname+" "+userlastname)))%>')" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.messenger"/>">
+				 <a HREF="#" ONCLICK ="popupPage2('<%=request.getContextPath()%>/messenger/DisplayMessages.do?providerNo=<%=Encode.forUriComponent(String.valueOf(curUser_no))%>&userName=<%=Encode.forUriComponent(String.valueOf(userfirstname+" "+userlastname))%>')" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.messenger"/>">
 				 <span id="oscar_new_msg"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.msg"/></span></a>
 			     </li>
 			   	</security:oscarSec>

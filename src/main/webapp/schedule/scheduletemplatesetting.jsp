@@ -219,7 +219,7 @@
                             <%if (!(isSiteAccessPrivacy || isTeamAccessPrivacy || grantOnlyCurProviderScheduleData)) {%>
                             <tr>
                                 <td nowrap bgcolor="#CCFFCC">&nbsp; <a HREF="#"
-                                                                       ONCLICK="popupPage(440,530,'scheduleholidaysetting.jsp?year=<%=Encode.forJavaScript(String.valueOf(year))%>&month=<%=Encode.forJavaScript(String.valueOf(month))%>&day=<%=Encode.forJavaScript(String.valueOf(day))%>')"
+                                                                       ONCLICK="popupPage(440,530,'scheduleholidaysetting.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(day))%>')"
                                                                        TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatesetting.msgHolidaySettingTip"/>;return true'><fmt:setBundle basename="oscarResources"/><fmt:message key="schedule.scheduletemplatesetting.btnHolidaySetting"/></a></td>
                             </tr>
                             <tr>

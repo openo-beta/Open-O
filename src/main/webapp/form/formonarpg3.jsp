@@ -570,7 +570,7 @@
 
         <input type="hidden" name="commonField" value="ar2_"/>
         <input type="hidden" name="c_lastVisited"
-               value=<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "pg3")))%>/>
+               value="<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "pg3")))%>"/>
         <input type="hidden" name="demographic_no"
                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
@@ -581,7 +581,7 @@
         <input type="hidden" name="ID"
                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
         <input type="hidden" name="provider_no"
-               value=<%=Encode.forHtml(request.getParameter("provNo"))%>/>
+               value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
         <input type="hidden" name="provNo"
                value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
         <input type="hidden" name="submit" value="exit"/>

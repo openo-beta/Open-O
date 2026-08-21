@@ -356,7 +356,7 @@
                     <td align="right"><b><input type="checkbox"
                                                 name="filter_<%=Encode.forHtmlAttribute(String.valueOf(100+i))%>"></b></td>
                     <td>
-                        <% if (bExtForm) { %> <%=Encode.forHtml(String.valueOf(propDemoExt[i]))%><%=Encode.forHtml(String.valueOf(propDemoExtForm[i].replaceAll("name=\"" + propDemoExt[i].replace(' ', '_') + "\"", "name=\"pSpec" + (100 + i) + "\"")))%>
+                        <% if (bExtForm) { %> <%=Encode.forHtml(String.valueOf(propDemoExt[i]))%><%=propDemoExtForm[i].replaceAll("name=\"" + propDemoExt[i].replace(' ', '_') + "\"", "name=\"pSpec" + (100 + i) + "\"")%>
                         <% } else { %> <%=Encode.forHtml(String.valueOf(propDemoExt[i]))%> <input type="text"
                                                                    name="pSpec<%=Encode.forHtmlAttribute(String.valueOf(100+i))%>" value="" size="15"> <% } %>
                     </td>

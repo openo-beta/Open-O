@@ -235,6 +235,12 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
 
+        <%-- RxSessionInterceptor: Enables multi-patient tab support by adding demographicNo to AJAX calls --%>
+        <script type="text/javascript">
+            var currentDemographicNo = '<%= Encode.forJavaScript(Integer.toString(bean.getDemographicNo())) %>';
+        </script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/oscarRx/js/rxSessionInterceptor.js"></script>
+
         <script type="text/javascript">
             function resetStash() {
 
@@ -258,7 +264,6 @@
                     method: 'post', parameters: data
                 });
             }
-
 
             function onPrint2(method, scriptId) {
                 var useSC = false;
@@ -302,7 +307,7 @@
                 var url = '<c:out value="${ctx}"/>/oscarRx/AddRxComment.jsp';
                 var ran_number = Math.round(Math.random() * 1000000);
                 var comment = encodeURIComponent(document.getElementById('additionalNotes').value);
-                var params = "scriptNo=<%=Encode.forJavaScript(String.valueOf(request.getAttribute("scriptId")))%>&comment=" + comment + "&rand=" + ran_number;  //]
+                var params = "scriptNo=<%=Encode.forUriComponent(String.valueOf(request.getAttribute("scriptId")))%>&comment=" + comment + "&rand=" + ran_number;  //]
                 new Ajax.Request(url, {method: 'post', parameters: params});
                 frames['preview'].document.getElementById('additNotes').innerHTML = document.getElementById('additionalNotes').value.replace(/\n/g, "<br>");
                 frames['preview'].document.getElementsByName('additNotes')[0].value = document.getElementById('additionalNotes').value.replace(/\n/g, "\r\n");
@@ -375,7 +380,7 @@
                     <% } %>
 
                     //we support pasting into orig encounter and new casemanagement
-                    demographicNo = <%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>;
+                    demographicNo = "<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>";
                     noteEditor = "noteEditor" + demographicNo;
                     if (window.parent.opener) {
                         if (window.parent.opener.document.forms["caseManagementEntryForm"] != undefined &&
@@ -443,7 +448,7 @@
             function openEncounter() {
                 var windowprops = "height=710,width=1024,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=20,left=20";
                 var currentDate = new Date().toISOString().substring(0, 10);
-                var url = "<%= request.getContextPath() %>/oscarEncounter/IncomingEncounter.do?providerNo=<%=Encode.forJavaScript(String.valueOf(bean.getProviderNo()))%>&demographicNo=<%=Encode.forJavaScript(String.valueOf(bean.getDemographicNo()))%>&curProviderNo=<%=Encode.forJavaScript(String.valueOf(bean.getProviderNo()))%>&userName=<%=Encode.forUriComponent(ProviderData.getProviderName(bean.getProviderNo()))%>&curDate=" + currentDate;
+                var url = "<%= request.getContextPath() %>/oscarEncounter/IncomingEncounter.do?providerNo=<%=Encode.forUriComponent(String.valueOf(bean.getProviderNo()))%>&demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.getDemographicNo()))%>&curProviderNo=<%=Encode.forUriComponent(String.valueOf(bean.getProviderNo()))%>&userName=<%=Encode.forUriComponent(ProviderData.getProviderName(bean.getProviderNo()))%>&curDate=" + currentDate;
 
                 if (window.parent.opener && window.parent.opener.document.forms["caseManagementEntryForm"] != undefined) {
                     // redirect if encounter window open
@@ -646,13 +651,14 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                     <div class="DivContentPadding">
 					<% if (bean.getStashSize() > 0) { %>
                                         <iframe id='preview' name='preview' width=420px height=890px
-							src="oscarRx/Preview2.jsp?scriptId=<%=Encode.forUriComponent(String.valueOf(bean.getStashItem(0).getScript_no()))%>&rePrint=<%=Encode.forUriComponent(String.valueOf(reprint))%>&pharmacyId=<%=Encode.forUriComponent(request.getParameter("pharmacyId"))%>"
+							src="oscarRx/Preview2.jsp?scriptId=<%=Encode.forUriComponent(String.valueOf(bean.getStashItem(0).getScript_no()))%>&rePrint=<%=Encode.forUriComponent(String.valueOf(reprint))%>&pharmacyId=<%=Encode.forUriComponent(request.getParameter("pharmacyId"))%>&demographicNo=<%=Encode.forUriComponent(Integer.toString(bean.getDemographicNo()))%>"
 							align=center border=0 frameborder=0></iframe></div>
 					<% } %>
                                 </td>
 
-                                <td valign=top><form action="${pageContext.request.contextPath}/oscarRx/clearPending.do" method="post">
+                                <td valign=top><form name="RxClearPendingForm" action="${pageContext.request.contextPath}/oscarRx/clearPending.do" method="post">
                                     <input type="hidden" name="action" id="action" value=""/>
+                                    <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(Integer.toString(bean.getDemographicNo()))%>"/>
                                     <div class="warning-note" id="faxWarningNote">
                                         <strong>Warning:</strong> faxing is disabled because no pharmacy fax number is
                                         available.</br></br>To enable faxing, close this window and select a pharmacy
@@ -836,7 +842,7 @@ function setDigitalSignatureToRx(digitalSignatureId, scriptId) {
                                             <td><span><input type=button
                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgBackToOscar"/>"
                                                              class="ControlPushButton" style="width: 210px"
-                                                             onClick="javascript:clearPending('close');parent.window.close();"/></span>
+                                                             onClick="clearPending('close');parent.window.close();"/></span>
                                             </td>
                                         </tr>
                                         <%

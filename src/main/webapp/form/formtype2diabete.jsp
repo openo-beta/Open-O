@@ -249,7 +249,7 @@
                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="ID"
                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
-        <input type="hidden" name="provider_no" value=<%="" + provNo%>/>
+        <input type="hidden" name="provider_no" value="<%="" + provNo%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="formCreated"

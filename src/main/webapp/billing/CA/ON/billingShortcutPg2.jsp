@@ -112,7 +112,8 @@
 
     // get patient's detail
     String errorFlag = "";
-    String warningMsg = "", errorMsg = "";
+    List<String> warningMsgs = new ArrayList<String>();
+    List<String> errorMsgs = new ArrayList<String>();
     String r_doctor = "", r_doctor_ohip = "";
     String demoFirst = "", demoLast = "", demoHIN = "", demoDOB = "", demoDOBYY = "", demoDOBMM = "", demoDOBDD = "", demoHCTYPE = "";
 
@@ -154,14 +155,14 @@
         demoDOB = demoDOBYY + demoDOBMM + demoDOBDD;
 
         if (demo.getHin() == null || demo.getHin().equals("")) {
-            warningMsg += "<br><font color='orange'>Warning: The patient does not have a valid HIN. </font><br>";
+            warningMsgs.add("The patient does not have a valid HIN.");
         }
         if (r_doctor_ohip != null && r_doctor_ohip.length() > 0 && r_doctor_ohip.length() != 6) {
-            warningMsg += "<br><font color='orange'>Warning: the referral doctor's no is wrong. </font><br>";
+            warningMsgs.add("The referral doctor's no is wrong.");
         }
         if (demoDOB.length() != 8) {
             errorFlag = "1";
-            errorMsg = errorMsg + "<br><font color='red'>Error: The patient does not have a valid DOB. </font><br>";
+            errorMsgs.add("The patient does not have a valid DOB.");
         }
     }
 
@@ -463,9 +464,6 @@
     }
 
 
-    // create msg
-    String wrongMsg = errorMsg + warningMsg;
-    //msg += errorMsg + warningMsg;
 %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -511,7 +509,13 @@
                         <td nowrap bgcolor="#FFCC99" width="10%" align="center"><%=Encode.forHtml(String.valueOf(demoname))%>
                             <%= demoSex.equals("1") ? "Male" : "Female" %> <%=Encode.forHtml(String.valueOf(" DOB: " + demoDOBYY + "/" + demoDOBMM + "/" + demoDOBDD + " HIN: " + demoHIN))%>
                         </td>
-                        <td bgcolor="#99CCCC" align="center"><%=Encode.forHtml(String.valueOf(wrongMsg))%>
+                        <td bgcolor="#99CCCC" align="center">
+                            <% for (String errorText : errorMsgs) { %>
+                                <br/><span style="color: red;">Error: <%=Encode.forHtmlContent(errorText)%></span><br/>
+                            <% } %>
+                            <% for (String warningText : warningMsgs) { %>
+                                <br/><span style="color: orange;">Warning: <%=Encode.forHtmlContent(warningText)%></span><br/>
+                            <% } %>
                         </td>
                     </tr>
                 </table>
@@ -528,7 +532,7 @@
                                 <tr>
                                     <td nowrap width="30%" align="center" valign="top"><b>Service
                                         Date</b><br>
-                                        <%=Encode.forHtml(request.getParameter("billDate").replaceAll("\\n", "<br>"))%>
+                                        <%=Encode.forHtml(request.getParameter("billDate")).replaceAll("\\n", "<br>")%>
                                     </td>
                                     <td align="center" width="33%"><b>Diagnostic Code</b><br>
                                         <%=Encode.forHtml(request.getParameter("dxCode"))%>
@@ -607,7 +611,7 @@
                 <table border="1" width="50%" bordercolorlight="#99A005"
                        bordercolordark="#FFFFFF">
 
-                    <%=Encode.forHtml(String.valueOf(msg))%>
+                    <%=msg%>
 
                     <tr>
 

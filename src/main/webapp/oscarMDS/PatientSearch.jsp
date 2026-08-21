@@ -382,12 +382,12 @@
     <script language="JavaScript">
         <!--
         function last() {
-            document.nextform.action = "<%= request.getContextPath() %>/oscarMDS/PatientSearch.jsp?keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forJavaScript(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forJavaScript(request.getParameter("dboperation"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nLastPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>&from=<%=Encode.forJavaScript(request.getParameter("from"))%>";
+            document.nextform.action = "<%= request.getContextPath() %>/oscarMDS/PatientSearch.jsp?keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>&from=<%=Encode.forUriComponent(request.getParameter("from"))%>";
             //document.nextform.submit();
         }
 
         function next() {
-            document.nextform.action = "<%= request.getContextPath() %>/oscarMDS/PatientSearch.jsp?keyword=<%=Encode.forJavaScript(request.getParameter("keyword"))%>&search_mode=<%=Encode.forJavaScript(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forJavaScript(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forJavaScript(request.getParameter("dboperation"))%>&orderby=<%=Encode.forJavaScript(request.getParameter("orderby"))%>&limit1=<%=Encode.forJavaScript(String.valueOf(nNextPage))%>&limit2=<%=Encode.forJavaScript(String.valueOf(strLimit2))%>&from=<%=Encode.forJavaScript(request.getParameter("from"))%>";
+            document.nextform.action = "<%= request.getContextPath() %>/oscarMDS/PatientSearch.jsp?keyword=<%=Encode.forUriComponent(request.getParameter("keyword"))%>&search_mode=<%=Encode.forUriComponent(request.getParameter("search_mode"))%>&displaymode=<%=Encode.forUriComponent(request.getParameter("displaymode"))%>&dboperation=<%=Encode.forUriComponent(request.getParameter("dboperation"))%>&orderby=<%=Encode.forUriComponent(request.getParameter("orderby"))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>&from=<%=Encode.forUriComponent(request.getParameter("from"))%>";
             //document.nextform.submit();
         }
 

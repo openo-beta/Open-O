@@ -85,7 +85,7 @@ public final class RxChooseDrug2Action extends ActionSupport {
             try {
 
                 RxDrugData.DrugMonograph f = drugData.getDrug(drugId);
-//                    rx.setGCN_SEQNO(f.gcnCode);
+                rx.setGCN_SEQNO(drugId);
                 String genName = "";
                 genName = f.name;
                 rx.setAtcCode(f.atc);

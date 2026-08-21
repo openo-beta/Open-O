@@ -80,7 +80,7 @@
             }
 
             function goCaption() {
-                //self.location.href = "reportFormCaption.jsp?id=<%=Encode.forJavaScript(String.valueOf(reportId))%>&tableName=<%=Encode.forJavaScript(String.valueOf(tableName))%>";
+                //self.location.href = "reportFormCaption.jsp?id=<%=Encode.forUriComponent(String.valueOf(reportId))%>&tableName=<%=Encode.forUriComponent(String.valueOf(tableName))%>";
             }
 
             function goPage(id) {
@@ -121,8 +121,8 @@
                             String fieldCaption = "";
                             String action = " Add ";
                             if (strTemp.length > 1) {
-                                fieldName = Encode.forHtml(strTemp[1]);
-                                fieldCaption = Encode.forHtml(strTemp[0].trim());
+                                fieldName = strTemp[1];
+                                fieldCaption = strTemp[0].trim();
                             }
                             if (fieldCaption.length() > 1) {
                                 color = "gold";
