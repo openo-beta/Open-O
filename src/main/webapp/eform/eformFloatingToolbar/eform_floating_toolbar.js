@@ -151,18 +151,34 @@ jQuery(document).on('click', '*[data-poload]', function () {
             eformFloatingToolbar.classList.add("disabled-toolbar");
 
             jQuery('#attachDocumentList').find(".delegateAttachment").each(function (index, data) {
-                let delegate = "#" + this.id.split("_")[1];
+                let delegateKey = this.id.split("_")[1];
+
+                // DOC sections share name="docNo" with distinct ids; look up by name+value.
+                // Skip if server-pre-attached; else mark as unsaved client-side selection.
+                if (jQuery(this).data("delegate-type") === "doc") {
+                    let docValue = this.value;
+                    let matches = jQuery('#attachDocumentsForm').find('input[name="docNo"][value="' + docValue + '"]');
+                    if (matches.filter('[data-pre-attached="true"]').length > 0) {
+                        return;
+                    }
+                    matches.prop("checked", true).attr("data-pre-attached", "true");
+                    return;
+                }
+
+                let delegate = "#" + delegateKey;
                 let element = jQuery('#attachDocumentsForm').find(delegate);
                 if (element.length === 0) {
                     element = addFormIfNotFound(data, demographicNo, delegate);
                 }
-                element.attr("checked", true);
+                element.prop("checked", true).attr("data-pre-attached", "true");
 
                 // Expand list if selected lab is older version
                 if (element.attr('data-version')) {
                     expandLabVersionList(element.parent().parent().parent().find('.collapse-arrow'));
                 }
             });
+
+            syncPreCheckedToDelegates('#attachDocumentList', false);
         }
     }).dialog({
         title: title,
@@ -186,6 +202,10 @@ jQuery(document).on('click', '*[data-poload]', function () {
         beforeClose: function (event, ui) {
             // before the dialog is closed:
 
+            if (!confirmPrivateDocsIfAny('#attachDocumentsForm')) {
+                return false;
+            }
+
             // check if list exists, if yes then empty it otherwise create new
             if (jQuery('#attachDocumentList').length === 0) {
                 const attachDocumentList = jQuery('<div>', {'id': 'attachDocumentList'});
@@ -193,18 +213,16 @@ jQuery(document).on('click', '*[data-poload]', function () {
             }
             jQuery('#attachDocumentList').empty();
 
-            // pass the checked documents to the eForm document list(attachDocumentList)
-            jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
-            ).each(function (index, data) {
-                let element = jQuery(this);
-                let input = jQuery("<input />", {
-                    type: 'hidden',
-                    name: element.attr('name'),
-                    value: element.val(),
-                    id: "delegate_" + element.attr('id'),
-                    class: 'delegateAttachment'
-                });
-                jQuery('#attachDocumentList').append(input);
+            // Cross-section dedupe: same docNo can render in patient + provider sections.
+            const seenDelegates = new Set();
+            jQuery('#attachDocumentsForm').find(
+                ".attachable_check:checkbox:checked:not(input[disabled='disabled'])"
+            ).each(function () {
+                const $el = jQuery(this);
+                const key = $el.attr('name') + "::" + $el.val();
+                if (seenDelegates.has(key)) return;
+                seenDelegates.add(key);
+                jQuery('#attachDocumentList').append(buildDelegateInput($el));
             });
 
             // show total attachments
@@ -229,7 +247,7 @@ function addFormIfNotFound(form, demographicNo, delegate) {
     const formDate = document.getElementById("entry_" + formId).getAttribute('data-formDate');
 
     const checkbox = jQuery('<input>', {
-        class: 'form_check',
+        class: 'form_check attachable_check',
         type: 'checkbox',
         name: checkboxName,
         id: formId,
@@ -436,12 +454,12 @@ function remotePrint() {
 		}
 
 		/*
-		 * for situations when the eForm does not contain dirty form
-		 * detection; save it everytime.
+		 * either the eForm has no dirty form detection, or dirty form
+		 * detection did not flag a change; confirm before saving.
 		 */
-		else if(typeof needToConfirm === 'undefined') {
+		else if(confirm("You haven't manually edited this document, would you like to save a copy to the patient's chart regardless?")) {
 			remoteSave();
-	}
+		}
 }
 
 function hailMary() {
