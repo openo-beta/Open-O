@@ -1356,17 +1356,19 @@ function HideSpin() {
 	}
 
 	/**
-	 * The font the eForm is drawn in.
-	 *
-	 * Not called "DejaVu Sans" on purpose. Some eForms declare that family themselves with a path the
-	 * PDF converter cannot reach, and a family it cannot load is dropped whole, so none of its text is
-	 * drawn. A name no eForm uses cannot be broken that way.
+	 * The family name the fields are forced to. A made-up name, so a form's own font
+	 * declarations can never clash with it.
 	 */
 	const EFORM_FONT_FAMILY = "OpenO eForm Sans";
 
 	/**
-	 * The DejaVu Sans files the application ships, and the weight and style each one draws.
+	 * Kerning on for the PDF converter, which draws without it by default, and no invented bold
+	 * or italic. Both change how wide a line of text is. !important, because some forms carry
+	 * text-rendering rules of their own. Keep identical to TEXT_STYLE_CSS in EForm.
 	 */
+	const EFORM_TEXT_STYLE = "*{font-synthesis:none;}*{text-rendering:optimizeLegibility !important;}";
+
+	/** The DejaVu Sans files shipped with OpenO, one per weight and style. */
 	const DEJAVU_FACES = [
 		{file: "DejaVuSans.ttf", weight: "normal", style: "normal"},
 		{file: "DejaVuSans-Bold.ttf", weight: "bold", style: "normal"},
@@ -1375,18 +1377,9 @@ function HideSpin() {
 	];
 
 	/**
-	 * The text the font is applied to.
-	 *
-	 * The font is set on the body and inherited, so it reaches every label and heading as well as the
-	 * fields. Inheritance loses to any direct declaration, so anything naming its own font keeps it.
-	 * That is what leaves icons and the toolbar alone, with no list of icon fonts to maintain.
-	 *
-	 * "html body" beats a form that sets its own body font with !important. The controls are listed
-	 * separately because a browser does not pass the body font into them.
-	 *
-	 * Option text cannot wrap, so a fixed-width select may show its longest option cut short.
-	 *
-	 * EForm.applyFieldFont uses the same selector on the saved form. Keep the two identical.
+	 * Every field a provider types into, plus the body so labels inherit the font. Elements
+	 * that name their own font, such as icons and the toolbar, are left alone. Keep identical
+	 * to the selector in EForm.applyFieldFont.
 	 */
 	const EFORM_FONT_SELECTOR = "html body,"
 		+ "input:not([type=button]):not([type=submit]):not([type=reset])"
@@ -1397,17 +1390,12 @@ function HideSpin() {
 		+ "[contenteditable]:not([contenteditable=false])";
 
 	/**
-	 * Draws the form in DejaVu Sans, the font the saved document is drawn in.
+	 * Forces the DejaVu Sans fonts onto the form's fields, so the browser and the saved PDF
+	 * draw the same text.
 	 *
-	 * The page and the document are drawn by two different engines. Given different fonts they
-	 * disagree about where a line wraps, and a field of a fixed height then drops what no longer fits
-	 * with nothing to say so.
-	 *
-	 * The faces are registered under their real name too, so a form asking for DejaVu Sans directly
-	 * gets the real bold rather than one the browser thickens itself.
-	 *
-	 * The rule waits until all four faces have loaded, so a field is never left asking for a face the
-	 * browser does not have.
+	 * Loads the four faces, registers them under the forced name and under "DejaVu Sans" for
+	 * forms that ask for it directly, applies the field rule once all four have loaded, then
+	 * tells the provider. The PDF half is EForm.applyFieldFont.
 	 */
 	function applyDejaVuFont() {
 		if (document.getElementById("eform-field-font")) {
@@ -1438,7 +1426,7 @@ function HideSpin() {
 
 			const style = document.createElement("style");
 			style.id = "eform-field-font";
-			style.textContent = EFORM_FONT_SELECTOR
+			style.textContent = EFORM_TEXT_STYLE + EFORM_FONT_SELECTOR
 				+ "{font-family:'" + EFORM_FONT_FAMILY + "',sans-serif !important;}";
 			document.head.appendChild(style);
 			reportDejaVuFaces(true);
@@ -1448,10 +1436,10 @@ function HideSpin() {
 	}
 
 	/**
-	 * Tells the provider whether the fonts loaded. Stays quiet if a save, download or error result is
-	 * already on screen, since those matter more.
+	 * Shows the provider whether the DejaVu Sans fonts were applied. Stays quiet when a save,
+	 * download or error message is already on screen.
 	 *
-	 * @param {boolean} added whether all four faces reached the browser
+	 * @param {boolean} added whether all four faces loaded
 	 */
 	function reportDejaVuFaces(added) {
 		const error = document.getElementById("error");
@@ -1462,7 +1450,7 @@ function HideSpin() {
 		}
 
 		createAndShowAlert("eform-font-alert", added
-			? "This form is using the DejaVu Sans fonts supplied with OpenO."
+			? "the fonts on this eForm have been automatically replaced with a different font to maximize compatibility when faxing or saving. If this automatic replacement is causing a problem, please contact your service provider or review the source code for more details."
 			: "The DejaVu Sans fonts could not be loaded. Text may wrap differently in the saved document.",
 			added ? "info" : "danger", 5, undefined);
 	}

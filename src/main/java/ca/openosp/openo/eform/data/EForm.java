@@ -34,6 +34,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.nodes.DataNode;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.TokenQueue;
 import org.jsoup.select.Elements;
@@ -53,7 +55,6 @@ import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementsDataBean
 import ca.openosp.openo.util.StringBuilderUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -84,41 +85,39 @@ public class EForm extends EFormBase {
     private static final String OPENER_VALUE = "link$eform";
 
     /**
-     * The font the eForm is drawn in.
-     *
-     * Not called "DejaVu Sans" on purpose. Some eForms declare that family themselves with a path the
-     * converter cannot reach, and a family it cannot load is dropped whole, so none of its text is
-     * drawn. A name no eForm uses cannot be broken that way.
+     * The family name the fields are forced to. A made-up name, so a form's own font
+     * declarations can never clash with it.
      */
     private static final String FIELD_FONT_FAMILY = "OpenO eForm Sans";
 
+    /** Matches an @font-face rule and its block. */
+    private static final Pattern FONT_FACE_RULE = Pattern.compile("(?i)@font-face\\s*\\{[^{}]*\\}");
+
     /**
-     * The DejaVu Sans files the application ships: weight, style, and the file each one is read from.
+     * Id of the style written below, so a re-save replaces it instead of adding a copy.
+     * Not the toolbar's "eform-field-font": the toolbar skips its work when it finds that id.
      */
-    private static final String[][] FIELD_FONT_FACES = {
-            {"normal", "normal", "DejaVuSans.ttf"},
-            {"bold", "normal", "DejaVuSans-Bold.ttf"},
-            {"normal", "italic", "DejaVuSans-Oblique.ttf"},
-            {"bold", "italic", "DejaVuSans-BoldOblique.ttf"}
-    };
-
-    /** Where those files sit, relative to the deployed application. */
-    private static final String FIELD_FONT_DIRECTORY = "library/eforms/dejavufonts/ttf";
+    private static final String FIELD_FONT_STYLE_ID = "eform-field-font-saved";
 
     /**
-     * The text the font is applied to.
-     *
-     * The font is set on the body and inherited, so it reaches every label and heading as well as the
-     * fields. Inheritance loses to any direct declaration, so anything naming its own font keeps it.
-     * That is what leaves icons alone, with no list of icon fonts to maintain.
-     *
-     * "html body" beats a form that sets its own body font with !important. The controls are listed
-     * separately because a browser does not pass the body font into them.
-     *
-     * Option text cannot wrap, so a fixed-width select may show its longest option cut short.
-     *
-     * eform_floating_toolbar.js uses the same selector on the page being filled in. Keep the two
-     * identical.
+     * Kerning on for the PDF converter, which draws without it by default, and no invented bold
+     * or italic. Both change how wide a line of text is. !important, because some forms carry
+     * text-rendering rules of their own.
+     */
+    private static final String TEXT_STYLE_CSS =
+            "*{font-synthesis:none;}*{text-rendering:optimizeLegibility !important;}";
+
+    /** The forced family, mapped to the DejaVu Sans fonts installed on the server. */
+    private static final String INSTALLED_FONT_CSS =
+            "@font-face{font-family:'" + FIELD_FONT_FAMILY + "';font-weight:normal;font-style:normal;src:local('DejaVu Sans');}"
+          + "@font-face{font-family:'" + FIELD_FONT_FAMILY + "';font-weight:bold;font-style:normal;src:local('DejaVu Sans');}"
+          + "@font-face{font-family:'" + FIELD_FONT_FAMILY + "';font-weight:normal;font-style:italic;src:local('DejaVu Sans');}"
+          + "@font-face{font-family:'" + FIELD_FONT_FAMILY + "';font-weight:bold;font-style:italic;src:local('DejaVu Sans');}";
+
+    /**
+     * Every field a provider types into, plus the body so labels inherit the font. Elements
+     * that name their own font, such as icons, are left alone. Keep identical to the selector
+     * in eform_floating_toolbar.js.
      */
     private static final String FONT_SELECTOR =
             "html body,"
@@ -1045,43 +1044,29 @@ public class EForm extends EFormBase {
     }
 
     /**
-     * Writes the font rule into this eForm so the document is drawn in the same font as the page.
+     * Forces the DejaVu Sans fonts onto the form's fields, so the browser and the PDF draw the
+     * same text.
      *
-     * The page and the document are drawn by two different engines. Given different fonts they
-     * disagree about where a line wraps, and a box of a fixed height then drops what no longer fits
-     * with nothing to say so.
-     *
-     * Called when the form is saved, so the stored copy carries the rule. Forms saved before this
-     * existed keep the HTML they were saved with.
-     *
-     * Each source names the installed font before the file path, so a path that later stops resolving
-     * falls back instead of taking the whole document down. Nothing is added unless all four files
-     * are there to be read.
+     * Removes the form's own @font-face rules, which the PDF converter cannot load, and writes
+     * one style that maps the field font to the DejaVu Sans installed on the server. The browser
+     * half is applyDejaVuFont() in eform_floating_toolbar.js. Runs when the form is saved.
      */
     public void applyFieldFont() {
-        if (StringUtils.isBlank(getRealPath())) {
-            return;
-        }
-
-        Path directory = Paths.get(getRealPath(), FIELD_FONT_DIRECTORY);
-        StringBuilder css = new StringBuilder();
-        for (String[] face : FIELD_FONT_FACES) {
-            Path file = directory.resolve(face[2]);
-            if (!Files.isReadable(file)) {
-                log.warn("eForm field font not readable, leaving the form's own fonts in place: " + file);
-                return;
+        Document document = getDocument();
+        document.select("style#" + FIELD_FONT_STYLE_ID).remove();
+        for (Element style : document.getElementsByTag("style")) {
+            String css = style.data();
+            String stripped = FONT_FACE_RULE.matcher(css).replaceAll("");
+            if (!stripped.equals(css)) {
+                style.empty();
+                style.appendChild(new DataNode(stripped));
             }
-            css.append("@font-face{font-family:'").append(FIELD_FONT_FAMILY)
-               .append("';font-weight:").append(face[0])
-               .append(";font-style:").append(face[1])
-               .append(";src:local('DejaVu Sans'), url('").append(file.toUri())
-               .append("') format('truetype');}");
         }
-        css.append(FONT_SELECTOR).append("{font-family:'").append(FIELD_FONT_FAMILY)
-           .append("',sans-serif !important;}");
 
-        Element style = getDocument().createElement("style");
-        style.text(css.toString());
+        Element style = document.createElement("style");
+        style.attr("id", FIELD_FONT_STYLE_ID);
+        style.text(TEXT_STYLE_CSS + INSTALLED_FONT_CSS
+                + FONT_SELECTOR + "{font-family:'" + FIELD_FONT_FAMILY + "',sans-serif !important;}");
         addHeadElement(style);
     }
 
