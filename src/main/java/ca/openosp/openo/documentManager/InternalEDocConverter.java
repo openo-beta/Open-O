@@ -7,20 +7,23 @@ import java.io.OutputStream;
 import java.util.HashMap;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.Logger;
+
+import ca.openosp.openo.utility.MiscUtils;
 
 import io.woo.htmltopdf.HtmlToPdf;
 import io.woo.htmltopdf.HtmlToPdfObject;
 import io.woo.htmltopdf.PdfPageSize;
 
 public class InternalEDocConverter implements EDocConverterInterface {
+
+    private static final Logger logger = MiscUtils.getLogger();
+
     /**
-     * Resolution the page is laid out at.
-     * <p>
-     * The renderer rounds a font size, and the height of a line, to a whole device pixel before it
-     * measures anything. At the default 96 the rounding is large enough to change where text wraps
-     * and to shorten every line, so the page does not match what the browser drew. Ten device
-     * pixels to the CSS pixel puts every size the forms use on a whole number, so none of them is
-     * rounded.
+     * Resolution the page is laid out at. If not set, the renderer defaults to 96, one device
+     * pixel per CSS pixel, and rounds font and line sizes to whole device pixels; at ten device
+     * pixels per CSS pixel nothing the forms use is rounded, so text wraps where the browser
+     * wraps it.
      */
     private static final int LAYOUT_DPI = 960;
 
@@ -52,6 +55,9 @@ public class InternalEDocConverter implements EDocConverterInterface {
         }};
         try (InputStream in = HtmlToPdf.create()
                 .object(HtmlToPdfObject.forHtml(document, htmlToPdfSettings))
+                // log fonts and images the renderer could not load; the conversion finishes anyway
+                .warning(message -> logger.warn("PDF conversion: " + message))
+                .error(message -> logger.error("PDF conversion: " + message))
                 .pageSize(PdfPageSize.Letter)
                 .dpi(LAYOUT_DPI)
                 .convert()) {
