@@ -214,7 +214,7 @@
                                                     '${e:forJavaScript(requestScope.selectedAddress != null ? requestScope.selectedAddress : '')}',
                                                     '${ctx}'
                                                         );
-                                                    });"
+                                                        });"
                                                 <c:if test="${requestScope.isFaxDisabled}">
                                                     disabled="disabled"
                                                 </c:if>>
