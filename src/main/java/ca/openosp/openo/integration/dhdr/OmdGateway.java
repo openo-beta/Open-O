@@ -134,6 +134,13 @@ public class OmdGateway {
 	 * refresh tokens in the body, and may set a session cookie in the headers. Neither belongs in the
 	 * audit table. The outcome fields above are always recorded, for every caller.
 	 *
+	 * <p>The entity is buffered before it is read, because auditing a response must not consume it.
+	 * A CXF response stream is readable once, and reading it closes it, so without buffering the
+	 * caller's own read of the same response fails with "Entity is not available". Every caller that
+	 * reads a body does so after this method has returned - {@code DHDRManager.search2} and the DHIR
+	 * retrievals for the payload they were called for, the OAuth callers for a token response whose
+	 * failure was recorded here.</p>
+	 *
 	 * @param log OMDGatewayTransactionLog the row opened before the call was made
 	 * @param response2 Response the response returned by the gateway
 	 * @param capturePayload boolean whether the response headers and body belong in the audit row
@@ -141,6 +148,16 @@ public class OmdGateway {
 	protected static void completeLog(OMDGatewayTransactionLog log, Response response2, boolean capturePayload) {
 		log.setResultCode(response2.getStatus());
 		log.setEnded(new Date());
+
+		try {
+			response2.bufferEntity();
+		} catch (Exception e) {
+			// An entity already consumed or closed cannot be buffered. The outcome fields below do not
+			// depend on the body, and an audit row is owed for the call either way, so this is recorded
+			// rather than thrown. The class name only: a transport exception's message carries the
+			// request URI, and the DHDR request URI carries the patient's health number.
+			logger.warn("Gateway response entity could not be buffered (" + e.getClass().getSimpleName() + ")");
+		}
 
 		// The correlation identifiers are recorded whenever the service supplies them, but their
 		// absence must not suppress the outcome: a failure that omits X-Request-Id is still a failure.
