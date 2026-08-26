@@ -47,7 +47,12 @@
              to be added per page - there is no filter that does it, and ~50 other form-bearing
              JSPs include this the same way. Without it the form submits no token at all. --%>
         <script src="<c:out value="${ctx}"/>/csrfguard" type="text/javascript"></script>
+        <%-- Loaded only alongside the form. The script binds to providerForm during window.onload
+             without checking that it is there, and the success state below renders no form - the
+             three sibling preference pages that share the script have the same shape. --%>
+        <% if (request.getAttribute("status") == null) { %>
         <script src="<c:out value="${ctx}"/>/share/javascript/provider_form_validations.js"></script>
+        <% } %>
         <link href="<c:out value="${ctx}"/>/css/bootstrap.css" rel="stylesheet" type="text/css"><!-- Bootstrap 2.3.1 -->
 
     </head>
