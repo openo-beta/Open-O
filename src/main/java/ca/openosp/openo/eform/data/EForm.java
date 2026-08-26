@@ -34,8 +34,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
-import org.jsoup.nodes.DataNode;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.TokenQueue;
 import org.jsoup.select.Elements;
@@ -83,50 +81,6 @@ public class EForm extends EFormBase {
     private static final String TABLE_ID = "table_id";
     private static final String OTHER_KEY = "other_key";
     private static final String OPENER_VALUE = "link$eform";
-
-    /**
-     * The family name the fields are forced to. A made-up name, so a form's own font
-     * declarations can never clash with it.
-     */
-    private static final String FIELD_FONT_FAMILY = "OpenO eForm Sans";
-
-    /** Matches an @font-face rule and its block. */
-    private static final Pattern FONT_FACE_RULE = Pattern.compile("(?i)@font-face\\s*\\{[^{}]*\\}");
-
-    /**
-     * Id of the style written below, so a re-save replaces it instead of adding a copy.
-     * Not the toolbar's "eform-field-font": the toolbar skips its work when it finds that id.
-     */
-    private static final String FIELD_FONT_STYLE_ID = "eform-field-font-saved";
-
-    /**
-     * Kerning on for the PDF converter, which draws without it by default, and no invented bold
-     * or italic. Both change how wide a line of text is. !important, because some forms carry
-     * text-rendering rules of their own.
-     */
-    private static final String TEXT_STYLE_CSS =
-            "*{font-synthesis:none;}*{text-rendering:optimizeLegibility !important;}";
-
-    /** The forced family, mapped to the DejaVu Sans fonts installed on the server. */
-    private static final String INSTALLED_FONT_CSS =
-            "@font-face{font-family:'" + FIELD_FONT_FAMILY + "';font-weight:normal;font-style:normal;src:local('DejaVu Sans');}"
-          + "@font-face{font-family:'" + FIELD_FONT_FAMILY + "';font-weight:bold;font-style:normal;src:local('DejaVu Sans');}"
-          + "@font-face{font-family:'" + FIELD_FONT_FAMILY + "';font-weight:normal;font-style:italic;src:local('DejaVu Sans');}"
-          + "@font-face{font-family:'" + FIELD_FONT_FAMILY + "';font-weight:bold;font-style:italic;src:local('DejaVu Sans');}";
-
-    /**
-     * Every field a provider types into, plus the body so labels inherit the font. Elements
-     * that name their own font, such as icons, are left alone. Keep identical to the selector
-     * in eform_floating_toolbar.js.
-     */
-    private static final String FONT_SELECTOR =
-            "html body,"
-            + "input:not([type=button]):not([type=submit]):not([type=reset])"
-            + ":not([type=image]):not([type=checkbox]):not([type=radio]):not([type=file])"
-            + ":not([type=hidden]):not(#remote_eform_subject),"
-            + "select,"
-            + "textarea,"
-            + "[contenteditable]:not([contenteditable=false])";
 
     public EForm() {
     }
@@ -1040,33 +994,6 @@ public class EForm extends EFormBase {
         String stringBuilder = "@font-face { font-family: dejavu; src: url('" + fontPath + "'); }";
         Element style = getDocument().createElement("style");
         style.text(stringBuilder);
-        addHeadElement(style);
-    }
-
-    /**
-     * Forces the DejaVu Sans fonts onto the form's fields, so the browser and the PDF draw the
-     * same text.
-     *
-     * Removes the form's own @font-face rules, which the PDF converter cannot load, and writes
-     * one style that maps the field font to the DejaVu Sans installed on the server. The browser
-     * half is applyDejaVuFont() in eform_floating_toolbar.js. Runs when the form is saved.
-     */
-    public void applyFieldFont() {
-        Document document = getDocument();
-        document.select("style#" + FIELD_FONT_STYLE_ID).remove();
-        for (Element style : document.getElementsByTag("style")) {
-            String css = style.data();
-            String stripped = FONT_FACE_RULE.matcher(css).replaceAll("");
-            if (!stripped.equals(css)) {
-                style.empty();
-                style.appendChild(new DataNode(stripped));
-            }
-        }
-
-        Element style = document.createElement("style");
-        style.attr("id", FIELD_FONT_STYLE_ID);
-        style.text(TEXT_STYLE_CSS + INSTALLED_FONT_CSS
-                + FONT_SELECTOR + "{font-family:'" + FIELD_FONT_FAMILY + "',sans-serif !important;}");
         addHeadElement(style);
     }
 

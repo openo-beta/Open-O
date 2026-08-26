@@ -1379,7 +1379,7 @@ function HideSpin() {
 	/**
 	 * Every field a provider types into, plus the body so labels inherit the font. Elements
 	 * that name their own font, such as icons and the toolbar, are left alone. Keep identical
-	 * to the selector in EForm.applyFieldFont.
+	 * to the selector in EFormFieldFont.
 	 */
 	const EFORM_FONT_SELECTOR = "html body,"
 		+ "input:not([type=button]):not([type=submit]):not([type=reset])"
@@ -1390,12 +1390,12 @@ function HideSpin() {
 		+ "[contenteditable]:not([contenteditable=false])";
 
 	/**
-	 * Forces the DejaVu Sans fonts onto the form's fields, so the browser and the saved PDF
-	 * draw the same text.
+	 * Forces the DejaVu Sans fonts on eForm text in the browser, matching what wkhtmltopdf is
+	 * given on the server, so both draw it the same way.
 	 *
 	 * Loads the four faces, registers them under the forced name and under "DejaVu Sans" for
 	 * forms that ask for it directly, applies the field rule once all four have loaded, then
-	 * tells the provider. The PDF half is EForm.applyFieldFont.
+	 * tells the provider. The server half is EFormFieldFont.apply.
 	 */
 	function applyDejaVuFont() {
 		if (document.getElementById("eform-field-font")) {
