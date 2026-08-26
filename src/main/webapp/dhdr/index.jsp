@@ -2139,6 +2139,15 @@
 			
 			$scope.callSearch = function(){
 
+				// A days value applySearchDays refused - zero, negative, or past the arithmetic's ceiling -
+				// left the two date fields as they were, so the box would otherwise go on displaying a period
+				// this search does not ask for. Cleared here rather than as it is typed: applySearchDays runs
+				// on every keystroke, and 40000 passes through 4, 40, 400 on the way in.
+				let enteredDays = parseInt($scope.searchDays, 10);
+				if (!isNaN(enteredDays) && (enteredDays < 1 || enteredDays > maxDaysToSearch)) {
+					$scope.clearSearchDays();
+				}
+
 				$scope.buttonDisabled = true;
 				$scope.meds = [];
 				$scope.services = [];
