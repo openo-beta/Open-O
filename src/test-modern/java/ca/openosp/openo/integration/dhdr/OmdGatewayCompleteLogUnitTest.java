@@ -223,18 +223,42 @@ class OmdGatewayCompleteLogUnitTest {
     }
 
     @Test
-    @DisplayName("should still record the outcome when the entity cannot be buffered")
+    @DisplayName("should still record the outcome when the entity cannot be read at all")
     void shouldRecordOutcome_whenEntityCannotBeBuffered() {
       OMDGatewayTransactionLog log = new OMDGatewayTransactionLog();
       Response response = response(503, "req-1");
-      doThrow(new IllegalStateException("Entity is not available")).when(response).bufferEntity();
+      // An entity consumed before this method saw it fails BOTH calls, not just the buffering.
+      // Throwing only on bufferEntity would leave the read below to succeed, and the assertion that
+      // the row survives would then hold for a reason the real failure does not supply.
+      IllegalStateException consumed = new IllegalStateException("Entity is not available");
+      doThrow(consumed).when(response).bufferEntity();
+      when(response.readEntity(String.class)).thenThrow(consumed);
 
       OmdGateway.completeLog(log, response, true);
 
-      // An audit row is owed for the call whether or not its body can be recovered (DHDR15.01).
+      // An audit row is owed for the call whether or not its body can be recovered (DHDR15.01):
+      // the outcome fields do not depend on the body, so only the message text is lost.
       assertThat(log.getSuccess()).isFalse();
       assertThat(log.getResultCode()).isEqualTo(503);
       assertThat(log.getxRequestId()).isEqualTo("req-1");
+      assertThat(log.getError()).isNull();
+    }
+
+    @Test
+    @DisplayName("should record the outcome of a success whose body cannot be read")
+    void shouldRecordOutcome_whenSuccessBodyCannotBeRead() {
+      OMDGatewayTransactionLog log = new OMDGatewayTransactionLog();
+      Response response = response(200, "req-1");
+      when(response.readEntity(String.class))
+          .thenThrow(new IllegalStateException("Entity is not available"));
+
+      OmdGateway.completeLog(log, response, true);
+
+      // The other call site of the same read: an opted-in capture that cannot recover the payload
+      // still leaves a row saying the call succeeded.
+      assertThat(log.getSuccess()).isTrue();
+      assertThat(log.getResultCode()).isEqualTo(200);
+      assertThat(log.getDataRecieved()).isNull();
     }
   }
 

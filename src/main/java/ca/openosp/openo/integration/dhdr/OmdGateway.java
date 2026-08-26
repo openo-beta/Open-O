@@ -152,10 +152,10 @@ public class OmdGateway {
 		try {
 			response2.bufferEntity();
 		} catch (Exception e) {
-			// An entity already consumed or closed cannot be buffered. The outcome fields below do not
-			// depend on the body, and an audit row is owed for the call either way, so this is recorded
-			// rather than thrown. The class name only: a transport exception's message carries the
-			// request URI, and the DHDR request URI carries the patient's health number.
+			// An entity already consumed or closed cannot be buffered, and the reads below then fail on it
+			// too - which is why they go through readBody rather than calling readEntity directly. The
+			// class name only: a transport exception's message carries the request URI, and the DHDR
+			// request URI carries the patient's health number.
 			logger.warn("Gateway response entity could not be buffered (" + e.getClass().getSimpleName() + ")");
 		}
 
@@ -177,7 +177,7 @@ public class OmdGateway {
 		boolean failed = response2.getStatus() >= 300;
 		log.setSuccess(!failed);
 		if (failed) {
-			log.setError(response2.readEntity(String.class));
+			log.setError(readBody(response2));
 		}
 
 		if (capturePayload) {
@@ -189,8 +189,30 @@ public class OmdGateway {
 			if (!failed) {
 				// The body is PHI (DHDR) or clinical payload; the access-controlled audit table is its
 				// only sanctioned destination. It must not be echoed to the application log.
-				log.setDataRecieved(response2.readEntity(String.class));
+				log.setDataRecieved(readBody(response2));
 			}
+		}
+	}
+
+	/**
+	 * Reads a gateway response body, or {@code null} when it cannot be read.
+	 *
+	 * <p>An audit row is owed for every call, and its outcome fields - status, return code,
+	 * correlation identifiers - do not depend on the body. A body that cannot be read therefore costs
+	 * the row its {@code error} or {@code dataRecieved} text, not the row itself. The case that
+	 * reaches here is an entity consumed before this class saw it: buffering fails on it, and so does
+	 * this read.</p>
+	 *
+	 * @param response2 Response the response to read the body from
+	 * @return String the body, or {@code null} if it could not be read
+	 */
+	private static String readBody(Response response2) {
+		try {
+			return response2.readEntity(String.class);
+		} catch (Exception e) {
+			// Class name only, for the reason given where the buffering failure is logged.
+			logger.warn("Gateway response body could not be read (" + e.getClass().getSimpleName() + ")");
+			return null;
 		}
 	}
 
