@@ -32,8 +32,9 @@ public final class EFormFieldFont {
     private static final String FIELD_FONT_STYLE_ID = "eform-field-font-saved";
 
     /**
-     * Kerning on for the PDF converter, which draws without it by default, and no invented bold
-     * or italic. Both change how wide a line of text is. !important, because some forms carry
+     * Two rules that keep a line the same width on both sides. font-synthesis stops the browser
+     * inventing a bold or italic it has no file for. text-rendering turns kerning on in
+     * wkhtmltopdf, which has it off by default. !important, because some forms carry
      * text-rendering rules of their own.
      */
     private static final String TEXT_STYLE_CSS =
@@ -48,8 +49,8 @@ public final class EFormFieldFont {
 
     /**
      * Every field a provider types into, plus the body so labels inherit the font. Elements
-     * that name their own font, such as icons, are left alone. Keep identical to the selector
-     * in eform_floating_toolbar.js.
+     * that name their own font, such as icons and the toolbar, are left alone. Keep identical
+     * to the selector in eform_floating_toolbar.js.
      */
     private static final String FONT_SELECTOR =
             "html body,"

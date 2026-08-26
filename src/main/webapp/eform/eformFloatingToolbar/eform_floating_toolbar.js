@@ -1362,9 +1362,10 @@ function HideSpin() {
 	const EFORM_FONT_FAMILY = "OpenO eForm Sans";
 
 	/**
-	 * Kerning on for the PDF converter, which draws without it by default, and no invented bold
-	 * or italic. Both change how wide a line of text is. !important, because some forms carry
-	 * text-rendering rules of their own. Keep identical to TEXT_STYLE_CSS in EForm.
+	 * Two rules that keep a line the same width on both sides. font-synthesis stops the browser
+	 * inventing a bold or italic it has no file for. text-rendering turns kerning on in
+	 * wkhtmltopdf, which has it off by default. !important, because some forms carry
+	 * text-rendering rules of their own. Keep identical to TEXT_STYLE_CSS in EFormFieldFont.
 	 */
 	const EFORM_TEXT_STYLE = "*{font-synthesis:none;}*{text-rendering:optimizeLegibility !important;}";
 
