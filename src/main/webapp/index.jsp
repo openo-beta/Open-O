@@ -29,7 +29,6 @@
 <%@ page import="ca.openosp.openo.managers.MfaManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix="c" %>
-<%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page contentType="text/html;charset=UTF-8" session="false" %>
 
 <%
@@ -707,7 +706,9 @@
 
                         </form>
 
-                        <oscar:oscarPropertiesCheck property="oneid.enabled" value="true" defaultVal="false">
+                        <%-- Shown from the oneid_enabled setting, editable on the EHR Connectivity
+                             admin screen, rather than from a properties file that needs a restart. --%>
+                        <c:if test="${LoginResourceBean.oneIdEnabled}">
                             <!-- <div class="oneid-or-divider"><span>or</span></div> -->
                             <a href="${pageContext.request.contextPath}/oneIdLogin.do"
                                id="oneIdLogin" class="btn btn-primary btn-block oneIDLogin">
@@ -716,7 +717,7 @@
     									<fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.oneid"/>
     								</span>
                             </a>
-                        </oscar:oscarPropertiesCheck>
+                        </c:if>
 
                         <c:if test="${ LoginResourceBean.acceptableUseAgreementManager.auaAvailable }">
     			            <span class="extrasmall">

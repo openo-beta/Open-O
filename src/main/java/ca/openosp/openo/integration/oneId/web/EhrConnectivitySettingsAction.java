@@ -64,8 +64,18 @@ public class EhrConnectivitySettingsAction extends ActionSupport {
             ONEID_KEYS.oag_client_secret.name(),
             ONEID_KEYS.keystore_password.name());
 
+    /**
+     * Keys whose value is a boolean shown as a toggle switch. A switch is a checkbox, and a cleared
+     * checkbox submits no parameter at all, so these are read as absent-means-false rather than
+     * skipped like the text fields, which is what lets a flag be turned back off.
+     */
+    private static final List<String> FLAG_KEYS = Arrays.asList(
+            ONEID_KEYS.oneid_enabled.name(),
+            ONEID_KEYS.dhdr_enabled.name());
+
     /** The keys this screen manages, in display order. */
     private static final ONEID_KEYS[] EDITABLE_KEYS = {
+            ONEID_KEYS.oneid_enabled, ONEID_KEYS.dhdr_enabled,
             ONEID_KEYS.oag_client_id, ONEID_KEYS.oag_client_secret, ONEID_KEYS.oag_public_key,
             ONEID_KEYS.keystore_path, ONEID_KEYS.keystore_alias, ONEID_KEYS.keystore_password,
             ONEID_KEYS.endpoint_authorize, ONEID_KEYS.endpoint_access_token,
@@ -101,11 +111,21 @@ public class EhrConnectivitySettingsAction extends ActionSupport {
 
         for (ONEID_KEYS key : EDITABLE_KEYS) {
             String name = key.name();
+            boolean flag = FLAG_KEYS.contains(name);
             String submitted = request.getParameter(name);
+            // A switch that is off sends nothing, so for a flag an absent parameter is the value
+            // "false" rather than "leave it alone" - otherwise a flag could be switched on and
+            // never off again.
+            if (submitted == null && flag) {
+                submitted = "false";
+            }
             if (submitted == null) {
                 continue;
             }
             submitted = submitted.trim();
+            if (flag) {
+                submitted = Boolean.toString("true".equalsIgnoreCase(submitted) || "on".equalsIgnoreCase(submitted));
+            }
             boolean secret = SECRET_KEYS.contains(name);
 
             // A blank secret means "leave the stored value unchanged".
@@ -139,15 +159,35 @@ public class EhrConnectivitySettingsAction extends ActionSupport {
             Map<String, String> setting = new LinkedHashMap<>();
             setting.put("key", key.name());
             setting.put("label", labelFor(key));
-            setting.put("type", secret ? "secret" : (key == ONEID_KEYS.oag_public_key ? "textarea" : "text"));
+            setting.put("type", typeFor(key, secret));
             setting.put("value", secret || pref == null ? "" : pref.getValue());
             settings.add(setting);
         }
         request.setAttribute("settings", settings);
     }
 
+    /**
+     * How the field is rendered: a blanked password box, a multi-line box, a toggle switch, or
+     * plain text.
+     *
+     * @param key ONEID_KEYS the setting being rendered
+     * @param secret boolean whether the value is withheld from the page
+     * @return String the type the JSP switches on
+     */
+    private String typeFor(ONEID_KEYS key, boolean secret) {
+        if (secret) {
+            return "secret";
+        }
+        if (FLAG_KEYS.contains(key.name())) {
+            return "switch";
+        }
+        return key == ONEID_KEYS.oag_public_key ? "textarea" : "text";
+    }
+
     private String labelFor(ONEID_KEYS key) {
         switch (key) {
+            case oneid_enabled: return "Enable ONE ID sign-in";
+            case dhdr_enabled: return "Enable DHDR medication viewer";
             case oag_client_id: return "OAG Client ID";
             case oag_client_secret: return "OAG Client Secret";
             case oag_public_key: return "OAG Public Key";

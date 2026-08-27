@@ -78,6 +78,14 @@
                             <textarea class="form-control" rows="4" id="${e:forHtmlAttribute(setting.key)}"
                                       name="${e:forHtmlAttribute(setting.key)}">${e:forHtmlContent(setting.value)}</textarea>
                         </c:when>
+                        <c:when test="${setting.type eq 'switch'}">
+                            <div class="form-check form-switch mt-2">
+                                <input type="checkbox" role="switch" class="form-check-input" value="true"
+                                       id="${e:forHtmlAttribute(setting.key)}"
+                                       name="${e:forHtmlAttribute(setting.key)}"
+                                       <c:if test="${setting.value eq 'true'}">checked="checked"</c:if>/>
+                            </div>
+                        </c:when>
                         <c:otherwise>
                             <input type="text" class="form-control" id="${e:forHtmlAttribute(setting.key)}"
                                    name="${e:forHtmlAttribute(setting.key)}" value="${e:forHtmlAttribute(setting.value)}"/>

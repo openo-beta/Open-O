@@ -116,7 +116,8 @@ INSERT INTO `SystemPreferences` (`name`,`value`,`updateDate`) VALUES
   ('pcoi_key','',NOW()),
   ('timeout','65',NOW()),                      -- gateway connection/read timeout (seconds)
   ('viewlet_timeout','65',NOW()),              -- viewlet response wait time (seconds)
-  ('oneid.sso.enabled','false',NOW());         -- toggles the ONE ID login button
+  ('oneid_enabled','false',NOW()),             -- shows the ONE ID login button
+  ('dhdr_enabled','false',NOW());              -- shows the DHDR medication viewer
 
 
 -- Security objects
