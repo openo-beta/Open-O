@@ -2470,7 +2470,7 @@ if (userAgent != null) {
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgHealthCard"/>
                                         </td>
-                                        <td class="tite1"><%=Encode.forHtml(String.valueOf(thisForm.getPatientHealthNum()))%><%=Encode.forHtml(String.valueOf(thisForm.getPatientHealthCardVersionCode()))%><%=Encode.forHtml(String.valueOf(thisForm.getPatientHealthCardType()))%>
+                                        <td class="tite1"><%=Encode.forHtml(thisForm.getFormattedHealthCard())%>
                                         </td>
                                     </tr>
                                     <tr id="conReqSendTo">
