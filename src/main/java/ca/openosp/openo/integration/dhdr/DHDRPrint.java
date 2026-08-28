@@ -1231,7 +1231,12 @@ public class DHDRPrint {
     }
 
     if (jsonOb.has("localData")) {
-      JSONArray localArr = jsonOb.getJSONArray("localData");
+      // DHDR05.02 requires the EMR-recorded medications in descending chronological order by default,
+      // and DHDR13.01(d) carries the View's element set onto the paper. The browser posts this array in
+      // DrugDao.findByDemographicId's order - createDate DESC - while the column printed as "Start Date"
+      // is rxDate, a different field, so a back-dated or bulk-entered prescription landed out of order.
+      // The screen hides that because its orderBy sorts at render time and never touches the array.
+      JSONArray localArr = sortByDateDesc(jsonOb.getJSONArray("localData"), "rxDate", "EMR prescription");
       document.add(Chunk.NEWLINE);
       addSectionHeading(document, "EMR Prescriptions", localArr.length());
       // DHDR13.01(d): the printout must carry "all data elements required for the View", and for the
@@ -1359,6 +1364,24 @@ public class DHDRPrint {
    * @return JSONArray the events ordered by whenPrepared descending
    */
   private JSONArray sortByWhenPreparedDesc(JSONArray arr, String entryLabel) throws JSONException {
+    return sortByDateDesc(arr, "whenPrepared", entryLabel);
+  }
+
+  /**
+   * Returns a copy of the given events ordered by the named ISO date field descending - most recent
+   * first. Events with no value for that field sort last, since the empty string compares below every
+   * date. The source array is left unmodified.
+   *
+   * <p>Display order only: the comparison is lexical on the raw ISO strings, where lexical order and
+   * chronological order agree.
+   *
+   * @param arr JSONArray the events to order
+   * @param dateField String the property holding the ISO date to order by
+   * @param entryLabel String what the entries are, for the skip log ("drug", "service", "EMR prescription")
+   * @return JSONArray the events ordered by that field, descending
+   */
+  JSONArray sortByDateDesc(JSONArray arr, String dateField, String entryLabel)
+      throws JSONException {
     List<JSONObject> list = new ArrayList<>();
     for (int i = 0; i < arr.length(); i++) {
       JSONObject event = arr.optJSONObject(i);
@@ -1369,7 +1392,7 @@ public class DHDRPrint {
       }
       list.add(event);
     }
-    list.sort((a, b) -> b.optString("whenPrepared", "").compareTo(a.optString("whenPrepared", "")));
+    list.sort((a, b) -> b.optString(dateField, "").compareTo(a.optString(dateField, "")));
     JSONArray sorted = new JSONArray();
     for (JSONObject event : list) {
       sorted.put(event);

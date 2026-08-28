@@ -7,6 +7,7 @@ import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
 import java.util.List;
 import java.util.Locale;
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -767,4 +768,101 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
       assertThat(print.serviceReportedPeriod(med())).isEmpty();
     }
   }
+
+  /**
+   * The EMR half of the Comparative printout was the one array that reached the page unsorted. The
+   * browser posts it in {@code DrugDao.findByDemographicId}'s order - {@code createDate DESC} - while
+   * the column printed as "Start Date" reads {@code rxDate}, a different field, so a back-dated or
+   * bulk-entered prescription landed out of order. DHDR05.02 makes descending chronological order a
+   * MUST by default and DHDR13.01(d) carries the View's element set onto the paper.
+   *
+   * <p>The screen hid this: its {@code orderBy} sorts at render time and never touches the underlying
+   * array, so the two halves disagreed only on paper.
+   */
+  @Nested
+  @DisplayName("sortByDateDesc")
+  class SortByDateDescTests {
+
+    private JSONArray arrayOf(String... dates) throws Exception {
+      JSONArray arr = new JSONArray();
+      for (String d : dates) {
+        JSONObject o = new JSONObject();
+        if (d != null) {
+          o.put("rxDate", d);
+        }
+        arr.put(o);
+      }
+      return arr;
+    }
+
+    private List<String> datesOf(JSONArray arr) {
+      return java.util.stream.IntStream.range(0, arr.length())
+          .mapToObj(i -> arr.optJSONObject(i).optString("rxDate", ""))
+          .toList();
+    }
+
+    @Test
+    @DisplayName("should order EMR prescriptions most-recent-first by the printed Start Date field")
+    void shouldOrderByRxDateDescending_notPostedOrder() throws Exception {
+      // Deliberately not already sorted, and not reverse-sorted either: an implementation that simply
+      // reversed the posted order would pass a two-element fixture.
+      JSONArray sorted =
+          print.sortByDateDesc(
+              arrayOf("2024-02-01", "2026-01-15", "2019-11-30", "2025-06-05"),
+              "rxDate",
+              "EMR prescription");
+
+      assertThat(datesOf(sorted))
+          .containsExactly("2026-01-15", "2025-06-05", "2024-02-01", "2019-11-30");
+    }
+
+    @Test
+    @DisplayName("should sort prescriptions with no start date last rather than first")
+    void shouldSortMissingDatesLast() throws Exception {
+      JSONArray sorted =
+          print.sortByDateDesc(
+              arrayOf(null, "2020-01-01", null, "2023-08-09"), "rxDate", "EMR prescription");
+
+      assertThat(datesOf(sorted)).containsExactly("2023-08-09", "2020-01-01", "", "");
+    }
+
+    @Test
+    @DisplayName("should leave the posted array unmodified")
+    void shouldNotMutateTheSourceArray() throws Exception {
+      JSONArray source = arrayOf("2020-01-01", "2026-01-01");
+
+      print.sortByDateDesc(source, "rxDate", "EMR prescription");
+
+      assertThat(datesOf(source)).containsExactly("2020-01-01", "2026-01-01");
+    }
+
+    @Test
+    @DisplayName("should skip a malformed entry rather than lose the whole printout")
+    void shouldSkipNonObjectEntries() throws Exception {
+      // Same isolation the rendering loops give: one bad element costs one row, not the PDF.
+      JSONArray source = arrayOf("2020-01-01", "2026-01-01");
+      source.put("not an object");
+
+      JSONArray sorted = print.sortByDateDesc(source, "rxDate", "EMR prescription");
+
+      assertThat(datesOf(sorted)).containsExactly("2026-01-01", "2020-01-01");
+    }
+
+    @Test
+    @DisplayName("should still order DHDR events by dispense date, as the whenPrepared caller expects")
+    void shouldOrderByAnyNamedDateField() throws Exception {
+      JSONArray arr = new JSONArray();
+      JSONObject older = new JSONObject();
+      older.put("whenPrepared", "2021-03-03");
+      JSONObject newer = new JSONObject();
+      newer.put("whenPrepared", "2022-04-04");
+      arr.put(older);
+      arr.put(newer);
+
+      JSONArray sorted = print.sortByDateDesc(arr, "whenPrepared", "drug");
+
+      assertThat(sorted.optJSONObject(0).optString("whenPrepared")).isEqualTo("2022-04-04");
+    }
+  }
+
 }
