@@ -156,6 +156,19 @@ function registerViewletOptions(key, options) {
     }
 }
 
+// Fills in the service on the options when the caller named none. Without a service there is
+// nothing to check the Viewlet's reply against, and a reply that confirms some other service
+// would be recorded as a success.
+function withService(options, service) {
+    if (!service || (options && options.service)) {
+        return options;
+    }
+    return {
+        service: service,
+        onOutcome: options ? options.onOutcome : null
+    };
+}
+
 // Options passed to the call win over registered ones, field by field.
 function resolveViewletOptions(key, options) {
     var registered = key ? oneIdViewletOptions[key] : null;
@@ -260,6 +273,9 @@ function doLaunchViewlet(ctx, demographicNo, key, displayMode, options) {
         }
         var timeout = viewletTimeout(data.timeoutMillis);
         var uuid = data.uuid;
+        // The eChart navbar launches without naming a service, so the one the launch endpoint
+        // names is used instead. A caller that named its own keeps it.
+        options = withService(options, data.service);
         if (displayMode === 'modal') {
             openViewletModal(data.viewletUrl, demographicNo, ctx, timeout, key, uuid, options);
         } else {

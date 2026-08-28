@@ -104,6 +104,10 @@ public class ViewletLaunchAction extends ActionSupport {
             node.put("viewletUrl", url);
             node.put("uuid", uniqueToken);
             node.put("timeoutMillis", viewletTimeoutMillis());
+            // The service this launch is for, so the reply can be checked against it. A Viewlet
+            // acting for several services can confirm one and say nothing about the one the
+            // clinician launched for, and that is not a success.
+            node.put("service", viewlet.getKeyValue());
             writeJson(HttpServletResponse.SC_OK, node);
         } catch (CMSException | IllegalStateException e) {
             // When the CMS refuses a context change it is its response body that becomes the
