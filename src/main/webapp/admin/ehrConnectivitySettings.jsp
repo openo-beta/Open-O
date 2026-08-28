@@ -24,9 +24,10 @@
 
 --%>
 <%--
-    ONE ID gateway settings: enter the client credentials, endpoints, keystore, JWKS/issuer and
-    OAG public key used to connect to Ontario Health. Rendered by EhrConnectivitySettingsAction.
-    Secret fields are blank on load and only saved when a new value is entered.
+    ONE ID gateway settings: enter the client credentials, endpoints, JWKS/issuer and OAG public
+    key used to connect to Ontario Health, and upload the gateway keystore. Rendered by
+    EhrConnectivitySettingsAction. Secret fields are blank on load and only saved when a new value
+    is entered, and the keystore is only replaced when a file is chosen.
 
     @since 2026-07-01
 --%>
@@ -60,7 +61,11 @@
         <div class="alert alert-success" role="alert">Settings saved.</div>
     </c:if>
 
-    <form name="ehrConnectivitySettingsForm" method="post"
+    <c:if test="${not empty error}">
+        <div class="alert alert-danger" role="alert">${e:forHtmlContent(error)}</div>
+    </c:if>
+
+    <form name="ehrConnectivitySettingsForm" method="post" enctype="multipart/form-data"
           action="${pageContext.request.contextPath}/admin/ehrConnectivitySettingsSave.do">
         <c:forEach var="setting" items="${settings}">
             <div class="row mb-3">
@@ -72,10 +77,12 @@
                         <c:when test="${setting.type eq 'secret'}">
                             <input type="password" class="form-control" id="${e:forHtmlAttribute(setting.key)}"
                                    name="${e:forHtmlAttribute(setting.key)}" value=""
+                                   maxlength="${valueMaxLength}"
                                    placeholder="(unchanged)" autocomplete="new-password"/>
                         </c:when>
                         <c:when test="${setting.type eq 'textarea'}">
                             <textarea class="form-control" rows="4" id="${e:forHtmlAttribute(setting.key)}"
+                                      maxlength="${valueMaxLength}"
                                       name="${e:forHtmlAttribute(setting.key)}">${e:forHtmlContent(setting.value)}</textarea>
                         </c:when>
                         <c:when test="${setting.type eq 'switch'}">
@@ -86,8 +93,22 @@
                                        <c:if test="${setting.value eq 'true'}">checked="checked"</c:if>/>
                             </div>
                         </c:when>
+                        <c:when test="${setting.type eq 'file'}">
+                            <input type="file" class="form-control" id="${e:forHtmlAttribute(setting.key)}"
+                                   name="keystoreUpload" accept=".jks,.p12,.pfx,.keystore"/>
+                            <div class="form-text">
+                                <c:choose>
+                                    <c:when test="${not empty setting.value}">
+                                        Stored at ${e:forHtmlContent(setting.value)}. Choose a file
+                                        to replace it; leave empty to keep it.
+                                    </c:when>
+                                    <c:otherwise>No keystore has been uploaded yet.</c:otherwise>
+                                </c:choose>
+                            </div>
+                        </c:when>
                         <c:otherwise>
                             <input type="text" class="form-control" id="${e:forHtmlAttribute(setting.key)}"
+                                   maxlength="${valueMaxLength}"
                                    name="${e:forHtmlAttribute(setting.key)}" value="${e:forHtmlAttribute(setting.value)}"/>
                         </c:otherwise>
                     </c:choose>

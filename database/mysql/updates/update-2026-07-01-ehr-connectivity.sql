@@ -97,6 +97,12 @@ CREATE TABLE IF NOT EXISTS `UAO` (
 );
 
 
+-- The gateway settings do not fit the column's 255 characters: a PEM encoded 2048-bit public key
+-- is around 450, and an endpoint URL carrying query parameters can be longer than 255 too. The
+-- settings screen writes one row at a time, so a value the column refuses throws part way through
+-- the list and leaves the rest of the screen unsaved.
+ALTER TABLE `SystemPreferences` MODIFY COLUMN `value` VARCHAR(1000) NULL;
+
 -- Gateway configuration (entered on the admin settings screen; secrets left blank)
 INSERT INTO `SystemPreferences` (`name`,`value`,`updateDate`) VALUES
   ('oag_client_id','',NOW()),
