@@ -523,22 +523,25 @@ function popupEHRService(url, demographicNo, ctx, timeout, key, uuid, options) {
     }
     armWaitTimer();
 
-    if (demographicNo) {
-        viewletWindowOpened();
-        var poll = setInterval(function () {
-            if (!popup || popup.closed) {
-                clearInterval(poll);
-                clearTimeout(waitTimer);
-                window.removeEventListener('message', onMessage);
-                reportOnce('noresponse', 'The EHR service window was closed without a response.');
-                if (openPopupViewlet === popup) {
-                    openPopupViewlet = null;
-                }
-                viewletWindowClosed();
+    // Teardown runs for every launch, not only one that named a patient: a window left without it
+    // keeps a message listener and its wait timer for the life of the page, and reports nothing.
+    // Only the patient context needs a patient, so that is the part that is guarded.
+    viewletWindowOpened();
+    var poll = setInterval(function () {
+        if (!popup || popup.closed) {
+            clearInterval(poll);
+            clearTimeout(waitTimer);
+            window.removeEventListener('message', onMessage);
+            reportOnce('noresponse', 'The EHR service window was closed without a response.');
+            if (openPopupViewlet === popup) {
+                openPopupViewlet = null;
+            }
+            viewletWindowClosed();
+            if (demographicNo) {
                 closeViewletPatientContext(ctx, demographicNo);
             }
-        }, 1000);
-    }
+        }
+    }, 1000);
     popup.focus();
 }
 
