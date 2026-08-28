@@ -822,7 +822,7 @@ public class OmdGateway {
 		completeLog(omdGatewayTransactionLog,response2);
 		transactionLogDao.merge(omdGatewayTransactionLog);
 		}catch(Exception e) {
-			e.getMessage();
+			logger.error("OMD Gateway POST failed\n" + stackTraceWithoutMessages(e));
 			// The call threw before any response arrived, so completeLog never ran and the outcome
 			// is set here instead. A row left with a null success reads as one whose call is still
 			// in flight.
@@ -867,7 +867,7 @@ public class OmdGateway {
 		completeLog(omdGatewayTransactionLog,response2,false);
 		transactionLogDao.merge(omdGatewayTransactionLog);
 		}catch(Exception e) {
-			e.getMessage();
+			logger.error("ONE ID token request failed\n" + stackTraceWithoutMessages(e));
 			// The call threw before any response arrived, so completeLog never ran and the outcome
 			// is set here instead. A row left with a null success reads as one whose call is still
 			// in flight.
