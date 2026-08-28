@@ -142,17 +142,17 @@ public class Logout2Action extends ActionSupport {
         try {
             CMSManager.userLogout(loggedInInfo);
         } catch (Exception e) {
-            logger.error("ONE ID CMS context clear on logout failed", e);
+            logger.error("ONE ID CMS context clear on logout failed\n" + OmdGateway.stackTraceWithoutMessages(e));
         }
         try {
             omdGateway.revokeToken(loggedInInfo, gatewayData);
         } catch (Exception e) {
-            logger.error("ONE ID token revoke failed", e);
+            logger.error("ONE ID token revoke failed\n" + OmdGateway.stackTraceWithoutMessages(e));
         }
         try {
             ehrConnectivityManager.removeOneIdSession(loggedInInfo, loggedInInfo.getLoggedInProviderNo());
         } catch (Exception e) {
-            logger.error("ONE ID session removal failed", e);
+            logger.error("ONE ID session removal failed\n" + OmdGateway.stackTraceWithoutMessages(e));
         }
         gatewayData.clearGatewayData();
         try {

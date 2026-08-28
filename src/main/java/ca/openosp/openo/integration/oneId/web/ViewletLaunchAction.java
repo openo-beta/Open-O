@@ -113,7 +113,7 @@ public class ViewletLaunchAction extends ActionSupport {
                     "The EHR service did not accept the patient context.", demographicNo, uniqueToken);
             writeFailure("The EHR service could not be launched. Please try again.");
         } catch (Exception e) {
-            logger.error("Viewlet launch failed", e);
+            logger.error("Viewlet launch failed\n" + OmdGateway.stackTraceWithoutMessages(e));
             new OmdGateway().logError(loggedInInfo, viewlet.getKeyValue(), "viewletLaunch", "The EHR service could not be launched.", demographicNo, uniqueToken);
             writeFailure("The EHR service could not be launched. Please try again.");
         }
@@ -233,7 +233,7 @@ public class ViewletLaunchAction extends ActionSupport {
             node.put("status", "ok");
             writeJson(HttpServletResponse.SC_OK, node);
         } catch (Exception e) {
-            logger.error("CMS patient close failed", e);
+            logger.error("CMS patient close failed\n" + OmdGateway.stackTraceWithoutMessages(e));
             writeFailure("The patient could not be removed from the EHR context.");
         }
         return NONE;

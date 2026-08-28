@@ -175,7 +175,12 @@ public class OmdGateway {
 
 		if (response2.getStatus() >= 300) {
 			log.setSuccess(false);
-			log.setError(body);
+			// A CMS refusal body quotes back the patient context just sent, so it is not stored.
+			// The outcome code is lifted into its own column above, which is what an auditor
+			// filters on. A refusal from any other system carries an OperationOutcome instead.
+			if (!CMS_EXTERNAL_SYSTEM.equals(log.getExternalSystem())) {
+				log.setError(body);
+			}
 		} else {
 			log.setSuccess(true);
 			if (storeResponseDetail) {
@@ -201,6 +206,9 @@ public class OmdGateway {
 		return UUID.randomUUID().toString();
 	}
 
+	/** The externalSystem recorded on a context call to the Ontario Health CMS. */
+	protected static final String CMS_EXTERNAL_SYSTEM = "CMS";
+
 	/** How many nested causes to render before stopping. */
 	private static final int MAX_CAUSE_DEPTH = 10;
 
@@ -217,7 +225,7 @@ public class OmdGateway {
 	 * @return String the class names and stack frames, or "(none)" when there is no exception
 	 * @since 2026-08-05
 	 */
-	private static String stackTraceWithoutMessages(Throwable throwable) {
+	public static String stackTraceWithoutMessages(Throwable throwable) {
 		if (throwable == null) {
 			return "(none)";
 		}
@@ -733,7 +741,7 @@ public class OmdGateway {
 		String externalSystem = null;
 		String transactionType = null;
 		if(fhirCastEvent != null) {
-			externalSystem = "CMS";
+			externalSystem = CMS_EXTERNAL_SYSTEM;
 			transactionType = fhirCastEvent.getHubEvent();
 		}
 		String requestId = newRequestId();
