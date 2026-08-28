@@ -22,6 +22,7 @@ import ca.openosp.openo.commn.model.OMDGatewayTransactionLog;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -99,6 +100,39 @@ public class OMDGatewayTransactionLogDao extends AbstractDaoImpl<OMDGatewayTrans
     Query query = entityManager.createQuery(
         "select x from OMDGatewayTransactionLog x  where x.externalSystem=? ORDER BY x.started desc");
     query.setParameter(1, systemType);
+    return (List<OMDGatewayTransactionLog>) bounded(query, maxRows).getResultList();
+  }
+
+  /**
+   * Finds interactions matching whichever of the two filters were given, newest first.
+   *
+   * <p>Both are applied together. Filtering on one and dropping the other would list rows that
+   * contradict what the screen says it is showing.</p>
+   *
+   * @param providerNo     String the provider who started the interaction, or null for any
+   * @param externalSystem String the EHR service the interaction was with, or null for any
+   * @param maxRows        int the most rows to return, or 0 for all of them
+   * @return List&lt;OMDGatewayTransactionLog&gt; the matching rows
+   */
+  @SuppressWarnings("unchecked")
+  public List<OMDGatewayTransactionLog> find(String providerNo, String externalSystem, int maxRows) {
+    List<String> conditions = new ArrayList<>();
+    if (providerNo != null) {
+      conditions.add("x.initiatingProviderNo=:providerNo");
+    }
+    if (externalSystem != null) {
+      conditions.add("x.externalSystem=:externalSystem");
+    }
+    String where = conditions.isEmpty() ? "" : " where " + String.join(" and ", conditions);
+
+    Query query = entityManager.createQuery(
+        "select x from OMDGatewayTransactionLog x" + where + " ORDER BY x.started desc");
+    if (providerNo != null) {
+      query.setParameter("providerNo", providerNo);
+    }
+    if (externalSystem != null) {
+      query.setParameter("externalSystem", externalSystem);
+    }
     return (List<OMDGatewayTransactionLog>) bounded(query, maxRows).getResultList();
   }
 

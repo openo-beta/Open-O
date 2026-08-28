@@ -122,13 +122,9 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
     @Override
     public List<OMDGatewayTransactionLog> getRecentLogs(LoggedInInfo loggedInInfo, String providerNo, String externalSystem, int maxRows) {
         checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
-        if (providerNo != null) {
-            return transactionLogDao.findByProviderNo(providerNo, maxRows);
-        }
-        if (externalSystem != null) {
-            return transactionLogDao.findByExternalSystem(externalSystem, maxRows);
-        }
-        return transactionLogDao.getAll(maxRows);
+        // Both filters are applied. Returning on the first one set would list rows that contradict
+        // the other, which the screen redisplays as though it had been used.
+        return transactionLogDao.find(providerNo, externalSystem, maxRows);
     }
 
     @Override
