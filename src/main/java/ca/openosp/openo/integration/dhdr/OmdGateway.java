@@ -679,6 +679,27 @@ public class OmdGateway {
 		return preference == null ? null : preference.getValue();
 	}
 
+	/**
+	 * A setting's value, or a failure naming the setting that has none.
+	 *
+	 * <p>A URL composed from an unset setting is still a URL: an absent row concatenates as the
+	 * text "null", and the value the migration seeds is empty, which leaves the base address on its
+	 * own. Either reaches the gateway as a redirect address it does not recognise, and what comes
+	 * back names the address rather than the setting behind it.</p>
+	 *
+	 * @param key   ONEID_KEYS the setting to read
+	 * @param label String the setting's name on the gateway settings screen
+	 * @return String the value, trimmed
+	 * @throws IllegalStateException when the setting holds no value
+	 */
+	private String requirePreferenceValue(SystemPreferences.ONEID_KEYS key, String label) {
+		String value = getPreferenceValue(key);
+		if (value == null || value.trim().isEmpty()) {
+			throw new IllegalStateException("The " + label + " setting is not configured.");
+		}
+		return value.trim();
+	}
+
 	protected String getConsumerKey() {
 		return getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
 	}
@@ -888,7 +909,7 @@ public class OmdGateway {
 		String transactionType = "TOKENS";
 		String tokenUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_access_token);
 		String callbackUrl = resolveBaseUrl()
-				+ getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_callback);
+				+ requirePreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_callback, "Callback Path");
 
 		String requestId = newRequestId();
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, null, externalSystem, transactionType);
@@ -990,7 +1011,7 @@ public class OmdGateway {
 	public String buildAuthorizeUrl(OneIdGatewayData oneIdGatewayData, String state, String nonce, String verifier) throws Exception {
 		String authorizeUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_authorize);
 		String callbackUrl = resolveBaseUrl()
-				+ getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_callback);
+				+ requirePreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_callback, "Callback Path");
 		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
 		String aud = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_audience);
 		String challenge = PKCEUtils.generateChallengeS256(verifier);
