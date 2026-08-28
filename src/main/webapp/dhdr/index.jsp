@@ -342,13 +342,20 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
+					<%-- DHDR03.01: the total is indicated for the view whether or not it returned anything.
+					     Inside the table it was gated on the same ng-show as the table, so a patient with
+					     pharmacy service events but no drug dispenses saw the heading and then nothing at
+					     all - no table, no zero - while the both-empty case fell through to the "No records
+					     found" message below. Held back until the walk has finished so it does not read 0
+					     mid-search. --%>
+					<div style="margin-bottom:4px;" ng-show="searchComplete && !searching">
+						{{meds.length}} results returned
+						<span ng-if="meds.length > 0">
+							<button type="button" class="btn btn-default btn-xs" ng-click="toggleExpandAll()">{{expandAll ? 'Collapse All' : 'Expand All'}}</button>  <button type="button" class="btn btn-default btn-xs" ng-click="printSummary()">Print</button>
+						</span>
+					</div>
 					<table class="table table-condensed table-striped table-bordered" ng-show="meds.length > 0">
 						<thead>
-							<tr>
-								<td colspan="12">
-									{{meds.length}} results returned  <button type="button" class="btn btn-default btn-xs" ng-click="toggleExpandAll()">{{expandAll ? 'Collapse All' : 'Expand All'}}</button>  <button type="button" class="btn btn-default btn-xs" ng-click="printSummary()">Print</button>
-								</td>
-							</tr>
 							<tr>
 								<th>
 									<a ng-click="orderByField='whenPrepared'; reverseSort = !reverseSort">
@@ -511,13 +518,20 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
+					<%-- DHDR03.01: the total is indicated for the view whether or not it returned anything.
+					     Inside the table it was gated on the same ng-show as the table, so a patient with
+					     pharmacy service events but no drug dispenses saw the heading and then nothing at
+					     all - no table, no zero - while the both-empty case fell through to the "No records
+					     found" message below. Held back until the walk has finished so it does not read 0
+					     mid-search. --%>
+					<div style="margin-bottom:4px;" ng-show="searchComplete && !searching">
+						{{services.length}} results returned
+						<span ng-if="services.length > 0">
+							<button type="button" class="btn btn-default btn-xs" ng-click="toggleExpandAllServices()">{{expandAllServices ? 'Collapse All' : 'Expand All'}}</button>  <button type="button" class="btn btn-default btn-xs" ng-click="printSummary()">Print</button>
+						</span>
+					</div>
 					<table class="table table-condensed table-striped table-bordered" ng-show="services.length > 0">
 						<thead>
-							<tr>
-								<td colspan="10">
-									{{services.length}} results returned  <button type="button" class="btn btn-default btn-xs" ng-click="toggleExpandAllServices()">{{expandAllServices ? 'Collapse All' : 'Expand All'}}</button>  <button type="button" class="btn btn-default btn-xs" ng-click="printSummary()">Print</button>
-								</td>
-							</tr>
 							<tr>
 								<th>
 									<a ng-click="serviceOrderByField='whenPrepared'; serviceReverseSort = !serviceReverseSort">Dispensed Date <span ng-show="serviceOrderByField == 'whenPrepared'"><span ng-show="!serviceReverseSort">^</span><span ng-show="serviceReverseSort">v</span></span></a>
@@ -778,13 +792,12 @@
 								</div>
 							</form>
 						</div>
+						<%-- DHDR03.01: see the summary view - the count must survive an empty section. --%>
+						<div style="margin-bottom:4px;" ng-show="searchComplete && !searching">
+							{{services.length}} results returned
+						</div>
 						<table class="table table-condensed table-striped table-bordered" ng-show="services.length > 0">
 							<thead>
-							<tr>
-								<td colspan="8">
-									{{services.length}} results returned
-								</td>
-							</tr>
 							<tr>
 								<th>
 									<a ng-click="serviceOrderByField='whenPrepared'; serviceReverseSort = !serviceReverseSort">
