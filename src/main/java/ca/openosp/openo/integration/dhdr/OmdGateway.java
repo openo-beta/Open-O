@@ -48,7 +48,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.jaxrs.client.WebClient;
-import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.ssl.SSLContexts;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONObject;
 import org.hl7.fhir.r4.model.Bundle;
@@ -61,11 +61,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.struts2.ServletActionContext;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -84,6 +86,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.UUID;
 
 public class OmdGateway {
@@ -550,27 +553,78 @@ public class OmdGateway {
 		return seconds * 1000;
 	}
 
-	protected TLSClientParameters getTLSClientParameters(LoggedInInfo loggedInInfo) throws Exception {
-			hasGatewayPropertiesSet(loggedInInfo);
-			KeyStore ks = KeyStore.getInstance("JKS");
-			ks.load( new FileInputStream(
-                    Paths.get(getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_path)).toFile()
-                ),
-                getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_password).toCharArray()
-                );
-			SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(ks, getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_password).toCharArray()).build();
-			sslcontext.getDefaultSSLParameters().setNeedClientAuth(true);
-			sslcontext.getDefaultSSLParameters().setWantClientAuth(true);
+	/**
+	 * A socket factory and the keystore it was built from. The file's own timestamp and size are
+	 * part of what identifies that keystore, because replacing an uploaded keystore keeps the same
+	 * path and password, and the settings alone cannot tell the new file from the old one.
+	 */
+	private static final class TlsKeystore {
+		private final String path;
+		private final String password;
+		private final long modified;
+		private final long size;
+		private final SSLSocketFactory socketFactory;
 
-			TLSClientParameters tlsParams = new TLSClientParameters();
-			tlsParams.setSSLSocketFactory(sslcontext.getSocketFactory());
-			// Hostname (CN) verification stays on; disable it only for local development.
-			if ("true".equalsIgnoreCase(OscarProperties.getInstance().getProperty("oneid.disable_tls_cn_check"))) {
-				tlsParams.setDisableCNCheck(true);
-			}
-
-			return tlsParams;
+		private TlsKeystore(String path, String password, File file, SSLSocketFactory socketFactory) {
+			this.path = path;
+			this.password = password;
+			this.modified = file.lastModified();
+			this.size = file.length();
+			this.socketFactory = socketFactory;
 		}
+
+		private boolean isFor(String otherPath, String otherPassword, File file) {
+			return Objects.equals(path, otherPath)
+					&& Objects.equals(password, otherPassword)
+					&& modified == file.lastModified()
+					&& size == file.length();
+		}
+	}
+
+	/** The last keystore built, reused until the settings or the file itself change. */
+	private static volatile TlsKeystore tlsKeystore;
+
+	protected TLSClientParameters getTLSClientParameters(LoggedInInfo loggedInInfo) throws Exception {
+		hasGatewayPropertiesSet(loggedInInfo);
+		TLSClientParameters tlsParams = new TLSClientParameters();
+		tlsParams.setSSLSocketFactory(clientSocketFactory());
+		// Hostname (CN) verification stays on; disable it only for local development.
+		if ("true".equalsIgnoreCase(OscarProperties.getInstance().getProperty("oneid.disable_tls_cn_check"))) {
+			tlsParams.setDisableCNCheck(true);
+		}
+		return tlsParams;
+	}
+
+	/**
+	 * The socket factory that presents the client certificate, built once per keystore. Every
+	 * gateway call went through here, so the keystore was read from disk, its key material parsed
+	 * and a fresh SSL context built each time, which also gave the connection no session to resume.
+	 *
+	 * @return SSLSocketFactory the factory holding the configured client certificate
+	 * @throws Exception when the keystore cannot be read or the context cannot be built
+	 */
+	private SSLSocketFactory clientSocketFactory() throws Exception {
+		String keystorePath = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_path);
+		String keystorePassword = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_password);
+		File keystoreFile = Paths.get(keystorePath).toFile();
+
+		TlsKeystore cached = tlsKeystore;
+		if (cached != null && cached.isFor(keystorePath, keystorePassword, keystoreFile)) {
+			return cached.socketFactory;
+		}
+
+		KeyStore ks = KeyStore.getInstance("JKS");
+		try (FileInputStream keystoreStream = new FileInputStream(keystoreFile)) {
+			ks.load(keystoreStream, keystorePassword.toCharArray());
+		}
+		// The key material is what presents the client certificate to the gateway.
+		SSLContext sslContext = SSLContexts.custom()
+				.loadKeyMaterial(ks, keystorePassword.toCharArray())
+				.build();
+		SSLSocketFactory socketFactory = sslContext.getSocketFactory();
+		tlsKeystore = new TlsKeystore(keystorePath, keystorePassword, keystoreFile, socketFactory);
+		return socketFactory;
+	}
 
 	public Response doGet(LoggedInInfo loggedInInfo, WebClient wc) throws TokenExpiredException {
 		return doGet(loggedInInfo,wc,null);
