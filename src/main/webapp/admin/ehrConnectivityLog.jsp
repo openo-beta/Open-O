@@ -94,6 +94,10 @@
                 <td>${e:forHtmlContent(log.transactionType)}</td>
                 <td>
                     <c:choose>
+                        <%-- A row that carries no outcome, such as a viewlet launch, whose result
+                             is recorded separately against the same correlation id. Tested first,
+                             because an unset value reads as false once it is used as a boolean. --%>
+                        <c:when test="${empty log.success}"><span class="badge bg-secondary">UNKNOWN</span></c:when>
                         <c:when test="${log.success}"><span class="badge bg-success">OK</span></c:when>
                         <c:otherwise><span class="badge bg-danger">FAIL</span></c:otherwise>
                     </c:choose>

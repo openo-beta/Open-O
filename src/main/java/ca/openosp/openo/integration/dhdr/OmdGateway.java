@@ -764,7 +764,9 @@ public class OmdGateway {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, "PCOI", "consentViewletLaunch");
 		omdGatewayTransactionLog.setDataSent(url);
 		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
-		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
+		// No outcome is claimed here. All that has happened is that a URL was composed: the window
+		// may be blocked, or opened and never answer. The viewletResult row carries what the EHR
+		// service actually reported, tied to this one by the correlation id.
 		persistCompleted(omdGatewayTransactionLog);
 		return url;
 	}
@@ -795,7 +797,9 @@ public class OmdGateway {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, viewletKey, "viewletLaunch");
 		omdGatewayTransactionLog.setDataSent(url);
 		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
-		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
+		// No outcome is claimed here. All that has happened is that a URL was composed: the window
+		// may be blocked, or opened and never answer. The viewletResult row carries what the EHR
+		// service actually reported, tied to this one by the correlation id.
 		persistCompleted(omdGatewayTransactionLog);
 		return url;
 	}
