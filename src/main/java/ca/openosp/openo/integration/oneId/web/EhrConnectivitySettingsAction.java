@@ -182,7 +182,8 @@ public class EhrConnectivitySettingsAction extends ActionSupport implements Uplo
                 continue;
             }
             SystemPreferences pref = ehrConnectivityManager.getConfig(key);
-            String previous = pref == null ? "" : pref.getValue();
+            // The column is nullable, so a row written by anything but this screen can hold null.
+            String previous = (pref == null || pref.getValue() == null) ? "" : pref.getValue();
             if (previous.equals(submitted)) {
                 continue;
             }

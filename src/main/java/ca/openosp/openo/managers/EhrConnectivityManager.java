@@ -99,24 +99,6 @@ public interface EhrConnectivityManager {
     List<OMDGatewayTransactionLog> getRecentLogs(LoggedInInfo loggedInInfo, String providerNo, String externalSystem, int maxRows);
 
     /**
-     * Returns the gateway transaction log rows for one provider, newest first.
-     *
-     * @param loggedInInfo LoggedInInfo the acting user, checked for the admin privilege
-     * @param providerNo String the provider number
-     * @return List&lt;OMDGatewayTransactionLog&gt; the matching rows
-     */
-    List<OMDGatewayTransactionLog> findLogsByProviderNo(LoggedInInfo loggedInInfo, String providerNo);
-
-    /**
-     * Returns the gateway transaction log rows for one external system, newest first.
-     *
-     * @param loggedInInfo LoggedInInfo the acting user, checked for the admin privilege
-     * @param externalSystem String the external system identifier
-     * @return List&lt;OMDGatewayTransactionLog&gt; the matching rows
-     */
-    List<OMDGatewayTransactionLog> findLogsByExternalSystem(LoggedInInfo loggedInInfo, String externalSystem);
-
-    /**
      * Returns the provider security records linked to a ONE ID subject. Called only from the ONE ID
      * callback before a session exists, so it carries no privilege check; the trust boundary is the
      * OAuth state and nonce plus the id-token signature that produced the subject.

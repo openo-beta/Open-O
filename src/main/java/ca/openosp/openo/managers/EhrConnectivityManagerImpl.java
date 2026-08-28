@@ -128,18 +128,6 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
     }
 
     @Override
-    public List<OMDGatewayTransactionLog> findLogsByProviderNo(LoggedInInfo loggedInInfo, String providerNo) {
-        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
-        return transactionLogDao.findByProviderNo(providerNo);
-    }
-
-    @Override
-    public List<OMDGatewayTransactionLog> findLogsByExternalSystem(LoggedInInfo loggedInInfo, String externalSystem) {
-        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
-        return transactionLogDao.findByExternalSystem(externalSystem);
-    }
-
-    @Override
     public List<Security> findProvidersByOneId(String subject) {
         return securityDao.findByOneIdKey(subject);
     }

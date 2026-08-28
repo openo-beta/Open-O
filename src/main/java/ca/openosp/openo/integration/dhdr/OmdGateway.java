@@ -114,7 +114,7 @@ public class OmdGateway {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = new OMDGatewayTransactionLog();
 		OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
 		if(oneIdGatewayData != null) {
-			logger.error("oneIdGatewayData.howLongUntilAccessTokenIsExpired() "+oneIdGatewayData.howLongUntilAccessTokenIsExpired());
+			logger.debug("Access token expires in " + oneIdGatewayData.howLongUntilAccessTokenIsExpired() + "s");
 			omdGatewayTransactionLog.setSecondsLeft(oneIdGatewayData.howLongUntilAccessTokenIsExpired());
 			omdGatewayTransactionLog.setUao(oneIdGatewayData.getUao());
 			omdGatewayTransactionLog.setContextSessionId(oneIdGatewayData.getCtxSessionId());
