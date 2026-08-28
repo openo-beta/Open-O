@@ -835,16 +835,19 @@ public class OmdGateway {
 	}
 	
 	public Response doPost(LoggedInInfo loggedInInfo, WebClient wc, Event fhirCastEvent) throws Exception {
-		// Context submission must carry the acting authority; block it when no UAO is selected.
 		OneIdGatewayData gatewayData = loggedInInfo.getOneIdGatewayData();
-		if (gatewayData == null || gatewayData.getUao() == null || gatewayData.getUao().trim().isEmpty()) {
+		// A provider with no gateway data has not signed in to ONE ID. That needs a sign-in, not an
+		// authority, so it is raised as the same condition a dead session raises and reaches the
+		// same prompt. Refreshes the access token if it has expired, and throws when the refresh
+		// token is dead too.
+		OneIDTokenUtils.verifyAccessTokenIsValid(loggedInInfo, gatewayData);
+		// Context submission must carry the acting authority; block it when no UAO is selected.
+		if (gatewayData.getUao() == null || gatewayData.getUao().trim().isEmpty()) {
 			throw new IllegalStateException("A ONE ID Under Authority Of (UAO) value must be selected before submitting context to the gateway.");
 		}
 		String consumerKey = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
 		String consumerSecret =getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_secret);
-		// Refresh the access token if it has expired (throws when the refresh token is dead too).
-		OneIDTokenUtils.verifyAccessTokenIsValid(loggedInInfo, loggedInInfo.getOneIdGatewayData());
-		String accessToken = loggedInInfo.getOneIdGatewayData().getAccessToken();
+		String accessToken = gatewayData.getAccessToken();
 		Integer demographicNo = null;
 		String externalSystem = null;
 		String transactionType = null;
