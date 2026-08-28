@@ -1286,13 +1286,6 @@ public class DHDRPrint {
   }
 
   /**
-   * Builds the DHDR-side patient demographic line (DHDR13.01.b) from the front-end {@code
-   * dhdrPatient} object (first/last name, gender, DOB, HIN as maintained by the DHDR EHR Service).
-   *
-   * @param dhdrPatient JSONObject the DHDR-side patient, or null when none was resolved
-   * @return String the demographic line, or an empty string when no DHDR patient is available
-   */
-  /**
    * Renders the DHDR-maintained patient identity for the event being printed into the Detailed view's
    * label/value table, marking any field that disagrees with the EMR record.
    *
@@ -1368,6 +1361,13 @@ public class DHDRPrint {
     return !value.isEmpty() && unmatched ? value + " (UNMATCHED)" : value;
   }
 
+  /**
+   * Builds the DHDR-side patient demographic line (DHDR13.01.b) from the front-end {@code
+   * dhdrPatient} object (first/last name, gender, DOB, HIN as maintained by the DHDR EHR Service).
+   *
+   * @param dhdrPatient JSONObject the DHDR-side patient, or null when none was resolved
+   * @return String the demographic line, or an empty string when no DHDR patient is available
+   */
   String buildDhdrDemoLine(JSONObject dhdrPatient) {
     if (dhdrPatient == null) {
       return "";
