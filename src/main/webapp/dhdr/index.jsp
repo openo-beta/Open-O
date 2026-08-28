@@ -946,6 +946,9 @@
 			</div>
         </div>
         <div class="modal-body" id="modal-body">
+            <%-- A print failure has to be reported inside the modal: this template runs under
+                 ModalInstanceCtrl, which cannot reach the controller's serviceErrors list. --%>
+            <div class="alert alert-danger" role="alert" ng-if="printError">{{printError}}</div>
             <div class="md-dialog-content" id="dialogContentApptProvider">
             
             <div class="row">
@@ -1565,6 +1568,21 @@
 				currentViewValue = 'summary';
 			}
 			
+			// A print that fails leaves the user with nothing to act on if it is announced through an
+			// alert() that says only "Error getting printout". Not a DHDR14.01 case - this is the EMR's
+			// own PDF build, not a message from the DHDR EHR Service - but the notice list is where the
+			// reader already looks, and it carries the code, severity, time and what to do next.
+			var printFailed = function(view){
+				$scope.serviceErrors.push({
+					httpMessage: "The " + view + " printout could not be produced.",
+					httpCode: "DHDR13.01",
+					severity: "error",
+					dateTime: new Date(),
+					moreInformation: "The records shown on screen are unaffected. Try printing again; if it"
+						+ " keeps failing, report it to your EMR administrator with the time shown here."
+				});
+			};
+
 			$scope.printSummary = function(){
 				var toPrint = {};
 				toPrint.meds = $scope.meds;
@@ -1585,8 +1603,7 @@
 				       var fileURL = URL.createObjectURL(file);
 				       window.open(fileURL);
 				}, function(errorMessage) {
-					alert("Error getting printout");
-					//rxComp.error = errorMessage;
+					printFailed("Comparative");
 				});	
 				//window.open('../ws/rs/dhdr/'+$scope.demographicNo+'/print/summary','_blank');
 			}
@@ -1612,8 +1629,7 @@
 				       var fileURL = URL.createObjectURL(file);
 				       window.open(fileURL);
 				}, function(errorMessage) {
-					alert("Error getting printout");
-					//rxComp.error = errorMessage;
+					printFailed("Summary");
 				});	
 				//window.open('../ws/rs/dhdr/'+$scope.demographicNo+'/print/summary','_blank');
 			}
@@ -2485,7 +2501,16 @@
 					//search($scope.demographicNo,$scope.searchConfig);
 					$scope.callSearch();
 				},function(reason){
-					alert(reason);
+					// Was alert(reason), which rendered the rejection object as [object Object] and then
+					// left the viewer silent - callSearch() never runs, so the page simply sits empty.
+					$scope.serviceErrors.push({
+						httpMessage: "The patient record could not be loaded, so no DHDR search was sent.",
+						httpCode: "DHDR02.02",
+						severity: "error",
+						dateTime: new Date(),
+						moreInformation: "Close this window and re-open the DHDR view from the patient's"
+							+ " prescription screen. If it recurs, report it to your EMR administrator."
+					});
 				});
 			};
 			
@@ -2610,19 +2635,39 @@
 						  .then(showOverrideResult, showOverrideResult);
 			  }
 			
+    		  // DHDR10.01 / DHDR14.01: every path that fails to bring up the PCOI viewlet reports through
+    		  // the notice list, with a code, a severity, a timestamp and a next step the EMR user can take
+    		  // without an admin role.
+    		  var viewletLaunchFailed = function(detail){
+				  $scope.serviceErrors.push({
+					  httpMessage: "The Temporary Consent Unblock could not be started.",
+					  httpCode: "DHDR10.01",
+					  severity: "error",
+					  dateTime: new Date(),
+					  moreInformation: (detail ? detail + " " : "")
+						  + "The patient's consent block remains in force and no drug or pharmacy service"
+						  + " information was retrieved. Try again; if it keeps failing, report it to your"
+						  + " EMR administrator with the time shown here."
+				  });
+			  };
+
     		  $scope.callConsentBlock = function($event){
 				  	$scope.buttonDisabled = true;
     				dhdrService.getConsentOveride($scope.demographicNo, "PCOI").then(function(response){
 						$scope.buttonDisabled = false;
     					if(response.status == 268){
-    						alert("Error check the log for more details :\n"+response.data.summary);// response.data);
+    						// DHDR14.01: "check the log" is not direction a clinician can act on, and the log is
+    						// admin-gated - the requirement states the EMR user MUST NOT need admin role access
+    						// to be notified of an error. PHI-free: the summary is the service's own rejection
+    						// text, and the technical detail stays in the audit row.
+    						viewletLaunchFailed(response.data ? response.data.summary : null);
     						return;
     					}
     					
     					var med = response.data;
 
 							if (!med || !med.referenceURL) {
-								alert("Error retrieving Temporary Consent Override: Viewlet URL is null");
+								viewletLaunchFailed("The service returned no viewlet address.");
 								return;
 							}
     					
@@ -2714,7 +2759,7 @@
     					
     				},function(reason){
 						$scope.buttonDisabled = false;
-    					alert(reason);
+    					viewletLaunchFailed(null);
     				});
     				
     		  }
@@ -3111,6 +3156,7 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 			}
 
 			$scope.printDetail = function(){
+					$scope.printError = null;
 					var toPrint = {};
 					toPrint.med = $scope.med;
 					// DHDR13.01(b) / BP14: this view is scoped to ONE event, so the DHDR-side identity on the
@@ -3128,8 +3174,12 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 					       var fileURL = URL.createObjectURL(file);
 					       window.open(fileURL);
 					}, function(errorMessage) {
-						alert("Error getting printout");
-						//rxComp.error = errorMessage;
+						// Reported on the modal itself: this runs in a $modal scope, which cannot see the
+						// controller's serviceErrors list. Same reason the patient block had to be decorated
+						// onto the event rather than exposed as a controller helper.
+						$scope.printError = "The Detailed printout could not be produced. The record shown here"
+							+ " is unaffected. Try again; if it keeps failing, report it to your EMR"
+							+ " administrator, noting the time.";
 					});	
 					//window.open('../ws/rs/dhdr/'+$scope.demographicNo+'/print/summary','_blank');
 			
