@@ -2854,7 +2854,6 @@
 				 return this.genericName+":"+this.dispensedDrugStrength+":"+this.drugDosageForm;
 			 }
 			
-			this.uniqVal = this.genericName+":"+this.dispensedDrugStrength+":"+this.drugDosageForm;
 			 
 			 /*
 <pre>
