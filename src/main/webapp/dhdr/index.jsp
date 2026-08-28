@@ -1632,7 +1632,20 @@
 						});
 						
 					}, function(errorMessage) {
-						//rxComp.error = errorMessage;
+						// The point of this view is to set the provincial record beside the local one, so an
+						// EMR column that is empty because the load failed must not read as "this patient has
+						// no medications". Empty the list so the count is honest, and raise it where the
+						// reader already looks for service problems.
+						$scope.compLocalMeds = [];
+						$scope.serviceErrors.push({
+							httpMessage: "The EMR medication list could not be loaded, so the EMR side of this"
+								+ " comparison is empty. It does not mean the patient has no medications recorded.",
+							httpCode: "DHDR05.02",
+							severity: "error",
+							dateTime: new Date(),
+							moreInformation: "Re-open the comparative view to try again. Use the patient's"
+								+ " medication record in the EMR to compare against the DHDR results below."
+						});
 					});	
 				
 			}
