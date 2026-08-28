@@ -65,8 +65,25 @@ public class OneIdJwksProvider {
     @Autowired
     private EhrConnectivityManager ehrConnectivityManager;
 
-    private JwkSet cachedKeys;
-    private long cachedAtMillis;
+    /**
+     * The shortest gap between two fetches forced by an unrecognised key id. Without it a run of
+     * tokens naming a key the issuer does not publish fetches the key set on every one of them.
+     */
+    private static final long MIN_REFRESH_INTERVAL_MILLIS = 60L * 1000L;
+
+    /** A fetched key set and when it was fetched, held together so the pair is swapped as one. */
+    private static final class CachedJwks {
+        private final JwkSet keys;
+        private final long fetchedAtMillis;
+
+        private CachedJwks(JwkSet keys, long fetchedAtMillis) {
+            this.keys = keys;
+            this.fetchedAtMillis = fetchedAtMillis;
+        }
+    }
+
+    private volatile CachedJwks cachedJwks;
+    private volatile long lastFetchAttemptMillis;
 
     /**
      * Verifies an id_token and returns its subject.
@@ -179,13 +196,32 @@ public class OneIdJwksProvider {
         return only;
     }
 
-    private synchronized JwkSet currentKeys(String jwksUri, boolean forceRefresh) {
+    /**
+     * The published key set, fetched when there is none or the held one has aged out.
+     *
+     * <p>Deliberately unsynchronized. The fetch waits up to ten seconds, and holding a lock across
+     * it would put every concurrent sign-in behind one slow request to the issuer. Two sign-ins
+     * arriving together may each fetch, which costs one extra request and returns the same keys.</p>
+     *
+     * @param jwksUri      String where the issuer publishes its keys
+     * @param forceRefresh boolean true to fetch even when the held keys are still fresh, after a
+     *                     token named a key id the held set does not contain
+     * @return JwkSet the keys to verify against
+     */
+    private JwkSet currentKeys(String jwksUri, boolean forceRefresh) {
+        CachedJwks cached = cachedJwks;
         long now = System.currentTimeMillis();
-        if (forceRefresh || cachedKeys == null || (now - cachedAtMillis) > CACHE_TTL_MILLIS) {
-            cachedKeys = Jwks.setParser().build().parse(fetchJwks(jwksUri));
-            cachedAtMillis = now;
+        if (cached != null && !forceRefresh && (now - cached.fetchedAtMillis) <= CACHE_TTL_MILLIS) {
+            return cached.keys;
         }
-        return cachedKeys;
+        if (cached != null && forceRefresh && (now - lastFetchAttemptMillis) < MIN_REFRESH_INTERVAL_MILLIS) {
+            // Fetched moments ago, so the issuer is not going to be publishing anything newer.
+            return cached.keys;
+        }
+        lastFetchAttemptMillis = now;
+        JwkSet fetched = Jwks.setParser().build().parse(fetchJwks(jwksUri));
+        cachedJwks = new CachedJwks(fetched, System.currentTimeMillis());
+        return fetched;
     }
 
     private String fetchJwks(String jwksUri) {
