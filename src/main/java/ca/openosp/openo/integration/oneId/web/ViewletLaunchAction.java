@@ -155,6 +155,11 @@ public class ViewletLaunchAction extends ActionSupport {
         // consent call while the drug override behind it never happens. The launch did not fail,
         // and it did not do what was asked, so it gets its own outcome.
         boolean partial = "partial".equalsIgnoreCase(status);
+
+        // The clinician closed the EHR service without going through with it. Nothing was
+        // accessed, and nothing failed either, so it is recorded as the decision it was rather
+        // than alongside the service's own errors.
+        boolean cancelled = "cancelled".equalsIgnoreCase(status);
         
         try {
             OmdGateway omdGateway = new OmdGateway();
@@ -164,6 +169,11 @@ public class ViewletLaunchAction extends ActionSupport {
                 omdGateway.logError(loggedInInfo, key.trim(), "viewletResultNoResponse",
                         "The EHR service window closed with no response, so the outcome is unknown. "
                                 + "Confirm the result in the EHR service's own data. "
+                                + (message == null ? "" : message),
+                        demographicNo, uniqueToken);
+            } else if (cancelled) {
+                omdGateway.logError(loggedInInfo, key.trim(), "viewletResultCancelled",
+                        "The clinician cancelled at the EHR service, so no access took place. "
                                 + (message == null ? "" : message),
                         demographicNo, uniqueToken);
             } else if (partial) {

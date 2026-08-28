@@ -416,9 +416,14 @@ function parseViewletCompletion(data, service) {
         }
     }
 
+    // A clinician cancelling and the service returning an error are different outcomes, and an
+    // auditor should not have to read the code out of the error text to tell them apart. An error
+    // still wins over a cancellation: the service said something went wrong.
     var status;
-    if (errors.length > 0 || cancelled) {
+    if (errors.length > 0) {
         status = 'failure';
+    } else if (cancelled) {
+        status = 'cancelled';
     } else if (confirmed) {
         status = 'success';
     } else {
