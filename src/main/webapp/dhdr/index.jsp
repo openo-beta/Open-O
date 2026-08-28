@@ -113,7 +113,7 @@
 	<script src="<%=request.getContextPath() %>/web/common/providerServices.js"></script>	
 	<script src="<%=request.getContextPath() %>/web/common/dhdrServices.js"></script>	
 	<script src="<%=request.getContextPath() %>/web/common/rxServices.js"></script>	
-	<script src="<%=request.getContextPath() %>/web/filters.js"></script>
+	<script src="<%=request.getContextPath() %>/web/common/filters.js"></script>
 	<style>
 		.modal-lg{
 			width:1700px;
