@@ -1368,23 +1368,21 @@ public class DHDRPrint {
     return !value.isEmpty() && unmatched ? value + " (UNMATCHED)" : value;
   }
 
-  private String buildDhdrDemoLine(JSONObject dhdrPatient) {
+  String buildDhdrDemoLine(JSONObject dhdrPatient) {
     if (dhdrPatient == null) {
       return "";
     }
-    String first = dhdrPatient.optString("firstName", "").trim();
-    String last = dhdrPatient.optString("lastName", "").trim();
+    String name = eventPatientName(dhdrPatient);
     String gender = dhdrPatient.optString("gender", "").trim();
     String dob = dhdrPatient.optString("dob", "").trim();
     String hin = dhdrPatient.optString("hin", "").trim();
-    if (first.isEmpty() && last.isEmpty() && dob.isEmpty() && hin.isEmpty()) {
+    if (name.isEmpty() && dob.isEmpty() && hin.isEmpty()) {
       return "";
     }
+    // Same join as the Detailed view's patient block, so the header and the table below it cannot
+    // render one patient's name two ways.
     StringBuilder sb = new StringBuilder("DHDR EHR Service - ");
-    sb.append(last);
-    if (!first.isEmpty()) {
-      sb.append(", ").append(first);
-    }
+    sb.append(name);
     if (!gender.isEmpty()) {
       sb.append("   Gender: ").append(gender);
     }

@@ -951,6 +951,49 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
   }
 
   /**
+   * The page header joins the same name the Detailed view's patient block does. It used to do so with
+   * its own copy of the logic, which appended ", " to an empty surname - so a patient recorded with a
+   * given name and no family name headed the page with a dangling separator. Both now share
+   * eventPatientName, so the header and the table below it cannot render one patient two ways.
+   */
+  @Nested
+  @DisplayName("buildDhdrDemoLine")
+  class DhdrDemoLineTests {
+
+    private JSONObject patient(String last, String first, String dob, String hin) throws Exception {
+      JSONObject o = new JSONObject();
+      o.put("lastName", last == null ? "" : last);
+      o.put("firstName", first == null ? "" : first);
+      o.put("dob", dob == null ? "" : dob);
+      o.put("hin", hin == null ? "" : hin);
+      return o;
+    }
+
+    @Test
+    @DisplayName("should head the page with the name, DOB, age and HIN")
+    void shouldRenderTheFullLine() throws Exception {
+      String line = print.buildDhdrDemoLine(patient("Kirby", "Susan", "1980-04-02", "5259156783"));
+      assertThat(line).startsWith("DHDR EHR Service - Kirby, Susan");
+      assertThat(line).contains("DOB: Apr 2, 1980").contains("HIN: 5259156783");
+    }
+
+    @Test
+    @DisplayName("should not head the page with a dangling separator when there is no surname")
+    void shouldNotLeadWithASeparator_whenLastNameMissing() throws Exception {
+      String line = print.buildDhdrDemoLine(patient("", "Susan", "1980-04-02", null));
+      assertThat(line).startsWith("DHDR EHR Service - Susan");
+      assertThat(line).doesNotContain("- , ");
+    }
+
+    @Test
+    @DisplayName("should render nothing when the DHDR resolved no patient at all")
+    void shouldBeEmpty_whenNothingIdentifiesThePatient() throws Exception {
+      assertThat(print.buildDhdrDemoLine(patient("", "", "", ""))).isEmpty();
+      assertThat(print.buildDhdrDemoLine(null)).isEmpty();
+    }
+  }
+
+  /**
    * BP17 says the DHDR maintains Therapeutic Class / Sub-Class for pharmacy services and not for drug
    * dispenses, and the drug grid printed a bare "/" for every row. The first fix removed the column,
    * which was wrong: the IG's own example bundles carry AHFS codings on drug dispenses, so a service
