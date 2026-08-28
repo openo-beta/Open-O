@@ -2816,12 +2816,40 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 			 
 			 */
 			
+			// DHDR06.01(d) names the Current Rx Number. The consumer profile carries identifier 1..1, so a
+			// conformant response holds only that one - but the submission profile allows a second (the
+			// Original Rx Number), the two are told apart only by the trailing NamingSystem id, and array
+			// order is not guaranteed. Taking whichever was serialised last could therefore display the
+			// original as though it were the current one.
+			//
+			// Three suffixes occur: the IG examples and the FHIR-to-CDS mapping use "-rx-number", while
+			// the submission profile's invariant permits "-current-rx-number" and "-original-rx-number".
+			// So prefer an explicit current one, otherwise take anything that is not explicitly the
+			// original, and only fall back to the original if it is all there is. Matched on the suffix
+			// for the same reason as the contained Medication codings below.
 			if(angular.isDefined(this.med.resource.identifier)){
+				var rxFallback;
 				for (ident of  this.med.resource.identifier) {
-					if(angular.isDefined(ident.value)){
-						this.rxNumber = ident.value;			
+					if(!angular.isDefined(ident.value)){
+						continue;
 					}
-				}				
+					var system = angular.isDefined(ident.system) ? ident.system : "";
+					if(system.endsWith("-current-rx-number")){
+						this.rxNumber = ident.value;
+						break;
+					}
+					if(!system.endsWith("-original-rx-number")){
+						// "-rx-number", or no system at all. First one wins, so the choice is deterministic.
+						if(!angular.isDefined(this.rxNumber)){
+							this.rxNumber = ident.value;
+						}
+					}else if(!angular.isDefined(rxFallback)){
+						rxFallback = ident.value;
+					}
+				}
+				if(!angular.isDefined(this.rxNumber)){
+					this.rxNumber = rxFallback;
+				}
 			} 
 			 
 			 /*
