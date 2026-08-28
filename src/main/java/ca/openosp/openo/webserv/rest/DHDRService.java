@@ -297,7 +297,11 @@ public class DHDRService extends AbstractServiceImpl {
     // completed decisions that went the other way and stay successful; the choice itself is in
     // transactionType, which is what the DHDR13.02 report reads. FAILED did not complete and UNKNOWN is
     // an outcome nobody observed, so neither may claim one.
-    boolean observed = !ConsentOverrideChoice.FAILED.getStoredValue().equals(status)
+    // A caller that sends no status at all is in the same position as UNKNOWN, only less informative:
+    // nothing was observed, and the row would otherwise claim a success with no choice recorded
+    // against it. The viewer always sends one of the four, so this guards the endpoint, not the app.
+    boolean observed = StringUtils.isNotBlank(status)
+        && !ConsentOverrideChoice.FAILED.getStoredValue().equals(status)
         && !ConsentOverrideChoice.UNKNOWN.getStoredValue().equals(status);
     new OmdGateway().logInteraction(loggedInInfo, "PCOI", status, demographicNo,
         observed, message, correlationId(uniqueToken));
