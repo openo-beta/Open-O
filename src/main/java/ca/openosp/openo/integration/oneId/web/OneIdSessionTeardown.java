@@ -58,12 +58,12 @@ final class OneIdSessionTeardown {
         try {
             CMSManager.userLogout(loggedInInfo);
         } catch (Exception e) {
-            logger.error("ONE ID CMS context clear failed", e);
+            logger.error("ONE ID CMS context clear failed\n" + OmdGateway.stackTraceWithoutMessages(e));
         }
         try {
             new OmdGateway().revokeToken(loggedInInfo, gatewayData);
         } catch (Exception e) {
-            logger.error("ONE ID token revoke failed", e);
+            logger.error("ONE ID token revoke failed\n" + OmdGateway.stackTraceWithoutMessages(e));
         }
     }
 }

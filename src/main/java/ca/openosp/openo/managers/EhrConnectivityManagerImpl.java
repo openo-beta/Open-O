@@ -165,6 +165,18 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
     }
 
     @Override
+    public void removeOwnOneIdSession(LoggedInInfo loggedInInfo) {
+        String providerNo = (loggedInInfo == null) ? null : loggedInInfo.getLoggedInProviderNo();
+        if (providerNo == null) {
+            throw new SecurityException("no acting provider to clear a ONE ID session for");
+        }
+        OneIdSession existing = oneIdSessionDao.find(providerNo);
+        if (existing != null) {
+            oneIdSessionDao.remove(existing);
+        }
+    }
+
+    @Override
     public boolean clearOneIdBinding(LoggedInInfo loggedInInfo, String providerNo) {
         checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.WRITE);
         Security securityRecord = securityDao.getByProviderNo(providerNo);

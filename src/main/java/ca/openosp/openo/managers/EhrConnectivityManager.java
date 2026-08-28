@@ -145,6 +145,18 @@ public interface EhrConnectivityManager {
     void removeOneIdSession(LoggedInInfo loggedInInfo, String providerNo);
 
     /**
+     * Removes the acting provider's own ONE ID session.
+     *
+     * <p>Authorized on identity rather than on a privilege: a provider clearing their own session
+     * needs no grant, because establishing it needed none. Logout has to work for every provider,
+     * including one whose role was never granted EHR connectivity or had it withdrawn after they
+     * signed in, and a session left behind is rehydrated on their next login.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the acting provider's session information
+     */
+    void removeOwnOneIdSession(LoggedInInfo loggedInInfo);
+
+    /**
      * Clears the ONE ID association (key and email) from a provider's security record.
      *
      * @param loggedInInfo LoggedInInfo the acting user, allowed as an admin or the owning provider
