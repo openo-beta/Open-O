@@ -205,6 +205,45 @@ public class OmdGateway {
 		}
 	}
 
+	/**
+	 * Writes a row for an interaction that is already over, stamping when it ended.
+	 *
+	 * <p>Only for the paths that have no response to wait for. A path that makes an HTTP call
+	 * persists its row when it opens the call and stamps the end in {@link #completeLog}, so
+	 * routing those through here would record the end as the moment the row was opened.</p>
+	 *
+	 * @param log OMDGatewayTransactionLog the finished row to write
+	 */
+	private void persistCompleted(OMDGatewayTransactionLog log) {
+		log.setEnded(new Date());
+		transactionLogDao.persist(log);
+	}
+
+	/**
+	 * Records a failed outcome on a row whose call threw before any response arrived.
+	 *
+	 * <p>Best effort on purpose: a token refresh has to end in a sign-in prompt, so failing to
+	 * write the audit row must not replace that prompt with a database error.</p>
+	 *
+	 * @param log   OMDGatewayTransactionLog the open row, or null when the failure came before one was written
+	 * @param cause Throwable the failure to record
+	 */
+	private void completeFailedRow(OMDGatewayTransactionLog log, Throwable cause) {
+		// A row that already has an end time was closed by completeLog, so the response it records
+		// is the real one. Only a row still open is finished here.
+		if (log == null || log.getEnded() != null) {
+			return;
+		}
+		try {
+			log.setSuccess(Boolean.FALSE);
+			log.setError(stackTraceWithoutMessages(cause));
+			log.setEnded(new Date());
+			transactionLogDao.merge(log);
+		} catch (Exception e) {
+			logger.warn("Could not record the failed gateway outcome (" + e.getClass().getSimpleName() + ")");
+		}
+	}
+
 	/** Generates a unique X-Request-Id for a single gateway transaction. */
 	protected static String newRequestId() {
 		return UUID.randomUUID().toString();
@@ -451,7 +490,7 @@ public class OmdGateway {
 			OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, null, "GATEWAY" , "Configuration Error");
 			omdGatewayTransactionLog.setStarted(new Date());
 			omdGatewayTransactionLog.setError(sb.toString());
-			transactionLogDao.persist(omdGatewayTransactionLog);
+			persistCompleted(omdGatewayTransactionLog);
 			throw(new Exception("Gateway Configuration Error"));
 		}
     logger.info("has props out " + sb);
@@ -473,7 +512,7 @@ public class OmdGateway {
 		if(uniqueToken != null) {
 			omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
 		}
-		transactionLogDao.persist(omdGatewayTransactionLog);
+		persistCompleted(omdGatewayTransactionLog);
 	}
 	
 	public void logDataReceived(LoggedInInfo loggedInInfo,String externalSystem, String transactionType,String dataReceived,Integer demographicNo) {
@@ -512,7 +551,7 @@ public class OmdGateway {
 		if(uniqueToken != null) {
 			omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
 		}
-		transactionLogDao.persist(omdGatewayTransactionLog);
+		persistCompleted(omdGatewayTransactionLog);
 	}
 
 	public WebClient getWebClientWholeURL(LoggedInInfo loggedInInfo,String url) throws Exception {
@@ -689,9 +728,11 @@ public class OmdGateway {
 			logger.error("OMD Gateway GET failed\n" + stackTraceWithoutMessages(e));
 			// The call threw before any response arrived, so completeLog never ran and the outcome
 			// is set here instead. A row left with a null success reads as one whose call is still
-			// in flight.
+			// in flight, and one with no end time reads as one that never finished. The end is when
+			// the failure was handled, because no response ever came.
 			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
 			omdGatewayTransactionLog.setError(stackTraceWithoutMessages(e));
+			omdGatewayTransactionLog.setEnded(new Date());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);
 		}
@@ -724,7 +765,7 @@ public class OmdGateway {
 		omdGatewayTransactionLog.setDataSent(url);
 		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
 		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
-		transactionLogDao.persist(omdGatewayTransactionLog);
+		persistCompleted(omdGatewayTransactionLog);
 		return url;
 	}
 
@@ -755,7 +796,7 @@ public class OmdGateway {
 		omdGatewayTransactionLog.setDataSent(url);
 		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
 		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
-		transactionLogDao.persist(omdGatewayTransactionLog);
+		persistCompleted(omdGatewayTransactionLog);
 		return url;
 	}
 
@@ -825,9 +866,11 @@ public class OmdGateway {
 			logger.error("OMD Gateway POST failed\n" + stackTraceWithoutMessages(e));
 			// The call threw before any response arrived, so completeLog never ran and the outcome
 			// is set here instead. A row left with a null success reads as one whose call is still
-			// in flight.
+			// in flight, and one with no end time reads as one that never finished. The end is when
+			// the failure was handled, because no response ever came.
 			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
 			omdGatewayTransactionLog.setError(stackTraceWithoutMessages(e));
+			omdGatewayTransactionLog.setEnded(new Date());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);
 		}
@@ -870,9 +913,11 @@ public class OmdGateway {
 			logger.error("ONE ID token request failed\n" + stackTraceWithoutMessages(e));
 			// The call threw before any response arrived, so completeLog never ran and the outcome
 			// is set here instead. A row left with a null success reads as one whose call is still
-			// in flight.
+			// in flight, and one with no end time reads as one that never finished. The end is when
+			// the failure was handled, because no response ever came.
 			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
 			omdGatewayTransactionLog.setError(stackTraceWithoutMessages(e));
+			omdGatewayTransactionLog.setEnded(new Date());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);
 		}
@@ -1027,6 +1072,7 @@ public class OmdGateway {
 			logger.error("Authorize call failed\n" + stackTraceWithoutMessages(e));
 			omdGatewayTransactionLog.setError(ExceptionUtils.getStackTrace(e));
 			omdGatewayTransactionLog.setSuccess(false);
+			omdGatewayTransactionLog.setEnded(new Date());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 		}
 		return response2;
@@ -1051,6 +1097,8 @@ public class OmdGateway {
 		params.put("client_assertion_type", CLIENT_ASSERTION_TYPE);
 		params.put("refresh_token", oneIdGatewayData.getRefreshTokenString());
 
+		// Declared out here so a call that throws before any response can still close its row.
+		OMDGatewayTransactionLog omdGatewayTransactionLog = null;
 		try (FileInputStream is = new FileInputStream(keystoreLocation);) {
 
 			KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -1074,7 +1122,7 @@ public class OmdGateway {
 				form.param(entry.getKey(), entry.getValue());
 			}
 			String requestId = newRequestId();
-			OMDGatewayTransactionLog omdGatewayTransactionLog = OmdGateway.getOMDGatewayTransactionLog(loggedInInfo, null, "Auth", "REFRESH");
+			omdGatewayTransactionLog = OmdGateway.getOMDGatewayTransactionLog(loggedInInfo, null, "Auth", "REFRESH");
 			omdGatewayTransactionLog.setxRequestId(requestId);
 			transactionLogDao.persist(omdGatewayTransactionLog);
 			Response response2 = wc.header("X-Request-Id", requestId).form(form);
@@ -1106,6 +1154,7 @@ public class OmdGateway {
 			throw e;
 		}catch(Exception e) {
 			logger.error("ONE ID token refresh failed\n" + stackTraceWithoutMessages(e));
+			completeFailedRow(omdGatewayTransactionLog, e);
 			throw new TokenExpiredException();
 		}
 	}
@@ -1171,9 +1220,11 @@ public class OmdGateway {
 		} catch (Exception e) {
 			// The call threw before any response arrived, so completeLog never ran and the outcome
 			// is set here instead. A row left with a null success reads as one whose call is still
-			// in flight.
+			// in flight, and one with no end time reads as one that never finished. The end is when
+			// the failure was handled, because no response ever came.
 			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
 			omdGatewayTransactionLog.setError(stackTraceWithoutMessages(e));
+			omdGatewayTransactionLog.setEnded(new Date());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw e;
 		}
