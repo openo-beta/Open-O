@@ -45,7 +45,6 @@ import ca.openosp.openo.utility.SpringUtils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.http.ssl.SSLContexts;
@@ -1021,68 +1020,6 @@ public class OmdGateway {
 	    byte[] randomBytes = new byte[32];
 	    new SecureRandom().nextBytes(randomBytes);
 	    return PKCEUtils.encodeBase64NoPadding(randomBytes);
-	}
-	
-	public Response callAuthorize(LoggedInInfo loggedInInfo,OneIdGatewayData oneIdGatewayData,String state,String verifier) {
-		logger.info("OAUTH2 Login started oneIdGatewayData null ?"+ (oneIdGatewayData == null)+ " loggedInInfo "+(loggedInInfo.getOneIdGatewayData() == null));
-		if(oneIdGatewayData == null ){
-			oneIdGatewayData = new OneIdGatewayData();
-		}
-	    String challenge = null;
-	    try {
-	    	challenge = PKCEUtils.generateChallengeS256(verifier);
-	    } catch(Exception e) {
-	    	logger.error("Error",e);
-	    }
-	    logger.debug("challenge = "+challenge);
-
-
-		String authorizeUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_authorize);
-		String callbackUrl = resolveBaseUrl()
-				+ getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_callback);
-		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
-
-		String aud = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_audience);
-
-		WebClient wc = WebClient.create(authorizeUrl);
-
-		wc.query("response_type", "code");
-
-		wc.query("scope", OneIDTokenUtils.urlEncode(oneIdGatewayData.getScope()));
-
-		if(oneIdGatewayData.get_profile() != null && oneIdGatewayData.get_profile().length() != 0) {
-			wc.query("_profile",OneIDTokenUtils.urlEncode(oneIdGatewayData.get_profile()));
-		}
-
-		wc.query("code_challenge_method", "S256");
-
-		wc.query("code_challenge", challenge);
-		wc.query("redirect_uri", callbackUrl);
-		wc.query("client_id", clientId);
-		wc.query("state", state);
-		if(aud != null){
-			wc.query("aud",aud);
-		}
-		if(oneIdGatewayData.getUao() != null) {
-			wc.query("uao",oneIdGatewayData.getUao());
-		}
-
-		OMDGatewayTransactionLog omdGatewayTransactionLog = OmdGateway.getOMDGatewayTransactionLog(loggedInInfo, null, "Auth", "AUTHORIZE");
-		transactionLogDao.persist(omdGatewayTransactionLog);
-		Response response2 = null;
-		try {
-			response2 = wc.header("Content-Type", "application/x-www-form-urlencoded").get();
-			completeLog(omdGatewayTransactionLog,response2,false);
-			transactionLogDao.merge(omdGatewayTransactionLog);
-			logger.info("Response Status from /Authorize =" + response2.getStatus());
-		}catch(Exception e) {
-			logger.error("Authorize call failed\n" + stackTraceWithoutMessages(e));
-			omdGatewayTransactionLog.setError(ExceptionUtils.getStackTrace(e));
-			omdGatewayTransactionLog.setSuccess(false);
-			omdGatewayTransactionLog.setEnded(new Date());
-			transactionLogDao.merge(omdGatewayTransactionLog);
-		}
-		return response2;
 	}
 	
 	public void refreshToken(LoggedInInfo loggedInInfo,OneIdGatewayData oneIdGatewayData) throws TokenExpiredException {
