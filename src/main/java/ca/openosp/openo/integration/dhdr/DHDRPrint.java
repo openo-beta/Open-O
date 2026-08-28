@@ -1307,9 +1307,10 @@ public class DHDRPrint {
     if (eventPatient == null) {
       return;
     }
-    addEventPatientRow(table, "First Name", eventPatient.optString("firstName", ""),
-        eventPatient.optBoolean("nameUnmatched", false));
-    addEventPatientRow(table, "Last Name", eventPatient.optString("lastName", ""),
+    // nameUnmatched is one flag over both name parts, so the name is printed as one row, exactly as
+    // the modal prints it. Split across a First Name and a Last Name row the single flag would mark
+    // both when only one differs, asserting a mismatch on a field that in fact agrees with the EMR.
+    addEventPatientRow(table, "Patient Name", eventPatientName(eventPatient),
         eventPatient.optBoolean("nameUnmatched", false));
     addEventPatientRow(table, "Gender", eventPatient.optString("gender", ""),
         eventPatient.optBoolean("genderUnmatched", false));
@@ -1320,6 +1321,23 @@ public class DHDRPrint {
     addEventPatientRow(table, "Age", computeAge(dob), false);
     addEventPatientRow(table, "HIN", eventPatient.optString("hin", ""),
         eventPatient.optBoolean("hinUnmatched", false));
+  }
+
+  /**
+   * Joins the event patient's name parts the way the Detailed view's modal shows them - "Last, First" -
+   * so paper and screen read alike. Either part may be absent, and a name with only one part is
+   * rendered without a dangling separator.
+   *
+   * @param eventPatient JSONObject the event's own patient identity
+   * @return String the name, or an empty string when neither part was recorded
+   */
+  String eventPatientName(JSONObject eventPatient) {
+    String last = eventPatient.optString("lastName", "").trim();
+    String first = eventPatient.optString("firstName", "").trim();
+    if (last.isEmpty()) {
+      return first;
+    }
+    return first.isEmpty() ? last : last + ", " + first;
   }
 
   /**

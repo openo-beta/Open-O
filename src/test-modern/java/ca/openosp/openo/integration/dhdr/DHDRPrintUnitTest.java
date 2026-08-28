@@ -896,6 +896,61 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
   }
 
   /**
+   * The viewer derives one nameUnmatched flag from both name parts, and the Detailed view's modal
+   * shows the name as a single "Last, First" line. The print splitting it across two rows meant one
+   * flag marked two fields, so a surname that differed marked the given name as well - asserting a
+   * mismatch on a field that in fact agreed with the EMR. Raised in AI review.
+   */
+  @Nested
+  @DisplayName("eventPatientName")
+  class EventPatientNameTests {
+
+    private JSONObject patient(String last, String first) throws Exception {
+      JSONObject o = new JSONObject();
+      if (last != null) {
+        o.put("lastName", last);
+      }
+      if (first != null) {
+        o.put("firstName", first);
+      }
+      return o;
+    }
+
+    @Test
+    @DisplayName("should join both parts the way the modal shows them")
+    void shouldJoinLastAndFirst() throws Exception {
+      assertThat(print.eventPatientName(patient("Kirby", "Susan"))).isEqualTo("Kirby, Susan");
+    }
+
+    @Test
+    @DisplayName("should render a surname alone without a dangling separator")
+    void shouldOmitSeparator_whenFirstNameMissing() throws Exception {
+      assertThat(print.eventPatientName(patient("Kirby", ""))).isEqualTo("Kirby");
+    }
+
+    @Test
+    @DisplayName("should render a given name alone without a leading separator")
+    void shouldOmitSeparator_whenLastNameMissing() throws Exception {
+      assertThat(print.eventPatientName(patient(null, "Susan"))).isEqualTo("Susan");
+    }
+
+    @Test
+    @DisplayName("should be empty when the DHDR recorded no name at all")
+    void shouldBeEmpty_whenNeitherPartRecorded() throws Exception {
+      assertThat(print.eventPatientName(patient(null, null))).isEmpty();
+    }
+
+    @Test
+    @DisplayName("should mark the whole name once when either part differs from the EMR")
+    void shouldMarkTheCombinedNameOnce() throws Exception {
+      // The single flag now governs a single row, so a differing surname can no longer mark a
+      // given name that matches.
+      String name = print.eventPatientName(patient("Kirbey", "Susan"));
+      assertThat(print.eventPatientCellValue(name, true)).isEqualTo("Kirbey, Susan (UNMATCHED)");
+    }
+  }
+
+  /**
    * BP17 says the DHDR maintains Therapeutic Class / Sub-Class for pharmacy services and not for drug
    * dispenses, and the drug grid printed a bare "/" for every row. The first fix removed the column,
    * which was wrong: the IG's own example bundles carry AHFS codings on drug dispenses, so a service
