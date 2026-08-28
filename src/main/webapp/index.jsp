@@ -95,10 +95,6 @@
                 window.open(page, "gpl", windowprops);
             }
 
-            function addStartTime() {
-                document.getElementById("oneIdLogin").href += (Math.round(new Date().getTime() / 1000).toString());
-            }
-
 
             function enhancedOrClassic(choice) {
                 document.getElementById("loginType").value = choice;
@@ -479,25 +475,6 @@
                 padding-left: 10px
             }
 
-            .oneid-or-divider {
-                display: flex;
-                align-items: center;
-                text-align: center;
-                color: #6c757d;
-                margin: 12px 0;
-            }
-
-            .oneid-or-divider::before,
-            .oneid-or-divider::after {
-                content: "";
-                flex: 1 1 0;
-                border-top: 1px solid #ced4da;
-            }
-
-            .oneid-or-divider span {
-                padding: 0 12px;
-            }
-
             footer {
                 padding: 5px 10px;
                 margin-top: 50px;
@@ -709,7 +686,6 @@
                         <%-- Shown from the oneid_enabled setting, editable on the EHR Connectivity
                              admin screen, rather than from a properties file that needs a restart. --%>
                         <c:if test="${LoginResourceBean.oneIdEnabled}">
-                            <!-- <div class="oneid-or-divider"><span>or</span></div> -->
                             <a href="${pageContext.request.contextPath}/oneIdLogin.do"
                                id="oneIdLogin" class="btn btn-primary btn-block oneIDLogin">
                                 <span class="oneIDLogo"></span>

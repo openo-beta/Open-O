@@ -47,7 +47,6 @@ public class LoginResourceBean {
     private String supportName;
     private String tabName;
     private String buildTag;
-    private String econsultURL;
     private String ssoLoginUrl;
     private boolean ssoEnabled;
     private boolean oneIdEnabled;
@@ -107,12 +106,6 @@ public class LoginResourceBean {
         }
 
         this.buildTag = OscarProperties.getBuildDate() + " " + OscarProperties.getBuildTag();
-
-        /*
-         * Not even sure that Ontario eConsult is currently an active service.
-         * Adjustments need to be made here if eConsult is needed.
-         */
-        this.econsultURL = oscarProperties.getProperty("backendEconsultUrl");
 
         this.acceptableUseAgreementManager = new AcceptableUseAgreementManager();
 
@@ -195,14 +188,6 @@ public class LoginResourceBean {
 
     public void setBuildTag(@SuppressWarnings("unused") String buildTag) {
         this.buildTag = null;
-    }
-
-    public String getEconsultURL() {
-        return econsultURL;
-    }
-
-    public void setEconsultURL(@SuppressWarnings("unused") String econsultURL) {
-        this.econsultURL = null;
     }
 
     public AcceptableUseAgreementManager getAcceptableUseAgreementManager() {
