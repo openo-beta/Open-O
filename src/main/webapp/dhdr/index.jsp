@@ -3100,8 +3100,14 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 			$scope.printDetail = function(){
 					var toPrint = {};
 					toPrint.med = $scope.med;
-					// DHDR13.01.b: the DHDR-side patient demographic printed on each page
-					toPrint.dhdrPatient = $scope.dhdrPatient;
+					// DHDR13.01(b) / BP14: this view is scoped to ONE event, so the DHDR-side identity on the
+					// paper must be that event's own contained Patient - the same one the modal shows above,
+					// with its per-field match flags - not the result set's headline. One HCN search can
+					// legitimately return several recorded identities, which is why the banner collects
+					// variants; sending the headline made the printout assert the wrong one for a divergent
+					// event and drop the mismatch flag with it. eventPatient carries the same five fields
+					// buildDhdrDemoLine reads, plus the flags the print now renders.
+					toPrint.dhdrPatient = $scope.med.eventPatient;
 
 					$http.post('../ws/rs/dhdr/'+demoNo+'/print/detail',toPrint,{ responseType: 'arraybuffer' }).then(function (response) {
 						

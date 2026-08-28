@@ -865,4 +865,34 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
     }
   }
 
+  /**
+   * BP14 clause 2 requires every event whose patient metadata disagrees with the EMR to be flagged. The
+   * Detailed printout carried no patient block at all and took its identity from the result-set
+   * headline, so a divergent event was printed under the wrong name with the mismatch marking lost.
+   */
+  @Nested
+  @DisplayName("event patient cell")
+  class EventPatientCellTests {
+
+    @Test
+    @DisplayName("should mark a value that disagrees with the EMR record")
+    void shouldAppendMarker_whenFieldUnmatched() {
+      assertThat(print.eventPatientCellValue("5259156783", true)).isEqualTo("5259156783 (UNMATCHED)");
+    }
+
+    @Test
+    @DisplayName("should leave a matching value unmarked")
+    void shouldLeaveValueAlone_whenFieldMatches() {
+      assertThat(print.eventPatientCellValue("5259156783", false)).isEqualTo("5259156783");
+    }
+
+    @Test
+    @DisplayName("should not mark a field the DHDR did not supply")
+    void shouldNotMarkAnEmptyValue() {
+      // "not recorded in the DHDR" and "recorded differently" are different facts; a bare
+      // "(UNMATCHED)" beside no value asserts a comparison that was never made.
+      assertThat(print.eventPatientCellValue("", true)).isEmpty();
+    }
+  }
+
 }

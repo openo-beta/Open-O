@@ -127,6 +127,13 @@ public class DHDRPrint {
       table.addCell(getHeaderCell("Pickup Date"));
       table.addCell(getItemCell(displayDate(med.optString("pickUpDate"))));
 
+      // DHDR13.01(b) / BP14: the Detailed view is scoped to one event, so the DHDR-side identity that
+      // belongs on this page is that event's own contained Patient - which is what the viewer now sends
+      // as dhdrPatient - together with the per-field match flags the screen shows. One HCN search can
+      // legitimately return several recorded identities; without this block the paper carried only the
+      // page header and lost the mismatch marking that is the whole point of BP14 clause 2.
+      addEventPatientRows(table, jsonOb.optJSONObject("dhdrPatient"));
+
       table.addCell(getHeaderCell("Generic"));
       table.addCell(getItemCell(med.optString("genericName"))); // Generic
 
@@ -1286,6 +1293,64 @@ public class DHDRPrint {
    * @param dhdrPatient JSONObject the DHDR-side patient, or null when none was resolved
    * @return String the demographic line, or an empty string when no DHDR patient is available
    */
+  /**
+   * Renders the DHDR-maintained patient identity for the event being printed into the Detailed view's
+   * label/value table, marking any field that disagrees with the EMR record.
+   *
+   * <p>The marker text matches the screen's, deliberately: a reader comparing paper against the modal
+   * should see the same word. A field with no value is left blank rather than marked - "not recorded in
+   * the DHDR" and "recorded differently" are different facts, and the viewer already distinguishes them.
+   *
+   * @param table PdfPTable the two-column detail table being built
+   * @param eventPatient JSONObject the event's own patient identity and match flags, or null
+   */
+  private void addEventPatientRows(PdfPTable table, JSONObject eventPatient) {
+    if (eventPatient == null) {
+      return;
+    }
+    addEventPatientRow(table, "First Name", eventPatient.optString("firstName", ""),
+        eventPatient.optBoolean("nameUnmatched", false));
+    addEventPatientRow(table, "Last Name", eventPatient.optString("lastName", ""),
+        eventPatient.optBoolean("nameUnmatched", false));
+    addEventPatientRow(table, "Gender", eventPatient.optString("gender", ""),
+        eventPatient.optBoolean("genderUnmatched", false));
+    String dob = eventPatient.optString("dob", "");
+    addEventPatientRow(table, "DOB", dob.isEmpty() ? "" : displayDate(dob),
+        eventPatient.optBoolean("dobUnmatched", false));
+    // Age is derived, so it carries no match flag of its own; DHDR13.01(b) lists it alongside the rest.
+    addEventPatientRow(table, "Age", computeAge(dob), false);
+    addEventPatientRow(table, "HIN", eventPatient.optString("hin", ""),
+        eventPatient.optBoolean("hinUnmatched", false));
+  }
+
+  /**
+   * Adds one label/value row of the event patient block, appending the unmatched marker when the field
+   * both has a value and disagrees with the EMR.
+   *
+   * @param table PdfPTable the two-column detail table being built
+   * @param label String the row label
+   * @param value String the value, already formatted for display; may be empty
+   * @param unmatched boolean whether this field disagrees with the EMR record
+   */
+  private void addEventPatientRow(PdfPTable table, String label, String value, boolean unmatched) {
+    table.addCell(getHeaderCell(label));
+    table.addCell(getItemCell(eventPatientCellValue(value, unmatched)));
+  }
+
+  /**
+   * Renders one event-patient value, appending the unmatched marker only when the field has a value to
+   * mark. An absent field is left blank: "not recorded in the DHDR" and "recorded differently from the
+   * EMR" are different facts, and marking the first as the second would assert a comparison that was
+   * never made.
+   *
+   * @param value String the value, already formatted for display; may be empty
+   * @param unmatched boolean whether this field disagrees with the EMR record
+   * @return String the cell text
+   */
+  String eventPatientCellValue(String value, boolean unmatched) {
+    return !value.isEmpty() && unmatched ? value + " (UNMATCHED)" : value;
+  }
+
   private String buildDhdrDemoLine(JSONObject dhdrPatient) {
     if (dhdrPatient == null) {
       return "";
