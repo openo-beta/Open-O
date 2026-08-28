@@ -86,6 +86,13 @@ public class UaoSelectAction extends ActionSupport {
     public String select() {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "w");
+        // The authority is only changed on a POST, so a crafted link or image cannot switch the
+        // custodian a clinician is acting under. A plain GET changes nothing and returns to the
+        // picker, where the choice can be made properly.
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+            redirectToPicker();
+            return NONE;
+        }
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         UAO uao = ownActiveUao(loggedInInfo, providerNo, parseId(request.getParameter("id")));
@@ -159,6 +166,18 @@ public class UaoSelectAction extends ActionSupport {
     private String currentUaoName(LoggedInInfo loggedInInfo) {
         OneIdGatewayData gatewayData = loggedInInfo.getOneIdGatewayData();
         return (gatewayData == null) ? null : gatewayData.getUaoFriendlyName();
+    }
+
+    /**
+     * Returns to the authority picker without touching the session. Used when a change arrives on
+     * anything but a POST, which must leave everything as it was.
+     */
+    private void redirectToPicker() {
+        try {
+            response.sendRedirect(request.getContextPath() + "/uaoSelect.do");
+        } catch (Exception e) {
+            logger.error("Failed to redirect after a non-POST authority change", e);
+        }
     }
 
     private void redirectHome() {
