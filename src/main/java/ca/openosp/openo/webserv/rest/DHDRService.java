@@ -27,6 +27,7 @@ import ca.openosp.openo.commn.dao.DemographicDao;
 import ca.openosp.openo.commn.exception.AccessDeniedException;
 import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.integration.dhdr.AuditInfo;
+import ca.openosp.openo.integration.dhdr.ConsentOverrideChoice;
 import ca.openosp.openo.integration.dhdr.DHDRManager;
 import ca.openosp.openo.integration.dhdr.DHDRPrint;
 import ca.openosp.openo.integration.dhdr.DHDRServiceException;
@@ -290,9 +291,16 @@ public class DHDRService extends AbstractServiceImpl {
     if (!securityInfoManager.hasPrivilege(loggedInInfo, SECURITY_OBJECT, "w", demographicNo)) {
       throw new AccessDeniedException(SECURITY_OBJECT, "w", demographicNo);
     }
-    OmdGateway omdGateway = new OmdGateway();
-    omdGateway.logDataReceived(loggedInInfo, "PCOI", status, message,
-        demographicNo, correlationId(uniqueToken));
+    // DHDR15.02: the row must carry the outcome the EMR observed, not the outcome of writing the row.
+    // logDataReceived means a successful receipt by contract - logError is its counterpart - so routing
+    // every choice through it recorded FAILED and UNKNOWN as successes. Refused and Cancelled are
+    // completed decisions that went the other way and stay successful; the choice itself is in
+    // transactionType, which is what the DHDR13.02 report reads. FAILED did not complete and UNKNOWN is
+    // an outcome nobody observed, so neither may claim one.
+    boolean observed = !ConsentOverrideChoice.FAILED.getStoredValue().equals(status)
+        && !ConsentOverrideChoice.UNKNOWN.getStoredValue().equals(status);
+    new OmdGateway().logInteraction(loggedInInfo, "PCOI", status, demographicNo,
+        observed, message, correlationId(uniqueToken));
     return Response.ok(true).build();
   }
 

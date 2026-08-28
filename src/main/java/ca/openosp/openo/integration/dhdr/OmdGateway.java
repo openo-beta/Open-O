@@ -227,8 +227,39 @@ public class OmdGateway {
 	 *     interaction is not scoped to a single patient
 	 */
 	public void logInteraction(LoggedInInfo loggedInInfo, String externalSystem, String transactionType, Integer demographicNo) {
+		logInteraction(loggedInInfo, externalSystem, transactionType, demographicNo, Boolean.TRUE, null, null);
+	}
+
+	/**
+	 * Records an interaction that does not itself call an EHR service, with the outcome the EMR actually
+	 * observed (DHDR15.01 / DHDR15.02).
+	 *
+	 * <p>The four-argument form above is for interactions that cannot fail once they are reached - a view
+	 * or a print of data already in hand - and so records success unconditionally. This form exists for
+	 * the ones that can: a decision posted back from a viewlet may report that it did not complete, or
+	 * report a code the EMR does not recognise, and an audit row must not claim an outcome nobody
+	 * observed. The decision itself stays in {@code transactionType}, which is what the DHDR13.02 report
+	 * reads, so recording an unsuccessful transaction does not hide which choice was made.</p>
+	 *
+	 * @param loggedInInfo LoggedInInfo the current session, supplying the initiating EMR user
+	 * @param externalSystem String the EHR service the interaction concerns, e.g. {@link AuditInfo#DHDR}
+	 * @param transactionType String the interaction, e.g. {@link AuditInfo#VIEW} or a consent-override choice
+	 * @param demographicNo Integer the patient the interaction concerns, or {@code null} when it is not
+	 *     scoped to a single patient
+	 * @param success Boolean the outcome the EMR observed
+	 * @param detail String the payload describing the interaction, or {@code null} to leave it unset
+	 * @param correlationId String the correlation identifier, or {@code null} when the caller had none
+	 */
+	public void logInteraction(LoggedInInfo loggedInInfo, String externalSystem, String transactionType,
+			Integer demographicNo, Boolean success, String detail, String correlationId) {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, externalSystem, transactionType);
-		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
+		omdGatewayTransactionLog.setSuccess(success);
+		if (detail != null) {
+			omdGatewayTransactionLog.setDataRecieved(detail);
+		}
+		if (correlationId != null) {
+			omdGatewayTransactionLog.setxCorrelationId(correlationId);
+		}
 		transactionLogDao.persist(omdGatewayTransactionLog);
 	}
 
