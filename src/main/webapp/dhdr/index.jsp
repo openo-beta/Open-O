@@ -435,7 +435,7 @@
 									</a>
 								</td>
 								<td>{{med.brandName.display}} {{med.dispensedDrugStrength}} {{med.drugDosageForm}}</td>
-								<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
+								<td>{{med | dhdrTherapeutic}}</td>
 								<td>{{med.dose}} {{med.doseUnit}}</td>
 								<td>{{med | dhdrFrequency}}</td>
 								<td>{{med.dispensedQuantity}} {{med.dispensedQuantityUnit}}</td>
@@ -569,7 +569,7 @@
 								<td>{{med.brandName.display}}</td>
 								<td>{{med.genericName}} <span ng-if="med.eventPatient.anyUnmatched" class="label label-warning" title="{{med.eventPatient.unmatchedSummary}}">Patient data differs</span> <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span></td>
 								<td>{{med.rxNumber}}</td>
-								<td scope="row">{{med.ahfsClass}}/{{med.ahfsSubClass}}</td>
+								<td scope="row">{{med | dhdrTherapeutic}}</td>
 								<td>{{med.dispensingPharmacy}}</td>
 								<td>{{med | dhdrPharmacist}}</td>
 								<td>{{med.dispensingPharmacyFaxNumber}}</td>
@@ -720,7 +720,7 @@
 											{{med.brandName.display}} {{med.dispensedDrugStrength}} {{med.drugDosageForm}} ({{med.genericName}}) <span ng-if="med.eventPatient.anyUnmatched" class="label label-warning" title="{{med.eventPatient.unmatchedSummary}}">Patient data differs</span> <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span>
 										</a>
 									</td>
-									<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
+									<td>{{med | dhdrTherapeutic}}</td>
 				 					<td>{{med.dispensedQuantity}} {{med.dispensedQuantityUnit}}</td>
 									<td>{{med.dose}}  {{med.doseUnit}}</td>
 									<td>{{med | dhdrFrequency}}</td>
@@ -863,7 +863,7 @@
 								<td>{{med.brandName.display}}</td>
 								<td>{{med.genericName}} <span ng-if="med.eventPatient.anyUnmatched" class="label label-warning" title="{{med.eventPatient.unmatchedSummary}}">Patient data differs</span> <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span></td>
 								<td>{{med.rxNumber}}</td>
-								<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
+								<td>{{med | dhdrTherapeutic}}</td>
 								<td>{{med.dispensingPharmacy}} - Fax:{{med.dispensingPharmacyFaxNumber}}</td>
 								<td>{{med | dhdrPharmacist}}</td>
 
@@ -1006,11 +1006,14 @@
 		 					<th>DIN/PIN</th>
 							<td>{{med.brandName.code}}</td>
  						</tr>
-						<tr>
+						<%-- BP17: not maintained for drug dispenses, so these rendered as two empty rows on
+						     every drug event. Rendered only when a value is actually present - the same
+						     treatment DHDRPrint.printDetail already gives them. --%>
+						<tr ng-if="med.ahfsClass">
 		 					<th>Therapeutic Class</th>
 							<td>{{med.ahfsClass}}</td>
  						</tr>
-						<tr>
+						<tr ng-if="med.ahfsSubClass">
 		 					<th>Therapeutic Sub-Class</th>
 							<td>{{med.ahfsSubClass}}</td>
  						</tr>
@@ -1289,6 +1292,20 @@
 		// Both separators are conditional: four cells composed this inline and all four dropped the
 		// guards, so a service whose pharmacist carries no OCP licence read as ", ". A filter for the
 		// same reason as dhdrFrequency above: two of the four cells render in their own modal scope.
+		// BP17 says the DHDR maintains Therapeutic Class / Sub-Class for pharmacy services and not for
+		// drug dispenses, and the drug tables duly rendered a bare "/" for every row. Removing the column
+		// was wrong, though: the IG's own examples DO carry AHFS codings on drug dispenses, so the column
+		// hides real data whenever the service supplies it. Render the separator only when there is
+		// something on both sides of it, which is right in either case.
+		app.filter('dhdrTherapeutic', function(){
+			return function(med){
+				if(!med){ return ""; }
+				var cls = (med.ahfsClass || "").trim();
+				var sub = (med.ahfsSubClass || "").trim();
+				return cls ? (sub ? cls + " / " + sub : cls) : sub;
+			};
+		});
+
 		app.filter('dhdrPharmacist', function(){
 			return function(med){
 				if(!med){ return ""; }
@@ -1616,7 +1633,7 @@
 				       var fileURL = URL.createObjectURL(file);
 				       window.open(fileURL);
 				}, function(errorMessage) {
-					printFailed("Comparative");
+					printFailed("Summary");
 				});	
 				//window.open('../ws/rs/dhdr/'+$scope.demographicNo+'/print/summary','_blank');
 			}
@@ -1642,7 +1659,7 @@
 				       var fileURL = URL.createObjectURL(file);
 				       window.open(fileURL);
 				}, function(errorMessage) {
-					printFailed("Summary");
+					printFailed("Comparative");
 				});	
 				//window.open('../ws/rs/dhdr/'+$scope.demographicNo+'/print/summary','_blank');
 			}

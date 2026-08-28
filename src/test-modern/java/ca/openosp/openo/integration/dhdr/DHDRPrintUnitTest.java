@@ -895,4 +895,54 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
     }
   }
 
+  /**
+   * BP17 says the DHDR maintains Therapeutic Class / Sub-Class for pharmacy services and not for drug
+   * dispenses, and the drug grid printed a bare "/" for every row. The first fix removed the column,
+   * which was wrong: the IG's own example bundles carry AHFS codings on drug dispenses, so a service
+   * that supplies them would have had them hidden. Rendering the separator conditionally is correct
+   * either way, and it also covers a pharmacy service that carries only one of the pair.
+   */
+  @Nested
+  @DisplayName("therapeuticClassText")
+  class TherapeuticClassTests {
+
+    private JSONObject med(String cls, String sub) throws Exception {
+      JSONObject o = new JSONObject();
+      if (cls != null) {
+        o.put("ahfsClass", cls);
+      }
+      if (sub != null) {
+        o.put("ahfsSubClass", sub);
+      }
+      return o;
+    }
+
+    @Test
+    @DisplayName("should join class and sub-class when both are present")
+    void shouldJoinBoth() throws Exception {
+      assertThat(print.therapeuticClassText(med("CENTRAL NERVOUS SYSTEM DRUG", "NONSTEROIDAL ANTI-INFLAMMATORY AGENTS")))
+          .isEqualTo("CENTRAL NERVOUS SYSTEM DRUG / NONSTEROIDAL ANTI-INFLAMMATORY AGENTS");
+    }
+
+    @Test
+    @DisplayName("should render the class alone rather than a trailing separator")
+    void shouldRenderClassAlone() throws Exception {
+      assertThat(print.therapeuticClassText(med("CENTRAL NERVOUS SYSTEM DRUG", null)))
+          .isEqualTo("CENTRAL NERVOUS SYSTEM DRUG");
+    }
+
+    @Test
+    @DisplayName("should render the sub-class alone rather than a leading separator")
+    void shouldRenderSubClassAlone() throws Exception {
+      assertThat(print.therapeuticClassText(med(null, "NONSTEROIDAL ANTI-INFLAMMATORY AGENTS")))
+          .isEqualTo("NONSTEROIDAL ANTI-INFLAMMATORY AGENTS");
+    }
+
+    @Test
+    @DisplayName("should render nothing at all when the DHDR supplied neither")
+    void shouldRenderNothing_whenNeitherPresent() throws Exception {
+      // The reported defect: every drug row carried an orphaned "/".
+      assertThat(print.therapeuticClassText(med(null, null))).isEmpty();
+    }
+  }
 }

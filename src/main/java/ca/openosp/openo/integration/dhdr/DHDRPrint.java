@@ -474,7 +474,7 @@ public class DHDRPrint {
                 + med.optString("drugDosageForm")
                 + " "
                 + med.optString("dispensedDrugStrength")));
-    table.addCell(getItemCell(med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")));
+    table.addCell(getItemCell(therapeuticClassText(med)));
     table.addCell(getItemCell(med.optString("dose") + " " + med.optString("doseUnit")));
     table.addCell(getItemCell(frequencyText(med)));
     table.addCell(
@@ -556,8 +556,7 @@ public class DHDRPrint {
         new Column("Pharmacy Service Type", med -> serviceTypeWithPin(med.optJSONObject("brandName"))),
         new Column("Pharmacy Service Description", med -> med.optString("genericName")),
         new Column("Rx Number", med -> med.optString("rxNumber")),
-        new Column("Therapeutic Class/Sub-class",
-            med -> med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")),
+        new Column("Therapeutic Class/Sub-class", this::therapeuticClassText),
         new Column("Pharmacy Name", med -> med.optString("dispensingPharmacy")),
         new Column("Pharmacist", this::pharmacistName),
         new Column("Pharmacy Fax", med -> med.optString("dispensingPharmacyFaxNumber")));
@@ -1411,6 +1410,28 @@ public class DHDRPrint {
     } catch (Exception e) {
       return "";
     }
+  }
+
+  /**
+   * Renders the therapeutic class / sub-class cell, emitting the separator only when there is a value on
+   * both sides of it.
+   *
+   * <p>BP17 states the DHDR maintains these for pharmacy services and not for drug dispenses, and the
+   * drug grid duly printed a bare "/" on every row. Dropping the column would have been wrong: the IG's
+   * own examples carry AHFS codings on drug dispenses, so a service that supplies them would have had
+   * them hidden. Rendering conditionally is correct whichever way the live service behaves, and it
+   * covers the pharmacy grid too, where a service missing one of the pair had the same exposure.
+   *
+   * @param med JSONObject the dispense or pharmacy-service event
+   * @return String "class / sub-class", either one alone, or empty
+   */
+  String therapeuticClassText(JSONObject med) {
+    String cls = optText(med, "ahfsClass");
+    String sub = optText(med, "ahfsSubClass");
+    if (cls.isEmpty()) {
+      return sub;
+    }
+    return sub.isEmpty() ? cls : cls + " / " + sub;
   }
 
   /**
