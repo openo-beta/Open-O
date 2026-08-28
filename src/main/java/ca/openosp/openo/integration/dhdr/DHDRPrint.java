@@ -802,8 +802,9 @@ public class DHDRPrint {
    * <p>Accepts what the two sources supply: epoch milliseconds from the EMR transfer objects, an ISO
    * date or date-time from the DHDR service. Anything else is returned unchanged rather than blanked.
    *
-   * <p>Display only - {@code sortByWhenPreparedDesc} compares the raw ISO strings, where lexical
-   * order is chronological order, so formatting before sorting would break it.
+   * <p>Display only - {@code sortByDateDesc} compares the raw ISO strings, and an ISO string compares
+   * year, month and day before any time part, so lexical order is the printed date order. Formatting
+   * before sorting would break that.
    *
    * @param raw String the value as it arrives, possibly empty
    * @return String the date as "MMM d, yyyy", or the input unchanged when it cannot be parsed
@@ -1474,8 +1475,16 @@ public class DHDRPrint {
    * first. Events with no value for that field sort last, since the empty string compares below every
    * date. The source array is left unmodified.
    *
-   * <p>Display order only: the comparison is lexical on the raw ISO strings, where lexical order and
-   * chronological order agree.
+   * <p>The comparison is lexical on the raw ISO strings. An ISO-8601 value compares year, then month,
+   * then day before it reaches any time part, so the result is descending order of the date each row
+   * prints - which is the order DHDR13.01 asks for at the granularity this page renders.
+   *
+   * <p>A FHIR {@code dateTime} may also carry a time and a UTC offset, so two values can order one way
+   * by instant and the other by string. That only happens between values sharing a printed date, or
+   * where a value in a local offset and one in {@code Z} straddle midnight - and in that second case
+   * ordering by instant would print the earlier date above the later one, which on a page showing only
+   * dates reads as a fault. Ordering by the string keeps the printed dates in the order a reader can
+   * check. Every dispense OMD returns is date-only in any event.
    *
    * @param arr JSONArray the events to order
    * @param dateField String the property holding the ISO date to order by
