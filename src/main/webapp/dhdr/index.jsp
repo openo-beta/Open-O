@@ -2312,6 +2312,10 @@
 				$scope.resultShortfall = { received: $scope.collectedEntries, expected: total };
 			};
 
+			// Ceiling on the paged walk in search(). At _count=1000 a page is 1000 events, so this is far
+			// above any real patient history; reaching it means the service is not terminating the walk.
+			const MAX_SEARCH_PAGES = 50;
+
 			search = function(demographicNo,searchConfig){
 				$scope.searching = true;
 				// Released once the whole page walk has ended, not once a page has arrived. A paged
@@ -2494,6 +2498,25 @@
 						
 						}else{
 							$scope.searchConfig.pageId = $scope.searchConfig.pageId+1;
+						}
+						// A service that always advertises a next page - misbehaving, or looping on a cursor
+						// it does not recognise - would recurse until the browser gave out, hammering the
+						// endpoint on the way. At _count=1000 the cap is far above any real result set, so
+						// reaching it means the walk is not terminating. Stop, and say so: a truncated list
+						// shown silently is the failure this notice exists to prevent, same as the
+						// resultShortfall case.
+						if($scope.searchConfig.pageId > MAX_SEARCH_PAGES){
+							walkFinished();
+							$scope.serviceErrors.push({
+								httpMessage: "The DHDR EHR Service kept offering further pages of results;"
+									+ " the list below was stopped after " + MAX_SEARCH_PAGES + " pages and may be incomplete.",
+								httpCode: "DHDR02.01",
+								severity: "error",
+								dateTime: new Date(),
+								moreInformation: "Narrow the search date range and try again. Use other available"
+									+ " sources of medication information to confirm this patient's history."
+							});
+							return;
 						}
 						search($scope.demographicNo,$scope.searchConfig);
 					} else {
