@@ -63,6 +63,7 @@ import org.apache.struts2.ServletActionContext;
 import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ProcessingException;
+import javax.ws.rs.core.Form;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import java.io.FileInputStream;
@@ -208,6 +209,14 @@ public class OmdGateway {
 
 	/** The externalSystem recorded on a context call to the Ontario Health CMS. */
 	protected static final String CMS_EXTERNAL_SYSTEM = "CMS";
+
+	/**
+	 * The client-assertion type named by RFC 7523. Held unencoded: these parameters go in a form
+	 * body, and the form writer percent-encodes what it is given, so a pre-encoded value would
+	 * reach the gateway double-encoded.
+	 */
+	private static final String CLIENT_ASSERTION_TYPE =
+			"urn:ietf:params:oauth:client-assertion-type:jwt-bearer";
 
 	/** How many nested causes to render before stopping. */
 	private static final int MAX_CAUSE_DEPTH = 10;
@@ -628,7 +637,7 @@ public class OmdGateway {
 			// is set here instead. A row left with a null success reads as one whose call is still
 			// in flight.
 			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
-			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
+			omdGatewayTransactionLog.setError(stackTraceWithoutMessages(e));
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);
 		}
@@ -764,7 +773,7 @@ public class OmdGateway {
 			// is set here instead. A row left with a null success reads as one whose call is still
 			// in flight.
 			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
-			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
+			omdGatewayTransactionLog.setError(stackTraceWithoutMessages(e));
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);
 		}
@@ -786,18 +795,19 @@ public class OmdGateway {
 		Response response2 = null;
 		try {
 			WebClient wc = WebClient.create(tokenUrl);
-			wc.query("grant_type", "authorization_code");
-			wc.query("client_assertion_type", "urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer");
+			// The authorization code, the PKCE verifier and the signed client assertion are
+			// credentials, so they go in the request body. A query string is written to the access
+			// log at both ends and kept by any proxy in between.
+			Form form = new Form();
+			form.param("grant_type", "authorization_code");
+			form.param("client_assertion_type", CLIENT_ASSERTION_TYPE);
+			form.param("code", code);
+			form.param("redirect_uri", callbackUrl);
+			form.param("client_id", clientId);
+			form.param("code_verifier", codeVerifier);
+			form.param("client_assertion", jwt);
 
-			wc.query("code", code);
-			wc.query("redirect_uri", callbackUrl);
-			wc.query("client_id", clientId);
-
-			wc.query("code_verifier",codeVerifier);
-			wc.query("client_assertion", jwt);
-
-
-			response2 = wc.header("X-Request-Id", requestId).header("Content-Type", "application/x-www-form-urlencoded").post(null);
+			response2 = wc.header("X-Request-Id", requestId).form(form);
 
 
 		completeLog(omdGatewayTransactionLog,response2,false);
@@ -808,7 +818,7 @@ public class OmdGateway {
 			// is set here instead. A row left with a null success reads as one whose call is still
 			// in flight.
 			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
-			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
+			omdGatewayTransactionLog.setError(stackTraceWithoutMessages(e));
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);
 		}
@@ -984,7 +994,7 @@ public class OmdGateway {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("grant_type", "refresh_token");
 		params.put("client_id", clientId);
-		params.put("client_assertion_type", "urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer");
+		params.put("client_assertion_type", CLIENT_ASSERTION_TYPE);
 		params.put("refresh_token", oneIdGatewayData.getRefreshTokenString());
 
 		try (FileInputStream is = new FileInputStream(keystoreLocation);) {
@@ -1003,14 +1013,17 @@ public class OmdGateway {
 			}
 
 			WebClient wc = WebClient.create(tokenUrl);
+			// The refresh token and the client assertion are credentials; they go in the body
+			// rather than the query string, for the reason getTokens gives.
+			Form form = new Form();
 			for (Entry<String, String> entry : params.entrySet()) {
-				wc.query(entry.getKey(), entry.getValue());
+				form.param(entry.getKey(), entry.getValue());
 			}
 			String requestId = newRequestId();
 			OMDGatewayTransactionLog omdGatewayTransactionLog = OmdGateway.getOMDGatewayTransactionLog(loggedInInfo, null, "Auth", "REFRESH");
 			omdGatewayTransactionLog.setxRequestId(requestId);
 			transactionLogDao.persist(omdGatewayTransactionLog);
-			Response response2 = wc.header("X-Request-Id", requestId).header("Content-Type", "application/x-www-form-urlencoded").post(null);
+			Response response2 = wc.header("X-Request-Id", requestId).form(form);
 			completeLog(omdGatewayTransactionLog,response2,false);
 			transactionLogDao.merge(omdGatewayTransactionLog);
 
@@ -1091,11 +1104,14 @@ public class OmdGateway {
 		transactionLogDao.persist(omdGatewayTransactionLog);
 		try {
 			WebClient wc = WebClient.create(revokeUrl);
-			wc.query("token", oneIdGatewayData.getAccessTokenStr());
-			wc.query("client_id", clientId);
-			wc.query("client_assertion_type", "urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer");
-			wc.query("client_assertion", jwt);
-			Response response2 = wc.header("X-Request-Id", requestId).header("Content-Type", "application/x-www-form-urlencoded").post(null);
+			// The token being revoked and the client assertion are credentials; they go in the
+			// body rather than the query string, for the reason getTokens gives.
+			Form form = new Form();
+			form.param("token", oneIdGatewayData.getAccessTokenStr());
+			form.param("client_id", clientId);
+			form.param("client_assertion_type", CLIENT_ASSERTION_TYPE);
+			form.param("client_assertion", jwt);
+			Response response2 = wc.header("X-Request-Id", requestId).form(form);
 			completeLog(omdGatewayTransactionLog, response2, false);
 			transactionLogDao.merge(omdGatewayTransactionLog);
 		} catch (Exception e) {
@@ -1103,7 +1119,7 @@ public class OmdGateway {
 			// is set here instead. A row left with a null success reads as one whose call is still
 			// in flight.
 			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
-			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
+			omdGatewayTransactionLog.setError(stackTraceWithoutMessages(e));
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw e;
 		}
