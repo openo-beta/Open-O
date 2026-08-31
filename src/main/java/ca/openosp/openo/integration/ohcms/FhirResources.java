@@ -59,7 +59,10 @@ import org.hl7.fhir.r4.model.StringType;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FhirResources {
 
@@ -83,10 +86,12 @@ public class FhirResources {
     identifier.setSystem(PROVIDER_UPI_SYSTEM)
         .setValue(oneIdGatewayData.getProviderUPI());
     organization.addIdentifier(identifier);
+    // There is not always a clinic on file. The authority can still name the organization,
+    // and the clinic only supplies the fallback name and the contact numbers.
     Clinic clinic = clinicDao.getClinic();
     // name the organization by the selected authority, falling back to the clinic
     String organizationName = oneIdGatewayData.getUaoFriendlyName();
-    if (organizationName == null || organizationName.trim().isEmpty()) {
+    if ((organizationName == null || organizationName.trim().isEmpty()) && clinic != null) {
       organizationName = clinic.getOrganizationName();
     }
     if (organizationName == null || organizationName.trim().isEmpty()) {
@@ -113,11 +118,12 @@ public class FhirResources {
         custodianAddress.setPostalCode(authority.getPostal().trim());
       }
     }
-    if (clinic.getWorkPhone() != null && clinic.getWorkPhone().trim().length() > 4) {
+    if (clinic != null && clinic.getWorkPhone() != null
+        && clinic.getWorkPhone().trim().length() > 4) {
       organization.addTelecom().setSystem(ContactPointSystem.PHONE)
           .setUse(ContactPointUse.WORK).setValue(clinic.getWorkPhone());
     }
-    if (clinic.getFax() != null && clinic.getFax().trim().length() > 4) {
+    if (clinic != null && clinic.getFax() != null && clinic.getFax().trim().length() > 4) {
       organization.addTelecom().setSystem(ContactPointSystem.FAX)
           .setUse(ContactPointUse.WORK).setValue(clinic.getFax());
     }
@@ -209,11 +215,10 @@ public class FhirResources {
     practitioner.setId(loggedInInfo.getLoggedInProvider().getPractitionerNo());
     practitioner.getMeta().addProfile(
         "http://ehealthontario.ca/fhir/StructureDefinition/ca-on-cms-profile-Practitioner|1.0.0");
-    practitioner.addIdentifier()
-        .setType(licenceIdentifierType())
-        .setSystem(PHYSICIAN_LICENCE_SYSTEM)
-        .setValue(loggedInInfo.getLoggedInProvider().getPractitionerNo())
-        .getAssigner().setDisplay(PHYSICIAN_LICENCE_ASSIGNER);
+    Identifier licence = new Identifier();
+    if (addLicenceIdentifier(licence, loggedInInfo.getLoggedInProvider())) {
+      practitioner.addIdentifier(licence);
+    }
     HumanName practitionerName = practitioner.addName()
         .setFamily(loggedInInfo.getLoggedInProvider().getLastName())
         .addGiven(loggedInInfo.getLoggedInProvider().getFirstName());
@@ -403,12 +408,61 @@ public class FhirResources {
       "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-provider-upi";
 
   /** The naming system OpenO asserts for a practitioner's licence number. */
-  private static final String PHYSICIAN_LICENCE_SYSTEM =
-      "https://fhir.infoway-inforoute.ca/NamingSystem/ca-on-license-physician";
+  private static final String LICENCE_SYSTEM_PREFIX =
+      "https://fhir.infoway-inforoute.ca/NamingSystem/";
 
-  /** The body that issues numbers in that system. */
-  private static final String PHYSICIAN_LICENCE_ASSIGNER =
-      "College of Physicians and Surgeons of Ontario";
+  /**
+   * The college a provider's practitioner number belongs to, by the code the provider record
+   * carries in practitionerNoType. The codes are the practitionerNoType lookup list; the naming
+   * systems and college names are the ones the EHR uses for the same bodies.
+   */
+  private static final Map<String, String[]> LICENCE_BODIES = licenceBodies();
+
+  private static Map<String, String[]> licenceBodies() {
+    Map<String, String[]> bodies = new HashMap<>();
+    bodies.put("CPSO", new String[]{"ca-on-license-physician",
+        "College of Physicians and Surgeons of Ontario"});
+    bodies.put("OCP", new String[]{"ca-on-license-pharmacist",
+        "Ontario College of Pharmacists"});
+    bodies.put("CNORNP", new String[]{"ca-on-license-nurse", "College of Nurses of Ontario"});
+    bodies.put("CNORN", new String[]{"ca-on-license-nurse", "College of Nurses of Ontario"});
+    bodies.put("CNORPN", new String[]{"ca-on-license-nurse", "College of Nurses of Ontario"});
+    bodies.put("CMO", new String[]{"ca-on-license-midwife", "College of Midwives of Ontario"});
+    return Collections.unmodifiableMap(bodies);
+  }
+
+  /**
+   * Adds the provider's college licence number, when their record says which college issued it.
+   *
+   * <p>The profile is explicit that this is for regulated practitioners only: "Provide college
+   * license number for regulated practitioners. Don't populate the 'identifier' for non-regulated
+   * practitioners or administrative staff." A record that does not name a college is one of those,
+   * or one nobody has filled in, and neither can be asserted as a physician's CPSO number.</p>
+   *
+   * <p>A record naming a college but holding no number is the same case. The number is mandatory
+   * in the profile, and an empty one is left out of the message rather than sent as empty, so what
+   * would reach the CMS is a naming system and a college identifying nobody.</p>
+   *
+   * @param identifier Identifier the identifier to populate, from a Practitioner or a Reference
+   * @param provider   Provider the provider whose licence is being described
+   * @return boolean true when a licence was added
+   */
+  private boolean addLicenceIdentifier(Identifier identifier, Provider provider) {
+    String collegeCode = provider.getPractitionerNoType();
+    String[] body = (collegeCode == null) ? null : LICENCE_BODIES.get(collegeCode.trim().toUpperCase());
+    if (body == null) {
+      return false;
+    }
+    String licenceNumber = provider.getPractitionerNo();
+    if (licenceNumber == null || licenceNumber.trim().isEmpty()) {
+      return false;
+    }
+    identifier.setType(licenceIdentifierType())
+        .setSystem(LICENCE_SYSTEM_PREFIX + body[0])
+        .setValue(licenceNumber.trim())
+        .getAssigner().setDisplay(body[1]);
+    return true;
+  }
 
   /** Marks an identifier as a medical licence number, from the HL7 identifier-type table. */
   private static CodeableConcept licenceIdentifierType() {
@@ -437,10 +491,10 @@ public class FhirResources {
       return null;
     }
     Reference reference = new Reference();
-    reference.getIdentifier()
-        .setType(licenceIdentifierType())
-        .setSystem(PHYSICIAN_LICENCE_SYSTEM)
-        .setValue(provider.getPractitionerNo().trim());
+    Identifier licence = new Identifier();
+    if (addLicenceIdentifier(licence, provider)) {
+      reference.setIdentifier(licence);
+    }
     String name = fullName(provider.getFirstName(), provider.getLastName());
     if (name != null) {
       reference.setDisplay(name);

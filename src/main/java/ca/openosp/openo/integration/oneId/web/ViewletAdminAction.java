@@ -95,6 +95,9 @@ public class ViewletAdminAction extends ActionSupport {
     public String add() {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "w");
+        if (rejectNonPost()) {
+            return NONE;
+        }
         String name = trimToNull(request.getParameter("name"));
         String keyValue = trimToNull(request.getParameter("keyValue"));
         boolean showInEchart = "true".equals(request.getParameter("showInEchart"));
@@ -124,6 +127,9 @@ public class ViewletAdminAction extends ActionSupport {
     public String update() {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "w");
+        if (rejectNonPost()) {
+            return NONE;
+        }
         OneIdViewlet viewlet = findViewlet(loggedInInfo, request.getParameter("id"));
         String name = trimToNull(request.getParameter("name"));
         String keyValue = trimToNull(request.getParameter("keyValue"));
@@ -151,6 +157,9 @@ public class ViewletAdminAction extends ActionSupport {
     public String disable() {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "w");
+        if (rejectNonPost()) {
+            return NONE;
+        }
         OneIdViewlet viewlet = findViewlet(loggedInInfo, request.getParameter("id"));
         if (viewlet != null && !viewlet.isDeleted()) {
             String before = describe(viewlet);
@@ -167,8 +176,19 @@ public class ViewletAdminAction extends ActionSupport {
     public String enable() {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "w");
+        if (rejectNonPost()) {
+            return NONE;
+        }
         OneIdViewlet viewlet = findViewlet(loggedInInfo, request.getParameter("id"));
         if (viewlet != null && viewlet.isDeleted()) {
+            // The key was free when this one was disabled, so another Viewlet may have taken it
+            // since. Two active rows on one key make a launch resolve to whichever has the lower
+            // id, which is this one.
+            if (keyInUse(loggedInInfo, viewlet.getKeyValue(), viewlet.getId())) {
+                flashKeyInUse();
+                redirectToList();
+                return NONE;
+            }
             viewlet.setDeleted(false);
             viewlet.setUpdatedBy(loggedInInfo.getLoggedInProviderNo());
             viewlet.setUpdateTime(new Date());
@@ -214,6 +234,19 @@ public class ViewletAdminAction extends ActionSupport {
 
     private static String normalizeDisplayMode(String value) {
         return MODE_MODAL.equals(value) ? MODE_MODAL : MODE_NON_MODAL;
+    }
+
+    /**
+     * Refuses a state change that did not arrive as a POST, sending the caller back to the list.
+     *
+     * @return boolean true when the request was refused and a redirect written
+     */
+    private boolean rejectNonPost() {
+        if ("POST".equalsIgnoreCase(request.getMethod())) {
+            return false;
+        }
+        redirectToList();
+        return true;
     }
 
     private void redirectToList() {

@@ -50,7 +50,7 @@ public class CMSManager {
         new Event(UUID.randomUUID().toString(), "hubTopic", "createHubTopic"));
     String hubTopicResponseBody = hubTopicResponse.readEntity(String.class);
     JSONObject responseB = new JSONObject(hubTopicResponseBody);
-    logger.debug("hubTopicResponse: " + hubTopicResponseBody);
+    logStatus("hubTopicResponse", hubTopicResponse);
     String hubTopic = responseB.getString("hub.topic");
     oneIdGatewayData.setHubTopic(hubTopic);
     // The hub.topic is the CMS-issued identifier of this context session; carrying it as the
@@ -102,7 +102,7 @@ public class CMSManager {
     }
     Response hubTopicResponse = omdGateway.doPost(loggedInInfo, createHubTopic, userLogin);
     String hubTopicResponseBody = hubTopicResponse.readEntity(String.class);
-    logger.debug("userLoginResponse: " + hubTopicResponseBody);
+    logStatus("userLoginResponse", hubTopicResponse);
     if (hubTopicResponse.getStatus() >= 200 && hubTopicResponse.getStatus() < 300) {
       oneIdGatewayData.setCmsLoggedIn(hubTopicResponseBody);
       oneIdGatewayData.setUpdateUAOInCMS(false);
@@ -136,7 +136,7 @@ public class CMSManager {
     }
     Response hubTopicResponse = omdGateway.doPost(loggedInInfo, createHubTopic, event);
     String hubTopicResponseBody = hubTopicResponse.readEntity(String.class);
-    logger.debug("OH.Organization-change: " + hubTopicResponseBody);
+    logStatus("OH.Organization-change", hubTopicResponse);
     if (hubTopicResponse.getStatus() >= 200 && hubTopicResponse.getStatus() < 300) {
       oneIdGatewayData.setUpdateUAOInCMS(false);
     } else if (hubTopicResponse.getStatus() >= 400 && hubTopicResponseBody != null) {
@@ -170,7 +170,7 @@ public class CMSManager {
     }
     Response hubTopicResponse = omdGateway.doPost(loggedInInfo, createHubTopic, event);
     String hubTopicResponseBody = hubTopicResponse.readEntity(String.class);
-    logger.debug("patientOpen: " + hubTopicResponseBody);
+    logStatus("patientOpen", hubTopicResponse);
 
     if (hubTopicResponse.getStatus() >= 200 && hubTopicResponse.getStatus() < 300) {
       oneIdGatewayData.setCmsPatientInContext("" + demographicNo);
@@ -202,7 +202,7 @@ public class CMSManager {
           fhirResources.getString(fhirResources.getPatient(demographic)));
       Response hubTopicResponse = omdGateway.doPost(loggedInInfo, createHubTopic, event);
       String hubTopicResponseBody = hubTopicResponse.readEntity(String.class);
-      logger.debug("patientOpen: " + hubTopicResponseBody);
+      logStatus("patientClose", hubTopicResponse);
       if (hubTopicResponse.getStatus() >= 200 && hubTopicResponse.getStatus() < 300) {
         oneIdGatewayData.setCmsPatientInContext(null);
       } else if (hubTopicResponse.getStatus() >= 400 && hubTopicResponseBody != null) {
@@ -262,7 +262,7 @@ public class CMSManager {
             param)));
     Response hubTopicResponse = omdGateway.doPost(loggedInInfo, createHubTopic, event);
     String hubTopicResponseBody = hubTopicResponse.readEntity(String.class);
-    logger.debug("consentTargetChange: " + hubTopicResponseBody);
+    logStatus("consentTargetChange", hubTopicResponse);
     if (hubTopicResponse.getStatus() >= 200 && hubTopicResponse.getStatus() < 300) {
       return null;
     } else if (hubTopicResponse.getStatus() >= 400 && hubTopicResponseBody != null) {
@@ -292,7 +292,7 @@ public class CMSManager {
             param)));
     Response hubTopicResponse = omdGateway.doPost(loggedInInfo, createHubTopic, event);
     String hubTopicResponseBody = hubTopicResponse.readEntity(String.class);
-    logger.debug("legacyLaunch: " + hubTopicResponseBody);
+    logStatus("legacyLaunch", hubTopicResponse);
     if (hubTopicResponse.getStatus() >= 200 && hubTopicResponse.getStatus() < 300) {
       return null;
     } else if (hubTopicResponse.getStatus() >= 400 && hubTopicResponseBody != null) {
@@ -316,10 +316,21 @@ public class CMSManager {
             oneIdGatewayData.getCmsUrl());
         Response hubTopicResponse = omdGateway.doPost(loggedInInfo, createHubTopic,
             new Event(UUID.randomUUID().toString(), oneIdGatewayData.getHubTopic(), "userLogout"));
-        String hubTopicResponseBody = hubTopicResponse.readEntity(String.class);
-        logger.debug("hubTopicResponse: " + hubTopicResponseBody);
+        logStatus("userLogout", hubTopicResponse);
       }
     }
     return null;
   }
+
+  /**
+   * Records the outcome of a CMS call without its response body. When the CMS refuses a context
+   * change its body quotes back the patient just sent, so only the status is logged.
+   *
+   * @param label String the call being recorded
+   * @param response Response the response returned by the CMS
+   */
+  private static void logStatus(String label, Response response) {
+    logger.debug(label + ": status " + response.getStatus());
+  }
+
 }

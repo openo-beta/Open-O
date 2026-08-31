@@ -65,8 +65,25 @@ public class OneIdJwksProvider {
     @Autowired
     private EhrConnectivityManager ehrConnectivityManager;
 
-    private JwkSet cachedKeys;
-    private long cachedAtMillis;
+    /**
+     * The shortest gap between two fetches forced by an unrecognised key id. Without it a run of
+     * tokens naming a key the issuer does not publish fetches the key set on every one of them.
+     */
+    private static final long MIN_REFRESH_INTERVAL_MILLIS = 60L * 1000L;
+
+    /** A fetched key set and when it was fetched, held together so the pair is swapped as one. */
+    private static final class CachedJwks {
+        private final JwkSet keys;
+        private final long fetchedAtMillis;
+
+        private CachedJwks(JwkSet keys, long fetchedAtMillis) {
+            this.keys = keys;
+            this.fetchedAtMillis = fetchedAtMillis;
+        }
+    }
+
+    private volatile CachedJwks cachedJwks;
+    private volatile long lastFetchAttemptMillis;
 
     /**
      * Verifies an id_token and returns its subject.
@@ -96,6 +113,13 @@ public class OneIdJwksProvider {
             // Fail closed: any signature, claim, key, or fetch problem rejects the login.
             logger.warn("id_token verification failed (" + e.getClass().getSimpleName() + ")");
             throw new IdTokenValidationException("id_token verification failed", e);
+        }
+
+        // The parser only compares an expiry it can find, so a token that carries none is not
+        // rejected by it. OpenID Connect requires the claim, and without it the token never
+        // stops being valid.
+        if (claims.getExpiration() == null) {
+            throw new IdTokenValidationException("id_token has no expiry");
         }
 
         String nonce = claims.get("nonce", String.class);
@@ -133,8 +157,11 @@ public class OneIdJwksProvider {
         if (keys == null) {
             return null;
         }
+        if (kid == null || kid.trim().isEmpty()) {
+            return soleKey(keys);
+        }
         for (Jwk<?> jwk : keys.getKeys()) {
-            if (kid == null || kid.equals(jwk.getId())) {
+            if (kid.equals(jwk.getId())) {
                 Key key = jwk.toKey();
                 if (key instanceof PublicKey) {
                     return (PublicKey) key;
@@ -144,13 +171,57 @@ public class OneIdJwksProvider {
         return null;
     }
 
-    private synchronized JwkSet currentKeys(String jwksUri, boolean forceRefresh) {
-        long now = System.currentTimeMillis();
-        if (forceRefresh || cachedKeys == null || (now - cachedAtMillis) > CACHE_TTL_MILLIS) {
-            cachedKeys = Jwks.setParser().build().parse(fetchJwks(jwksUri));
-            cachedAtMillis = now;
+    /**
+     * The only public key in the set, or null when the set holds more than one.
+     *
+     * <p>A token may leave the key id out where the issuer publishes a single key, since there is
+     * nothing to choose between. Where it publishes several, which is what a key rotation looks
+     * like, choosing one would make verification depend on the order they happened to be listed in.
+     *
+     * @param keys JwkSet the published keys
+     * @return PublicKey the single public key, or null when there is not exactly one
+     */
+    private static PublicKey soleKey(JwkSet keys) {
+        PublicKey only = null;
+        for (Jwk<?> jwk : keys.getKeys()) {
+            Key key = jwk.toKey();
+            if (key instanceof PublicKey) {
+                if (only != null) {
+                    logger.warn("id_token carries no key id and the JWKS publishes more than one");
+                    return null;
+                }
+                only = (PublicKey) key;
+            }
         }
-        return cachedKeys;
+        return only;
+    }
+
+    /**
+     * The published key set, fetched when there is none or the held one has aged out.
+     *
+     * <p>Deliberately unsynchronized. The fetch waits up to ten seconds, and holding a lock across
+     * it would put every concurrent sign-in behind one slow request to the issuer. Two sign-ins
+     * arriving together may each fetch, which costs one extra request and returns the same keys.</p>
+     *
+     * @param jwksUri      String where the issuer publishes its keys
+     * @param forceRefresh boolean true to fetch even when the held keys are still fresh, after a
+     *                     token named a key id the held set does not contain
+     * @return JwkSet the keys to verify against
+     */
+    private JwkSet currentKeys(String jwksUri, boolean forceRefresh) {
+        CachedJwks cached = cachedJwks;
+        long now = System.currentTimeMillis();
+        if (cached != null && !forceRefresh && (now - cached.fetchedAtMillis) <= CACHE_TTL_MILLIS) {
+            return cached.keys;
+        }
+        if (cached != null && forceRefresh && (now - lastFetchAttemptMillis) < MIN_REFRESH_INTERVAL_MILLIS) {
+            // Fetched moments ago, so the issuer is not going to be publishing anything newer.
+            return cached.keys;
+        }
+        lastFetchAttemptMillis = now;
+        JwkSet fetched = Jwks.setParser().build().parse(fetchJwks(jwksUri));
+        cachedJwks = new CachedJwks(fetched, System.currentTimeMillis());
+        return fetched;
     }
 
     private String fetchJwks(String jwksUri) {

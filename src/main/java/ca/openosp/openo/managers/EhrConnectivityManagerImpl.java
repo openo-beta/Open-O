@@ -122,30 +122,9 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
     @Override
     public List<OMDGatewayTransactionLog> getRecentLogs(LoggedInInfo loggedInInfo, String providerNo, String externalSystem, int maxRows) {
         checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
-        List<OMDGatewayTransactionLog> logs;
-        if (providerNo != null) {
-            logs = transactionLogDao.findByProviderNo(providerNo);
-        } else if (externalSystem != null) {
-            logs = transactionLogDao.findByExternalSystem(externalSystem);
-        } else {
-            logs = transactionLogDao.getAll();
-        }
-        if (logs.size() > maxRows) {
-            logs = logs.subList(0, maxRows);
-        }
-        return logs;
-    }
-
-    @Override
-    public List<OMDGatewayTransactionLog> findLogsByProviderNo(LoggedInInfo loggedInInfo, String providerNo) {
-        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
-        return transactionLogDao.findByProviderNo(providerNo);
-    }
-
-    @Override
-    public List<OMDGatewayTransactionLog> findLogsByExternalSystem(LoggedInInfo loggedInInfo, String externalSystem) {
-        checkPrivilege(loggedInInfo, SecurityInfoManager.READ);
-        return transactionLogDao.findByExternalSystem(externalSystem);
+        // Both filters are applied. Returning on the first one set would list rows that contradict
+        // the other, which the screen redisplays as though it had been used.
+        return transactionLogDao.find(providerNo, externalSystem, maxRows);
     }
 
     @Override
@@ -155,16 +134,26 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
 
     @Override
     public void saveOneIdSession(OneIdSession oneIdSession) {
-        if (oneIdSessionDao.find(oneIdSession.getProviderNo()) == null) {
-            oneIdSessionDao.persist(oneIdSession);
-        } else {
-            oneIdSessionDao.merge(oneIdSession);
-        }
+        // The provider number is the assigned id, so this writes a provider's first session and
+        // replaces a later one without needing to know which it is.
+        oneIdSessionDao.merge(oneIdSession);
     }
 
     @Override
     public void removeOneIdSession(LoggedInInfo loggedInInfo, String providerNo) {
         checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.WRITE);
+        OneIdSession existing = oneIdSessionDao.find(providerNo);
+        if (existing != null) {
+            oneIdSessionDao.remove(existing);
+        }
+    }
+
+    @Override
+    public void removeOwnOneIdSession(LoggedInInfo loggedInInfo) {
+        String providerNo = (loggedInInfo == null) ? null : loggedInInfo.getLoggedInProviderNo();
+        if (providerNo == null) {
+            throw new SecurityException("no acting provider to clear a ONE ID session for");
+        }
         OneIdSession existing = oneIdSessionDao.find(providerNo);
         if (existing != null) {
             oneIdSessionDao.remove(existing);
@@ -285,12 +274,12 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
                 || securityInfoManager.hasPrivilege(loggedInInfo, "_ehr.connectivity", privilege, null)) {
             return;
         }
-        throw new RuntimeException("missing required sec object (_ehr.connectivity or _admin.ehrConnectivity)");
+        throw new SecurityException("missing required sec object (_ehr.connectivity or _admin.ehrConnectivity)");
     }
 
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin.ehrConnectivity", privilege, null)) {
-            throw new RuntimeException("missing required sec object (_admin.ehrConnectivity)");
+            throw new SecurityException("missing required sec object (_admin.ehrConnectivity)");
         }
     }
 
@@ -323,7 +312,7 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
                 && securityInfoManager.hasPrivilege(loggedInInfo, "_ehr.connectivity", privilege, null)) {
             return;
         }
-        throw new RuntimeException(
+        throw new SecurityException(
                 "missing required sec object (_admin.ehrConnectivity, or _ehr.connectivity on own provider)");
     }
 }

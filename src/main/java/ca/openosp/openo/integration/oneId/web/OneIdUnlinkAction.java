@@ -75,6 +75,14 @@ public class OneIdUnlinkAction extends ActionSupport {
         }
 
         String providerNo = loggedInInfo.getLoggedInProviderNo();
+        // End the session at Ontario Health first. Severing the binding locally leaves the EHR
+        // context and the access token standing, and the tokens needed to withdraw them are about
+        // to be discarded.
+        OneIdGatewayData gatewayData = loggedInInfo.getOneIdGatewayData();
+        if (gatewayData != null) {
+            OneIdSessionTeardown.endRemoteSession(loggedInInfo, gatewayData);
+        }
+
         if (ehrConnectivityManager.clearOneIdBinding(loggedInInfo, providerNo)) {
             LogAction.addLog(providerNo, LogConst.UNLINK, "ONE ID", "", request.getRemoteAddr());
         }

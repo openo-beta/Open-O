@@ -17,6 +17,11 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Set;
 import java.io.IOException;
 
 public class OneIdFilter implements Filter {
@@ -39,7 +44,10 @@ public class OneIdFilter implements Filter {
         String loggedInUser =
             (session != null) ? (String) session.getAttribute("user") : null;
 
-        if (loggedInUser != null) {
+        // Every request reaches this filter, including each script, stylesheet and image a page
+        // pulls in. Those cannot act on a ONE ID session, so they do not need one restored, and
+        // rehydrating for each of them is one database read per asset per page.
+        if (loggedInUser != null && !isStaticResource(httpRequest.getRequestURI())) {
             try {
                 rehydrateOneIdSession(session, loggedInUser);
             } catch (Exception e) {
@@ -51,6 +59,28 @@ public class OneIdFilter implements Filter {
         // If no ONE ID session exists, the user is accessing the EMR locally with no intent of
         // authenticating with ONE ID; the request proceeds unchanged.
         chain.doFilter(request, response);
+    }
+
+    /** Requests for these are served as files and never act on a ONE ID session. */
+    private static final Set<String> STATIC_EXTENSIONS = new HashSet<>(Arrays.asList(
+            "css", "js", "map", "png", "jpg", "jpeg", "gif", "svg", "ico",
+            "woff", "woff2", "ttf", "eot"));
+
+    /**
+     * Whether the path names a static file rather than something that acts on a session.
+     *
+     * @param path String the request URI, which carries no query string
+     * @return boolean true when the request is for a static file
+     */
+    private static boolean isStaticResource(String path) {
+        if (path == null) {
+            return false;
+        }
+        int dot = path.lastIndexOf('.');
+        if (dot < 0 || dot == path.length() - 1) {
+            return false;
+        }
+        return STATIC_EXTENSIONS.contains(path.substring(dot + 1).toLowerCase(Locale.ROOT));
     }
 
     /**
@@ -68,10 +98,12 @@ public class OneIdFilter implements Filter {
             return;
         }
         OneIdGatewayData gatewayData = (OneIdGatewayData) session.getAttribute(LoggedInInfo.OH_GATEWAY_DATA);
+        // Compared null-safely: a stored session may carry no lastKeptActive or access token, and
+        // an exception raised here is swallowed by the caller, leaving ONE ID quietly not working.
         if (gatewayData != null && ((gatewayData.getUao() != null
                 && !gatewayData.getUao().equals(oneIdSession.getUaoUpi())) ||
-                (!gatewayData.getLastKeptActive().equals(oneIdSession.getLastKeptActive())) ||
-                (!gatewayData.getAccessTokenStr().equals(oneIdSession.getAccessToken())))) {
+                !Objects.equals(gatewayData.getLastKeptActive(), oneIdSession.getLastKeptActive()) ||
+                !Objects.equals(gatewayData.getAccessTokenStr(), oneIdSession.getAccessToken()))) {
             gatewayData = null;
         }
         if (gatewayData == null) {

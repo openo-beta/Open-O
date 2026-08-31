@@ -142,17 +142,23 @@ public class Logout2Action extends ActionSupport {
         try {
             CMSManager.userLogout(loggedInInfo);
         } catch (Exception e) {
-            logger.error("ONE ID CMS context clear on logout failed", e);
+            logger.error("ONE ID CMS context clear on logout failed\n" + OmdGateway.stackTraceWithoutMessages(e));
         }
         try {
             omdGateway.revokeToken(loggedInInfo, gatewayData);
         } catch (Exception e) {
-            logger.error("ONE ID token revoke failed", e);
+            logger.error("ONE ID token revoke failed\n" + OmdGateway.stackTraceWithoutMessages(e));
         }
         try {
-            ehrConnectivityManager.removeOneIdSession(loggedInInfo, loggedInInfo.getLoggedInProviderNo());
+            ehrConnectivityManager.removeOwnOneIdSession(loggedInInfo);
         } catch (Exception e) {
-            logger.error("ONE ID session removal failed", e);
+            logger.error("ONE ID session removal failed\n" + OmdGateway.stackTraceWithoutMessages(e));
+            // The stored session outlived the attempt to delete it, so the next login restores it
+            // along with its tokens. Recording a sign-out here would say something happened that
+            // did not.
+            LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), LogConst.NORIGHT, "ONE ID",
+                    "sign out did not complete: the stored session could not be removed",
+                    request.getRemoteAddr());
         }
         gatewayData.clearGatewayData();
         try {

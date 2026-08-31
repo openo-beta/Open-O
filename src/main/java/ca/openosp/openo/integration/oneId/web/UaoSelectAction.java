@@ -68,6 +68,7 @@ public class UaoSelectAction extends ActionSupport {
 
         List<UAO> uaoList = ehrConnectivityManager.findUaosByProvider(loggedInInfo, providerNo);
         if (uaoList == null || uaoList.isEmpty()) {
+            clearUao(loggedInInfo, providerNo);
             redirectHome();
             return NONE;
         }
@@ -85,15 +86,69 @@ public class UaoSelectAction extends ActionSupport {
     public String select() {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "w");
+        // The authority is only changed on a POST, so a crafted link or image cannot switch the
+        // custodian a clinician is acting under. A plain GET changes nothing and returns to the
+        // picker, where the choice can be made properly.
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+            redirectToPicker();
+            return NONE;
+        }
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        Integer id = parseId(request.getParameter("id"));
-        UAO uao = (id == null) ? null : ehrConnectivityManager.findUao(loggedInInfo, id);
+        UAO uao = ownActiveUao(loggedInInfo, providerNo, parseId(request.getParameter("id")));
         if (uao != null) {
             applyUao(loggedInInfo, providerNo, uao);
         }
         redirectHome();
         return NONE;
+    }
+
+    /**
+     * Finds one of the acting provider's own values that is still in use.
+     *
+     * <p>The id arrives on the request, so it is matched against the same list the picker was built
+     * from rather than fetched on its own. Only a value that list offered can be applied: not one
+     * belonging to another provider, and not one that has been taken out of use.
+     *
+     * @param loggedInInfo LoggedInInfo the acting provider's session information
+     * @param providerNo   String the acting provider
+     * @param id           Integer the submitted value's id, which may be absent or unparseable
+     * @return UAO the matching value, or null when the id names none of theirs
+     */
+    private UAO ownActiveUao(LoggedInInfo loggedInInfo, String providerNo, Integer id) {
+        if (id == null) {
+            return null;
+        }
+        List<UAO> uaoList = ehrConnectivityManager.findUaosByProvider(loggedInInfo, providerNo);
+        if (uaoList == null) {
+            return null;
+        }
+        for (UAO candidate : uaoList) {
+            if (id.equals(candidate.getId())) {
+                return candidate;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Drops the authority a provider was acting under, from the request and from the stored session.
+     *
+     * <p>Withdrawing a provider's last authority only deactivates the row. The value they last
+     * selected stays on their session, where it still names a custodian to the CMS and still
+     * satisfies the check that lets an EHR service launch, so it is cleared as soon as this screen
+     * finds nothing left to offer them.
+     *
+     * @param loggedInInfo LoggedInInfo the acting provider's session information
+     * @param providerNo   String the acting provider
+     */
+    private void clearUao(LoggedInInfo loggedInInfo, String providerNo) {
+        OneIdGatewayData gatewayData = loggedInInfo.getOneIdGatewayData();
+        if (gatewayData != null) {
+            gatewayData.setUao(null);
+            gatewayData.setUaoFriendlyName(null);
+        }
+        ehrConnectivityManager.setSessionUao(loggedInInfo, providerNo, null, null);
     }
 
     private void applyUao(LoggedInInfo loggedInInfo, String providerNo, UAO uao) {
@@ -111,6 +166,18 @@ public class UaoSelectAction extends ActionSupport {
     private String currentUaoName(LoggedInInfo loggedInInfo) {
         OneIdGatewayData gatewayData = loggedInInfo.getOneIdGatewayData();
         return (gatewayData == null) ? null : gatewayData.getUaoFriendlyName();
+    }
+
+    /**
+     * Returns to the authority picker without touching the session. Used when a change arrives on
+     * anything but a POST, which must leave everything as it was.
+     */
+    private void redirectToPicker() {
+        try {
+            response.sendRedirect(request.getContextPath() + "/uaoSelect.do");
+        } catch (Exception e) {
+            logger.error("Failed to redirect after a non-POST authority change", e);
+        }
     }
 
     private void redirectHome() {

@@ -45,10 +45,9 @@ import ca.openosp.openo.utility.SpringUtils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.jaxrs.client.WebClient;
-import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.ssl.SSLContexts;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONObject;
 import org.hl7.fhir.r4.model.Bundle;
@@ -61,10 +60,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.struts2.ServletActionContext;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ProcessingException;
+import javax.ws.rs.core.Form;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -83,6 +85,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.UUID;
 
 public class OmdGateway {
@@ -111,7 +114,7 @@ public class OmdGateway {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = new OMDGatewayTransactionLog();
 		OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
 		if(oneIdGatewayData != null) {
-			logger.debug("oneIdGatewayData.howLongUntilAccessTokenIsExpired() "+oneIdGatewayData.howLongUntilAccessTokenIsExpired());
+			logger.debug("Access token expires in " + oneIdGatewayData.howLongUntilAccessTokenIsExpired() + "s");
 			omdGatewayTransactionLog.setSecondsLeft(oneIdGatewayData.howLongUntilAccessTokenIsExpired());
 			omdGatewayTransactionLog.setUao(oneIdGatewayData.getUao());
 			omdGatewayTransactionLog.setContextSessionId(oneIdGatewayData.getCtxSessionId());
@@ -204,7 +207,12 @@ public class OmdGateway {
 		boolean failed = response2.getStatus() >= 300;
 		log.setSuccess(!failed);
 		if (failed) {
-			log.setError(body);
+			// A CMS refusal body quotes back the patient context just sent, so it is not stored.
+			// The outcome code is lifted into its own column above, which is what an auditor
+			// filters on. A refusal from any other system carries an OperationOutcome instead.
+			if (!CMS_EXTERNAL_SYSTEM.equals(log.getExternalSystem())) {
+				log.setError(body);
+			}
 		}
 
 		// Headers are withheld on the same terms as the body, because an OAuth response carries
@@ -225,10 +233,46 @@ public class OmdGateway {
 		}
 	}
 
+	/**
+	 * Records a failed outcome on a row whose call threw before any response arrived.
+	 *
+	 * <p>Best effort on purpose: a token refresh has to end in a sign-in prompt, so failing to
+	 * write the audit row must not replace that prompt with a database error.</p>
+	 *
+	 * @param log   OMDGatewayTransactionLog the open row, or null when the failure came before one was written
+	 * @param cause Throwable the failure to record
+	 */
+	private void completeFailedRow(OMDGatewayTransactionLog log, Throwable cause) {
+		// A row that already has an end time was closed by completeLog, so the response it records
+		// is the real one. Only a row still open is finished here.
+		if (log == null || log.getEnded() != null) {
+			return;
+		}
+		try {
+			log.setSuccess(Boolean.FALSE);
+			log.setError(stackTraceWithoutMessages(cause));
+			log.setEnded(new Date());
+			transactionLogDao.merge(log);
+		} catch (Exception e) {
+			logger.warn("Could not record the failed gateway outcome (" + e.getClass().getSimpleName() + ")");
+		}
+	}
+
 	/** Generates a unique X-Request-Id for a single gateway transaction. */
 	protected static String newRequestId() {
 		return UUID.randomUUID().toString();
 	}
+
+	/** The externalSystem recorded on a context call to the Ontario Health CMS. */
+	protected static final String CMS_EXTERNAL_SYSTEM = "CMS";
+
+	/**
+	 * The client-assertion type named by RFC 7523. Held unencoded: these parameters go in a form
+	 * body, and the form writer percent-encodes what it is given, so a pre-encoded value would
+	 * reach the gateway double-encoded.
+	 */
+	private static final String CLIENT_ASSERTION_TYPE =
+			"urn:ietf:params:oauth:client-assertion-type:jwt-bearer";
 
 	/** How many nested causes to render before stopping. */
 	private static final int MAX_CAUSE_DEPTH = 10;
@@ -246,7 +290,7 @@ public class OmdGateway {
 	 * @return String the class names and stack frames, or "(none)" when there is no exception
 	 * @since 2026-08-05
 	 */
-	private static String stackTraceWithoutMessages(Throwable throwable) {
+	public static String stackTraceWithoutMessages(Throwable throwable) {
 		if (throwable == null) {
 			return "(none)";
 		}
@@ -753,27 +797,78 @@ public class OmdGateway {
 		return seconds * 1000;
 	}
 
-	protected TLSClientParameters getTLSClientParameters(LoggedInInfo loggedInInfo) throws Exception {
-			hasGatewayPropertiesSet(loggedInInfo);
-			KeyStore ks = KeyStore.getInstance("JKS");
-			ks.load( new FileInputStream(
-                    Paths.get(getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_path)).toFile()
-                ),
-                getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_password).toCharArray()
-                );
-			SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(ks, getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_password).toCharArray()).build();
-			sslcontext.getDefaultSSLParameters().setNeedClientAuth(true);
-			sslcontext.getDefaultSSLParameters().setWantClientAuth(true);
+	/**
+	 * A socket factory and the keystore it was built from. The file's own timestamp and size are
+	 * part of what identifies that keystore, because replacing an uploaded keystore keeps the same
+	 * path and password, and the settings alone cannot tell the new file from the old one.
+	 */
+	private static final class TlsKeystore {
+		private final String path;
+		private final String password;
+		private final long modified;
+		private final long size;
+		private final SSLSocketFactory socketFactory;
 
-			TLSClientParameters tlsParams = new TLSClientParameters();
-			tlsParams.setSSLSocketFactory(sslcontext.getSocketFactory());
-			// Hostname (CN) verification stays on; disable it only for local development.
-			if ("true".equalsIgnoreCase(OscarProperties.getInstance().getProperty("oneid.disable_tls_cn_check"))) {
-				tlsParams.setDisableCNCheck(true);
-			}
-
-			return tlsParams;
+		private TlsKeystore(String path, String password, File file, SSLSocketFactory socketFactory) {
+			this.path = path;
+			this.password = password;
+			this.modified = file.lastModified();
+			this.size = file.length();
+			this.socketFactory = socketFactory;
 		}
+
+		private boolean isFor(String otherPath, String otherPassword, File file) {
+			return Objects.equals(path, otherPath)
+					&& Objects.equals(password, otherPassword)
+					&& modified == file.lastModified()
+					&& size == file.length();
+		}
+	}
+
+	/** The last keystore built, reused until the settings or the file itself change. */
+	private static volatile TlsKeystore tlsKeystore;
+
+	protected TLSClientParameters getTLSClientParameters(LoggedInInfo loggedInInfo) throws Exception {
+		hasGatewayPropertiesSet(loggedInInfo);
+		TLSClientParameters tlsParams = new TLSClientParameters();
+		tlsParams.setSSLSocketFactory(clientSocketFactory());
+		// Hostname (CN) verification stays on; disable it only for local development.
+		if ("true".equalsIgnoreCase(OscarProperties.getInstance().getProperty("oneid.disable_tls_cn_check"))) {
+			tlsParams.setDisableCNCheck(true);
+		}
+		return tlsParams;
+	}
+
+	/**
+	 * The socket factory that presents the client certificate, built once per keystore. Every
+	 * gateway call went through here, so the keystore was read from disk, its key material parsed
+	 * and a fresh SSL context built each time, which also gave the connection no session to resume.
+	 *
+	 * @return SSLSocketFactory the factory holding the configured client certificate
+	 * @throws Exception when the keystore cannot be read or the context cannot be built
+	 */
+	private SSLSocketFactory clientSocketFactory() throws Exception {
+		String keystorePath = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_path);
+		String keystorePassword = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_password);
+		File keystoreFile = Paths.get(keystorePath).toFile();
+
+		TlsKeystore cached = tlsKeystore;
+		if (cached != null && cached.isFor(keystorePath, keystorePassword, keystoreFile)) {
+			return cached.socketFactory;
+		}
+
+		KeyStore ks = KeyStore.getInstance("JKS");
+		try (FileInputStream keystoreStream = new FileInputStream(keystoreFile)) {
+			ks.load(keystoreStream, keystorePassword.toCharArray());
+		}
+		// The key material is what presents the client certificate to the gateway.
+		SSLContext sslContext = SSLContexts.custom()
+				.loadKeyMaterial(ks, keystorePassword.toCharArray())
+				.build();
+		SSLSocketFactory socketFactory = sslContext.getSocketFactory();
+		tlsKeystore = new TlsKeystore(keystorePath, keystorePassword, keystoreFile, socketFactory);
+		return socketFactory;
+	}
 
 	public Response doGet(LoggedInInfo loggedInInfo, WebClient wc) throws TokenExpiredException {
 		return doGet(loggedInInfo,wc,null);
@@ -788,6 +883,27 @@ public class OmdGateway {
 	private String getPreferenceValue(SystemPreferences.ONEID_KEYS key) {
 		SystemPreferences preference = systemPreferencesDao.findPreferenceByName(key);
 		return preference == null ? null : preference.getValue();
+	}
+
+	/**
+	 * A setting's value, or a failure naming the setting that has none.
+	 *
+	 * <p>A URL composed from an unset setting is still a URL: an absent row concatenates as the
+	 * text "null", and the value the migration seeds is empty, which leaves the base address on its
+	 * own. Either reaches the gateway as a redirect address it does not recognise, and what comes
+	 * back names the address rather than the setting behind it.</p>
+	 *
+	 * @param key   ONEID_KEYS the setting to read
+	 * @param label String the setting's name on the gateway settings screen
+	 * @return String the value, trimmed
+	 * @throws IllegalStateException when the setting holds no value
+	 */
+	private String requirePreferenceValue(SystemPreferences.ONEID_KEYS key, String label) {
+		String value = getPreferenceValue(key);
+		if (value == null || value.trim().isEmpty()) {
+			throw new IllegalStateException("The " + label + " setting is not configured.");
+		}
+		return value.trim();
 	}
 
 	protected String getConsumerKey() {
@@ -838,10 +954,11 @@ public class OmdGateway {
 			logger.error("OMD Gateway GET failed\n" + stackTraceWithoutMessages(e));
 			// The call threw before any response arrived, so completeLog never ran and the outcome
 			// is set here instead. A row left with a null success reads as one whose call is still
-			// in flight.
+			// in flight, and one with no end time reads as one that never finished. The end is when
+			// the failure was handled, because no response ever came.
 			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
+			omdGatewayTransactionLog.setError(stackTraceWithoutMessages(e));
 			omdGatewayTransactionLog.setEnded(new Date());
-			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);
 		}
@@ -873,7 +990,9 @@ public class OmdGateway {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, "PCOI", "consentViewletLaunch");
 		omdGatewayTransactionLog.setDataSent(url);
 		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
-		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
+		// No outcome is claimed here. All that has happened is that a URL was composed: the window
+		// may be blocked, or opened and never answer. The viewletResult row carries what the EHR
+		// service actually reported, tied to this one by the correlation id.
 		persistCompleted(omdGatewayTransactionLog);
 		return url;
 	}
@@ -904,7 +1023,9 @@ public class OmdGateway {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, viewletKey, "viewletLaunch");
 		omdGatewayTransactionLog.setDataSent(url);
 		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
-		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
+		// No outcome is claimed here. All that has happened is that a URL was composed: the window
+		// may be blocked, or opened and never answer. The viewletResult row carries what the EHR
+		// service actually reported, tied to this one by the correlation id.
 		persistCompleted(omdGatewayTransactionLog);
 		return url;
 	}
@@ -940,21 +1061,24 @@ public class OmdGateway {
 	}
 	
 	public Response doPost(LoggedInInfo loggedInInfo, WebClient wc, Event fhirCastEvent) throws Exception {
-		// Context submission must carry the acting authority; block it when no UAO is selected.
 		OneIdGatewayData gatewayData = loggedInInfo.getOneIdGatewayData();
-		if (gatewayData == null || gatewayData.getUao() == null || gatewayData.getUao().trim().isEmpty()) {
+		// A provider with no gateway data has not signed in to ONE ID. That needs a sign-in, not an
+		// authority, so it is raised as the same condition a dead session raises and reaches the
+		// same prompt. Refreshes the access token if it has expired, and throws when the refresh
+		// token is dead too.
+		OneIDTokenUtils.verifyAccessTokenIsValid(loggedInInfo, gatewayData);
+		// Context submission must carry the acting authority; block it when no UAO is selected.
+		if (gatewayData.getUao() == null || gatewayData.getUao().trim().isEmpty()) {
 			throw new IllegalStateException("A ONE ID Under Authority Of (UAO) value must be selected before submitting context to the gateway.");
 		}
 		String consumerKey = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
 		String consumerSecret =getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_secret);
-		// Refresh the access token if it has expired (throws when the refresh token is dead too).
-		OneIDTokenUtils.verifyAccessTokenIsValid(loggedInInfo, loggedInInfo.getOneIdGatewayData());
-		String accessToken = loggedInInfo.getOneIdGatewayData().getAccessToken();
+		String accessToken = gatewayData.getAccessToken();
 		Integer demographicNo = null;
 		String externalSystem = null;
 		String transactionType = null;
 		if(fhirCastEvent != null) {
-			externalSystem = "CMS";
+			externalSystem = CMS_EXTERNAL_SYSTEM;
 			transactionType = fhirCastEvent.getHubEvent();
 		}
 		String requestId = newRequestId();
@@ -972,13 +1096,14 @@ public class OmdGateway {
 		completeLog(omdGatewayTransactionLog,response2);
 		transactionLogDao.merge(omdGatewayTransactionLog);
 		}catch(Exception e) {
-			e.getMessage();
+			logger.error("OMD Gateway POST failed\n" + stackTraceWithoutMessages(e));
 			// The call threw before any response arrived, so completeLog never ran and the outcome
 			// is set here instead. A row left with a null success reads as one whose call is still
-			// in flight.
+			// in flight, and one with no end time reads as one that never finished. The end is when
+			// the failure was handled, because no response ever came.
 			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
+			omdGatewayTransactionLog.setError(stackTraceWithoutMessages(e));
 			omdGatewayTransactionLog.setEnded(new Date());
-			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);
 		}
@@ -990,7 +1115,7 @@ public class OmdGateway {
 		String transactionType = "TOKENS";
 		String tokenUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_access_token);
 		String callbackUrl = resolveBaseUrl()
-				+ getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_callback);
+				+ requirePreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_callback, "Callback Path");
 
 		String requestId = newRequestId();
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, null, externalSystem, transactionType);
@@ -1000,29 +1125,32 @@ public class OmdGateway {
 		Response response2 = null;
 		try {
 			WebClient wc = WebClient.create(tokenUrl);
-			wc.query("grant_type", "authorization_code");
-			wc.query("client_assertion_type", "urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer");
+			// The authorization code, the PKCE verifier and the signed client assertion are
+			// credentials, so they go in the request body. A query string is written to the access
+			// log at both ends and kept by any proxy in between.
+			Form form = new Form();
+			form.param("grant_type", "authorization_code");
+			form.param("client_assertion_type", CLIENT_ASSERTION_TYPE);
+			form.param("code", code);
+			form.param("redirect_uri", callbackUrl);
+			form.param("client_id", clientId);
+			form.param("code_verifier", codeVerifier);
+			form.param("client_assertion", jwt);
 
-			wc.query("code", code);
-			wc.query("redirect_uri", callbackUrl);
-			wc.query("client_id", clientId);
-
-			wc.query("code_verifier",codeVerifier);
-			wc.query("client_assertion", jwt);
-
-
-			response2 = wc.header("X-Request-Id", requestId).header("Content-Type", "application/x-www-form-urlencoded").post(null);
+			response2 = wc.header("X-Request-Id", requestId).form(form);
 
 
 		completeLog(omdGatewayTransactionLog,response2,false);
 		transactionLogDao.merge(omdGatewayTransactionLog);
 		}catch(Exception e) {
-			e.getMessage();
+			logger.error("ONE ID token request failed\n" + stackTraceWithoutMessages(e));
 			// The call threw before any response arrived, so completeLog never ran and the outcome
 			// is set here instead. A row left with a null success reads as one whose call is still
-			// in flight.
+			// in flight, and one with no end time reads as one that never finished. The end is when
+			// the failure was handled, because no response ever came.
 			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
-			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
+			omdGatewayTransactionLog.setError(stackTraceWithoutMessages(e));
+			omdGatewayTransactionLog.setEnded(new Date());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw(e);
 		}
@@ -1089,7 +1217,7 @@ public class OmdGateway {
 	public String buildAuthorizeUrl(OneIdGatewayData oneIdGatewayData, String state, String nonce, String verifier) throws Exception {
 		String authorizeUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_authorize);
 		String callbackUrl = resolveBaseUrl()
-				+ getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_callback);
+				+ requirePreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_callback, "Callback Path");
 		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
 		String aud = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_audience);
 		String challenge = PKCEUtils.generateChallengeS256(verifier);
@@ -1121,67 +1249,6 @@ public class OmdGateway {
 	    return PKCEUtils.encodeBase64NoPadding(randomBytes);
 	}
 	
-	public Response callAuthorize(LoggedInInfo loggedInInfo,OneIdGatewayData oneIdGatewayData,String state,String verifier) {
-		logger.info("OAUTH2 Login started oneIdGatewayData null ?"+ (oneIdGatewayData == null)+ " loggedInInfo "+(loggedInInfo.getOneIdGatewayData() == null));
-		if(oneIdGatewayData == null ){
-			oneIdGatewayData = new OneIdGatewayData();
-		}
-	    String challenge = null;
-	    try {
-	    	challenge = PKCEUtils.generateChallengeS256(verifier);
-	    } catch(Exception e) {
-	    	logger.error("Error",e);
-	    }
-	    logger.debug("challenge = "+challenge);
-
-
-		String authorizeUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_authorize);
-		String callbackUrl = resolveBaseUrl()
-				+ getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_callback);
-		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
-
-		String aud = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_audience);
-
-		WebClient wc = WebClient.create(authorizeUrl);
-
-		wc.query("response_type", "code");
-
-		wc.query("scope", OneIDTokenUtils.urlEncode(oneIdGatewayData.getScope()));
-
-		if(oneIdGatewayData.get_profile() != null && oneIdGatewayData.get_profile().length() != 0) {
-			wc.query("_profile",OneIDTokenUtils.urlEncode(oneIdGatewayData.get_profile()));
-		}
-
-		wc.query("code_challenge_method", "S256");
-
-		wc.query("code_challenge", challenge);
-		wc.query("redirect_uri", callbackUrl);
-		wc.query("client_id", clientId);
-		wc.query("state", state);
-		if(aud != null){
-			wc.query("aud",aud);
-		}
-		if(oneIdGatewayData.getUao() != null) {
-			wc.query("uao",oneIdGatewayData.getUao());
-		}
-
-		OMDGatewayTransactionLog omdGatewayTransactionLog = OmdGateway.getOMDGatewayTransactionLog(loggedInInfo, null, "Auth", "AUTHORIZE");
-		transactionLogDao.persist(omdGatewayTransactionLog);
-		Response response2 = null;
-		try {
-			response2 = wc.header("Content-Type", "application/x-www-form-urlencoded").get();
-			completeLog(omdGatewayTransactionLog,response2,false);
-			transactionLogDao.merge(omdGatewayTransactionLog);
-			logger.info("Response Status from /Authorize =" + response2.getStatus());
-		}catch(Exception e) {
-			logger.error("Authorize call failed\n" + stackTraceWithoutMessages(e));
-			omdGatewayTransactionLog.setError(ExceptionUtils.getStackTrace(e));
-			omdGatewayTransactionLog.setSuccess(false);
-			transactionLogDao.merge(omdGatewayTransactionLog);
-		}
-		return response2;
-	}
-	
 	public void refreshToken(LoggedInInfo loggedInInfo,OneIdGatewayData oneIdGatewayData) throws TokenExpiredException {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, 10);
@@ -1198,9 +1265,11 @@ public class OmdGateway {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("grant_type", "refresh_token");
 		params.put("client_id", clientId);
-		params.put("client_assertion_type", "urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer");
+		params.put("client_assertion_type", CLIENT_ASSERTION_TYPE);
 		params.put("refresh_token", oneIdGatewayData.getRefreshTokenString());
 
+		// Declared out here so a call that throws before any response can still close its row.
+		OMDGatewayTransactionLog omdGatewayTransactionLog = null;
 		try (FileInputStream is = new FileInputStream(keystoreLocation);) {
 
 			KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -1217,14 +1286,17 @@ public class OmdGateway {
 			}
 
 			WebClient wc = WebClient.create(tokenUrl);
+			// The refresh token and the client assertion are credentials; they go in the body
+			// rather than the query string, for the reason getTokens gives.
+			Form form = new Form();
 			for (Entry<String, String> entry : params.entrySet()) {
-				wc.query(entry.getKey(), entry.getValue());
+				form.param(entry.getKey(), entry.getValue());
 			}
 			String requestId = newRequestId();
-			OMDGatewayTransactionLog omdGatewayTransactionLog = OmdGateway.getOMDGatewayTransactionLog(loggedInInfo, null, "Auth", "REFRESH");
+			omdGatewayTransactionLog = OmdGateway.getOMDGatewayTransactionLog(loggedInInfo, null, "Auth", "REFRESH");
 			omdGatewayTransactionLog.setxRequestId(requestId);
 			transactionLogDao.persist(omdGatewayTransactionLog);
-			Response response2 = wc.header("X-Request-Id", requestId).header("Content-Type", "application/x-www-form-urlencoded").post(null);
+			Response response2 = wc.header("X-Request-Id", requestId).form(form);
 			completeLog(omdGatewayTransactionLog,response2,false);
 			transactionLogDao.merge(omdGatewayTransactionLog);
 
@@ -1253,6 +1325,7 @@ public class OmdGateway {
 			throw e;
 		}catch(Exception e) {
 			logger.error("ONE ID token refresh failed\n" + stackTraceWithoutMessages(e));
+			completeFailedRow(omdGatewayTransactionLog, e);
 			throw new TokenExpiredException();
 		}
 	}
@@ -1305,19 +1378,24 @@ public class OmdGateway {
 		transactionLogDao.persist(omdGatewayTransactionLog);
 		try {
 			WebClient wc = WebClient.create(revokeUrl);
-			wc.query("token", oneIdGatewayData.getAccessTokenStr());
-			wc.query("client_id", clientId);
-			wc.query("client_assertion_type", "urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer");
-			wc.query("client_assertion", jwt);
-			Response response2 = wc.header("X-Request-Id", requestId).header("Content-Type", "application/x-www-form-urlencoded").post(null);
+			// The token being revoked and the client assertion are credentials; they go in the
+			// body rather than the query string, for the reason getTokens gives.
+			Form form = new Form();
+			form.param("token", oneIdGatewayData.getAccessTokenStr());
+			form.param("client_id", clientId);
+			form.param("client_assertion_type", CLIENT_ASSERTION_TYPE);
+			form.param("client_assertion", jwt);
+			Response response2 = wc.header("X-Request-Id", requestId).form(form);
 			completeLog(omdGatewayTransactionLog, response2, false);
 			transactionLogDao.merge(omdGatewayTransactionLog);
 		} catch (Exception e) {
 			// The call threw before any response arrived, so completeLog never ran and the outcome
 			// is set here instead. A row left with a null success reads as one whose call is still
-			// in flight.
+			// in flight, and one with no end time reads as one that never finished. The end is when
+			// the failure was handled, because no response ever came.
 			omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
-			omdGatewayTransactionLog.setError(e.getLocalizedMessage());
+			omdGatewayTransactionLog.setError(stackTraceWithoutMessages(e));
+			omdGatewayTransactionLog.setEnded(new Date());
 			transactionLogDao.merge(omdGatewayTransactionLog);
 			throw e;
 		}

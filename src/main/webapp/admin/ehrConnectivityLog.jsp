@@ -77,6 +77,7 @@
             <th>System</th>
             <th>Transaction</th>
             <th>Status</th>
+            <th>EHR Outcome</th>
             <th>UAO</th>
             <th>X-Request-Id</th>
             <th>X-Correlation-Id</th>
@@ -93,11 +94,16 @@
                 <td>${e:forHtmlContent(log.transactionType)}</td>
                 <td>
                     <c:choose>
+                        <%-- A row that carries no outcome, such as a viewlet launch, whose result
+                             is recorded separately against the same correlation id. Tested first,
+                             because an unset value reads as false once it is used as a boolean. --%>
+                        <c:when test="${empty log.success}"><span class="badge bg-secondary">UNKNOWN</span></c:when>
                         <c:when test="${log.success}"><span class="badge bg-success">OK</span></c:when>
                         <c:otherwise><span class="badge bg-danger">FAIL</span></c:otherwise>
                     </c:choose>
                     ${e:forHtmlContent(log.resultCode)}
                 </td>
+                <td>${e:forHtmlContent(log.ehrResultCode)}</td>
                 <td>${e:forHtmlContent(log.uao)}</td>
                 <td>${e:forHtmlContent(log.xRequestId)}</td>
                 <td>${e:forHtmlContent(log.xCorrelationId)}</td>
@@ -106,7 +112,7 @@
             </tr>
         </c:forEach>
         <c:if test="${empty logs}">
-            <tr><td colspan="10" class="text-center text-muted">No gateway transactions recorded.</td></tr>
+            <tr><td colspan="11" class="text-center text-muted">No gateway transactions recorded.</td></tr>
         </c:if>
         </tbody>
     </table>

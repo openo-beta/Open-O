@@ -34,10 +34,10 @@ import ca.openosp.openo.utility.SpringUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.owasp.encoder.Encode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -76,6 +76,9 @@ public class UaoAdminAction extends ActionSupport {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "w");
         String providerNo = trimToNull(request.getParameter("providerNo"));
+        if (rejectNonPost(providerNo)) {
+            return NONE;
+        }
         String name = trimToNull(request.getParameter("name"));
         String friendlyName = trimToNull(request.getParameter("friendlyName"));
         String address = trimToNull(request.getParameter("address"));
@@ -116,6 +119,9 @@ public class UaoAdminAction extends ActionSupport {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "w");
         String providerNo = trimToNull(request.getParameter("providerNo"));
+        if (rejectNonPost(providerNo)) {
+            return NONE;
+        }
         UAO uao = findOwned(loggedInInfo, request.getParameter("id"), providerNo);
         if (uao != null) {
             String uaoName = uao.getName();
@@ -135,6 +141,9 @@ public class UaoAdminAction extends ActionSupport {
         LoggedInInfo loggedInInfo = loggedInInfo();
         checkPrivilege(loggedInInfo, "w");
         String providerNo = trimToNull(request.getParameter("providerNo"));
+        if (rejectNonPost(providerNo)) {
+            return NONE;
+        }
         UAO uao = findOwned(loggedInInfo, request.getParameter("id"), providerNo);
         if (uao != null) {
             String previousDefault = currentDefaultName(loggedInInfo, providerNo);
@@ -146,13 +155,27 @@ public class UaoAdminAction extends ActionSupport {
         return NONE;
     }
 
+    /**
+     * Finds one of a provider's authorities that is still in use.
+     *
+     * <p>A withdrawn value is not returned. The list this screen works from only shows active
+     * values, so an id naming a withdrawn one comes from a page left open while someone else
+     * changed it, and acting on it would remove what is already removed or record a default that
+     * was never set.
+     *
+     * @param loggedInInfo LoggedInInfo the acting administrator's session information
+     * @param idValue      String the submitted id, which may be absent or unparseable
+     * @param providerNo   String the provider the value must belong to
+     * @return UAO the matching value, or null when the id names none of theirs
+     */
     private UAO findOwned(LoggedInInfo loggedInInfo, String idValue, String providerNo) {
         Integer id = parseId(idValue);
         if (id == null || providerNo == null) {
             return null;
         }
         UAO uao = ehrConnectivityManager.findUao(loggedInInfo, id);
-        if (uao != null && providerNo.equals(uao.getProviderNo())) {
+        if (uao != null && providerNo.equals(uao.getProviderNo())
+                && Boolean.TRUE.equals(uao.getActive())) {
             return uao;
         }
         return null;
@@ -175,11 +198,25 @@ public class UaoAdminAction extends ActionSupport {
         return "none";
     }
 
+    /**
+     * Refuses a state change that did not arrive as a POST, sending the caller back to the list.
+     *
+     * @param providerNo String the provider whose list to return to, which may be absent
+     * @return boolean true when the request was refused and a redirect written
+     */
+    private boolean rejectNonPost(String providerNo) {
+        if ("POST".equalsIgnoreCase(request.getMethod())) {
+            return false;
+        }
+        redirectToList(providerNo);
+        return true;
+    }
+
     private void redirectToList(String providerNo) {
         try {
             String url = request.getContextPath() + "/admin/uaoAdmin.do";
             if (providerNo != null) {
-                url += "?providerNo=" + URLEncoder.encode(providerNo, "UTF-8");
+                url += "?providerNo=" + Encode.forUriComponent(providerNo);
             }
             response.sendRedirect(url);
         } catch (Exception e) {

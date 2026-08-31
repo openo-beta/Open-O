@@ -156,6 +156,19 @@ function registerViewletOptions(key, options) {
     }
 }
 
+// Fills in the service on the options when the caller named none. Without a service there is
+// nothing to check the Viewlet's reply against, and a reply that confirms some other service
+// would be recorded as a success.
+function withService(options, service) {
+    if (!service || (options && options.service)) {
+        return options;
+    }
+    return {
+        service: service,
+        onOutcome: options ? options.onOutcome : null
+    };
+}
+
 // Options passed to the call win over registered ones, field by field.
 function resolveViewletOptions(key, options) {
     var registered = key ? oneIdViewletOptions[key] : null;
@@ -260,6 +273,9 @@ function doLaunchViewlet(ctx, demographicNo, key, displayMode, options) {
         }
         var timeout = viewletTimeout(data.timeoutMillis);
         var uuid = data.uuid;
+        // The eChart navbar launches without naming a service, so the one the launch endpoint
+        // names is used instead. A caller that named its own keeps it.
+        options = withService(options, data.service);
         if (displayMode === 'modal') {
             openViewletModal(data.viewletUrl, demographicNo, ctx, timeout, key, uuid, options);
         } else {
@@ -400,9 +416,14 @@ function parseViewletCompletion(data, service) {
         }
     }
 
+    // A clinician cancelling and the service returning an error are different outcomes, and an
+    // auditor should not have to read the code out of the error text to tell them apart. An error
+    // still wins over a cancellation: the service said something went wrong.
     var status;
-    if (errors.length > 0 || cancelled) {
+    if (errors.length > 0) {
         status = 'failure';
+    } else if (cancelled) {
+        status = 'cancelled';
     } else if (confirmed) {
         status = 'success';
     } else {
@@ -520,22 +541,25 @@ function popupEHRService(url, demographicNo, ctx, timeout, key, uuid, options) {
     }
     armWaitTimer();
 
-    if (demographicNo) {
-        viewletWindowOpened();
-        var poll = setInterval(function () {
-            if (!popup || popup.closed) {
-                clearInterval(poll);
-                clearTimeout(waitTimer);
-                window.removeEventListener('message', onMessage);
-                reportOnce('noresponse', 'The EHR service window was closed without a response.');
-                if (openPopupViewlet === popup) {
-                    openPopupViewlet = null;
-                }
-                viewletWindowClosed();
+    // Teardown runs for every launch, not only one that named a patient: a window left without it
+    // keeps a message listener and its wait timer for the life of the page, and reports nothing.
+    // Only the patient context needs a patient, so that is the part that is guarded.
+    viewletWindowOpened();
+    var poll = setInterval(function () {
+        if (!popup || popup.closed) {
+            clearInterval(poll);
+            clearTimeout(waitTimer);
+            window.removeEventListener('message', onMessage);
+            reportOnce('noresponse', 'The EHR service window was closed without a response.');
+            if (openPopupViewlet === popup) {
+                openPopupViewlet = null;
+            }
+            viewletWindowClosed();
+            if (demographicNo) {
                 closeViewletPatientContext(ctx, demographicNo);
             }
-        }, 1000);
-    }
+        }
+    }, 1000);
     popup.focus();
 }
 

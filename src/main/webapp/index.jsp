@@ -29,7 +29,6 @@
 <%@ page import="ca.openosp.openo.managers.MfaManager" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix="c" %>
-<%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ page contentType="text/html;charset=UTF-8" session="false" %>
 
 <%
@@ -94,10 +93,6 @@
                 var page = "" + varpage;
                 windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";
                 window.open(page, "gpl", windowprops);
-            }
-
-            function addStartTime() {
-                document.getElementById("oneIdLogin").href += (Math.round(new Date().getTime() / 1000).toString());
             }
 
 
@@ -480,25 +475,6 @@
                 padding-left: 10px
             }
 
-            .oneid-or-divider {
-                display: flex;
-                align-items: center;
-                text-align: center;
-                color: #6c757d;
-                margin: 12px 0;
-            }
-
-            .oneid-or-divider::before,
-            .oneid-or-divider::after {
-                content: "";
-                flex: 1 1 0;
-                border-top: 1px solid #ced4da;
-            }
-
-            .oneid-or-divider span {
-                padding: 0 12px;
-            }
-
             footer {
                 padding: 5px 10px;
                 margin-top: 50px;
@@ -707,8 +683,9 @@
 
                         </form>
 
-                        <oscar:oscarPropertiesCheck property="oneid.enabled" value="true" defaultVal="false">
-                            <!-- <div class="oneid-or-divider"><span>or</span></div> -->
+                        <%-- Shown from the oneid_enabled setting, editable on the EHR Connectivity
+                             admin screen, rather than from a properties file that needs a restart. --%>
+                        <c:if test="${LoginResourceBean.oneIdEnabled}">
                             <a href="${pageContext.request.contextPath}/oneIdLogin.do"
                                id="oneIdLogin" class="btn btn-primary btn-block oneIDLogin">
                                 <span class="oneIDLogo"></span>
@@ -716,7 +693,7 @@
     									<fmt:setBundle basename="oscarResources"/><fmt:message key="loginApplication.oneid"/>
     								</span>
                             </a>
-                        </oscar:oscarPropertiesCheck>
+                        </c:if>
 
                         <c:if test="${ LoginResourceBean.acceptableUseAgreementManager.auaAvailable }">
     			            <span class="extrasmall">

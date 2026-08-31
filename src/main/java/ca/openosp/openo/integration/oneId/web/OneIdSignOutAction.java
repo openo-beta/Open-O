@@ -23,8 +23,6 @@
  */
 package ca.openosp.openo.integration.oneId.web;
 
-import ca.openosp.openo.integration.dhdr.OmdGateway;
-import ca.openosp.openo.integration.ohcms.CMSManager;
 import ca.openosp.openo.integration.oneId.OneIdGatewayData;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
@@ -80,24 +78,27 @@ public class OneIdSignOutAction extends ActionSupport {
             return NONE;
         }
 
-        try {
-            CMSManager.userLogout(loggedInInfo);
-        } catch (Exception e) {
-            logger.error("ONE ID CMS context clear on sign out failed", e);
-        }
-        try {
-            new OmdGateway().revokeToken(loggedInInfo, gatewayData);
-        } catch (Exception e) {
-            logger.error("ONE ID token revoke on sign out failed", e);
-        }
+        OneIdSessionTeardown.endRemoteSession(loggedInInfo, gatewayData);
+        boolean removed = true;
         try {
             ehrConnectivityManager.removeOneIdSession(loggedInInfo, providerNo);
         } catch (Exception e) {
+            removed = false;
             logger.error("ONE ID session removal on sign out failed", e);
         }
 
         clearGatewayData(loggedInInfo, gatewayData);
-        LogAction.addLog(providerNo, LogConst.LOGOUT, "ONE ID", "", request.getRemoteAddr());
+        if (removed) {
+            LogAction.addLog(providerNo, LogConst.LOGOUT, "ONE ID", "", request.getRemoteAddr());
+        } else {
+            // The stored session outlived the attempt to delete it, so the next request restores
+            // it and the provider is signed in again. The grant was already withdrawn, so what
+            // comes back is a session whose tokens no longer work. Recording a sign-out here
+            // would say something happened that did not.
+            LogAction.addLog(providerNo, LogConst.NORIGHT, "ONE ID",
+                    "sign out did not complete: the stored session could not be removed",
+                    request.getRemoteAddr());
+        }
         redirectToPreferences();
         return NONE;
     }

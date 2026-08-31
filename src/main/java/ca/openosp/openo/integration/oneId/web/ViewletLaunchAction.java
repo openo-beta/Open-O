@@ -97,20 +97,28 @@ public class ViewletLaunchAction extends ActionSupport {
             writeFailure("This EHR service is not configured.");
             return NONE;
         }
+        String uniqueToken = Base64.getUrlEncoder().encodeToString(UUID.randomUUID().toString().getBytes());
         try {
-            String uniqueToken = Base64.getUrlEncoder().encodeToString(UUID.randomUUID().toString().getBytes());
             String url = new OmdGateway().getViewletLaunchURL(loggedInInfo, demographicNo, viewlet.getKeyValue(), uniqueToken);
             ObjectNode node = objectMapper.createObjectNode();
             node.put("viewletUrl", url);
             node.put("uuid", uniqueToken);
             node.put("timeoutMillis", viewletTimeoutMillis());
+            // The service this launch is for, so the reply can be checked against it. A Viewlet
+            // acting for several services can confirm one and say nothing about the one the
+            // clinician launched for, and that is not a success.
+            node.put("service", viewlet.getKeyValue());
             writeJson(HttpServletResponse.SC_OK, node);
         } catch (CMSException | IllegalStateException e) {
-            new OmdGateway().logError(loggedInInfo, viewlet.getKeyValue(), "viewletLaunch", e.getMessage(), demographicNo, null);
-            writeFailure(e.getMessage());
+            // When the CMS refuses a context change it is its response body that becomes the
+            // exception message, and that body quotes back the patient just sent, so neither the
+            // audit row nor the reply repeats it. The correlation id ties this row to the launch.
+            new OmdGateway().logError(loggedInInfo, viewlet.getKeyValue(), "viewletLaunch",
+                    "The EHR service did not accept the patient context.", demographicNo, uniqueToken);
+            writeFailure("The EHR service could not be launched. Please try again.");
         } catch (Exception e) {
-            logger.error("Viewlet launch failed", e);
-            new OmdGateway().logError(loggedInInfo, viewlet.getKeyValue(), "viewletLaunch", "The EHR service could not be launched.", demographicNo, null);
+            logger.error("Viewlet launch failed\n" + OmdGateway.stackTraceWithoutMessages(e));
+            new OmdGateway().logError(loggedInInfo, viewlet.getKeyValue(), "viewletLaunch", "The EHR service could not be launched.", demographicNo, uniqueToken);
             writeFailure("The EHR service could not be launched. Please try again.");
         }
         return NONE;
@@ -147,6 +155,11 @@ public class ViewletLaunchAction extends ActionSupport {
         // consent call while the drug override behind it never happens. The launch did not fail,
         // and it did not do what was asked, so it gets its own outcome.
         boolean partial = "partial".equalsIgnoreCase(status);
+
+        // The clinician closed the EHR service without going through with it. Nothing was
+        // accessed, and nothing failed either, so it is recorded as the decision it was rather
+        // than alongside the service's own errors.
+        boolean cancelled = "cancelled".equalsIgnoreCase(status);
         
         try {
             OmdGateway omdGateway = new OmdGateway();
@@ -156,6 +169,11 @@ public class ViewletLaunchAction extends ActionSupport {
                 omdGateway.logError(loggedInInfo, key.trim(), "viewletResultNoResponse",
                         "The EHR service window closed with no response, so the outcome is unknown. "
                                 + "Confirm the result in the EHR service's own data. "
+                                + (message == null ? "" : message),
+                        demographicNo, uniqueToken);
+            } else if (cancelled) {
+                omdGateway.logError(loggedInInfo, key.trim(), "viewletResultCancelled",
+                        "The clinician cancelled at the EHR service, so no access took place. "
                                 + (message == null ? "" : message),
                         demographicNo, uniqueToken);
             } else if (partial) {
@@ -229,7 +247,7 @@ public class ViewletLaunchAction extends ActionSupport {
             node.put("status", "ok");
             writeJson(HttpServletResponse.SC_OK, node);
         } catch (Exception e) {
-            logger.error("CMS patient close failed", e);
+            logger.error("CMS patient close failed\n" + OmdGateway.stackTraceWithoutMessages(e));
             writeFailure("The patient could not be removed from the EHR context.");
         }
         return NONE;

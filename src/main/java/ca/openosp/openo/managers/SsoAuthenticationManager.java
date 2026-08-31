@@ -164,8 +164,10 @@ public class SsoAuthenticationManager implements Serializable {
     public Map<String, Object> checkOneIdLogin(String subject) {
         Map<String, Object> sessionData = checkLogin(new HashMap<>(), subject);
         if (sessionData != null && !sessionData.isEmpty()) {
+            // Only the subject. The oneid_token attribute is read as an access token, by eConsult
+            // to decide a provider is signed in and by the DHIR submission as a bearer header, and
+            // a subject is neither of those. ONE ID tokens live in OneIdSession.
             sessionData.put("oneIdKey", subject);
-            sessionData.put("oneid_token", subject);
         }
         return sessionData;
     }
