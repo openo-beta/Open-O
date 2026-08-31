@@ -154,6 +154,24 @@ public class SsoAuthenticationManager implements Serializable {
         return sessionData;
     }
 
+    /**
+     * Builds session data for a ONE ID login by resolving the provider from the verified subject.
+     * The subject is matched against the provider's stored oneIdKey (the same path SSO uses).
+     *
+     * @param subject String the verified subject (sub) from the ONE ID id_token
+     * @return Map of session attributes, or an empty/null map when no provider is linked to the subject
+     */
+    public Map<String, Object> checkOneIdLogin(String subject) {
+        Map<String, Object> sessionData = checkLogin(new HashMap<>(), subject);
+        if (sessionData != null && !sessionData.isEmpty()) {
+            // Only the subject. The oneid_token attribute is read as an access token, by eConsult
+            // to decide a provider is signed in and by the DHIR submission as a bearer header, and
+            // a subject is neither of those. ONE ID tokens live in OneIdSession.
+            sessionData.put("oneIdKey", subject);
+        }
+        return sessionData;
+    }
+
     public Map<String, Object> checkLogin(Map<String, Object> sessionData, String[] authenticationParams) {
         String[] providerInformation = checkPlainTextLogin(authenticationParams);
         return createSession(sessionData, providerInformation);

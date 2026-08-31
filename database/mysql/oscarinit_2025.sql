@@ -879,3 +879,109 @@ ALTER TABLE security ADD mfaSecret VARCHAR(255);
 -- set to "RSVPreF3"
 -- 
 UPDATE `preventions` SET prevention_type = "RSV" WHERE `prevention_type` = "RSVPreF3";
+
+--
+-- Table structure for table `OMDGatewayTransactionLog`
+-- One audit row per gateway, context and viewlet call. ehrResultCode holds the EHR service's own
+-- outcome code, for example IN_0045; resultCode holds the HTTP status.
+--
+CREATE TABLE IF NOT EXISTS `OMDGatewayTransactionLog` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `ended` timestamp NULL DEFAULT NULL,
+  `initiatingProviderNo` varchar(25) DEFAULT NULL,
+  `transactionType` varchar(50) DEFAULT NULL,
+  `externalSystem` varchar(50) DEFAULT NULL,
+  `demographicNo` int(10) DEFAULT NULL,
+  `resultCode` int(10) DEFAULT NULL,
+  `ehrResultCode` varchar(255) DEFAULT NULL,
+  `messageHeaderId` varchar(64) DEFAULT NULL,
+  `medicationDispenseIds` text,
+  `success` tinyint(1) DEFAULT NULL,
+  `error` longtext,
+  `headers` longtext,
+  `uao` varchar(50) DEFAULT NULL,
+  `oscarSessionId` varchar(50) DEFAULT NULL,
+  `contextSessionId` varchar(50) DEFAULT NULL,
+  `secondsLeft` int(10) DEFAULT NULL,
+  `dataSent` longtext,
+  `uniqueSessionId` varchar(50) DEFAULT NULL,
+  `dataRecieved` longtext,
+  `xRequestId` varchar(50) DEFAULT NULL,
+  `xLobTxId` varchar(50) DEFAULT NULL,
+  `xCorrelationId` varchar(50) DEFAULT NULL,
+  `xGtwyClientId` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `OMDGatewayTransactionLog_uniqueSessionId_idx` (`uniqueSessionId`(40)),
+  KEY `OMDGatewayTransactionLog_provider_idx` (`initiatingProviderNo`),
+  KEY `OMDGatewayTransactionLog_ehrResultCode_idx` (`ehrResultCode`(64))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Table structure for table `OneIdSession`
+-- Persisted ONE ID session: tokens, toolbar, UAO and hubTopic per provider.
+--
+CREATE TABLE IF NOT EXISTS `OneIdSession` (
+  `providerNo` varchar(25) NOT NULL,
+  `refreshToken` varchar(2048) DEFAULT NULL,
+  `idToken` varchar(8192) DEFAULT NULL,
+  `accessToken` blob,
+  `subject` varchar(128) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `uaoName` varchar(255) DEFAULT NULL,
+  `uaoUpi` varchar(64) DEFAULT NULL,
+  `serviceEntitlements` text,
+  `authorizationId` varchar(1024) DEFAULT NULL,
+  `hubTopic` varchar(255) DEFAULT NULL,
+  `timestamp` bigint(20) NOT NULL DEFAULT 0,
+  `lastKeptActive` datetime DEFAULT NULL,
+  `sso` tinyint(1) DEFAULT 0,
+  `toolbar` blob DEFAULT NULL,
+  PRIMARY KEY (`providerNo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Table structure for table `OneIdViewlet`
+-- Configurable list of EHR service viewlets.
+--
+CREATE TABLE IF NOT EXISTS `OneIdViewlet` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `keyValue` varchar(50) NOT NULL,
+  `updatedBy` varchar(10) DEFAULT NULL,
+  `updateTime` datetime DEFAULT NULL,
+  `showInEchart` tinyint(1) DEFAULT 1,
+  `deleted` tinyint(1) DEFAULT 0,
+  `displayMode` varchar(20) NOT NULL DEFAULT 'non-modal',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Table structure for table `UAO`
+-- "Under Authority Of" values, one row per provider and authority assignment.
+--
+CREATE TABLE IF NOT EXISTS `UAO` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `providerNo` varchar(25) DEFAULT NULL,
+  `friendlyName` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `province` varchar(255) DEFAULT NULL,
+  `postal` varchar(25) DEFAULT NULL,
+  `defaultUAO` tinyint(1) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  `addedBy` varchar(25) DEFAULT NULL,
+  `dateCreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `dateUpdated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `UAO_provider_name_idx` (`providerNo`,`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Alter table structure for table `SystemPreferences`, widened value column for the EHR
+-- connectivity gateway settings: a PEM encoded 2048-bit public key is around 450 characters and
+-- an endpoint URL carrying query parameters can exceed 255.
+--
+ALTER TABLE `SystemPreferences`
+MODIFY COLUMN `value` VARCHAR(1000) NULL;
