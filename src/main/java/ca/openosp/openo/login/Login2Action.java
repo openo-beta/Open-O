@@ -395,8 +395,13 @@ public final class Login2Action extends ActionSupport {
             // invalidate the existing session
             HttpSession session = request.getSession(false);
             String verifiedOneIdSubject = null;
+            String sessionNameId = null;
             if (session != null) {
                 verifiedOneIdSubject = (String) session.getAttribute("oneIdSubject");
+                // The SAML sign-in leaves its subject on the session and index.jsp renders it into
+                // a hidden field for this form to post back. Held here because the session is
+                // about to be replaced, and the posted value is only trusted if it matches this.
+                sessionNameId = (String) session.getAttribute("nameId");
                 if (request.getParameter("invalidate_session") != null
                         && request.getParameter("invalidate_session").equals("false")) {
                     // don't invalidate in this case it messes up authenticity of OAUTH
@@ -414,7 +419,7 @@ public final class Login2Action extends ActionSupport {
             // Process ONE ID if present
             String oneIdKey = (verifiedOneIdSubject != null && !verifiedOneIdSubject.isEmpty())
                     ? verifiedOneIdSubject
-                    : request.getParameter("nameId");
+                    : postedNameIdMatchingSession(sessionNameId, strAuth[0]);
             String oneIdEmail = request.getParameter("email");
             
             // If the oneIdKey parameter is not null and is not an empty string
@@ -893,4 +898,37 @@ public final class Login2Action extends ActionSupport {
     public void setMfaRegistrationFlow(boolean mfaRegistrationFlow) {
         this.mfaRegistrationFlow = mfaRegistrationFlow;
     }
+
+    /**
+     * The ONE ID subject posted with the sign-in form, but only when it is the one the server had
+     * already put on the session.
+     *
+     * <p>The subject arrives as a hidden field, so on its own it is whatever the browser chose to
+     * send. Binding an account to an unchecked value lets anyone who can sign in claim somebody
+     * else's ONE ID identity: the next time its real owner signs in through ONE ID, the subject
+     * resolves to the account that claimed it and they are signed in as that person, with their
+     * tokens stored against it.</p>
+     *
+     * <p>The legitimate route for this field is the SAML sign-in, which leaves the subject on the
+     * session for index.jsp to render, so a genuine value always matches what was held. A value
+     * matching nothing was invented by the sender and is refused.</p>
+     *
+     * @param sessionNameId String the subject held on the session before it was replaced, or null
+     * @param providerNo    String the provider signing in, for the log line
+     * @return String the posted subject when it matches the session, otherwise null
+     */
+    private String postedNameIdMatchingSession(String sessionNameId, String providerNo) {
+        String posted = request.getParameter("nameId");
+        if (posted == null || posted.isEmpty()) {
+            return null;
+        }
+        if (sessionNameId != null && sessionNameId.equals(posted)) {
+            return posted;
+        }
+        // Not logged with the value: it names a person.
+        logger.warn("Refused a ONE ID subject posted with the sign-in form for provider " + providerNo
+                + "; it did not match the one held on the session");
+        return null;
+    }
+
 }
