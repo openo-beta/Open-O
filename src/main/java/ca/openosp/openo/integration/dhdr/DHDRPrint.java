@@ -127,6 +127,13 @@ public class DHDRPrint {
       table.addCell(getHeaderCell("Pickup Date"));
       table.addCell(getItemCell(displayDate(med.optString("pickUpDate"))));
 
+      // DHDR13.01(b) / BP14: the Detailed view is scoped to one event, so the DHDR-side identity that
+      // belongs on this page is that event's own contained Patient - which is what the viewer now sends
+      // as dhdrPatient - together with the per-field match flags the screen shows. One HCN search can
+      // legitimately return several recorded identities; without this block the paper carried only the
+      // page header and lost the mismatch marking that is the whole point of BP14 clause 2.
+      addEventPatientRows(table, jsonOb.optJSONObject("dhdrPatient"));
+
       table.addCell(getHeaderCell("Generic"));
       table.addCell(getItemCell(med.optString("genericName"))); // Generic
 
@@ -467,7 +474,7 @@ public class DHDRPrint {
                 + med.optString("drugDosageForm")
                 + " "
                 + med.optString("dispensedDrugStrength")));
-    table.addCell(getItemCell(med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")));
+    table.addCell(getItemCell(therapeuticClassText(med)));
     table.addCell(getItemCell(med.optString("dose") + " " + med.optString("doseUnit")));
     table.addCell(getItemCell(frequencyText(med)));
     table.addCell(
@@ -549,8 +556,7 @@ public class DHDRPrint {
         new Column("Pharmacy Service Type", med -> serviceTypeWithPin(med.optJSONObject("brandName"))),
         new Column("Pharmacy Service Description", med -> med.optString("genericName")),
         new Column("Rx Number", med -> med.optString("rxNumber")),
-        new Column("Therapeutic Class/Sub-class",
-            med -> med.optString("ahfsClass") + "/" + med.optString("ahfsSubClass")),
+        new Column("Therapeutic Class/Sub-class", this::therapeuticClassText),
         new Column("Pharmacy Name", med -> med.optString("dispensingPharmacy")),
         new Column("Pharmacist", this::pharmacistName),
         new Column("Pharmacy Fax", med -> med.optString("dispensingPharmacyFaxNumber")));
@@ -796,8 +802,9 @@ public class DHDRPrint {
    * <p>Accepts what the two sources supply: epoch milliseconds from the EMR transfer objects, an ISO
    * date or date-time from the DHDR service. Anything else is returned unchanged rather than blanked.
    *
-   * <p>Display only - {@code sortByWhenPreparedDesc} compares the raw ISO strings, where lexical
-   * order is chronological order, so formatting before sorting would break it.
+   * <p>Display only - {@code sortByDateDesc} compares the raw ISO strings, and an ISO string compares
+   * year, month and day before any time part, so lexical order is the printed date order. Formatting
+   * before sorting would break that.
    *
    * @param raw String the value as it arrives, possibly empty
    * @return String the date as "MMM d, yyyy", or the input unchanged when it cannot be parsed
@@ -1231,7 +1238,12 @@ public class DHDRPrint {
     }
 
     if (jsonOb.has("localData")) {
-      JSONArray localArr = jsonOb.getJSONArray("localData");
+      // DHDR05.02 requires the EMR-recorded medications in descending chronological order by default,
+      // and DHDR13.01(d) carries the View's element set onto the paper. The browser posts this array in
+      // DrugDao.findByDemographicId's order - createDate DESC - while the column printed as "Start Date"
+      // is rxDate, a different field, so a back-dated or bulk-entered prescription landed out of order.
+      // The screen hides that because its orderBy sorts at render time and never touches the array.
+      JSONArray localArr = sortByDateDesc(jsonOb.getJSONArray("localData"), "rxDate", "EMR prescription");
       document.add(Chunk.NEWLINE);
       addSectionHeading(document, "EMR Prescriptions", localArr.length());
       // DHDR13.01(d): the printout must carry "all data elements required for the View", and for the
@@ -1275,29 +1287,103 @@ public class DHDRPrint {
   }
 
   /**
+   * Renders the DHDR-maintained patient identity for the event being printed into the Detailed view's
+   * label/value table, marking any field that disagrees with the EMR record.
+   *
+   * <p>The marker text matches the screen's, deliberately: a reader comparing paper against the modal
+   * should see the same word. A field with no value is left blank rather than marked - "not recorded in
+   * the DHDR" and "recorded differently" are different facts, and the viewer already distinguishes them.
+   *
+   * @param table PdfPTable the two-column detail table being built
+   * @param eventPatient JSONObject the event's own patient identity and match flags, or null
+   */
+  private void addEventPatientRows(PdfPTable table, JSONObject eventPatient) {
+    if (eventPatient == null) {
+      return;
+    }
+    // nameUnmatched is one flag over both name parts, so the name is printed as one row, exactly as
+    // the modal prints it. Split across a First Name and a Last Name row the single flag would mark
+    // both when only one differs, asserting a mismatch on a field that in fact agrees with the EMR.
+    addEventPatientRow(table, "Patient Name", eventPatientName(eventPatient),
+        eventPatient.optBoolean("nameUnmatched", false));
+    addEventPatientRow(table, "Gender", eventPatient.optString("gender", ""),
+        eventPatient.optBoolean("genderUnmatched", false));
+    String dob = eventPatient.optString("dob", "");
+    addEventPatientRow(table, "DOB", dob.isEmpty() ? "" : displayDate(dob),
+        eventPatient.optBoolean("dobUnmatched", false));
+    // Age is derived, so it carries no match flag of its own; DHDR13.01(b) lists it alongside the rest.
+    addEventPatientRow(table, "Age", computeAge(dob), false);
+    addEventPatientRow(table, "HIN", eventPatient.optString("hin", ""),
+        eventPatient.optBoolean("hinUnmatched", false));
+  }
+
+  /**
+   * Joins the event patient's name parts the way the Detailed view's modal shows them - "Last, First" -
+   * so paper and screen read alike. Either part may be absent, and a name with only one part is
+   * rendered without a dangling separator.
+   *
+   * @param eventPatient JSONObject the event's own patient identity
+   * @return String the name, or an empty string when neither part was recorded
+   */
+  String eventPatientName(JSONObject eventPatient) {
+    String last = eventPatient.optString("lastName", "").trim();
+    String first = eventPatient.optString("firstName", "").trim();
+    if (last.isEmpty()) {
+      return first;
+    }
+    return first.isEmpty() ? last : last + ", " + first;
+  }
+
+  /**
+   * Adds one label/value row of the event patient block, appending the unmatched marker when the field
+   * both has a value and disagrees with the EMR.
+   *
+   * @param table PdfPTable the two-column detail table being built
+   * @param label String the row label
+   * @param value String the value, already formatted for display; may be empty
+   * @param unmatched boolean whether this field disagrees with the EMR record
+   */
+  private void addEventPatientRow(PdfPTable table, String label, String value, boolean unmatched) {
+    table.addCell(getHeaderCell(label));
+    table.addCell(getItemCell(eventPatientCellValue(value, unmatched)));
+  }
+
+  /**
+   * Renders one event-patient value, appending the unmatched marker only when the field has a value to
+   * mark. An absent field is left blank: "not recorded in the DHDR" and "recorded differently from the
+   * EMR" are different facts, and marking the first as the second would assert a comparison that was
+   * never made.
+   *
+   * @param value String the value, already formatted for display; may be empty
+   * @param unmatched boolean whether this field disagrees with the EMR record
+   * @return String the cell text
+   */
+  String eventPatientCellValue(String value, boolean unmatched) {
+    return !value.isEmpty() && unmatched ? value + " (UNMATCHED)" : value;
+  }
+
+  /**
    * Builds the DHDR-side patient demographic line (DHDR13.01.b) from the front-end {@code
    * dhdrPatient} object (first/last name, gender, DOB, HIN as maintained by the DHDR EHR Service).
    *
    * @param dhdrPatient JSONObject the DHDR-side patient, or null when none was resolved
    * @return String the demographic line, or an empty string when no DHDR patient is available
    */
-  private String buildDhdrDemoLine(JSONObject dhdrPatient) {
+  String buildDhdrDemoLine(JSONObject dhdrPatient) {
     if (dhdrPatient == null) {
       return "";
     }
-    String first = dhdrPatient.optString("firstName", "").trim();
-    String last = dhdrPatient.optString("lastName", "").trim();
+    String name = eventPatientName(dhdrPatient);
     String gender = dhdrPatient.optString("gender", "").trim();
     String dob = dhdrPatient.optString("dob", "").trim();
     String hin = dhdrPatient.optString("hin", "").trim();
-    if (first.isEmpty() && last.isEmpty() && dob.isEmpty() && hin.isEmpty()) {
+    if (name.isEmpty() && dob.isEmpty() && hin.isEmpty()) {
       return "";
     }
+    // Same join as the Detailed view's patient block, so the header and the table below it cannot
+    // render one patient's name two ways.
     StringBuilder sb = new StringBuilder("DHDR EHR Service - ");
-    sb.append(last);
-    if (!first.isEmpty()) {
-      sb.append(", ").append(first);
-    }
+    sb.append(name);
     if (!gender.isEmpty()) {
       sb.append("   Gender: ").append(gender);
     }
@@ -1344,6 +1430,28 @@ public class DHDRPrint {
   }
 
   /**
+   * Renders the therapeutic class / sub-class cell, emitting the separator only when there is a value on
+   * both sides of it.
+   *
+   * <p>BP17 states the DHDR maintains these for pharmacy services and not for drug dispenses, and the
+   * drug grid duly printed a bare "/" on every row. Dropping the column would have been wrong: the IG's
+   * own examples carry AHFS codings on drug dispenses, so a service that supplies them would have had
+   * them hidden. Rendering conditionally is correct whichever way the live service behaves, and it
+   * covers the pharmacy grid too, where a service missing one of the pair had the same exposure.
+   *
+   * @param med JSONObject the dispense or pharmacy-service event
+   * @return String "class / sub-class", either one alone, or empty
+   */
+  String therapeuticClassText(JSONObject med) {
+    String cls = optText(med, "ahfsClass");
+    String sub = optText(med, "ahfsSubClass");
+    if (cls.isEmpty()) {
+      return sub;
+    }
+    return sub.isEmpty() ? cls : cls + " / " + sub;
+  }
+
+  /**
    * Returns a copy of the given events ordered by dispense date ({@code whenPrepared}) descending -
    * most recent first - as the printed history requires (DHDR13.01). Events with no whenPrepared
    * value sort last. The source array is left unmodified.
@@ -1359,6 +1467,32 @@ public class DHDRPrint {
    * @return JSONArray the events ordered by whenPrepared descending
    */
   private JSONArray sortByWhenPreparedDesc(JSONArray arr, String entryLabel) throws JSONException {
+    return sortByDateDesc(arr, "whenPrepared", entryLabel);
+  }
+
+  /**
+   * Returns a copy of the given events ordered by the named ISO date field descending - most recent
+   * first. Events with no value for that field sort last, since the empty string compares below every
+   * date. The source array is left unmodified.
+   *
+   * <p>The comparison is lexical on the raw ISO strings. An ISO-8601 value compares year, then month,
+   * then day before it reaches any time part, so the result is descending order of the date each row
+   * prints - which is the order DHDR13.01 asks for at the granularity this page renders.
+   *
+   * <p>A FHIR {@code dateTime} may also carry a time and a UTC offset, so two values can order one way
+   * by instant and the other by string. That only happens between values sharing a printed date, or
+   * where a value in a local offset and one in {@code Z} straddle midnight - and in that second case
+   * ordering by instant would print the earlier date above the later one, which on a page showing only
+   * dates reads as a fault. Ordering by the string keeps the printed dates in the order a reader can
+   * check. Every dispense OMD returns is date-only in any event.
+   *
+   * @param arr JSONArray the events to order
+   * @param dateField String the property holding the ISO date to order by
+   * @param entryLabel String what the entries are, for the skip log ("drug", "service", "EMR prescription")
+   * @return JSONArray the events ordered by that field, descending
+   */
+  JSONArray sortByDateDesc(JSONArray arr, String dateField, String entryLabel)
+      throws JSONException {
     List<JSONObject> list = new ArrayList<>();
     for (int i = 0; i < arr.length(); i++) {
       JSONObject event = arr.optJSONObject(i);
@@ -1369,7 +1503,7 @@ public class DHDRPrint {
       }
       list.add(event);
     }
-    list.sort((a, b) -> b.optString("whenPrepared", "").compareTo(a.optString("whenPrepared", "")));
+    list.sort((a, b) -> b.optString(dateField, "").compareTo(a.optString(dateField, "")));
     JSONArray sorted = new JSONArray();
     for (JSONObject event : list) {
       sorted.put(event);

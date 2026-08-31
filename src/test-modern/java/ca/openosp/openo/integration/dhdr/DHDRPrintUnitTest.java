@@ -7,6 +7,7 @@ import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
 import java.util.List;
 import java.util.Locale;
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -765,6 +766,281 @@ class DHDRPrintUnitTest extends OpenOUnitTestBase {
     void shouldReturnEmpty_whenMismatchObjectIsBare() throws Exception {
       // Nothing to report is preferable to a line reading "reported searching: ".
       assertThat(print.serviceReportedPeriod(med())).isEmpty();
+    }
+  }
+
+  /**
+   * The EMR half of the Comparative printout was the one array that reached the page unsorted. The
+   * browser posts it in {@code DrugDao.findByDemographicId}'s order - {@code createDate DESC} - while
+   * the column printed as "Start Date" reads {@code rxDate}, a different field, so a back-dated or
+   * bulk-entered prescription landed out of order. DHDR05.02 makes descending chronological order a
+   * MUST by default and DHDR13.01(d) carries the View's element set onto the paper.
+   *
+   * <p>The screen hid this: its {@code orderBy} sorts at render time and never touches the underlying
+   * array, so the two halves disagreed only on paper.
+   */
+  @Nested
+  @DisplayName("sortByDateDesc")
+  class SortByDateDescTests {
+
+    private JSONArray arrayOf(String... dates) throws Exception {
+      JSONArray arr = new JSONArray();
+      for (String d : dates) {
+        JSONObject o = new JSONObject();
+        if (d != null) {
+          o.put("rxDate", d);
+        }
+        arr.put(o);
+      }
+      return arr;
+    }
+
+    private List<String> datesOf(JSONArray arr) {
+      return java.util.stream.IntStream.range(0, arr.length())
+          .mapToObj(i -> arr.optJSONObject(i).optString("rxDate", ""))
+          .toList();
+    }
+
+    @Test
+    @DisplayName("should order EMR prescriptions most-recent-first by the printed Start Date field")
+    void shouldOrderByRxDateDescending_notPostedOrder() throws Exception {
+      // Deliberately not already sorted, and not reverse-sorted either: an implementation that simply
+      // reversed the posted order would pass a two-element fixture.
+      JSONArray sorted =
+          print.sortByDateDesc(
+              arrayOf("2024-02-01", "2026-01-15", "2019-11-30", "2025-06-05"),
+              "rxDate",
+              "EMR prescription");
+
+      assertThat(datesOf(sorted))
+          .containsExactly("2026-01-15", "2025-06-05", "2024-02-01", "2019-11-30");
+    }
+
+    @Test
+    @DisplayName("should sort prescriptions with no start date last rather than first")
+    void shouldSortMissingDatesLast() throws Exception {
+      JSONArray sorted =
+          print.sortByDateDesc(
+              arrayOf(null, "2020-01-01", null, "2023-08-09"), "rxDate", "EMR prescription");
+
+      assertThat(datesOf(sorted)).containsExactly("2023-08-09", "2020-01-01", "", "");
+    }
+
+    @Test
+    @DisplayName("should leave the posted array unmodified")
+    void shouldNotMutateTheSourceArray() throws Exception {
+      JSONArray source = arrayOf("2020-01-01", "2026-01-01");
+
+      print.sortByDateDesc(source, "rxDate", "EMR prescription");
+
+      assertThat(datesOf(source)).containsExactly("2020-01-01", "2026-01-01");
+    }
+
+    @Test
+    @DisplayName("should skip a malformed entry rather than lose the whole printout")
+    void shouldSkipNonObjectEntries() throws Exception {
+      // Same isolation the rendering loops give: one bad element costs one row, not the PDF.
+      JSONArray source = arrayOf("2020-01-01", "2026-01-01");
+      source.put("not an object");
+
+      JSONArray sorted = print.sortByDateDesc(source, "rxDate", "EMR prescription");
+
+      assertThat(datesOf(sorted)).containsExactly("2026-01-01", "2020-01-01");
+    }
+
+    @Test
+    @DisplayName("should still order DHDR events by dispense date, as the whenPrepared caller expects")
+    void shouldOrderByAnyNamedDateField() throws Exception {
+      JSONArray arr = new JSONArray();
+      JSONObject older = new JSONObject();
+      older.put("whenPrepared", "2021-03-03");
+      JSONObject newer = new JSONObject();
+      newer.put("whenPrepared", "2022-04-04");
+      arr.put(older);
+      arr.put(newer);
+
+      JSONArray sorted = print.sortByDateDesc(arr, "whenPrepared", "drug");
+
+      assertThat(sorted.optJSONObject(0).optString("whenPrepared")).isEqualTo("2022-04-04");
+    }
+  }
+
+  /**
+   * BP14 clause 2 requires every event whose patient metadata disagrees with the EMR to be flagged. The
+   * Detailed printout carried no patient block at all and took its identity from the result-set
+   * headline, so a divergent event was printed under the wrong name with the mismatch marking lost.
+   */
+  @Nested
+  @DisplayName("event patient cell")
+  class EventPatientCellTests {
+
+    @Test
+    @DisplayName("should mark a value that disagrees with the EMR record")
+    void shouldAppendMarker_whenFieldUnmatched() {
+      assertThat(print.eventPatientCellValue("5259156783", true)).isEqualTo("5259156783 (UNMATCHED)");
+    }
+
+    @Test
+    @DisplayName("should leave a matching value unmarked")
+    void shouldLeaveValueAlone_whenFieldMatches() {
+      assertThat(print.eventPatientCellValue("5259156783", false)).isEqualTo("5259156783");
+    }
+
+    @Test
+    @DisplayName("should not mark a field the DHDR did not supply")
+    void shouldNotMarkAnEmptyValue() {
+      // "not recorded in the DHDR" and "recorded differently" are different facts; a bare
+      // "(UNMATCHED)" beside no value asserts a comparison that was never made.
+      assertThat(print.eventPatientCellValue("", true)).isEmpty();
+    }
+  }
+
+  /**
+   * The viewer derives one nameUnmatched flag from both name parts, and the Detailed view's modal
+   * shows the name as a single "Last, First" line. The print splitting it across two rows meant one
+   * flag marked two fields, so a surname that differed marked the given name as well - asserting a
+   * mismatch on a field that in fact agreed with the EMR. Raised in AI review.
+   */
+  @Nested
+  @DisplayName("eventPatientName")
+  class EventPatientNameTests {
+
+    private JSONObject patient(String last, String first) throws Exception {
+      JSONObject o = new JSONObject();
+      if (last != null) {
+        o.put("lastName", last);
+      }
+      if (first != null) {
+        o.put("firstName", first);
+      }
+      return o;
+    }
+
+    @Test
+    @DisplayName("should join both parts the way the modal shows them")
+    void shouldJoinLastAndFirst() throws Exception {
+      assertThat(print.eventPatientName(patient("Kirby", "Susan"))).isEqualTo("Kirby, Susan");
+    }
+
+    @Test
+    @DisplayName("should render a surname alone without a dangling separator")
+    void shouldOmitSeparator_whenFirstNameMissing() throws Exception {
+      assertThat(print.eventPatientName(patient("Kirby", ""))).isEqualTo("Kirby");
+    }
+
+    @Test
+    @DisplayName("should render a given name alone without a leading separator")
+    void shouldOmitSeparator_whenLastNameMissing() throws Exception {
+      assertThat(print.eventPatientName(patient(null, "Susan"))).isEqualTo("Susan");
+    }
+
+    @Test
+    @DisplayName("should be empty when the DHDR recorded no name at all")
+    void shouldBeEmpty_whenNeitherPartRecorded() throws Exception {
+      assertThat(print.eventPatientName(patient(null, null))).isEmpty();
+    }
+
+    @Test
+    @DisplayName("should mark the whole name once when either part differs from the EMR")
+    void shouldMarkTheCombinedNameOnce() throws Exception {
+      // The single flag now governs a single row, so a differing surname can no longer mark a
+      // given name that matches.
+      String name = print.eventPatientName(patient("Kirbey", "Susan"));
+      assertThat(print.eventPatientCellValue(name, true)).isEqualTo("Kirbey, Susan (UNMATCHED)");
+    }
+  }
+
+  /**
+   * The page header joins the same name the Detailed view's patient block does. It used to do so with
+   * its own copy of the logic, which appended ", " to an empty surname - so a patient recorded with a
+   * given name and no family name headed the page with a dangling separator. Both now share
+   * eventPatientName, so the header and the table below it cannot render one patient two ways.
+   */
+  @Nested
+  @DisplayName("buildDhdrDemoLine")
+  class DhdrDemoLineTests {
+
+    private JSONObject patient(String last, String first, String dob, String hin) throws Exception {
+      JSONObject o = new JSONObject();
+      o.put("lastName", last == null ? "" : last);
+      o.put("firstName", first == null ? "" : first);
+      o.put("dob", dob == null ? "" : dob);
+      o.put("hin", hin == null ? "" : hin);
+      return o;
+    }
+
+    @Test
+    @DisplayName("should head the page with the name, DOB, age and HIN")
+    void shouldRenderTheFullLine() throws Exception {
+      String line = print.buildDhdrDemoLine(patient("Kirby", "Susan", "1980-04-02", "5259156783"));
+      assertThat(line).startsWith("DHDR EHR Service - Kirby, Susan");
+      assertThat(line).contains("DOB: Apr 2, 1980").contains("HIN: 5259156783");
+    }
+
+    @Test
+    @DisplayName("should not head the page with a dangling separator when there is no surname")
+    void shouldNotLeadWithASeparator_whenLastNameMissing() throws Exception {
+      String line = print.buildDhdrDemoLine(patient("", "Susan", "1980-04-02", null));
+      assertThat(line).startsWith("DHDR EHR Service - Susan");
+      assertThat(line).doesNotContain("- , ");
+    }
+
+    @Test
+    @DisplayName("should render nothing when the DHDR resolved no patient at all")
+    void shouldBeEmpty_whenNothingIdentifiesThePatient() throws Exception {
+      assertThat(print.buildDhdrDemoLine(patient("", "", "", ""))).isEmpty();
+      assertThat(print.buildDhdrDemoLine(null)).isEmpty();
+    }
+  }
+
+  /**
+   * BP17 says the DHDR maintains Therapeutic Class / Sub-Class for pharmacy services and not for drug
+   * dispenses, and the drug grid printed a bare "/" for every row. The first fix removed the column,
+   * which was wrong: the IG's own example bundles carry AHFS codings on drug dispenses, so a service
+   * that supplies them would have had them hidden. Rendering the separator conditionally is correct
+   * either way, and it also covers a pharmacy service that carries only one of the pair.
+   */
+  @Nested
+  @DisplayName("therapeuticClassText")
+  class TherapeuticClassTests {
+
+    private JSONObject med(String cls, String sub) throws Exception {
+      JSONObject o = new JSONObject();
+      if (cls != null) {
+        o.put("ahfsClass", cls);
+      }
+      if (sub != null) {
+        o.put("ahfsSubClass", sub);
+      }
+      return o;
+    }
+
+    @Test
+    @DisplayName("should join class and sub-class when both are present")
+    void shouldJoinBoth() throws Exception {
+      assertThat(print.therapeuticClassText(med("CENTRAL NERVOUS SYSTEM DRUG", "NONSTEROIDAL ANTI-INFLAMMATORY AGENTS")))
+          .isEqualTo("CENTRAL NERVOUS SYSTEM DRUG / NONSTEROIDAL ANTI-INFLAMMATORY AGENTS");
+    }
+
+    @Test
+    @DisplayName("should render the class alone rather than a trailing separator")
+    void shouldRenderClassAlone() throws Exception {
+      assertThat(print.therapeuticClassText(med("CENTRAL NERVOUS SYSTEM DRUG", null)))
+          .isEqualTo("CENTRAL NERVOUS SYSTEM DRUG");
+    }
+
+    @Test
+    @DisplayName("should render the sub-class alone rather than a leading separator")
+    void shouldRenderSubClassAlone() throws Exception {
+      assertThat(print.therapeuticClassText(med(null, "NONSTEROIDAL ANTI-INFLAMMATORY AGENTS")))
+          .isEqualTo("NONSTEROIDAL ANTI-INFLAMMATORY AGENTS");
+    }
+
+    @Test
+    @DisplayName("should render nothing at all when the DHDR supplied neither")
+    void shouldRenderNothing_whenNeitherPresent() throws Exception {
+      // The reported defect: every drug row carried an orphaned "/".
+      assertThat(print.therapeuticClassText(med(null, null))).isEmpty();
     }
   }
 }

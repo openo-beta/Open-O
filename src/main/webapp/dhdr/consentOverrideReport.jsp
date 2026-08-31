@@ -44,6 +44,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     String missingObject = null;
@@ -90,28 +91,28 @@
         <div class="form-group">
             <label for="searchLastName">Patient last name</label>
             <input type="text" class="form-control" id="searchLastName" name="searchLastName"
-                   value="<c:out value='${searchLastName}'/>"/>
+                   value="${e:forHtmlAttribute(searchLastName)}"/>
         </div>
         <div class="form-group">
             <label for="searchUniqueId">Patient Unique ID</label>
             <input type="text" class="form-control" id="searchUniqueId" name="searchUniqueId"
-                   value="<c:out value='${searchUniqueId}'/>"/>
+                   value="${e:forHtmlAttribute(searchUniqueId)}"/>
         </div>
         <div class="form-group">
             <label for="dateFrom">From</label>
             <input type="date" class="form-control" id="dateFrom" name="dateFrom"
-                   value="<c:out value='${dateFrom}'/>"/>
+                   value="${e:forHtmlAttribute(dateFrom)}"/>
         </div>
         <div class="form-group">
             <label for="dateTo">To</label>
             <input type="date" class="form-control" id="dateTo" name="dateTo"
-                   value="<c:out value='${dateTo}'/>"/>
+                   value="${e:forHtmlAttribute(dateTo)}"/>
         </div>
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <c:if test="${not empty dateWarning}">
-        <div class="alert alert-warning"><c:out value="${dateWarning}"/></div>
+        <div class="alert alert-warning">${e:forHtml(dateWarning)}</div>
     </c:if>
 
     <p><strong>${fn:length(rows)}</strong> override request(s) found.</p>
@@ -137,12 +138,12 @@
             <c:otherwise>
                 <c:forEach var="row" items="${rows}">
                     <tr>
-                        <td><c:out value="${row.dateTime}"/></td>
-                        <td><c:out value="${row.emrUser}"/></td>
-                        <td><c:out value="${row.uniqueId}"/></td>
-                        <td><c:out value="${row.patientName}"/></td>
-                        <td><c:out value="${row.hcn}"/></td>
-                        <td><c:out value="${row.choice}"/></td>
+                        <td>${e:forHtml(row.dateTime)}</td>
+                        <td>${e:forHtml(row.emrUser)}</td>
+                        <td>${e:forHtml(row.uniqueId)}</td>
+                        <td>${e:forHtml(row.patientName)}</td>
+                        <td>${e:forHtml(row.hcn)}</td>
+                        <td>${e:forHtml(row.choice)}</td>
                     </tr>
                 </c:forEach>
             </c:otherwise>

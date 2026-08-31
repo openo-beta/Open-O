@@ -38,7 +38,7 @@
 	boolean authed=true;
 %><security:oscarSec roleName="<%=roleName$%>" objectName="_rx" rights="r" reverse="<%=true%>">
 	<%authed=false; %>
-	<%response.sendRedirect("../securityError.jsp?type=_admin&type=_admin.misc");%>
+	<%response.sendRedirect("../securityError.jsp?type=_rx");%>
 </security:oscarSec><%
 	if(!authed) {
 		return;
@@ -121,7 +121,7 @@
 	<script src="<%=request.getContextPath() %>/web/common/providerServices.js"></script>	
 	<script src="<%=request.getContextPath() %>/web/common/dhdrServices.js"></script>	
 	<script src="<%=request.getContextPath() %>/web/common/rxServices.js"></script>	
-	<script src="<%=request.getContextPath() %>/web/filters.js"></script>
+	<script src="<%=request.getContextPath() %>/web/common/filters.js"></script>
 	<%-- DHDR11.01: the shared ONE ID viewlet helpers. parseViewletCompletion reads the ONE Access
 	     Viewlet Framework completion message and reportViewletResult records the outcome, so the
 	     consent viewlet is read and audited by the same code as every other EHR service rather than
@@ -355,13 +355,20 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
+					<%-- DHDR03.01: the total is indicated for the view whether or not it returned anything.
+					     Inside the table it was gated on the same ng-show as the table, so a patient with
+					     pharmacy service events but no drug dispenses saw the heading and then nothing at
+					     all - no table, no zero - while the both-empty case fell through to the "No records
+					     found" message below. Held back until the walk has finished so it does not read 0
+					     mid-search. --%>
+					<div style="margin-bottom:4px;" ng-show="searchComplete && !searching">
+						{{meds.length}} results returned
+						<span ng-if="meds.length > 0">
+							<button type="button" class="btn btn-default btn-xs" ng-click="toggleExpandAll()">{{expandAll ? 'Collapse All' : 'Expand All'}}</button>  <button type="button" class="btn btn-default btn-xs" ng-click="printSummary()">Print</button>
+						</span>
+					</div>
 					<table class="table table-condensed table-striped table-bordered" ng-show="meds.length > 0">
 						<thead>
-							<tr>
-								<td colspan="12">
-									{{meds.length}} results returned  <button type="button" class="btn btn-default btn-xs" ng-click="toggleExpandAll()">{{expandAll ? 'Collapse All' : 'Expand All'}}</button>  <button type="button" class="btn btn-default btn-xs" ng-click="printSummary()">Print</button>
-								</td>
-							</tr>
 							<tr>
 								<th>
 									<a ng-click="orderByField='whenPrepared'; reverseSort = !reverseSort">
@@ -441,7 +448,7 @@
 									</a>
 								</td>
 								<td>{{med.brandName.display}} {{med.dispensedDrugStrength}} {{med.drugDosageForm}}</td>
-								<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
+								<td>{{med | dhdrTherapeutic}}</td>
 								<td>{{med.dose}} {{med.doseUnit}}</td>
 								<td>{{med | dhdrFrequency}}</td>
 								<td>{{med.dispensedQuantity}} {{med.dispensedQuantityUnit}}</td>
@@ -524,13 +531,20 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
+					<%-- DHDR03.01: the total is indicated for the view whether or not it returned anything.
+					     Inside the table it was gated on the same ng-show as the table, so a patient with
+					     pharmacy service events but no drug dispenses saw the heading and then nothing at
+					     all - no table, no zero - while the both-empty case fell through to the "No records
+					     found" message below. Held back until the walk has finished so it does not read 0
+					     mid-search. --%>
+					<div style="margin-bottom:4px;" ng-show="searchComplete && !searching">
+						{{services.length}} results returned
+						<span ng-if="services.length > 0">
+							<button type="button" class="btn btn-default btn-xs" ng-click="toggleExpandAllServices()">{{expandAllServices ? 'Collapse All' : 'Expand All'}}</button>  <button type="button" class="btn btn-default btn-xs" ng-click="printSummary()">Print</button>
+						</span>
+					</div>
 					<table class="table table-condensed table-striped table-bordered" ng-show="services.length > 0">
 						<thead>
-							<tr>
-								<td colspan="10">
-									{{services.length}} results returned  <button type="button" class="btn btn-default btn-xs" ng-click="toggleExpandAllServices()">{{expandAllServices ? 'Collapse All' : 'Expand All'}}</button>  <button type="button" class="btn btn-default btn-xs" ng-click="printSummary()">Print</button>
-								</td>
-							</tr>
 							<tr>
 								<th>
 									<a ng-click="serviceOrderByField='whenPrepared'; serviceReverseSort = !serviceReverseSort">Dispensed Date <span ng-show="serviceOrderByField == 'whenPrepared'"><span ng-show="!serviceReverseSort">^</span><span ng-show="serviceReverseSort">v</span></span></a>
@@ -568,7 +582,7 @@
 								<td>{{med.brandName.display}}</td>
 								<td>{{med.genericName}} <span ng-if="med.eventPatient.anyUnmatched" class="label label-warning" title="{{med.eventPatient.unmatchedSummary}}">Patient data differs</span> <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span></td>
 								<td>{{med.rxNumber}}</td>
-								<td scope="row">{{med.ahfsClass}}/{{med.ahfsSubClass}}</td>
+								<td scope="row">{{med | dhdrTherapeutic}}</td>
 								<td>{{med.dispensingPharmacy}}</td>
 								<td>{{med | dhdrPharmacist}}</td>
 								<td>{{med.dispensingPharmacyFaxNumber}}</td>
@@ -719,7 +733,7 @@
 											{{med.brandName.display}} {{med.dispensedDrugStrength}} {{med.drugDosageForm}} ({{med.genericName}}) <span ng-if="med.eventPatient.anyUnmatched" class="label label-warning" title="{{med.eventPatient.unmatchedSummary}}">Patient data differs</span> <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span>
 										</a>
 									</td>
-									<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
+									<td>{{med | dhdrTherapeutic}}</td>
 				 					<td>{{med.dispensedQuantity}} {{med.dispensedQuantityUnit}}</td>
 									<td>{{med.dose}}  {{med.doseUnit}}</td>
 									<td>{{med | dhdrFrequency}}</td>
@@ -791,13 +805,12 @@
 								</div>
 							</form>
 						</div>
+						<%-- DHDR03.01: see the summary view - the count must survive an empty section. --%>
+						<div style="margin-bottom:4px;" ng-show="searchComplete && !searching">
+							{{services.length}} results returned
+						</div>
 						<table class="table table-condensed table-striped table-bordered" ng-show="services.length > 0">
 							<thead>
-							<tr>
-								<td colspan="8">
-									{{services.length}} results returned
-								</td>
-							</tr>
 							<tr>
 								<th>
 									<a ng-click="serviceOrderByField='whenPrepared'; serviceReverseSort = !serviceReverseSort">
@@ -863,7 +876,7 @@
 								<td>{{med.brandName.display}}</td>
 								<td>{{med.genericName}} <span ng-if="med.eventPatient.anyUnmatched" class="label label-warning" title="{{med.eventPatient.unmatchedSummary}}">Patient data differs</span> <span ng-if="med.statusNotCompleted" class="label label-danger" title="This dispense event is not in a completed state and may have been reversed or recorded in error.">{{med.status}}</span></td>
 								<td>{{med.rxNumber}}</td>
-								<td>{{med.ahfsClass}} / {{med.ahfsSubClass}}</td>
+								<td>{{med | dhdrTherapeutic}}</td>
 								<td>{{med.dispensingPharmacy}} - Fax:{{med.dispensingPharmacyFaxNumber}}</td>
 								<td>{{med | dhdrPharmacist}}</td>
 
@@ -959,6 +972,9 @@
 			</div>
         </div>
         <div class="modal-body" id="modal-body">
+            <%-- A print failure has to be reported inside the modal: this template runs under
+                 ModalInstanceCtrl, which cannot reach the controller's serviceErrors list. --%>
+            <div class="alert alert-danger" role="alert" ng-if="printError">{{printError}}</div>
             <div class="md-dialog-content" id="dialogContentApptProvider">
             
             <div class="row">
@@ -1003,11 +1019,14 @@
 		 					<th>DIN/PIN</th>
 							<td>{{med.brandName.code}}</td>
  						</tr>
-						<tr>
+						<%-- BP17: not maintained for drug dispenses, so these rendered as two empty rows on
+						     every drug event. Rendered only when a value is actually present - the same
+						     treatment DHDRPrint.printDetail already gives them. --%>
+						<tr ng-if="med.ahfsClass">
 		 					<th>Therapeutic Class</th>
 							<td>{{med.ahfsClass}}</td>
  						</tr>
-						<tr>
+						<tr ng-if="med.ahfsSubClass">
 		 					<th>Therapeutic Sub-Class</th>
 							<td>{{med.ahfsSubClass}}</td>
  						</tr>
@@ -1286,6 +1305,20 @@
 		// Both separators are conditional: four cells composed this inline and all four dropped the
 		// guards, so a service whose pharmacist carries no OCP licence read as ", ". A filter for the
 		// same reason as dhdrFrequency above: two of the four cells render in their own modal scope.
+		// BP17 says the DHDR maintains Therapeutic Class / Sub-Class for pharmacy services and not for
+		// drug dispenses, and the drug tables duly rendered a bare "/" for every row. Removing the column
+		// was wrong, though: the IG's own examples DO carry AHFS codings on drug dispenses, so the column
+		// hides real data whenever the service supplies it. Render the separator only when there is
+		// something on both sides of it, which is right in either case.
+		app.filter('dhdrTherapeutic', function(){
+			return function(med){
+				if(!med){ return ""; }
+				var cls = (med.ahfsClass || "").trim();
+				var sub = (med.ahfsSubClass || "").trim();
+				return cls ? (sub ? cls + " / " + sub : cls) : sub;
+			};
+		});
+
 		app.filter('dhdrPharmacist', function(){
 			return function(med){
 				if(!med){ return ""; }
@@ -1578,6 +1611,21 @@
 				currentViewValue = 'summary';
 			}
 			
+			// A print that fails leaves the user with nothing to act on if it is announced through an
+			// alert() that says only "Error getting printout". Not a DHDR14.01 case - this is the EMR's
+			// own PDF build, not a message from the DHDR EHR Service - but the notice list is where the
+			// reader already looks, and it carries the code, severity, time and what to do next.
+			var printFailed = function(view){
+				$scope.serviceErrors.push({
+					httpMessage: "The " + view + " printout could not be produced.",
+					httpCode: "DHDR13.01",
+					severity: "error",
+					dateTime: new Date(),
+					moreInformation: "The records shown on screen are unaffected. Try printing again; if it"
+						+ " keeps failing, report it to your EMR administrator with the time shown here."
+				});
+			};
+
 			$scope.printSummary = function(){
 				var toPrint = {};
 				toPrint.meds = $scope.meds;
@@ -1598,8 +1646,7 @@
 				       var fileURL = URL.createObjectURL(file);
 				       window.open(fileURL);
 				}, function(errorMessage) {
-					alert("Error getting printout");
-					//rxComp.error = errorMessage;
+					printFailed("Summary");
 				});	
 				//window.open('../ws/rs/dhdr/'+$scope.demographicNo+'/print/summary','_blank');
 			}
@@ -1625,8 +1672,7 @@
 				       var fileURL = URL.createObjectURL(file);
 				       window.open(fileURL);
 				}, function(errorMessage) {
-					alert("Error getting printout");
-					//rxComp.error = errorMessage;
+					printFailed("Comparative");
 				});	
 				//window.open('../ws/rs/dhdr/'+$scope.demographicNo+'/print/summary','_blank');
 			}
@@ -1645,7 +1691,20 @@
 						});
 						
 					}, function(errorMessage) {
-						//rxComp.error = errorMessage;
+						// The point of this view is to set the provincial record beside the local one, so an
+						// EMR column that is empty because the load failed must not read as "this patient has
+						// no medications". Empty the list so the count is honest, and raise it where the
+						// reader already looks for service problems.
+						$scope.compLocalMeds = [];
+						$scope.serviceErrors.push({
+							httpMessage: "The EMR medication list could not be loaded, so the EMR side of this"
+								+ " comparison is empty. It does not mean the patient has no medications recorded.",
+							httpCode: "DHDR05.02",
+							severity: "error",
+							dateTime: new Date(),
+							moreInformation: "Re-open the comparative view to try again. Use the patient's"
+								+ " medication record in the EMR to compare against the DHDR results below."
+						});
 					});	
 				
 			}
@@ -2152,6 +2211,15 @@
 			
 			$scope.callSearch = function(){
 
+				// A days value applySearchDays refused - zero, negative, or past the arithmetic's ceiling -
+				// left the two date fields as they were, so the box would otherwise go on displaying a period
+				// this search does not ask for. Cleared here rather than as it is typed: applySearchDays runs
+				// on every keystroke, and 40000 passes through 4, 40, 400 on the way in.
+				let enteredDays = parseInt($scope.searchDays, 10);
+				if (!isNaN(enteredDays) && (enteredDays < 1 || enteredDays > maxDaysToSearch)) {
+					$scope.clearSearchDays();
+				}
+
 				$scope.buttonDisabled = true;
 				$scope.meds = [];
 				$scope.services = [];
@@ -2273,6 +2341,10 @@
 				if (typeof total !== "number" || $scope.collectedEntries >= total) { return; }
 				$scope.resultShortfall = { received: $scope.collectedEntries, expected: total };
 			};
+
+			// Ceiling on the paged walk in search(). At _count=1000 a page is 1000 events, so this is far
+			// above any real patient history; reaching it means the service is not terminating the walk.
+			const MAX_SEARCH_PAGES = 50;
 
 			search = function(demographicNo,searchConfig){
 				$scope.searching = true;
@@ -2457,6 +2529,25 @@
 						}else{
 							$scope.searchConfig.pageId = $scope.searchConfig.pageId+1;
 						}
+						// A service that always advertises a next page - misbehaving, or looping on a cursor
+						// it does not recognise - would recurse until the browser gave out, hammering the
+						// endpoint on the way. At _count=1000 the cap is far above any real result set, so
+						// reaching it means the walk is not terminating. Stop, and say so: a truncated list
+						// shown silently is the failure this notice exists to prevent, same as the
+						// resultShortfall case.
+						if($scope.searchConfig.pageId > MAX_SEARCH_PAGES){
+							walkFinished();
+							$scope.serviceErrors.push({
+								httpMessage: "The DHDR EHR Service kept offering further pages of results;"
+									+ " the list below was stopped after " + MAX_SEARCH_PAGES + " pages and may be incomplete.",
+								httpCode: "DHDR02.01",
+								severity: "error",
+								dateTime: new Date(),
+								moreInformation: "Narrow the search date range and try again. Use other available"
+									+ " sources of medication information to confirm this patient's history."
+							});
+							return;
+						}
 						search($scope.demographicNo,$scope.searchConfig);
 					} else {
 						walkFinished();
@@ -2476,7 +2567,16 @@
 					//search($scope.demographicNo,$scope.searchConfig);
 					$scope.callSearch();
 				},function(reason){
-					alert(reason);
+					// Was alert(reason), which rendered the rejection object as [object Object] and then
+					// left the viewer silent - callSearch() never runs, so the page simply sits empty.
+					$scope.serviceErrors.push({
+						httpMessage: "The patient record could not be loaded, so no DHDR search was sent.",
+						httpCode: "DHDR02.02",
+						severity: "error",
+						dateTime: new Date(),
+						moreInformation: "Close this window and re-open the DHDR view from the patient's"
+							+ " prescription screen. If it recurs, report it to your EMR administrator."
+					});
 				});
 			};
 			
@@ -2601,19 +2701,39 @@
 						  .then(showOverrideResult, showOverrideResult);
 			  }
 			
+    		  // DHDR10.01 / DHDR14.01: every path that fails to bring up the PCOI viewlet reports through
+    		  // the notice list, with a code, a severity, a timestamp and a next step the EMR user can take
+    		  // without an admin role.
+    		  var viewletLaunchFailed = function(detail){
+				  $scope.serviceErrors.push({
+					  httpMessage: "The Temporary Consent Unblock could not be started.",
+					  httpCode: "DHDR10.01",
+					  severity: "error",
+					  dateTime: new Date(),
+					  moreInformation: (detail ? detail + " " : "")
+						  + "The patient's consent block remains in force and no drug or pharmacy service"
+						  + " information was retrieved. Try again; if it keeps failing, report it to your"
+						  + " EMR administrator with the time shown here."
+				  });
+			  };
+
     		  $scope.callConsentBlock = function($event){
 				  	$scope.buttonDisabled = true;
     				dhdrService.getConsentOveride($scope.demographicNo, "PCOI").then(function(response){
 						$scope.buttonDisabled = false;
     					if(response.status == 268){
-    						alert("Error check the log for more details :\n"+response.data.summary);// response.data);
+    						// DHDR14.01: "check the log" is not direction a clinician can act on, and the log is
+    						// admin-gated - the requirement states the EMR user MUST NOT need admin role access
+    						// to be notified of an error. PHI-free: the summary is the service's own rejection
+    						// text, and the technical detail stays in the audit row.
+    						viewletLaunchFailed(response.data ? response.data.summary : null);
     						return;
     					}
     					
     					var med = response.data;
 
 							if (!med || !med.referenceURL) {
-								alert("Error retrieving Temporary Consent Override: Viewlet URL is null");
+								viewletLaunchFailed("The service returned no viewlet address.");
 								return;
 							}
     					
@@ -2716,7 +2836,7 @@
     					
     				},function(reason){
 						$scope.buttonDisabled = false;
-    					alert(reason);
+    					viewletLaunchFailed(null);
     				});
     				
     		  }
@@ -2758,7 +2878,6 @@
 				 return this.genericName+":"+this.dispensedDrugStrength+":"+this.drugDosageForm;
 			 }
 			
-			this.uniqVal = this.genericName+":"+this.dispensedDrugStrength+":"+this.drugDosageForm;
 			 
 			 /*
 <pre>
@@ -2773,12 +2892,40 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 			 
 			 */
 			
+			// DHDR06.01(d) names the Current Rx Number. The consumer profile carries identifier 1..1, so a
+			// conformant response holds only that one - but the submission profile allows a second (the
+			// Original Rx Number), the two are told apart only by the trailing NamingSystem id, and array
+			// order is not guaranteed. Taking whichever was serialised last could therefore display the
+			// original as though it were the current one.
+			//
+			// Three suffixes occur: the IG examples and the FHIR-to-CDS mapping use "-rx-number", while
+			// the submission profile's invariant permits "-current-rx-number" and "-original-rx-number".
+			// So prefer an explicit current one, otherwise take anything that is not explicitly the
+			// original, and only fall back to the original if it is all there is. Matched on the suffix
+			// for the same reason as the contained Medication codings below.
 			if(angular.isDefined(this.med.resource.identifier)){
+				var rxFallback;
 				for (ident of  this.med.resource.identifier) {
-					if(angular.isDefined(ident.value)){
-						this.rxNumber = ident.value;			
+					if(!angular.isDefined(ident.value)){
+						continue;
 					}
-				}				
+					var system = angular.isDefined(ident.system) ? ident.system : "";
+					if(system.endsWith("-current-rx-number")){
+						this.rxNumber = ident.value;
+						break;
+					}
+					if(!system.endsWith("-original-rx-number")){
+						// "-rx-number", or no system at all. First one wins, so the choice is deterministic.
+						if(!angular.isDefined(this.rxNumber)){
+							this.rxNumber = ident.value;
+						}
+					}else if(!angular.isDefined(rxFallback)){
+						rxFallback = ident.value;
+					}
+				}
+				if(!angular.isDefined(this.rxNumber)){
+					this.rxNumber = rxFallback;
+				}
 			} 
 			 
 			 /*
@@ -3113,10 +3260,17 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 			}
 
 			$scope.printDetail = function(){
+					$scope.printError = null;
 					var toPrint = {};
 					toPrint.med = $scope.med;
-					// DHDR13.01.b: the DHDR-side patient demographic printed on each page
-					toPrint.dhdrPatient = $scope.dhdrPatient;
+					// DHDR13.01(b) / BP14: this view is scoped to ONE event, so the DHDR-side identity on the
+					// paper must be that event's own contained Patient - the same one the modal shows above,
+					// with its per-field match flags - not the result set's headline. One HCN search can
+					// legitimately return several recorded identities, which is why the banner collects
+					// variants; sending the headline made the printout assert the wrong one for a divergent
+					// event and drop the mismatch flag with it. eventPatient carries the same five fields
+					// buildDhdrDemoLine reads, plus the flags the print now renders.
+					toPrint.dhdrPatient = $scope.med.eventPatient;
 
 					$http.post('../ws/rs/dhdr/'+demoNo+'/print/detail',toPrint,{ responseType: 'arraybuffer' }).then(function (response) {
 						
@@ -3124,8 +3278,12 @@ j) Pharmacy Phone Number [Organization.telecom[1].value]
 					       var fileURL = URL.createObjectURL(file);
 					       window.open(fileURL);
 					}, function(errorMessage) {
-						alert("Error getting printout");
-						//rxComp.error = errorMessage;
+						// Reported on the modal itself: this runs in a $modal scope, which cannot see the
+						// controller's serviceErrors list. Same reason the patient block had to be decorated
+						// onto the event rather than exposed as a controller helper.
+						$scope.printError = "The Detailed printout could not be produced. The record shown here"
+							+ " is unaffected. Try again; if it keeps failing, report it to your EMR"
+							+ " administrator, noting the time.";
 					});	
 					//window.open('../ws/rs/dhdr/'+$scope.demographicNo+'/print/summary','_blank');
 			

@@ -1,7 +1,11 @@
 package ca.openosp.openo.integration.dhdr;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import javax.ws.rs.core.MultivaluedHashMap;
@@ -12,6 +16,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 
 import ca.openosp.openo.commn.model.OMDGatewayTransactionLog;
 
@@ -24,6 +29,10 @@ import ca.openosp.openo.commn.model.OMDGatewayTransactionLog;
  * as a failure even when the service omits the {@code X-Request-Id} correlation header, and a
  * successful response body must be captured only when the caller opts in - the OAuth token endpoints
  * share this method and return credentials in the body.
+ *
+ * <p>A third is covered here because it cannot be seen from the audit row at all: the response has to
+ * survive being audited. Reading a CXF entity closes it, so a response audited without being buffered
+ * first is unreadable by the caller that asked for it.
  */
 @Tag("unit")
 @Tag("dhdr")
@@ -169,6 +178,90 @@ class OmdGatewayCompleteLogUnitTest {
       OmdGateway.completeLog(log, response(400, "req-1"), false);
 
       assertThat(log.getError()).isEqualTo(BODY);
+    }
+  }
+
+  @Nested
+  @DisplayName("entity survives being audited")
+  class EntityAvailability {
+
+    @Test
+    @DisplayName("should buffer the entity before reading it when the caller opts in")
+    void shouldBufferEntity_beforeReadingBody() {
+      OMDGatewayTransactionLog log = new OMDGatewayTransactionLog();
+      Response response = response(200, "req-1");
+
+      OmdGateway.completeLog(log, response, true);
+
+      // Order is the whole point: buffering after the read is too late, the stream is already closed.
+      InOrder inOrder = inOrder(response);
+      inOrder.verify(response).bufferEntity();
+      inOrder.verify(response).readEntity(String.class);
+    }
+
+    @Test
+    @DisplayName("should buffer the entity on a failure the caller did not opt in to")
+    void shouldBufferEntity_whenFailureAndCallerDidNotOptIn() {
+      OMDGatewayTransactionLog log = new OMDGatewayTransactionLog();
+      Response response = response(400, "req-1");
+
+      OmdGateway.completeLog(log, response, false);
+
+      // A failed token call is read for its error here and read again by the OAuth caller.
+      verify(response).bufferEntity();
+    }
+
+    @Test
+    @DisplayName("should buffer the entity even when the caller does not opt in")
+    void shouldBufferEntity_whenCallerDoesNotOptIn() {
+      OMDGatewayTransactionLog log = new OMDGatewayTransactionLog();
+      Response response = response(200, "req-1");
+
+      OmdGateway.completeLog(log, response, false);
+
+      // DHDRManager.search2 and the DHIR retrievals read the body after this returns; nothing here
+      // knows whether a given caller will, so the entity is left re-readable for all of them.
+      // Whether this method reads it is a separate property, asserted in ResponsePayloadCapture.
+      verify(response).bufferEntity();
+    }
+
+    @Test
+    @DisplayName("should still record the outcome when the entity cannot be read at all")
+    void shouldRecordOutcome_whenEntityCannotBeBuffered() {
+      OMDGatewayTransactionLog log = new OMDGatewayTransactionLog();
+      Response response = response(503, "req-1");
+      // An entity consumed before this method saw it fails BOTH calls, not just the buffering.
+      // Throwing only on bufferEntity would leave the read below to succeed, and the assertion that
+      // the row survives would then hold for a reason the real failure does not supply.
+      IllegalStateException consumed = new IllegalStateException("Entity is not available");
+      doThrow(consumed).when(response).bufferEntity();
+      when(response.readEntity(String.class)).thenThrow(consumed);
+
+      OmdGateway.completeLog(log, response, true);
+
+      // An audit row is owed for the call whether or not its body can be recovered (DHDR15.01):
+      // the outcome fields do not depend on the body, so only the message text is lost.
+      assertThat(log.getSuccess()).isFalse();
+      assertThat(log.getResultCode()).isEqualTo(503);
+      assertThat(log.getxRequestId()).isEqualTo("req-1");
+      assertThat(log.getError()).isNull();
+    }
+
+    @Test
+    @DisplayName("should record the outcome of a success whose body cannot be read")
+    void shouldRecordOutcome_whenSuccessBodyCannotBeRead() {
+      OMDGatewayTransactionLog log = new OMDGatewayTransactionLog();
+      Response response = response(200, "req-1");
+      when(response.readEntity(String.class))
+          .thenThrow(new IllegalStateException("Entity is not available"));
+
+      OmdGateway.completeLog(log, response, true);
+
+      // The other call site of the same read: an opted-in capture that cannot recover the payload
+      // still leaves a row saying the call succeeded.
+      assertThat(log.getSuccess()).isTrue();
+      assertThat(log.getResultCode()).isEqualTo(200);
+      assertThat(log.getDataRecieved()).isNull();
     }
   }
 

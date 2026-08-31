@@ -135,27 +135,40 @@ public class OmdGateway {
 	/**
 	 * Records the outcome of a gateway call on its transaction log row.
 	 *
-	 * @param storeResponseDetail when false neither the response body nor the response headers are
-	 *                            stored. Used for the OAuth calls: a token response carries access
-	 *                            and refresh tokens in its body, and an authorize response carries
-	 *                            the authorization code in its Location header. The correlation
-	 *                            headers are still lifted into their own columns above, so a call
-	 *                            excluded here is still traceable.
+	 * <p>The response headers and body are only captured when {@code storeResponseDetail} is set.
+	 * Callers that exchange credentials must leave it unset: the OAuth token endpoints return access
+	 * and refresh tokens in the body, an authorize response carries the authorization code in its
+	 * Location header, and either may set a session cookie. None of that belongs in the audit table.
+	 * The outcome fields above are always recorded, for every caller, and the correlation headers are
+	 * lifted into their own columns, so a call excluded here is still traceable.
+	 *
+	 * <p>The entity is buffered before it is read, because auditing a response must not consume it.
+	 * A CXF response stream is readable once, and reading it closes it, so without buffering the
+	 * caller's own read of the same response fails with "Entity is not available". Every caller that
+	 * reads a body does so after this method has returned - {@code DHDRManager.search2} and the DHIR
+	 * retrievals for the payload they were called for, the OAuth callers for a token response whose
+	 * failure was recorded here.</p>
+	 *
+	 * @param log OMDGatewayTransactionLog the row opened before the call was made
+	 * @param response2 Response the response returned by the gateway
+	 * @param storeResponseDetail boolean whether the response headers and body belong in the audit row
 	 */
 	protected static void completeLog(OMDGatewayTransactionLog log, Response response2, boolean storeResponseDetail) {
 		log.setResultCode(response2.getStatus());
 		log.setEnded(new Date());
 
-		// Buffer the entity so the body can be read here and again by the caller
-		// (a CXF response stream is otherwise consumable only once).
-		String body = "";
 		try {
 			response2.bufferEntity();
-			body = response2.readEntity(String.class);
 		} catch (Exception e) {
-			logger.warn("Could not read gateway response body (" + e.getClass().getSimpleName() + ")");
+			// An entity already consumed or closed cannot be buffered, and the reads below then fail on it
+			// too - which is why they go through readBody rather than calling readEntity directly. The
+			// class name only: a transport exception's message carries the request URI, and the DHDR
+			// request URI carries the patient's health number.
+			logger.warn("Gateway response entity could not be buffered (" + e.getClass().getSimpleName() + ")");
 		}
 
+		// The correlation identifiers are recorded whenever the service supplies them, but their
+		// absence must not suppress the outcome: a failure that omits X-Request-Id is still a failure.
 		String xRequestId = response2.getHeaderString("X-Request-Id");
 		if (xRequestId != null) {
 			log.setxRequestId(xRequestId);
@@ -168,6 +181,12 @@ public class OmdGateway {
 		if (xCorrelationId != null) {
 			log.setxCorrelationId(xCorrelationId);
 		}
+
+		// Read once and used three times below. readBody re-reads the buffered entity on every call,
+		// and a DHDR searchset is the largest body the gateway returns, so this is not a place to
+		// take it three times. It goes through readBody rather than readEntity so that a response
+		// which could not be buffered yields null here instead of throwing over the outcome fields.
+		String body = readBody(response2);
 
 		// Parsed once and read three times: every call reaches here, including the OAuth ones whose
 		// bodies are not FHIR at all, so this is not a place to parse the same string repeatedly.
@@ -182,14 +201,10 @@ public class OmdGateway {
 		log.setMessageHeaderId(extractBundleId(responseJson));
 		log.setMedicationDispenseIds(extractMedicationDispenseIds(responseJson));
 
-		if (response2.getStatus() >= 300) {
-			log.setSuccess(false);
+		boolean failed = response2.getStatus() >= 300;
+		log.setSuccess(!failed);
+		if (failed) {
 			log.setError(body);
-		} else {
-			log.setSuccess(true);
-			if (storeResponseDetail) {
-				log.setDataRecieved(body);
-			}
 		}
 
 		// Headers are withheld on the same terms as the body, because an OAuth response carries
@@ -202,6 +217,11 @@ public class OmdGateway {
 				headers.append(headerName).append(":").append(response2.getHeaderString(headerName)).append("\n");
 			}
 			log.setHeaders(headers.toString());
+			if (!failed) {
+				// The body is PHI (DHDR) or clinical payload; the access-controlled audit table is its
+				// only sanctioned destination. It must not be echoed to the application log.
+				log.setDataRecieved(body);
+			}
 		}
 	}
 
@@ -485,6 +505,28 @@ public class OmdGateway {
 	}
 
 	/**
+	 * Reads a gateway response body, or {@code null} when it cannot be read.
+	 *
+	 * <p>An audit row is owed for every call, and its outcome fields - status, return code,
+	 * correlation identifiers - do not depend on the body. A body that cannot be read therefore costs
+	 * the row its {@code error} or {@code dataRecieved} text, not the row itself. The case that
+	 * reaches here is an entity consumed before this class saw it: buffering fails on it, and so does
+	 * this read.</p>
+	 *
+	 * @param response2 Response the response to read the body from
+	 * @return String the body, or {@code null} if it could not be read
+	 */
+	private static String readBody(Response response2) {
+		try {
+			return response2.readEntity(String.class);
+		} catch (Exception e) {
+			// Class name only, for the reason given where the buffering failure is logged.
+			logger.warn("Gateway response body could not be read (" + e.getClass().getSimpleName() + ")");
+			return null;
+		}
+	}
+
+	/**
 	 * Records an interaction that does not itself call an EHR service - a user viewing or printing
 	 * data already retrieved from one (DHDR15.01).
 	 *
@@ -495,8 +537,39 @@ public class OmdGateway {
 	 *     interaction is not scoped to a single patient
 	 */
 	public void logInteraction(LoggedInInfo loggedInInfo, String externalSystem, String transactionType, Integer demographicNo) {
+		logInteraction(loggedInInfo, externalSystem, transactionType, demographicNo, Boolean.TRUE, null, null);
+	}
+
+	/**
+	 * Records an interaction that does not itself call an EHR service, with the outcome the EMR actually
+	 * observed (DHDR15.01 / DHDR15.02).
+	 *
+	 * <p>The four-argument form above is for interactions that cannot fail once they are reached - a view
+	 * or a print of data already in hand - and so records success unconditionally. This form exists for
+	 * the ones that can: a decision posted back from a viewlet may report that it did not complete, or
+	 * report a code the EMR does not recognise, and an audit row must not claim an outcome nobody
+	 * observed. The decision itself stays in {@code transactionType}, which is what the DHDR13.02 report
+	 * reads, so recording an unsuccessful transaction does not hide which choice was made.</p>
+	 *
+	 * @param loggedInInfo LoggedInInfo the current session, supplying the initiating EMR user
+	 * @param externalSystem String the EHR service the interaction concerns, e.g. {@link AuditInfo#DHDR}
+	 * @param transactionType String the interaction, e.g. {@link AuditInfo#VIEW} or a consent-override choice
+	 * @param demographicNo Integer the patient the interaction concerns, or {@code null} when it is not
+	 *     scoped to a single patient
+	 * @param success Boolean the outcome the EMR observed
+	 * @param detail String the payload describing the interaction, or {@code null} to leave it unset
+	 * @param correlationId String the correlation identifier, or {@code null} when the caller had none
+	 */
+	public void logInteraction(LoggedInInfo loggedInInfo, String externalSystem, String transactionType,
+			Integer demographicNo, Boolean success, String detail, String correlationId) {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, externalSystem, transactionType);
-		omdGatewayTransactionLog.setSuccess(Boolean.TRUE);
+		omdGatewayTransactionLog.setSuccess(success);
+		if (detail != null) {
+			omdGatewayTransactionLog.setDataRecieved(detail);
+		}
+		if (correlationId != null) {
+			omdGatewayTransactionLog.setxCorrelationId(correlationId);
+		}
 		persistCompleted(omdGatewayTransactionLog);
 	}
 
