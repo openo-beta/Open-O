@@ -1970,6 +1970,7 @@ if (userAgent != null) {
                                                             <c:out value="${ attachedDocument.description }"/>
                                                             <input name="docNo" value="${ attachedDocument.docId }"
                                                                    id="delegate_docNo${ attachedDocument.docId }"
+                                                                   data-delegate-type="doc"
                                                                    class="delegateAttachment" type="hidden">
                                                         </td>
                                                     </tr>
@@ -2469,7 +2470,7 @@ if (userAgent != null) {
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgHealthCard"/>
                                         </td>
-                                        <td class="tite1"><%=Encode.forHtml(String.valueOf(thisForm.getPatientHealthNum()))%><%=Encode.forHtml(String.valueOf(thisForm.getPatientHealthCardVersionCode()))%><%=Encode.forHtml(String.valueOf(thisForm.getPatientHealthCardType()))%>
+                                        <td class="tite1"><%=Encode.forHtml(thisForm.getFormattedHealthCard())%>
                                         </td>
                                     </tr>
                                     <tr id="conReqSendTo">
@@ -3170,19 +3171,41 @@ if (userAgent != null) {
                 jQuery("#attachDocumentDisplay").load(trigger.data('poload'), function (response, status, xhr) {
                     if (status === "success") {
                         $mainForm.find(".delegateAttachment").each(function (index, data) {
-                            let delegate = "#" + this.id.split("_")[1];
+                            let delegateKey = this.id.split("_")[1];
+
+                            // DOC sections share name="docNo" with distinct ids; look up by name+value.
+                            // Skip if server-pre-attached; else mark as unsaved client-side selection.
+                            if (jQuery(this).data("delegate-type") === "doc") {
+                                let docValue = this.value;
+                                let matches = jQuery('#attachDocumentsForm').find('input[name="docNo"][value="' + docValue + '"]');
+                                if (matches.filter('[data-pre-attached="true"]').length > 0) {
+                                    return;
+                                }
+                                matches.prop("checked", true);
+                                matches.each(function () {
+                                    let $m = jQuery(this);
+                                    let oldType = $m.attr("class").split(" ")[0];
+                                    $m.removeClass(oldType).addClass(oldType.split("_")[0] + "_pre_check");
+                                });
+                                matches.attr("data-pre-attached", "true");
+                                return;
+                            }
+
+                            let delegate = "#" + delegateKey;
                             let element = jQuery('#attachDocumentsForm').find(delegate);
                             if (element.length === 0) {
                                 element = addFormIfNotFound(data, '<%=Encode.forJavaScript(String.valueOf(demo))%>', delegate);
                             }
-                            let elementClassType = element.attr("class").split("_")[0];
-                            element.attr("checked", true).attr("class", elementClassType + "_pre_check");
+                            let oldType = element.attr("class").split(" ")[0];
+                            element.attr("checked", true).removeClass(oldType).addClass(oldType.split("_")[0] + "_pre_check");
 
                             // Expand list if selected lab is older version
                             if (element.attr('data-version')) {
                                 expandLabVersionList(element.parent().parent().parent().find('.collapse-arrow'));
                             }
                         });
+
+                        syncPreCheckedToDelegates($mainForm, true);
 
                         // Disable all EncounterForm (form) checkboxes in the attachment window if a consultation request is created using OceanMD.
                         if (typeof disableFields !== 'undefined' && disableFields === true) {
@@ -3211,34 +3234,40 @@ if (userAgent != null) {
                     beforeClose: function (event, ui) {
                         // before the dialog is closed:
 
+                        // warn on NEW (not pre-attached) private eDoc selections
+                        if (!confirmPrivateDocsIfAny('#attachDocumentsForm')) {
+                            return false;
+                        }
+
+                        // Cross-section dedupe: same docNo can render in patient + provider sections.
+                        var seenDelegates = {};
                         // pass the checked elements to the consultation request form
-                        jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
+                        jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .providerPrivateDocument_check:checked:not(input[disabled='disabled']), .providerPublicDocument_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
                         ).each(function (index, data) {
                             var element = jQuery(this);
-                            var input = jQuery("<input />", {
-                                type: 'hidden',
-                                name: element.attr('name'),
-                                value: element.val(),
-                                id: "delegate_" + element.attr('id'),
-                                class: 'delegateAttachment'
-                            });
+                            var key = element.attr('name') + "::" + element.val();
+                            if (seenDelegates[key]) return;
+                            seenDelegates[key] = true;
+                            var input = buildDelegateInput(element);
+                            // entry_ row id uses name+value (not checkbox id) so the three DOC sections share a row key.
                             var row = jQuery("<tr>", {id: "entry_" + element.attr("name") + element.val()});
                             var column = jQuery("<td>");
                             var target = "#attachedDocumentsTable";
 
-                            if ("lab_check".indexOf(element.attr("class")) !== -1) {
+                            // Route each item to its section by type class (boxes carry multiple classes, e.g. "lab_check attachable_check").
+                            if (element.hasClass("lab_check")) {
                                 target = "#attachedLabsTable";
                             }
 
-                            if ("form_check".indexOf(element.attr("class")) !== -1) {
+                            if (element.hasClass("form_check")) {
                                 target = "#attachedFormsTable";
                             }
 
-                            if ("eForm_check".indexOf(element.attr("class")) != -1) {
+                            if (element.hasClass("eForm_check")) {
                                 target = "#attachedEFormsTable";
                             }
 
-                            if ("hrm_check".indexOf(element.attr("class")) != -1) {
+                            if (element.hasClass("hrm_check")) {
                                 target = "#attachedHRMDocumentsTable";
                             }
                             column.text(element.attr("title"));
@@ -3249,13 +3278,15 @@ if (userAgent != null) {
                         });
 
                         // remove unchecked elements from the request form.
-                        jQuery('#attachDocumentsForm').find(".document_pre_check:not(input[disabled='disabled']), .lab_pre_check:not(input[disabled='disabled']), .form_pre_check:not(input[disabled='disabled']), .eForm_pre_check:not(input[disabled='disabled']), .hrm_pre_check:not(input[disabled='disabled'])").each(function (index, data) {
+                        jQuery('#attachDocumentsForm').find(".document_pre_check:not(input[disabled='disabled']), .providerPrivateDocument_pre_check:not(input[disabled='disabled']), .providerPublicDocument_pre_check:not(input[disabled='disabled']), .lab_pre_check:not(input[disabled='disabled']), .form_pre_check:not(input[disabled='disabled']), .eForm_pre_check:not(input[disabled='disabled']), .hrm_pre_check:not(input[disabled='disabled'])").each(function (index, data) {
                             var checkedElement = jQuery(this);
 
                             if (!checkedElement.is(':checked')) {
-                                var checkedElementClass = checkedElement.attr("class");
-                                $mainForm.find("#entry_" + checkedElement.attr("id")).remove();
-                                checkedElement.attr("class", checkedElementClass.split("_")[0] + "_check");
+                                var oldType = checkedElement.attr("class").split(" ")[0];
+                                $mainForm.find("#entry_" + checkedElement.attr("name") + checkedElement.val()).remove();
+                                checkedElement.removeClass(oldType).addClass(oldType.split("_")[0] + "_check");
+                                // Drop pre-attached so a subsequent re-check fires the private-doc warning.
+                                checkedElement.removeAttr("data-pre-attached");
                             }
                         });
 
