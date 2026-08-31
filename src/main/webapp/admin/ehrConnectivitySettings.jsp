@@ -61,8 +61,12 @@
         <div class="alert alert-success" role="alert">Settings saved.</div>
     </c:if>
 
-    <c:if test="${not empty error}">
-        <div class="alert alert-danger" role="alert">${e:forHtmlContent(error)}</div>
+    <c:if test="${not empty problems}">
+        <div class="alert alert-danger" role="alert">
+            <c:forEach var="problem" items="${problems}">
+                <div>${e:forHtmlContent(problem)}</div>
+            </c:forEach>
+        </div>
     </c:if>
 
     <form name="ehrConnectivitySettingsForm" method="post" enctype="multipart/form-data"

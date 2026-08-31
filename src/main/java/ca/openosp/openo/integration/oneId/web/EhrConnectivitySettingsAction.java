@@ -152,9 +152,13 @@ public class EhrConnectivitySettingsAction extends ActionSupport implements Uplo
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         String ip = request.getRemoteAddr();
 
+        // One save can turn up more than one problem, so they are collected rather than each
+        // overwriting the last.
+        List<String> problems = new ArrayList<>();
+
         // The keystore arrives as a file rather than a typed path. No file on the form means the
         // stored keystore stays where it is, the same as a blank secret.
-        String uploadedKeystorePath = storeUploadedKeystore();
+        String uploadedKeystorePath = storeUploadedKeystore(problems);
 
         for (ONEID_KEYS key : EDITABLE_KEYS) {
             String name = key.name();
@@ -181,6 +185,15 @@ public class EhrConnectivitySettingsAction extends ActionSupport implements Uplo
             if (secret && submitted.isEmpty()) {
                 continue;
             }
+            // Checked here rather than left to the column. The settings are written a row at a
+            // time, so a value the column refuses throws part way through and leaves every key
+            // after it unsaved. The form caps the length too, but only in the browser.
+            if (submitted.length() > VALUE_MAX_LENGTH) {
+                problems.add(labelFor(key) + " was not saved: it is longer than "
+                        + VALUE_MAX_LENGTH + " characters.");
+                continue;
+            }
+
             SystemPreferences pref = ehrConnectivityManager.getConfig(key);
             // The column is nullable, so a row written by anything but this screen can hold null.
             String previous = (pref == null || pref.getValue() == null) ? "" : pref.getValue();
@@ -193,6 +206,9 @@ public class EhrConnectivitySettingsAction extends ActionSupport implements Uplo
         }
 
         request.setAttribute("saved", Boolean.TRUE);
+        if (!problems.isEmpty()) {
+            request.setAttribute("problems", problems);
+        }
         loadSettingsForDisplay();
         return "success";
     }
@@ -266,7 +282,7 @@ public class EhrConnectivitySettingsAction extends ActionSupport implements Uplo
      * @return String the absolute path of the stored keystore, or null when no file was submitted
      *         or the file could not be stored
      */
-    private String storeUploadedKeystore() {
+    private String storeUploadedKeystore(List<String> problems) {
         if (keystoreUpload == null) {
             return null;
         }
@@ -275,7 +291,7 @@ public class EhrConnectivitySettingsAction extends ActionSupport implements Uplo
             return null;
         }
         if (!hasKeystoreExtension(originalName)) {
-            request.setAttribute("error", "The keystore was not stored: it must be one of "
+            problems.add("The keystore was not stored: it must be one of "
                     + String.join(", ", KEYSTORE_EXTENSIONS) + ".");
             return null;
         }
@@ -288,11 +304,11 @@ public class EhrConnectivitySettingsAction extends ActionSupport implements Uplo
             return destination.getAbsolutePath();
         } catch (IOException e) {
             logger.error("Could not store the uploaded ONE ID keystore", e);
-            request.setAttribute("error", "The keystore was not stored. Check the server log.");
+            problems.add("The keystore was not stored. Check the server log.");
             return null;
         } catch (SecurityException | IllegalStateException e) {
             logger.error("Rejected the uploaded ONE ID keystore", e);
-            request.setAttribute("error", "The keystore was not stored: the file was rejected. Check the server log.");
+            problems.add("The keystore was not stored: the file was rejected. Check the server log.");
             return null;
         }
     }
