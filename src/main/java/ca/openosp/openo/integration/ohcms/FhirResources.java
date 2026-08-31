@@ -439,6 +439,10 @@ public class FhirResources {
    * practitioners or administrative staff." A record that does not name a college is one of those,
    * or one nobody has filled in, and neither can be asserted as a physician's CPSO number.</p>
    *
+   * <p>A record naming a college but holding no number is the same case. The number is mandatory
+   * in the profile, and an empty one is left out of the message rather than sent as empty, so what
+   * would reach the CMS is a naming system and a college identifying nobody.</p>
+   *
    * @param identifier Identifier the identifier to populate, from a Practitioner or a Reference
    * @param provider   Provider the provider whose licence is being described
    * @return boolean true when a licence was added
@@ -449,9 +453,13 @@ public class FhirResources {
     if (body == null) {
       return false;
     }
+    String licenceNumber = provider.getPractitionerNo();
+    if (licenceNumber == null || licenceNumber.trim().isEmpty()) {
+      return false;
+    }
     identifier.setType(licenceIdentifierType())
         .setSystem(LICENCE_SYSTEM_PREFIX + body[0])
-        .setValue(provider.getPractitionerNo().trim())
+        .setValue(licenceNumber.trim())
         .getAssigner().setDisplay(body[1]);
     return true;
   }
