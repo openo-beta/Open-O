@@ -44,6 +44,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPublicKey;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
@@ -73,6 +74,7 @@ class OneIdJwksProviderUnitTest extends OpenOUnitTestBase {
     private static KeyPair attackerKeyPair;
     private static HttpServer jwksServer;
     private static String jwksUrl;
+    private static final AtomicInteger jwksFetches = new AtomicInteger();
 
     private EhrConnectivityManager ehrConnectivityManager;
     private OneIdJwksProvider provider;
@@ -87,6 +89,7 @@ class OneIdJwksProviderUnitTest extends OpenOUnitTestBase {
         String jwks = jwksJson((RSAPublicKey) signingKeyPair.getPublic(), KID);
         jwksServer = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
         jwksServer.createContext("/jwks", exchange -> {
+            jwksFetches.incrementAndGet();
             byte[] body = jwks.getBytes(StandardCharsets.UTF_8);
             exchange.getResponseHeaders().add("Content-Type", "application/json");
             exchange.sendResponseHeaders(200, body.length);
@@ -112,6 +115,7 @@ class OneIdJwksProviderUnitTest extends OpenOUnitTestBase {
 
         provider = new OneIdJwksProvider();
         ReflectionTestUtils.setField(provider, "ehrConnectivityManager", ehrConnectivityManager);
+        jwksFetches.set(0);
     }
 
     @Test
@@ -277,4 +281,31 @@ class OneIdJwksProviderUnitTest extends OpenOUnitTestBase {
         }
         return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
+
+    @Test
+    @DisplayName("should fetch the key set once when two tokens are verified in the cache window")
+    void shouldFetchOnce_whenTwoTokensVerifiedWithinCacheWindow() throws Exception {
+        provider.verifyIdToken(validTokenBuilder().compact(), NONCE);
+        provider.verifyIdToken(validTokenBuilder().compact(), NONCE);
+
+        assertThat(jwksFetches.get()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("should not refetch the key set when an unknown key id arrives inside the refresh interval")
+    void shouldNotRefetch_whenKeyIdUnknownWithinRefreshInterval() throws Exception {
+        // Warms the cache, so the unknown key id below is the only thing that could force a fetch.
+        provider.verifyIdToken(validTokenBuilder().compact(), NONCE);
+        assertThat(jwksFetches.get()).isEqualTo(1);
+
+        String unknownKid = signedTokenBuilder().header().keyId("unknown-kid").and()
+                .claim("nonce", NONCE).compact();
+        assertThatThrownBy(() -> provider.verifyIdToken(unknownKid, NONCE))
+                .isInstanceOf(IdTokenValidationException.class);
+
+        // A key id the held set does not carry asks for a refresh. Inside the interval the held
+        // set is used instead, so a run of such tokens cannot fetch on every one of them.
+        assertThat(jwksFetches.get()).isEqualTo(1);
+    }
+
 }
