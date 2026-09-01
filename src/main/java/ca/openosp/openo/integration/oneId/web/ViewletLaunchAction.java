@@ -158,7 +158,10 @@ public class ViewletLaunchAction extends ActionSupport {
 
         // The clinician closed the EHR service without going through with it. Nothing was
         // accessed, and nothing failed either, so it is recorded as the decision it was rather
-        // than alongside the service's own errors.
+        // than alongside the service's own errors. A definite decision the EMR was told about is
+        // an observed outcome, which is what the success column states; the decision itself stays
+        // in transactionType. This is the same rule the DHDR consent path applies to its own
+        // Cancelled choice, and the two now sit in one table behind one screen.
         boolean cancelled = "cancelled".equalsIgnoreCase(status);
         
         try {
@@ -172,10 +175,8 @@ public class ViewletLaunchAction extends ActionSupport {
                                 + (message == null ? "" : message),
                         demographicNo, uniqueToken);
             } else if (cancelled) {
-                omdGateway.logError(loggedInInfo, key.trim(), "viewletResultCancelled",
-                        "The clinician cancelled at the EHR service, so no access took place. "
-                                + (message == null ? "" : message),
-                        demographicNo, uniqueToken);
+                omdGateway.logInteraction(loggedInInfo, key.trim(), "viewletResultCancelled",
+                        demographicNo, Boolean.TRUE, message, uniqueToken);
             } else if (partial) {
                 omdGateway.logError(loggedInInfo, key.trim(), "viewletResultPartial",
                         "The EHR service replied without confirming the requested service, so the "
