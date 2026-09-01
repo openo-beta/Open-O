@@ -139,8 +139,13 @@ class OneIdJwksProviderUnitTest extends OpenOUnitTestBase {
     @DisplayName("should reject when the signature is tampered")
     void shouldReject_whenSignatureTampered() {
         String[] parts = validTokenBuilder().compact().split("\\.");
-        char last = parts[2].charAt(parts[2].length() - 1);
-        parts[2] = parts[2].substring(0, parts[2].length() - 1) + (last == 'A' ? 'B' : 'A');
+        // Tamper with the first character of the signature, not the last. An RSA-2048 signature is
+        // 256 bytes, which is 342 base64url characters: the final character carries only two
+        // significant bits and its remaining four are discarded on decode, so changing it leaves
+        // roughly one signature in four byte-identical and the token verifies. Every bit of the
+        // first character survives.
+        char first = parts[2].charAt(0);
+        parts[2] = (first == 'A' ? 'B' : 'A') + parts[2].substring(1);
         String tampered = parts[0] + "." + parts[1] + "." + parts[2];
 
         assertThatThrownBy(() -> provider.verifyIdToken(tampered, NONCE))
