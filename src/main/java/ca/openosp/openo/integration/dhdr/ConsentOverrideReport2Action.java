@@ -66,6 +66,7 @@ public class ConsentOverrideReport2Action extends ActionSupport {
    *
    * @return String the Struts result name ({@code success})
    */
+  @Override
   public String execute() {
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     if (!securityInfoManager.hasPrivilege(loggedInInfo, SECURITY_OBJECT, "r", null)

@@ -1161,11 +1161,10 @@ public class OmdGateway {
 	 * Builds the private_key_jwt client assertion used to authenticate to the token endpoint,
 	 * signed with the configured keystore key.
 	 *
-	 * @param loggedInInfo LoggedInInfo the current session context
 	 * @return String the signed client-assertion JWT
 	 * @throws Exception when the keystore cannot be read or holds no usable private key
 	 */
-	protected String buildClientAssertion(LoggedInInfo loggedInInfo) throws Exception {
+	protected String buildClientAssertion() throws Exception {
 		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
 		String audURL = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_audience);
 		String alias = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_alias);
@@ -1200,7 +1199,7 @@ public class OmdGateway {
 	 */
 	public Response exchangeCodeForTokens(LoggedInInfo loggedInInfo, String code, String codeVerifier) throws Exception {
 		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
-		return getTokens(loggedInInfo, code, clientId, codeVerifier, buildClientAssertion(loggedInInfo));
+		return getTokens(loggedInInfo, code, clientId, codeVerifier, buildClientAssertion());
 	}
 
 	/**
@@ -1371,7 +1370,7 @@ public class OmdGateway {
 	public void revokeToken(LoggedInInfo loggedInInfo, OneIdGatewayData oneIdGatewayData) throws Exception {
 		String revokeUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_revocation);
 		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
-		String jwt = buildClientAssertion(loggedInInfo);
+		String jwt = buildClientAssertion();
 		String requestId = newRequestId();
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, null, "Auth", "REVOKE");
 		omdGatewayTransactionLog.setxRequestId(requestId);
