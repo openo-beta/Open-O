@@ -43,7 +43,6 @@ import ca.openosp.openo.utility.PKCEUtils;
 import ca.openosp.openo.utility.PathUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.jaxrs.client.WebClient;
@@ -83,6 +82,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -309,6 +309,9 @@ public class OmdGateway {
 
 	/** The externalSystem recorded on a context call to the Ontario Health CMS. */
 	protected static final String CMS_EXTERNAL_SYSTEM = "CMS";
+
+	/** The FHIRcast event that ends the provider's CMS session. */
+	private static final String CMS_USER_LOGOUT_EVENT = "userLogout";
 
 	/**
 	 * The client-assertion type named by RFC 7523. Held unencoded: these parameters go in a form
@@ -927,10 +930,7 @@ public class OmdGateway {
 			return cached.socketFactory;
 		}
 
-		KeyStore ks = KeyStore.getInstance("JKS");
-		try (FileInputStream keystoreStream = new FileInputStream(keystoreFile)) {
-			ks.load(keystoreStream, keystorePassword.toCharArray());
-		}
+		KeyStore ks = loadKeystore(keystorePath, keystorePassword);
 		// The key material is what presents the client certificate to the gateway.
 		SSLContext sslContext = SSLContexts.custom()
 				.loadKeyMaterial(ks, keystorePassword.toCharArray())
@@ -1050,21 +1050,25 @@ public class OmdGateway {
 	 *                   PCOI address
 	 */
 	public String getConsentViewletURL(LoggedInInfo loggedInInfo, int demographicNo, String target,String uniqueToken) throws Exception {
-		setContextWithRetry(() -> CMSManager.consentTargetChange(loggedInInfo, demographicNo, target));
-		OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
-		String pcoiUrl = oneIdGatewayData.getPcoiUrl();
-		if (pcoiUrl == null || pcoiUrl.trim().isEmpty()) {
-			throw new CMSException("No consent service address was found in the ONE ID toolbar. Check the PCOI Key setting names a registered Viewlet.");
+		// Held across both steps: the URL names the hub topic of the context set on the line above,
+		// and a second request moving that context in between would launch on another patient.
+		synchronized (CMSManager.contextLock(loggedInInfo)) {
+			setContextWithRetry(() -> CMSManager.consentTargetChange(loggedInInfo, demographicNo, target));
+			OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
+			String pcoiUrl = oneIdGatewayData.getPcoiUrl();
+			if (pcoiUrl == null || pcoiUrl.trim().isEmpty()) {
+				throw new CMSException("No consent service address was found in the ONE ID toolbar. Check the PCOI Key setting names a registered Viewlet.");
+			}
+			String url = pcoiUrl+"?launch="+oneIdGatewayData.getHubTopic()+"&iss="+oneIdGatewayData.getFhirIss()+"&inheritanceID="+oneIdGatewayData.getAuthorizationId();
+			OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, "PCOI", "consentViewletLaunch");
+			omdGatewayTransactionLog.setDataSent(url);
+			omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
+			// No outcome is claimed here. All that has happened is that a URL was composed: the window
+			// may be blocked, or opened and never answer. The viewletResult row carries what the EHR
+			// service actually reported, tied to this one by the correlation id.
+			persistCompleted(omdGatewayTransactionLog);
+			return url;
 		}
-		String url = pcoiUrl+"?launch="+oneIdGatewayData.getHubTopic()+"&iss="+oneIdGatewayData.getFhirIss()+"&inheritanceID="+oneIdGatewayData.getAuthorizationId();
-		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, "PCOI", "consentViewletLaunch");
-		omdGatewayTransactionLog.setDataSent(url);
-		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
-		// No outcome is claimed here. All that has happened is that a URL was composed: the window
-		// may be blocked, or opened and never answer. The viewletResult row carries what the EHR
-		// service actually reported, tied to this one by the correlation id.
-		persistCompleted(omdGatewayTransactionLog);
-		return url;
 	}
 
 	/**
@@ -1082,22 +1086,26 @@ public class OmdGateway {
 	 *                   address for the key
 	 */
 	public String getViewletLaunchURL(LoggedInInfo loggedInInfo, int demographicNo, String viewletKey, String uniqueToken) throws Exception {
-		setContextWithRetry(() -> CMSManager.patientChange(loggedInInfo, demographicNo));
-		OneIdSession oneIdSession = oneIdSessionDao.find(loggedInInfo.getLoggedInProviderNo());
-		String serviceUrl = oneIdSession == null ? null : oneIdSession.getUrlFromToolbar(viewletKey);
-		if (serviceUrl == null || serviceUrl.trim().isEmpty()) {
-			throw new CMSException("No service address was found in the ONE ID toolbar for key " + viewletKey + ".");
+		// Held across both steps: the URL names the hub topic of the context set on the line above,
+		// and a second request moving that context in between would launch on another patient.
+		synchronized (CMSManager.contextLock(loggedInInfo)) {
+			setContextWithRetry(() -> CMSManager.patientChange(loggedInInfo, demographicNo));
+			OneIdSession oneIdSession = oneIdSessionDao.find(loggedInInfo.getLoggedInProviderNo());
+			String serviceUrl = oneIdSession == null ? null : oneIdSession.getUrlFromToolbar(viewletKey);
+			if (serviceUrl == null || serviceUrl.trim().isEmpty()) {
+				throw new CMSException("No service address was found in the ONE ID toolbar for key " + viewletKey + ".");
+			}
+			OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
+			String url = serviceUrl+"?launch="+oneIdGatewayData.getHubTopic()+"&iss="+oneIdGatewayData.getFhirIss()+"&inheritanceID="+oneIdGatewayData.getAuthorizationId();
+			OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, viewletKey, "viewletLaunch");
+			omdGatewayTransactionLog.setDataSent(url);
+			omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
+			// No outcome is claimed here. All that has happened is that a URL was composed: the window
+			// may be blocked, or opened and never answer. The viewletResult row carries what the EHR
+			// service actually reported, tied to this one by the correlation id.
+			persistCompleted(omdGatewayTransactionLog);
+			return url;
 		}
-		OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
-		String url = serviceUrl+"?launch="+oneIdGatewayData.getHubTopic()+"&iss="+oneIdGatewayData.getFhirIss()+"&inheritanceID="+oneIdGatewayData.getAuthorizationId();
-		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, demographicNo, viewletKey, "viewletLaunch");
-		omdGatewayTransactionLog.setDataSent(url);
-		omdGatewayTransactionLog.setxCorrelationId(uniqueToken);
-		// No outcome is claimed here. All that has happened is that a URL was composed: the window
-		// may be blocked, or opened and never answer. The viewletResult row carries what the EHR
-		// service actually reported, tied to this one by the correlation id.
-		persistCompleted(omdGatewayTransactionLog);
-		return url;
 	}
 
 	private static final int MAX_SET_CONTEXT_ATTEMPTS = 3;
@@ -1138,7 +1146,13 @@ public class OmdGateway {
 		// token is dead too.
 		OneIDTokenUtils.verifyAccessTokenIsValid(loggedInInfo, gatewayData);
 		// Context submission must carry the acting authority; block it when no UAO is selected.
-		if (gatewayData.getUao() == null || gatewayData.getUao().trim().isEmpty()) {
+		// A sign-out is the exception: it withdraws context rather than submitting any, and a
+		// provider who cleared their authority before signing out would otherwise be refused here
+		// and leave their session standing at the far end.
+		boolean withdrawingContext = fhirCastEvent != null
+				&& CMS_USER_LOGOUT_EVENT.equals(fhirCastEvent.getHubEvent());
+		if (!withdrawingContext
+				&& (gatewayData.getUao() == null || gatewayData.getUao().trim().isEmpty())) {
 			throw new IllegalStateException("A ONE ID Under Authority Of (UAO) value must be selected before submitting context to the gateway.");
 		}
 		String consumerKey = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
@@ -1245,17 +1259,38 @@ public class OmdGateway {
 		cal.add(Calendar.MINUTE, 10);
 		Date expiryDate = cal.getTime();
 
-		try (FileInputStream is = new FileInputStream(keystoreLocation)) {
-			KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
-			keystore.load(is, keystorePassword.toCharArray());
-			Key key = keystore.getKey(alias, keystorePassword.toCharArray());
-			if (!(key instanceof PrivateKey)) {
-				throw new IllegalStateException("Keystore alias does not hold a private key");
-			}
-			Certificate cert = keystore.getCertificate(alias);
-			return JWT.create().withSubject(clientId).withAudience(audURL).withExpiresAt(expiryDate).withIssuer(clientId)
-					.sign(Algorithm.RSA256((RSAPublicKey) cert.getPublicKey(), (RSAPrivateKey) key));
+		KeyStore keystore = loadKeystore(keystoreLocation, keystorePassword);
+		Key key = keystore.getKey(alias, keystorePassword.toCharArray());
+		if (!(key instanceof PrivateKey)) {
+			throw new IllegalStateException("Keystore alias does not hold a private key");
 		}
+		Certificate cert = keystore.getCertificate(alias);
+		return JWT.create().withSubject(clientId).withAudience(audURL).withExpiresAt(expiryDate).withIssuer(clientId)
+				.sign(Algorithm.RSA256((RSAPublicKey) cert.getPublicKey(), (RSAPrivateKey) key));
+	}
+
+	/**
+	 * Reads the configured keystore, taking its type from the file's extension.
+	 *
+	 * <p>Every caller went its own way about this: the TLS socket factory read the file as JKS,
+	 * while the client assertion read it as the JDK default, which is PKCS12 from Java 9 on. A .p12
+	 * uploaded on the settings screen therefore signed assertions and failed the TLS handshake, and
+	 * a .jks did the reverse. One reader means the file is read the same way wherever it is used.
+	 *
+	 * @param keystorePath String where the keystore is stored
+	 * @param keystorePassword String the password it was written with
+	 * @return KeyStore the loaded keystore
+	 * @throws Exception when the file cannot be read or does not open with that password
+	 */
+	private static KeyStore loadKeystore(String keystorePath, String keystorePassword) throws Exception {
+		String lowerCased = keystorePath == null ? "" : keystorePath.toLowerCase(Locale.ROOT);
+		String type = (lowerCased.endsWith(".p12") || lowerCased.endsWith(".pfx")) ? "PKCS12" : "JKS";
+		KeyStore keystore = KeyStore.getInstance(type);
+		char[] password = keystorePassword == null ? null : keystorePassword.toCharArray();
+		try (FileInputStream keystoreStream = new FileInputStream(keystorePath)) {
+			keystore.load(keystoreStream, password);
+		}
+		return keystore;
 	}
 
 	/**
@@ -1369,9 +1404,9 @@ public class OmdGateway {
 	 * session filter rebuilt one of them, and then the stored row is the only place the new tokens
 	 * are.
 	 *
-	 * <p>The row is re-read rather than taken from the persistence context, which holds it as the
-	 * session filter loaded it earlier in this same request - that is, as it was before the other
-	 * request wrote to it.
+	 * <p>The read sees the other request's write because the DAO carries its own transaction and
+	 * nothing here holds an outer one: the lookup opens a persistence context, reads, and commits,
+	 * so it goes to the database rather than answering from one held open across the request.
 	 *
 	 * @param providerNo String the acting provider
 	 * @param oneIdGatewayData OneIdGatewayData the gateway data to bring up to date
@@ -1386,7 +1421,6 @@ public class OmdGateway {
 			if (stored == null) {
 				return false;
 			}
-			oneIdSessionDao.refresh(stored);
 			String storedAccessToken = stored.getAccessToken();
 			if (storedAccessToken == null || storedAccessToken.isEmpty()
 					|| storedAccessToken.equals(oneIdGatewayData.getAccessTokenStr())) {
@@ -1410,17 +1444,8 @@ public class OmdGateway {
 	}
 
 	private void exchangeRefreshToken(LoggedInInfo loggedInInfo,OneIdGatewayData oneIdGatewayData) throws TokenExpiredException {
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.MINUTE, 10);
-		Date expiryDate = cal.getTime();
-
 		String tokenUrl = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_access_token);
-		String audURL = getPreferenceValue(SystemPreferences.ONEID_KEYS.endpoint_audience);
-
 		String clientId = getPreferenceValue(SystemPreferences.ONEID_KEYS.oag_client_id);
-		String alias = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_alias);
-		String keystoreLocation = getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_path);
-		String keystorePassword= getPreferenceValue(SystemPreferences.ONEID_KEYS.keystore_password);
 
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("grant_type", "refresh_token");
@@ -1430,20 +1455,11 @@ public class OmdGateway {
 
 		// Declared out here so a call that throws before any response can still close its row.
 		OMDGatewayTransactionLog omdGatewayTransactionLog = null;
-		try (FileInputStream is = new FileInputStream(keystoreLocation);) {
-
-			KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
-			keystore.load(is, keystorePassword.toCharArray());
-
-			Key key = keystore.getKey(alias, keystorePassword.toCharArray());
-
-			if (key instanceof PrivateKey) {
-				Certificate cert = keystore.getCertificate(alias);
-
-				JWTCreator.Builder builder = JWT.create().withSubject(clientId).withAudience(audURL).withExpiresAt(expiryDate).withIssuer(clientId);
-				String jwt = builder.sign(Algorithm.RSA256((RSAPublicKey) cert.getPublicKey(), (RSAPrivateKey) key));
-				params.put("client_assertion", jwt);
-			}
+		try {
+			// The same assertion the code exchange sends. Built here from its own keystore read
+			// before, which is how the two came to disagree about the keystore's type, and which
+			// let a keystore holding no private key send a refresh with no assertion at all.
+			params.put("client_assertion", buildClientAssertion());
 
 			WebClient wc = WebClient.create(tokenUrl);
 			// The refresh token and the client assertion are credentials; they go in the body

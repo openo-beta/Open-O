@@ -30,6 +30,7 @@ var openPopupViewlet = null;
 var openViewletCount = 0;
 var viewletHeartbeatTimer = null;
 var currentModalDispose = null;
+var currentPopupDispose = null;
 
 function writeViewletWindowMarker() {
     try {
@@ -474,8 +475,29 @@ function reportViewletResult(ctx, demographicNo, key, uuid, status, message, onR
 
 function popupEHRService(url, demographicNo, ctx, timeout, key, uuid, options) {
     var windowProperties = 'height=800,width=1300,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0';
+    // Every launch reuses the window name, so a second one replaces the first window while the
+    // first launch's listener, wait timer and close poller carry on watching a window that is now
+    // showing something else. The earlier launch is finalized before the name is taken over.
+    if (currentPopupDispose) {
+        currentPopupDispose();
+    }
     var popup = window.open(url, 'EHR Service', windowProperties);
     if (!popup) {
+        // The context moved to this patient before the window was asked for, so the launch has to
+        // be reported and the context put back; nothing else will, because no window ever opened.
+        reportViewletResult(ctx, demographicNo, key, uuid, 'failure',
+            'The EHR service window was blocked by the browser.');
+        notifyViewletOutcome(options, {
+            status: 'failure',
+            message: 'The EHR service window was blocked by the browser.',
+            demographicNo: demographicNo,
+            key: key,
+            uuid: uuid,
+            completion: null
+        });
+        if (demographicNo) {
+            closeViewletPatientContext(ctx, demographicNo);
+        }
         alert('The EHR service window was blocked. Allow pop-ups for this site and try again.');
         return;
     }
@@ -504,8 +526,11 @@ function popupEHRService(url, demographicNo, ctx, timeout, key, uuid, options) {
     // A message from the Viewlet's own origin marks it as alive; only a completion
     // message decides the outcome. A window closed without one is recorded as
     // 'noresponse' by the close poller; see closeModal for what that means.
+    //
+    // The sender is checked as well as the origin. Origin alone accepts any window on that origin,
+    // which includes another EHR service launch: one of them could confirm the other's outcome.
     function onMessage(event) {
-        if (expectedOrigin && event.origin === expectedOrigin) {
+        if (expectedOrigin && event.origin === expectedOrigin && event.source === popup) {
             responded = true;
             var completion = parseViewletCompletion(event.data, options && options.service);
             if (completion) {
@@ -545,19 +570,40 @@ function popupEHRService(url, demographicNo, ctx, timeout, key, uuid, options) {
     // keeps a message listener and its wait timer for the life of the page, and reports nothing.
     // Only the patient context needs a patient, so that is the part that is guarded.
     viewletWindowOpened();
-    var poll = setInterval(function () {
-        if (!popup || popup.closed) {
+    var poll = null;
+
+    // Stops watching this launch and records an outcome for it, once. Called by the close poller
+    // when the window goes away, and by the next launch when it takes the window name over.
+    function finalizePopup(status, message, skipPatientClose) {
+        if (poll) {
             clearInterval(poll);
-            clearTimeout(waitTimer);
-            window.removeEventListener('message', onMessage);
-            reportOnce('noresponse', 'The EHR service window was closed without a response.');
-            if (openPopupViewlet === popup) {
-                openPopupViewlet = null;
-            }
-            viewletWindowClosed();
-            if (demographicNo) {
-                closeViewletPatientContext(ctx, demographicNo);
-            }
+            poll = null;
+        }
+        clearTimeout(waitTimer);
+        window.removeEventListener('message', onMessage);
+        reportOnce(status, message);
+        if (openPopupViewlet === popup) {
+            openPopupViewlet = null;
+        }
+        if (currentPopupDispose === dispose) {
+            currentPopupDispose = null;
+        }
+        viewletWindowClosed();
+        if (!skipPatientClose && demographicNo) {
+            closeViewletPatientContext(ctx, demographicNo);
+        }
+    }
+
+    // The incoming launch has already moved the context on the server, so this one does not clear
+    // it on the way out.
+    var dispose = function () {
+        finalizePopup('failure', 'The EHR service was replaced by another EHR service launch.', true);
+    };
+    currentPopupDispose = dispose;
+
+    poll = setInterval(function () {
+        if (!popup || popup.closed) {
+            finalizePopup('noresponse', 'The EHR service window was closed without a response.', false);
         }
     }, 1000);
     popup.focus();
@@ -672,8 +718,11 @@ function openViewletModal(url, demographicNo, ctx, timeout, key, uuid, options) 
     // A completion message from the Viewlet's own origin decides the outcome and closes
     // the dialog; other messages are ignored. A dialog closed without a completion
     // message is recorded as a failure.
+    //
+    // The sender is checked as well as the origin, so only this dialog's own frame can answer for
+    // it and not some other window that happens to share the origin.
     function onMessage(event) {
-        if (expectedOrigin && event.origin === expectedOrigin) {
+        if (expectedOrigin && event.origin === expectedOrigin && event.source === frame.contentWindow) {
             var completion = parseViewletCompletion(event.data, options && options.service);
             if (completion) {
                 reportOnce(completion.status, completion.message, completion);

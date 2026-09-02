@@ -71,7 +71,13 @@ public class Logout2Action extends ActionSupport {
     }
 
     public String ssoLogout() {
-        logout();
+        String result = logout();
+        if (NONE.equals(result)) {
+            // logout() redirected to the ONE ID End Session endpoint and committed the response.
+            // Forwarding the SAML result on top of that fails with "cannot forward after the
+            // response has been committed", so the ONE ID sign-out is the one that stands.
+            return NONE;
+        }
         return "logoutsso";
     }
 

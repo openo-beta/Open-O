@@ -421,13 +421,20 @@ public class FhirResources {
   private static Map<String, String[]> licenceBodies() {
     Map<String, String[]> bodies = new HashMap<>();
     bodies.put("CPSO", new String[]{"ca-on-license-physician",
-        "College of Physicians and Surgeons of Ontario"});
+        "College of Physicians and Surgeons of Ontario", "MD", "Medical License number"});
     bodies.put("OCP", new String[]{"ca-on-license-pharmacist",
-        "Ontario College of Pharmacists"});
-    bodies.put("CNORNP", new String[]{"ca-on-license-nurse", "College of Nurses of Ontario"});
-    bodies.put("CNORN", new String[]{"ca-on-license-nurse", "College of Nurses of Ontario"});
-    bodies.put("CNORPN", new String[]{"ca-on-license-nurse", "College of Nurses of Ontario"});
-    bodies.put("CMO", new String[]{"ca-on-license-midwife", "College of Midwives of Ontario"});
+        "Ontario College of Pharmacists", "RPH", "Pharmacist License number"});
+    bodies.put("CNORNP", new String[]{"ca-on-license-nurse", "College of Nurses of Ontario",
+        "RN", "Registered Nurse number"});
+    bodies.put("CNORN", new String[]{"ca-on-license-nurse", "College of Nurses of Ontario",
+        "RN", "Registered Nurse number"});
+    bodies.put("CNORPN", new String[]{"ca-on-license-nurse", "College of Nurses of Ontario",
+        "RN", "Registered Nurse number"});
+    // HL7 table 0203 publishes no midwife code. "MD" is what the CMS has been sent for every
+    // college until now, so it stays here rather than being replaced with a guess; it is the one
+    // entry in this table still to be confirmed with OMD.
+    bodies.put("CMO", new String[]{"ca-on-license-midwife", "College of Midwives of Ontario",
+        "MD", "Medical License number"});
     return Collections.unmodifiableMap(bodies);
   }
 
@@ -457,20 +464,30 @@ public class FhirResources {
     if (licenceNumber == null || licenceNumber.trim().isEmpty()) {
       return false;
     }
-    identifier.setType(licenceIdentifierType())
+    identifier.setType(licenceIdentifierType(body[2], body[3]))
         .setSystem(LICENCE_SYSTEM_PREFIX + body[0])
         .setValue(licenceNumber.trim())
         .getAssigner().setDisplay(body[1]);
     return true;
   }
 
-  /** Marks an identifier as a medical licence number, from the HL7 identifier-type table. */
-  private static CodeableConcept licenceIdentifierType() {
+  /**
+   * Names what kind of licence an identifier holds, from the HL7 identifier-type table.
+   *
+   * <p>Taken from the college that issued it rather than fixed. Every licence went out as "MD",
+   * so a pharmacist's OCP number and a nurse's CNO number reached the CMS described as physician
+   * licences.
+   *
+   * @param code String the HL7 table 0203 code for the issuing college's licence
+   * @param display String that code's display name
+   * @return CodeableConcept the identifier type
+   */
+  private static CodeableConcept licenceIdentifierType(String code, String display) {
     CodeableConcept type = new CodeableConcept();
     type.addCoding()
         .setSystem("http://hl7.org/fhir/v2/0203")
-        .setCode("MD")
-        .setDisplay("Medical License number");
+        .setCode(code)
+        .setDisplay(display);
     return type;
   }
 

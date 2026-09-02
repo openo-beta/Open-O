@@ -219,8 +219,27 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
     }
 
     @Override
+    public OneIdSession findOneIdSession(LoggedInInfo loggedInInfo, String providerNo) {
+        checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.READ);
+        return oneIdSessionDao.find(providerNo);
+    }
+
+    @Override
     public void setSessionHubTopic(LoggedInInfo loggedInInfo, String providerNo, String hubTopic) {
         checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.WRITE);
+        OneIdSession session = oneIdSessionDao.find(providerNo);
+        if (session != null) {
+            session.setHubTopic(hubTopic);
+            oneIdSessionDao.merge(session);
+        }
+    }
+
+    @Override
+    public void setOwnSessionHubTopic(LoggedInInfo loggedInInfo, String hubTopic) {
+        String providerNo = (loggedInInfo == null) ? null : loggedInInfo.getLoggedInProviderNo();
+        if (providerNo == null) {
+            throw new SecurityException("no acting provider to record a hub topic for");
+        }
         OneIdSession session = oneIdSessionDao.find(providerNo);
         if (session != null) {
             session.setHubTopic(hubTopic);

@@ -24,6 +24,7 @@
 package ca.openosp.openo.integration.oneId.web;
 
 import ca.openosp.openo.integration.oneId.OneIdGatewayData;
+import ca.openosp.openo.integration.oneId.OneIdSession;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.managers.EhrConnectivityManager;
@@ -56,6 +57,39 @@ public class OneIdUnlinkAction extends ActionSupport {
     private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
     private final EhrConnectivityManager ehrConnectivityManager = SpringUtils.getBean(EhrConnectivityManager.class);
 
+    /**
+     * Rebuilds just enough gateway data from the provider's stored ONE ID session to end it at
+     * Ontario Health: the tokens the revoke needs and the hub topic the context clear names.
+     *
+     * <p>Used when the session filter has not put the gateway data on the request, which is what
+     * happens on the first request after a restart and whenever the rehydration failed. The data is
+     * attached to the acting session because the CMS context clear reads it from there.
+     *
+     * @param loggedInInfo LoggedInInfo the acting provider's session information
+     * @param providerNo   String the acting provider
+     * @return OneIdGatewayData the rebuilt data, or null when there is no stored session to rebuild from
+     */
+    private OneIdGatewayData gatewayDataFromStoredSession(LoggedInInfo loggedInInfo, String providerNo) {
+        try {
+            OneIdSession stored = ehrConnectivityManager.findOneIdSession(loggedInInfo, providerNo);
+            if (stored == null || stored.getAccessToken() == null || stored.getAccessToken().isEmpty()) {
+                return null;
+            }
+            OneIdGatewayData gatewayData = new OneIdGatewayData();
+            gatewayData.setAccessTokenStr(stored.getAccessToken());
+            gatewayData.processAccessToken(stored.getAccessToken());
+            gatewayData.setIdTokenStr(stored.getIdToken());
+            gatewayData.setHubTopic(stored.getHubTopic());
+            gatewayData.setCtxSessionId(stored.getHubTopic());
+            gatewayData.setUao(stored.getUaoUpi());
+            loggedInInfo.setOneIdGatewayData(gatewayData);
+            return gatewayData;
+        } catch (Exception e) {
+            logger.error("Could not rebuild the ONE ID session for unlink teardown", e);
+            return null;
+        }
+    }
+
     @Override
     public String execute() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -79,6 +113,12 @@ public class OneIdUnlinkAction extends ActionSupport {
         // context and the access token standing, and the tokens needed to withdraw them are about
         // to be discarded.
         OneIdGatewayData gatewayData = loggedInInfo.getOneIdGatewayData();
+        if (gatewayData == null) {
+            // Nothing on the session does not mean nothing at the far end: the stored row still
+            // holds live tokens, and severing the binding without them leaves an Ontario Health
+            // session and an access token standing that nothing can withdraw afterwards.
+            gatewayData = gatewayDataFromStoredSession(loggedInInfo, providerNo);
+        }
         if (gatewayData != null) {
             OneIdSessionTeardown.endRemoteSession(loggedInInfo, gatewayData);
         }
@@ -87,7 +127,18 @@ public class OneIdUnlinkAction extends ActionSupport {
             LogAction.addLog(providerNo, LogConst.UNLINK, "ONE ID", "", request.getRemoteAddr());
         }
 
-        ehrConnectivityManager.removeOneIdSession(loggedInInfo, providerNo);
+        try {
+            ehrConnectivityManager.removeOneIdSession(loggedInInfo, providerNo);
+        } catch (Exception e) {
+            // The binding is already gone, so the row left behind is rehydrated on the next request
+            // as a session whose tokens have just been revoked. Recorded rather than thrown: an
+            // uncaught failure here would also lose the redirect and leave the provider on an
+            // error page with the unlink half done and nothing said about it.
+            logger.error("ONE ID session removal on unlink failed", e);
+            LogAction.addLog(providerNo, LogConst.NORIGHT, "ONE ID",
+                    "unlink did not complete: the stored session could not be removed",
+                    request.getRemoteAddr());
+        }
         if (loggedInInfo.getOneIdGatewayData() != null) {
             // The emptied object is detached as well; left on the session it would make the
             // provider look signed in to ONE ID with no usable tokens.

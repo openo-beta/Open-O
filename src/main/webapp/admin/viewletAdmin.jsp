@@ -65,10 +65,10 @@
         <div class="card-body">
             <form method="post" action="${pageContext.request.contextPath}/admin/viewletAdminAdd.do" class="row g-2 align-items-center">
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="name" placeholder="Viewlet name" required/>
+                    <input type="text" class="form-control" name="name" placeholder="Viewlet name" maxlength="100" required/>
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="keyValue" placeholder="Toolbar key" required/>
+                    <input type="text" class="form-control" name="keyValue" placeholder="Toolbar key" maxlength="50" required/>
                 </div>
                 <div class="col-auto">
                     <select class="form-select" name="displayMode">
@@ -104,11 +104,11 @@
             <tr>
                 <td>
                     <input type="text" class="form-control form-control-sm" name="name" form="viewletForm${viewlet.id}"
-                           value="${e:forHtmlAttribute(viewlet.name)}" required/>
+                           value="${e:forHtmlAttribute(viewlet.name)}" maxlength="100" required/>
                 </td>
                 <td>
                     <input type="text" class="form-control form-control-sm" name="keyValue" form="viewletForm${viewlet.id}"
-                           value="${e:forHtmlAttribute(viewlet.keyValue)}" required/>
+                           value="${e:forHtmlAttribute(viewlet.keyValue)}" maxlength="50" required/>
                 </td>
                 <td>
                     <select class="form-select form-select-sm" name="displayMode" form="viewletForm${viewlet.id}">

@@ -129,15 +129,21 @@ public class OneIdCallbackAction extends ActionSupport {
             loggedInInfo.setSession(session);
 
             OmdGateway omdGateway = new OmdGateway();
+            JSONObject tokens;
+            // Closed on every path, including the refusals that return without reading a body.
+            // Each sign-in leaks a pooled connection otherwise.
             Response tokenResponse = omdGateway.exchangeCodeForTokens(loggedInInfo, code, verifier);
-            if (tokenResponse.getStatus() != 200) {
-                if (stepUpProviderNo != null) {
-                    return stepUpError(session, returnUrl, "error");
+            try {
+                if (tokenResponse.getStatus() != 200) {
+                    if (stepUpProviderNo != null) {
+                        return stepUpError(session, returnUrl, "error");
+                    }
+                    return failWith(ConnectivityErrorHelper.mapStatus(tokenResponse.getStatus()));
                 }
-                return failWith(ConnectivityErrorHelper.mapStatus(tokenResponse.getStatus()));
+                tokens = new JSONObject(tokenResponse.readEntity(String.class));
+            } finally {
+                tokenResponse.close();
             }
-
-            JSONObject tokens = new JSONObject(tokenResponse.readEntity(String.class));
             String idToken = tokens.optString("id_token", null);
             if (idToken == null) {
                 if (stepUpProviderNo != null) {
@@ -156,7 +162,12 @@ public class OneIdCallbackAction extends ActionSupport {
 
             if (matches == null || matches.isEmpty()) {
                 // Not linked yet: keep the verified subject and send the provider to log in once to bind.
+                // The email goes with it because the sign-in form has no verified one to post, and
+                // the moment is stamped so an abandoned attempt cannot be picked up much later by
+                // whoever sits down at the browser next.
                 session.setAttribute("oneIdSubject", subject);
+                session.setAttribute("oneIdSubjectEmail", tokens.optString("email", null));
+                session.setAttribute("oneIdSubjectAt", Long.valueOf(System.currentTimeMillis()));
                 response.sendRedirect(request.getContextPath() + "/index.jsp?oneIdLink=true");
                 return NONE;
             }

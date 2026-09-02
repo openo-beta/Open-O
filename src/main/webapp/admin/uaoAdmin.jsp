@@ -75,7 +75,7 @@
                         <input type="text" class="form-control" name="name" placeholder="UAO value" required/>
                     </div>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" name="friendlyName" placeholder="Friendly name"/>
+                        <input type="text" class="form-control" name="friendlyName" placeholder="Friendly name" required/>
                     </div>
                     <div class="col-md-4">
                         <input type="text" class="form-control" name="address" placeholder="Street address"/>

@@ -108,6 +108,36 @@ public class OMDGatewayTransactionLogDao extends AbstractDaoImpl<OMDGatewayTrans
    * @param to Date the inclusive upper bound on the event timestamp ({@code started})
    * @return List&lt;OMDGatewayTransactionLog&gt; the matching records, newest first
    */
+  /**
+   * Counts the rows carrying a correlation id, for one provider, patient and external system, whose
+   * transaction type is in the given set.
+   *
+   * <p>This is how a reply about a Viewlet is tied back to the launch that asked for it. The
+   * correlation id is minted server-side and handed to the browser, so a reply quoting one that
+   * matches no launch row of this provider's, for this patient, on this service, did not come from
+   * a launch the EMR made.
+   *
+   * @param correlationId String the id the launch was recorded under
+   * @param providerNo String the provider the launch belonged to
+   * @param demographicNo Integer the patient the launch named
+   * @param externalSystem String the EHR service the launch was for
+   * @param transactionTypes Collection&lt;String&gt; the transaction types to count; must not be empty
+   * @return long how many rows match
+   */
+  public long countByCorrelation(String correlationId, String providerNo, Integer demographicNo,
+      String externalSystem, Collection<String> transactionTypes) {
+    Query query = entityManager.createQuery(
+        "select count(x) from OMDGatewayTransactionLog x where x.xCorrelationId = ?1"
+            + " and x.initiatingProviderNo = ?2 and x.demographicNo = ?3"
+            + " and x.externalSystem = ?4 and x.transactionType in (?5)");
+    query.setParameter(1, correlationId);
+    query.setParameter(2, providerNo);
+    query.setParameter(3, demographicNo);
+    query.setParameter(4, externalSystem);
+    query.setParameter(5, transactionTypes);
+    return ((Number) query.getSingleResult()).longValue();
+  }
+
   @SuppressWarnings("unchecked")
   public List<OMDGatewayTransactionLog> findByExternalSystemAndTransactionTypes(
       String externalSystem, Collection<String> transactionTypes, Date from, Date to) {

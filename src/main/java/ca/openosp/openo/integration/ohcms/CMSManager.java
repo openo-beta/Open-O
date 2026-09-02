@@ -36,10 +36,36 @@ import org.hl7.fhir.r4.model.Location;
 import javax.annotation.Nullable;
 import javax.ws.rs.core.Response;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class CMSManager {
 
   static Logger logger = MiscUtils.getLogger();
+
+  /** One lock per provider, guarding the patient held in their CMS context. */
+  private static final ConcurrentMap<String, Object> contextLocks =
+      new ConcurrentHashMap<String, Object>();
+
+  /**
+   * The lock guarding a provider's CMS patient context.
+   *
+   * <p>Keyed by provider rather than taken on the gateway data, which the session filter replaces
+   * whenever the stored session moves on: two requests can then hold different instances and
+   * synchronize on nothing.
+   *
+   * <p>A caller whose work depends on the context staying put - composing a launch URL for the
+   * patient just put in context - holds this across both steps. Setting the context and then
+   * launching under it are one operation; between them a second request can move the context to
+   * another patient, and the launch opens the wrong record.
+   *
+   * @param loggedInInfo LoggedInInfo the acting provider session
+   * @return Object the monitor to synchronize on
+   */
+  public static Object contextLock(LoggedInInfo loggedInInfo) {
+    String providerNo = loggedInInfo == null ? null : loggedInInfo.getLoggedInProviderNo();
+    return contextLocks.computeIfAbsent(providerNo == null ? "" : providerNo, key -> new Object());
+  }
 
   public static String createHubTopic(LoggedInInfo loggedInInfo) throws Exception {
     OmdGateway omdGateway = new OmdGateway();
@@ -57,7 +83,7 @@ public class CMSManager {
     // context session id puts it on every context audit row.
     oneIdGatewayData.setCtxSessionId(hubTopic);
     EhrConnectivityManager ehrConnectivityManager = SpringUtils.getBean(EhrConnectivityManager.class);
-    ehrConnectivityManager.setSessionHubTopic(loggedInInfo, loggedInInfo.getLoggedInProviderNo(), hubTopic);
+    ehrConnectivityManager.setOwnSessionHubTopic(loggedInInfo, hubTopic);
     return null;
   }
 
@@ -190,7 +216,7 @@ public class CMSManager {
     OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
     // Same lock as patientChange: the close must not interleave with a concurrent
     // open for another patient in the same session.
-    synchronized (oneIdGatewayData) {
+    synchronized (contextLock(loggedInInfo)) {
       if (oneIdGatewayData.getHubTopic() == null) {
         createHubTopic(loggedInInfo);
       }
@@ -226,9 +252,16 @@ public class CMSManager {
    */
   public static void patientChange(LoggedInInfo loggedInInfo, int demographicNo) throws Exception {
     OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
+    if (oneIdGatewayData == null) {
+      // No ONE ID session, so there is no context to move. Raised as a CMS refusal because that is
+      // what the callers here already handle; left to fall through it is a NullPointerException,
+      // which reaches the clinician as a server error instead of a prompt to sign in.
+      throw new CMSException("No ONE ID session. Sign in to ONE ID and try again.");
+    }
     // The read-then-write of the patient context must not interleave between concurrent
-    // requests in one session, or two launches can leave the wrong patient in context.
-    synchronized (oneIdGatewayData) {
+    // requests in one session, or two launches can leave the wrong patient in context. A caller
+    // whose next step depends on the context holds the same lock across both.
+    synchronized (contextLock(loggedInInfo)) {
       if (oneIdGatewayData.getCmsLoggedIn() != null && oneIdGatewayData.isUpdateUAOInCMS()) {
         organizationChange(loggedInInfo);
       }

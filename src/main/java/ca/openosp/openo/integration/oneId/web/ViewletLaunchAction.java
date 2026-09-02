@@ -23,6 +23,7 @@
  */
 package ca.openosp.openo.integration.oneId.web;
 
+import ca.openosp.openo.commn.dao.OMDGatewayTransactionLogDao;
 import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.integration.dhdr.OmdGateway;
 import ca.openosp.openo.integration.ohcms.CMSException;
@@ -43,7 +44,9 @@ import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -67,6 +70,7 @@ public class ViewletLaunchAction extends ActionSupport {
 
     private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
     private final EhrConnectivityManager ehrConnectivityManager = SpringUtils.getBean(EhrConnectivityManager.class);
+    private final OMDGatewayTransactionLogDao transactionLogDao = SpringUtils.getBean(OMDGatewayTransactionLogDao.class);
 
     public String launch() {
         LoggedInInfo loggedInInfo = loggedInInfo();
@@ -113,12 +117,15 @@ public class ViewletLaunchAction extends ActionSupport {
             // When the CMS refuses a context change it is its response body that becomes the
             // exception message, and that body quotes back the patient just sent, so neither the
             // audit row nor the reply repeats it. The correlation id ties this row to the launch.
-            new OmdGateway().logError(loggedInInfo, viewlet.getKeyValue(), "viewletLaunch",
-                    "The EHR service did not accept the patient context.", demographicNo, uniqueToken);
+            recordLaunchFailure(loggedInInfo, viewlet.getKeyValue(), demographicNo, uniqueToken,
+                    "The EHR service did not accept the patient context.");
+            releasePatientContext(loggedInInfo, demographicNo);
             writeFailure("The EHR service could not be launched. Please try again.");
         } catch (Exception e) {
             logger.error("Viewlet launch failed\n" + OmdGateway.stackTraceWithoutMessages(e));
-            new OmdGateway().logError(loggedInInfo, viewlet.getKeyValue(), "viewletLaunch", "The EHR service could not be launched.", demographicNo, uniqueToken);
+            recordLaunchFailure(loggedInInfo, viewlet.getKeyValue(), demographicNo, uniqueToken,
+                    "The EHR service could not be launched.");
+            releasePatientContext(loggedInInfo, demographicNo);
             writeFailure("The EHR service could not be launched. Please try again.");
         }
         return NONE;
@@ -140,6 +147,10 @@ public class ViewletLaunchAction extends ActionSupport {
             throw new SecurityException("missing required sec object (_demographic)");
         }
         String uniqueToken = emptyToNull(request.getParameter("uuid"));
+        if (!answersAnOpenLaunch(loggedInInfo, key.trim(), demographicNo, uniqueToken)) {
+            writeFailure("The EHR service result did not match an open launch.");
+            return NONE;
+        }
         String message = bounded(request.getParameter("message"));
         String status = request.getParameter("status");
         boolean success = "success".equalsIgnoreCase(status);
@@ -252,6 +263,97 @@ public class ViewletLaunchAction extends ActionSupport {
             writeFailure("The patient could not be removed from the EHR context.");
         }
         return NONE;
+    }
+
+    /** The transaction types written when a Viewlet launch URL is composed, by either route. */
+    private static final List<String> LAUNCH_TRANSACTION_TYPES =
+            Arrays.asList("viewletLaunch", "consentViewletLaunch");
+
+    /**
+     * Whether a reply names a launch this provider made for this patient on this service, and one
+     * that has not been answered already.
+     *
+     * <p>Everything in the reply except the session comes from the browser. Without this the
+     * endpoint recorded whatever it was told: any signed-in user could post a confirmed outcome for
+     * a patient they can read and a service nobody launched, and the consent unblock report reads
+     * those rows as unblocks that happened. The correlation id is minted on the server and written
+     * on the launch row, so matching against that row is what makes the reply the launch's own.
+     *
+     * <p>A second reply for the same launch is refused too. The browser reports once per launch,
+     * and a repeat would either duplicate the audit row or overwrite one outcome with another.
+     *
+     * @param loggedInInfo LoggedInInfo the acting provider session
+     * @param key String the EHR service the reply is about
+     * @param demographicNo Integer the patient the reply is about
+     * @param uniqueToken String the correlation id the launch was issued with
+     * @return boolean true when the reply belongs to an unanswered launch
+     */
+    private boolean answersAnOpenLaunch(LoggedInInfo loggedInInfo, String key, Integer demographicNo,
+                                        String uniqueToken) {
+        if (uniqueToken == null) {
+            return false;
+        }
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        try {
+            if (transactionLogDao.countByCorrelation(uniqueToken, providerNo, demographicNo, key,
+                    LAUNCH_TRANSACTION_TYPES) == 0) {
+                logger.warn("Refused a viewlet result naming no launch of provider " + providerNo);
+                return false;
+            }
+            if (transactionLogDao.countByCorrelation(uniqueToken, providerNo, demographicNo, key,
+                    RESULT_TRANSACTION_TYPES) > 0) {
+                logger.warn("Refused a repeat viewlet result for provider " + providerNo);
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
+            // The launch cannot be confirmed either way. Refusing here would drop the audit row
+            // VF06.01 requires for a launch that did happen, so the reply is recorded and the
+            // failure to check it is noted.
+            logger.error("Could not match a viewlet result to its launch; recording it anyway", e);
+            return true;
+        }
+    }
+
+    /** The transaction types written when a reply about a launch is recorded. */
+    private static final List<String> RESULT_TRANSACTION_TYPES = Arrays.asList(
+            OmdGateway.VIEWLET_RESULT, OmdGateway.VIEWLET_RESULT_CANCELLED,
+            OmdGateway.VIEWLET_RESULT_NO_RESPONSE, OmdGateway.VIEWLET_RESULT_PARTIAL);
+
+    /**
+     * Records a failed launch, without letting that write take the reply's place.
+     *
+     * <p>The audit row is written inside the handler that answers 268. A transaction log that
+     * cannot be written threw straight out of it, so the clinician got a server error instead of
+     * the failure message the endpoint documents, and the row was lost either way.
+     */
+    private void recordLaunchFailure(LoggedInInfo loggedInInfo, String key, Integer demographicNo,
+                                     String uniqueToken, String reason) {
+        try {
+            new OmdGateway().logError(loggedInInfo, key, "viewletLaunch", reason, demographicNo, uniqueToken);
+        } catch (Exception e) {
+            logger.error("Could not record the viewlet launch failure for provider "
+                    + loggedInInfo.getLoggedInProviderNo() + " (correlation " + uniqueToken + ")", e);
+        }
+    }
+
+    /**
+     * Takes the patient back out of the CMS context after a launch that moved it and then failed.
+     *
+     * <p>No window opens on a 268, so the browser never reaches the close call it makes when one
+     * is shut. The patient would stay in context at Ontario Health until something else moved it.
+     */
+    private void releasePatientContext(LoggedInInfo loggedInInfo, Integer demographicNo) {
+        try {
+            if (demographicNo != null && loggedInInfo.getOneIdGatewayData() != null
+                    && String.valueOf(demographicNo).equals(
+                            loggedInInfo.getOneIdGatewayData().getCmsPatientInContext())) {
+                CMSManager.patientClose(loggedInInfo, demographicNo);
+            }
+        } catch (Exception e) {
+            logger.error("Could not clear the patient context after a failed launch\n"
+                    + OmdGateway.stackTraceWithoutMessages(e));
+        }
     }
 
     private void writeFailure(String message) {

@@ -210,7 +210,30 @@ public interface EhrConnectivityManager {
      * @param providerNo String the provider number
      * @param hubTopic String the CMS context topic (hub.topic)
      */
+    /**
+     * Returns a provider's stored ONE ID session, or null when they have none.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user
+     * @param providerNo   String the provider whose session is wanted
+     * @return OneIdSession the stored session, or null
+     */
+    OneIdSession findOneIdSession(LoggedInInfo loggedInInfo, String providerNo);
+
     void setSessionHubTopic(LoggedInInfo loggedInInfo, String providerNo, String hubTopic);
+
+    /**
+     * Records the CMS-issued hub topic on the acting provider's own ONE ID session.
+     *
+     * <p>No grant beyond being that provider, for the same reason as
+     * {@link #removeOwnOneIdSession(LoggedInInfo)}: the topic is issued by the CMS partway through
+     * a launch the provider is already authorized for, and demanding a write grant here would
+     * refuse a provider holding read-only EHR connectivity after the CMS had already created it,
+     * leaving the topic only in memory.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the acting provider's session information
+     * @param hubTopic String the topic the CMS issued
+     */
+    void setOwnSessionHubTopic(LoggedInInfo loggedInInfo, String hubTopic);
 
     /**
      * Returns every Viewlet registry entry, including disabled ones, ordered by name.

@@ -71,7 +71,11 @@ public class EctDisplayEHR2Action extends EctDisplayAction {
         for (OneIdViewlet viewlet : viewlets) {
             NavBarDisplayDAO.Item item = NavBarDisplayDAO.Item();
             item.setLinkTitle("Open " + viewlet.getName());
-            item.setTitle(StringUtils.maxLenString(viewlet.getName(), MAX_LEN_TITLE, CROP_LEN_TITLE, ELLIPSES));
+            // LeftNavBarDisplay.jsp writes the title straight out, so an administrator's Viewlet
+            // name reaches the chart as markup unless it is encoded. Truncated first, so the
+            // crop lands on the name rather than in the middle of an entity.
+            item.setTitle(Encode.forHtml(
+                    StringUtils.maxLenString(viewlet.getName(), MAX_LEN_TITLE, CROP_LEN_TITLE, ELLIPSES)));
             String url;
             if (missingFields == null) {
                 url = "launchViewlet('" + request.getContextPath() + "'," + bean.demographicNo + ",'"

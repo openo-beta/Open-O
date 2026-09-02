@@ -55,6 +55,15 @@ public class SsoAuthenticationManager implements Serializable {
 
     private static final Logger logger = MiscUtils.getLogger();
 
+    /**
+     * The authenticator for the sign-in being processed, and the only place the resolved
+     * {@code Security} record is held between authenticating and building the session.
+     *
+     * <p>This bean is a singleton, so the field is shared by every sign-in in flight. The three
+     * entry points below are synchronized for that reason: authenticate, build the session and
+     * read the security record are one step, and two sign-ins overlapping across it produce a
+     * session carrying one provider's name and another provider's security record.
+     */
     private LoginCheckLogin loginCheck;
 
     @Autowired
@@ -112,7 +121,7 @@ public class SsoAuthenticationManager implements Serializable {
     /**
      * @return Map of attributes for use in new login session
      */
-    public Map<String, Object> checkSSOLogin(Auth auth) {
+    public synchronized Map<String, Object> checkSSOLogin(Auth auth) {
         Map<String, List<String>> attributes = auth.getAttributes();
         String nameId = auth.getNameId();
         String nameIdFormat = auth.getNameIdFormat();
@@ -161,7 +170,7 @@ public class SsoAuthenticationManager implements Serializable {
      * @param subject String the verified subject (sub) from the ONE ID id_token
      * @return Map of session attributes, or an empty/null map when no provider is linked to the subject
      */
-    public Map<String, Object> checkOneIdLogin(String subject) {
+    public synchronized Map<String, Object> checkOneIdLogin(String subject) {
         Map<String, Object> sessionData = checkLogin(new HashMap<>(), subject);
         if (sessionData != null && !sessionData.isEmpty()) {
             // Only the subject. The oneid_token attribute is read as an access token, by eConsult
@@ -172,7 +181,7 @@ public class SsoAuthenticationManager implements Serializable {
         return sessionData;
     }
 
-    public Map<String, Object> checkLogin(Map<String, Object> sessionData, String[] authenticationParams) {
+    public synchronized Map<String, Object> checkLogin(Map<String, Object> sessionData, String[] authenticationParams) {
         String[] providerInformation = checkPlainTextLogin(authenticationParams);
         return createSession(sessionData, providerInformation);
     }

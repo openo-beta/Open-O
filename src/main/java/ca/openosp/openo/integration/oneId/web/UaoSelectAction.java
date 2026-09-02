@@ -96,9 +96,15 @@ public class UaoSelectAction extends ActionSupport {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
         UAO uao = ownActiveUao(loggedInInfo, providerNo, parseId(request.getParameter("id")));
-        if (uao != null) {
-            applyUao(loggedInInfo, providerNo, uao);
+        if (uao == null) {
+            // The authority went out of use between the picker being drawn and the choice arriving.
+            // Going home would leave the previous one on the session, where it still names a
+            // custodian to the CMS and still satisfies the check that lets a launch through. The
+            // picker re-reads what is left and clears the session when there is nothing.
+            redirectToPicker();
+            return NONE;
         }
+        applyUao(loggedInInfo, providerNo, uao);
         redirectHome();
         return NONE;
     }
@@ -165,7 +171,14 @@ public class UaoSelectAction extends ActionSupport {
 
     private String currentUaoName(LoggedInInfo loggedInInfo) {
         OneIdGatewayData gatewayData = loggedInInfo.getOneIdGatewayData();
-        return (gatewayData == null) ? null : gatewayData.getUaoFriendlyName();
+        if (gatewayData == null) {
+            return null;
+        }
+        String friendlyName = gatewayData.getUaoFriendlyName();
+        // Rows saved before the friendly name was required carry none, and the value itself is the
+        // only other thing that tells one authority from another.
+        return (friendlyName == null || friendlyName.trim().isEmpty())
+                ? gatewayData.getUao() : friendlyName;
     }
 
     /**

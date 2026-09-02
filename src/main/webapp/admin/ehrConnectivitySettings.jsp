@@ -57,7 +57,7 @@
     <p class="text-muted">Client credentials, endpoints and keystore used to connect to Ontario
         Health. Secret fields are shown blank; leave them blank to keep the stored value.</p>
 
-    <c:if test="${saved}">
+    <c:if test="${saved and empty problems}">
         <div class="alert alert-success" role="alert">Settings saved.</div>
     </c:if>
 

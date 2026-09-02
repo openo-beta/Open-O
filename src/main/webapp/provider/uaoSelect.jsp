@@ -62,7 +62,7 @@
             <c:forEach var="uao" items="${uaoList}">
                 <form method="post" action="${pageContext.request.contextPath}/uaoSelectApply.do">
                     <input type="hidden" name="id" value="${e:forHtmlAttribute(uao.id)}"/>
-                    <button type="submit" class="btn btn-primary btn-lg w-100">${e:forHtmlContent(uao.friendlyName)}</button>
+                    <button type="submit" class="btn btn-primary btn-lg w-100"><c:choose><c:when test="${not empty uao.friendlyName}">${e:forHtmlContent(uao.friendlyName)}</c:when><c:otherwise>${e:forHtmlContent(uao.name)}</c:otherwise></c:choose></button>
                 </form>
             </c:forEach>
         </div>

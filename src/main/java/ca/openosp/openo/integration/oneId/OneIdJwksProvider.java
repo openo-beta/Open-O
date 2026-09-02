@@ -71,14 +71,25 @@ public class OneIdJwksProvider {
      */
     private static final long MIN_REFRESH_INTERVAL_MILLIS = 60L * 1000L;
 
-    /** A fetched key set and when it was fetched, held together so the pair is swapped as one. */
+    /**
+     * A fetched key set, the endpoint it came from, and when it was fetched, held together so the
+     * three are swapped as one. The endpoint is part of it because an administrator who corrects
+     * the JWKS setting would otherwise go on verifying against the old endpoint's keys until the
+     * time-to-live ran out.
+     */
     private static final class CachedJwks {
+        private final String jwksUri;
         private final JwkSet keys;
         private final long fetchedAtMillis;
 
-        private CachedJwks(JwkSet keys, long fetchedAtMillis) {
+        private CachedJwks(String jwksUri, JwkSet keys, long fetchedAtMillis) {
+            this.jwksUri = jwksUri;
             this.keys = keys;
             this.fetchedAtMillis = fetchedAtMillis;
+        }
+
+        private boolean isFor(String otherJwksUri) {
+            return jwksUri.equals(otherJwksUri);
         }
     }
 
@@ -210,6 +221,10 @@ public class OneIdJwksProvider {
      */
     private JwkSet currentKeys(String jwksUri, boolean forceRefresh) {
         CachedJwks cached = cachedJwks;
+        if (cached != null && !cached.isFor(jwksUri)) {
+            // The endpoint setting changed; what is held belongs to the old one.
+            cached = null;
+        }
         long now = System.currentTimeMillis();
         if (cached != null && !forceRefresh && (now - cached.fetchedAtMillis) <= CACHE_TTL_MILLIS) {
             return cached.keys;
@@ -220,15 +235,47 @@ public class OneIdJwksProvider {
         }
         lastFetchAttemptMillis = now;
         JwkSet fetched = Jwks.setParser().build().parse(fetchJwks(jwksUri));
-        cachedJwks = new CachedJwks(fetched, System.currentTimeMillis());
+        cachedJwks = new CachedJwks(jwksUri, fetched, System.currentTimeMillis());
         return fetched;
     }
 
     private String fetchJwks(String jwksUri) {
+        requireSecureTransport(jwksUri);
         WebClient wc = WebClient.create(jwksUri).accept(MediaType.APPLICATION_JSON);
         WebClient.getConfig(wc).getHttpConduit().getClient().setConnectionTimeout(FETCH_TIMEOUT_MILLIS);
         WebClient.getConfig(wc).getHttpConduit().getClient().setReceiveTimeout(FETCH_TIMEOUT_MILLIS);
         return wc.get(String.class);
+    }
+
+    /**
+     * Refuses a JWKS endpoint that is not HTTPS.
+     *
+     * <p>These are the keys every id_token is verified against, so anything able to rewrite the
+     * response chooses the signing key and can mint a token for any provider. Over plain HTTP that
+     * is anyone on the path.
+     *
+     * <p>Loopback is allowed, because a test serving the key set from 127.0.0.1 has no path for
+     * anyone to be on.
+     *
+     * @param jwksUri String the configured endpoint
+     */
+    private static void requireSecureTransport(String jwksUri) {
+        java.net.URI uri;
+        try {
+            uri = java.net.URI.create(jwksUri);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("The JWKS endpoint setting is not a valid URL.");
+        }
+        String scheme = uri.getScheme();
+        if (scheme != null && scheme.equalsIgnoreCase("https")) {
+            return;
+        }
+        String host = uri.getHost();
+        if (host != null && (host.equals("127.0.0.1") || host.equals("localhost")
+                || host.equals("::1") || host.equals("[::1]"))) {
+            return;
+        }
+        throw new IllegalStateException("The JWKS endpoint must be an https URL.");
     }
 
     private String requireConfig(ONEID_KEYS key, String label) throws IdTokenValidationException {

@@ -24,6 +24,7 @@
 package ca.openosp.openo.integration.oneId.web;
 
 import ca.openosp.openo.commn.model.UAO;
+import ca.openosp.openo.integration.oneId.OneIdSession;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.managers.EhrConnectivityManager;
@@ -130,11 +131,41 @@ public class UaoAdminAction extends ActionSupport {
             uao.setDefaultUAO(false);
             uao.setDateUpdated(new Date());
             ehrConnectivityManager.updateUao(loggedInInfo, uao);
+            clearWithdrawnSessionUao(loggedInInfo, providerNo, uaoName);
             audit(loggedInInfo, LogConst.DELETE, providerNo,
                     "before={name=" + uaoName + ", default=" + wasDefault + "} after={removed}");
         }
         redirectToList(providerNo);
         return NONE;
+    }
+
+    /**
+     * Takes a withdrawn authority off the provider's stored ONE ID session.
+     *
+     * <p>Deactivating the row stops it being offered, but the value the provider selected earlier
+     * stays on their session, where it still names a custodian to the CMS and still satisfies the
+     * check that lets a gateway call through. They would go on acting under an authority that has
+     * been taken away from them until they next sign in.
+     *
+     * <p>Only when it is the one they are on. Withdrawing an authority they are not using changes
+     * nothing about the one they are.
+     *
+     * @param loggedInInfo LoggedInInfo the acting administrator's session information
+     * @param providerNo   String the provider the authority belonged to
+     * @param uaoName      String the withdrawn authority's value
+     */
+    private void clearWithdrawnSessionUao(LoggedInInfo loggedInInfo, String providerNo, String uaoName) {
+        if (uaoName == null) {
+            return;
+        }
+        try {
+            OneIdSession session = ehrConnectivityManager.findOneIdSession(loggedInInfo, providerNo);
+            if (session != null && uaoName.equals(session.getUaoUpi())) {
+                ehrConnectivityManager.setSessionUao(loggedInInfo, providerNo, null, null);
+            }
+        } catch (Exception e) {
+            logger.error("Could not clear the withdrawn authority from the provider's ONE ID session", e);
+        }
     }
 
     public String setDefault() {

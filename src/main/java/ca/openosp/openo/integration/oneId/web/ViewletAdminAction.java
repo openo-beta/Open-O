@@ -104,6 +104,10 @@ public class ViewletAdminAction extends ActionSupport {
         String displayMode = normalizeDisplayMode(request.getParameter("displayMode"));
 
         if (name != null && keyValue != null) {
+            if (!lengthsFit(name, keyValue)) {
+                redirectToList();
+                return NONE;
+            }
             if (keyInUse(loggedInInfo, keyValue, null)) {
                 flashKeyInUse();
                 redirectToList();
@@ -135,6 +139,10 @@ public class ViewletAdminAction extends ActionSupport {
         String keyValue = trimToNull(request.getParameter("keyValue"));
 
         if (viewlet != null && name != null && keyValue != null) {
+            if (!lengthsFit(name, keyValue)) {
+                redirectToList();
+                return NONE;
+            }
             if (keyInUse(loggedInInfo, keyValue, viewlet.getId())) {
                 flashKeyInUse();
                 redirectToList();
@@ -199,9 +207,21 @@ public class ViewletAdminAction extends ActionSupport {
         return NONE;
     }
 
+    /**
+     * Whether an active Viewlet already holds this toolbar key.
+     *
+     * <p>Compared without regard to case, because the column's collation is case-insensitive and
+     * so is the toolbar lookup that resolves a launch. Comparing exactly let "DHDR" through beside
+     * an existing "dhdr", and the launch then picked whichever row came first.
+     *
+     * @param loggedInInfo LoggedInInfo the acting administrator
+     * @param keyValue String the key being claimed
+     * @param excludeId Integer the row being edited, or null when adding
+     * @return boolean true when another active row already holds the key
+     */
     private boolean keyInUse(LoggedInInfo loggedInInfo, String keyValue, Integer excludeId) {
         for (OneIdViewlet existing : ehrConnectivityManager.findAllViewlets(loggedInInfo)) {
-            if (!existing.isDeleted() && keyValue.equals(existing.getKeyValue())
+            if (!existing.isDeleted() && keyValue.equalsIgnoreCase(existing.getKeyValue())
                     && !existing.getId().equals(excludeId)) {
                 return true;
             }
@@ -209,9 +229,41 @@ public class ViewletAdminAction extends ActionSupport {
         return false;
     }
 
+    /** The most characters the OneIdViewlet name column holds. */
+    private static final int MAX_NAME_LENGTH = 100;
+
+    /** The most characters the OneIdViewlet keyValue column holds. */
+    private static final int MAX_KEY_LENGTH = 50;
+
+    /**
+     * Whether the submitted name and key fit the columns that store them.
+     *
+     * <p>Checked here rather than left to the database, which answers an over-long value with a
+     * truncation error the screen cannot explain, or by silently cutting it short depending on the
+     * server's strict-mode setting. The form caps both too, but only in the browser.
+     *
+     * @param name String the submitted name
+     * @param keyValue String the submitted toolbar key
+     * @return boolean true when both fit
+     */
+    private boolean lengthsFit(String name, String keyValue) {
+        if (name.length() > MAX_NAME_LENGTH) {
+            flash("The Viewlet name must be " + MAX_NAME_LENGTH + " characters or fewer.");
+            return false;
+        }
+        if (keyValue.length() > MAX_KEY_LENGTH) {
+            flash("The toolbar key must be " + MAX_KEY_LENGTH + " characters or fewer.");
+            return false;
+        }
+        return true;
+    }
+
+    private void flash(String message) {
+        request.getSession().setAttribute("viewletAdminError", message);
+    }
+
     private void flashKeyInUse() {
-        request.getSession().setAttribute("viewletAdminError",
-                "A Viewlet with that toolbar key already exists.");
+        flash("A Viewlet with that toolbar key already exists.");
     }
 
     private OneIdViewlet findViewlet(LoggedInInfo loggedInInfo, String idValue) {
