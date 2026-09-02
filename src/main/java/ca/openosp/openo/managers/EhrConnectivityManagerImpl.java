@@ -225,9 +225,9 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
     }
 
     @Override
-    public boolean clearSessionUaoIfMatches(LoggedInInfo loggedInInfo, String providerNo, String uaoValue) {
+    public boolean clearSessionUaoIfWithdrawn(LoggedInInfo loggedInInfo, String providerNo, String uaoValue) {
         checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.WRITE);
-        return oneIdSessionDao.clearSessionUaoIfMatches(providerNo, uaoValue) > 0;
+        return oneIdSessionDao.clearSessionUaoIfWithdrawn(providerNo, uaoValue) > 0;
     }
 
     @Override

@@ -12,10 +12,12 @@ public class OneIdSessionDaoImpl extends AbstractDaoImpl<OneIdSession> implement
     }
 
     @Override
-    public int clearSessionUaoIfMatches(String providerNo, String uaoValue) {
+    public int clearSessionUaoIfWithdrawn(String providerNo, String uaoValue) {
         Query query = entityManager.createQuery(
                 "update OneIdSession s set s.uaoUpi = null, s.uaoName = null"
-                        + " where s.providerNo = :providerNo and s.uaoUpi = :uaoValue");
+                        + " where s.providerNo = :providerNo and s.uaoUpi = :uaoValue"
+                        + " and not exists (select u.id from UAO u where u.providerNo = :providerNo"
+                        + " and u.name = :uaoValue and u.active = true)");
         query.setParameter("providerNo", providerNo);
         query.setParameter("uaoValue", uaoValue);
         return query.executeUpdate();

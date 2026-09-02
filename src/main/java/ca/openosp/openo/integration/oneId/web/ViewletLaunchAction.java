@@ -294,27 +294,42 @@ public class ViewletLaunchAction extends ActionSupport {
             return false;
         }
         String providerNo = loggedInInfo.getLoggedInProviderNo();
-        try {
-            if (transactionLogDao.countByCorrelation(uniqueToken, providerNo, demographicNo, key,
-                    LAUNCH_TRANSACTION_TYPES) == 0) {
-                logger.warn("Refused a viewlet result naming no launch of provider " + providerNo);
+        // A lookup that could not run is not an answer. The browser reports a launch once and does
+        // not try again, so a query that failed on a deadlock or a timeout would cost the audit log
+        // a completion that really happened. Only a count that came back refuses the reply.
+        for (int attempt = 1; attempt <= LOOKUP_ATTEMPTS; attempt++) {
+            try {
+                if (transactionLogDao.countByCorrelation(uniqueToken, providerNo, demographicNo, key,
+                        LAUNCH_TRANSACTION_TYPES) == 0) {
+                    logger.warn("Refused a viewlet result naming no launch of provider " + providerNo);
+                    return false;
+                }
+                if (transactionLogDao.countByCorrelation(uniqueToken, providerNo, demographicNo, key,
+                        RESULT_TRANSACTION_TYPES) > 0) {
+                    logger.warn("Refused a repeat viewlet result for provider " + providerNo);
+                    return false;
+                }
+                return true;
+            } catch (Exception e) {
+                if (attempt < LOOKUP_ATTEMPTS) {
+                    logger.warn("Retrying the viewlet launch lookup ("
+                            + e.getClass().getSimpleName() + ")");
+                    continue;
+                }
+                // Still refused rather than recorded. An outcome nobody could verify is worse in
+                // the audit table than a gap: a gap is visible to whoever reads it, an unverified
+                // row reads as fact. Logged with the provider and the correlation id so the missing
+                // row can be tied back to its launch.
+                logger.error("Refused a viewlet result that could not be matched to its launch, for provider "
+                        + providerNo + " (correlation " + uniqueToken + ")", e);
                 return false;
             }
-            if (transactionLogDao.countByCorrelation(uniqueToken, providerNo, demographicNo, key,
-                    RESULT_TRANSACTION_TYPES) > 0) {
-                logger.warn("Refused a repeat viewlet result for provider " + providerNo);
-                return false;
-            }
-            return true;
-        } catch (Exception e) {
-            // Refused, not recorded. An outcome nobody could verify is worse in the audit table
-            // than a gap: a gap is visible to whoever reads it, an unverified row reads as fact.
-            // Logged loudly with the provider and the correlation id so the gap can be traced.
-            logger.error("Refused a viewlet result that could not be matched to its launch, for provider "
-                    + loggedInInfo.getLoggedInProviderNo() + " (correlation " + uniqueToken + ")", e);
-            return false;
         }
+        return false;
     }
+
+    /** How many times the launch lookup is tried before a failure to run it is taken as an answer. */
+    private static final int LOOKUP_ATTEMPTS = 2;
 
     /** The transaction types written when a reply about a launch is recorded. */
     private static final List<String> RESULT_TRANSACTION_TYPES = Arrays.asList(

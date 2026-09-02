@@ -211,15 +211,15 @@ public interface EhrConnectivityManager {
     OneIdSession findOneIdSession(LoggedInInfo loggedInInfo, String providerNo);
 
     /**
-     * Clears the authority on a provider's ONE ID session, but only while it is still the one
-     * given.
+     * Clears the authority on a provider's ONE ID session, but only while it is still the one they
+     * are on and no active assignment still grants it.
      *
      * @param loggedInInfo LoggedInInfo the acting user, allowed as an admin or the owning provider
      * @param providerNo String the provider whose session is being cleared
-     * @param uaoValue String the authority that must still be in force for the clear to happen
-     * @return boolean true when it was still in force and has been cleared
+     * @param uaoValue String the withdrawn authority
+     * @return boolean true when the session was cleared
      */
-    boolean clearSessionUaoIfMatches(LoggedInInfo loggedInInfo, String providerNo, String uaoValue);
+    boolean clearSessionUaoIfWithdrawn(LoggedInInfo loggedInInfo, String providerNo, String uaoValue);
 
     /**
      * Persists the CMS-generated context topic onto the provider's ONE ID session so it survives

@@ -89,19 +89,37 @@ public class OneIdUnlinkAction extends ActionSupport {
             gatewayData.setHubTopic(stored.getHubTopic());
             gatewayData.setCtxSessionId(stored.getHubTopic());
             gatewayData.setUao(stored.getUaoUpi());
-            // The context clear posts to this address, so without it there is nothing to clear the
-            // context against. Resolved from the stored toolbar the same way the session filter
-            // does it, preferring hub.url and falling back to cms_url.
-            String cmsUrl = stored.getUrlFromToolbar(OmdGateway.ToolbarKeys.HUB_URL.key);
-            if (cmsUrl == null || cmsUrl.isEmpty()) {
-                cmsUrl = stored.getUrlFromToolbar(OmdGateway.ToolbarKeys.CMS_URL.key);
-            }
-            gatewayData.setCmsUrl(cmsUrl);
+            gatewayData.setCmsUrl(storedCmsUrl(stored));
             loggedInInfo.setOneIdGatewayData(gatewayData);
             return gatewayData;
         } catch (Exception e) {
             logger.error("Could not rebuild the ONE ID session for unlink teardown", e);
             return null;
+        }
+    }
+
+    /**
+     * The CMS endpoint held in a stored session's toolbar, preferring hub.url and falling back to
+     * cms_url, the way the session filter resolves it.
+     *
+     * <p>Kept off the rest of the rebuild. The toolbar is Base64 JSON decoded on read, so a stored
+     * value that will not parse throws, and a failure to find one address would otherwise cost the
+     * whole gateway data and with it the token revoke, which needs none of this.
+     *
+     * @param stored OneIdSession the provider's stored ONE ID session
+     * @return String the CMS endpoint, or empty when the toolbar carries none or will not decode
+     */
+    private String storedCmsUrl(OneIdSession stored) {
+        try {
+            String cmsUrl = stored.getUrlFromToolbar(OmdGateway.ToolbarKeys.HUB_URL.key);
+            if (cmsUrl == null || cmsUrl.isEmpty()) {
+                cmsUrl = stored.getUrlFromToolbar(OmdGateway.ToolbarKeys.CMS_URL.key);
+            }
+            return cmsUrl == null ? "" : cmsUrl;
+        } catch (Exception e) {
+            logger.error("Could not read the CMS endpoint from the stored ONE ID toolbar ("
+                    + e.getClass().getSimpleName() + "); the remote context cannot be cleared");
+            return "";
         }
     }
 

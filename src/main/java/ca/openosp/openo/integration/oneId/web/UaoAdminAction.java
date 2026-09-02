@@ -174,17 +174,12 @@ public class UaoAdminAction extends ActionSupport {
             return true;
         }
         try {
-            // A provider can hold two assignments carrying the same value. Withdrawing one of them
-            // leaves the other in force, and the session names the value rather than the row, so
-            // there is nothing to clear while any active assignment still carries it.
-            for (UAO remaining : ehrConnectivityManager.findUaosByProvider(loggedInInfo, providerNo)) {
-                if (uaoName.equals(remaining.getName())) {
-                    return true;
-                }
-            }
-            // Cleared only while it is still the one in force, in one statement, so a value the
-            // provider selected in the meantime is not taken away instead.
-            ehrConnectivityManager.clearSessionUaoIfMatches(loggedInInfo, providerNo, uaoName);
+            // One statement, carrying both conditions. A provider can hold two assignments with the
+            // same value, so withdrawing one leaves the other in force and there is nothing to
+            // clear; and either the provider picking a different authority or another administrator
+            // adding that value back would slip between a check made here and the write that
+            // followed it.
+            ehrConnectivityManager.clearSessionUaoIfWithdrawn(loggedInInfo, providerNo, uaoName);
             return true;
         } catch (Exception e) {
             logger.error("Could not clear the withdrawn authority from the provider's ONE ID session", e);
