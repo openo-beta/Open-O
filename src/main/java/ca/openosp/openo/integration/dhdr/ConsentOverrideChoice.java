@@ -14,17 +14,22 @@ import java.util.List;
  * button opens the PCOI viewlet - is not seen by that path at all: the viewlet's outcome comes back
  * through the shared viewlet result endpoint, which writes its own vocabulary.
  *
- * <p>This enum is the single source of truth for both. {@link #storedValues()} is what the
- * consent-override endpoint accepts and stores; {@link #reportTransactionTypes()} is what the
+ * <p>This enum owns what those values mean and how they are shown. {@link #storedValues()} is what
+ * the consent-override endpoint accepts and stores; {@link #reportTransactionTypes()} is what the
  * report's query selects, being those values together with the viewlet result types; and
  * {@link #labelFor(String, Boolean)} resolves a row from either route for display.
+ *
+ * <p>It does not own the viewlet result vocabulary itself. Those values belong to the endpoint that
+ * writes them and are named on {@link OmdGateway}, which both sides read - the reader matching a
+ * literal the writer could change is how the completed unblock went missing from this report in the
+ * first place.
  *
  * <p>DHDR13.02 speaks of a continue / refuse / cancel choice. {@link #FAILED} and {@link #UNKNOWN}
  * are operational states with no requirement vocabulary of their own, written when the override did
  * not complete (DHDR11.01.b) and when the viewlet's response carried no code the EMR recognises;
  * both are surfaced plainly. UNKNOWN must stay in this enum for the attempt to reach the report at
- * all - {@link #storedValues()} is the query's whitelist, so a decision missing from here is
- * written to the audit table and then never shown.
+ * all - {@link #reportTransactionTypes()} is the query's whitelist, so a decision missing from here
+ * is written to the audit table and then never shown.
  *
  * @since 2026-07-09
  */
@@ -34,7 +39,7 @@ public enum ConsentOverrideChoice {
    * The patient's consent block was temporarily unblocked and the DHDR query proceeded.
    *
    * <p>Nothing stores this value: the unblock happens inside the PCOI viewlet, so the row that
-   * records it arrives as a confirmed {@link #VIEWLET_RESULT}. The constant is what that row
+   * records it arrives as a confirmed {@link OmdGateway#VIEWLET_RESULT}. The constant is what that row
    * resolves to, and what the report labels it.
    */
   OVERWRITE("Overwrite", "Continue (Unblock)"),
@@ -51,23 +56,6 @@ public enum ConsentOverrideChoice {
   /** The viewlet answered with no code the EMR recognises, so no outcome could be asserted. */
   UNKNOWN("Unknown", "Unknown (unrecognised response)");
 
-  /**
-   * The {@code transactionType} values the shared viewlet result endpoint writes when a consent
-   * viewlet answers, mapped to the decision each one means by
-   * {@link #fromTransactionLog(String, Boolean)}.
-   *
-   * <p>{@code viewletResult} is written both for a confirmed outcome and for a failed one, so it is
-   * the single value that cannot be read from the transaction type alone - the success column
-   * separates the two. The other three say what they mean on their own.
-   */
-  static final String VIEWLET_RESULT = "viewletResult";
-
-  static final String VIEWLET_RESULT_CANCELLED = "viewletResultCancelled";
-
-  static final String VIEWLET_RESULT_NO_RESPONSE = "viewletResultNoResponse";
-
-  static final String VIEWLET_RESULT_PARTIAL = "viewletResultPartial";
-
   private static final List<String> STORED_VALUES;
 
   private static final List<String> REPORT_TRANSACTION_TYPES;
@@ -80,10 +68,10 @@ public enum ConsentOverrideChoice {
     STORED_VALUES = Collections.unmodifiableList(values);
 
     List<String> reportTypes = new ArrayList<String>(values);
-    reportTypes.add(VIEWLET_RESULT);
-    reportTypes.add(VIEWLET_RESULT_CANCELLED);
-    reportTypes.add(VIEWLET_RESULT_NO_RESPONSE);
-    reportTypes.add(VIEWLET_RESULT_PARTIAL);
+    reportTypes.add(OmdGateway.VIEWLET_RESULT);
+    reportTypes.add(OmdGateway.VIEWLET_RESULT_CANCELLED);
+    reportTypes.add(OmdGateway.VIEWLET_RESULT_NO_RESPONSE);
+    reportTypes.add(OmdGateway.VIEWLET_RESULT_PARTIAL);
     REPORT_TRANSACTION_TYPES = Collections.unmodifiableList(reportTypes);
   }
 
@@ -129,7 +117,7 @@ public enum ConsentOverrideChoice {
    * <p>Selecting on {@link #storedValues()} alone is what the report used to do, and it silently
    * omitted every completed unblock. Nothing writes {@link #OVERWRITE}: a clinician who goes ahead
    * with the unblock does so inside the PCOI viewlet, whose outcome is recorded by the shared
-   * viewlet result endpoint under {@link #VIEWLET_RESULT}. The report showed refusals and
+   * viewlet result endpoint under {@link OmdGateway#VIEWLET_RESULT}. The report showed refusals and
    * cancellations at the prompt and nothing else - the one event DHDR13.02 exists to record was the
    * one event missing from it.
    *
@@ -147,25 +135,25 @@ public enum ConsentOverrideChoice {
    *
    * @param transactionType String the row's stored {@code transactionType}, may be {@code null}
    * @param success Boolean the row's success column, used only to tell a confirmed
-   *     {@link #VIEWLET_RESULT} from a failed one; may be {@code null}
+   *     {@link OmdGateway#VIEWLET_RESULT} from a failed one; may be {@code null}
    * @return ConsentOverrideChoice the decision, or {@code null} when the value is null or belongs
    *     to neither vocabulary
    */
   public static ConsentOverrideChoice fromTransactionLog(String transactionType, Boolean success) {
-    if (VIEWLET_RESULT.equals(transactionType)) {
+    if (OmdGateway.VIEWLET_RESULT.equals(transactionType)) {
       // The only row whose meaning needs the success column: logDataReceived writes it true for a
       // confirmed outcome, and the endpoint's catch-all failure branch writes the same type false.
       return Boolean.TRUE.equals(success) ? OVERWRITE : FAILED;
     }
-    if (VIEWLET_RESULT_CANCELLED.equals(transactionType)) {
+    if (OmdGateway.VIEWLET_RESULT_CANCELLED.equals(transactionType)) {
       return CANCELLED;
     }
-    if (VIEWLET_RESULT_PARTIAL.equals(transactionType)) {
+    if (OmdGateway.VIEWLET_RESULT_PARTIAL.equals(transactionType)) {
       // The viewlet confirmed the consent call but not the drug service behind it, so the unblock
       // did not complete - which is what FAILED states (DHDR11.01.b).
       return FAILED;
     }
-    if (VIEWLET_RESULT_NO_RESPONSE.equals(transactionType)) {
+    if (OmdGateway.VIEWLET_RESULT_NO_RESPONSE.equals(transactionType)) {
       // The window closed without answering. Nobody observed an outcome, which is UNKNOWN, not a
       // refusal: the override may well have gone through at Ontario Health.
       return UNKNOWN;
@@ -217,7 +205,7 @@ public enum ConsentOverrideChoice {
    *
    * @param transactionType String the row's stored {@code transactionType}, may be {@code null}
    * @param success Boolean the row's success column, used only to tell a confirmed
-   *     {@link #VIEWLET_RESULT} from a failed one; may be {@code null}
+   *     {@link OmdGateway#VIEWLET_RESULT} from a failed one; may be {@code null}
    * @return String the label, the raw transaction type if unrecognised, or {@code ""} if
    *     {@code null}
    */

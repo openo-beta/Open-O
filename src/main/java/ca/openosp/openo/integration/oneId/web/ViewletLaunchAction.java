@@ -167,24 +167,24 @@ public class ViewletLaunchAction extends ActionSupport {
         try {
             OmdGateway omdGateway = new OmdGateway();
             if (success) {
-                omdGateway.logDataReceived(loggedInInfo, key.trim(), "viewletResult", message, demographicNo, uniqueToken);
+                omdGateway.logDataReceived(loggedInInfo, key.trim(), OmdGateway.VIEWLET_RESULT, message, demographicNo, uniqueToken);
             } else if (noResponse) {
-                omdGateway.logError(loggedInInfo, key.trim(), "viewletResultNoResponse",
+                omdGateway.logError(loggedInInfo, key.trim(), OmdGateway.VIEWLET_RESULT_NO_RESPONSE,
                         "The EHR service window closed with no response, so the outcome is unknown. "
                                 + "Confirm the result in the EHR service's own data. "
                                 + (message == null ? "" : message),
                         demographicNo, uniqueToken);
             } else if (cancelled) {
-                omdGateway.logInteraction(loggedInInfo, key.trim(), "viewletResultCancelled",
+                omdGateway.logInteraction(loggedInInfo, key.trim(), OmdGateway.VIEWLET_RESULT_CANCELLED,
                         demographicNo, Boolean.TRUE, message, uniqueToken);
             } else if (partial) {
-                omdGateway.logError(loggedInInfo, key.trim(), "viewletResultPartial",
+                omdGateway.logError(loggedInInfo, key.trim(), OmdGateway.VIEWLET_RESULT_PARTIAL,
                         "The EHR service replied without confirming the requested service, so the "
                                 + "outcome is unconfirmed. Confirm the result in the EHR service's own data. "
                                 + (message == null ? "" : message),
                         demographicNo, uniqueToken);
             } else {
-                omdGateway.logError(loggedInInfo, key.trim(), "viewletResult",
+                omdGateway.logError(loggedInInfo, key.trim(), OmdGateway.VIEWLET_RESULT,
                         message == null ? "The EHR service did not return a successful response." : message,
                         demographicNo, uniqueToken);
             }

@@ -110,6 +110,36 @@ public class OmdGateway {
 		}
 	}
 
+	/**
+	 * The {@code transactionType} values written for the outcome of an EHR service (viewlet) launch.
+	 *
+	 * <p>Named here because two sides have to agree on them and neither owns both ends: the viewlet
+	 * result endpoint writes them, and the DHDR temporary consent unblock report selects and labels
+	 * its rows by them. They were literals in both places, so a branch added on the writing side
+	 * reached the audit table under a value the report does not select, and the row was simply
+	 * absent from a report that is meant to account for it.
+	 *
+	 * <p>These are stored values. Live rows carry them in
+	 * {@code OMDGatewayTransactionLog.transactionType}, so renaming one orphans every row written
+	 * under the old name. Add rather than rename, and add to
+	 * {@link ConsentOverrideChoice#reportTransactionTypes()} in the same change.
+	 *
+	 * <p>{@link #VIEWLET_RESULT} is written for a confirmed outcome and for a failed one alike; the
+	 * success column is what separates them. The other three carry their meaning on their own.
+	 *
+	 * @since 2026-09-02
+	 */
+	public static final String VIEWLET_RESULT = "viewletResult";
+
+	/** The clinician closed the EHR service without going through with it. @see #VIEWLET_RESULT */
+	public static final String VIEWLET_RESULT_CANCELLED = "viewletResultCancelled";
+
+	/** The window closed without answering, so no outcome was observed. @see #VIEWLET_RESULT */
+	public static final String VIEWLET_RESULT_NO_RESPONSE = "viewletResultNoResponse";
+
+	/** The reply confirmed the viewlet call but not the service launched for. @see #VIEWLET_RESULT */
+	public static final String VIEWLET_RESULT_PARTIAL = "viewletResultPartial";
+
 	public static OMDGatewayTransactionLog getOMDGatewayTransactionLog(LoggedInInfo loggedInInfo, Integer demographicNo, String externalSystem, String transactionType) {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = new OMDGatewayTransactionLog();
 		OneIdGatewayData oneIdGatewayData = loggedInInfo.getOneIdGatewayData();
