@@ -32,6 +32,7 @@
 <%@page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@page import="org.owasp.encoder.Encode" %>
+<%@page import="ca.openosp.openo.integration.dhdr.ConsentOverrideChoice" %>
 <fmt:setBundle basename="oscarResources"/>
 <%
     String roleName$ = (String)session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -282,8 +283,8 @@
 		 					<!-- DHDR09.03: the EMR renders the mandated consent-block message itself (not reliant on the OperationOutcome text). -->
 		 					<div>Access to Drug and Pharmacy Service information has been blocked by the patient.</div>
 		 					<button type="button" class="btn btn-danger" ng-click="callConsentBlock();" ng-disabled="buttonDisabled">Temporary Consent Unblock</button>
-		 					<button type="button" class="btn btn-default" ng-click="logOverrideStatus(outs.id, null, 'Cancelled');">Cancel</button>
-		 					<button type="button" class="btn btn-default" ng-click="logOverrideStatus(outs.id, null, 'Refused');">Refused</button>
+		 					<button type="button" class="btn btn-default" ng-click="logOverrideStatus(outs.id, null, '<%=ConsentOverrideChoice.CANCELLED.getStoredValue()%>');">Cancel</button>
+		 					<button type="button" class="btn btn-default" ng-click="logOverrideStatus(outs.id, null, '<%=ConsentOverrideChoice.REFUSED.getStoredValue()%>');">Refused</button>
 		 				</span>
 		 			</div>
 		 		</div>
