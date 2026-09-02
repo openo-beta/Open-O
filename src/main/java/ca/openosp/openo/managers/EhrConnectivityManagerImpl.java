@@ -269,12 +269,22 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
         return viewlet;
     }
 
+    /**
+     * Guards the provider-facing use of an EHR service: listing the services on a chart and
+     * launching one.
+     *
+     * <p>Use is {@code _ehr.connectivity}, not {@code _admin.ehrConnectivity}. The two objects
+     * split configuring the gateway from using it, and a launch is use: it puts a patient into the
+     * Ontario Health CMS context and opens their record in an external service. Setting up
+     * endpoints and registering viewlets does not carry that.
+     *
+     * @param loggedInInfo LoggedInInfo the acting provider session
+     * @param privilege String the right being asked for
+     */
     private void checkEhrAccess(LoggedInInfo loggedInInfo, String privilege) {
-        if (securityInfoManager.hasPrivilege(loggedInInfo, "_admin.ehrConnectivity", privilege, null)
-                || securityInfoManager.hasPrivilege(loggedInInfo, "_ehr.connectivity", privilege, null)) {
-            return;
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_ehr.connectivity", privilege, null)) {
+            throw new SecurityException("missing required sec object (_ehr.connectivity)");
         }
-        throw new SecurityException("missing required sec object (_ehr.connectivity or _admin.ehrConnectivity)");
     }
 
     private void checkPrivilege(LoggedInInfo loggedInInfo, String privilege) {
