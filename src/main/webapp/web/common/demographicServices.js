@@ -15,6 +15,15 @@ angular.module("demographicServices", [])
             getDemographic: function (demographicNo) {
                 var deferred = $q.defer();
                 $http.get(this.apiPath + 'demographics/' + demographicNo, this.configHeadersWithCache).then(function (response) {
+                    // A patient the endpoint cannot return comes back as 200 with an empty body
+                    // rather than a 404 - DemographicService answers null - so resolving whatever
+                    // arrived handed the viewer an empty patient and let it search on regardless.
+                    // The caller's load-error notice (DHDR02.02) only runs on a rejection, so it
+                    // could never appear for the case it was written for.
+                    if (!response || !response.data) {
+                        deferred.reject("The patient record was not returned");
+                        return;
+                    }
                     deferred.resolve(response.data);
                 }, function () {
                     deferred.reject("An error occurred while fetching demographic");
