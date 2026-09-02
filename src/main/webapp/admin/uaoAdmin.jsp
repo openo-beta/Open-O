@@ -65,6 +65,10 @@
         </div>
     </form>
 
+    <c:if test="${not empty uaoAdminError}">
+        <div class="alert alert-warning">${e:forHtmlContent(uaoAdminError)}</div>
+    </c:if>
+
     <c:if test="${not empty providerNo}">
         <div class="card mb-4">
             <div class="card-header">Add a UAO for provider ${e:forHtmlContent(providerNo)}</div>

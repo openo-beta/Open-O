@@ -24,7 +24,6 @@
 package ca.openosp.openo.integration.oneId.web;
 
 import ca.openosp.openo.commn.model.UAO;
-import ca.openosp.openo.integration.oneId.OneIdSession;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.managers.EhrConnectivityManager;
@@ -70,6 +69,13 @@ public class UaoAdminAction extends ActionSupport {
             request.setAttribute("uaoList", uaoList);
         }
         request.setAttribute("providerNo", providerNo);
+        // Shown once and dropped, the way the Viewlet screen carries its own message across the
+        // redirect that follows a change.
+        Object flash = request.getSession().getAttribute("uaoAdminError");
+        if (flash != null) {
+            request.setAttribute("uaoAdminError", flash);
+            request.getSession().removeAttribute("uaoAdminError");
+        }
         return "success";
     }
 
@@ -131,9 +137,18 @@ public class UaoAdminAction extends ActionSupport {
             uao.setDefaultUAO(false);
             uao.setDateUpdated(new Date());
             ehrConnectivityManager.updateUao(loggedInInfo, uao);
-            clearWithdrawnSessionUao(loggedInInfo, providerNo, uaoName);
+            boolean sessionSettled = clearWithdrawnSessionUao(loggedInInfo, providerNo, uaoName);
             audit(loggedInInfo, LogConst.DELETE, providerNo,
-                    "before={name=" + uaoName + ", default=" + wasDefault + "} after={removed}");
+                    "before={name=" + uaoName + ", default=" + wasDefault + "} after={removed"
+                            + (sessionSettled ? "" : ", session not cleared") + "}");
+            if (!sessionSettled) {
+                // The row is withdrawn but the provider may still be acting under it, so the audit
+                // line above says so rather than reading as a clean removal, and the administrator
+                // is told the removal has not fully taken effect.
+                request.getSession().setAttribute("uaoAdminError",
+                        "The authority was withdrawn, but the provider's ONE ID session could not be"
+                                + " updated. They may keep acting under it until they sign in again.");
+            }
         }
         redirectToList(providerNo);
         return NONE;
@@ -154,17 +169,26 @@ public class UaoAdminAction extends ActionSupport {
      * @param providerNo   String the provider the authority belonged to
      * @param uaoName      String the withdrawn authority's value
      */
-    private void clearWithdrawnSessionUao(LoggedInInfo loggedInInfo, String providerNo, String uaoName) {
+    private boolean clearWithdrawnSessionUao(LoggedInInfo loggedInInfo, String providerNo, String uaoName) {
         if (uaoName == null) {
-            return;
+            return true;
         }
         try {
-            OneIdSession session = ehrConnectivityManager.findOneIdSession(loggedInInfo, providerNo);
-            if (session != null && uaoName.equals(session.getUaoUpi())) {
-                ehrConnectivityManager.setSessionUao(loggedInInfo, providerNo, null, null);
+            // A provider can hold two assignments carrying the same value. Withdrawing one of them
+            // leaves the other in force, and the session names the value rather than the row, so
+            // there is nothing to clear while any active assignment still carries it.
+            for (UAO remaining : ehrConnectivityManager.findUaosByProvider(loggedInInfo, providerNo)) {
+                if (uaoName.equals(remaining.getName())) {
+                    return true;
+                }
             }
+            // Cleared only while it is still the one in force, in one statement, so a value the
+            // provider selected in the meantime is not taken away instead.
+            ehrConnectivityManager.clearSessionUaoIfMatches(loggedInInfo, providerNo, uaoName);
+            return true;
         } catch (Exception e) {
             logger.error("Could not clear the withdrawn authority from the provider's ONE ID session", e);
+            return false;
         }
     }
 

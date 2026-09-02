@@ -23,6 +23,7 @@
  */
 package ca.openosp.openo.integration.oneId.web;
 
+import ca.openosp.openo.integration.dhdr.OmdGateway;
 import ca.openosp.openo.integration.oneId.OneIdGatewayData;
 import ca.openosp.openo.integration.oneId.OneIdSession;
 import ca.openosp.openo.log.LogAction;
@@ -72,16 +73,30 @@ public class OneIdUnlinkAction extends ActionSupport {
     private OneIdGatewayData gatewayDataFromStoredSession(LoggedInInfo loggedInInfo, String providerNo) {
         try {
             OneIdSession stored = ehrConnectivityManager.findOneIdSession(loggedInInfo, providerNo);
-            if (stored == null || stored.getAccessToken() == null || stored.getAccessToken().isEmpty()) {
+            if (stored == null) {
                 return null;
             }
             OneIdGatewayData gatewayData = new OneIdGatewayData();
-            gatewayData.setAccessTokenStr(stored.getAccessToken());
-            gatewayData.processAccessToken(stored.getAccessToken());
+            // Decoded only when there is one. A row holding a hub topic and no access token still
+            // has a CMS context to clear, and refusing to build anything for it left that context
+            // standing; the revoke that needs the token fails on its own and is best-effort.
+            String accessToken = stored.getAccessToken();
+            if (accessToken != null && !accessToken.isEmpty()) {
+                gatewayData.setAccessTokenStr(accessToken);
+                gatewayData.processAccessToken(accessToken);
+            }
             gatewayData.setIdTokenStr(stored.getIdToken());
             gatewayData.setHubTopic(stored.getHubTopic());
             gatewayData.setCtxSessionId(stored.getHubTopic());
             gatewayData.setUao(stored.getUaoUpi());
+            // The context clear posts to this address, so without it there is nothing to clear the
+            // context against. Resolved from the stored toolbar the same way the session filter
+            // does it, preferring hub.url and falling back to cms_url.
+            String cmsUrl = stored.getUrlFromToolbar(OmdGateway.ToolbarKeys.HUB_URL.key);
+            if (cmsUrl == null || cmsUrl.isEmpty()) {
+                cmsUrl = stored.getUrlFromToolbar(OmdGateway.ToolbarKeys.CMS_URL.key);
+            }
+            gatewayData.setCmsUrl(cmsUrl);
             loggedInInfo.setOneIdGatewayData(gatewayData);
             return gatewayData;
         } catch (Exception e) {

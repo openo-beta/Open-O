@@ -225,6 +225,12 @@ public class EhrConnectivityManagerImpl implements EhrConnectivityManager {
     }
 
     @Override
+    public boolean clearSessionUaoIfMatches(LoggedInInfo loggedInInfo, String providerNo, String uaoValue) {
+        checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.WRITE);
+        return oneIdSessionDao.clearSessionUaoIfMatches(providerNo, uaoValue) > 0;
+    }
+
+    @Override
     public void setSessionHubTopic(LoggedInInfo loggedInInfo, String providerNo, String hubTopic) {
         checkProviderAccess(loggedInInfo, providerNo, SecurityInfoManager.WRITE);
         OneIdSession session = oneIdSessionDao.find(providerNo);

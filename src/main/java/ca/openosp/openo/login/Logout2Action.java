@@ -122,10 +122,13 @@ public class Logout2Action extends ActionSupport {
         if (oneIdEndSessionUrl != null) {
             try {
                 response.sendRedirect(oneIdEndSessionUrl);
+                // Only a redirect that was actually written ends the request here. Returning NONE
+                // for an attempt that threw would leave the caller with nothing to navigate to,
+                // and ssoLogout reads this result to decide whether its own is still needed.
+                return NONE;
             } catch (Exception e) {
                 logger.error("Failed to redirect to the ONE ID End Session endpoint", e);
             }
-            return NONE;
         }
         return SUCCESS;
     }

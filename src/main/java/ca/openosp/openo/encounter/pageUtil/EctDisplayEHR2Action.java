@@ -70,7 +70,10 @@ public class EctDisplayEHR2Action extends EctDisplayAction {
 
         for (OneIdViewlet viewlet : viewlets) {
             NavBarDisplayDAO.Item item = NavBarDisplayDAO.Item();
-            item.setLinkTitle("Open " + viewlet.getName());
+            // LeftNavBarDisplay.jsp writes this into title='...', so it needs attribute encoding
+            // and not the HTML-body encoding the visible text below gets: a name carrying an
+            // apostrophe closes the attribute otherwise.
+            item.setLinkTitle(Encode.forHtmlAttribute("Open " + viewlet.getName()));
             // LeftNavBarDisplay.jsp writes the title straight out, so an administrator's Viewlet
             // name reaches the chart as markup unless it is encoded. Truncated first, so the
             // crop lands on the name rather than in the middle of an entity.

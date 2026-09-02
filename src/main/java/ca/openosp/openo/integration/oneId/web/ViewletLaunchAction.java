@@ -307,11 +307,12 @@ public class ViewletLaunchAction extends ActionSupport {
             }
             return true;
         } catch (Exception e) {
-            // The launch cannot be confirmed either way. Refusing here would drop the audit row
-            // VF06.01 requires for a launch that did happen, so the reply is recorded and the
-            // failure to check it is noted.
-            logger.error("Could not match a viewlet result to its launch; recording it anyway", e);
-            return true;
+            // Refused, not recorded. An outcome nobody could verify is worse in the audit table
+            // than a gap: a gap is visible to whoever reads it, an unverified row reads as fact.
+            // Logged loudly with the provider and the correlation id so the gap can be traced.
+            logger.error("Refused a viewlet result that could not be matched to its launch, for provider "
+                    + loggedInInfo.getLoggedInProviderNo() + " (correlation " + uniqueToken + ")", e);
+            return false;
         }
     }
 
