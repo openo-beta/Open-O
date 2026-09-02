@@ -131,13 +131,25 @@ public class OmdGateway {
 	 */
 	public static final String VIEWLET_RESULT = "viewletResult";
 
-	/** The clinician closed the EHR service without going through with it. @see #VIEWLET_RESULT */
+	/**
+	 * The clinician closed the EHR service without going through with it.
+	 *
+	 * @see #VIEWLET_RESULT
+	 */
 	public static final String VIEWLET_RESULT_CANCELLED = "viewletResultCancelled";
 
-	/** The window closed without answering, so no outcome was observed. @see #VIEWLET_RESULT */
+	/**
+	 * The window closed without answering, so no outcome was observed.
+	 *
+	 * @see #VIEWLET_RESULT
+	 */
 	public static final String VIEWLET_RESULT_NO_RESPONSE = "viewletResultNoResponse";
 
-	/** The reply confirmed the viewlet call but not the service launched for. @see #VIEWLET_RESULT */
+	/**
+	 * The reply confirmed the viewlet call but not the service it was launched for.
+	 *
+	 * @see #VIEWLET_RESULT
+	 */
 	public static final String VIEWLET_RESULT_PARTIAL = "viewletResultPartial";
 
 	public static OMDGatewayTransactionLog getOMDGatewayTransactionLog(LoggedInInfo loggedInInfo, Integer demographicNo, String externalSystem, String transactionType) {

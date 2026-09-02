@@ -293,7 +293,13 @@ public class DHDRService extends AbstractServiceImpl {
                 + "Its response is stored on this row.",
             e.getMessage(), demographicNo, uniqueToken);
       } catch (Exception auditFailure) {
-        logger.error("Could not record the consent viewlet launch failure\n"
+        // Named by provider and correlation token, not by patient. The token is the same one the
+        // lost row would have carried and the one the viewer holds, so it ties this line to the
+        // request either side of the gap; the provider matches how the search failures above are
+        // identified. The demographic is deliberately not here - the application log does not get
+        // to say a drug history was queried for a named patient just because a write failed.
+        logger.error("Could not record the consent viewlet launch failure for provider "
+            + loggedInInfo.getLoggedInProviderNo() + " (correlation " + uniqueToken + ")\n"
             + stackTraceWithoutMessages(auditFailure));
       }
       NotificationTo1 notif = new NotificationTo1();
