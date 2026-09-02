@@ -135,6 +135,11 @@ public class OMDGatewayTransactionLog extends AbstractModel<Integer> {
     this.ehrResultCode = ehrResultCode;
   }
 
+  /**
+   * @return String the id of the MessageHeader resource the response carried, or null when it
+   *     carried none
+   * @since 2026-08-12
+   */
   public String getMessageHeaderId() {
     return messageHeaderId;
   }
@@ -143,6 +148,12 @@ public class OMDGatewayTransactionLog extends AbstractModel<Integer> {
     this.messageHeaderId = messageHeaderId;
   }
 
+  /**
+   * @return String the dispense ids the interaction returned, as a comma separated list; a list too
+   *     long for the column ends with a count of the ids left out, so what is returned may not be
+   *     the whole set
+   * @since 2026-08-12
+   */
   public String getMedicationDispenseIds() {
     return medicationDispenseIds;
   }

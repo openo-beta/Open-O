@@ -45,6 +45,10 @@ public class DHDRSearchConfig {
     this.endDate = endDate;
   }
 
+  /**
+   * @return String the search id carried back from a previous response, which pages through that
+   *     same result set, or null to start a fresh search
+   */
   public String getSearchId() {
     return searchId;
   }
@@ -53,6 +57,11 @@ public class DHDRSearchConfig {
     this.searchId = searchId;
   }
 
+  /**
+   * @return String the page to fetch within the search named by {@link #getSearchId()}, or null for
+   *     the first page. Held as a String because that is how the viewer sends it; a value that is
+   *     not a whole number is read as null rather than rejected
+   */
   public String getPageId() {
     return pageId;
   }
