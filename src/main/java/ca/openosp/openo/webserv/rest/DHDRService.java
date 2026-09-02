@@ -281,10 +281,21 @@ public class DHDRService extends AbstractServiceImpl {
       // recording it: CMSManager's own logStatus writes a debug line with the status code and no
       // body. It goes to the gateway audit row, on the row rather than in the column the log screen
       // renders, which is where whole payloads already live.
-      new OmdGateway().logError(loggedInInfo, "PCOI", "consentViewletLaunchFailed",
-          "The consent management service rejected the request to open the consent viewlet. "
-              + "Its response is stored on this row.",
-          e.getMessage(), demographicNo, uniqueToken);
+      //
+      // Best-effort on purpose. If the transaction log cannot be written the row is lost either
+      // way, and letting that escape would replace the notice the clinician is meant to see with an
+      // uncaught server error - losing the notice as well as the row. Messages omitted from the
+      // trace: a persistence failure can quote the value it choked on, which here is the response
+      // body this whole branch exists to keep out of sight.
+      try {
+        new OmdGateway().logError(loggedInInfo, "PCOI", "consentViewletLaunchFailed",
+            "The consent management service rejected the request to open the consent viewlet. "
+                + "Its response is stored on this row.",
+            e.getMessage(), demographicNo, uniqueToken);
+      } catch (Exception auditFailure) {
+        logger.error("Could not record the consent viewlet launch failure\n"
+            + stackTraceWithoutMessages(auditFailure));
+      }
       NotificationTo1 notif = new NotificationTo1();
       // Prefixed to the viewer's own DHDR10.01 guidance, so this says what happened and nothing
       // more; the retry direction comes from there.
