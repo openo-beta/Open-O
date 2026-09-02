@@ -279,8 +279,8 @@ public class DHDRService extends AbstractServiceImpl {
    * @param demographicNo Integer the patient's demographic number
    * @param uniqueToken String the correlation token issued by {@link #getConsentOveride(int)};
    *     a caller with none sends a placeholder, which {@link #correlationId(String)} maps back to null
-   * @param status String the consent-override decision: {@code Overwrite}, {@code Refused} or
-   *     {@code Cancelled}
+   * @param status String the consent-override decision, which must be one of
+   *     {@link ConsentOverrideChoice}'s stored values; anything else is rejected as a bad request
    * @param message String the raw JSON payload describing the consent-override event
    * @return Response indicating the event was logged
    */
@@ -303,13 +303,19 @@ public class DHDRService extends AbstractServiceImpl {
     // completed decisions that went the other way and stay successful; the choice itself is in
     // transactionType, which is what the DHDR13.02 report reads. FAILED did not complete and UNKNOWN is
     // an outcome nobody observed, so neither may claim one.
-    // A caller that sends no status at all is in the same position as UNKNOWN, only less informative:
-    // nothing was observed, and the row would otherwise claim a success with no choice recorded
-    // against it. The viewer always sends one of the four, so this guards the endpoint, not the app.
-    boolean observed = StringUtils.isNotBlank(status)
-        && !ConsentOverrideChoice.FAILED.getStoredValue().equals(status)
-        && !ConsentOverrideChoice.UNKNOWN.getStoredValue().equals(status);
-    new OmdGateway().logInteraction(loggedInInfo, "PCOI", status, demographicNo,
+    ConsentOverrideChoice choice = ConsentOverrideChoice.fromStoredValue(status);
+    if (choice == null) {
+      // A status outside the vocabulary is not a decision this endpoint can record. It used to be
+      // stored as it arrived and marked observed, which let unconstrained caller text into
+      // transactionType - the column the DHDR13.02 report selects and displays on. A blank status
+      // lands here for the same reason: nothing was observed, and there is no choice to record
+      // against the row. The viewer reaches this endpoint from the two prompt buttons only, so it
+      // sends Refused or Cancelled and nothing else; this guards the endpoint, not the app.
+      throw new WebApplicationException(Response.Status.BAD_REQUEST);
+    }
+    boolean observed = choice != ConsentOverrideChoice.FAILED
+        && choice != ConsentOverrideChoice.UNKNOWN;
+    new OmdGateway().logInteraction(loggedInInfo, "PCOI", choice.getStoredValue(), demographicNo,
         observed, message, correlationId(uniqueToken));
     return Response.ok(true).build();
   }
