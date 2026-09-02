@@ -296,40 +296,52 @@ public class ViewletLaunchAction extends ActionSupport {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         // A lookup that could not run is not an answer. The browser reports a launch once and does
         // not try again, so a query that failed on a deadlock or a timeout would cost the audit log
-        // a completion that really happened. Only a count that came back refuses the reply.
-        for (int attempt = 1; attempt <= LOOKUP_ATTEMPTS; attempt++) {
-            try {
-                if (transactionLogDao.countByCorrelation(uniqueToken, providerNo, demographicNo, key,
-                        LAUNCH_TRANSACTION_TYPES) == 0) {
-                    logger.warn("Refused a viewlet result naming no launch of provider " + providerNo);
-                    return false;
-                }
-                if (transactionLogDao.countByCorrelation(uniqueToken, providerNo, demographicNo, key,
-                        RESULT_TRANSACTION_TYPES) > 0) {
-                    logger.warn("Refused a repeat viewlet result for provider " + providerNo);
-                    return false;
-                }
-                return true;
-            } catch (Exception e) {
-                if (attempt < LOOKUP_ATTEMPTS) {
-                    logger.warn("Retrying the viewlet launch lookup ("
-                            + e.getClass().getSimpleName() + ")");
-                    continue;
-                }
-                // Still refused rather than recorded. An outcome nobody could verify is worse in
-                // the audit table than a gap: a gap is visible to whoever reads it, an unverified
-                // row reads as fact. Logged with the provider and the correlation id so the missing
-                // row can be tied back to its launch.
-                logger.error("Refused a viewlet result that could not be matched to its launch, for provider "
-                        + providerNo + " (correlation " + uniqueToken + ")", e);
-                return false;
-            }
+        // a completion that really happened. It gets one more go before the reply is refused.
+        try {
+            return launchIsOpen(uniqueToken, providerNo, demographicNo, key);
+        } catch (Exception firstAttempt) {
+            logger.warn("Retrying the viewlet launch lookup ("
+                    + firstAttempt.getClass().getSimpleName() + ")");
         }
-        return false;
+        try {
+            return launchIsOpen(uniqueToken, providerNo, demographicNo, key);
+        } catch (Exception e) {
+            // Refused rather than recorded. An outcome nobody could verify is worse in the audit
+            // table than a gap: a gap is visible to whoever reads it, an unverified row reads as
+            // fact. Logged with the provider and the correlation id so the missing row can still be
+            // tied back to its launch.
+            logger.error("Refused a viewlet result that could not be matched to its launch, for provider "
+                    + providerNo + " (correlation " + uniqueToken + ")", e);
+            return false;
+        }
     }
 
-    /** How many times the launch lookup is tried before a failure to run it is taken as an answer. */
-    private static final int LOOKUP_ATTEMPTS = 2;
+    /**
+     * Whether the transaction log holds a launch this reply can belong to.
+     *
+     * <p>Returning is the answer and throwing is the absence of one, which is what lets the caller
+     * tell a launch that is genuinely unknown from a lookup that could not be made.
+     *
+     * @param uniqueToken String the correlation id the launch was issued with
+     * @param providerNo String the acting provider
+     * @param demographicNo Integer the patient the reply is about
+     * @param key String the EHR service the reply is about
+     * @return boolean true when a matching launch exists and has not been answered
+     */
+    private boolean launchIsOpen(String uniqueToken, String providerNo, Integer demographicNo,
+                                 String key) {
+        if (transactionLogDao.countByCorrelation(uniqueToken, providerNo, demographicNo, key,
+                LAUNCH_TRANSACTION_TYPES) == 0) {
+            logger.warn("Refused a viewlet result naming no launch of provider " + providerNo);
+            return false;
+        }
+        if (transactionLogDao.countByCorrelation(uniqueToken, providerNo, demographicNo, key,
+                RESULT_TRANSACTION_TYPES) > 0) {
+            logger.warn("Refused a repeat viewlet result for provider " + providerNo);
+            return false;
+        }
+        return true;
+    }
 
     /** The transaction types written when a reply about a launch is recorded. */
     private static final List<String> RESULT_TRANSACTION_TYPES = Arrays.asList(
