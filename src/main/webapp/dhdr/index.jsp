@@ -2724,8 +2724,8 @@
     					if(response.status == 268){
     						// DHDR14.01: "check the log" is not direction a clinician can act on, and the log is
     						// admin-gated - the requirement states the EMR user MUST NOT need admin role access
-    						// to be notified of an error. PHI-free: the summary is the service's own rejection
-    						// text, and the technical detail stays in the audit row.
+    						// to be notified of an error. PHI-free: the summary is a fixed notice, and the
+    						// service's own response stays in the audit row.
     						viewletLaunchFailed(response.data ? response.data.summary : null);
     						return;
     					}

@@ -257,10 +257,13 @@ public class DHDRService extends AbstractServiceImpl {
     if (!securityInfoManager.hasPrivilege(loggedInInfo, SECURITY_OBJECT, "r", demographicNo)) {
       throw new AccessDeniedException(SECURITY_OBJECT, "r", demographicNo);
     }
+    // Minted before the call so the failure path carries it too: an attempt that was rejected gets
+    // the same correlation id a successful one would have, which is what ties the audit row to the
+    // request the viewer made.
+    String uuid = UUID.randomUUID().toString();
+    String uniqueToken = Base64.getUrlEncoder().encodeToString(uuid.getBytes());
     try {
       OmdGateway omdGateway = new OmdGateway();
-      String uuid = UUID.randomUUID().toString();
-      String uniqueToken = Base64.getUrlEncoder().encodeToString(uuid.getBytes());
       String url = omdGateway.getConsentViewletURL(loggedInInfo, demographicNo,
           "http://ehealthontario.ca/fhir/StructureDefinition/ca-on-medications-profile-MedicationDispense",
           uniqueToken);
@@ -269,8 +272,23 @@ public class DHDRService extends AbstractServiceImpl {
       notif.setUuid(uniqueToken);
       return Response.ok().entity(notif).build();
     } catch (CMSException e) {
+      // The exception message is the consent-management service's own response body: unedited
+      // external text, from an exchange whose event payload carries the patient's context. It was
+      // being handed straight to the browser as the notice summary, which is the one place on this
+      // endpoint that did not answer with a fixed PHI-free notice.
+      //
+      // The body still has to be recoverable, or the failure becomes untriageable - and nothing was
+      // recording it: CMSManager's own logStatus writes a debug line with the status code and no
+      // body. It goes to the gateway audit row, on the row rather than in the column the log screen
+      // renders, which is where whole payloads already live.
+      new OmdGateway().logError(loggedInInfo, "PCOI", "consentViewletLaunchFailed",
+          "The consent management service rejected the request to open the consent viewlet. "
+              + "Its response is stored on this row.",
+          e.getMessage(), demographicNo, uniqueToken);
       NotificationTo1 notif = new NotificationTo1();
-      notif.setSummary(e.getMessage());
+      // Prefixed to the viewer's own DHDR10.01 guidance, so this says what happened and nothing
+      // more; the retry direction comes from there.
+      notif.setSummary("The consent management service rejected the request.");
       return Response.status(268).entity(notif).build();
     }
   }

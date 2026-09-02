@@ -707,10 +707,36 @@ public class OmdGateway {
 	}
 
 	public void logError(LoggedInInfo loggedInInfo,String externalSystem, String transactionType,String error,Integer demographicNo,String uniqueToken) {
+		logError(loggedInInfo, externalSystem, transactionType, error, null, demographicNo, uniqueToken);
+	}
+
+	/**
+	 * Records a failed interaction, keeping the operator's explanation and the external system's own
+	 * response in the columns each belongs in.
+	 *
+	 * <p>The gateway log screen renders {@code error} and not {@code dataRecieved}, so an explanation
+	 * written to the latter never reaches the person reading the log. A raw response body is the
+	 * other way round: it can carry patient detail, and belongs where whole payloads already go - on
+	 * the row, out of the rendered column. Writing both on one row lets it say what went wrong
+	 * without putting the response itself on screen.
+	 *
+	 * @param loggedInInfo LoggedInInfo the acting provider session
+	 * @param externalSystem String the system the call was made to
+	 * @param transactionType String the transaction being recorded
+	 * @param error String the operator-facing explanation, which must carry no patient detail
+	 * @param dataReceived String the external system's own response, or null when there was none
+	 * @param demographicNo Integer the patient the call concerns, or null
+	 * @param uniqueToken String the correlation id tying this row to its request, or null
+	 * @since 2026-09-02
+	 */
+	public void logError(LoggedInInfo loggedInInfo,String externalSystem, String transactionType,String error,String dataReceived,Integer demographicNo,String uniqueToken) {
 		OMDGatewayTransactionLog omdGatewayTransactionLog = getOMDGatewayTransactionLog(loggedInInfo, null, externalSystem, transactionType);
 		omdGatewayTransactionLog.setStarted(new Date());
 		omdGatewayTransactionLog.setSuccess(Boolean.FALSE);
 		omdGatewayTransactionLog.setError(error);
+		if(dataReceived != null) {
+			omdGatewayTransactionLog.setDataRecieved(dataReceived);
+		}
 		if(demographicNo != null) {
 			omdGatewayTransactionLog.setDemographicNo(demographicNo);
 		}
