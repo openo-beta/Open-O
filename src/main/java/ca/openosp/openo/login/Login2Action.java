@@ -911,24 +911,6 @@ public final class Login2Action extends ActionSupport {
     }
 
     /**
-     * The ONE ID subject posted with the sign-in form, but only when it is the one the server had
-     * already put on the session.
-     *
-     * <p>The subject arrives as a hidden field, so on its own it is whatever the browser chose to
-     * send. Binding an account to an unchecked value lets anyone who can sign in claim somebody
-     * else's ONE ID identity: the next time its real owner signs in through ONE ID, the subject
-     * resolves to the account that claimed it and they are signed in as that person, with their
-     * tokens stored against it.</p>
-     *
-     * <p>The legitimate route for this field is the SAML sign-in, which leaves the subject on the
-     * session for index.jsp to render, so a genuine value always matches what was held. A value
-     * matching nothing was invented by the sender and is refused.</p>
-     *
-     * @param sessionNameId String the subject held on the session before it was replaced, or null
-     * @param providerNo    String the provider signing in, for the log line
-     * @return String the posted subject when it matches the session, otherwise null
-     */
-    /**
      * How long a ONE ID subject waiting to be linked stays usable, in milliseconds.
      *
      * <p>The subject sits on the session between the ONE ID sign-in and the local sign-in that
@@ -958,6 +940,24 @@ public final class Login2Action extends ActionSupport {
         return subject;
     }
 
+    /**
+     * The ONE ID subject posted with the sign-in form, but only when it is the one the server had
+     * already put on the session.
+     *
+     * <p>The subject arrives as a hidden field, so on its own it is whatever the browser chose to
+     * send. Binding an account to an unchecked value lets anyone who can sign in claim somebody
+     * else's ONE ID identity: the next time its real owner signs in through ONE ID, the subject
+     * resolves to the account that claimed it and they are signed in as that person, with their
+     * tokens stored against it.</p>
+     *
+     * <p>The legitimate route for this field is the SAML sign-in, which leaves the subject on the
+     * session for index.jsp to render, so a genuine value always matches what was held. A value
+     * matching nothing was invented by the sender and is refused.</p>
+     *
+     * @param sessionNameId String the subject held on the session before it was replaced, or null
+     * @param providerNo    String the provider signing in, for the log line
+     * @return String the posted subject when it matches the session, otherwise null
+     */
     private String postedNameIdMatchingSession(String sessionNameId, String providerNo) {
         String posted = request.getParameter("nameId");
         if (posted == null || posted.isEmpty()) {

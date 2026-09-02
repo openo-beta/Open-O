@@ -202,15 +202,6 @@ public interface EhrConnectivityManager {
     void setSessionUao(LoggedInInfo loggedInInfo, String providerNo, String uaoValue, String uaoFriendlyName);
 
     /**
-     * Persists the CMS-generated context topic onto the provider's ONE ID session so it survives
-     * across requests and every context call is made against the same topic. No-op when the provider
-     * has no ONE ID session.
-     *
-     * @param loggedInInfo LoggedInInfo the acting user, allowed as an admin or the owning provider
-     * @param providerNo String the provider number
-     * @param hubTopic String the CMS context topic (hub.topic)
-     */
-    /**
      * Returns a provider's stored ONE ID session, or null when they have none.
      *
      * @param loggedInInfo LoggedInInfo the acting user
@@ -219,6 +210,15 @@ public interface EhrConnectivityManager {
      */
     OneIdSession findOneIdSession(LoggedInInfo loggedInInfo, String providerNo);
 
+    /**
+     * Persists the CMS-generated context topic onto the provider's ONE ID session so it survives
+     * across requests and every context call is made against the same topic. No-op when the provider
+     * has no ONE ID session.
+     *
+     * @param loggedInInfo LoggedInInfo the acting user, allowed as an admin or the owning provider
+     * @param providerNo String the provider number
+     * @param hubTopic String the CMS context topic (hub.topic)
+     */
     void setSessionHubTopic(LoggedInInfo loggedInInfo, String providerNo, String hubTopic);
 
     /**
