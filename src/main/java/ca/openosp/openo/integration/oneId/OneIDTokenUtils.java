@@ -117,6 +117,10 @@ public class OneIDTokenUtils {
    * fixes. No session and a dead session call for the same thing from the user, so they raise the
    * same exception and land on the same prompt.</p>
    *
+   * <p>The expiry read here is only what decides whether to go and refresh. A provider's refreshes
+   * are serialized in {@link OmdGateway#refreshToken}, which re-reads the expiry once it holds the
+   * lock, so two requests arriving together do not both exchange the same refresh token.</p>
+   *
    * @param loggedInInfo LoggedInInfo the current session, used to persist a refreshed token
    * @param oneIdGatewayData OneIdGatewayData the provider's ONE ID tokens, or null when they have
    *     not signed in

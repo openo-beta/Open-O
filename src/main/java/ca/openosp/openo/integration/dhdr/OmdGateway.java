@@ -87,6 +87,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class OmdGateway {
 
@@ -1316,7 +1318,98 @@ public class OmdGateway {
 	    return PKCEUtils.encodeBase64NoPadding(randomBytes);
 	}
 	
+	/**
+	 * One lock per provider, so two of their requests cannot refresh against the same refresh token
+	 * at the same time. Kept for the life of the application: there is one entry per provider who
+	 * has refreshed, which the staff list bounds.
+	 */
+	private static final ConcurrentMap<String, Object> refreshLocks = new ConcurrentHashMap<String, Object>();
+
+	private static Object refreshLock(String providerNo) {
+		return refreshLocks.computeIfAbsent(providerNo, key -> new Object());
+	}
+
+	/**
+	 * Exchanges the provider's refresh token for a new access token, one request at a time.
+	 *
+	 * <p>The gateway rotates the refresh token, so two requests that both found the access token
+	 * expired would send the same one twice. The second send is a reuse of a token the gateway has
+	 * already replaced: it refuses that call, and may withdraw the whole grant over it, which signs
+	 * the provider out of every tab they have open. The second request waits here instead and then
+	 * finds the token the first one fetched.
+	 *
+	 * <p>The wait is per provider, so one provider's slow refresh does not hold up anyone else.
+	 *
+	 * @param loggedInInfo LoggedInInfo the acting provider session
+	 * @param oneIdGatewayData OneIdGatewayData the gateway data whose tokens are replaced
+	 * @throws TokenExpiredException when the gateway refuses the refresh
+	 */
 	public void refreshToken(LoggedInInfo loggedInInfo,OneIdGatewayData oneIdGatewayData) throws TokenExpiredException {
+		String providerNo = loggedInInfo == null ? null : loggedInInfo.getLoggedInProviderNo();
+		if (providerNo == null) {
+			// Nothing to serialize on, and no stored session to read a newer token back from.
+			exchangeRefreshToken(loggedInInfo, oneIdGatewayData);
+			return;
+		}
+		synchronized (refreshLock(providerNo)) {
+			if (adoptStoredTokens(providerNo, oneIdGatewayData)) {
+				return;
+			}
+			exchangeRefreshToken(loggedInInfo, oneIdGatewayData);
+		}
+	}
+
+	/**
+	 * Takes the tokens off the provider's stored ONE ID session when they are newer than the ones in
+	 * hand, and says whether that leaves a usable access token.
+	 *
+	 * <p>Runs on entering the refresh lock, to find out whether the request that just left it has
+	 * already done the work. Two requests usually share one OneIdGatewayData, so the first one's new
+	 * access token is already on the object the second is holding. They hold separate copies when the
+	 * session filter rebuilt one of them, and then the stored row is the only place the new tokens
+	 * are.
+	 *
+	 * <p>The row is re-read rather than taken from the persistence context, which holds it as the
+	 * session filter loaded it earlier in this same request - that is, as it was before the other
+	 * request wrote to it.
+	 *
+	 * @param providerNo String the acting provider
+	 * @param oneIdGatewayData OneIdGatewayData the gateway data to bring up to date
+	 * @return boolean true when the tokens now in hand are good and no exchange is needed
+	 */
+	private boolean adoptStoredTokens(String providerNo, OneIdGatewayData oneIdGatewayData) {
+		try {
+			if (!oneIdGatewayData.isAccessTokenExpired()) {
+				return true;
+			}
+			OneIdSession stored = oneIdSessionDao.find(providerNo);
+			if (stored == null) {
+				return false;
+			}
+			oneIdSessionDao.refresh(stored);
+			String storedAccessToken = stored.getAccessToken();
+			if (storedAccessToken == null || storedAccessToken.isEmpty()
+					|| storedAccessToken.equals(oneIdGatewayData.getAccessTokenStr())) {
+				return false;
+			}
+			oneIdGatewayData.processAccessToken(storedAccessToken);
+			String storedRefreshToken = stored.getRefreshToken();
+			if (storedRefreshToken != null && !storedRefreshToken.isEmpty()) {
+				oneIdGatewayData.setRefreshTokenStr(storedRefreshToken);
+				oneIdGatewayData.processRefreshToken(storedRefreshToken);
+			}
+			return !oneIdGatewayData.isAccessTokenExpired();
+		} catch (Exception e) {
+			// A stored session that cannot be read or decoded leaves the exchange to go ahead, which
+			// is what would have happened without this check. Class name only: a decode failure
+			// quotes the token it choked on.
+			logger.warn("Could not read the stored ONE ID tokens before refreshing ("
+					+ e.getClass().getSimpleName() + ")");
+			return false;
+		}
+	}
+
+	private void exchangeRefreshToken(LoggedInInfo loggedInInfo,OneIdGatewayData oneIdGatewayData) throws TokenExpiredException {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, 10);
 		Date expiryDate = cal.getTime();
