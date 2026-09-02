@@ -162,7 +162,9 @@ public class DHDRService extends AbstractServiceImpl {
       // code is the DHDR14.01 error code, so it is passed through rather than flattened to a 503.
       // Logged whole: DHDRServiceException carries only the status code in a message we build, and
       // takes no cause, so nothing from the request or response reaches the log through it.
-      logger.error("DHDR search failed for demographic " + demographicNo, e);
+      // Identified by the provider rather than the patient - see the catch below.
+      logger.error("DHDR search failed for provider "
+          + loggedInInfo.getLoggedInProviderNo(), e);
       return Response.ok().entity(notice(e.getHttpCode(),
           "The DHDR EHR Service reported an error.",
           RETRY_GUIDANCE)).build();
@@ -170,8 +172,13 @@ public class DHDRService extends AbstractServiceImpl {
       // Landing here means the service was never reached: the gateway is misconfigured, the network
       // failed, or the service did not respond (DHDR14.01, v3.0 change note (q)). The exception
       // detail is already on the gateway audit row; the user gets a PHI-free notice.
-      logger.error("DHDR search failed for demographic " + demographicNo + " - "
-          + stackTraceWithoutMessages(e));
+      //
+      // The failure is pinned to the provider, not the patient. Naming the patient said in the
+      // application log that a drug history was queried for them, which is the kind of thing the
+      // gateway audit row exists to hold instead. The provider and the timestamp still identify
+      // that row, and it carries the demographic, so nothing is lost for triage.
+      logger.error("DHDR search failed for provider " + loggedInInfo.getLoggedInProviderNo()
+          + " - " + stackTraceWithoutMessages(e));
       return Response.ok().entity(notice(Response.Status.SERVICE_UNAVAILABLE.getStatusCode(),
           "The DHDR EHR Service could not be reached.", RETRY_GUIDANCE)).build();
     }
