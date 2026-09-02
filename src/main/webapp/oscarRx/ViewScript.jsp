@@ -382,7 +382,7 @@
                                             <td><span><input type=button
                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgCreateNewRx"/>"
                                                              class="ControlPushButton"
-                                                             style="width: 200px" onClick="<%=Encode.forJavaScript(String.valueOf(createAnewRx))%>"/></span>
+                                                             style="width: 200px" onClick="<%=Encode.forHtmlAttribute(createAnewRx)%>"/></span>
                                             </td>
                                         </tr>
                                         <tr>
