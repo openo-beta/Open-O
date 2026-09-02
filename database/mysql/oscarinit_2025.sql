@@ -985,3 +985,48 @@ CREATE TABLE IF NOT EXISTS `UAO` (
 --
 ALTER TABLE `SystemPreferences`
 MODIFY COLUMN `value` VARCHAR(1000) NULL;
+
+--
+-- EHR connectivity gateway configuration. Seeded blank so the settings screen has a row to write
+-- to for every key it manages; secrets stay empty and are entered there. Kept identical to
+-- updates/update-2026-07-01-ehr-connectivity.sql, which seeds the same rows on an upgrade.
+--
+INSERT INTO `SystemPreferences` (`name`,`value`,`updateDate`) VALUES
+  ('oag_client_id','',NOW()),
+  ('oag_client_secret','',NOW()),
+  ('oag_public_key','',NOW()),                 -- OAG public key from enrollment
+  ('keystore_path','',NOW()),
+  ('keystore_alias','',NOW()),
+  ('keystore_password','',NOW()),
+  ('endpoint_authorize','',NOW()),
+  ('endpoint_access_token','',NOW()),
+  ('endpoint_callback','',NOW()),
+  ('endpoint_audience','',NOW()),
+  ('endpoint_jwks','',NOW()),                  -- JWKS URI for id-token signature validation
+  ('oneid_issuer','',NOW()),                   -- expected id-token issuer
+  ('endpoint_end_session','',NOW()),           -- OIDC end-session endpoint
+  ('endpoint_revocation','',NOW()),            -- token revocation endpoint
+  ('pcoi_key','',NOW()),
+  ('timeout','65',NOW()),                      -- gateway connection/read timeout (seconds)
+  ('viewlet_timeout','65',NOW()),              -- viewlet response wait time (seconds)
+  ('oneid_enabled','false',NOW()),             -- shows the ONE ID login button
+  ('dhdr_enabled','false',NOW());              -- shows the DHDR medication viewer
+
+--
+-- Security objects
+--   _admin.ehrConnectivity -> admin gateway / viewlet / UAO screens
+--   _ehr.connectivity      -> provider-facing use (login / launch / UAO / logout)
+--
+-- Without these rows and the grants below, every connectivity action denies every user, including
+-- the administrator who would go and configure the gateway.
+--
+INSERT INTO `secObjectName` (`objectName`) VALUES ('_admin.ehrConnectivity');
+INSERT INTO `secObjectName` (`objectName`) VALUES ('_ehr.connectivity');
+
+-- 'x' grants full access
+INSERT INTO `secObjPrivilege` VALUES ('admin','_admin.ehrConnectivity','x',0,999998);
+INSERT INTO `secObjPrivilege` VALUES ('admin','_ehr.connectivity','x',0,999998);
+INSERT INTO `secObjPrivilege` VALUES ('doctor','_ehr.connectivity','x',0,999998);
+INSERT INTO `secObjPrivilege` VALUES ('nurse','_ehr.connectivity','x',0,999998);
+INSERT INTO `secObjPrivilege` VALUES ('locum','_ehr.connectivity','x',0,999998);
+INSERT INTO `secObjPrivilege` VALUES ('psychiatrist','_ehr.connectivity','x',0,999998);
