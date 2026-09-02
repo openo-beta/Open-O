@@ -46,8 +46,11 @@ import ca.openosp.openo.utility.LoggedInInfo;
 public class ConsentOverrideReportService {
 
   /**
-   * The {@code externalSystem} discriminator the consent-override path writes. The same system also
-   * writes a {@code consentViewletLaunch} record, which the decision whitelist excludes.
+   * The {@code externalSystem} discriminator every consent decision carries, whichever route it
+   * took: the consent-override path writes it, and so does the shared viewlet result endpoint when
+   * the viewlet it reports on is the consent viewlet. The same system also writes a
+   * {@code consentViewletLaunch} record, which {@link ConsentOverrideChoice#reportTransactionTypes()}
+   * excludes - opening the viewlet is not a decision.
    */
   static final String EXTERNAL_SYSTEM = "PCOI";
 
@@ -79,7 +82,7 @@ public class ConsentOverrideReportService {
   public List<Row> findRows(LoggedInInfo loggedInInfo, String searchLastName, String searchUniqueId,
       Date from, Date to) {
     List<OMDGatewayTransactionLog> logs = transactionLogDao.findByExternalSystemAndTransactionTypes(
-        EXTERNAL_SYSTEM, ConsentOverrideChoice.storedValues(), from, to);
+        EXTERNAL_SYSTEM, ConsentOverrideChoice.reportTransactionTypes(), from, to);
 
     // The Unique-ID filter needs no lookup at all: it compares the demographicNo already carried on
     // the log row. Applying it here removes the resolution work rather than performing it and then
@@ -180,7 +183,7 @@ public class ConsentOverrideReportService {
     Row row = new Row();
     // DateUtils.format renders null as the empty string, which is what an unstamped record shows.
     row.setDateTime(DateUtils.format(TIMESTAMP_FORMAT, log.getStarted(), null));
-    row.setChoice(ConsentOverrideChoice.labelFor(log.getTransactionType()));
+    row.setChoice(ConsentOverrideChoice.labelFor(log.getTransactionType(), log.getSuccess()));
 
     String providerNo = log.getInitiatingProviderNo();
     if (StringUtils.isNotBlank(providerNo)) {

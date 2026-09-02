@@ -97,8 +97,9 @@ public class OMDGatewayTransactionLogDao extends AbstractDaoImpl<OMDGatewayTrans
    *
    * <p>The transaction-type whitelist is supplied by the caller rather than fixed here, because the
    * meaning of a transaction type belongs to the integration that writes it. The DHDR consent
-   * unblock report, for example, passes {@code "PCOI"} with the four override decisions, which
-   * excludes the {@code "consentViewletLaunch"} row that the same external system also writes.
+   * unblock report, for example, passes {@code "PCOI"} with every type that records a decision -
+   * both its own override values and the viewlet result types - which excludes the
+   * {@code "consentViewletLaunch"} row that the same external system also writes.
    *
    * @param externalSystem String the {@code externalSystem} discriminator to match exactly
    * @param transactionTypes Collection&lt;String&gt; the transaction types to include; must not be

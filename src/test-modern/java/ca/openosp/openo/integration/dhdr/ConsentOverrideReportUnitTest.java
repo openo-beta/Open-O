@@ -69,13 +69,61 @@ class ConsentOverrideReportUnitTest {
     }
 
     @Test
-    @DisplayName("should keep the viewer's Unknown outcome selectable by the report query")
+    @DisplayName("should keep the Unknown outcome selectable and labelled by both routes")
     void shouldStoreUnknownOutcome_whenViewletResponseUnrecognised() {
-      // The viewer writes "Unknown" when the PCOI response carries no code it recognises. The
-      // report query filters on storedValues(), so omitting it here hides the attempt entirely.
+      // The viewer does not write "Unknown" itself - a viewlet that closes without answering is
+      // reported as viewletResultNoResponse, and that is what resolves to UNKNOWN. The constant
+      // still has to exist for the attempt to be selectable and to have a label at all.
       assertThat(ConsentOverrideChoice.storedValues()).contains("Unknown");
       assertThat(ConsentOverrideChoice.labelFor("Unknown"))
           .isEqualTo("Unknown (unrecognised response)");
+      assertThat(ConsentOverrideChoice.labelFor("viewletResultNoResponse", Boolean.FALSE))
+          .isEqualTo("Unknown (unrecognised response)");
+    }
+
+    @Test
+    @DisplayName("should select the viewlet result types too, since nothing ever stores Overwrite")
+    void shouldSelectViewletResultTypes_whenListingReportTransactionTypes() {
+      // The regression this guards. Selecting on storedValues() alone showed refusals and
+      // cancellations taken at the prompt and hid every completed unblock: a clinician who goes
+      // ahead does so inside the PCOI viewlet, and that outcome reaches the log through the shared
+      // viewlet result endpoint under its own vocabulary. "Overwrite" is written by nothing.
+      assertThat(ConsentOverrideChoice.reportTransactionTypes())
+          .containsAll(ConsentOverrideChoice.storedValues())
+          .contains("viewletResult", "viewletResultCancelled", "viewletResultNoResponse",
+              "viewletResultPartial")
+          .doesNotContain("consentViewletLaunch");
+    }
+
+    @Test
+    @DisplayName("should read a confirmed viewlet result as the completed unblock")
+    void shouldResolveToOverwrite_whenViewletResultSucceeded() {
+      assertThat(ConsentOverrideChoice.fromTransactionLog("viewletResult", Boolean.TRUE))
+          .isEqualTo(ConsentOverrideChoice.OVERWRITE);
+      assertThat(ConsentOverrideChoice.labelFor("viewletResult", Boolean.TRUE))
+          .isEqualTo("Continue (Unblock)");
+    }
+
+    @Test
+    @DisplayName("should read an unsuccessful viewlet result as a failed override")
+    void shouldResolveToFailed_whenViewletResultDidNotSucceed() {
+      // viewletResult is written for both a confirmed outcome and a failed one, so the success
+      // column is the only thing separating them - a row that never recorded one included.
+      assertThat(ConsentOverrideChoice.fromTransactionLog("viewletResult", Boolean.FALSE))
+          .isEqualTo(ConsentOverrideChoice.FAILED);
+      assertThat(ConsentOverrideChoice.fromTransactionLog("viewletResult", null))
+          .isEqualTo(ConsentOverrideChoice.FAILED);
+    }
+
+    @Test
+    @DisplayName("should map each remaining viewlet outcome to the decision it records")
+    void shouldMapViewletOutcomes_whenResolvingTheRemainingTypes() {
+      assertThat(ConsentOverrideChoice.fromTransactionLog("viewletResultCancelled", Boolean.TRUE))
+          .isEqualTo(ConsentOverrideChoice.CANCELLED);
+      assertThat(ConsentOverrideChoice.fromTransactionLog("viewletResultPartial", Boolean.FALSE))
+          .isEqualTo(ConsentOverrideChoice.FAILED);
+      assertThat(ConsentOverrideChoice.fromTransactionLog("viewletResultNoResponse", Boolean.FALSE))
+          .isEqualTo(ConsentOverrideChoice.UNKNOWN);
     }
 
     @Test
@@ -236,7 +284,7 @@ class ConsentOverrideReportUnitTest {
       service.findRows(loggedInInfo, null, null, from, to);
 
       verify(transactionLogDao).findByExternalSystemAndTransactionTypes(
-          eq("PCOI"), eq(ConsentOverrideChoice.storedValues()), eq(from), eq(to));
+          eq("PCOI"), eq(ConsentOverrideChoice.reportTransactionTypes()), eq(from), eq(to));
     }
 
     @Test
@@ -403,13 +451,57 @@ class ConsentOverrideReportUnitTest {
       verify(demographicDao, never()).getDemographics(anyList());
     }
 
+    @Test
+    @DisplayName("should show a completed unblock, which reaches the log as a viewlet result")
+    void shouldShowCompletedUnblock_whenOutcomeCameFromTheViewlet() {
+      when(transactionLogDao.findByExternalSystemAndTransactionTypes(
+              anyString(), anyCollection(), any(Date.class), any(Date.class)))
+          .thenReturn(List.of(log("viewletResult", "101", 42, Boolean.TRUE)));
+      when(providerManager.getProvider(loggedInInfo, "101")).thenReturn(provider("Who", "Doctor"));
+      when(demographicDao.getDemographics(anyList()))
+          .thenReturn(List.of(demographic(42, "Smith", "John", "1234567890")));
+
+      List<Row> rows = service.findRows(loggedInInfo, null, null, new Date(0L), new Date());
+
+      assertThat(rows).hasSize(1);
+      assertThat(rows.get(0).getChoice()).isEqualTo("Continue (Unblock)");
+      assertThat(rows.get(0).getPatientName()).isEqualTo("Smith, John");
+    }
+
+    @Test
+    @DisplayName("should tell a failed viewlet outcome apart from a completed one")
+    void shouldLabelFailedOutcome_whenViewletResultWasNotSuccessful() {
+      // Same transaction type as the row above; only the success column differs.
+      when(transactionLogDao.findByExternalSystemAndTransactionTypes(
+              anyString(), anyCollection(), any(Date.class), any(Date.class)))
+          .thenReturn(List.of(log("viewletResult", "101", 42, Boolean.FALSE)));
+      when(providerManager.getProvider(loggedInInfo, "101")).thenReturn(provider("Who", "Doctor"));
+      when(demographicDao.getDemographics(anyList())).thenReturn(List.of());
+
+      List<Row> rows = service.findRows(loggedInInfo, null, null, new Date(0L), new Date());
+
+      assertThat(rows.get(0).getChoice()).isEqualTo("Failed (did not complete)");
+    }
+
+    /**
+     * A row from the consent-override path, which stores a decision value directly. Note that
+     * "Overwrite" is a value the report can render but that nothing writes - a completed unblock
+     * arrives by the other route, so use the four-argument overload for those.
+     */
     private OMDGatewayTransactionLog log(String transactionType, String providerNo,
         Integer demographicNo) {
+      return log(transactionType, providerNo, demographicNo, null);
+    }
+
+    /** A row carrying a success column, as every row written by the viewlet result endpoint does. */
+    private OMDGatewayTransactionLog log(String transactionType, String providerNo,
+        Integer demographicNo, Boolean success) {
       OMDGatewayTransactionLog log = new OMDGatewayTransactionLog();
       log.setStarted(new Date());
       log.setTransactionType(transactionType);
       log.setInitiatingProviderNo(providerNo);
       log.setDemographicNo(demographicNo);
+      log.setSuccess(success);
       return log;
     }
 
