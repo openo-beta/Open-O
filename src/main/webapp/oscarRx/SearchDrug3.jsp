@@ -2570,13 +2570,29 @@
     });
   }
 
+    // Words shorter than this are not highlighted, because the search itself ignores them.
+    const HIGHLIGHT_MIN_WORD_LENGTH = 3;
+
+    /*
+     * Marks the parts of a drug name that matched what was typed.
+     *
+     * The term is split into words the same way the search splits it, so a name is marked when
+     * the words appear apart in it ("Amoxicillin 500" inside "amoxicillin oral 500MG") and when
+     * only one of them matched ("Amoxicillin" inside "Mylan Amoxicilline"). Matching on the
+     * whole phrase instead left rows that the search had returned looking unmatched.
+     */
     function replaceAll(str, keyword) {
-      let matcher;
-      let lastkeyword;
-      if (keyword !== lastkeyword) {
-        matcher = new RegExp("(" + keyword + ")", "ig");
-        lastkeyword = keyword;
+      let words = keyword.split(/[^\p{L}\p{N}]+/u)
+        .filter(function (word) {
+          return word.length >= HIGHLIGHT_MIN_WORD_LENGTH;
+        })
+        .map(function (word) {
+          return jQuery.ui.autocomplete.escapeRegex(word);
+        });
+      if (words.length === 0) {
+        return str;
       }
+      let matcher = new RegExp("(" + words.join("|") + ")", "ig");
       return str.replace(matcher, "<span class='drugKeyword' >$1</span>");
     }
 
@@ -2674,7 +2690,7 @@
             + " class='drugitem"
             + inactivedrug
             + "' >"
-            + replaceAll(item.label, jQuery.ui.autocomplete.escapeRegex(item.keyword))
+            + replaceAll(item.label, item.keyword)
             + "</a>")
           .appendTo(ul);
       };
