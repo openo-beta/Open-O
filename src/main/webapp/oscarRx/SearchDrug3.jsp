@@ -1161,7 +1161,12 @@
                           <div id="autocomplete_choices"></div>
                         </div>
                         <div id="advanceSearchParameters">
-                          <fieldset id="drugCategorySet">
+                          <%-- Hidden, not disabled: the checked "All" radio must keep posting
+                               method=searchAllCategories. A disabled control is not submitted, and
+                               without that parameter the request falls through to the legacy branch,
+                               which returns HTML to a caller expecting JSON, leaving the dropdown
+                               empty with nothing on screen or in the log to explain it. --%>
+                          <fieldset id="drugCategorySet" hidden>
                             <input type="radio" id="allCategories" name="method"
                                    value="searchAllCategories" class="trigger"
                                    checked="checked"/>
