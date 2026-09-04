@@ -456,6 +456,9 @@ Ontario, Canada
 
             function onNotBook() {
                 document.forms[0].keyword.value = "<%=Encode.forJavaScript(String.valueOf(DONOTBOOK))%>";
+                // Assigning value dispatches no input event, so tell the handler that keeps
+                // #keyword and #demographic_no in step that the name no longer names a patient.
+                $("#keyword").trigger("input");
             }
 
             function onButRepeat() {
