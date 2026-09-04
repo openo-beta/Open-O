@@ -561,18 +561,43 @@ Ontario, Canada
 
                 var url = "<%= request.getContextPath() %>/demographic/SearchDemographic.do?jqueryJSON=true&activeOnly=true";
 
+                // The row the user has highlighted with the arrow keys or the mouse.
+                // jQuery UI only fires select on Enter/Tab/click, so hold the row here
+                // and commit it if the field loses focus while that row is still shown.
+                var highlightedDemographic = null;
+
+                // The patient the field is currently linked to. Refreshed whenever the
+                // field gains focus or a pick is committed, so an edit that ends up back
+                // at the same name can keep its link.
+                var linkedDemographic = null;
+
+                function currentDemographic() {
+                    return {
+                        value: $("#demographic_no").val(),
+                        provider: $("#mrp").val(),
+                        formattedName: $("#keyword").val()
+                    };
+                }
+
+                function commitDemographic(item) {
+                    $("#demographic_no").val(item.value);
+                    $("#mrp").val(item.provider);
+                    $("#keyword").val(item.formattedName);
+                    highlightedDemographic = null;
+                    linkedDemographic = currentDemographic();
+                }
+
                 $("#keyword").autocomplete({
                     source: url,
                     minLength: 2,
 
                     focus: function (event, ui) {
                         $("#keyword").val(ui.item.formattedName);
+                        highlightedDemographic = ui.item;
                         return false;
                     },
                     select: function (event, ui) {
-                        $("#demographic_no").val(ui.item.value);
-                        $("#mrp").val(ui.item.provider);
-                        $("#keyword").val(ui.item.formattedName);
+                        commitDemographic(ui.item);
                         return false;
                     }
                 })
@@ -581,6 +606,30 @@ Ontario, Canada
                         .append("<div><b>" + item.label + "</b>" + "<br>" + item.provider + "</div>")
                         .appendTo(ul);
                 };
+
+                $("#keyword").on("focus", function () {
+                    linkedDemographic = currentDemographic();
+                });
+
+                // Editing the name breaks the link to whoever is in demographic_no, so
+                // drop the link until a patient is picked again.
+                $("#keyword").on("input", function () {
+                    highlightedDemographic = null;
+                    $("#demographic_no").val("");
+                    $("#mrp").val("");
+                });
+
+                $("#keyword").on("blur", function () {
+                    var name = $("#keyword").val();
+                    if (highlightedDemographic && highlightedDemographic.formattedName === name) {
+                        // Highlighted but never committed with Enter/Tab/click.
+                        commitDemographic(highlightedDemographic);
+                    } else if (!$("#demographic_no").val() && linkedDemographic
+                            && linkedDemographic.value && linkedDemographic.formattedName === name) {
+                        // Edited back to exactly the linked patient's name.
+                        commitDemographic(linkedDemographic);
+                    }
+                });
 
 
                 $.widget('custom.myselectmenu', $.ui.selectmenu, {
