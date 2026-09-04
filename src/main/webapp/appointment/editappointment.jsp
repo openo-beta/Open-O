@@ -737,11 +737,21 @@
                 });
 
                 // Editing the name breaks the link to whoever is in demographic_no, so
-                // drop the link until a patient is picked again.
-                jQuery("#keyword").on("input", function () {
+                // drop the link until a patient is picked again. patient:unlink is for
+                // code that sets the field directly: assigning value fires no input
+                // event, and triggering one would also start an autocomplete search.
+                jQuery("#keyword").on("input patient:unlink", function () {
                     highlightedDemographic = null;
                     jQuery("#demographic_no").val("");
                     jQuery("#mrp").val("");
+                });
+
+                // Escape restores the typed term without an input event, so the row the
+                // user just backed out of would still be sitting in highlightedDemographic.
+                jQuery("#keyword").on("keydown", function (event) {
+                    if (event.keyCode === jQuery.ui.keyCode.ESCAPE) {
+                        highlightedDemographic = null;
+                    }
                 });
 
                 jQuery("#keyword").on("blur", function () {

@@ -458,7 +458,7 @@ Ontario, Canada
                 document.forms[0].keyword.value = "<%=Encode.forJavaScript(String.valueOf(DONOTBOOK))%>";
                 // Assigning value dispatches no input event, so tell the handler that keeps
                 // #keyword and #demographic_no in step that the name no longer names a patient.
-                $("#keyword").trigger("input");
+                $("#keyword").trigger("patient:unlink");
             }
 
             function onButRepeat() {
@@ -615,11 +615,21 @@ Ontario, Canada
                 });
 
                 // Editing the name breaks the link to whoever is in demographic_no, so
-                // drop the link until a patient is picked again.
-                $("#keyword").on("input", function () {
+                // drop the link until a patient is picked again. patient:unlink is for
+                // code that sets the field directly: assigning value fires no input
+                // event, and triggering one would also start an autocomplete search.
+                $("#keyword").on("input patient:unlink", function () {
                     highlightedDemographic = null;
                     $("#demographic_no").val("");
                     $("#mrp").val("");
+                });
+
+                // Escape restores the typed term without an input event, so the row the
+                // user just backed out of would still be sitting in highlightedDemographic.
+                $("#keyword").on("keydown", function (event) {
+                    if (event.keyCode === $.ui.keyCode.ESCAPE) {
+                        highlightedDemographic = null;
+                    }
                 });
 
                 $("#keyword").on("blur", function () {
