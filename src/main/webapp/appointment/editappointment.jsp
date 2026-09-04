@@ -573,6 +573,7 @@
                 document.EDITAPPT.chart_no.value = "<%=Encode.forJavaScriptBlock(apptObj.getChart_no())%>";
                 document.EDITAPPT.keyword.value = "<%=Encode.forJavaScriptBlock(apptObj.getName())%>";
                 document.EDITAPPT.demographic_no.value = "<%=Encode.forJavaScriptBlock(apptObj.getDemographic_no())%>";
+                jQuery("#keyword").trigger("patient:relink");
                 document.forms[0].reason.value = "<%= Encode.forJavaScriptBlock(apptObj.getReason()) %>";
                 document.forms[0].notes.value = "<%= Encode.forJavaScriptBlock(apptObj.getNotes()) %>";
                 document.EDITAPPT.location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
@@ -744,6 +745,14 @@
                     highlightedDemographic = null;
                     jQuery("#demographic_no").val("");
                     jQuery("#mrp").val("");
+                });
+
+                // pasteAppt fills the field with a patient the appointment is genuinely
+                // linked to, but writes value directly, so take that as the new baseline
+                // rather than leaving the snapshot on whatever focus last saw.
+                jQuery("#keyword").on("patient:relink", function () {
+                    highlightedDemographic = null;
+                    linkedDemographic = currentDemographic();
                 });
 
                 // Escape restores the typed term without an input event, so the row the
