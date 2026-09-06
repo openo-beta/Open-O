@@ -36,6 +36,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -254,13 +256,13 @@ public class Prevention extends AbstractModel<Integer> implements Serializable, 
 //  public void setLastSyncedDate(Date lastSyncedDate) {
 //    this.lastSyncedDate = lastSyncedDate;
 //    }
-//
-//    @PreUpdate
-//	protected void autoSetUpdateTime()
-//	{
-//		lastUpdateDate=new Date();
-//	}
-//
+
+    @PreUpdate
+    @PrePersist
+    protected void autoSetUpdateTime() {
+        lastUpdateDate = new Date();
+    }
+
 //    @PrePersist
 //    protected void autoSetUpdateTime() {
 //        lastUpdateDate = new Date();
