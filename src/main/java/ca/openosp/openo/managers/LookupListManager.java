@@ -25,6 +25,8 @@
 package ca.openosp.openo.managers;
 
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.regex.Pattern;
 
 import ca.openosp.openo.commn.dao.LookupListDao;
 import ca.openosp.openo.commn.dao.LookupListItemDao;
@@ -38,6 +40,9 @@ import ca.openosp.openo.log.LogAction;
 
 @Service
 public class LookupListManager {
+
+    private static final Pattern COLOUR = Pattern.compile("#[0-9a-fA-F]{6}");
+    private static final Pattern ICON = Pattern.compile("glyphicon-[a-z0-9-]+");
 
     @Autowired
     private LookupListDao lookupListDao;
@@ -189,5 +194,59 @@ public class LookupListManager {
         return (id == lookupListItemId);
     }
 
+    /**
+     * Sets or clears the colour a lookupListItem is drawn in.
+     *
+     * @param loggedInInfo LoggedInInfo the current user, who needs _admin update
+     * @param lookupListItemId int the item to change
+     * @param colour String a #rrggbb hex colour, or null or blank to clear it
+     * @return boolean true if the item exists and was updated, false if there is no such item
+     * @throws RuntimeException if the user lacks _admin update
+     * @throws IllegalArgumentException if colour is neither blank nor #rrggbb
+     * @since 2026-09-15
+     */
+    public boolean updateLookupListItemColour(LoggedInInfo loggedInInfo, int lookupListItemId, String colour) {
+        return updateLookupListItemStyle(loggedInInfo, lookupListItemId, colour, COLOUR, LookupListItem::setColour);
+    }
 
+    /**
+     * Sets or clears the icon drawn for a lookupListItem.
+     *
+     * @param loggedInInfo LoggedInInfo the current user, who needs _admin update
+     * @param lookupListItemId int the item to change
+     * @param icon String a glyphicon class name such as glyphicon-home, or null or blank to clear it
+     * @return boolean true if the item exists and was updated, false if there is no such item
+     * @throws RuntimeException if the user lacks _admin update
+     * @throws IllegalArgumentException if icon is neither blank nor a glyphicon class name
+     * @since 2026-09-15
+     */
+    public boolean updateLookupListItemIcon(LoggedInInfo loggedInInfo, int lookupListItemId, String icon) {
+        return updateLookupListItemStyle(loggedInInfo, lookupListItemId, icon, ICON, LookupListItem::setIcon);
+    }
+
+    /*
+     * Style values are later written into class and style attributes, so only
+     * values matching the pattern are stored; blank means clear.
+     */
+    private boolean updateLookupListItemStyle(LoggedInInfo loggedInInfo, int lookupListItemId, String value,
+                                              Pattern pattern, BiConsumer<LookupListItem, String> setter) {
+
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null)) {
+            throw new RuntimeException("Access Denied");
+        }
+
+        String style = value == null || value.isBlank() ? null : value.trim();
+        if (style != null && !pattern.matcher(style).matches()) {
+            throw new IllegalArgumentException("lookupListItem style value must match " + pattern.pattern());
+        }
+
+        LookupListItem lookupListItem = findLookupListItemById(loggedInInfo, lookupListItemId);
+        if (lookupListItem == null) {
+            return false;
+        }
+
+        setter.accept(lookupListItem, style);
+        updateLookupListItem(loggedInInfo, lookupListItem);
+        return true;
+    }
 }
