@@ -1,0 +1,38 @@
+/*
+ * Item Style editor dialog (appointment/itemStyleEditorDialog.jspf).
+ */
+.item-style-editor {
+    width: min(32rem, 95vw);
+}
+
+.item-style-editor::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.item-style-editor-icons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+    gap: 0.25rem;
+    max-height: 18rem;
+    overflow-y: auto;
+}
+
+.item-style-editor-choice {
+    padding: 0.4rem 0.25rem;
+    line-height: 1;
+}
+
+.item-style-editor-choice img {
+    max-width: 1.75rem;
+    max-height: 1.75rem;
+}
+
+.item-style-editor-choice[aria-pressed="true"] {
+    outline: 2px solid var(--bs-primary, #0d6efd);
+    background-color: var(--bs-primary-bg-subtle, #cfe2ff);
+}
+
+/* The current icon when it is outside the set: spans the grid so its caption fits. */
+.item-style-editor-choice-current {
+    grid-column: 1 / -1;
+}
