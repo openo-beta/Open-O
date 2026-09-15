@@ -47,6 +47,7 @@
 <%@page import="ca.openosp.openo.commn.dao.AppointmentArchiveDao" %>
 <%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@page import="ca.openosp.openo.commn.model.Appointment" %>
+<%@page import="ca.openosp.openo.appt.LocationList" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.MyDateFormat" %>
@@ -104,7 +105,7 @@
                     appt.setName(request.getParameter("keyword"));
                     appt.setNotes(request.getParameter("notes"));
                     appt.setReason(request.getParameter("reason"));
-                    appt.setLocation(request.getParameter("location"));
+                    LocationList.applyPostedLocation(appt, request);
                     appt.setResources(request.getParameter("resources"));
                     appt.setType(request.getParameter("type"));
                     appt.setStyle(request.getParameter("style"));

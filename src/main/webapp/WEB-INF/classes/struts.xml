@@ -2058,6 +2058,10 @@
             <result name="success">/appointment/appointmentstatussetting.jsp</result>
             <result name="saved" type="redirect">/appointment/apptStatusSetting.do</result>
         </action>
+        <action name="appointment/apptLocationSetting" class="ca.openosp.openo.appt.web.AppointmentLocation2Action" method="execute">
+            <result name="success">/appointment/appointmentlocationsetting.jsp</result>
+            <result name="saved" type="redirect">/appointment/apptLocationSetting.do</result>
+        </action>
         <action name="appointment/printAppointmentReceiptAction" class="ca.openosp.openo.report.pageUtil.PrintAppointmentReceipt2Action"/>
         <action name="oscarRx/updateDrugrefDB" class="ca.openosp.openo.prescript.pageUtil.RxUpdateDrugref2Action"/>
         <action name="oscarRx/copyFavorite" class="ca.openosp.openo.prescript.web.CopyFavorites2Action" method="execute">

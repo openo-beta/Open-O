@@ -36,6 +36,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@ page import="ca.openosp.openo.PMmodule.model.ProgramProvider" %>
 
+<%@ page import="ca.openosp.openo.appt.LocationList" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.utility.MiscUtils" %>
@@ -67,6 +68,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="appt" %>
 
 <%
     LoggedInInfo loggedInInfo1 = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -144,6 +146,7 @@
     for (LookupListItem lli : reasonCodes.getItems()) {
         reasonCodesMap.put(lli.getId(), lli);
     }
+    LocationList locations = LocationList.load(loggedInInfo1);
 
     // are prevention stop sign icons being loaded? This needs to be known when loading the schedule
     pageContext.setAttribute("isPreventionWarningDisabled", providerPreventionManager.isDisabled());
@@ -1843,6 +1846,8 @@
                                                         <%if (bMultisites) {%>
                                                         <span title="<%=Encode.forHtmlAttribute(String.valueOf(sitename))%>"
                                                               style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(siteBgColor.get(sitename)))%>;">&nbsp;</span>|
+                                                        <%} else {%>
+                                                        <appt:locationChip item="<%=locations.find(appointment.getLocationCode())%>"/>
                                                         <%} %>
 
                                                         <%

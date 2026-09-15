@@ -56,6 +56,7 @@ public final class AppointmentTransfer {
     private String notes;
     private String reason;
     private String location;
+    private Integer locationCode;
     private String resources;
     private String type;
     private String style;
@@ -147,6 +148,27 @@ public final class AppointmentTransfer {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    /**
+     * Gets the Location List item chosen for the appointment. Read-only over SOAP: {@link #copyTo}
+     * ignores it, because the location text must stay a snapshot of the chosen item's label.
+     *
+     * @return Integer the LookupListItem id, or null when no item was chosen
+     * @since 2026-09-15
+     */
+    public Integer getLocationCode() {
+        return (locationCode);
+    }
+
+    /**
+     * Sets the Location List item id; filled in by {@link #toTransfer}.
+     *
+     * @param locationCode Integer the LookupListItem id, or null for none
+     * @since 2026-09-15
+     */
+    public void setLocationCode(Integer locationCode) {
+        this.locationCode = locationCode;
     }
 
     public String getResources() {
@@ -247,7 +269,7 @@ public final class AppointmentTransfer {
 
     public Appointment copyTo(Appointment appointment) {
 
-        String[] ignored = {"id", "appointmentDate", "startTime", "endTime", "createDateTime", "updateDateTime", "creator", "lastUpdateUser", "creatorSecurityId"};
+        String[] ignored = {"id", "appointmentDate", "startTime", "endTime", "createDateTime", "updateDateTime", "creator", "lastUpdateUser", "creatorSecurityId", "locationCode"};
         BeanUtils.copyProperties(this, appointment, ignored);
 
         if (appointmentStartDateTime != null) {
