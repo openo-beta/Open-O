@@ -2056,19 +2056,17 @@
         <action name="documentManager/documentUpload" class="ca.openosp.openo.documentManager.actions.DocumentUpload2Action"/>
         <action name="appointment/apptStatusSetting" class="ca.openosp.openo.appt.status.web.AppointmentStatus2Action" method="execute">
             <result name="success">/appointment/appointmentstatussetting.jsp</result>
-            <result name="edit">/appointment/appointmentstatusedit.jsp</result>
+            <result name="saved" type="redirect">/appointment/apptStatusSetting.do</result>
         </action>
         <action name="appointment/printAppointmentReceiptAction" class="ca.openosp.openo.report.pageUtil.PrintAppointmentReceipt2Action"/>
         <action name="oscarRx/updateDrugrefDB" class="ca.openosp.openo.prescript.pageUtil.RxUpdateDrugref2Action"/>
         <action name="oscarRx/copyFavorite" class="ca.openosp.openo.prescript.web.CopyFavorites2Action" method="execute">
             <result name="success">/oscarRx/CopyFavorites.jsp</result>
-            <result name="edit">/appointment/appointmentstatusedit.jsp</result>
         </action>
         <action name="oscarRx/hideCpp" class="ca.openosp.openo.prescript.web.RxHideCpp2Action"/>
         <action name="oscarRx/reorderDrug" class="ca.openosp.openo.prescript.web.RxReorder2Action"/>
         <action name="oscarRx/copyFavorite2" class="ca.openosp.openo.prescript.web.CopyFavorites2Action" method="execute">
             <result name="success">/oscarRx/CopyFavorites2.jsp</result>
-            <result name="edit">/appointment/appointmentstatusedit.jsp</result>
         </action>
         <action name="PMmodule/Admin/SysAdmin" class="ca.openosp.openo.PMmodule.web.admin.AdminHome2Action" method="execute">
             <result name="admin">page.admin.home</result>

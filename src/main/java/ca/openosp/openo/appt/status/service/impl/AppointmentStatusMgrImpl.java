@@ -26,6 +26,10 @@ package ca.openosp.openo.appt.status.service.impl;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 import ca.openosp.openo.commn.dao.AppointmentStatusDao;
 import ca.openosp.openo.commn.model.AppointmentStatus;
@@ -40,6 +44,8 @@ import ca.openosp.openo.appt.status.service.AppointmentStatusMgr;
 public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
 
     private static AppointmentStatusDao appointStatusDao = SpringUtils.getBean(AppointmentStatusDao.class);
+
+    private static final Pattern COLOUR = Pattern.compile("#[0-9a-fA-F]{6}");
 
     private static List<AppointmentStatus> cachedActiveStatuses = null;
     private static boolean cacheIsDirty = false;
@@ -86,8 +92,38 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
         appointStatusDao.changeStatus(ID, iActive);
     }
 
-    public void modifyStatus(int ID, String strDesc, String strColor) {
-        appointStatusDao.modifyStatus(ID, strDesc, strColor);
+    public boolean updateDescription(int id, String description) {
+        String value = StringUtils.trimToEmpty(description);
+        if (value.isEmpty() || value.length() > DESCRIPTION_MAX_LENGTH) {
+            throw new IllegalArgumentException("appointment status description must be 1-" + DESCRIPTION_MAX_LENGTH + " characters");
+        }
+        return updateEditable(id, value, AppointmentStatus::setDescription);
+    }
+
+    public boolean updateColour(int id, String colour) {
+        String value = StringUtils.trimToEmpty(colour);
+        if (!COLOUR.matcher(value).matches()) {
+            throw new IllegalArgumentException("appointment status colour must match " + COLOUR.pattern());
+        }
+        return updateEditable(id, value, AppointmentStatus::setColor);
+    }
+
+    public boolean updateIcon(int id, String icon) {
+        if (icon == null || !ICON_SET.contains(icon)) {
+            throw new IllegalArgumentException("appointment status icon must be one of " + ICON_SET);
+        }
+        return updateEditable(id, icon, AppointmentStatus::setIcon);
+    }
+
+    /* Locked statuses (editable=0) keep their seeded look, so only editable ones are changed. */
+    private boolean updateEditable(int id, String value, BiConsumer<AppointmentStatus, String> setter) {
+        AppointmentStatus status = appointStatusDao.find(id);
+        if (status == null || status.getEditable() != 1) {
+            return false;
+        }
+        setter.accept(status, value);
+        appointStatusDao.merge(status);
+        return true;
     }
 
     public int checkStatusUsuage(List<AppointmentStatus> allStatus) {

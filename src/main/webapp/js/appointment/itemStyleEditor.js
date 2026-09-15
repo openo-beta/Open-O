@@ -34,7 +34,8 @@
  * - Include itemStyleEditorDialog.jspf, css/itemStyleEditor.css and this script; add
  *   css/glyphicons-standalone.css when an icon set is of kind 'glyphicon'.
  * - Each edit trigger carries data-item-style-edit (description, colour or icon),
- *   data-item-id and data-current (the value being edited).
+ *   data-item-id and data-current (the value being edited). WEB-INF/tags/itemStyleEditButton.tag
+ *   renders one.
  * - Call ItemStyleEditor.init() with one entry per kind the page edits. A trigger for a
  *   kind the page did not configure does nothing.
  *
