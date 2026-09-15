@@ -85,6 +85,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.AppointmentTypeDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.appt.ApptUtil" %>
+<%@ page import="ca.openosp.openo.appt.LocationList" %>
 <%@ page import="ca.openosp.openo.appt.ApptData" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
@@ -97,6 +98,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="appt" %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
 <%
 
@@ -144,6 +146,8 @@
     LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
     LookupList reasonCodes = lookupListManager.findLookupListByName(loggedInInfo, "reasonCode");
     pageContext.setAttribute("reasonCodes", reasonCodes);
+    LocationList locations = LocationList.load(loggedInInfo);
+    boolean locationMode = locations.isLocationMode();
 
     ApptData apptObj = ApptUtil.getAppointmentFromSession(request);
 
@@ -576,7 +580,11 @@
                 document.EDITAPPT.demographic_no.value = "<%=Encode.forJavaScriptBlock(apptObj.getDemographic_no())%>";
                 document.forms[0].reason.value = "<%= Encode.forJavaScriptBlock(apptObj.getReason()) %>";
                 document.forms[0].notes.value = "<%= Encode.forJavaScriptBlock(apptObj.getNotes()) %>";
+                <% if (locationMode) { %>
+                document.EDITAPPT.locationCode.value = "<%=Encode.forJavaScriptBlock(StringUtils.defaultString(apptObj.getLocationCode()))%>";
+                <% } else { %>
                 document.EDITAPPT.location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
+                <% } %>
                 document.EDITAPPT.resources.value = "<%=Encode.forJavaScriptBlock(apptObj.getResources())%>";
                 document.EDITAPPT.type.value = "<%=Encode.forJavaScriptBlock(apptObj.getType())%>";
                 if ('<%=apptObj.getUrgency()%>' === 'critical') {
@@ -618,7 +626,8 @@
                             break;
                         }
                     }
-                } else if (loc.nodeName.toUpperCase() === "INPUT") {
+                } else if (loc.nodeName.toUpperCase() === "INPUT" && !document.forms['EDITAPPT'].locationCode) {
+                    // The Location List, when the form offers it, takes no free text.
                     document.forms['EDITAPPT'].location.value = locSel;
                 }
             }
@@ -1074,6 +1083,11 @@
                             }
                             %>
                         </select>
+                        <% } else if (locationMode) {
+                            Integer locationCode = bFirstDisp ? appt.getLocationCode() : LocationList.parseCode(request.getParameter("locationCode"));
+                        %>
+                        <appt:locationSelect choices="<%=locations.getChoices(locationCode)%>" selected="<%=locationCode%>"
+                                             legacy="<%=locations.getLegacyLocation(locationCode, loc)%>"/>
                         <% } else { %>
 		        <input type="text" class="form-control" name="location" tabindex="4"
                        value="<%=Encode.forHtmlAttribute(bFirstDisp?appt.getLocation():request.getParameter("location"))%>" >

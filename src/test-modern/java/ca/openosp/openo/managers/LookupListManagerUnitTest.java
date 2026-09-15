@@ -1,7 +1,9 @@
 package ca.openosp.openo.managers;
 
+import ca.openosp.openo.commn.dao.LookupListDao;
 import ca.openosp.openo.commn.dao.LookupListItemDao;
 import ca.openosp.openo.commn.dao.OscarLogDao;
+import ca.openosp.openo.commn.model.LookupList;
 import ca.openosp.openo.commn.model.LookupListItem;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
@@ -37,7 +39,8 @@ import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for the lookupListItem style updates in {@link LookupListManager}:
- * {@code updateLookupListItemColour} and {@code updateLookupListItemIcon}.
+ * {@code updateLookupListItemColour} and {@code updateLookupListItemIcon}; and for
+ * {@code findAppointmentLocationList}, the one place the Location List is resolved.
  *
  * <p>Both values end up in class and style attributes on the schedule, so the tests pin the
  * whitelist: a valid value is stored, blank clears it, anything else is rejected before the
@@ -46,7 +49,7 @@ import static org.mockito.Mockito.when;
  * @since 2026-09-15
  */
 @ExtendWith(MockitoExtension.class)
-@DisplayName("LookupListManager style update unit tests")
+@DisplayName("LookupListManager style update and Location List unit tests")
 @Tag("unit")
 @Tag("fast")
 @Tag("manager")
@@ -54,6 +57,9 @@ import static org.mockito.Mockito.when;
 public class LookupListManagerUnitTest extends OpenOUnitTestBase {
 
     private static final int ITEM_ID = 7;
+
+    @Mock
+    private LookupListDao lookupListDao;
 
     @Mock
     private LookupListItemDao lookupListItemDao;
@@ -87,6 +93,22 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
     @AfterEach
     void tearDown() {
         logActionMock.close();
+    }
+
+    @Nested
+    @DisplayName("findAppointmentLocationList")
+    class LocationListResolver {
+
+        @Test
+        @DisplayName("should resolve the appointmentLocationCode list without a privilege check")
+        void shouldFindLocationList_whenAnyUser() {
+            LookupList locationList = new LookupList();
+            when(lookupListDao.findByName("appointmentLocationCode")).thenReturn(locationList);
+
+            assertThat(manager.findAppointmentLocationList(loggedInInfo)).isSameAs(locationList);
+
+            verify(securityInfoManager, never()).hasPrivilege(any(), any(), any(), any());
+        }
     }
 
     @Nested

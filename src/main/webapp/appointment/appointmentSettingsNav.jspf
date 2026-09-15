@@ -1,0 +1,29 @@
+<%--
+    Appointment Settings tabs: Status and Location. The Status tab only shows when
+    ENABLE_EDIT_APPT_STATUS is on, since otherwise the schedule ignores the statuses it edits.
+
+    Include with a static include inside <body>, after setting:
+      activeTab  status or location
+
+    Request attributes, set by AppointmentSettingsAction:
+      statusTabEnabled  Boolean whether to show the Status tab
+
+    @since 2026-09-15
+--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setBundle basename="oscarResources"/>
+<ul class="nav nav-tabs mb-3">
+    <c:if test="${statusTabEnabled}">
+        <li class="nav-item">
+            <a class="nav-link${activeTab == 'status' ? ' active' : ''}" href="<c:url value='/appointment/apptStatusSetting.do'/>">
+                <fmt:message key="admin.appt.settings.tab.status"/>
+            </a>
+        </li>
+    </c:if>
+    <li class="nav-item">
+        <a class="nav-link${activeTab == 'location' ? ' active' : ''}" href="<c:url value='/appointment/apptLocationSetting.do'/>">
+            <fmt:message key="admin.appt.settings.tab.location"/>
+        </a>
+    </li>
+</ul>

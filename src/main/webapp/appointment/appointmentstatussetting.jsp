@@ -31,6 +31,7 @@
       descriptionMaxLength  Integer the description column's width
       useStatus             String code of a disabled status still used by appointments, if any
       saveFailed            Boolean true when the last change was rejected
+      statusTabEnabled      Boolean whether to show the Status tab
 
     @since 2008-04-21
 --%>
@@ -52,6 +53,7 @@
 <fmt:setBundle basename="oscarResources"/>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <c:set var="statusAction" value="/appointment/apptStatusSetting.do"/>
+<c:set var="activeTab" value="status"/>
 <c:set var="itemStyleEditorAction" value="${statusAction}"/>
 <!DOCTYPE html>
 <html>
@@ -73,6 +75,8 @@
     </style>
 </head>
 <body class="p-3">
+<%@ include file="appointmentSettingsNav.jspf" %>
+
 <div class="d-flex align-items-center mb-3">
     <h1 class="h5 mb-0 me-auto"><fmt:message key="admin.appt.status.mgr.title"/></h1>
     <form method="post" action="<c:url value='${statusAction}'/>">
