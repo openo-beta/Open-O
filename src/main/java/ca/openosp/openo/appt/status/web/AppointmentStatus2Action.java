@@ -19,15 +19,18 @@
 package ca.openosp.openo.appt.status.web;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.function.BooleanSupplier;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.model.AppointmentStatus;
+import ca.openosp.openo.managers.SecurityInfoManager;
+import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.appt.status.service.AppointmentStatusMgr;
 import ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl;
@@ -35,141 +38,111 @@ import ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl;
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
+/**
+ * Appointment Status Manager: lists the appointment statuses and applies changes to them.
+ *
+ * <p>Routed on the {@code dispatch} parameter. Anything other than a change renders the list and
+ * needs read on one of {@link #SEC_OBJECTS}. A change needs update on one of them and must be
+ * posted, since the CSRF guard only checks posts:</p>
+ * <ul>
+ *   <li>{@code reset}: restores the seeded descriptions and colours</li>
+ *   <li>{@code changestatus}: enables or disables {@code statusID} ({@code iActive} 1 or 0)</li>
+ *   <li>{@code updateDescription}, {@code updateColour}, {@code updateIcon}: sets status {@code ID}
+ *       to {@code value}; posted by the item style editor on the list page</li>
+ * </ul>
+ * <p>A saved change redirects back to the list. A rejected one renders the list with status 400
+ * and {@code saveFailed} set.</p>
+ *
+ * @since 2024-12-06
+ */
 public class AppointmentStatus2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
     private static final Logger logger = MiscUtils.getLogger();
 
+    /** Holding read (to view) or update (to change) on any one of these opens the page; the JSP gate matches. */
+    private static final List<String> SEC_OBJECTS = List.of("_admin", "_admin.userAdmin", "_admin.schedule");
+
+    private static final String SAVED = "saved";
+
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private AppointmentStatusMgr appointmentStatusMgr = new AppointmentStatusMgrImpl();
+
+    /**
+     * Renders the status list, or applies the change named by {@code dispatch}.
+     *
+     * @return String {@code success} to render the list, or {@code saved} to redirect back to it
+     * @throws SecurityException if the user lacks the privilege, or a change was not posted
+     */
     public String execute() {
-        String method = request.getParameter("dispatch");
-        if ("view".equals(method)) {
-            return view();
-        } else if ("reset".equals(method)) {
-            return reset();
-        } else if ("changestatus".equals(method)) {
-            return changestatus();
-        } else if ("modify".equals(method)) {
-            return modify();
-        } else if ("update".equals(method)) {
-            return update();
+        // The admin menu links here with no dispatch, and a switch on null throws.
+        String dispatch = Objects.toString(request.getParameter("dispatch"), "view");
+        return switch (dispatch) {
+            case "reset" -> change(() -> {
+                appointmentStatusMgr.reset();
+                return true;
+            });
+            case "changestatus" -> change(() -> {
+                appointmentStatusMgr.changeStatus(intParameter("statusID"), intParameter("iActive"));
+                return true;
+            });
+            case "updateDescription" -> change(() -> appointmentStatusMgr.updateDescription(intParameter("ID"), request.getParameter("value")));
+            case "updateColour" -> change(() -> appointmentStatusMgr.updateColour(intParameter("ID"), request.getParameter("value")));
+            case "updateIcon" -> change(() -> appointmentStatusMgr.updateIcon(intParameter("ID"), request.getParameter("value")));
+            default -> {
+                requirePrivilege(SecurityInfoManager.READ);
+                yield view();
+            }
+        };
+    }
+
+    /*
+     * Runs one change for a user with update, and only when posted, since the CSRF guard only checks
+     * posts. The change returns false, or throws IllegalArgumentException, when it is refused.
+     */
+    private String change(BooleanSupplier change) {
+        requirePrivilege(SecurityInfoManager.UPDATE);
+        if (!"POST".equals(request.getMethod())) {
+            throw new SecurityException("appointment status changes must be posted");
         }
+
+        boolean saved;
+        try {
+            saved = change.getAsBoolean();
+        } catch (IllegalArgumentException e) {
+            // Also catches NumberFormatException from a malformed id; the page never posts one.
+            logger.warn("Rejected appointment status change: {}", e.getMessage());
+            saved = false;
+        }
+        if (saved) {
+            return SAVED;
+        }
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        request.setAttribute("saveFailed", true);
         return view();
     }
 
-    public String view() {
-        logger.warn("view");
-        populateAllStatus(request);
-        return SUCCESS;
+    private int intParameter(String name) {
+        return Integer.parseInt(request.getParameter(name));
     }
 
-    public String reset() {
-        logger.warn("reset");
-        AppointmentStatusMgr apptStatusMgr = getApptStatusMgr();
-        apptStatusMgr.reset();
-        populateAllStatus(request);
-        return SUCCESS;
-    }
-
-    public String changestatus() {
-        logger.warn("changestatus");
-        AppointmentStatusMgr apptStatusMgr = getApptStatusMgr();
-        int ID = Integer.parseInt(request.getParameter("statusID"));
-        int iActive = Integer.parseInt(request.getParameter("iActive"));
-        apptStatusMgr.changeStatus(ID, iActive);
-        populateAllStatus(request);
-        return SUCCESS;
-    }
-
-    public String modify() {
-        logger.warn("modify");
-        AppointmentStatusMgr apptStatusMgr = getApptStatusMgr();
-        int ID = Integer.parseInt(request.getParameter("statusID"));
-        AppointmentStatus appt = apptStatusMgr.getStatus(ID);
-
-        this.setID(ID);
-        this.setApptStatus(appt.getStatus());
-        this.setApptDesc(appt.getDescription());
-        this.setApptOldColor(appt.getColor());
-
-        return "edit";
-    }
-
-    public String update() {
-        logger.warn("update");
-        AppointmentStatusMgr apptStatusMgr = getApptStatusMgr();
-
-        int ID = this.getID();
-        String strDesc = this.getApptDesc();
-        String strColor = this.getApptColor();
-        if (null == strColor || strColor.equals(""))
-            strColor = this.getApptOldColor();
-        apptStatusMgr.modifyStatus(ID, strDesc, strColor);
-        populateAllStatus(request);
-        return SUCCESS;
-    }
-
-    public WebApplicationContext getApptContext() {
-        return WebApplicationContextUtils.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
-    }
-
-    public AppointmentStatusMgr getApptStatusMgr() {
-        return new AppointmentStatusMgrImpl();
-    }
-
-    private void populateAllStatus(HttpServletRequest request) {
-        AppointmentStatusMgr apptStatusMgr = getApptStatusMgr();
-        List allStatus = apptStatusMgr.getAllStatus();
-        request.setAttribute("allStatus", allStatus);
-        int iUseStatus = apptStatusMgr.checkStatusUsuage(allStatus);
-        if (iUseStatus > 0) {
-            request.setAttribute("useStatus", apptStatusMgr.getStatus(iUseStatus + 1).getStatus());
+    private void requirePrivilege(String privilege) {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (SEC_OBJECTS.stream().noneMatch(object -> securityInfoManager.hasPrivilege(loggedInInfo, object, privilege, null))) {
+            throw new SecurityException("missing required sec object (" + String.join(" or ", SEC_OBJECTS) + ")");
         }
     }
 
-    private int ID;
-    private String apptStatus;
-    private String apptDesc;
-    private String apptOldColor;
-    private String apptColor;
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
-    public String getApptStatus() {
-        return apptStatus;
-    }
-
-    public void setApptStatus(String apptStatus) {
-        this.apptStatus = apptStatus;
-    }
-
-    public String getApptDesc() {
-        return apptDesc;
-    }
-
-    public void setApptDesc(String apptDesc) {
-        this.apptDesc = apptDesc;
-    }
-
-    public String getApptOldColor() {
-        return apptOldColor;
-    }
-
-    public void setApptOldColor(String apptOldColor) {
-        this.apptOldColor = apptOldColor;
-    }
-
-    public String getApptColor() {
-        return apptColor;
-    }
-
-    public void setApptColor(String apptColor) {
-        this.apptColor = apptColor;
+    private String view() {
+        List<AppointmentStatus> allStatus = appointmentStatusMgr.getAllStatus();
+        request.setAttribute("allStatus", allStatus);
+        request.setAttribute("iconSet", AppointmentStatusMgr.ICON_SET);
+        request.setAttribute("descriptionMaxLength", AppointmentStatusMgr.DESCRIPTION_MAX_LENGTH);
+        int iUseStatus = appointmentStatusMgr.checkStatusUsuage(allStatus);
+        if (iUseStatus > 0) {
+            request.setAttribute("useStatus", appointmentStatusMgr.getStatus(iUseStatus + 1).getStatus());
+        }
+        return SUCCESS;
     }
 }
