@@ -43,6 +43,7 @@ public class LookupListManager {
 
     private static final Pattern COLOUR = Pattern.compile("#[0-9a-fA-F]{6}");
     private static final Pattern ICON = Pattern.compile("glyphicon-[a-z0-9-]+");
+    private static final String APPOINTMENT_LOCATION_LIST = "appointmentLocationCode";
 
     @Autowired
     private LookupListDao lookupListDao;
@@ -61,6 +62,20 @@ public class LookupListManager {
 
     public LookupList findLookupListByName(LoggedInInfo loggedInInfo, String name) {
         return lookupListDao.findByName(name);
+    }
+
+    /**
+     * Finds the Location List: the one lookup list whose items are the places an appointment can be
+     * booked. Every appointment screen resolves the list here, so this is the only place that knows
+     * which list it is. Like {@link #findLookupListByName}, it needs no privilege, because booking
+     * screens load it for every user.
+     *
+     * @param loggedInInfo LoggedInInfo the current user
+     * @return LookupList the Location List with all its items, active or not, or null if it is missing
+     * @since 2026-09-15
+     */
+    public LookupList findAppointmentLocationList(LoggedInInfo loggedInInfo) {
+        return findLookupListByName(loggedInInfo, APPOINTMENT_LOCATION_LIST);
     }
 
     public LookupList addLookupList(LoggedInInfo loggedInInfo, LookupList lookupList) {

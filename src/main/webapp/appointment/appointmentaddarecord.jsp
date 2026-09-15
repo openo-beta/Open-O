@@ -47,6 +47,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Demographic,ca.openosp.openo.appt.AppointmentMailer, ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@page import="ca.openosp.openo.commn.model.Appointment" %>
+<%@page import="ca.openosp.openo.appt.LocationList" %>
 <%@page import="ca.openosp.openo.commn.dao.WaitingListDao" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@page import="ca.openosp.openo.util.UtilDateUtilities" %>
@@ -124,7 +125,7 @@
             a.setName(request.getParameter("keyword"));
             a.setNotes(request.getParameter("notes"));
             a.setReason(request.getParameter("reason"));
-            a.setLocation(request.getParameter("location"));
+            LocationList.applyPostedLocation(a, request);
             a.setResources(request.getParameter("resources"));
             a.setType(request.getParameter("type"));
             a.setStyle(request.getParameter("style"));
