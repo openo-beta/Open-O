@@ -3,8 +3,8 @@
     ca.openosp.openo.appt.LocationList#isLocationMode() is true. It posts locationCode, and a
     hidden location holding the Legacy Location, if any; LocationList.applyPostedLocation saves them.
 
-    The first choice is "none", or the Legacy Location when the appointment has one: its location
-    text with no item, which saving unchanged keeps.
+    The first choice is "Not specified", or the Legacy Location when the appointment has one: its
+    location text with no item, which saving unchanged keeps.
 
     Attributes:
       choices   List<LookupListItem> the items to offer, in display order
@@ -27,7 +27,7 @@
             <option value="" selected><c:out value="${legacy}"/></option>
         </c:when>
         <c:otherwise>
-            <option value=""><fmt:message key="appointment.location.none"/></option>
+            <option value=""><fmt:message key="appointment.location.notSpecified"/></option>
         </c:otherwise>
     </c:choose>
     <c:forEach items="${choices}" var="item">
