@@ -224,6 +224,36 @@
 
         editing = {kind: kind, id: id, initial: KINDS[kind].read()};
         dialog.showModal();
+        if (window.frameElement) {
+            fitToVisibleArea();
+            window.parent.addEventListener('scroll', fitToVisibleArea);
+            window.parent.addEventListener('resize', fitToVisibleArea);
+        }
+    }
+
+    /**
+     * Centres the dialog in the part of its iframe the browser window shows, and caps its height to
+     * that part. A modal dialog centres itself in its own window, but the admin page loads settings
+     * pages in an iframe that can be taller than the browser window, which left the buttons below it.
+     */
+    function fitToVisibleArea() {
+        const GAP = 16;
+        const box = window.frameElement.getBoundingClientRect();
+        const visibleTop = Math.max(0, -box.top);
+        const visibleBottom = Math.min(window.innerHeight, window.parent.innerHeight - box.top);
+        dialog.style.top = (visibleTop + GAP) + 'px';
+        dialog.style.bottom = Math.max(0, window.innerHeight - visibleBottom + GAP) + 'px';
+        dialog.style.setProperty('--item-style-editor-room', Math.max(0, visibleBottom - visibleTop - 2 * GAP) + 'px');
+    }
+
+    /**
+     * Stops following the parent page's scrolling and resizing once the dialog closes.
+     */
+    function stopFitting() {
+        if (window.frameElement) {
+            window.parent.removeEventListener('scroll', fitToVisibleArea);
+            window.parent.removeEventListener('resize', fitToVisibleArea);
+        }
     }
 
     /**
@@ -268,6 +298,7 @@
         config = options;
 
         form.addEventListener('submit', onSubmit);
+        dialog.addEventListener('close', stopFitting);
         form.querySelector('[data-action="clear"]').addEventListener('click', function () {
             save('');
         });
