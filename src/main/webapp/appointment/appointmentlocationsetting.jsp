@@ -86,7 +86,7 @@
 </div>
 
 <c:if test="${saveFailed}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="admin.appt.location.msg.saveFailed"/></div>
+    <div class="alert alert-danger" role="alert"><fmt:message key="admin.appt.settings.msg.saveFailed"/></div>
 </c:if>
 
 <c:choose>
