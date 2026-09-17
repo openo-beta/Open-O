@@ -313,7 +313,7 @@ public final class MiscUtils {
 	 */
 	public static String sanitizeFileName(String fileName) {
         return fileName.replaceAll("\\s+", "_")
-                .replaceAll("[^a-zA-Z0-9._]", "")
+                .replaceAll("[^a-zA-Z0-9._-]", "")
                 .replaceAll("\\.+", ".");
 	}
 
