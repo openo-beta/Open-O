@@ -194,7 +194,7 @@ public class EmailSend2Action extends ActionSupport {
      * <p>This private helper method performs comprehensive email data preparation including:</p>
      * <ul>
      *   <li>Extracting sender and recipient email addresses</li>
-     *   <li>Retrieving subject, body, and internal comment fields</li>
+     *   <li>Retrieving subject, body, footer, and internal comment fields</li>
      *   <li>Processing encryption settings (email body and attachment encryption)</li>
      *   <li>Handling password protection parameters (password and password clue)</li>
      *   <li>Retrieving patient chart display options and demographic information</li>
@@ -215,6 +215,7 @@ public class EmailSend2Action extends ActionSupport {
         String[] receiverEmails = request.getParameterValues("receiverEmailAddress");
         String subject = request.getParameter("subjectEmail");
         String body = request.getParameter("bodyEmail");
+        String footer = request.getParameter("footerEmail");
         String encryptedMessage = request.getParameter("encryptedMessage");
         String password = request.getParameter("emailPDFPassword");
         String passwordClue = request.getParameter("emailPDFPasswordClue");
@@ -235,6 +236,7 @@ public class EmailSend2Action extends ActionSupport {
         emailData.setRecipients(receiverEmails);
         emailData.setSubject(subject);
         emailData.setBody(body);
+        emailData.setFooter(footer);
         emailData.setEncryptedMessage(encryptedMessage);
         emailData.setPassword(password);
         emailData.setPasswordClue(passwordClue);

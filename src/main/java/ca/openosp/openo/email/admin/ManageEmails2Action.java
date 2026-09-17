@@ -255,6 +255,7 @@ public class ManageEmails2Action extends ActionSupport {
         request.setAttribute("senderEmail", emailLog.getFromEmail());
         request.setAttribute("subjectEmail", emailLog.getSubject());
         request.setAttribute("bodyEmail", emailLog.getBody());
+        request.setAttribute("footerEmail", emailLog.getFooter());
         request.setAttribute("encryptedMessageEmail", emailLog.getEncryptedMessage());
         request.setAttribute("emailPDFPassword", emailLog.getPassword());
         request.setAttribute("emailPDFPasswordClue", emailLog.getPasswordClue());
