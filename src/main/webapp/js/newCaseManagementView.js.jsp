@@ -480,15 +480,22 @@
         if (params2.length > 0) {
             params = params + "&" + params2;
         }
-        new Ajax.Updater("encMainDiv",
+        new Ajax.Updater({ success: "encMainDiv" },
             ctx + "/CaseManagementView.do",
             {
                 method: 'post',
                 postBody: params,
                 evalScripts: true,
                 insertion: Insertion.Top,
-                onComplete: function () {
+                onComplete: function (request) {
                     $("notesLoading").hide();
+                    var requestSucceeded = request.status >= 200 && request.status < 300;
+                    if (!requestSucceeded) {
+                        notesOffset = Math.max(0, offset - notesIncrement);
+                        notesRetrieveOk = true;
+                        notesCurrentTop = null;
+                        return;
+                    }
                     notesRetrieveOk = $("encMainDiv").children.length > previousNoteCount;
                     if (!notesRetrieveOk) {
                         clearInterval(notesScrollCheckInterval);
