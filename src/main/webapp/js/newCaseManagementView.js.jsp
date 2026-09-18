@@ -467,6 +467,12 @@
 
      */
     function notesLoader(offset, numToReturn, demoNo) {
+        var notesWrapper = $("encMainDivWrapper");
+        var preserveScrollPosition = notesCurrentTop !== null;
+        var previousScrollHeight = notesWrapper.scrollHeight;
+        var previousScrollTop = notesWrapper.scrollTop;
+        var previousNoteCount = $("encMainDiv").children.length;
+
         $("notesLoading").show();
         console.log("loading: " + " offset: " + offset + " max notes: " + numToReturn + " demo: " + demoNo);
         var params = "method=viewNotesOpt&offset=" + offset + "&numToReturn=" + numToReturn + "&demographicNo=" + demoNo;
@@ -481,20 +487,20 @@
                 postBody: params,
                 evalScripts: true,
                 insertion: Insertion.Top,
-                onSuccess: function (data) {
-                    notesRetrieveOk = (data.responseText.replace(/\s+/g, '').length > 0);
-                    if (!notesRetrieveOk) {
-                        clearInterval(scrollCheckInterval);
-                    }
-                },
                 onComplete: function () {
                     $("notesLoading").hide();
-                    $("encMainDivWrapper").scrollTop = 10;
-
-                    <%--if (notesCurrentTop != null) {--%>
-                    <%--	$(notesCurrentTop).scrollIntoView();--%>
-                    <%--}--%>
-                    <%--scrollDownInnerBar();--%>
+                    notesRetrieveOk = $("encMainDiv").children.length > previousNoteCount;
+                    if (!notesRetrieveOk) {
+                        clearInterval(notesScrollCheckInterval);
+                        notesScrollCheckInterval = null;
+                    }
+                    if (preserveScrollPosition) {
+                        notesWrapper.scrollTop = previousScrollTop
+                            + notesWrapper.scrollHeight - previousScrollHeight;
+                        notesCurrentTop = null;
+                    } else {
+                        notesWrapper.scrollTop = 10;
+                    }
                 }
             });
     }
