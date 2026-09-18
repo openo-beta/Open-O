@@ -39,7 +39,7 @@ public class EmailSender {
         this.emailConfig = emailConfig;
         this.recipients = emailData.getRecipients();
         this.subject = emailData.getSubject();
-        this.body = emailData.getBody();
+        this.body = emailData.getBodyWithFooter();
         this.attachments = emailData.getAttachments();
         this.additionalParams = emailData.getAdditionalParams();
     }

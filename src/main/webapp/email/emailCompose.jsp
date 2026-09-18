@@ -376,6 +376,24 @@
 
                 <div class="card mt-4">
                     <div class="card-header">
+                        <h5 class="card-title">Footer</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <c:set var="footerEmail"
+                                           value="${ empty param.footerEmail ? footerEmail : param.footerEmail }"/>
+                                    <textarea class="form-control" name="footerEmail" id="footerEmail" rows="4"
+                                              placeholder="Clinic signature, unsubscribe line, disclaimer...">${ e:forHtmlContent(not empty footerEmail ? footerEmail : '') }</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
                         <h5 class="card-title">
                             <span class="icon-lock"></span> Encryption <span id="encryptionOptionsInfo"
                                                                              class="icon-info-sign"

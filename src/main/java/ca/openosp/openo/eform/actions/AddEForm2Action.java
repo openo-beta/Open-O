@@ -536,6 +536,7 @@ public class AddEForm2Action extends ActionSupport {
         session.setAttribute("senderEmail", settings.senderEmail());
         session.setAttribute("subjectEmail", settings.subjectEmail());
         session.setAttribute("bodyEmail", settings.bodyEmail());
+        session.setAttribute("footerEmail", settings.footerEmail());
         session.setAttribute("encryptedMessageEmail", settings.encryptedMessageEmail());
         session.setAttribute("emailPatientChartOption", settings.emailPatientChartOption());
     }
@@ -566,6 +567,7 @@ public class AddEForm2Action extends ActionSupport {
         request.setAttribute("senderEmail", settings.senderEmail());
         request.setAttribute("subjectEmail", settings.subjectEmail());
         request.setAttribute("bodyEmail", settings.bodyEmail());
+        request.setAttribute("footerEmail", settings.footerEmail());
         request.setAttribute("encryptedMessageEmail", settings.encryptedMessageEmail());
         request.setAttribute("emailPatientChartOption", settings.emailPatientChartOption());
     }

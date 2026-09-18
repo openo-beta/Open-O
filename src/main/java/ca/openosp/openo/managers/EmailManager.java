@@ -112,6 +112,9 @@ public class EmailManager {
 
         EmailLog emailLog = new EmailLog(emailConfig, emailConfig.getSenderEmail(), emailData.getRecipients(), emailData.getSubject(), emailData.getBody(), EmailStatus.FAILED);
         setEmailAttachments(emailLog, emailData.getAttachments());
+        // The footer is kept off the body so it stays out of the chart note, and is recorded
+        // here so the sent email can be reconstructed for audit and for resend.
+        emailLog.setFooter(emailData.getFooter());
         emailLog.setEncryptedMessage(emailData.getEncryptedMessage());
         emailLog.setPassword(emailData.getPassword());
         emailLog.setPasswordClue(emailData.getPasswordClue());
