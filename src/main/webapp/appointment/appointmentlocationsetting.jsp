@@ -26,18 +26,24 @@
 <%--
     Appointment Settings, Location tab.
 
-    Lists the Location List's active items, the places an appointment can be booked, with the chip
-    each shows on the schedule. A user who may change them gets pencil buttons that open the item
-    style editor (js/appointment/itemStyleEditor.js) for the colour and icon, and a link to the
-    Look-Up List Manager, where items are added, renamed and deactivated. Changes post back to
-    AppointmentLocation2Action.
+    Lists the places an appointment can be booked in one table, as the Status tab lists statuses:
+    the active locations in the order the booking screens offer them, then the inactive ones by
+    name, each with the chip it shows on the schedule. A user who may change them gets pencil
+    buttons that open the item style editor (js/appointment/itemStyleEditor.js) for the name, colour
+    and icon, buttons to move an active location along the order, an Enable or Disable button on
+    each row, and a link to the Look-Up List Manager, where locations are added. Changes post back
+    to AppointmentLocation2Action.
 
     Request attributes, set by AppointmentLocation2Action (appointment/apptLocationSetting.do):
-      locationItems     List<LookupListItem> the active items, in display order
-      locationListName  String the Location List's name, for the Look-Up List Manager link
-      canChange         Boolean whether the user may change item styles
-      saveFailed        Boolean true when the last change was rejected
-      statusTabEnabled  Boolean whether to show the Status tab
+      locations              List<LookupListItem> the active locations in order, then the inactive by name
+      activeLocationCount    Integer how many of locations are active, all of them first
+      locationListName       String the Location List's name, for the Look-Up List Manager link
+      canChange              Boolean whether the user may change locations
+      canDeactivate          Boolean whether the user may disable one
+      saveFailed             Boolean true when the last change was rejected
+      saveFailedKey          String the message for a change refused with a reason, if any
+      saveFailedParam        String that message's parameter, if it takes one
+      statusTabEnabled       Boolean whether to show the Status tab
 
     @since 2026-09-15
 --%>
@@ -47,6 +53,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="appt" %>
+<%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -58,7 +65,11 @@
 <fmt:setBundle basename="oscarResources"/>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <c:set var="activeTab" value="location"/>
-<c:set var="itemStyleEditorAction" value="/appointment/apptLocationSetting.do"/>
+<c:set var="locationAction" value="/appointment/apptLocationSetting.do"/>
+<c:set var="itemStyleEditorAction" value="${locationAction}"/>
+<c:set var="itemStyleEditorDescriptionTitleKey" value="admin.appt.location.label.editName"/>
+<fmt:message key="admin.appt.location.label.editName" var="editNameLabel"/>
+<fmt:message key="admin.appt.location.msg.confirmLastDisable" var="confirmLastDisable"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,7 +80,7 @@
     <link href="${ctx}/css/itemStyleEditor.css" rel="stylesheet">
     <script src="${ctx}/js/appointment/itemStyleEditor.js"></script>
 </head>
-<body class="p-3">
+<body class="p-3" data-name-max-length="<%= ca.openosp.openo.appt.LocationList.LABEL_MAX_LENGTH %>">
 <%@ include file="appointmentSettingsNav.jspf" %>
 
 <div class="d-flex align-items-center mb-3">
@@ -86,11 +97,20 @@
 </div>
 
 <c:if test="${saveFailed}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="admin.appt.settings.msg.saveFailed"/></div>
+    <div class="alert alert-danger" role="alert">
+        <fmt:message key="${empty saveFailedKey ? 'admin.appt.settings.msg.saveFailed' : saveFailedKey}">
+            <c:if test="${not empty saveFailedParam}"><fmt:param value="${saveFailedParam}"/></c:if>
+        </fmt:message>
+    </div>
+</c:if>
+
+<%-- The list takes over booking as soon as one location is active, so say so while none is. --%>
+<c:if test="${activeLocationCount == 0 and not empty locations}">
+    <div class="alert alert-info" role="alert"><fmt:message key="admin.appt.location.msg.noneActive"/></div>
 </c:if>
 
 <c:choose>
-    <c:when test="${empty locationItems}">
+    <c:when test="${empty locations}">
         <p class="text-muted"><fmt:message key="admin.appt.location.msg.empty"/></p>
     </c:when>
     <c:otherwise>
@@ -102,12 +122,22 @@
                     <th scope="col"><fmt:message key="admin.appt.location.label.colour"/></th>
                     <th scope="col"><fmt:message key="admin.appt.location.label.icon"/></th>
                     <th scope="col"><fmt:message key="admin.appt.location.label.chip"/></th>
+                    <th scope="col"><fmt:message key="admin.appt.location.label.active"/></th>
+                    <c:if test="${canChange}">
+                        <th scope="col"><fmt:message key="admin.appt.location.label.actions"/></th>
+                    </c:if>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${locationItems}" var="item">
-                    <tr>
-                        <td><c:out value="${item.label}"/></td>
+                <c:forEach items="${locations}" var="item" varStatus="loop">
+                    <tr id="location-${fn:escapeXml(item.id)}" class="${item.active ? '' : 'text-muted'}">
+                        <td>
+                            <c:out value="${item.label}"/>
+                            <c:if test="${canChange}">
+                                <appt:itemStyleEditButton kind="description" itemId="${item.id}"
+                                                          current="${item.label}" label="${editNameLabel}"/>
+                            </c:if>
+                        </td>
                         <td class="text-nowrap">
                             <c:out value="${item.colour}"/>
                             <c:if test="${canChange}">
@@ -115,26 +145,76 @@
                             </c:if>
                         </td>
                         <td class="text-nowrap">
-                            <c:out value="${item.icon}"/>
+                            <c:if test="${not empty item.icon}">
+                                <span class="glyphicon ${fn:escapeXml(item.icon)}" aria-hidden="true"></span>
+                                <span class="location-icon-name" data-icon="${fn:escapeXml(item.icon)}"></span>
+                            </c:if>
                             <c:if test="${canChange}">
                                 <appt:itemStyleEditButton kind="icon" itemId="${item.id}" current="${item.icon}"/>
                             </c:if>
                         </td>
+                        <%-- Inactive locations still draw their chip on the appointments booked with them. --%>
                         <td><appt:locationChip item="${item}"/></td>
+                        <td><fmt:message key="${item.active ? 'global.yes' : 'global.no'}"/></td>
+                        <c:if test="${canChange}">
+                            <td class="text-nowrap">
+                                <c:choose>
+                                    <c:when test="${item.active}">
+                                        <c:if test="${activeLocationCount > 1}">
+                                            <appt:locationActionButton action="${locationAction}" dispatch="moveUp"
+                                                                       itemId="${item.id}" labelKey="admin.appt.location.btn.moveUp"
+                                                                       glyph="glyphicon-chevron-up" disabled="${loop.first}"/>
+                                            <appt:locationActionButton action="${locationAction}" dispatch="moveDown"
+                                                                       itemId="${item.id}" labelKey="admin.appt.location.btn.moveDown"
+                                                                       glyph="glyphicon-chevron-down"
+                                                                       disabled="${loop.index == activeLocationCount - 1}"/>
+                                        </c:if>
+                                        <c:if test="${canDeactivate}">
+                                            <appt:locationActionButton action="${locationAction}" dispatch="deactivate"
+                                                                       itemId="${item.id}" labelKey="admin.appt.location.btn.disable"
+                                                                       confirm="${activeLocationCount == 1 ? confirmLastDisable : ''}"/>
+                                        </c:if>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <appt:locationActionButton action="${locationAction}" dispatch="restore"
+                                                                   itemId="${item.id}" labelKey="admin.appt.location.btn.enable"/>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                        </c:if>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
         </div>
+        <c:if test="${canChange}">
+            <p class="text-muted small"><fmt:message key="admin.appt.location.msg.renameNote"/></p>
+        </c:if>
     </c:otherwise>
 </c:choose>
 
 <%@ include file="itemStyleEditorDialog.jspf" %>
 <script>
-    ItemStyleEditor.init({
-        colour: {clearable: true},
-        icon: {clearable: true, iconSet: {kind: 'glyphicon', names: ItemStyleEditor.GLYPHICONS}}
-    });
+    (function () {
+        document.querySelectorAll('.location-icon-name').forEach(function (name) {
+            name.textContent = ItemStyleEditor.readableIconName(name.dataset.icon);
+        });
+
+        // Disabling the last active location sends every booking screen back to a typed box.
+        document.querySelectorAll('form[data-confirm]').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!window.confirm(form.dataset.confirm)) {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        ItemStyleEditor.init({
+            description: {maxLength: Number(document.body.dataset.nameMaxLength)},
+            colour: {clearable: true},
+            icon: {clearable: true, iconSet: {kind: 'glyphicon', names: ItemStyleEditor.GLYPHICONS}}
+        });
+    })();
 </script>
 </body>
 </html>

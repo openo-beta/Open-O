@@ -80,10 +80,49 @@ public abstract class AppointmentSettingsAction extends ActionSupport {
     }
 
     /**
+     * A change refused for a reason the user can act on, such as a name another item already has.
+     * The page shows {@link #getMessageKey()} in place of the generic message.
+     *
+     * @since 2026-09-17
+     */
+    protected static class ChangeRefusedException extends IllegalArgumentException {
+
+        private static final long serialVersionUID = 1L;
+
+        private final String messageKey;
+        private final String messageParam;
+
+        /**
+         * @param messageKey String the message to show instead of the generic one
+         * @param messageParam String the message's single parameter, or null if it takes none
+         */
+        protected ChangeRefusedException(String messageKey, String messageParam) {
+            super(messageKey);
+            this.messageKey = messageKey;
+            this.messageParam = messageParam;
+        }
+
+        /**
+         * @return String the message key the page shows
+         */
+        public String getMessageKey() {
+            return messageKey;
+        }
+
+        /**
+         * @return String the message's parameter, or null
+         */
+        public String getMessageParam() {
+            return messageParam;
+        }
+    }
+
+    /**
      * Applies one change.
      *
-     * @param change BooleanSupplier the change, which returns false or throws IllegalArgumentException
-     *               when it is refused
+     * @param change BooleanSupplier the change, which returns false, throws
+     *               {@link ChangeRefusedException} to say why it was refused, or throws
+     *               IllegalArgumentException when it is refused without a reason to show
      * @return String {@link #SAVED} to redirect back to the page, or {@code success} to render it
      *         with status 400 when the change was refused
      * @throws SecurityException if {@link #canChange()} is false, or the change was not posted
@@ -99,6 +138,11 @@ public abstract class AppointmentSettingsAction extends ActionSupport {
         boolean saved;
         try {
             saved = change.getAsBoolean();
+        } catch (ChangeRefusedException e) {
+            logger.warn("Refused appointment settings change: {}", e.getMessage());
+            request.setAttribute("saveFailedKey", e.getMessageKey());
+            request.setAttribute("saveFailedParam", e.getMessageParam());
+            saved = false;
         } catch (IllegalArgumentException e) {
             // Also catches NumberFormatException from a malformed id; the pages never post one.
             logger.warn("Rejected appointment settings change: {}", e.getMessage());
