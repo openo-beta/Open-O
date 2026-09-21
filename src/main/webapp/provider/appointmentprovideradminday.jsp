@@ -1908,6 +1908,9 @@
                                                         <% } %>
                                                             <%--|--%>
                                                         <%
+                                                            // Both tooltips name the location the chip or site marker shows.
+                                                            String apptLocation = locations.getDisplayName(appointment);
+                                                            String locationLine = apptLocation.isEmpty() ? "" : "&#013;&#010;location: " + Encode.forHtmlAttribute(apptLocation);
                                                             if (demographic_no == 0) {
                                                         %>
                                                         <!--  caisi  -->
@@ -1949,7 +1952,7 @@
                                                             // Build tooltip variants for privacy-compliant display (dot-name format)
                                                             // Always show reason/notes labels, but handle "null" string from String.valueOf(null)
                                                             String timeRange = iS + ":" + (iSm > 10 ? "" : "0") + iSm + "-" + iE + ":" + iEm;
-                                                            String dotTooltipShort = timeRange + " " + Encode.forHtmlAttribute(name) + ((type != null && !type.isEmpty()) ? "&#013;&#010;type: " + Encode.forHtmlAttribute(type) : "");
+                                                            String dotTooltipShort = timeRange + " " + Encode.forHtmlAttribute(name) + ((type != null && !type.isEmpty()) ? "&#013;&#010;type: " + Encode.forHtmlAttribute(type) : "") + locationLine;
                                                             String dotReasonDisplay = (reason != null && !"null".equals(reason)) ? reason : "";
                                                             String dotNotesDisplay = (notes != null && !"null".equals(notes)) ? notes : "";
                                                             String dotTooltipFull = dotTooltipShort + "&#013;&#010;reason: " + Encode.forHtmlAttribute(dotReasonDisplay) + "&#013;&#010;notes: " + Encode.forHtmlAttribute(dotNotesDisplay);
@@ -2050,7 +2053,7 @@
                                                         <%
                                                             // Build tooltip variants for privacy-compliant display
                                                             // Always show reason/notes labels, but handle "null" string from String.valueOf(null)
-                                                            String tooltipShort = Encode.forHtmlAttribute(name) + ((type != null && !type.isEmpty()) ? "&#013;&#010;type: " + Encode.forHtmlAttribute(type) : "");
+                                                            String tooltipShort = Encode.forHtmlAttribute(name) + ((type != null && !type.isEmpty()) ? "&#013;&#010;type: " + Encode.forHtmlAttribute(type) : "") + locationLine;
                                                             String reasonDisplay = (reason != null && !"null".equals(reason)) ? reason : "";
                                                             String notesDisplay = (notes != null && !"null".equals(notes)) ? notes : "";
                                                             String tooltipFull = tooltipShort + "&#013;&#010;reason: " + Encode.forHtmlAttribute(reasonDisplay) + "&#013;&#010;notes: " + Encode.forHtmlAttribute(notesDisplay);

@@ -67,7 +67,9 @@ public final class LocationList {
      *
      * <ul>
      *   <li>No {@code locationCode} field: the form offered sites, programs or free text, so the
-     *       posted {@code location} text is saved and the location code left as it is.</li>
+     *       posted {@code location} text is saved. The location code is kept while the text is
+     *       unchanged, as when the list has been switched off since booking, and cleared once the
+     *       text changes: the new text is no longer that item's name.</li>
      *   <li>An item of the list, active or not: its id becomes the location code and its label,
      *       cut to the column width, the location text.</li>
      *   <li>Blank, or anything else: the location code is cleared and the posted {@code location}
@@ -78,9 +80,13 @@ public final class LocationList {
      * @param request HttpServletRequest the booking form's request
      */
     public static void applyPostedLocation(Appointment appointment, HttpServletRequest request) {
+        String previous = appointment.getLocation();
         appointment.setLocation(request.getParameter("location"));
         String posted = request.getParameter("locationCode");
         if (posted == null) {
+            if (!StringUtils.defaultString(previous).equals(StringUtils.defaultString(appointment.getLocation()))) {
+                appointment.setLocationCode(null);
+            }
             return;
         }
 
@@ -101,6 +107,21 @@ public final class LocationList {
      */
     public String getLegacyLocation(Integer code, String location) {
         return find(code) == null ? location : null;
+    }
+
+    /**
+     * Names an appointment's location as the schedule shows it. Without multisite sites, a location
+     * code that is an item of this list shows the item's current name, as its chip does; otherwise
+     * the saved location text, which with sites is the site's name.
+     *
+     * @param appointment Appointment the appointment shown
+     * @return String the location's name, or blank when the appointment has none
+     * @since 2026-09-21
+     */
+    public String getDisplayName(Appointment appointment) {
+        LookupListItem item = IsPropertiesOn.isMultisitesEnable() ? null : find(appointment.getLocationCode());
+        String name = item == null ? appointment.getLocation() : item.getLabel();
+        return name == null || "null".equals(name) ? "" : name.trim();
     }
 
     /**

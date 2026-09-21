@@ -202,6 +202,7 @@ Ontario, Canada
         <script src="<%= request.getContextPath() %>/js/global.js"></script>
         <script src="<%= request.getContextPath() %>/js/checkDate.js"></script>
         <script src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
+        <script src="<%= request.getContextPath() %>/js/appointment/locationSelect.js"></script>
 
         <style>
 
@@ -507,7 +508,7 @@ Ontario, Canada
                 document.forms[0].resources.value = "<%=Encode.forJavaScriptBlock(apptObj.getResources())%>";
                 document.forms[0].type.value = "<%=Encode.forJavaScriptBlock(apptObj.getType())%>";
                 <% if (locationMode) { %>
-                document.forms[0].locationCode.value = "<%=Encode.forJavaScriptBlock(StringUtils.defaultString(apptObj.getLocationCode()))%>";
+                selectLocationCode(document.forms[0].locationCode, "<%=Encode.forJavaScriptBlock(StringUtils.defaultString(apptObj.getLocationCode()))%>");
                 <% } else { %>
                 document.forms[0].location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
                 <% } %>
@@ -550,7 +551,10 @@ Ontario, Canada
                 document.forms['ADDAPPT'].duration.value = durSel;
                 document.forms['ADDAPPT'].resources.value = resSel;
                 var loc = document.forms['ADDAPPT'].location;
-                if (loc.nodeName === 'SELECT') {
+                // The Location List takes the type's location by name, and no free text.
+                if (document.forms['ADDAPPT'].locationCode) {
+                    selectLocationByName(document.forms['ADDAPPT'].locationCode, locSel);
+                } else if (loc.nodeName === 'SELECT') {
                     for (c = 0; c < loc.length; c++) {
                         if (loc.options[c].innerHTML == locSel) {
                             loc.selectedIndex = c;
@@ -558,8 +562,7 @@ Ontario, Canada
                             break;
                         }
                     }
-                } else if (loc.nodeName === "INPUT" && !document.forms['ADDAPPT'].locationCode) {
-                    // The Location List, when the form offers it, takes no free text.
+                } else if (loc.nodeName === "INPUT") {
                     document.forms['ADDAPPT'].location.value = locSel;
                 }
             }

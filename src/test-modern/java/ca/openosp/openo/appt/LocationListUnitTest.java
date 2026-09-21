@@ -51,7 +51,28 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
     private final LookupListItem retired = item(12, "Old Annex", false);
     private final LookupListItem room2 = item(13, "Room 2", true);
 
+    /** The site setups that decide the Location Mode; each test starts with none and ends as it found them. */
+    private static final List<String> MODE_KEYS = List.of("multisites", "scheduleSiteID", "ModuleNames", "useProgramLocation");
+    private final Map<String, String> savedModeProperties = new HashMap<>();
+    private final OscarProperties properties = OscarProperties.getInstance();
+
     private LookupList locationList;
+
+    @BeforeEach
+    void clearModeProperties() {
+        for (String key : MODE_KEYS) {
+            String value = (String) properties.remove(key);
+            if (value != null) {
+                savedModeProperties.put(key, value);
+            }
+        }
+    }
+
+    @AfterEach
+    void restoreModeProperties() {
+        MODE_KEYS.forEach(properties::remove);
+        properties.putAll(savedModeProperties);
+    }
 
     @BeforeEach
     void setUp() {
@@ -203,26 +224,6 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
     @DisplayName("isLocationMode")
     class LocationMode {
 
-        private static final List<String> KEYS = List.of("multisites", "scheduleSiteID", "ModuleNames", "useProgramLocation");
-        private final Map<String, String> saved = new HashMap<>();
-        private final OscarProperties properties = OscarProperties.getInstance();
-
-        @BeforeEach
-        void clearModeProperties() {
-            for (String key : KEYS) {
-                String value = (String) properties.remove(key);
-                if (value != null) {
-                    saved.put(key, value);
-                }
-            }
-        }
-
-        @AfterEach
-        void restoreModeProperties() {
-            KEYS.forEach(properties::remove);
-            properties.putAll(saved);
-        }
-
         @Test
         @DisplayName("should use the list when it has an active item and no site setup applies")
         void shouldBeLocationMode_whenActiveItemAndNoSites() {
@@ -272,6 +273,59 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
     }
 
     @Nested
+    @DisplayName("getDisplayName")
+    class DisplayNames {
+
+        private final Appointment appointment = new Appointment();
+
+        @Test
+        @DisplayName("should name the item's current name when the code is an item of the list")
+        void shouldUseCurrentName_whenCodeIsItem() {
+            appointment.setLocationCode(13);
+            appointment.setLocation("Room 2 (booked name)");
+
+            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("Room 2");
+        }
+
+        @Test
+        @DisplayName("should name an inactive item without marking it")
+        void shouldUseName_whenItemInactive() {
+            appointment.setLocationCode(12);
+
+            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("Old Annex");
+        }
+
+        @Test
+        @DisplayName("should use the saved text when the code is not an item of the list")
+        void shouldUseText_whenCodeNotItem() {
+            appointment.setLocationCode(99);
+            appointment.setLocation(" Front desk ");
+
+            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("Front desk");
+        }
+
+        @Test
+        @DisplayName("should use the saved text, the site, when the schedule shows sites")
+        void shouldUseText_whenMultisites() {
+            appointment.setLocationCode(13);
+            appointment.setLocation("Downtown");
+            properties.setProperty("multisites", "on");
+
+            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("Downtown");
+        }
+
+        @ParameterizedTest
+        @NullAndEmptySource
+        @ValueSource(strings = {"null", "  "})
+        @DisplayName("should be blank when the appointment has no location")
+        void shouldBeBlank_whenNoLocation(String text) {
+            appointment.setLocation(text);
+
+            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEmpty();
+        }
+    }
+
+    @Nested
     @DisplayName("applyPostedLocation")
     class ApplyPostedLocation {
 
@@ -286,15 +340,38 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should save the typed location and leave the code when the form offered no Location List")
-        void shouldSaveTextKeepCode_whenNoLocationCodeField() {
-            request.setParameter("location", "Front desk");
+        @DisplayName("should keep the code when the form offered no Location List and the text is unchanged")
+        void shouldKeepCode_whenNoLocationCodeFieldAndTextUnchanged() {
+            request.setParameter("location", "Before");
 
             LocationList.applyPostedLocation(appointment, request);
 
-            assertThat(appointment.getLocation()).isEqualTo("Front desk");
+            assertThat(appointment.getLocation()).isEqualTo("Before");
             assertThat(appointment.getLocationCode()).isEqualTo(7);
             verifyNoInteractions(lookupListManager);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"Front desk", "before", "Before ", ""})
+        @DisplayName("should save the typed location and clear the code when the form offered no Location List and the text changed")
+        void shouldClearCode_whenNoLocationCodeFieldAndTextChanged(String typed) {
+            request.setParameter("location", typed);
+
+            LocationList.applyPostedLocation(appointment, request);
+
+            assertThat(appointment.getLocation()).isEqualTo(typed);
+            assertThat(appointment.getLocationCode()).isNull();
+            verifyNoInteractions(lookupListManager);
+        }
+
+        @Test
+        @DisplayName("should treat no saved text and a blank post as the same text")
+        void shouldKeepCode_whenNoSavedTextAndBlankPosted() {
+            appointment.setLocation(null);
+
+            LocationList.applyPostedLocation(appointment, request);
+
+            assertThat(appointment.getLocationCode()).isEqualTo(7);
         }
 
         @Test
