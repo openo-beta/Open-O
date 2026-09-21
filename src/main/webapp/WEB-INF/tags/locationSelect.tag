@@ -30,8 +30,18 @@
             <option value=""><fmt:message key="appointment.location.notSpecified"/></option>
         </c:otherwise>
     </c:choose>
+    <%-- A saved location that is no longer offered stays on the list, marked, so saving keeps it.
+         The option's text is kept free of stray whitespace: scripts match a location by it. --%>
     <c:forEach items="${choices}" var="item">
-        <option value="${fn:escapeXml(item.id)}" ${item.id == selected ? 'selected' : ''}><c:out value="${item.label}"/></option>
+        <c:choose>
+            <c:when test="${item.active}"><c:set var="optionLabel" value="${item.label}"/></c:when>
+            <c:otherwise>
+                <fmt:message key="appointment.location.inactiveItem" var="optionLabel">
+                    <fmt:param value="${item.label}"/>
+                </fmt:message>
+            </c:otherwise>
+        </c:choose>
+        <option value="${fn:escapeXml(item.id)}" ${item.id == selected ? 'selected' : ''}><c:out value="${optionLabel}"/></option>
     </c:forEach>
 </select>
 <input type="hidden" name="location" value="${fn:escapeXml(legacy)}">

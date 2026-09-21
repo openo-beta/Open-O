@@ -33,6 +33,10 @@
 
     Include with a static include inside <body>, after setting:
       itemStyleEditorAction  the context-relative form action, e.g. /appointment/apptStatusSetting.do
+    and optionally:
+      itemStyleEditorDescriptionTitleKey  the message key heading the description editor, when the
+                                          page calls the value something of its own, such as a
+                                          location's name; defaults to "Edit Description"
 
     Posts: ID, dispatch (updateDescription, updateColour or updateIcon) and value.
 
@@ -56,7 +60,7 @@
         <div class="card-body">
             <fieldset data-kind="description" hidden disabled>
                 <label for="itemStyleEditorDescription" class="form-label fs-5">
-                    <fmt:message key="appointment.itemStyleEditor.title.description"/>
+                    <fmt:message key="${empty itemStyleEditorDescriptionTitleKey ? 'appointment.itemStyleEditor.title.description' : itemStyleEditorDescriptionTitleKey}"/>
                 </label>
                 <input type="text" class="form-control item-style-editor-description" id="itemStyleEditorDescription"
                        required pattern=".*\S.*">
