@@ -175,7 +175,7 @@ public class SFTPConnector {
     private static String prepareForDownload(String folder) throws Exception {
 
         //ensure the downloads directory exists
-        String path = checkFolder(downloadsDirectory);
+        String path = checkFolder(requireDownloadsDirectory());
 
         //if it's a simple "do i have my downloads folder" check, then we're done!
         //no other folder is specified
@@ -184,7 +184,7 @@ public class SFTPConnector {
 
         //if code gets to here then we're ensuring that specified folder exists within SFTP download folder.
         //-also fixes the beginning if the specified folder already begins with a '/' slash it ignores the slash
-        String dir = downloadsDirectory
+        String dir = requireDownloadsDirectory()
                 + (folder == null ? "" : (folder.charAt(0) == '/' ? folder.substring(1, folder.length() - 1) : folder));
 
         //return the full path of the existing folder
@@ -816,20 +816,17 @@ public class SFTPConnector {
         OMD_keyLocation = oMD_keyLocation;
     }
 
-    public static String getDownloadsDirectory() {
-        String dd = downloadsDirectory;
-        if (dd == null || dd.equals("")) {
-            dd = "webapps/OscarDocument/hrm/sftp_downloads/";
-            return dd;
-
-        } else {
-            return downloadsDirectory;
+    /**
+     * Returns the directory the encrypted files downloaded over sFTP are written to.
+     *
+     * @return String the configured OMD_downloads directory
+     * @throws IllegalStateException if OMD_downloads is not set
+     */
+    public static String requireDownloadsDirectory() {
+        if (downloadsDirectory == null || downloadsDirectory.trim().isEmpty()) {
+            throw new IllegalStateException("HRM downloads directory is not configured. Set OMD_downloads in oscar.properties.");
         }
-
-    }
-
-    public static void setDownloadsDirectory(String downloadsDir) {
-        downloadsDirectory = downloadsDir;
+        return downloadsDirectory;
     }
 
     public static String getDecryptionKey() {
