@@ -33,6 +33,7 @@ import javax.xml.validation.SchemaFactory;
 import java.nio.file.Files;
 import java.nio.charset.StandardCharsets;
 
+import java.util.regex.Pattern;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
@@ -74,6 +75,18 @@ import ca.openosp.OscarProperties;
 public class HRMReportParser {
 
     private static Logger logger = MiscUtils.getLogger();
+
+    // The hashes below identify a report, so they are taken over the report's markup with the
+    // formatting removed. Two files can carry the same report and still differ in comments and
+    // indentation: OntarioMD's own samples annotate each file with its own name and indent it
+    // differently, and hashing that text verbatim makes one report look like two.
+    private static final Pattern XML_COMMENT = Pattern.compile("<!--.*?-->", Pattern.DOTALL);
+    private static final Pattern BETWEEN_TAGS = Pattern.compile(">\\s+<");
+    // DOTALL: these elements span several lines, so the dot has to cross line breaks to reach
+    // the closing tag.
+    private static final Pattern MESSAGE_UNIQUE_ID = Pattern.compile("<MessageUniqueID>.*?</MessageUniqueID>", Pattern.DOTALL);
+    private static final Pattern TRANSACTION_INFORMATION = Pattern.compile("<TransactionInformation>.*?</TransactionInformation>", Pattern.DOTALL);
+    private static final Pattern DEMOGRAPHICS = Pattern.compile("<Demographics>.*?</Demographics>", Pattern.DOTALL);
 
     private HRMReportParser() {
     }
@@ -215,11 +228,13 @@ public class HRMReportParser {
 
         warnIfSendingFacilityNotRegistered(loggedInInfo, report.getSendingFacilityId());
 
-        String reportFileData = report.getFileData();
+        String reportFileData = normalizeForHashing(report.getFileData());
 
-        String noMessageIdFileData = reportFileData.replaceAll("<MessageUniqueID>.*?</MessageUniqueID>", "<MessageUniqueID></MessageUniqueID>");
-        String noTransactionInfoFileData = reportFileData.replaceAll("<TransactionInformation>.*?</TransactionInformation>", "<TransactionInformation></TransactionInformation>");
-        String noDemograhpicInfoFileData = reportFileData.replaceAll("<Demographics>.*?</Demographics>", "<Demographics></Demographics").replaceAll("<MessageUniqueID>.*?</MessageUniqueID>", "<MessageUniqueID></MessageUniqueID>");
+        String noMessageIdFileData = MESSAGE_UNIQUE_ID.matcher(reportFileData).replaceAll("<MessageUniqueID></MessageUniqueID>");
+        String noTransactionInfoFileData = TRANSACTION_INFORMATION.matcher(reportFileData).replaceAll("<TransactionInformation></TransactionInformation>");
+        String noDemograhpicInfoFileData = MESSAGE_UNIQUE_ID.matcher(
+                DEMOGRAPHICS.matcher(reportFileData).replaceAll("<Demographics></Demographics>"))
+                .replaceAll("<MessageUniqueID></MessageUniqueID>");
 
         String noMessageIdHash = DigestUtils.md5Hex(noMessageIdFileData);
         String noTransactionInfoHash = DigestUtils.md5Hex(noTransactionInfoFileData);
@@ -264,7 +279,11 @@ public class HRMReportParser {
 
             if (sameReportDifferentRecipientReportList != null && sameReportDifferentRecipientReportList.size() > 0) {
                 logger.info("Same Report Different Recipient, for file:" + report.getFileLocation());
-                HRMReportParser.routeReportToProvider(sameReportDifferentRecipientReportList.get(0), report);
+                HRMDocument existingDocument = sameReportDifferentRecipientReportList.get(0);
+                HRMReportParser.routeReportToProvider(existingDocument, report);
+                ctx.setDocument(existingDocument);
+                ctx.addWarning("This report has already been received for a different recipient and has been"
+                        + " flagged as a duplicate. The recipient has been added to the report already on file.");
             } else {
                 // New report or changed report
                 hrmDocumentDao.persist(document);
@@ -490,6 +509,18 @@ public class HRMReportParser {
         return true;
     }
 
+    /**
+     * Strips comments and the indentation between elements so that the report hashes describe the
+     * report rather than the file's layout.
+     *
+     * @param fileData String the report file's raw contents
+     * @return String the same markup with comments removed and inter-element whitespace collapsed
+     */
+    private static String normalizeForHashing(String fileData) {
+        String withoutComments = XML_COMMENT.matcher(fileData).replaceAll("");
+        return BETWEEN_TAGS.matcher(withoutComments).replaceAll("><").trim();
+    }
+
     /*
      * this only gets called for new or changed reports being added to DB. We already know this isn't
      * an exact duplicate report.
@@ -524,6 +555,14 @@ public class HRMReportParser {
         List<HRMReport> thisDemoHrmReportList = HRMReportParser.loadAllReportsRoutedToDemographic(loggedInInfo, report.getLegalName());
 
         for (HRMReport loadedReport : thisDemoHrmReportList) {
+            // The report being saved is already linked to this patient by the time this runs, so it
+            // comes back in the list. Comparing it with itself always scores a match and would make
+            // it its own parent, which hides it from the inbox.
+            if (loadedReport.getHrmDocumentId() != null
+                    && loadedReport.getHrmDocumentId().intValue() == mergedDocument.getId().intValue()) {
+                continue;
+            }
+
             boolean hasSameReportContent = report.getFirstReportTextContent().equalsIgnoreCase(loadedReport.getFirstReportTextContent());
             boolean hasSameStatus = hasSameStatus(report, loadedReport);
             boolean hasSameClass = report.getFirstReportClass().equalsIgnoreCase(loadedReport.getFirstReportClass());
@@ -554,16 +593,15 @@ public class HRMReportParser {
                 threshold += 5;
 
             if (threshold >= 45) {
-                // This is probably a changed report addressed to the same demographic, so set the parent id (as long as this isn't the same report) and we're done!
-                if (loadedReport.getHrmParentDocumentId() != null && loadedReport.getHrmDocumentId().intValue() != mergedDocument.getId().intValue()) {
+                // A changed version of a report already on file for this patient. Hang it off the
+                // same parent when the matched report has one, otherwise off the matched report.
+                if (loadedReport.getHrmParentDocumentId() != null) {
                     mergedDocument.setParentReport(loadedReport.getHrmParentDocumentId());
-                    hrmDocumentDao.merge(mergedDocument);
-                    return;
-                } else if (loadedReport.getHrmParentDocumentId() == null) {
+                } else {
                     mergedDocument.setParentReport(loadedReport.getHrmDocumentId());
-                    hrmDocumentDao.merge(mergedDocument);
-                    return;
                 }
+                hrmDocumentDao.merge(mergedDocument);
+                return;
             }
         }
     }
@@ -784,6 +822,9 @@ public class HRMReportParser {
                     if (labRule.getForwardTypeStrings().contains("HRM")) {
                         //Creates a string of the providers number that the lab will be forwarded to
                         String forwardProviderNumber = labRule.getFrwdProviderNo();
+                        if (forwardProviderNumber == null || forwardProviderNumber.trim().isEmpty()) {
+                            continue;
+                        }
                         //Checks to see if this providers is already linked to this lab
                         HRMDocumentToProvider hrmDocumentToProvider = hrmDocumentToProviderDao.findByHrmDocumentIdAndProviderNo(reportId, forwardProviderNumber);
                         //If a record was not found
@@ -822,6 +863,12 @@ public class HRMReportParser {
     }
 
     public static void routeReportToProvider(Integer reportId, String providerNo) {
+        // A patient with no most responsible provider has a blank provider_no, which would
+        // otherwise be written as a routing row pointing at nobody.
+        if (providerNo == null || providerNo.trim().isEmpty()) {
+            return;
+        }
+
         HRMDocumentToProviderDao hrmDocumentToProviderDao = (HRMDocumentToProviderDao) SpringUtils.getBean(HRMDocumentToProviderDao.class);
 
         // Check if routing already exists
