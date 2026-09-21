@@ -243,6 +243,7 @@
     <script src="<%= request.getContextPath() %>/js/global.js"></script>
     <script src="<%= request.getContextPath() %>/js/checkDate.js"></script>
     <script src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
+    <script src="<%= request.getContextPath() %>/js/appointment/locationSelect.js"></script>
 
         <style>
 
@@ -580,7 +581,7 @@
                 document.forms[0].reason.value = "<%= Encode.forJavaScriptBlock(apptObj.getReason()) %>";
                 document.forms[0].notes.value = "<%= Encode.forJavaScriptBlock(apptObj.getNotes()) %>";
                 <% if (locationMode) { %>
-                document.EDITAPPT.locationCode.value = "<%=Encode.forJavaScriptBlock(StringUtils.defaultString(apptObj.getLocationCode()))%>";
+                selectLocationCode(document.EDITAPPT.locationCode, "<%=Encode.forJavaScriptBlock(StringUtils.defaultString(apptObj.getLocationCode()))%>");
                 <% } else { %>
                 document.EDITAPPT.location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
                 <% } %>
@@ -617,7 +618,10 @@
                 document.forms['EDITAPPT'].duration.value = durSel;
                 document.forms['EDITAPPT'].resources.value = resSel;
                 var loc = document.forms['EDITAPPT'].location;
-                if (loc.nodeName.toUpperCase() === 'SELECT') {
+                // The Location List takes the type's location by name, and no free text.
+                if (document.forms['EDITAPPT'].locationCode) {
+                    selectLocationByName(document.forms['EDITAPPT'].locationCode, locSel);
+                } else if (loc.nodeName.toUpperCase() === 'SELECT') {
                     for (c = 0; c < loc.length; c++) {
                         if (loc.options[c].innerHTML === locSel) {
                             loc.selectedIndex = c;
@@ -625,8 +629,7 @@
                             break;
                         }
                     }
-                } else if (loc.nodeName.toUpperCase() === "INPUT" && !document.forms['EDITAPPT'].locationCode) {
-                    // The Location List, when the form offers it, takes no free text.
+                } else if (loc.nodeName.toUpperCase() === "INPUT") {
                     document.forms['EDITAPPT'].location.value = locSel;
                 }
             }
