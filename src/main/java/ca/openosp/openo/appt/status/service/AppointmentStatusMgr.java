@@ -41,6 +41,7 @@ public interface AppointmentStatusMgr {
      */
     List<String> ICON_SET = List.of(
             "starbill.gif", "todo.gif", "here.gif", "picked.gif", "empty.gif", "noshow.gif", "cancel.gif", "billed.gif",
+            "thumb.png",
             "1.gif", "2.gif", "3.gif", "4.gif", "5.gif", "6.gif", "7.gif", "8.gif",
             "9.gif", "10.gif", "11.gif", "12.gif", "13.gif", "14.gif", "15.gif", "16.gif");
 
@@ -95,5 +96,13 @@ public interface AppointmentStatusMgr {
 
     public int checkStatusUsuage(List<AppointmentStatus> allStatus);
 
+    /**
+     * Puts every editable status (editable=1) back to its Default Status Style: the description,
+     * colour and icon it is seeded with. Statuses are matched by status code, not id, because ids
+     * differ between installs. Locked statuses, codes without a default, and whether a status is
+     * active are left alone, and no missing status is added. All changes are saved together.
+     *
+     * @since 2026-09-21
+     */
     public void reset();
 }
