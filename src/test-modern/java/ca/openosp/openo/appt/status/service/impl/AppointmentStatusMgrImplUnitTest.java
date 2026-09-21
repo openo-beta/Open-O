@@ -16,13 +16,18 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -34,12 +39,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for the status updates in {@link AppointmentStatusMgrImpl}: {@code updateDescription},
- * {@code updateColour} and {@code updateIcon}.
+ * Unit tests for the status changes in {@link AppointmentStatusMgrImpl}: {@code updateDescription},
+ * {@code updateColour}, {@code updateIcon} and {@code reset}.
  *
  * <p>The colour and icon end up in style and src attributes on the schedule, so the tests pin the
  * rules: a valid value is saved, an invalid one is rejected before the status is loaded, and a
- * locked status (editable=0) is never changed.</p>
+ * locked status (editable=0) is never changed. Reset is checked on both table layouts found in the
+ * field, and against the seed it restores.</p>
  *
  * @since 2026-09-15
  */
@@ -167,7 +173,7 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
 
         @ParameterizedTest
         @NullAndEmptySource
-        @ValueSource(strings = {"thumb.png", "Shere.gif", "../here.gif", " here.gif", "here.gif\" onerror=\"x"})
+        @ValueSource(strings = {"lts.gif", "Shere.gif", "../here.gif", " here.gif", "here.gif\" onerror=\"x"})
         @DisplayName("should reject the icon and load nothing when it is not in the icon set")
         void shouldRejectIcon_whenNotInIconSet(String icon) {
             assertThatThrownBy(() -> manager.updateIcon(STATUS_ID, icon))
@@ -225,6 +231,158 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
 
             assertThat(status.getDescription()).isEqualTo("Here");
             assertThat(status.getColor()).isEqualTo("#00ee00");
+        }
+    }
+
+    @Nested
+    @DisplayName("reset")
+    class Reset {
+
+        /* One seeded appointment_status row: (id,'code','description','#colour','icon',active,editable,... */
+        private static final Pattern SEED_ROW =
+                Pattern.compile("\\((\\d+),\\s*'(\\w)',\\s*'([^']*)',\\s*'([^']*)',\\s*'([^']*)',\\s*(\\d),\\s*(\\d)");
+
+        private AppointmentStatus row(int id, String code, int editable) {
+            AppointmentStatus row = new AppointmentStatus();
+            row.setId(id);
+            row.setStatus(code);
+            row.setDescription("Custom " + code);
+            row.setColor("#123456");
+            row.setIcon("16.gif");
+            row.setActive(1);
+            row.setEditable(editable);
+            return row;
+        }
+
+        private List<AppointmentStatus> seedRows() throws IOException {
+            String seed = Files.readString(Path.of("database/mysql/oscardata.sql"));
+            String insert = seed.substring(seed.indexOf("INSERT INTO `appointment_status` VALUES"));
+            insert = insert.substring(0, insert.indexOf(';'));
+            List<AppointmentStatus> rows = new ArrayList<>();
+            Matcher m = SEED_ROW.matcher(insert);
+            while (m.find()) {
+                AppointmentStatus seeded = new AppointmentStatus();
+                seeded.setId(Integer.parseInt(m.group(1)));
+                seeded.setStatus(m.group(2));
+                seeded.setDescription(m.group(3));
+                seeded.setColor(m.group(4));
+                seeded.setIcon(m.group(5));
+                seeded.setActive(Integer.parseInt(m.group(6)));
+                seeded.setEditable(Integer.parseInt(m.group(7)));
+                rows.add(seeded);
+            }
+            return rows;
+        }
+
+        @SuppressWarnings("unchecked")
+        private List<AppointmentStatus> resetAndCaptureSaved(List<AppointmentStatus> table) {
+            when(appointmentStatusDao.findAll()).thenReturn(table);
+            ArgumentCaptor<List<AppointmentStatus>> saved = ArgumentCaptor.forClass(List.class);
+
+            manager.reset();
+
+            verify(appointmentStatusDao).mergeAll(saved.capture());
+            return saved.getValue();
+        }
+
+        @Test
+        @DisplayName("should restore every editable status to its seeded style by code on the 15-row layout")
+        void shouldRestoreSeededStyleByCode_whenFifteenRowLayout() throws IOException {
+            List<AppointmentStatus> seed = seedRows();
+            assertThat(seed).hasSize(15);
+            List<AppointmentStatus> table = new ArrayList<>();
+            for (AppointmentStatus seeded : seed) {
+                // Every row unlocked, so each default is written and can be compared with the seed.
+                table.add(row(seeded.getId(), seeded.getStatus(), 1));
+            }
+
+            List<AppointmentStatus> saved = resetAndCaptureSaved(table);
+
+            assertThat(saved).hasSize(15);
+            for (int i = 0; i < seed.size(); i++) {
+                assertThat(table.get(i))
+                        .as("status %s", seed.get(i).getStatus())
+                        .extracting(AppointmentStatus::getDescription, AppointmentStatus::getColor, AppointmentStatus::getIcon)
+                        .containsExactly(seed.get(i).getDescription(), seed.get(i).getColor(), seed.get(i).getIcon());
+            }
+        }
+
+        @Test
+        @DisplayName("should restore only icons in the icon set and descriptions that fit the column")
+        void shouldRestoreValidStyles_whenEveryCodeReset() throws IOException {
+            List<AppointmentStatus> table = new ArrayList<>();
+            for (AppointmentStatus seeded : seedRows()) {
+                table.add(row(seeded.getId(), seeded.getStatus(), 1));
+            }
+
+            resetAndCaptureSaved(table);
+
+            assertThat(table).allSatisfy(status -> {
+                assertThat(AppointmentStatusMgr.ICON_SET).contains(status.getIcon());
+                assertThat(status.getDescription()).hasSizeLessThanOrEqualTo(AppointmentStatusMgr.DESCRIPTION_MAX_LENGTH);
+                assertThat(status.getColor()).matches("#[0-9a-fA-F]{6}");
+            });
+        }
+
+        @Test
+        @DisplayName("should match statuses by code on the older 13-row layout, where ids 11-13 are N, C and B")
+        void shouldMatchByCode_whenThirteenRowLayout() {
+            AppointmentStatus here = row(3, "H", 1);
+            AppointmentStatus custom5 = row(10, "e", 1);
+            AppointmentStatus noShow = row(11, "N", 1);
+            AppointmentStatus billed = row(13, "B", 1);
+
+            resetAndCaptureSaved(List.of(here, custom5, noShow, billed));
+
+            assertThat(here.getDescription()).isEqualTo("Here");
+            assertThat(here.getIcon()).isEqualTo("here.gif");
+            assertThat(custom5.getDescription()).isEqualTo("Customized 5");
+            assertThat(noShow.getDescription()).isEqualTo("No Show");
+            assertThat(noShow.getColor()).isEqualTo("#cccccc");
+            assertThat(noShow.getIcon()).isEqualTo("noshow.gif");
+            assertThat(billed.getDescription()).isEqualTo("Billed");
+        }
+
+        @Test
+        @DisplayName("should leave locked statuses and unknown codes alone")
+        void shouldSkipLockedAndUnknown_whenResetting() {
+            AppointmentStatus here = row(3, "H", 1);
+            AppointmentStatus todo = row(1, "t", 0);
+            AppointmentStatus clinicOwn = row(16, "z", 1);
+
+            List<AppointmentStatus> saved = resetAndCaptureSaved(List.of(here, todo, clinicOwn));
+
+            assertThat(saved).containsExactly(here);
+            assertThat(todo.getDescription()).isEqualTo("Custom t");
+            assertThat(todo.getIcon()).isEqualTo("16.gif");
+            assertThat(clinicOwn.getDescription()).isEqualTo("Custom z");
+        }
+
+        @Test
+        @DisplayName("should keep whether a status is active or editable")
+        void shouldKeepActiveAndEditable_whenResetting() {
+            AppointmentStatus custom3 = row(8, "c", 1);
+            custom3.setActive(0);
+
+            resetAndCaptureSaved(List.of(custom3));
+
+            assertThat(custom3.getDescription()).isEqualTo("Customized 3");
+            assertThat(custom3.getActive()).isZero();
+            assertThat(custom3.getEditable()).isEqualTo(1);
+        }
+
+        @Test
+        @DisplayName("should save all changes in one call and nothing one by one")
+        void shouldSaveTogether_whenResetting() {
+            resetAndCaptureSaved(List.of(row(3, "H", 1), row(4, "P", 1)));
+
+            verify(appointmentStatusDao, never()).merge(any());
+        }
+
+        @Test
+        @DisplayName("should save an empty batch when no status is editable")
+        void shouldSaveNothing_whenNoStatusEditable() {
+            assertThat(resetAndCaptureSaved(List.of(row(1, "t", 0)))).isEmpty();
         }
     }
 }

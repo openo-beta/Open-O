@@ -22,8 +22,9 @@
 
     Lists every appointment status. An editable status gets pencil buttons that open the item
     style editor (js/appointment/itemStyleEditor.js) for its description, colour and icon, and an
-    Enable or Disable button. A locked status (editable=0) is read-only. Reset restores the seeded
-    descriptions and colours. Every change posts back to AppointmentStatus2Action.
+    Enable or Disable button. A locked status (editable=0) is read-only. Reset, after a confirm,
+    puts every editable status back to its seeded description, colour and icon. Every change posts
+    back to AppointmentStatus2Action.
 
     Request attributes, set by AppointmentStatus2Action (appointment/apptStatusSetting.do):
       allStatus             List<AppointmentStatus> every status
@@ -79,7 +80,8 @@
 
 <div class="d-flex align-items-center mb-3">
     <h1 class="h5 mb-0 me-auto"><fmt:message key="admin.appt.status.mgr.title"/></h1>
-    <form method="post" action="<c:url value='${statusAction}'/>">
+    <fmt:message key="admin.appt.status.mgr.msg.confirmReset" var="confirmReset"/>
+    <form method="post" action="<c:url value='${statusAction}'/>" data-confirm="${fn:escapeXml(confirmReset)}">
         <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>">
         <input type="hidden" name="dispatch" value="reset">
         <button type="submit" class="btn btn-sm btn-outline-secondary"><fmt:message key="global.reset"/></button>
@@ -175,6 +177,15 @@
             if (/^#[0-9a-fA-F]{6}$/.test(swatch.dataset.colour)) {
                 swatch.style.backgroundColor = swatch.dataset.colour;
             }
+        });
+
+        // Reset overwrites every editable status's description, colour and icon, with no undo.
+        document.querySelectorAll('form[data-confirm]').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!window.confirm(form.dataset.confirm)) {
+                    event.preventDefault();
+                }
+            });
         });
 
         ItemStyleEditor.init({
