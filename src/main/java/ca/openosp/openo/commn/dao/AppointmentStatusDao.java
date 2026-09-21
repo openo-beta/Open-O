@@ -15,7 +15,13 @@ public interface AppointmentStatusDao extends AbstractDao<AppointmentStatus> {
 
     public AppointmentStatus findByStatus(String status);
 
-    public void modifyStatus(int ID, String strDesc, String strColor);
+    /**
+     * Saves several statuses together, so either every change lands or none does.
+     *
+     * @param statuses List<AppointmentStatus> the changed statuses to merge
+     * @since 2026-09-21
+     */
+    public void mergeAll(List<AppointmentStatus> statuses);
 
     public void changeStatus(int ID, int iActive);
 

@@ -56,13 +56,13 @@ public class AppointmentStatusDaoImpl extends AbstractDaoImpl<AppointmentStatus>
         return null;
     }
 
+    /*
+     * One call is one transaction (AbstractDaoImpl is @Transactional), so the batch is all or nothing.
+     * Not batchPersist-style: those use their own EntityManager and commit every 25 rows.
+     */
     @Override
-    public void modifyStatus(int ID, String strDesc, String strColor) {
-        AppointmentStatus appts = find(ID);
-        if (appts != null) {
-            appts.setDescription(strDesc);
-            appts.setColor(strColor);
-        }
+    public void mergeAll(List<AppointmentStatus> statuses) {
+        statuses.forEach(this::merge);
     }
 
     public void changeStatus(int ID, int iActive) {

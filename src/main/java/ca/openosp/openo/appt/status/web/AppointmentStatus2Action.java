@@ -34,7 +34,7 @@ import ca.openosp.openo.managers.SecurityInfoManager;
  * change needs update on one of the Appointment Settings objects, the same ones read opens the page
  * with, and must be posted (see {@link AppointmentSettingsAction}):</p>
  * <ul>
- *   <li>{@code reset}: restores the seeded descriptions and colours</li>
+ *   <li>{@code reset}: puts every editable status back to its seeded description, colour and icon</li>
  *   <li>{@code changestatus}: enables or disables {@code statusID} ({@code iActive} 1 or 0)</li>
  *   <li>{@code updateDescription}, {@code updateColour}, {@code updateIcon}: sets status {@code ID}
  *       to {@code value}; posted by the item style editor on the list page</li>

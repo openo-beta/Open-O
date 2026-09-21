@@ -70,6 +70,8 @@
 <c:set var="itemStyleEditorDescriptionTitleKey" value="admin.appt.location.label.editName"/>
 <fmt:message key="admin.appt.location.label.editName" var="editNameLabel"/>
 <fmt:message key="admin.appt.location.msg.confirmLastDisable" var="confirmLastDisable"/>
+<%-- An unstyled location draws the default chip; its empty Colour and Icon cells say so on hover. --%>
+<fmt:message key="admin.appt.location.label.defaultStyle" var="defaultStyleLabel"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -139,16 +141,22 @@
                             </c:if>
                         </td>
                         <td class="text-nowrap">
-                            <c:out value="${item.colour}"/>
+                            <c:choose>
+                                <c:when test="${not empty item.colour}"><c:out value="${item.colour}"/></c:when>
+                                <c:otherwise><span class="text-muted" role="img" title="${fn:escapeXml(defaultStyleLabel)}" aria-label="${fn:escapeXml(defaultStyleLabel)}">&mdash;</span></c:otherwise>
+                            </c:choose>
                             <c:if test="${canChange}">
                                 <appt:itemStyleEditButton kind="colour" itemId="${item.id}" current="${item.colour}"/>
                             </c:if>
                         </td>
                         <td class="text-nowrap">
-                            <c:if test="${not empty item.icon}">
-                                <span class="glyphicon ${fn:escapeXml(item.icon)}" aria-hidden="true"></span>
-                                <span class="location-icon-name" data-icon="${fn:escapeXml(item.icon)}"></span>
-                            </c:if>
+                            <c:choose>
+                                <c:when test="${not empty item.icon}">
+                                    <span class="glyphicon ${fn:escapeXml(item.icon)} location-icon" role="img"
+                                          data-icon="${fn:escapeXml(item.icon)}"></span>
+                                </c:when>
+                                <c:otherwise><span class="text-muted" role="img" title="${fn:escapeXml(defaultStyleLabel)}" aria-label="${fn:escapeXml(defaultStyleLabel)}">&mdash;</span></c:otherwise>
+                            </c:choose>
                             <c:if test="${canChange}">
                                 <appt:itemStyleEditButton kind="icon" itemId="${item.id}" current="${item.icon}"/>
                             </c:if>
@@ -196,8 +204,11 @@
 <%@ include file="itemStyleEditorDialog.jspf" %>
 <script>
     (function () {
-        document.querySelectorAll('.location-icon-name').forEach(function (name) {
-            name.textContent = ItemStyleEditor.readableIconName(name.dataset.icon);
+        // The icon's readable name shows on hover and is read out, as the Status tab shows icons alone.
+        document.querySelectorAll('.location-icon').forEach(function (icon) {
+            const name = ItemStyleEditor.readableIconName(icon.dataset.icon);
+            icon.title = name;
+            icon.setAttribute('aria-label', name);
         });
 
         // Disabling the last active location sends every booking screen back to a typed box.
