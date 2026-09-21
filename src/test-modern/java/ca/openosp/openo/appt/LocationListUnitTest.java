@@ -137,6 +137,50 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
     }
 
     @Nested
+    @DisplayName("names")
+    class Names {
+
+        @Test
+        @DisplayName("should list the active locations in order, then the inactive ones by name")
+        void shouldListActiveFirstThenInactiveByName() {
+            LookupListItem annexB = item(14, "annex B", false);
+            LookupListItem clinicA = item(15, "Clinic A", false);
+            locationList.setItems(List.of(room1, clinicA, retired, annexB, room2));
+
+            assertThat(LocationList.of(locationList).getItemsActiveFirst())
+                    .containsExactly(room1, room2, annexB, clinicA, retired);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"Room 2", "room 2", "  ROOM 2  "})
+        @DisplayName("should call a name taken when another location in use has it, ignoring case and spaces")
+        void shouldBeTaken_whenAnotherActiveHasIt(String name) {
+            assertThat(LocationList.of(locationList).isNameTaken(name, room1)).isTrue();
+        }
+
+        @Test
+        @DisplayName("should let a location keep its own name, in any case")
+        void shouldBeFree_whenOnlyItsOwn() {
+            assertThat(LocationList.of(locationList).isNameTaken("ROOM 1", room1)).isFalse();
+        }
+
+        @Test
+        @DisplayName("should not count an inactive location, which no new booking offers")
+        void shouldBeFree_whenOnlyInactiveHasIt() {
+            assertThat(LocationList.of(locationList).isNameTaken("Old Annex", room1)).isFalse();
+        }
+
+        @Test
+        @DisplayName("should catch the clash when an inactive location would be enabled under an active name")
+        void shouldBeTaken_whenRestoringOntoActiveName() {
+            LookupListItem oldRoom2 = item(16, "room 2", false);
+            locationList.setItems(List.of(room1, room2, oldRoom2));
+
+            assertThat(LocationList.of(locationList).isNameTaken(oldRoom2.getLabel(), oldRoom2)).isTrue();
+        }
+    }
+
+    @Nested
     @DisplayName("parseCode")
     class ParseCode {
 

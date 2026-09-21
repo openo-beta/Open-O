@@ -108,6 +108,18 @@
     let editing = null;
 
     /**
+     * Turns an icon value into words, for the choice's tooltip and for screen readers:
+     * glyphicon-map-marker becomes "Map marker", empty.gif becomes "Empty".
+     *
+     * @param {string} name the icon value
+     * @returns {string} the icon's name in words
+     */
+    function readableIconName(name) {
+        const words = name.replace(/^glyphicon-/, '').replace(/\.[a-z]+$/, '').replace(/-/g, ' ').trim();
+        return words.charAt(0).toUpperCase() + words.slice(1);
+    }
+
+    /**
      * Builds one icon choice button.
      *
      * @param {Object} iconSet the icon set descriptor the choice belongs to
@@ -120,8 +132,8 @@
         button.type = 'button';
         button.className = 'btn btn-light item-style-editor-choice';
         button.dataset.icon = name;
-        button.title = name;
-        button.setAttribute('aria-label', name);
+        button.title = readableIconName(name);
+        button.setAttribute('aria-label', button.title);
         button.setAttribute('aria-pressed', 'false');
 
         if (iconSet.kind === 'image') {
@@ -327,6 +339,7 @@
 
     window.ItemStyleEditor = Object.freeze({
         init: init,
+        readableIconName: readableIconName,
         GLYPHICONS: GLYPHICONS
     });
 })(window, document);
