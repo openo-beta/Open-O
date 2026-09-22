@@ -30,6 +30,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import ca.openosp.openo.appt.LocationList;
 import ca.openosp.openo.commn.model.Appointment;
 import ca.openosp.openo.commn.model.Appointment.BookingSource;
 import org.springframework.beans.BeanUtils;
@@ -152,7 +153,8 @@ public final class AppointmentTransfer {
 
     /**
      * Gets the Location List item chosen for the appointment. Read-only over SOAP: {@link #copyTo}
-     * ignores it, because the location text must stay a snapshot of the chosen item's label.
+     * ignores it, because the location text must stay a snapshot of the chosen item's label, and
+     * clears it when the location text changes.
      *
      * @return Integer the LookupListItem id, or null when no item was chosen
      * @since 2026-09-15
@@ -269,8 +271,9 @@ public final class AppointmentTransfer {
 
     public Appointment copyTo(Appointment appointment) {
 
-        String[] ignored = {"id", "appointmentDate", "startTime", "endTime", "createDateTime", "updateDateTime", "creator", "lastUpdateUser", "creatorSecurityId", "locationCode"};
+        String[] ignored = {"id", "appointmentDate", "startTime", "endTime", "createDateTime", "updateDateTime", "creator", "lastUpdateUser", "creatorSecurityId", "location", "locationCode"};
         BeanUtils.copyProperties(this, appointment, ignored);
+        LocationList.setLocationText(appointment, location);
 
         if (appointmentStartDateTime != null) {
             appointment.setAppointmentDate(appointmentStartDateTime.getTime());

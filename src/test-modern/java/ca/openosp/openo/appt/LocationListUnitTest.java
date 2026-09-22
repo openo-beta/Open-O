@@ -442,6 +442,49 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
     }
 
     @Nested
+    @DisplayName("setLocationText")
+    class SetLocationText {
+
+        private final Appointment appointment = new Appointment();
+
+        @BeforeEach
+        void codedAppointment() {
+            appointment.setLocation("Room 1");
+            appointment.setLocationCode(11);
+        }
+
+        @Test
+        @DisplayName("should keep the code when the text is unchanged")
+        void shouldKeepCode_whenTextUnchanged() {
+            LocationList.setLocationText(appointment, "Room 1");
+
+            assertThat(appointment.getLocation()).isEqualTo("Room 1");
+            assertThat(appointment.getLocationCode()).isEqualTo(11);
+        }
+
+        @ParameterizedTest
+        @NullAndEmptySource
+        @ValueSource(strings = {"Room 12", "room 1", "Room 1 "})
+        @DisplayName("should save the text and clear the code when the text changed")
+        void shouldClearCode_whenTextChanged(String text) {
+            LocationList.setLocationText(appointment, text);
+
+            assertThat(appointment.getLocation()).isEqualTo(text);
+            assertThat(appointment.getLocationCode()).isNull();
+        }
+
+        @Test
+        @DisplayName("should treat no saved text and blank text as the same text")
+        void shouldKeepCode_whenNullBecomesBlank() {
+            appointment.setLocation(null);
+
+            LocationList.setLocationText(appointment, "");
+
+            assertThat(appointment.getLocationCode()).isEqualTo(11);
+        }
+    }
+
+    @Nested
     @DisplayName("applyPostedLocation")
     class ApplyPostedLocation {
 

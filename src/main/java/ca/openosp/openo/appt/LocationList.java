@@ -78,9 +78,8 @@ public final class LocationList {
      *
      * <ul>
      *   <li>No {@code locationCode} field: the form offered sites, programs or free text, so the
-     *       posted {@code location} text is saved. The location code is kept while the text is
-     *       unchanged, as when the list has been switched off since booking, and cleared once the
-     *       text changes: the new text is no longer that item's name.</li>
+     *       posted {@code location} text is saved through {@link #setLocationText}, which keeps the
+     *       code only while the text is unchanged (as when the list was switched off since booking).</li>
      *   <li>An item of the list, active or not: its id becomes the location code and its label,
      *       cut to the column width, the location text.</li>
      *   <li>Blank, or anything else: the location code is cleared and the posted {@code location}
@@ -91,21 +90,34 @@ public final class LocationList {
      * @param request HttpServletRequest the booking form's request
      */
     public static void applyPostedLocation(Appointment appointment, HttpServletRequest request) {
-        String previous = appointment.getLocation();
-        appointment.setLocation(request.getParameter("location"));
         String posted = request.getParameter("locationCode");
         if (posted == null) {
-            if (!StringUtils.defaultString(previous).equals(StringUtils.defaultString(appointment.getLocation()))) {
-                appointment.setLocationCode(null);
-            }
+            setLocationText(appointment, request.getParameter("location"));
             return;
         }
 
         LookupListItem item = load(LoggedInInfo.getLoggedInInfoFromSession(request)).find(parseCode(posted));
         appointment.setLocationCode(item == null ? null : item.getId());
-        if (item != null) {
-            appointment.setLocation(StringUtils.left(item.getLabel(), LABEL_MAX_LENGTH));
+        appointment.setLocation(item == null ? request.getParameter("location")
+                : StringUtils.left(item.getLabel(), LABEL_MAX_LENGTH));
+    }
+
+    /**
+     * Saves a location text that wasn't chosen from the Location List: typed on a booking form, or
+     * sent by an integration. The location code is kept while the text is unchanged (null and blank
+     * count as the same) and cleared once it changes, because the new text is no longer that item's
+     * name. Use it wherever a saved appointment's location text changes outside the Location List,
+     * booking forms and integrations alike, so a code never outlives its label.
+     *
+     * @param appointment Appointment the appointment about to be saved
+     * @param text String the new location text, or null
+     * @since 2026-09-22
+     */
+    public static void setLocationText(Appointment appointment, String text) {
+        if (!StringUtils.defaultString(appointment.getLocation()).equals(StringUtils.defaultString(text))) {
+            appointment.setLocationCode(null);
         }
+        appointment.setLocation(text);
     }
 
     /**
