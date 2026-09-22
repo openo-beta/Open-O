@@ -1868,7 +1868,7 @@
                                                         <span title="<%= sitename %>"
                                                               style="background-color:<%=siteBgColor.get(sitename)%>;">&nbsp;</span>|
                                                         <%} else {%>
-                                                        <appt:locationChip item="<%=locations.find(appointment.getLocationCode())%>"/>
+                                                        <appt:locationChip item="<%=locations.getChipItem(appointment)%>"/>
                                                         <%} %>
 
                                                         <%

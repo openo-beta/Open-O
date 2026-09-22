@@ -1,8 +1,11 @@
 package ca.openosp.openo.appt;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import ca.openosp.OscarProperties;
+import ca.openosp.openo.PMmodule.model.Program;
+import ca.openosp.openo.PMmodule.service.ProgramManager;
 import ca.openosp.openo.commn.IsPropertiesOn;
 import ca.openosp.openo.commn.model.Appointment;
 import ca.openosp.openo.commn.model.LookupList;
@@ -27,6 +32,9 @@ import ca.openosp.openo.utility.SpringUtils;
  * as the appointment's location code and a snapshot of its label as the location text, so screens
  * that only read the text keep working and a renamed item doesn't rewrite past appointments.</p>
  *
+ * <p>It also decides how the schedule marks and names an appointment's location, which depends on
+ * whether the clinic books by a site setup (sites, schedule sites or CAISI programs) instead.</p>
+ *
  * @since 2026-09-15
  */
 public final class LocationList {
@@ -35,6 +43,9 @@ public final class LocationList {
     public static final int LABEL_MAX_LENGTH = 80;
 
     private final List<LookupListItem> items;
+
+    /** Program names already looked up, by program id; a day view names the same few programs many times. */
+    private final Map<Integer, Optional<String>> programNames = new HashMap<>();
 
     private LocationList(List<LookupListItem> items) {
         this.items = items;
@@ -110,18 +121,50 @@ public final class LocationList {
     }
 
     /**
-     * Names an appointment's location as the schedule shows it. Without multisite sites, a location
-     * code that is an item of this list shows the item's current name, as its chip does; otherwise
-     * the saved location text, which with sites is the site's name.
+     * Names an appointment's location as the schedule shows it: what the booking screen offered.
+     * Outside site setups, a location code that is an item of this list shows the item's current
+     * name, as its chip does. In a site setup, the saved location text: the site's name, or with
+     * CAISI program locations the program's location, or its name when it has none, since a
+     * booking saves the program's id.
      *
      * @param appointment Appointment the appointment shown
      * @return String the location's name, or blank when the appointment has none
      * @since 2026-09-21
      */
     public String getDisplayName(Appointment appointment) {
-        LookupListItem item = IsPropertiesOn.isMultisitesEnable() ? null : find(appointment.getLocationCode());
-        String name = item == null ? appointment.getLocation() : item.getLabel();
+        LookupListItem item = getChipItem(appointment);
+        String name = item != null ? item.getLabel()
+                : isProgramSetup() ? programName(appointment.getLocation()) : appointment.getLocation();
         return name == null || "null".equals(name) ? "" : name.trim();
+    }
+
+    /**
+     * Finds the item whose chip marks an appointment on the schedule. Site setups show their own
+     * location, so a code saved before the clinic switched to one draws no chip.
+     *
+     * @param appointment Appointment the appointment shown
+     * @return LookupListItem the appointment's item, active or not, or null for no chip
+     * @since 2026-09-22
+     */
+    public LookupListItem getChipItem(Appointment appointment) {
+        return isSiteSetup() ? null : find(appointment.getLocationCode());
+    }
+
+    /**
+     * Names the program a program-location booking saved by id, as the booking dropdown names it.
+     * Any program the id matches is named, active or not; other text is returned as it is.
+     */
+    private String programName(String location) {
+        Integer id = parseCode(StringUtils.trim(location));
+        if (id == null) {
+            return location;
+        }
+        return programNames.computeIfAbsent(id, key -> {
+            ProgramManager programManager = SpringUtils.getBean(ProgramManager.class);
+            Program program = programManager.getProgram(key);
+            return Optional.ofNullable(program)
+                    .map(p -> StringUtils.isBlank(p.getLocation()) ? p.getName() : p.getLocation());
+        }).orElse(location);
     }
 
     /**
@@ -144,13 +187,22 @@ public final class LocationList {
      * @return boolean true if the booking screens offer the list's active items
      */
     public boolean isLocationMode() {
+        return !isSiteSetup() && items.stream().anyMatch(LookupListItem::isActive);
+    }
+
+    /** Whether the booking screens offer a site setup: multisite sites, schedule sites or CAISI programs. */
+    private static boolean isSiteSetup() {
+        return IsPropertiesOn.isMultisitesEnable()
+                || !OscarProperties.getInstance().getProperty("scheduleSiteID", "").isEmpty()
+                || isProgramSetup();
+    }
+
+    /** Whether the booking screens offer CAISI programs; sites come first when both are on. */
+    private static boolean isProgramSetup() {
         OscarProperties properties = OscarProperties.getInstance();
-        boolean programLocations = StringUtils.containsIgnoreCase(properties.getProperty("ModuleNames"), "Caisi")
-                && "true".equals(properties.getProperty("useProgramLocation"));
         return !IsPropertiesOn.isMultisitesEnable()
-                && properties.getProperty("scheduleSiteID", "").isEmpty()
-                && !programLocations
-                && items.stream().anyMatch(LookupListItem::isActive);
+                && StringUtils.containsIgnoreCase(properties.getProperty("ModuleNames"), "Caisi")
+                && "true".equals(properties.getProperty("useProgramLocation"));
     }
 
     /**
