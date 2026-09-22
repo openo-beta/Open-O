@@ -1847,7 +1847,7 @@
                                                         <span title="<%=Encode.forHtmlAttribute(String.valueOf(sitename))%>"
                                                               style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(siteBgColor.get(sitename)))%>;">&nbsp;</span>|
                                                         <%} else {%>
-                                                        <appt:locationChip item="<%=locations.find(appointment.getLocationCode())%>"/>
+                                                        <appt:locationChip item="<%=locations.getChipItem(appointment)%>"/>
                                                         <%} %>
 
                                                         <%

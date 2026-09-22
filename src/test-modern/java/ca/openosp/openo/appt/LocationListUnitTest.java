@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import ca.openosp.OscarProperties;
+import ca.openosp.openo.PMmodule.model.Program;
+import ca.openosp.openo.PMmodule.service.ProgramManager;
 import ca.openosp.openo.commn.model.Appointment;
 import ca.openosp.openo.commn.model.LookupList;
 import ca.openosp.openo.commn.model.LookupListItem;
@@ -28,6 +30,9 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verifyNoInteractions;
 
 /**
@@ -46,6 +51,9 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
 
     @Mock
     private LookupListManager lookupListManager;
+
+    @Mock
+    private ProgramManager programManager;
 
     private final LookupListItem room1 = item(11, "Room 1", true);
     private final LookupListItem retired = item(12, "Old Annex", false);
@@ -77,11 +85,24 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
     @BeforeEach
     void setUp() {
         registerMock(LookupListManager.class, lookupListManager);
+        registerMock(ProgramManager.class, programManager);
         locationList = new LookupList();
         locationList.setId(LOCATION_LIST_ID);
         locationList.setName("appointmentLocationCode");
         locationList.setItems(List.of(room1, retired, room2));
         lenient().when(lookupListManager.findAppointmentLocationList(any())).thenReturn(locationList);
+    }
+
+    private void programLocations() {
+        properties.setProperty("ModuleNames", "HRM,Caisi");
+        properties.setProperty("useProgramLocation", "true");
+    }
+
+    private static Program program(String name, String location) {
+        Program program = new Program();
+        program.setName(name);
+        program.setLocation(location);
+        return program;
     }
 
     private static LookupListItem item(int id, String label, boolean active) {
@@ -314,6 +335,72 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
             assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("Downtown");
         }
 
+        @Test
+        @DisplayName("should use the saved text, the site, when the schedule shows schedule sites")
+        void shouldUseText_whenScheduleSites() {
+            appointment.setLocationCode(13);
+            appointment.setLocation("site1");
+            properties.setProperty("scheduleSiteID", "site1|site2");
+
+            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("site1");
+        }
+
+        @Test
+        @DisplayName("should name the program's location when a program-location booking saved its id")
+        void shouldUseProgramLocation_whenProgramSetup() {
+            programLocations();
+            appointment.setLocationCode(13);
+            appointment.setLocation("10034");
+            when(programManager.getProgram(10034)).thenReturn(program("Shelter", "East Wing"));
+
+            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("East Wing");
+        }
+
+        @Test
+        @DisplayName("should name the program when it has no location, as the booking dropdown does")
+        void shouldUseProgramName_whenProgramHasNoLocation() {
+            programLocations();
+            appointment.setLocation("10034");
+            when(programManager.getProgram(10034)).thenReturn(program("Shelter", " "));
+
+            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("Shelter");
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"10099", "Front desk"})
+        @DisplayName("should use the saved text when it names no program")
+        void shouldUseText_whenNoProgramMatches(String text) {
+            programLocations();
+            appointment.setLocation(text);
+
+            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo(text);
+        }
+
+        @Test
+        @DisplayName("should look each program up once per list")
+        void shouldLookUpProgramOnce_whenNamedTwice() {
+            programLocations();
+            appointment.setLocation("10034");
+            when(programManager.getProgram(10034)).thenReturn(program("Shelter", "East Wing"));
+            LocationList locations = LocationList.of(locationList);
+
+            locations.getDisplayName(appointment);
+            locations.getDisplayName(appointment);
+
+            verify(programManager, times(1)).getProgram(10034);
+        }
+
+        @Test
+        @DisplayName("should use the saved text, not a program, when sites and programs are both on")
+        void shouldUseText_whenMultisitesAndProgramLocations() {
+            programLocations();
+            properties.setProperty("multisites", "on");
+            appointment.setLocation("10034");
+
+            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("10034");
+            verifyNoInteractions(programManager);
+        }
+
         @ParameterizedTest
         @NullAndEmptySource
         @ValueSource(strings = {"null", "  "})
@@ -322,6 +409,35 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
             appointment.setLocation(text);
 
             assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEmpty();
+        }
+    }
+
+    @Nested
+    @DisplayName("getChipItem")
+    class ChipItem {
+
+        private final Appointment appointment = new Appointment();
+
+        @Test
+        @DisplayName("should give the appointment's item, active or not, when no site setup applies")
+        void shouldGiveItem_whenNoSiteSetup() {
+            appointment.setLocationCode(12);
+
+            assertThat(LocationList.of(locationList).getChipItem(appointment)).isSameAs(retired);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"multisites", "scheduleSiteID", "programs"})
+        @DisplayName("should give no chip in a site setup, for a code saved before the switch")
+        void shouldGiveNoChip_whenSiteSetup(String setup) {
+            switch (setup) {
+                case "multisites" -> properties.setProperty("multisites", "on");
+                case "scheduleSiteID" -> properties.setProperty("scheduleSiteID", "site1|site2");
+                default -> programLocations();
+            }
+            appointment.setLocationCode(13);
+
+            assertThat(LocationList.of(locationList).getChipItem(appointment)).isNull();
         }
     }
 
