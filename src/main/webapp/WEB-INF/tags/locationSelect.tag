@@ -21,7 +21,7 @@
 <%@ tag import="ca.openosp.openo.appt.LocationList" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <fmt:setBundle basename="oscarResources"/>
 <select name="locationCode" class="form-control" tabindex="4">
     <option value=""><fmt:message key="appointment.location.notSpecified"/></option>
@@ -43,7 +43,7 @@
         </c:choose>
         <%-- A body-set var is a String, so the comparison is text, like the posted value. --%>
         <c:set var="optionValue">${item.id}</c:set>
-        <option value="${fn:escapeXml(optionValue)}" ${optionValue eq selected ? 'selected' : ''} ${item.active ? '' : 'data-inactive'}><c:out value="${optionLabel}"/></option>
+        <option value="${e:forHtmlAttribute(optionValue)}" ${optionValue eq selected ? 'selected' : ''} ${item.active ? '' : 'data-inactive'}><c:out value="${optionLabel}"/></option>
     </c:forEach>
 </select>
-<input type="hidden" name="location" value="${fn:escapeXml(legacy)}">
+<input type="hidden" name="location" value="${e:forHtmlAttribute(legacy)}">
