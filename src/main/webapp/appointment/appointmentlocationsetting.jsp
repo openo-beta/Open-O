@@ -40,6 +40,7 @@
       locationListName       String the Location List's name, for the Look-Up List Manager link
       canChange              Boolean whether the user may change locations
       canDeactivate          Boolean whether the user may disable one
+      canAdd                 Boolean whether the user may add one in the Look-Up List Manager
       saveFailed             Boolean true when the last change was rejected
       saveFailedKey          String the message for a change refused with a reason, if any
       saveFailedParam        String that message's parameter, if it takes one
@@ -51,6 +52,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="appt" %>
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
@@ -87,7 +89,7 @@
 
 <div class="d-flex align-items-center mb-3">
     <h1 class="h5 mb-0 me-auto"><fmt:message key="admin.appt.location.title"/></h1>
-    <c:if test="${canChange and not empty locationListName}">
+    <c:if test="${canAdd and not empty locationListName}">
         <c:url var="manageItemsUrl" value="/lookupListManagerAction.do">
             <c:param name="method" value="manageSingle"/>
             <c:param name="listName" value="${locationListName}"/>
@@ -101,7 +103,7 @@
 <c:if test="${saveFailed}">
     <div class="alert alert-danger" role="alert">
         <fmt:message key="${empty saveFailedKey ? 'admin.appt.settings.msg.saveFailed' : saveFailedKey}">
-            <c:if test="${not empty saveFailedParam}"><fmt:param value="${saveFailedParam}"/></c:if>
+            <c:if test="${not empty saveFailedParam}"><fmt:param value="${e:forHtml(saveFailedParam)}"/></c:if>
         </fmt:message>
     </div>
 </c:if>

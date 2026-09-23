@@ -196,6 +196,54 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
     }
 
     @Nested
+    @DisplayName("enable and disable")
+    class Active {
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1})
+        @DisplayName("should save the active flag when the status is editable")
+        void shouldSaveActive_whenStatusEditable(int active) {
+            status.setActive(1 - active);
+
+            assertThat(manager.changeStatus(STATUS_ID, active)).isTrue();
+
+            assertThat(status.getActive()).isEqualTo(active);
+            verify(appointmentStatusDao).merge(status);
+        }
+
+        @Test
+        @DisplayName("should leave a locked status as it is")
+        void shouldReturnFalse_whenStatusLocked() {
+            status.setEditable(0);
+            status.setActive(1);
+
+            assertThat(manager.changeStatus(STATUS_ID, 0)).isFalse();
+
+            assertThat(status.getActive()).isEqualTo(1);
+            verify(appointmentStatusDao, never()).merge(any());
+        }
+
+        @Test
+        @DisplayName("should return false when the status does not exist")
+        void shouldReturnFalse_whenStatusMissing() {
+            when(appointmentStatusDao.find(99)).thenReturn(null);
+
+            assertThat(manager.changeStatus(99, 0)).isFalse();
+
+            verify(appointmentStatusDao, never()).merge(any());
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {-1, 2})
+        @DisplayName("should reject an active flag other than 0 or 1")
+        void shouldReject_whenActiveNotZeroOrOne(int active) {
+            assertThatThrownBy(() -> manager.changeStatus(STATUS_ID, active)).isInstanceOf(IllegalArgumentException.class);
+
+            verify(appointmentStatusDao, never()).merge(any());
+        }
+    }
+
+    @Nested
     @DisplayName("shared rules")
     class SharedRules {
 

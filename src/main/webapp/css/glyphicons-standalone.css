@@ -2,13 +2,14 @@
  * Glyphicons Halflings without the rest of Bootstrap 3.
  *
  * Lets Bootstrap 5 pages show the glyphicon Item Style icons that the schedule day view
- * renders with its full Bootstrap 3.0.0 stylesheet. Rules are copied unchanged from
- * library/bootstrap/3.0.0/css/bootstrap.css; keep the two in step.
+ * renders with its full Bootstrap 3.0.0 stylesheet. Rules are copied from
+ * library/bootstrap/3.0.0/css/bootstrap.css, unchanged except that the font URLs point at that
+ * library's fonts folder; keep the two in step.
  */
 @font-face {
     font-family: 'Glyphicons Halflings';
     src: url('../library/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.eot');
-    src: url('../library/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../library/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../library/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.woff') format('woff'), url('../library/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../library/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+    src: url('../library/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../library/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.woff') format('woff'), url('../library/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../library/bootstrap/3.0.0/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
 }
 
 .glyphicon {

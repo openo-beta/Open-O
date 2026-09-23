@@ -3,33 +3,32 @@
     ca.openosp.openo.appt.LocationList#isLocationMode() is true. It posts locationCode, and a
     hidden location holding the Legacy Location, if any; LocationList.applyPostedLocation saves them.
 
-    The first choice is "Not specified", or the Legacy Location when the appointment has one: its
-    location text with no item, which saving unchanged keeps.
+    The first choice is "Not specified", which saves no location. An appointment with a Legacy
+    Location (location text with no item) also gets that text as a choice, posted as
+    LocationList.LEGACY_VALUE and marked data-legacy, so saving it unchanged keeps the text.
 
     Attributes:
       choices   List<LookupListItem> the items to offer, in display order
-      selected  Integer the chosen item's id, or null
+      selected  String the chosen option's value (see LocationList.Choice), or blank for "Not specified"
       legacy    String the Legacy Location to offer, or blank
 
     @since 2026-09-15
 --%>
 <%@ tag body-content="empty" pageEncoding="UTF-8" %>
 <%@ attribute name="choices" required="true" type="java.util.List" %>
-<%@ attribute name="selected" required="false" type="java.lang.Integer" %>
+<%@ attribute name="selected" required="false" %>
 <%@ attribute name="legacy" required="false" %>
+<%@ tag import="ca.openosp.openo.appt.LocationList" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <fmt:setBundle basename="oscarResources"/>
 <select name="locationCode" class="form-control" tabindex="4">
-    <c:choose>
-        <c:when test="${not empty legacy}">
-            <option value="" selected><c:out value="${legacy}"/></option>
-        </c:when>
-        <c:otherwise>
-            <option value=""><fmt:message key="appointment.location.notSpecified"/></option>
-        </c:otherwise>
-    </c:choose>
+    <option value=""><fmt:message key="appointment.location.notSpecified"/></option>
+    <c:if test="${not empty legacy}">
+        <c:set var="legacyValue"><%= LocationList.LEGACY_VALUE %></c:set>
+        <option value="${legacyValue}" data-legacy ${legacyValue eq selected ? 'selected' : ''}><c:out value="${legacy}"/></option>
+    </c:if>
     <%-- A saved location that is no longer offered stays on the list, marked, so saving keeps it.
          The option's text is kept free of stray whitespace, and an inactive one is marked, because
          js/appointment/locationSelect.js matches a location by name. --%>
@@ -42,7 +41,9 @@
                 </fmt:message>
             </c:otherwise>
         </c:choose>
-        <option value="${fn:escapeXml(item.id)}" ${item.id == selected ? 'selected' : ''} ${item.active ? '' : 'data-inactive'}><c:out value="${optionLabel}"/></option>
+        <%-- A body-set var is a String, so the comparison is text, like the posted value. --%>
+        <c:set var="optionValue">${item.id}</c:set>
+        <option value="${fn:escapeXml(optionValue)}" ${optionValue eq selected ? 'selected' : ''} ${item.active ? '' : 'data-inactive'}><c:out value="${optionLabel}"/></option>
     </c:forEach>
 </select>
 <input type="hidden" name="location" value="${fn:escapeXml(legacy)}">

@@ -18,7 +18,7 @@ function selectLocationByName(select, name) {
         return;
     }
     const match = Array.from(select.options).find(function (option) {
-        return option.value && !option.hasAttribute('data-inactive')
+        return option.value && !option.hasAttribute('data-inactive') && !option.hasAttribute('data-legacy')
             && option.text.trim().toLowerCase() === wanted;
     });
     if (match) {
@@ -28,15 +28,15 @@ function selectLocationByName(select, name) {
 
 /**
  * Chooses a location by its code, as pasting a copied appointment does. A code the dropdown doesn't
- * offer, such as a location disabled since the copy, falls back to the first choice ("Not specified",
- * or the booking's Legacy Location), so a paste never leaves the dropdown blank.
+ * offer, such as a location disabled since the copy, or a copied Legacy Location, falls back to
+ * "Not specified", so a paste never leaves the dropdown blank or keeps the target's own Legacy Location.
  *
  * @param {HTMLSelectElement} select the locationCode dropdown
  * @param {string} code the location code, or blank
  */
 function selectLocationCode(select, code) {
     const offered = Array.from(select.options).some(function (option) {
-        return option.value === code;
+        return option.value === code && !option.hasAttribute('data-legacy');
     });
     select.value = offered ? code : '';
 }

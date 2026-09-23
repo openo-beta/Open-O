@@ -27,7 +27,8 @@ import ca.openosp.openo.utility.SpringUtils;
  * </ul>
  *
  * <p>Changes need update on {@code _admin}, which {@link LookupListManager} requires, except
- * disabling, which needs delete because it is the manager's remove. All must be posted (see
+ * disabling, which needs delete because it is the manager's remove. The link to add locations
+ * needs write, because the manager's Add does. All changes must be posted (see
  * {@link AppointmentSettingsAction}). A location's name must be at most
  * {@link LocationList#LABEL_MAX_LENGTH} characters, because a booking saves a copy of it, and may
  * not be one another active location already has.</p>
@@ -35,6 +36,9 @@ import ca.openosp.openo.utility.SpringUtils;
  * @since 2026-09-15
  */
 public class AppointmentLocation2Action extends AppointmentSettingsAction {
+
+    /** Location changes are Look-Up List edits, which LookupListManager checks against _admin. */
+    private static final List<String> ADMIN = List.of("_admin");
 
     private LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
 
@@ -66,7 +70,7 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
 
     @Override
     protected boolean canChange() {
-        return hasAnyPrivilege(List.of("_admin"), SecurityInfoManager.UPDATE);
+        return hasAnyPrivilege(ADMIN, SecurityInfoManager.UPDATE);
     }
 
     /**
@@ -76,7 +80,7 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
      * @return boolean true if the user holds delete on _admin
      */
     public boolean isCanDeactivate() {
-        return hasAnyPrivilege(List.of("_admin"), SecurityInfoManager.DELETE);
+        return hasAnyPrivilege(ADMIN, SecurityInfoManager.DELETE);
     }
 
     /**
@@ -96,8 +100,9 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
         request.setAttribute("locationListName", list == null ? null : list.getName());
         request.setAttribute("locations", locations.getItemsActiveFirst());
         request.setAttribute("activeLocationCount", locations.getActiveItems().size());
-        request.setAttribute("canChange", canChange());
         request.setAttribute("canDeactivate", isCanDeactivate());
+        // The Add link opens the Look-Up List Manager, whose Add needs write, not update.
+        request.setAttribute("canAdd", hasAnyPrivilege(ADMIN, SecurityInfoManager.WRITE));
         return SUCCESS;
     }
 

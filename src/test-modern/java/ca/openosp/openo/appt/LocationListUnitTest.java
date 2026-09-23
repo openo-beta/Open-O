@@ -158,16 +158,6 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should offer a booking's text as its Legacy Location only when its code is not an item")
-        void shouldOfferLegacyLocation_whenCodeNotAnItem() {
-            LocationList locations = LocationList.of(locationList);
-
-            assertThat(locations.getLegacyLocation(null, "Room 5 (old)")).isEqualTo("Room 5 (old)");
-            assertThat(locations.getLegacyLocation(99, "Room 5 (old)")).isEqualTo("Room 5 (old)");
-            assertThat(locations.getLegacyLocation(13, "Room 2")).isNull();
-        }
-
-        @Test
         @DisplayName("should be empty when the list is missing")
         void shouldBeEmpty_whenListMissing() {
             LocationList locations = LocationList.of(null);
@@ -485,6 +475,62 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
     }
 
     @Nested
+    @DisplayName("dropdown choice")
+    class Choices {
+
+        private LocationList locations;
+
+        @BeforeEach
+        void wrapList() {
+            locations = LocationList.of(locationList);
+        }
+
+        @Test
+        @DisplayName("should choose a saved booking's item, active or not")
+        void shouldChooseItem_whenCodeIsItem() {
+            assertThat(locations.choiceFor(13, "Room 2")).isEqualTo(new LocationList.Choice("13", null));
+            assertThat(locations.choiceFor(12, "Old Annex")).isEqualTo(new LocationList.Choice("12", null));
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"Room 2", " room 2 ", "ROOM 2"})
+        @DisplayName("should choose the active item a typed location names, ignoring case and surrounding spaces")
+        void shouldChooseNamedItem_whenTypedTextNamesActiveItem(String typed) {
+            assertThat(locations.choiceFor(null, typed)).isEqualTo(new LocationList.Choice("13", null));
+        }
+
+        @Test
+        @DisplayName("should keep typed text as the Legacy Location when it names only an inactive item")
+        void shouldChooseLegacy_whenTypedTextNamesInactiveItem() {
+            assertThat(locations.choiceFor(null, "Old Annex")).isEqualTo(new LocationList.Choice(LocationList.LEGACY_VALUE, "Old Annex"));
+        }
+
+        @Test
+        @DisplayName("should offer and choose the Legacy Location when the code is not an item and the text names none")
+        void shouldChooseLegacy_whenTextNamesNoItem() {
+            assertThat(locations.choiceFor(null, "Room 5 (old)")).isEqualTo(new LocationList.Choice(LocationList.LEGACY_VALUE, "Room 5 (old)"));
+            assertThat(locations.choiceFor(99, "Room 5 (old)")).isEqualTo(new LocationList.Choice(LocationList.LEGACY_VALUE, "Room 5 (old)"));
+        }
+
+        @ParameterizedTest
+        @NullAndEmptySource
+        @ValueSource(strings = {"  "})
+        @DisplayName("should choose Not specified when the booking has no location")
+        void shouldChooseNotSpecified_whenNoLocation(String location) {
+            assertThat(locations.choiceFor(null, location)).isEqualTo(new LocationList.Choice("", null));
+        }
+
+        @Test
+        @DisplayName("should name an item's code only when an item is chosen")
+        void shouldGiveCode_whenItemChosen() {
+            assertThat(new LocationList.Choice("13", null).code()).isEqualTo(13);
+            assertThat(new LocationList.Choice(LocationList.LEGACY_VALUE, "Room 5 (old)").code()).isNull();
+            assertThat(new LocationList.Choice("", null).code()).isNull();
+            assertThat(new LocationList.Choice(null, null).code()).isNull();
+        }
+    }
+
+    @Nested
     @DisplayName("applyPostedLocation")
     class ApplyPostedLocation {
 
@@ -568,14 +614,27 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
 
         @Test
         @DisplayName("should clear the code and keep the Legacy Location when it stays chosen")
-        void shouldClearCodeKeepText_whenBlank() {
+        void shouldKeepLegacyText_whenLegacyChosen() {
+            request.setParameter("location", "Room 5 (old)");
+            request.setParameter("locationCode", LocationList.LEGACY_VALUE);
+
+            LocationList.applyPostedLocation(appointment, request);
+
+            assertThat(appointment.getLocationCode()).isNull();
+            assertThat(appointment.getLocation()).isEqualTo("Room 5 (old)");
+            verifyNoInteractions(lookupListManager);
+        }
+
+        @Test
+        @DisplayName("should clear the location when Not specified is chosen, even with a Legacy Location on offer")
+        void shouldClearLocation_whenNotSpecifiedChosen() {
             request.setParameter("location", "Room 5 (old)");
             request.setParameter("locationCode", "");
 
             LocationList.applyPostedLocation(appointment, request);
 
             assertThat(appointment.getLocationCode()).isNull();
-            assertThat(appointment.getLocation()).isEqualTo("Room 5 (old)");
+            assertThat(appointment.getLocation()).isEmpty();
         }
 
         @ParameterizedTest
