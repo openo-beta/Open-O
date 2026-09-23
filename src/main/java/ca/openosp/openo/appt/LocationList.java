@@ -69,8 +69,24 @@ public final class LocationList {
     /** Program names already looked up, by program id; a day view names the same few programs many times. */
     private final Map<Integer, Optional<String>> programNames = new HashMap<>();
 
+    /** Whether the booking screens offer CAISI programs; sites come first when both are on. */
+    private final boolean programSetup;
+
+    /**
+     * Whether the booking screens offer a site setup: multisite sites, schedule sites or CAISI
+     * programs. Read once per list, since a day view asks for every appointment and each missing
+     * property logs a warning.
+     */
+    private final boolean siteSetup;
+
     private LocationList(List<LookupListItem> items) {
         this.items = items;
+        OscarProperties properties = OscarProperties.getInstance();
+        boolean multisites = IsPropertiesOn.isMultisitesEnable();
+        this.programSetup = !multisites
+                && StringUtils.containsIgnoreCase(properties.getProperty("ModuleNames"), "Caisi")
+                && "true".equals(properties.getProperty("useProgramLocation"));
+        this.siteSetup = multisites || !properties.getProperty("scheduleSiteID", "").isEmpty() || programSetup;
     }
 
     /**
@@ -184,7 +200,7 @@ public final class LocationList {
     public String getDisplayName(Appointment appointment) {
         LookupListItem item = getChipItem(appointment);
         String name = item != null ? item.getLabel()
-                : isProgramSetup() ? programName(appointment.getLocation()) : appointment.getLocation();
+                : programSetup ? programName(appointment.getLocation()) : appointment.getLocation();
         return name == null || "null".equals(name) ? "" : name.trim();
     }
 
@@ -197,7 +213,7 @@ public final class LocationList {
      * @since 2026-09-22
      */
     public LookupListItem getChipItem(Appointment appointment) {
-        return isSiteSetup() ? null : find(appointment.getLocationCode());
+        return siteSetup ? null : find(appointment.getLocationCode());
     }
 
     /**
@@ -237,22 +253,7 @@ public final class LocationList {
      * @return boolean true if the booking screens offer the list's active items
      */
     public boolean isLocationMode() {
-        return !isSiteSetup() && items.stream().anyMatch(LookupListItem::isActive);
-    }
-
-    /** Whether the booking screens offer a site setup: multisite sites, schedule sites or CAISI programs. */
-    private static boolean isSiteSetup() {
-        return IsPropertiesOn.isMultisitesEnable()
-                || !OscarProperties.getInstance().getProperty("scheduleSiteID", "").isEmpty()
-                || isProgramSetup();
-    }
-
-    /** Whether the booking screens offer CAISI programs; sites come first when both are on. */
-    private static boolean isProgramSetup() {
-        OscarProperties properties = OscarProperties.getInstance();
-        return !IsPropertiesOn.isMultisitesEnable()
-                && StringUtils.containsIgnoreCase(properties.getProperty("ModuleNames"), "Caisi")
-                && "true".equals(properties.getProperty("useProgramLocation"));
+        return !siteSetup && items.stream().anyMatch(LookupListItem::isActive);
     }
 
     /**

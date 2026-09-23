@@ -1,8 +1,11 @@
 package ca.openosp.openo.appt.status.web;
 
+import java.util.List;
+
 import ca.openosp.openo.appt.status.service.AppointmentStatusMgr;
 import ca.openosp.openo.commn.dao.AppointmentStatusDao;
 import ca.openosp.openo.commn.dao.OscarLogDao;
+import ca.openosp.openo.commn.model.AppointmentStatus;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
@@ -292,6 +295,28 @@ public class AppointmentStatus2ActionUnitTest extends OpenOUnitTestBase {
             assertThat(response.getStatus()).isEqualTo(400);
             verify(appointmentStatusMgr, never()).updateColour(anyInt(), anyString());
         }
+    }
+
+    @Test
+    @DisplayName("should name the disabled status still in use by its place in the list, whatever the ids")
+    void shouldNameUsedStatus_whenIdsHaveGap() {
+        grant("_admin", SecurityInfoManager.READ);
+        request.setMethod("GET");
+        // No id 2, so the third status (the one in use) has id 4, not 3.
+        List<AppointmentStatus> statuses = List.of(status(1, "t"), status(3, "H"), status(4, "d"));
+        when(appointmentStatusMgr.getAllStatus()).thenReturn(statuses);
+        when(appointmentStatusMgr.checkStatusUsuage(statuses)).thenReturn(2);
+
+        action.execute();
+
+        assertThat(request.getAttribute("useStatus")).isEqualTo("d");
+    }
+
+    private static AppointmentStatus status(int id, String code) {
+        AppointmentStatus status = new AppointmentStatus();
+        status.setId(id);
+        status.setStatus(code);
+        return status;
     }
 
     @Test

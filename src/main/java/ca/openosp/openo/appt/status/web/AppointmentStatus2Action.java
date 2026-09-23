@@ -113,7 +113,7 @@ public class AppointmentStatus2Action extends AppointmentSettingsAction {
         request.setAttribute("descriptionMaxLength", AppointmentStatusMgr.DESCRIPTION_MAX_LENGTH);
         int iUseStatus = appointmentStatusMgr.checkStatusUsuage(allStatus);
         if (iUseStatus > 0) {
-            request.setAttribute("useStatus", appointmentStatusMgr.getStatus(iUseStatus + 1).getStatus());
+            request.setAttribute("useStatus", allStatus.get(iUseStatus).getStatus());
         }
         return SUCCESS;
     }
