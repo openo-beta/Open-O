@@ -51,7 +51,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="appt" %>
@@ -94,7 +93,7 @@
             <c:param name="method" value="manageSingle"/>
             <c:param name="listName" value="${locationListName}"/>
         </c:url>
-        <a class="btn btn-sm btn-outline-secondary" href="${fn:escapeXml(manageItemsUrl)}">
+        <a class="btn btn-sm btn-outline-secondary" href="${e:forHtmlAttribute(manageItemsUrl)}">
             <fmt:message key="admin.appt.location.btn.manageItems"/>
         </a>
     </c:if>
@@ -134,7 +133,7 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${locations}" var="item" varStatus="loop">
-                    <tr id="location-${fn:escapeXml(item.id)}" class="${item.active ? '' : 'text-muted'}">
+                    <tr id="location-${e:forHtmlAttribute(item.id)}" class="${item.active ? '' : 'text-muted'}">
                         <td>
                             <c:out value="${item.label}"/>
                             <c:if test="${canChange}">
@@ -145,7 +144,7 @@
                         <td class="text-nowrap">
                             <c:choose>
                                 <c:when test="${not empty item.colour}"><c:out value="${item.colour}"/></c:when>
-                                <c:otherwise><span class="text-muted" role="img" title="${fn:escapeXml(defaultStyleLabel)}" aria-label="${fn:escapeXml(defaultStyleLabel)}">&mdash;</span></c:otherwise>
+                                <c:otherwise><span class="text-muted" role="img" title="${e:forHtmlAttribute(defaultStyleLabel)}" aria-label="${e:forHtmlAttribute(defaultStyleLabel)}">&mdash;</span></c:otherwise>
                             </c:choose>
                             <c:if test="${canChange}">
                                 <appt:itemStyleEditButton kind="colour" itemId="${item.id}" current="${item.colour}"/>
@@ -154,10 +153,10 @@
                         <td class="text-nowrap">
                             <c:choose>
                                 <c:when test="${not empty item.icon}">
-                                    <span class="glyphicon ${fn:escapeXml(item.icon)} location-icon" role="img"
-                                          data-icon="${fn:escapeXml(item.icon)}"></span>
+                                    <span class="glyphicon ${e:forHtmlAttribute(item.icon)} location-icon" role="img"
+                                          data-icon="${e:forHtmlAttribute(item.icon)}"></span>
                                 </c:when>
-                                <c:otherwise><span class="text-muted" role="img" title="${fn:escapeXml(defaultStyleLabel)}" aria-label="${fn:escapeXml(defaultStyleLabel)}">&mdash;</span></c:otherwise>
+                                <c:otherwise><span class="text-muted" role="img" title="${e:forHtmlAttribute(defaultStyleLabel)}" aria-label="${e:forHtmlAttribute(defaultStyleLabel)}">&mdash;</span></c:otherwise>
                             </c:choose>
                             <c:if test="${canChange}">
                                 <appt:itemStyleEditButton kind="icon" itemId="${item.id}" current="${item.icon}"/>

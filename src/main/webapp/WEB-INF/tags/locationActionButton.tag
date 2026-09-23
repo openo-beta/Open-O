@@ -27,20 +27,20 @@
 <%@ attribute name="confirm" required="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 <fmt:setBundle basename="oscarResources"/>
 <fmt:message key="${labelKey}" var="label"/>
 <form method="post" action="<c:url value='${action}'/>" class="d-inline"
-      <c:if test="${not empty confirm}">data-confirm="${fn:escapeXml(confirm)}"</c:if>>
+      <c:if test="${not empty confirm}">data-confirm="${e:forHtmlAttribute(confirm)}"</c:if>>
     <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>">
-    <input type="hidden" name="dispatch" value="${fn:escapeXml(dispatch)}">
-    <input type="hidden" name="ID" value="${fn:escapeXml(itemId)}">
+    <input type="hidden" name="dispatch" value="${e:forHtmlAttribute(dispatch)}">
+    <input type="hidden" name="ID" value="${e:forHtmlAttribute(itemId)}">
     <c:choose>
         <c:when test="${not empty glyph}">
-            <button type="submit" class="btn btn-sm btn-outline-secondary" title="${fn:escapeXml(label)}"
-                    aria-label="${fn:escapeXml(label)}" ${disabled ? 'disabled' : ''}>
-                <span class="glyphicon ${fn:escapeXml(glyph)}" aria-hidden="true"></span>
+            <button type="submit" class="btn btn-sm btn-outline-secondary" title="${e:forHtmlAttribute(label)}"
+                    aria-label="${e:forHtmlAttribute(label)}" ${disabled ? 'disabled' : ''}>
+                <span class="glyphicon ${e:forHtmlAttribute(glyph)}" aria-hidden="true"></span>
             </button>
         </c:when>
         <c:otherwise>

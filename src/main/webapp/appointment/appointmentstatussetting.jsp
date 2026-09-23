@@ -40,7 +40,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="appt" %>
@@ -84,7 +83,7 @@
     <h1 class="h5 mb-0 me-auto"><fmt:message key="admin.appt.status.mgr.title"/></h1>
     <c:if test="${canChange}">
         <fmt:message key="admin.appt.status.mgr.msg.confirmReset" var="confirmReset"/>
-        <form method="post" action="<c:url value='${statusAction}'/>" data-confirm="${fn:escapeXml(confirmReset)}">
+        <form method="post" action="<c:url value='${statusAction}'/>" data-confirm="${e:forHtmlAttribute(confirmReset)}">
             <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>">
             <input type="hidden" name="dispatch" value="reset">
             <button type="submit" class="btn btn-sm btn-outline-secondary"><fmt:message key="global.reset"/></button>
@@ -107,9 +106,9 @@
 
 <div class="table-responsive">
     <table id="statusTable" class="table table-sm table-striped align-middle"
-           data-icon-base="${fn:escapeXml(ctx)}/images/"
-           data-icon-names="<c:forEach items='${iconSet}' var='icon' varStatus='loop'>${fn:escapeXml(icon)}${loop.last ? '' : ' '}</c:forEach>"
-           data-description-max-length="${fn:escapeXml(descriptionMaxLength)}">
+           data-icon-base="${e:forHtmlAttribute(ctx)}/images/"
+           data-icon-names="<c:forEach items='${iconSet}' var='icon' varStatus='loop'>${e:forHtmlAttribute(icon)}${loop.last ? '' : ' '}</c:forEach>"
+           data-description-max-length="${e:forHtmlAttribute(descriptionMaxLength)}">
         <thead>
         <tr>
             <th scope="col"><fmt:message key="admin.appt.status.mgr.label.status"/></th>
@@ -134,14 +133,14 @@
                     </c:if>
                 </td>
                 <td class="text-nowrap">
-                    <span class="status-swatch" data-colour="${fn:escapeXml(status.color)}"></span>
+                    <span class="status-swatch" data-colour="${e:forHtmlAttribute(status.color)}"></span>
                     <c:out value="${status.color}"/>
                     <c:if test="${editable and canChange}">
                         <appt:itemStyleEditButton kind="colour" itemId="${status.id}" current="${status.color}"/>
                     </c:if>
                 </td>
                 <td class="text-nowrap">
-                    <img src="${fn:escapeXml(ctx)}/images/${fn:escapeXml(status.icon)}" alt="${fn:escapeXml(status.icon)}">
+                    <img src="${e:forHtmlAttribute(ctx)}/images/${e:forHtmlAttribute(status.icon)}" alt="${e:forHtmlAttribute(status.icon)}">
                     <c:if test="${editable and canChange}">
                         <appt:itemStyleEditButton kind="icon" itemId="${status.id}" current="${status.icon}"/>
                     </c:if>
@@ -154,7 +153,7 @@
                                 <form method="post" action="<c:url value='${statusAction}'/>">
                                     <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>">
                                     <input type="hidden" name="dispatch" value="changestatus">
-                                    <input type="hidden" name="statusID" value="${fn:escapeXml(status.id)}">
+                                    <input type="hidden" name="statusID" value="${e:forHtmlAttribute(status.id)}">
                                     <input type="hidden" name="iActive" value="${status.active > 0 ? 0 : 1}">
                                     <button type="submit" class="btn btn-sm btn-outline-primary">
                                         <fmt:message key="${status.active > 0 ? 'admin.appt.status.mgr.btn.disable' : 'admin.appt.status.mgr.btn.enable'}"/>
@@ -162,7 +161,7 @@
                                 </form>
                             </c:when>
                             <c:otherwise>
-                                <span class="badge bg-secondary" title="${fn:escapeXml(lockedTitle)}">
+                                <span class="badge bg-secondary" title="${e:forHtmlAttribute(lockedTitle)}">
                                     <fmt:message key="admin.appt.status.mgr.label.locked"/>
                                 </span>
                             </c:otherwise>
