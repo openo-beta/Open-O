@@ -22,9 +22,9 @@
 
     Lists every appointment status. For a user who may change them, an editable status gets pencil
     buttons that open the item style editor (js/appointment/itemStyleEditor.js) for its description,
-    colour and icon, and an Enable or Disable button. A locked status (editable=0) is read-only.
-    Reset, after a confirm, puts every editable status back to its seeded description, colour and
-    icon. Every change posts back to AppointmentStatus2Action.
+    colour and icon, and an Enable or Disable button; Disable confirms first, since it affects every
+    appointment still using the status. A locked status (editable=0) is read-only. Reset, after a confirm, puts every editable status back to its
+    seeded description, colour and icon. Every change posts back to AppointmentStatus2Action.
 
     Request attributes, set by AppointmentStatus2Action (appointment/apptStatusSetting.do):
       allStatus             List<AppointmentStatus> every status
@@ -103,6 +103,7 @@
 </c:if>
 
 <fmt:message key="admin.appt.status.mgr.label.lockedTitle" var="lockedTitle"/>
+<fmt:message key="admin.appt.status.mgr.msg.confirmDisable" var="confirmDisable"/>
 
 <div class="table-responsive">
     <table id="statusTable" class="table table-sm table-striped align-middle"
@@ -150,7 +151,7 @@
                     <td>
                         <c:choose>
                             <c:when test="${editable}">
-                                <form method="post" action="<c:url value='${statusAction}'/>">
+                                <form method="post" action="<c:url value='${statusAction}'/>"<c:if test="${status.active > 0}"> data-confirm="${e:forHtmlAttribute(confirmDisable)}"</c:if>>
                                     <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>">
                                     <input type="hidden" name="dispatch" value="changestatus">
                                     <input type="hidden" name="statusID" value="${e:forHtmlAttribute(status.id)}">
@@ -186,7 +187,8 @@
             }
         });
 
-        // Reset overwrites every editable status's description, colour and icon, with no undo.
+        // Reset overwrites every editable status's description, colour and icon, with no undo, and
+        // Disable affects every appointment still using the status.
         document.querySelectorAll('form[data-confirm]').forEach(function (form) {
             form.addEventListener('submit', function (event) {
                 if (!window.confirm(form.dataset.confirm)) {
