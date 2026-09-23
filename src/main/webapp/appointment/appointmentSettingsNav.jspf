@@ -16,13 +16,13 @@
 <ul class="nav nav-tabs mb-3">
     <c:if test="${statusTabEnabled}">
         <li class="nav-item">
-            <a class="nav-link${activeTab == 'status' ? ' active' : ''}" href="<c:url value='/appointment/apptStatusSetting.do'/>">
+            <a class="nav-link${activeTab == 'status' ? ' active' : ''}"${activeTab == 'status' ? ' aria-current="page"' : ''} href="<c:url value='/appointment/apptStatusSetting.do'/>">
                 <fmt:message key="admin.appt.settings.tab.status"/>
             </a>
         </li>
     </c:if>
     <li class="nav-item">
-        <a class="nav-link${activeTab == 'location' ? ' active' : ''}" href="<c:url value='/appointment/apptLocationSetting.do'/>">
+        <a class="nav-link${activeTab == 'location' ? ' active' : ''}"${activeTab == 'location' ? ' aria-current="page"' : ''} href="<c:url value='/appointment/apptLocationSetting.do'/>">
             <fmt:message key="admin.appt.settings.tab.location"/>
         </a>
     </li>

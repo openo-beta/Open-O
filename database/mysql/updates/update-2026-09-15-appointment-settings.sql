@@ -6,6 +6,9 @@ ALTER TABLE LookupListItem
   ADD COLUMN IF NOT EXISTS icon varchar(255) NULL AFTER label,
   ADD COLUMN IF NOT EXISTS colour varchar(7) NULL AFTER icon;
 
+-- A narrower existing colour column (UBC's was varchar(6)) is widened too.
+ALTER TABLE LookupListItem MODIFY colour varchar(7) NULL;
+
 -- Location Code: the Location List item chosen at booking. The location text keeps
 -- a snapshot of the item's label, so it widens to fit item labels.
 ALTER TABLE appointment

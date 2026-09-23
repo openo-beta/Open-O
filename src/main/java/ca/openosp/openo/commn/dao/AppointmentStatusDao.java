@@ -23,7 +23,5 @@ public interface AppointmentStatusDao extends AbstractDao<AppointmentStatus> {
      */
     public void mergeAll(List<AppointmentStatus> statuses);
 
-    public void changeStatus(int ID, int iActive);
-
     public int checkStatusUsuage(List<AppointmentStatus> allStatus);
 }

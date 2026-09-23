@@ -114,8 +114,11 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
         return appointStatusDao.find(ID);
     }
 
-    public void changeStatus(int ID, int iActive) {
-        appointStatusDao.changeStatus(ID, iActive);
+    public boolean changeStatus(int id, int active) {
+        if (active != 0 && active != 1) {
+            throw new IllegalArgumentException("appointment status active must be 0 or 1");
+        }
+        return updateEditable(id, active, AppointmentStatus::setActive);
     }
 
     public boolean updateDescription(int id, String description) {
@@ -146,7 +149,7 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
         return status.getEditable() == 1;
     }
 
-    private boolean updateEditable(int id, String value, BiConsumer<AppointmentStatus, String> setter) {
+    private <T> boolean updateEditable(int id, T value, BiConsumer<AppointmentStatus, T> setter) {
         AppointmentStatus status = appointStatusDao.find(id);
         if (status == null || !isEditable(status)) {
             return false;

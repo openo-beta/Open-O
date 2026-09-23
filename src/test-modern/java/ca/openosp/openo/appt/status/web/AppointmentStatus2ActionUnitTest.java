@@ -2,6 +2,8 @@ package ca.openosp.openo.appt.status.web;
 
 import ca.openosp.openo.appt.status.service.AppointmentStatusMgr;
 import ca.openosp.openo.commn.dao.AppointmentStatusDao;
+import ca.openosp.openo.commn.dao.OscarLogDao;
+import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -24,12 +27,13 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -37,7 +41,8 @@ import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link AppointmentStatus2Action}: the privilege and POST checks in front of every
- * change, routing of the item style editor's dispatch values, and the saved/rejected outcomes.
+ * change, routing of the item style editor's dispatch values, the saved/rejected outcomes, and the
+ * audit row each saved change writes.
  *
  * @since 2026-09-15
  */
@@ -58,12 +63,16 @@ public class AppointmentStatus2ActionUnitTest extends OpenOUnitTestBase {
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
     private AppointmentStatus2Action action;
+    private MockedStatic<LogAction> logActionMock;
 
     @BeforeEach
     void setUp() {
         registerMock(SecurityInfoManager.class, securityInfoManager);
         // Creating the action creates the real manager, whose class load looks up the DAO.
         registerMock(AppointmentStatusDao.class, mock(AppointmentStatusDao.class));
+        // LogAction's static initializer looks up OscarLogDao, so register it before mocking LogAction
+        registerMock(OscarLogDao.class, mock(OscarLogDao.class));
+        logActionMock = mockStatic(LogAction.class);
 
         request = new MockHttpServletRequest("POST", "/appointment/apptStatusSetting.do");
         response = new MockHttpServletResponse();
@@ -77,6 +86,7 @@ public class AppointmentStatus2ActionUnitTest extends OpenOUnitTestBase {
     @AfterEach
     void clearActionContext() {
         ActionContext.clear();
+        logActionMock.close();
     }
 
     private void grant(String object, String privilege) {
@@ -98,6 +108,29 @@ public class AppointmentStatus2ActionUnitTest extends OpenOUnitTestBase {
 
             assertThat(request.getAttribute("allStatus")).isNotNull();
             assertThat(request.getAttribute("iconSet")).isEqualTo(AppointmentStatusMgr.ICON_SET);
+        }
+
+        @Test
+        @DisplayName("should offer the change controls with update")
+        void shouldSetCanChange_whenUpdatePrivilege() {
+            grant("_admin.schedule", SecurityInfoManager.READ);
+            grant("_admin.schedule", SecurityInfoManager.UPDATE);
+            request.setMethod("GET");
+
+            action.execute();
+
+            assertThat(request.getAttribute("canChange")).isEqualTo(true);
+        }
+
+        @Test
+        @DisplayName("should hide the change controls from a user who can only read")
+        void shouldClearCanChange_whenReadOnly() {
+            grant("_admin.schedule", SecurityInfoManager.READ);
+            request.setMethod("GET");
+
+            action.execute();
+
+            assertThat(request.getAttribute("canChange")).isEqualTo(false);
         }
 
         @Test
@@ -180,13 +213,29 @@ public class AppointmentStatus2ActionUnitTest extends OpenOUnitTestBase {
         @Test
         @DisplayName("should enable or disable the posted status")
         void shouldChangeActive_whenChangeStatusPosted() {
+            when(appointmentStatusMgr.changeStatus(8, 1)).thenReturn(true);
             request.setParameter("dispatch", "changestatus");
             request.setParameter("statusID", "8");
             request.setParameter("iActive", "1");
 
             assertThat(action.execute()).isEqualTo("saved");
 
-            verify(appointmentStatusMgr).changeStatus(8, 1);
+            logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
+                    eq("AppointmentStatus2Action.changestatus"), contains("id 8: active set to 1")));
+        }
+
+        @Test
+        @DisplayName("should show the list with an error when the status to enable or disable is locked")
+        void shouldShowError_whenChangeStatusRefused() {
+            when(appointmentStatusMgr.changeStatus(11, 0)).thenReturn(false);
+            request.setParameter("dispatch", "changestatus");
+            request.setParameter("statusID", "11");
+            request.setParameter("iActive", "0");
+
+            assertThat(action.execute()).isEqualTo("success");
+
+            assertThat(response.getStatus()).isEqualTo(400);
+            logActionMock.verifyNoInteractions();
         }
 
         @Test
@@ -197,6 +246,19 @@ public class AppointmentStatus2ActionUnitTest extends OpenOUnitTestBase {
             assertThat(action.execute()).isEqualTo("saved");
 
             verify(appointmentStatusMgr).reset();
+            logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
+                    eq("AppointmentStatus2Action.reset"), anyString()));
+        }
+
+        @Test
+        @DisplayName("should write an audit row naming the status and its new value")
+        void shouldAudit_whenStyleSaved() {
+            when(appointmentStatusMgr.updateColour(3, "#445566")).thenReturn(true);
+
+            post("updateColour", "3", "#445566");
+
+            logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
+                    eq("AppointmentStatus2Action.updateColour"), eq("appointment_status id 3: colour set to [#445566]")));
         }
 
         @Test
@@ -208,6 +270,7 @@ public class AppointmentStatus2ActionUnitTest extends OpenOUnitTestBase {
 
             assertThat(response.getStatus()).isEqualTo(400);
             assertThat(request.getAttribute("saveFailed")).isEqualTo(true);
+            logActionMock.verifyNoInteractions();
         }
 
         @Test
@@ -239,6 +302,9 @@ public class AppointmentStatus2ActionUnitTest extends OpenOUnitTestBase {
 
         assertThat(action.execute()).isEqualTo("success");
 
-        verify(securityInfoManager, never()).hasPrivilege(any(), any(), eq(SecurityInfoManager.UPDATE), any());
+        assertThat(request.getAttribute("allStatus")).isNotNull();
+        verify(appointmentStatusMgr, never()).reset();
+        verify(appointmentStatusMgr, never()).changeStatus(anyInt(), anyInt());
+        logActionMock.verifyNoInteractions();
     }
 }

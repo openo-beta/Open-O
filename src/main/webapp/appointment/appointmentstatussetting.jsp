@@ -20,11 +20,11 @@
 <%--
     Appointment Status Manager.
 
-    Lists every appointment status. An editable status gets pencil buttons that open the item
-    style editor (js/appointment/itemStyleEditor.js) for its description, colour and icon, and an
-    Enable or Disable button. A locked status (editable=0) is read-only. Reset, after a confirm,
-    puts every editable status back to its seeded description, colour and icon. Every change posts
-    back to AppointmentStatus2Action.
+    Lists every appointment status. For a user who may change them, an editable status gets pencil
+    buttons that open the item style editor (js/appointment/itemStyleEditor.js) for its description,
+    colour and icon, and an Enable or Disable button. A locked status (editable=0) is read-only.
+    Reset, after a confirm, puts every editable status back to its seeded description, colour and
+    icon. Every change posts back to AppointmentStatus2Action.
 
     Request attributes, set by AppointmentStatus2Action (appointment/apptStatusSetting.do):
       allStatus             List<AppointmentStatus> every status
@@ -33,6 +33,7 @@
       useStatus             String code of a disabled status still used by appointments, if any
       saveFailed            Boolean true when the last change was rejected
       statusTabEnabled      Boolean whether to show the Status tab
+      canChange             Boolean whether the user may change statuses
 
     @since 2008-04-21
 --%>
@@ -40,6 +41,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="appt" %>
 <%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
@@ -80,12 +82,14 @@
 
 <div class="d-flex align-items-center mb-3">
     <h1 class="h5 mb-0 me-auto"><fmt:message key="admin.appt.status.mgr.title"/></h1>
-    <fmt:message key="admin.appt.status.mgr.msg.confirmReset" var="confirmReset"/>
-    <form method="post" action="<c:url value='${statusAction}'/>" data-confirm="${fn:escapeXml(confirmReset)}">
-        <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>">
-        <input type="hidden" name="dispatch" value="reset">
-        <button type="submit" class="btn btn-sm btn-outline-secondary"><fmt:message key="global.reset"/></button>
-    </form>
+    <c:if test="${canChange}">
+        <fmt:message key="admin.appt.status.mgr.msg.confirmReset" var="confirmReset"/>
+        <form method="post" action="<c:url value='${statusAction}'/>" data-confirm="${fn:escapeXml(confirmReset)}">
+            <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>">
+            <input type="hidden" name="dispatch" value="reset">
+            <button type="submit" class="btn btn-sm btn-outline-secondary"><fmt:message key="global.reset"/></button>
+        </form>
+    </c:if>
 </div>
 
 <c:if test="${saveFailed}">
@@ -94,7 +98,7 @@
 <c:if test="${not empty useStatus}">
     <div class="alert alert-warning" role="alert">
         <fmt:message key="admin.appt.status.mgr.msg.usedBefore">
-            <fmt:param value="${useStatus}"/>
+            <fmt:param value="${e:forHtml(useStatus)}"/>
         </fmt:message>
     </div>
 </c:if>
@@ -113,7 +117,9 @@
             <th scope="col"><fmt:message key="admin.appt.status.mgr.label.color"/></th>
             <th scope="col"><fmt:message key="admin.appt.status.mgr.label.icon"/></th>
             <th scope="col"><fmt:message key="admin.appt.status.mgr.label.enable"/></th>
-            <th scope="col"><fmt:message key="admin.appt.status.mgr.label.active"/></th>
+            <c:if test="${canChange}">
+                <th scope="col"><fmt:message key="admin.appt.status.mgr.label.active"/></th>
+            </c:if>
         </tr>
         </thead>
         <tbody>
@@ -123,44 +129,46 @@
                 <td class="text-nowrap"><c:out value="${status.status}"/></td>
                 <td class="text-nowrap">
                     <c:out value="${status.description}"/>
-                    <c:if test="${editable}">
+                    <c:if test="${editable and canChange}">
                         <appt:itemStyleEditButton kind="description" itemId="${status.id}" current="${status.description}"/>
                     </c:if>
                 </td>
                 <td class="text-nowrap">
                     <span class="status-swatch" data-colour="${fn:escapeXml(status.color)}"></span>
                     <c:out value="${status.color}"/>
-                    <c:if test="${editable}">
+                    <c:if test="${editable and canChange}">
                         <appt:itemStyleEditButton kind="colour" itemId="${status.id}" current="${status.color}"/>
                     </c:if>
                 </td>
                 <td class="text-nowrap">
                     <img src="${fn:escapeXml(ctx)}/images/${fn:escapeXml(status.icon)}" alt="${fn:escapeXml(status.icon)}">
-                    <c:if test="${editable}">
+                    <c:if test="${editable and canChange}">
                         <appt:itemStyleEditButton kind="icon" itemId="${status.id}" current="${status.icon}"/>
                     </c:if>
                 </td>
                 <td><fmt:message key="${status.active > 0 ? 'global.yes' : 'global.no'}"/></td>
-                <td>
-                    <c:choose>
-                        <c:when test="${editable}">
-                            <form method="post" action="<c:url value='${statusAction}'/>">
-                                <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>">
-                                <input type="hidden" name="dispatch" value="changestatus">
-                                <input type="hidden" name="statusID" value="${fn:escapeXml(status.id)}">
-                                <input type="hidden" name="iActive" value="${status.active > 0 ? 0 : 1}">
-                                <button type="submit" class="btn btn-sm btn-outline-primary">
-                                    <fmt:message key="${status.active > 0 ? 'admin.appt.status.mgr.btn.disable' : 'admin.appt.status.mgr.btn.enable'}"/>
-                                </button>
-                            </form>
-                        </c:when>
-                        <c:otherwise>
-                            <span class="badge bg-secondary" title="${fn:escapeXml(lockedTitle)}">
-                                <fmt:message key="admin.appt.status.mgr.label.locked"/>
-                            </span>
-                        </c:otherwise>
-                    </c:choose>
-                </td>
+                <c:if test="${canChange}">
+                    <td>
+                        <c:choose>
+                            <c:when test="${editable}">
+                                <form method="post" action="<c:url value='${statusAction}'/>">
+                                    <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>">
+                                    <input type="hidden" name="dispatch" value="changestatus">
+                                    <input type="hidden" name="statusID" value="${fn:escapeXml(status.id)}">
+                                    <input type="hidden" name="iActive" value="${status.active > 0 ? 0 : 1}">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">
+                                        <fmt:message key="${status.active > 0 ? 'admin.appt.status.mgr.btn.disable' : 'admin.appt.status.mgr.btn.enable'}"/>
+                                    </button>
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="badge bg-secondary" title="${fn:escapeXml(lockedTitle)}">
+                                    <fmt:message key="admin.appt.status.mgr.label.locked"/>
+                                </span>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </c:if>
             </tr>
         </c:forEach>
         </tbody>

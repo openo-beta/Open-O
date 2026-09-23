@@ -1257,7 +1257,7 @@ Ontario, Canada
                                 </select>
                                 <% } else if (locationMode) { %>
                                 <appt:locationSelect choices="<%=locations.getActiveItems()%>"
-                                                     selected='<%=bFirstDisp ? null : LocationList.parseCode(request.getParameter("locationCode"))%>'/>
+                                                     selected='<%=bFirstDisp ? null : request.getParameter("locationCode")%>'/>
                                 <% } else { %>
 	            <input type="TEXT" name="location" tabindex="4" tabindex="4" value="<%=Encode.forHtmlAttribute(String.valueOf(loc))%>" class="form-control">
                                 <% } %>

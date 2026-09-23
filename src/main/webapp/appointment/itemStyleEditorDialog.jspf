@@ -59,7 +59,7 @@
 
         <div class="card-body">
             <fieldset data-kind="description" hidden disabled>
-                <label for="itemStyleEditorDescription" class="form-label fs-5">
+                <label for="itemStyleEditorDescription" id="itemStyleEditorTitle-description" class="form-label fs-5">
                     <fmt:message key="${empty itemStyleEditorDescriptionTitleKey ? 'appointment.itemStyleEditor.title.description' : itemStyleEditorDescriptionTitleKey}"/>
                 </label>
                 <input type="text" class="form-control item-style-editor-description" id="itemStyleEditorDescription"
@@ -67,7 +67,7 @@
             </fieldset>
 
             <fieldset data-kind="colour" hidden disabled>
-                <label for="itemStyleEditorColour" class="form-label fs-5">
+                <label for="itemStyleEditorColour" id="itemStyleEditorTitle-colour" class="form-label fs-5">
                     <fmt:message key="appointment.itemStyleEditor.title.colour"/>
                 </label>
                 <input type="color" class="form-control form-control-color item-style-editor-colour"
@@ -76,7 +76,7 @@
 
             <%-- Bootstrap floats a legend and clears only its next sibling, so the grid must follow it directly. --%>
             <fieldset data-kind="icon" hidden disabled>
-                <legend class="fs-5"><fmt:message key="appointment.itemStyleEditor.title.icon"/></legend>
+                <legend id="itemStyleEditorTitle-icon" class="fs-5"><fmt:message key="appointment.itemStyleEditor.title.icon"/></legend>
                 <div class="item-style-editor-icons"
                      data-not-in-set-label="<c:out value='${itemStyleEditorNotInSet}'/>"></div>
             </fieldset>

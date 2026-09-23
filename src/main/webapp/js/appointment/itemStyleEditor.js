@@ -231,6 +231,8 @@
         form.querySelectorAll('fieldset[data-kind]').forEach(function (fieldset) {
             fieldset.hidden = fieldset.disabled = fieldset.dataset.kind !== kind;
         });
+        // The visible field's label names the dialog for screen readers.
+        dialog.setAttribute('aria-labelledby', 'itemStyleEditorTitle-' + kind);
         form.querySelector('[data-action="clear"]').hidden = !config[kind].clearable;
         KINDS[kind].load(current, config[kind]);
 
@@ -323,8 +325,14 @@
                 selectIcon(choice.dataset.icon);
             }
         });
+        // A drag from a field that ends on the backdrop clicks the dialog in some browsers, which
+        // would lose what was typed, so only a click that also started on the backdrop closes it.
+        let pressedOnBackdrop = false;
+        dialog.addEventListener('pointerdown', function (event) {
+            pressedOnBackdrop = event.target === dialog;
+        });
         dialog.addEventListener('click', function (event) {
-            if (event.target === dialog) {
+            if (event.target === dialog && pressedOnBackdrop) {
                 dialog.close();
             }
         });

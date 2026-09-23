@@ -1053,10 +1053,11 @@
                             %>
                         </select>
                         <% } else if (locationMode) {
-                            Integer locationCode = bFirstDisp ? appt.getLocationCode() : LocationList.parseCode(request.getParameter("locationCode"));
+                            LocationList.Choice locationChoice = bFirstDisp ? locations.choiceFor(appt.getLocationCode(), loc)
+                                    : new LocationList.Choice(request.getParameter("locationCode"), loc);
                         %>
-                        <appt:locationSelect choices="<%=locations.getChoices(locationCode)%>" selected="<%=locationCode%>"
-                                             legacy="<%=locations.getLegacyLocation(locationCode, loc)%>"/>
+                        <appt:locationSelect choices="<%=locations.getChoices(locationChoice.code())%>" selected="<%=locationChoice.value()%>"
+                                             legacy="<%=locationChoice.legacy()%>"/>
                         <% } else { %>
 		        <input type="text" class="form-control" name="location" tabindex="4"
                        value="<%=Encode.forHtmlAttribute(bFirstDisp?appt.getLocation():request.getParameter("location"))%>" >

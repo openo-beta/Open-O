@@ -20,11 +20,17 @@ package ca.openosp.openo.appt.status.web;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiPredicate;
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
+
+import org.apache.commons.lang3.StringUtils;
 
 import ca.openosp.openo.appt.status.service.AppointmentStatusMgr;
 import ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl;
 import ca.openosp.openo.appt.web.AppointmentSettingsAction;
 import ca.openosp.openo.commn.model.AppointmentStatus;
+import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.managers.SecurityInfoManager;
 
 /**
@@ -39,6 +45,9 @@ import ca.openosp.openo.managers.SecurityInfoManager;
  *   <li>{@code updateDescription}, {@code updateColour}, {@code updateIcon}: sets status {@code ID}
  *       to {@code value}; posted by the item style editor on the list page</li>
  * </ul>
+ *
+ * <p>Locked statuses (editable=0) can't be changed: edits and Enable/Disable refuse them, and Reset
+ * skips them. Each saved change writes an audit log row.</p>
  *
  * @since 2024-12-06
  */
@@ -56,19 +65,39 @@ public class AppointmentStatus2Action extends AppointmentSettingsAction {
         // The admin menu links here with no dispatch, and a switch on null throws.
         String dispatch = Objects.toString(request.getParameter("dispatch"), "view");
         return switch (dispatch) {
-            case "reset" -> change(() -> {
+            case "reset" -> changeAudited(dispatch, () -> {
                 appointmentStatusMgr.reset();
                 return true;
-            });
-            case "changestatus" -> change(() -> {
-                appointmentStatusMgr.changeStatus(intParameter("statusID"), intParameter("iActive"));
-                return true;
-            });
-            case "updateDescription" -> change(() -> appointmentStatusMgr.updateDescription(intParameter("ID"), request.getParameter("value")));
-            case "updateColour" -> change(() -> appointmentStatusMgr.updateColour(intParameter("ID"), request.getParameter("value")));
-            case "updateIcon" -> change(() -> appointmentStatusMgr.updateIcon(intParameter("ID"), request.getParameter("value")));
+            }, () -> "every editable status restored to its default description, colour and icon");
+            case "changestatus" -> changeAudited(dispatch,
+                    () -> appointmentStatusMgr.changeStatus(intParameter("statusID"), intParameter("iActive")),
+                    () -> "appointment_status id " + intParameter("statusID") + ": active set to " + intParameter("iActive"));
+            case "updateDescription" -> changeStyle(dispatch, "description", appointmentStatusMgr::updateDescription);
+            case "updateColour" -> changeStyle(dispatch, "colour", appointmentStatusMgr::updateColour);
+            case "updateIcon" -> changeStyle(dispatch, "icon", appointmentStatusMgr::updateIcon);
             default -> show();
         };
+    }
+
+    /* Sets status ID's description, colour or icon to the posted value. */
+    private String changeStyle(String dispatch, String field, BiPredicate<Integer, String> update) {
+        String value = request.getParameter("value");
+        return changeAudited(dispatch, () -> update.test(intParameter("ID"), value),
+                () -> "appointment_status id " + intParameter("ID") + ": " + field + " set to [" + StringUtils.trimToEmpty(value) + "]");
+    }
+
+    /*
+     * Applies a change and, once it is saved, writes its audit row, as the Location tab's manager
+     * does for its changes. A refused change writes none.
+     */
+    private String changeAudited(String dispatch, BooleanSupplier change, Supplier<String> data) {
+        return change(() -> {
+            boolean saved = change.getAsBoolean();
+            if (saved) {
+                LogAction.addLogSynchronous(getLoggedInInfo(), "AppointmentStatus2Action." + dispatch, data.get());
+            }
+            return saved;
+        });
     }
 
     @Override
