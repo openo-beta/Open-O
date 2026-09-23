@@ -303,8 +303,10 @@
                 var windowname = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>";
                 // Pages on another site, such as the Resource link, get their own window name
                 // so they never share a window with an OpenO page.
-                if (/^https?:\/\//i.test(page) && page.indexOf(window.location.origin + "/") !== 0) {
-                    windowname = "oscarExternal";
+                var site = document.createElement("a");
+                site.href = page;
+                if ((site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
+                    windowname = "oscarExternal_" + (windowname || site.host);
                 }
                 windowprops = "height=600,width=700,location=no,"
                     + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";

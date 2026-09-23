@@ -67,8 +67,10 @@ function popup2(height, width, top, left, url, windowName) {
 
    // Pages on another site, such as the Resource link, get their own window name
    // so they never share a window with an OpenO page.
-   if (/^https?:\/\//i.test(url) && url.indexOf(window.location.origin + "/") !== 0) {
-       windowName = "oscarExternal";
+   const site = document.createElement("a");
+   site.href = url;
+   if ((site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
+      windowName = "oscarExternal_" + (windowName || site.host);
    }
 
    // Check if the popup window already exists or if it has been closed
