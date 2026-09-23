@@ -205,10 +205,9 @@ var page = "" + varpage;
 var windowname = "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.apptProvider"/>";
 // Pages on another site, such as the Resource link, get their own window name
 // so they never share a window with an OpenO page.
-var site = document.createElement("a");
-site.href = page;
+var site = new URL(page, document.baseURI);
 if ((site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
-    windowname = "oscarExternal_" + (windowname || site.host);
+    windowname = "oscarExternal_" + windowname;
 }
 windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
 var popup=window.open(page, windowname, windowprops);
@@ -279,8 +278,7 @@ vwidth = typeof(vwidth) != 'undefined' ? vwidth : '1024px';
 var page = "" + varpage;
 // Pages on another site, such as the Resource link, get their own window name
 // so they never share a window with an OpenO page.
-var site = document.createElement("a");
-site.href = page;
+var site = new URL(page, document.baseURI);
 if ((site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
     windowname = "oscarExternal_" + (windowname || site.host);
 }
@@ -300,10 +298,9 @@ var page = varpage;
 var windowname = "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>_appt";
 // Pages on another site, such as the Resource link, get their own window name
 // so they never share a window with an OpenO page.
-var site = document.createElement("a");
-site.href = page;
+var site = new URL(page, document.baseURI);
 if ((site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
-    windowname = "oscarExternal_" + (windowname || site.host);
+    windowname = "oscarExternal_" + windowname;
 }
 windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
 var popup=window.open(page, windowname, windowprops);

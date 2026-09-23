@@ -31,10 +31,9 @@ function popupPage(vheight, vwidth, varpage) {
     var windowName = "attachment";
     // Pages on another site, such as the Resource link, get their own window name
     // so they never share a window with an OpenO page.
-    var site = document.createElement("a");
-    site.href = page;
+    var site = new URL(page, document.baseURI);
     if ((site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
-        windowName = "oscarExternal_" + (windowName || site.host);
+        windowName = "oscarExternal_" + windowName;
     }
     windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";
     var popup = window.open(page, windowName, windowprops);

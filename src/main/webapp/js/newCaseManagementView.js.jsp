@@ -94,8 +94,7 @@
         var page = "" + varpage;
         // Pages on another site, such as the Resource link, get their own window name
         // so they never share a window with an OpenO page.
-        var site = document.createElement("a");
-        site.href = page;
+        var site = new URL(page, document.baseURI);
         if ((site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
             name = "oscarExternal_" + (name || site.host);
         }

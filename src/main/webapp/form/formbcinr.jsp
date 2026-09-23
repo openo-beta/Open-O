@@ -172,10 +172,9 @@
             var windowname = "inr2";
             // Pages on another site, such as the Resource link, get their own window name
             // so they never share a window with an OpenO page.
-            var site = document.createElement("a");
-            site.href = varpage;
+            var site = new URL(varpage, document.baseURI);
             if ((site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
-                windowname = "oscarExternal_" + (windowname || site.host);
+                windowname = "oscarExternal_" + windowname;
             }
             windowprops = "height=700,width=960" +
                 ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=no,screenX=50,screenY=50,top=20,left=20";
