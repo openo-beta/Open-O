@@ -45,6 +45,27 @@ public final class ResponseDefaultsFilter extends OscarBaseFilter {
     private boolean forceStrongETag = true;
     private boolean warnCharsetCacheChange = false;
 
+    /**
+     * Sends the Cross-Origin-Opener-Policy header on every page.
+     * <p>
+     * Struts already sends this header on .do pages, but JSP pages did not send
+     * it. When a JSP page opens a .do page in a popup and only one of the two has
+     * the header, the browser breaks the link between the two windows: the next
+     * click opens a new popup instead of reusing the old one, and window.opener
+     * is null inside the popup. Sending the header from here on every page keeps
+     * the windows linked.
+     * <p>
+     * The value must be the same as the coop interceptor mode in struts.xml.
+     * "same-origin-allow-popups" is used instead of the strict "same-origin"
+     * because OpenO also opens external links in popups, such as Resource on the
+     * schedule page or the BMI calculator. With the strict value the browser
+     * forgets those windows, so every click on the same external link opens a
+     * new window. With "allow-popups" OpenO can reuse the window it already
+     * opened, the same way it reuses its own popups.
+     */
+    private static final String COOP_HEADER = "Cross-Origin-Opener-Policy";
+    private static final String COOP_VALUE = "same-origin-allow-popups";
+
     public ResponseDefaultsFilter() {
     }
 
@@ -95,6 +116,8 @@ public final class ResponseDefaultsFilter extends OscarBaseFilter {
         if (this.setNoCache) {
             this.setCaching(request, (HttpServletResponse) response);
         }
+
+        response.setHeader(COOP_HEADER, COOP_VALUE);
 
         if (this.forceStrongETag || this.warnCharsetCacheChange) {
             response = new ResponseDefaultsFilterResponseWrapper((HttpServletResponse) response, this.forceStrongETag, this.warnCharsetCacheChange);

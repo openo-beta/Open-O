@@ -28,8 +28,14 @@ function setMinWidth(width) {
 // open a new popup window
 function popupPage(vheight, vwidth, varpage) {
     var page = "" + varpage;
+    var windowName = "attachment";
+    // Pages on another site, such as the Resource link, get their own window name
+    // so they never share a window with an OpenO page.
+    if (/^https?:\/\//i.test(page) && page.indexOf(window.location.origin + "/") !== 0) {
+        windowName = "oscarExternal";
+    }
     windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes";
-    var popup = window.open(page, "attachment", windowprops);
+    var popup = window.open(page, windowName, windowprops);
     if (popup != null) {
         if (popup.opener == null) {
             popup.opener = self;

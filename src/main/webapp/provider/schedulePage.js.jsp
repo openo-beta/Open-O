@@ -202,8 +202,14 @@ this.focus();
 
 function popupPage(vheight,vwidth,varpage) {
 var page = "" + varpage;
+var windowname = "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.apptProvider"/>";
+// Pages on another site, such as the Resource link, get their own window name
+// so they never share a window with an OpenO page.
+if (/^https?:\/\//i.test(page) && page.indexOf(window.location.origin + "/") !== 0) {
+    windowname = "oscarExternal";
+}
 windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
-var popup=window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.apptProvider"/>", windowprops);
+var popup=window.open(page, windowname, windowprops);
 if (popup != null) {
 if (popup.opener == null) {
 popup.opener = self;
@@ -269,6 +275,11 @@ windowname = typeof(windowname)!= 'undefined' ? windowname : 'apptProviderSearch
 vheight = typeof(vheight) != 'undefined' ? vheight : '700px';
 vwidth = typeof(vwidth) != 'undefined' ? vwidth : '1024px';
 var page = "" + varpage;
+// Pages on another site, such as the Resource link, get their own window name
+// so they never share a window with an OpenO page.
+if (/^https?:\/\//i.test(page) && page.indexOf(window.location.origin + "/") !== 0) {
+    windowname = "oscarExternal";
+}
 windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
 var popup = window.open(page, windowname, windowprops);
 if (popup != null) {

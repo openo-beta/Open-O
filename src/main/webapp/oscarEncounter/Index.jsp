@@ -300,9 +300,15 @@
 
             function popupPage2(varpage) {
                 var page = "" + varpage;
+                var windowname = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>";
+                // Pages on another site, such as the Resource link, get their own window name
+                // so they never share a window with an OpenO page.
+                if (/^https?:\/\//i.test(page) && page.indexOf(window.location.origin + "/") !== 0) {
+                    windowname = "oscarExternal";
+                }
                 windowprops = "height=600,width=700,location=no,"
                     + "scrollbars=yes,menubars=no,toolbars=no,resizable=yes,top=0,left=0";
-                window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPage2Window"/>", windowprops);
+                window.open(page, windowname, windowprops);
             }
 
             function urlencode(str) {
