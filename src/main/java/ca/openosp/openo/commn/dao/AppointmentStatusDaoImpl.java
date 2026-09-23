@@ -65,13 +65,6 @@ public class AppointmentStatusDaoImpl extends AbstractDaoImpl<AppointmentStatus>
         statuses.forEach(this::merge);
     }
 
-    public void changeStatus(int ID, int iActive) {
-        AppointmentStatus appts = find(ID);
-        if (appts != null) {
-            appts.setActive(iActive);
-        }
-    }
-
     /**
      * I don't know about this one...but i'm just converting it to a JPA entity for
      * now.

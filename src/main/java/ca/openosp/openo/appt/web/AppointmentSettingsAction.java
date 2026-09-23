@@ -23,7 +23,8 @@ import ca.openosp.openo.utility.SpringUtils;
  * {@link #change} applies one change for a user the page's {@link #canChange()} allows, and only
  * when posted, since the CSRF guard only checks posts. A saved change redirects back to the page
  * ({@link #SAVED}); a refused one renders it with status 400 and {@code saveFailed} set. Every
- * render sets {@code statusTabEnabled} for the pages' tabs.</p>
+ * render sets {@code statusTabEnabled} for the pages' tabs, and {@code canChange} so a page offers
+ * its change controls only to a user who may use them.</p>
  *
  * @since 2026-09-15
  */
@@ -158,6 +159,7 @@ public abstract class AppointmentSettingsAction extends ActionSupport {
 
     private String render() {
         request.setAttribute("statusTabEnabled", isStatusTabEnabled());
+        request.setAttribute("canChange", canChange());
         return view();
     }
 

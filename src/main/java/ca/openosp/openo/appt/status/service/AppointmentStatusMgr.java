@@ -58,7 +58,17 @@ public interface AppointmentStatusMgr {
 
     public AppointmentStatus getStatus(int ID);
 
-    public void changeStatus(int ID, int iActive);
+    /**
+     * Enables or disables an editable status. Locked statuses (editable=0) stay as seeded, as they
+     * do for every other change.
+     *
+     * @param id int the appointment_status id
+     * @param active int 1 to enable the status, 0 to disable it
+     * @return boolean true when saved; false when there is no such status or it is locked (editable=0)
+     * @throws IllegalArgumentException if active is neither 0 nor 1
+     * @since 2026-09-23
+     */
+    public boolean changeStatus(int id, int active);
 
     /**
      * Renames an editable status.

@@ -148,6 +148,19 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
+        @DisplayName("should offer adding locations only with write on _admin, which the manager's Add needs")
+        void shouldOfferAdd_whenAdminWrite() {
+            grant("_admin", SecurityInfoManager.READ);
+            grant("_admin", SecurityInfoManager.UPDATE);
+            action.execute();
+            assertThat(request.getAttribute("canAdd")).isEqualTo(false);
+
+            grant("_admin", SecurityInfoManager.WRITE);
+            action.execute();
+            assertThat(request.getAttribute("canAdd")).isEqualTo(true);
+        }
+
+        @Test
         @DisplayName("should refuse the page without read on any Appointment Settings object")
         void shouldThrow_whenNoReadPrivilege() {
             assertThatThrownBy(() -> action.execute()).isInstanceOf(SecurityException.class);

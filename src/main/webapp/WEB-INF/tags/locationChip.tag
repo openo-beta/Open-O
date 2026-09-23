@@ -1,7 +1,8 @@
 <%--
     Location Chip: the small marker on a schedule appointment showing its Location List item's
-    colour and icon, with the item's current label on hover. An item with no colour or no icon falls
-    back to neutral grey or a map marker, each on its own. Renders nothing when item is null.
+    colour and icon, with the item's current label on hover and for screen readers. An item with no
+    colour or no icon falls back to neutral grey or a map marker, each on its own. Renders nothing
+    when item is null.
 
     Needs the Bootstrap 3 glyphicon font, which the schedule already loads.
 
@@ -15,7 +16,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:if test="${not empty item}">
-    <span class="location-chip" title="${fn:escapeXml(item.label)}"
+    <span class="location-chip" role="img" title="${fn:escapeXml(item.label)}" aria-label="${fn:escapeXml(item.label)}"
           style="display:inline-block;padding:0 2px;border-radius:2px;color:#fff;background-color:${fn:escapeXml(empty item.colour ? '#6c757d' : item.colour)};"><span
             class="glyphicon ${fn:escapeXml(empty item.icon ? 'glyphicon-map-marker' : item.icon)}" aria-hidden="true"></span></span>
 </c:if>

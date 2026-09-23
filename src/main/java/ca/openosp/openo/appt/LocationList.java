@@ -42,6 +42,28 @@ public final class LocationList {
     /** The width of appointment.location, which holds the chosen item's label. */
     public static final int LABEL_MAX_LENGTH = 80;
 
+    /** The dropdown value that keeps a booking's Legacy Location, which has no item to name. */
+    public static final String LEGACY_VALUE = "legacy";
+
+    /**
+     * A booking's location dropdown, as the form posts it: the option chosen, and the Legacy Location
+     * offered besides "Not specified" and the items.
+     *
+     * @param value String the chosen option's value: blank for "Not specified", {@link #LEGACY_VALUE},
+     *              or an item's id
+     * @param legacy String the Legacy Location offered, or blank when there is none
+     * @since 2026-09-23
+     */
+    public record Choice(String value, String legacy) {
+
+        /**
+         * @return Integer the chosen item's id, or null when "Not specified" or the Legacy Location is chosen
+         */
+        public Integer code() {
+            return parseCode(value);
+        }
+    }
+
     private final List<LookupListItem> items;
 
     /** Program names already looked up, by program id; a day view names the same few programs many times. */
@@ -80,10 +102,11 @@ public final class LocationList {
      *   <li>No {@code locationCode} field: the form offered sites, programs or free text, so the
      *       posted {@code location} text is saved through {@link #setLocationText}, which keeps the
      *       code only while the text is unchanged (as when the list was switched off since booking).</li>
+     *   <li>{@link #LEGACY_VALUE}: the location code is cleared and the posted {@code location} text,
+     *       the Legacy Location the edit screen offered, is kept.</li>
      *   <li>An item of the list, active or not: its id becomes the location code and its label,
      *       cut to the column width, the location text.</li>
-     *   <li>Blank, or anything else: the location code is cleared and the posted {@code location}
-     *       text saved. That text is the Legacy Location the edit screen offered, or blank.</li>
+     *   <li>Blank ("Not specified"), or anything else: the location code and text are cleared.</li>
      * </ul>
      *
      * @param appointment Appointment the appointment about to be saved
@@ -96,10 +119,15 @@ public final class LocationList {
             return;
         }
 
+        if (LEGACY_VALUE.equals(posted)) {
+            appointment.setLocationCode(null);
+            appointment.setLocation(request.getParameter("location"));
+            return;
+        }
+
         LookupListItem item = load(LoggedInInfo.getLoggedInInfoFromSession(request)).find(parseCode(posted));
         appointment.setLocationCode(item == null ? null : item.getId());
-        appointment.setLocation(item == null ? request.getParameter("location")
-                : StringUtils.left(item.getLabel(), LABEL_MAX_LENGTH));
+        appointment.setLocation(item == null ? "" : StringUtils.left(item.getLabel(), LABEL_MAX_LENGTH));
     }
 
     /**
@@ -121,15 +149,25 @@ public final class LocationList {
     }
 
     /**
-     * Finds the Legacy Location a booking offers to keep: its location text, when its location code
-     * is not an item of this list.
+     * Works out the choice an edit screen's dropdown starts on for a saved booking: its item, when
+     * its location code is one; otherwise the active item its location text names, ignoring case and
+     * surrounding spaces, so a location typed before the list existed is linked on the next save;
+     * otherwise its location text as a Legacy Location, chosen; or "Not specified" when it has none.
      *
      * @param code Integer the booking's location code, or null
      * @param location String the booking's location text, or null
-     * @return String location, or null when code is an item of this list
+     * @return Choice the dropdown's starting choice
+     * @since 2026-09-23
      */
-    public String getLegacyLocation(Integer code, String location) {
-        return find(code) == null ? location : null;
+    public Choice choiceFor(Integer code, String location) {
+        if (find(code) != null) {
+            return new Choice(String.valueOf(code), null);
+        }
+        return getActiveItems().stream()
+                .filter(item -> isSameName(item.getLabel(), location))
+                .findFirst()
+                .map(item -> new Choice(String.valueOf(item.getId()), null))
+                .orElseGet(() -> StringUtils.isBlank(location) ? new Choice("", null) : new Choice(LEGACY_VALUE, location));
     }
 
     /**
@@ -248,11 +286,15 @@ public final class LocationList {
      * @since 2026-09-17
      */
     public boolean isNameTaken(String name, LookupListItem item) {
-        String wanted = name.trim();
         return items.stream()
                 .filter(LookupListItem::isActive)
                 .filter(other -> !Objects.equals(other.getId(), item.getId()))
-                .anyMatch(other -> other.getLabel().trim().equalsIgnoreCase(wanted));
+                .anyMatch(other -> isSameName(other.getLabel(), name));
+    }
+
+    /* Location names match ignoring case and surrounding spaces. */
+    private static boolean isSameName(String one, String other) {
+        return one != null && other != null && one.trim().equalsIgnoreCase(other.trim());
     }
 
     /**
