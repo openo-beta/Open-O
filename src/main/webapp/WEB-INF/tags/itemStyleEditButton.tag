@@ -19,11 +19,11 @@
 <%@ attribute name="label" required="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <fmt:setBundle basename="oscarResources"/>
 <c:if test="${empty label}">
     <fmt:message key="appointment.itemStyleEditor.title.${kind}" var="label"/>
 </c:if>
-<button type="button" class="btn btn-link btn-sm p-0 ms-1" title="${fn:escapeXml(label)}" aria-label="${fn:escapeXml(label)}"
-        data-item-style-edit="${fn:escapeXml(kind)}" data-item-id="${fn:escapeXml(itemId)}"
-        data-current="${fn:escapeXml(current)}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+<button type="button" class="btn btn-link btn-sm p-0 ms-1" title="${e:forHtmlAttribute(label)}" aria-label="${e:forHtmlAttribute(label)}"
+        data-item-style-edit="${e:forHtmlAttribute(kind)}" data-item-id="${e:forHtmlAttribute(itemId)}"
+        data-current="${e:forHtmlAttribute(current)}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
