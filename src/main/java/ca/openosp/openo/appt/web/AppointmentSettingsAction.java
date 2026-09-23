@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.owasp.encoder.Encode;
 
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.managers.SecurityInfoManager;
@@ -145,8 +146,9 @@ public abstract class AppointmentSettingsAction extends ActionSupport {
             request.setAttribute("saveFailedParam", e.getMessageParam());
             saved = false;
         } catch (IllegalArgumentException e) {
-            // Also catches NumberFormatException from a malformed id; the pages never post one.
-            logger.warn("Rejected appointment settings change: {}", e.getMessage());
+            // Also catches NumberFormatException from a malformed id; the pages never post one. Its
+            // message quotes the posted value, so it is encoded to keep line breaks out of the log.
+            logger.warn("Rejected appointment settings change: {}", Encode.forJava(e.getMessage()));
             saved = false;
         }
         if (saved) {
