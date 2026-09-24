@@ -242,7 +242,7 @@ public class DocumentPreview2Action extends ActionSupport {
      * - allHRMDocuments: ArrayList&lt;HashMap&lt;String,? extends Object&gt;&gt; all HRM documents
      * - allLabsSortedByVersions: List&lt;AttachmentLabResultData&gt; lab results sorted by versions
      * - allForms: List&lt;EctFormData.PatientForm&gt; all encounter forms
-     * - allEForms: List&lt;EFormData&gt; all current electronic forms, followed by any deleted eForms attached to this consult
+     * - allEForms: List&lt;EFormData&gt; any deleted eForms attached to this consult, followed by all current electronic forms
      * - attachedDocumentIds: Set&lt;String&gt; doc IDs already attached to this consult
      * - foreignPrivateDocIds: Set&lt;String&gt; attached private docs not owned by the current provider
      * - attachedEFormIds: Set&lt;Integer&gt; eForm fdids already attached to this consult
@@ -286,7 +286,7 @@ public class DocumentPreview2Action extends ActionSupport {
      * - allHRMDocuments: ArrayList&lt;HashMap&lt;String,? extends Object&gt;&gt; all HRM documents
      * - allLabsSortedByVersions: List&lt;AttachmentLabResultData&gt; lab results sorted by versions
      * - allForms: List&lt;EctFormData.PatientForm&gt; all encounter forms
-     * - allEForms: List&lt;EFormData&gt; all current electronic forms excluding the specified fdid, followed by any deleted eForms attached to this eForm
+     * - allEForms: List&lt;EFormData&gt; any deleted eForms attached to this eForm, followed by all current electronic forms excluding the specified fdid
      * - attachedDocumentIds: Set&lt;String&gt; doc IDs already attached to this eForm
      * - foreignPrivateDocIds: Set&lt;String&gt; attached private docs not owned by the current provider
      * - attachedEFormIds: Set&lt;Integer&gt; eForm fdids already attached to this eForm

@@ -18,7 +18,7 @@ import java.util.function.Function;
  * <p>Built from the base lists (active patient docs, the current provider's private docs, public
  * provider docs, current eForms), then filled in by
  * {@link ca.openosp.openo.documentManager.DocumentAttachmentManager#mergeAttachedIntoSections}
- * with any attached item its section doesn't already list.</p>
+ * with any attached item its section doesn't already list, placed at the top of the section.</p>
  *
  * @since 2026-09-10
  */
@@ -34,6 +34,7 @@ public class AttachmentSections {
         private final List<T> items;
         private final Function<T, ?> idOf;
         private final Set<Object> listedIds = new HashSet<>();
+        private int addedCount = 0;
 
         private Section(List<T> items, Function<T, ?> idOf) {
             this.items = items == null ? new ArrayList<>() : new ArrayList<>(items);
@@ -44,13 +45,15 @@ public class AttachmentSections {
         }
 
         /**
-         * Appends the item unless an item with the same id is already listed.
+         * Adds the item above the base list, after any item added before it, unless an item with
+         * the same id is already listed. The window only shows the first few items of a section
+         * until "Show N More" is clicked, so added items must come first to stay visible.
          *
          * @param item T the item to add
          */
-        public void addIfAbsent(T item) {
+        public void addToTopIfAbsent(T item) {
             if (listedIds.add(idOf.apply(item))) {
-                items.add(item);
+                items.add(addedCount++, item);
             }
         }
 

@@ -91,8 +91,8 @@ public interface DocumentAttachmentManager {
     /**
      * Merges the items attached to a consult/eForm into the attachment window's sections so
      * every attached item is listed and can be unchecked to detach it. Each attached item is
-     * appended to its section unless that section already lists it — e.g. deleted items, other
-     * providers' private docs, and docs no longer listed for this patient or facility. Also
+     * added to the top of its section unless that section already lists it — e.g. deleted items,
+     * other providers' private docs, and docs no longer listed for this patient or facility. Also
      * records the attached doc/eForm ids (for pre-checking) and the ids of attached private docs
      * owned by another provider (for labelling).
      *
