@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import ca.openosp.OscarProperties;
+import ca.openosp.openo.commn.IsPropertiesOn;
 import ca.openosp.openo.PMmodule.model.Program;
 import ca.openosp.openo.PMmodule.service.ProgramManager;
 import ca.openosp.openo.commn.model.Appointment;
@@ -24,12 +25,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -429,6 +432,19 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
 
             assertThat(LocationList.of(locationList).getChipItem(appointment)).isNull();
         }
+
+        @Test
+        @DisplayName("should read the site setup once per list, however many appointments ask")
+        void shouldReadSiteSetupOnce_whenManyAppointmentsAsk() {
+            LocationList locations = LocationList.of(locationList);
+            try (MockedStatic<IsPropertiesOn> propertiesOn = mockStatic(IsPropertiesOn.class)) {
+                locations.getChipItem(appointment);
+                locations.getDisplayName(appointment);
+                locations.isLocationMode();
+
+                propertiesOn.verify(IsPropertiesOn::isMultisitesEnable, times(1));
+            }
+        }
     }
 
     @Nested
@@ -554,6 +570,18 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
             assertThat(appointment.getLocation()).isEqualTo("Before");
             assertThat(appointment.getLocationCode()).isEqualTo(7);
             verifyNoInteractions(lookupListManager);
+        }
+
+        @Test
+        @DisplayName("should not read the site setup to save a chosen item, since a repeat booking saves many")
+        void shouldNotReadSiteSetup_whenItemChosen() {
+            request.setParameter("locationCode", "13");
+            try (MockedStatic<IsPropertiesOn> propertiesOn = mockStatic(IsPropertiesOn.class)) {
+                LocationList.applyPostedLocation(appointment, request);
+
+                propertiesOn.verifyNoInteractions();
+            }
+            assertThat(appointment.getLocationCode()).isEqualTo(13);
         }
 
         @ParameterizedTest
