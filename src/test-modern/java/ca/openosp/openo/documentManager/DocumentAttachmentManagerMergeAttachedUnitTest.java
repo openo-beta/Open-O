@@ -90,6 +90,17 @@ class DocumentAttachmentManagerMergeAttachedUnitTest {
             assertThat(providerPublicDocs).isEmpty();
             assertThat(foreignPrivateDocIds).isEmpty();
         }
+
+        @Test
+        @DisplayName("deleted patient doc is listed above the active patient docs so it isn't hidden behind \"Show N More\"")
+        void shouldListDeletedPatientDocFirst_whenActiveDocsListed() {
+            EDoc newer = patientDoc("20", 'A');
+            EDoc older = patientDoc("21", 'A');
+            EDoc deleted = patientDoc("22", 'D');
+            useSections(new AttachmentSections(Arrays.asList(newer, older), null, null, null));
+            merge(deleted);
+            assertThat(allDocuments).containsExactly(deleted, newer, older);
+        }
     }
 
     @Nested
@@ -258,15 +269,15 @@ class DocumentAttachmentManagerMergeAttachedUnitTest {
         }
 
         @Test
-        @DisplayName("deleted attached eForm is appended after the current eForms so it can be detached")
-        void shouldAppendDeletedEForm_whenAttachedEFormDeleted() {
+        @DisplayName("deleted attached eForm is listed above the current eForms so it isn't hidden behind \"Show N More\"")
+        void shouldListDeletedEFormFirst_whenAttachedEFormDeleted() {
             EFormData current = eForm(1, true);
             EFormData deleted = eForm(2, false);
             AttachmentSections withEForms = new AttachmentSections(null, null, null, Collections.singletonList(current));
 
             manager.mergeAttachedIntoSections(loggedInInfo, null, Arrays.asList(current, deleted), withEForms);
 
-            assertThat(withEForms.getEForms().getItems()).containsExactly(current, deleted);
+            assertThat(withEForms.getEForms().getItems()).containsExactly(deleted, current);
             assertThat(withEForms.getAttachedEFormIds()).containsExactlyInAnyOrder(1, 2);
         }
 
@@ -279,11 +290,13 @@ class DocumentAttachmentManagerMergeAttachedUnitTest {
         }
 
         @Test
-        @DisplayName("several deleted eForms keep their attached order")
+        @DisplayName("several deleted eForms keep their attached order, above the current eForms")
         void shouldKeepAttachedOrder_whenSeveralDeletedEForms() {
-            manager.mergeAttachedIntoSections(loggedInInfo, null, Arrays.asList(eForm(5, false), eForm(4, false)), sections);
+            AttachmentSections withEForms = new AttachmentSections(null, null, null, Arrays.asList(eForm(7, true), eForm(1, true)));
 
-            assertThat(sections.getEForms().getItems()).extracting(EFormData::getId).containsExactly(5, 4);
+            manager.mergeAttachedIntoSections(loggedInInfo, null, Arrays.asList(eForm(5, false), eForm(4, false)), withEForms);
+
+            assertThat(withEForms.getEForms().getItems()).extracting(EFormData::getId).containsExactly(5, 4, 7, 1);
         }
 
         @Test
