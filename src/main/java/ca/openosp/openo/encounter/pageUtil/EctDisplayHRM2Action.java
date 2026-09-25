@@ -81,7 +81,9 @@ public class EctDisplayHRM2Action extends EctDisplayAction {
                 item.setDate(date);
                 hash = Math.abs(winName.hashCode());
 
-                url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/hospitalReportManager/Display.do?id=" + hrmDocumentId + "&segmentID=" + hrmDocumentId + "');";
+                // Comma-separated IDs of older copies of this report, so the report shows its duplicate history
+                String duplicateLabIds = (String) hrmDocument.get("duplicateLabIds");
+                url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/hospitalReportManager/Display.do?id=" + hrmDocumentId + "&segmentID=" + hrmDocumentId + "&duplicateLabIds=" + duplicateLabIds + "');";
 
                 String labRead = "";
                 if (!oscarLogDao.hasRead(user, "hrm", hrmDocumentId)) {
