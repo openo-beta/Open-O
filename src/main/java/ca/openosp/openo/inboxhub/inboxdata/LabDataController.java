@@ -533,7 +533,8 @@ public class LabDataController {
     private String encodeURL(String url) {
         String encodedUrl = "";
         try {
-            encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString());
+            // A comma is valid as-is in a query value, so keep it readable (e.g. duplicateLabIds=58,59)
+            encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString()).replace("%2C", ",");
         } catch (UnsupportedEncodingException e) {
             MiscUtils.getLogger().error(e);
         }

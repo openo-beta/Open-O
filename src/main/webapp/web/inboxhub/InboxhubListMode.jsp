@@ -110,13 +110,14 @@
     });
 
     //Opens a popup window to a given inbox item.
+    //The inbox item links are already URL-encoded on the server, so encoding again breaks commas in duplicateLabIds.
     function reportWindow(page, height, width) {
         if (height && width) {
             windowprops = "height=" + height + ", width=" + width + ", location=no, scrollbars=yes, menubars=no, toolbars=no, resizable=yes, top=0, left=0";
         } else {
             windowprops = "height=660, width=960, location=no, scrollbars=yes, menubars=no, toolbars=no, resizable=yes, top=0, left=0";
         }
-        var popup = window.open(encodeURI(page), "labreport", windowprops);
+        var popup = window.open(page, "labreport", windowprops);
         popup.focus();
     }
 
