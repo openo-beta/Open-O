@@ -63,9 +63,10 @@
                 </interceptor-ref>
                 <!--
                     Sends the Cross-Origin-Opener-Policy header on .do pages.
-                    ResponseDefaultsFilter sends the same header on all other pages.
-                    Both must use the same value, or a popup opened from a JSP page
-                    loses its link to the window that opened it.
+                    CoopHeaderFilter sends the same header on every response, and
+                    this interceptor sets it again just before a result renders.
+                    Both must use the same value, or a popup loses its link to the
+                    window that opened it.
                 -->
                 <interceptor-ref name="coop">
                     <param name="disabled">false</param>
