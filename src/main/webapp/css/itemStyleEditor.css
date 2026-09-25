@@ -1,0 +1,56 @@
+/*
+ * Item Style editor dialog (appointment/itemStyleEditorDialog.jspf).
+ *
+ * Fits the window: the title and buttons stay in view and only the body between them scrolls. In an
+ * iframe, itemStyleEditor.js sets --item-style-editor-room to the height the browser window shows.
+ */
+.item-style-editor {
+    width: min(32rem, 95vw);
+    max-height: min(28rem, var(--item-style-editor-room, calc(100vh - 2rem)));
+    overflow: hidden;
+}
+
+.item-style-editor[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-style-editor > form {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.item-style-editor .card-body {
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.item-style-editor::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.item-style-editor-icons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+    gap: 0.25rem;
+}
+
+.item-style-editor-choice {
+    padding: 0.4rem 0.25rem;
+    line-height: 1;
+}
+
+.item-style-editor-choice img {
+    max-width: 1.75rem;
+    max-height: 1.75rem;
+}
+
+.item-style-editor-choice[aria-pressed="true"] {
+    outline: 2px solid var(--bs-primary, #0d6efd);
+    background-color: var(--bs-primary-bg-subtle, #cfe2ff);
+}
+
+/* The current icon when it is outside the set: spans the grid so its caption fits. */
+.item-style-editor-choice-current {
+    grid-column: 1 / -1;
+}

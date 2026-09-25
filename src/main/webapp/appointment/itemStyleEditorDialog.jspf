@@ -1,0 +1,95 @@
+<%--
+
+    Copyright (c) 2015-2019. The Pharmacists Clinic, Faculty of Pharmaceutical Sciences, University of British Columbia. All Rights Reserved.
+    This software is published under the GPL GNU General Public License.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+    This software was written for the
+    The Pharmacists Clinic
+    Faculty of Pharmaceutical Sciences
+    University of British Columbia
+    Vancouver, British Columbia, Canada
+
+--%>
+<%--
+    Item Style editor dialog.
+
+    The one dialog js/appointment/itemStyleEditor.js opens to edit an item's description, colour
+    or icon. The markup is static so the CSRF token and every field exist before the first open;
+    the script only fills and shows them. Each kind's control sits in its own fieldset and has no
+    name: the script copies the chosen value into the one posted value field.
+
+    Include with a static include inside <body>, after setting:
+      itemStyleEditorAction  the context-relative form action, e.g. /appointment/apptStatusSetting.do
+    and optionally:
+      itemStyleEditorDescriptionTitleKey  the message key heading the description editor, when the
+                                          page calls the value something of its own, such as a
+                                          location's name; defaults to "Edit Description"
+
+    Posts: ID, dispatch (updateDescription, updateColour or updateIcon) and value.
+
+    @since 2026-09-15
+--%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
+<fmt:setBundle basename="oscarResources"/>
+<fmt:message key="appointment.itemStyleEditor.notInSet" var="itemStyleEditorNotInSet"/>
+
+<dialog id="itemStyleEditor" class="item-style-editor p-0 border-0 rounded shadow">
+    <form method="post" action="<c:url value='${itemStyleEditorAction}'/>" class="card border-0">
+        <%-- Not <csrf:token/>: that prints NAME=VALUE text for URLs, not a field. --%>
+        <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>">
+
+        <input type="hidden" name="ID" value="">
+        <input type="hidden" name="dispatch" value="">
+        <input type="hidden" name="value" value="">
+
+        <div class="card-body">
+            <fieldset data-kind="description" hidden disabled>
+                <label for="itemStyleEditorDescription" id="itemStyleEditorTitle-description" class="form-label fs-5">
+                    <fmt:message key="${empty itemStyleEditorDescriptionTitleKey ? 'appointment.itemStyleEditor.title.description' : itemStyleEditorDescriptionTitleKey}"/>
+                </label>
+                <input type="text" class="form-control item-style-editor-description" id="itemStyleEditorDescription"
+                       required pattern=".*\S.*">
+            </fieldset>
+
+            <fieldset data-kind="colour" hidden disabled>
+                <label for="itemStyleEditorColour" id="itemStyleEditorTitle-colour" class="form-label fs-5">
+                    <fmt:message key="appointment.itemStyleEditor.title.colour"/>
+                </label>
+                <input type="color" class="form-control form-control-color item-style-editor-colour"
+                       id="itemStyleEditorColour">
+            </fieldset>
+
+            <%-- Bootstrap floats a legend and clears only its next sibling, so the grid must follow it directly. --%>
+            <fieldset data-kind="icon" hidden disabled>
+                <legend id="itemStyleEditorTitle-icon" class="fs-5"><fmt:message key="appointment.itemStyleEditor.title.icon"/></legend>
+                <div class="item-style-editor-icons"
+                     data-not-in-set-label="<c:out value='${itemStyleEditorNotInSet}'/>"></div>
+            </fieldset>
+        </div>
+
+        <div class="card-footer d-flex gap-2 justify-content-end">
+            <button type="button" class="btn btn-outline-danger me-auto" data-action="clear" hidden>
+                <fmt:message key="global.clear"/>
+            </button>
+            <button type="button" class="btn btn-secondary" data-action="cancel">
+                <fmt:message key="global.btnCancel"/>
+            </button>
+            <button type="submit" class="btn btn-primary"><fmt:message key="global.btnSave"/></button>
+        </div>
+    </form>
+</dialog>

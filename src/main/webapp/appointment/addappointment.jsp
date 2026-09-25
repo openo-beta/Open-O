@@ -94,6 +94,7 @@ Ontario, Canada
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.appt.JdbcApptImpl" %>
 <%@ page import="ca.openosp.openo.appt.ApptUtil" %>
+<%@ page import="ca.openosp.openo.appt.LocationList" %>
 <%@ page import="ca.openosp.openo.appt.ApptData" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 
@@ -101,6 +102,7 @@ Ontario, Canada
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="appt" %>
 
 <fmt:setBundle basename="oscarResources"/>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
@@ -162,6 +164,8 @@ Ontario, Canada
     LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
     LookupList reasonCodes = lookupListManager.findLookupListByName(loggedInInfo, "reasonCode");
     pageContext.setAttribute("reasonCodes", reasonCodes);
+    LocationList locations = LocationList.load(loggedInInfo);
+    boolean locationMode = locations.isLocationMode();
 
     int iPageSize = 5;
 
@@ -198,6 +202,7 @@ Ontario, Canada
         <script src="<%= request.getContextPath() %>/js/global.js"></script>
         <script src="<%= request.getContextPath() %>/js/checkDate.js"></script>
         <script src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
+        <script src="<%= request.getContextPath() %>/js/appointment/locationSelect.js"></script>
 
         <style>
 
@@ -504,7 +509,11 @@ Ontario, Canada
                 document.forms[0].notes.value = "<%= Encode.forJavaScriptBlock(apptObj.getNotes()) %>";
                 document.forms[0].resources.value = "<%=Encode.forJavaScriptBlock(apptObj.getResources())%>";
                 document.forms[0].type.value = "<%=Encode.forJavaScriptBlock(apptObj.getType())%>";
+                <% if (locationMode) { %>
+                selectLocationCode(document.forms[0].locationCode, "<%=Encode.forJavaScriptBlock(StringUtils.defaultString(apptObj.getLocationCode()))%>");
+                <% } else { %>
                 document.forms[0].location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
+                <% } %>
                 if ('<%=Encode.forJavaScript(String.valueOf(apptObj.getUrgency()))%>' == 'critical') {
                     document.forms[0].urgency.checked = "checked";
                 }
@@ -515,7 +524,7 @@ Ontario, Canada
                 statusCode = statusCode.substring(0, 1); //the selector only supports setting the first status
                 document.forms[0].status.value = statusCode;
                 <%}%>
-                <%if("true".equals(pros.getProperty("appointment.paste.location","false"))) {%>
+                <%if(!locationMode && "true".equals(pros.getProperty("appointment.paste.location","false"))) {%>
                 document.forms[0].location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
                 <%}%>
 
@@ -544,7 +553,10 @@ Ontario, Canada
                 document.forms['ADDAPPT'].duration.value = durSel;
                 document.forms['ADDAPPT'].resources.value = resSel;
                 var loc = document.forms['ADDAPPT'].location;
-                if (loc.nodeName === 'SELECT') {
+                // The Location List takes the type's location by name, and no free text.
+                if (document.forms['ADDAPPT'].locationCode) {
+                    selectLocationByName(document.forms['ADDAPPT'].locationCode, locSel);
+                } else if (loc.nodeName === 'SELECT') {
                     for (c = 0; c < loc.length; c++) {
                         if (loc.options[c].innerHTML == locSel) {
                             loc.selectedIndex = c;
@@ -1286,6 +1298,9 @@ Ontario, Canada
                                     }
                                     %>
                                 </select>
+                                <% } else if (locationMode) { %>
+                                <appt:locationSelect choices="<%=locations.getActiveItems()%>"
+                                                     selected='<%=bFirstDisp ? null : request.getParameter("locationCode")%>'/>
                                 <% } else { %>
 	            <input type="TEXT" name="location" tabindex="4" tabindex="4" value="<%=Encode.forHtmlAttribute(String.valueOf(loc))%>" class="form-control">
                                 <% } %>

@@ -629,12 +629,9 @@
                            title="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.scheduleSettingTitle"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.scheduleSetting"/></a></li>
                     <security:oscarSec roleName="<%=roleName$%>" objectName="_admin.schedule.curprovider_only"
                                        rights="r" reverse="<%=true%>">
-                        <oscar:oscarPropertiesCheck property="ENABLE_EDIT_APPT_STATUS"
-                                                    value="yes">
-                            <li><a href="#"
-                                   onclick="popupPage(500,600,'${pageContext.request.contextPath}/appointment/apptStatusSetting.do');return false;"
-                                   title="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.scheduleSettingTitle"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.appointmentStatusSetting"/></a></li>
-                        </oscar:oscarPropertiesCheck>
+                        <li><a href="#"
+                               onclick="popupPage(500,600,'${pageContext.request.contextPath}/appointment/appointmentstatuscontrol.jsp');return false;"
+                               title="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.scheduleSettingTitle"/>"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.appointmentStatusSetting"/></a></li>
 
                         <li><a href="#"
                                onclick="popupPage(500,screen.width,'${pageContext.request.contextPath}/appointment/appointmentTypeAction.do'); return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.appointmentTypeList"/></a></li>

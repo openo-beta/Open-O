@@ -40,6 +40,10 @@ public class LookupListItem extends AbstractModel<Integer> {
 
     private String label;
 
+    private String icon;
+
+    private String colour;
+
     private boolean active = true;
 
     private int displayOrder = 0;
@@ -74,6 +78,44 @@ public class LookupListItem extends AbstractModel<Integer> {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    /**
+     * Returns the icon drawn for this item, such as on an appointment location chip.
+     *
+     * @return String a glyphicon class name such as {@code glyphicon-home}, or null when unset
+     */
+    public String getIcon() {
+        return icon;
+    }
+
+    /**
+     * Sets the icon drawn for this item. Validation lives in
+     * {@link ca.openosp.openo.managers.LookupListManager#updateLookupListItemIcon}.
+     *
+     * @param icon String a glyphicon class name, or null to clear it
+     */
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    /**
+     * Returns the colour this item is drawn in, such as on an appointment location chip.
+     *
+     * @return String a {@code #rrggbb} hex colour, or null when unset
+     */
+    public String getColour() {
+        return colour;
+    }
+
+    /**
+     * Sets the colour this item is drawn in. Validation lives in
+     * {@link ca.openosp.openo.managers.LookupListManager#updateLookupListItemColour}.
+     *
+     * @param colour String a {@code #rrggbb} hex colour, or null to clear it
+     */
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     public boolean isActive() {

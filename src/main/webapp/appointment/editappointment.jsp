@@ -84,6 +84,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.AppointmentTypeDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.appt.ApptUtil" %>
+<%@ page import="ca.openosp.openo.appt.LocationList" %>
 <%@ page import="ca.openosp.openo.appt.ApptData" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
@@ -96,6 +97,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="appt" %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
 <%
 
@@ -143,6 +145,8 @@
     LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
     LookupList reasonCodes = lookupListManager.findLookupListByName(loggedInInfo, "reasonCode");
     pageContext.setAttribute("reasonCodes", reasonCodes);
+    LocationList locations = LocationList.load(loggedInInfo);
+    boolean locationMode = locations.isLocationMode();
 
     ApptData apptObj = ApptUtil.getAppointmentFromSession(request);
 
@@ -239,6 +243,7 @@
     <script src="<%= request.getContextPath() %>/js/global.js"></script>
     <script src="<%= request.getContextPath() %>/js/checkDate.js"></script>
     <script src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
+    <script src="<%= request.getContextPath() %>/js/appointment/locationSelect.js"></script>
 
         <style>
 
@@ -575,7 +580,11 @@
                 document.EDITAPPT.demographic_no.value = "<%=Encode.forJavaScriptBlock(apptObj.getDemographic_no())%>";
                 document.forms[0].reason.value = "<%= Encode.forJavaScriptBlock(apptObj.getReason()) %>";
                 document.forms[0].notes.value = "<%= Encode.forJavaScriptBlock(apptObj.getNotes()) %>";
+                <% if (locationMode) { %>
+                selectLocationCode(document.EDITAPPT.locationCode, "<%=Encode.forJavaScriptBlock(StringUtils.defaultString(apptObj.getLocationCode()))%>");
+                <% } else { %>
                 document.EDITAPPT.location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
+                <% } %>
                 document.EDITAPPT.resources.value = "<%=Encode.forJavaScriptBlock(apptObj.getResources())%>";
                 document.EDITAPPT.type.value = "<%=Encode.forJavaScriptBlock(apptObj.getType())%>";
                 if ('<%=Encode.forJavaScript(String.valueOf(apptObj.getUrgency()))%>' === 'critical') {
@@ -609,7 +618,10 @@
                 document.forms['EDITAPPT'].duration.value = durSel;
                 document.forms['EDITAPPT'].resources.value = resSel;
                 var loc = document.forms['EDITAPPT'].location;
-                if (loc.nodeName.toUpperCase() === 'SELECT') {
+                // The Location List takes the type's location by name, and no free text.
+                if (document.forms['EDITAPPT'].locationCode) {
+                    selectLocationByName(document.forms['EDITAPPT'].locationCode, locSel);
+                } else if (loc.nodeName.toUpperCase() === 'SELECT') {
                     for (c = 0; c < loc.length; c++) {
                         if (loc.options[c].innerHTML === locSel) {
                             loc.selectedIndex = c;
@@ -1073,6 +1085,12 @@
                             }
                             %>
                         </select>
+                        <% } else if (locationMode) {
+                            LocationList.Choice locationChoice = bFirstDisp ? locations.choiceFor(appt.getLocationCode(), loc)
+                                    : new LocationList.Choice(request.getParameter("locationCode"), loc);
+                        %>
+                        <appt:locationSelect choices="<%=locations.getChoices(locationChoice.code())%>" selected="<%=locationChoice.value()%>"
+                                             legacy="<%=locationChoice.legacy()%>"/>
                         <% } else { %>
 		        <input type="text" class="form-control" name="location" tabindex="4"
                        value="<%=Encode.forHtmlAttribute(bFirstDisp?appt.getLocation():request.getParameter("location"))%>" >

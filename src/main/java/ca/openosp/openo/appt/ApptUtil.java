@@ -58,6 +58,7 @@ public class ApptUtil {
         obj.setChart_no(request.getParameter("chart_no"));
         obj.setUrgency(request.getParameter("urgency"));
         obj.setReasonCode(request.getParameter("reasonCode"));
+        obj.setLocationCode(request.getParameter("locationCode"));
         // set up session bean
         request.getSession().setAttribute(SESSION_APPT_BEAN, obj);
     }

@@ -879,3 +879,16 @@ ALTER TABLE security ADD mfaSecret VARCHAR(255);
 -- set to "RSVPreF3"
 -- 
 UPDATE `preventions` SET prevention_type = "RSV" WHERE `prevention_type` = "RSVPreF3";
+
+--
+-- Alter table structure for LookupListItem, appointment and appointmentArchive: Item Style and Location Code
+--
+ALTER TABLE LookupListItem
+  ADD COLUMN IF NOT EXISTS icon varchar(255) NULL AFTER label,
+  ADD COLUMN IF NOT EXISTS colour varchar(7) NULL AFTER icon;
+ALTER TABLE appointment
+  ADD COLUMN IF NOT EXISTS locationCode int(11) NULL AFTER location,
+  MODIFY location varchar(80) NULL DEFAULT NULL;
+ALTER TABLE appointmentArchive
+  ADD COLUMN IF NOT EXISTS locationCode int(11) NULL AFTER location,
+  MODIFY location varchar(80) NULL DEFAULT NULL;

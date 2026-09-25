@@ -99,12 +99,35 @@ public class Appointment extends AbstractModel<Integer> implements Serializable,
 
     private Integer reasonCode;
 
+    private Integer locationCode;
+
     public Integer getReasonCode() {
         return reasonCode;
     }
 
     public void setReasonCode(Integer reasonCode) {
         this.reasonCode = reasonCode;
+    }
+
+    /**
+     * Gets the Location List item chosen for this appointment. The location text holds a snapshot of
+     * that item's label.
+     *
+     * @return Integer the LookupListItem id, or null when no item was chosen
+     * @since 2026-09-15
+     */
+    public Integer getLocationCode() {
+        return locationCode;
+    }
+
+    /**
+     * Sets the Location List item chosen for this appointment.
+     *
+     * @param locationCode Integer the LookupListItem id, or null for none
+     * @since 2026-09-15
+     */
+    public void setLocationCode(Integer locationCode) {
+        this.locationCode = locationCode;
     }
 
     public String getProviderNo() {
