@@ -149,7 +149,7 @@
     } else {
     %>
 
-    <%=Encode.forHtml(String.valueOf(errorCode))%>
+    <%=errorCode%>
     <input type="button" value="Change" onClick="history.go(-1);return false;">
     <%
         }
