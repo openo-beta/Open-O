@@ -343,7 +343,7 @@
                                 <tr>
                                     <td align="right">Provider:</td>
                                     <td><select id="provider">
-                                        <%=Encode.forHtml(String.valueOf(providerCombo()))%>
+                                        <%=providerCombo()%>
                                     </select></td>
                                 </tr>
                             </table>
@@ -409,7 +409,7 @@
                         String sVal = prov[i].split("/")[0];
                         String sTxt = prov[i].split("/")[1];
 
-                        sb.append("<option value='" + sVal + "'>" + sTxt + "</option>");
+                        sb.append("<option value='" + Encode.forHtmlAttribute(sVal) + "'>" + Encode.forHtml(sTxt) + "</option>");
                     }
                     return new String(sb);
                 }

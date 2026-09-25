@@ -7,6 +7,8 @@
  */
 package ca.openosp.openo.utility;
 
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -120,5 +122,56 @@ class HtmlEncodingUtilsTest {
     void semicolonBreaksShouldKeepTrailingEmpties() {
         String result = HtmlEncodingUtils.encodeForHtmlWithSemicolonBreaks("a;b;");
         assertThat(result).isEqualTo("a<br />b<br />");
+    }
+
+    @Test
+    @DisplayName("allowing markup: returns empty string for null input")
+    void allowingMarkupShouldReturnEmptyForNull() {
+        assertThat(HtmlEncodingUtils.encodeForHtmlAllowingMarkup(null, "<br/>")).isEmpty();
+    }
+
+    @Test
+    @DisplayName("allowing markup: escapes everything when no markup is trusted")
+    void allowingMarkupShouldEscapeAllWithoutTrustedMarkup() {
+        assertThat(HtmlEncodingUtils.encodeForHtmlAllowingMarkup("a<br/>b"))
+                .isEqualTo("a&lt;br/&gt;b");
+    }
+
+    @Test
+    @DisplayName("allowing markup: restores exactly the trusted strings")
+    void allowingMarkupShouldRestoreTrustedStrings() {
+        String highlight = "<span style=\"color:#767676\">";
+        String formatted = "Line 1<br/><center>Title</center>" + highlight + "note</span>&nbsp;5&#181;g";
+        assertThat(HtmlEncodingUtils.encodeForHtmlAllowingMarkup(formatted,
+                "<br/>", "<center>", "</center>", highlight, "</span>", "&nbsp;", "&#181;"))
+                .isEqualTo(formatted);
+    }
+
+    @Test
+    @DisplayName("allowing markup: encodes the text around the trusted markup")
+    void allowingMarkupShouldEncodeSurroundingText() {
+        assertThat(HtmlEncodingUtils.encodeForHtmlAllowingMarkup("K <5.5 & \"low\"<br/>next", "<br/>"))
+                .isEqualTo("K &lt;5.5 &amp; &#34;low&#34;<br/>next");
+    }
+
+    @Test
+    @DisplayName("allowing markup: every OLIS formatting token survives the encode-restore round trip")
+    void allowingMarkupShouldRestoreEveryOlisFormattingToken() {
+        for (String token : OLISHL7Handler.FORMATTING_MARKUP) {
+            String formatted = "before " + token + " after";
+            assertThat(HtmlEncodingUtils.encodeForHtmlAllowingMarkup(formatted, OLISHL7Handler.FORMATTING_MARKUP))
+                    .as("token %s", token)
+                    .isEqualTo(formatted);
+        }
+    }
+
+    @Test
+    @DisplayName("allowing markup: keeps untrusted tags escaped instead of dropping them")
+    void allowingMarkupShouldKeepUntrustedTagsEscaped() {
+        String result = HtmlEncodingUtils.encodeForHtmlAllowingMarkup(
+                "Titer <positive><script>alert(1)</script><span onmouseover=alert(1)>x</span>", "<br/>");
+        assertThat(result)
+                .doesNotContain("<positive>", "<script>", "<span onmouseover")
+                .contains("Titer &lt;positive&gt;", "&lt;script&gt;", "&lt;span onmouseover=alert(1)&gt;");
     }
 }

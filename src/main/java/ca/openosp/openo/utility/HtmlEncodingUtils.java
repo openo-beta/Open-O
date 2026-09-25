@@ -65,6 +65,39 @@ public final class HtmlEncodingUtils {
     }
 
     /**
+     * HTML-encode {@code value}, then restore each exact string in
+     * {@code trustedMarkup}. Use this for text into which our own code
+     * inserted known markup, such as {@code OLISHL7Handler.formatString()}
+     * output rendered with {@code OLISHL7Handler.FORMATTING_MARKUP}.
+     *
+     * <p>Only those exact strings are restored. Any other tag, attribute or
+     * entity in the value stays escaped, so the data cannot inject markup.
+     * Unlike an HTML sanitizer, this never drops text: markup that is not
+     * trusted is shown escaped rather than deleted.
+     *
+     * <p>Source text that literally contains a trusted string renders as that
+     * markup, since after encoding it is indistinguishable from markup our
+     * code inserted. This is safe (the trusted set is fixed) and matches how
+     * these pages always rendered such text.
+     *
+     * @param value         Object the text to encode; {@code null} produces
+     *                      an empty string
+     * @param trustedMarkup String... exact markup strings allowed to render
+     * @return String the encoded text with the trusted markup restored
+     * @since 2026-09-25
+     */
+    public static String encodeForHtmlAllowingMarkup(Object value, String... trustedMarkup) {
+        if (value == null) {
+            return "";
+        }
+        String encoded = Encode.forHtml(value.toString());
+        for (String markup : trustedMarkup) {
+            encoded = encoded.replace(Encode.forHtml(markup), markup);
+        }
+        return encoded;
+    }
+
+    /**
      * HTML-encode {@code value}, replacing literal {@code ;} delimiters in
      * the source string with {@code <br />} line breaks. Used for Rx
      * instruction fields ({@code fullOutLine}) where {@code ;} is the
