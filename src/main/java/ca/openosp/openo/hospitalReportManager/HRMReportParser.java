@@ -100,14 +100,36 @@ public class HRMReportParser {
         return null;
     }
 
+    /**
+     * Parses an HRM report that is already stored in OpenO, for display.
+     *
+     * <p>Skips the empty-required-element check that {@link #parseNewReport} applies, so a
+     * report accepted before that check existed still opens instead of vanishing from the
+     * inbox and chart.
+     *
+     * @param loggedInInfo LoggedInInfo the current session
+     * @param hrmReportFileLocation String path of the report XML, absolute or relative to DOCUMENT_DIR
+     * @return HRMReport the parsed report, or null if the file is missing or cannot be parsed
+     */
     public static HRMReport parseReport(LoggedInInfo loggedInInfo, String hrmReportFileLocation) {
-        return parseReport(loggedInInfo, hrmReportFileLocation, null);
+        return parseReport(loggedInInfo, hrmReportFileLocation, null, false);
     }
 
-    /*
-     * Called when a report is added to system
+    /**
+     * Parses an HRM report that is being received (sFTP fetch, upload, migration).
+     *
+     * <p>Rejects the report if an element the HRM schema requires is present but empty.
+     *
+     * @param loggedInInfo LoggedInInfo the current session
+     * @param hrmReportFileLocation String path of the report XML, absolute or relative to DOCUMENT_DIR
+     * @param errors List&lt;Throwable&gt; collects the parse errors; may be null
+     * @return HRMReport the parsed report, or null if the report is rejected
      */
-    public static HRMReport parseReport(LoggedInInfo loggedInInfo, String hrmReportFileLocation, List<Throwable> errors) {
+    public static HRMReport parseNewReport(LoggedInInfo loggedInInfo, String hrmReportFileLocation, List<Throwable> errors) {
+        return parseReport(loggedInInfo, hrmReportFileLocation, errors, true);
+    }
+
+    private static HRMReport parseReport(LoggedInInfo loggedInInfo, String hrmReportFileLocation, List<Throwable> errors, boolean isNewReport) {
         OmdCds root = null;
 
         logger.info("Parsing the Report in the location:" + hrmReportFileLocation);
@@ -139,7 +161,9 @@ public class HRMReportParser {
                         tmpXMLholder.toPath(),
                         StandardCharsets.UTF_8
                     );
-                    HRMXmlValidator.validateNoRequiredElementsEmpty(tmpXMLholder);
+                    if (isNewReport) {
+                        HRMXmlValidator.validateNoRequiredElementsEmpty(tmpXMLholder);
+                    }
                 }
 
                 // Load and compile the XSD schema

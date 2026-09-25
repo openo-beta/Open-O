@@ -100,7 +100,7 @@ public class HRMUploadLab2Action extends ActionSupport implements UploadedFilesA
             try (InputStream inputStream = new FileInputStream(file)) {
                 String filePath = Utilities.saveFile(inputStream, sanitizedFileName);
                 List<Throwable> parseErrors = new ArrayList<>();
-                HRMReport report = HRMReportParser.parseReport(loggedInInfo, filePath, parseErrors);
+                HRMReport report = HRMReportParser.parseNewReport(loggedInInfo, filePath, parseErrors);
 
                 if (report == null) {
                     String errMsg = parseErrors.isEmpty() ? "Failed to parse HRM report" : parseErrors.get(0).getMessage();

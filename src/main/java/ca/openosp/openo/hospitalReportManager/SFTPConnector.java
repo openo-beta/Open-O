@@ -611,7 +611,7 @@ public class SFTPConnector {
                         if (filename != null) {
 
                             List<Throwable> errors = new ArrayList<Throwable>();
-                            HRMReport report = HRMReportParser.parseReport(loggedInInfo, filename, errors);
+                            HRMReport report = HRMReportParser.parseNewReport(loggedInInfo, filename, errors);
                             if (report != null) {
                                 hrmLogEntry.setParsed(true);
                                 hrmLogEntry.setRecipientId(report.getDeliverToUserId());

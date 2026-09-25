@@ -208,7 +208,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
                     }
 
                     // Parse and process the HRM report
-                    HRMReport report = HRMReportParser.parseReport(loggedInInfo, destinationFile.getAbsolutePath());
+                    HRMReport report = HRMReportParser.parseNewReport(loggedInInfo, destinationFile.getAbsolutePath(), null);
                     if (report != null) {
                         HRMReportParser.addReportToInbox(loggedInInfo, report);
                         obj.put("message", safeFileName + " successfully saved");
