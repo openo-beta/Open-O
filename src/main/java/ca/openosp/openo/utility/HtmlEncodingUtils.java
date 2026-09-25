@@ -75,6 +75,11 @@ public final class HtmlEncodingUtils {
      * Unlike an HTML sanitizer, this never drops text: markup that is not
      * trusted is shown escaped rather than deleted.
      *
+     * <p>Source text that literally contains a trusted string renders as that
+     * markup, since after encoding it is indistinguishable from markup our
+     * code inserted. This is safe (the trusted set is fixed) and matches how
+     * these pages always rendered such text.
+     *
      * @param value         Object the text to encode; {@code null} produces
      *                      an empty string
      * @param trustedMarkup String... exact markup strings allowed to render
