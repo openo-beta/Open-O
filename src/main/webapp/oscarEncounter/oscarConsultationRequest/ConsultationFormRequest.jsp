@@ -2470,7 +2470,7 @@ if (userAgent != null) {
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgHealthCard"/>
                                         </td>
-                                        <td class="tite1"><%=Encode.forHtml(String.valueOf(thisForm.getPatientHealthNum()))%><%=Encode.forHtml(String.valueOf(thisForm.getPatientHealthCardVersionCode()))%><%=Encode.forHtml(String.valueOf(thisForm.getPatientHealthCardType()))%>
+                                        <td class="tite1"><%=Encode.forHtml(thisForm.getFormattedHealthCard())%>
                                         </td>
                                     </tr>
                                     <tr id="conReqSendTo">
@@ -3193,8 +3193,13 @@ if (userAgent != null) {
 
                             let delegate = "#" + delegateKey;
                             let element = jQuery('#attachDocumentsForm').find(delegate);
-                            if (element.length === 0) {
+                            // addFormIfNotFound only knows encounter forms; an unlisted attachment of any other
+                            // type has no checkbox to pre-check, so skip it instead of aborting the whole loop.
+                            if (element.length === 0 && data.name === "formNo") {
                                 element = addFormIfNotFound(data, '<%=Encode.forJavaScript(String.valueOf(demo))%>', delegate);
+                            }
+                            if (element.length === 0) {
+                                return;
                             }
                             let oldType = element.attr("class").split(" ")[0];
                             element.attr("checked", true).removeClass(oldType).addClass(oldType.split("_")[0] + "_pre_check");
