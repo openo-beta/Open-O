@@ -92,6 +92,17 @@
             varpage = ctx + varpage.substr(2);
         }
         var page = "" + varpage;
+        // Pages on another site, such as the Resource link, get their own window name
+        // so they never share a window with an OpenO page.
+        var site = null;
+        try {
+            site = new URL(page, document.baseURI);
+        } catch (e) {
+            // An address the browser cannot read keeps the window name it was given.
+        }
+        if (site && (site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
+            name = "oscarExternal_" + (name || site.host);
+        }
         windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
         //var popup =window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.popupPageWindow"/>", windowprops);
         openWindows[name] = window.open(page, name, windowprops);

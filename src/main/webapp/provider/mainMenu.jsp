@@ -210,7 +210,8 @@
                             if ("on".equalsIgnoreCase(prov) && !hide_eConsult) {
                         %>
                         <li id="econ">
-                            <a href="#" onclick="popupOscarRx(625, 1024, '<%=request.getContextPath()%>/oscarEncounter/econsult.do')"
+                            <%-- eConsult redirects to another site, so it gets its own window instead of the one Msg, Consultations and the tickler share. --%>
+                            <a href="#" onclick="popupFocusPage(625, 1024, '<%=request.getContextPath()%>/oscarEncounter/econsult.do', 'eConsult')"
                                title="eConsult">
                                 <span>eConsult</span></a>
                         </li>

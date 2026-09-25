@@ -169,9 +169,21 @@
         }
 
         function popupPage(varpage) {
+            var windowname = "inr2";
+            // Pages on another site, such as the Resource link, get their own window name
+            // so they never share a window with an OpenO page.
+            var site = null;
+            try {
+                site = new URL(varpage, document.baseURI);
+            } catch (e) {
+                // An address the browser cannot read keeps the window name it was given.
+            }
+            if (site && (site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
+                windowname = "oscarExternal_" + windowname;
+            }
             windowprops = "height=700,width=960" +
                 ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=no,screenX=50,screenY=50,top=20,left=20";
-            var popup = window.open(varpage, "inr2", windowprops);
+            var popup = window.open(varpage, windowname, windowprops);
             if (popup.opener == null) {
                 popup.opener = self;
             }
