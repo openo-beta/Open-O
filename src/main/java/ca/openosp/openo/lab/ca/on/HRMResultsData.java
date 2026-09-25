@@ -93,8 +93,13 @@ public class HRMResultsData {
         HashMap<String, LabResultData> labResults = new HashMap<String, LabResultData>();
         HashMap<String, HRMReport> labReports = new HashMap<String, HRMReport>();
 
+        // A report routed to several providers comes back once per provider; handle it once,
+        // otherwise it is counted as a duplicate of itself.
+        Set<Integer> seenDocumentIds = new HashSet<>();
+
         for (HRMDocumentToProvider hrmDocResult : hrmDocResultsProvider) {
             Integer id = hrmDocResult.getHrmDocumentId();
+            if (!seenDocumentIds.add(id)) continue;
             LabResultData lbData = new LabResultData(LabResultData.HRM);
 
             List<HRMDocument> hrmDocument = hrmDocumentDao.findById(id);
