@@ -2111,16 +2111,13 @@
                                         // rather than raw message order.
                                         for (ca.openosp.openo.olis.model.OlisLabChildResultSortable child : handler.getChildObrResults(childOBR)) {
                                             String ceStatus = child.getStatus() != null ? child.getStatus().trim() : "";
-                                            boolean ceStrikeout = ceStatus.startsWith("W");
                                             String ceName = child.getName();
-                                            ceName = ceStrikeout ? "<s>" + ceName + "</s>" : ceName;
                                             String ceSense = child.getSensitivity();
-                                            ceSense = ceStrikeout ? "<s>" + ceSense + "</s>" : ceSense;
                                 %>
                                 <tr>
-                                    <td><%=Encode.forHtml(String.valueOf(ceName))%>
+                                    <td><%=strikeOutInvalidContent(ceName, ceStatus)%>
                                     </td>
-                                    <td align="center"><%=Encode.forHtml(String.valueOf(ceSense))%>
+                                    <td align="center"><%=strikeOutInvalidContent(ceSense, ceStatus)%>
                                     </td>
                                 </tr>
                                 <%
