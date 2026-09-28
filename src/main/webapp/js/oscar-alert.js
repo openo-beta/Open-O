@@ -206,6 +206,10 @@ class OscarAlert {
                 overflow-y: auto;
                 min-height: 0;
             }
+            /* An alert is never part of the form, so keep it off the printout. */
+            @media print {
+                :host { display: none !important; }
+            }
         `;
 
         // 7. Prepare Shadow DOM
