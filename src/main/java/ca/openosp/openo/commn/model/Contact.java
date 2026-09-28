@@ -26,7 +26,9 @@
 
 package ca.openosp.openo.commn.model;
 
-import java.util.Date;
+import ca.openosp.openo.integration.fhir.r4.interfaces.ContactInterface;
+import ca.openosp.openo.commn.constants.ContactRelationship;
+import ca.openosp.openo.commn.constants.ContactType;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
@@ -41,10 +43,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
-import ca.openosp.openo.integration.fhir.interfaces.ContactInterface;
-import ca.openosp.openo.integration.fhir.resources.constants.ContactRelationship;
-import ca.openosp.openo.integration.fhir.resources.constants.ContactType;
+import java.util.Date;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -303,5 +302,9 @@ public class Contact extends AbstractModel<Integer> implements ContactInterface 
     @Override
     public String getPhone() {
         return this.getResidencePhone();
+    }
+
+    public String getCpso() {
+        return "";
     }
 }

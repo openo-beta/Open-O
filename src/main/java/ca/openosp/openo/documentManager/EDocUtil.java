@@ -41,9 +41,12 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import ca.openosp.openo.commn.dao.*;
@@ -454,11 +457,14 @@ public final class EDocUtil {
             }
             currentdoc.setType(d.getDoctype());
             currentdoc.setStatus(d.getStatus());
-            currentdoc.setObservationDate(d.getObservationdate());
+            // yyyy-MM-dd to match rest of system; Date overload uses yyyy/MM/dd.
+            currentdoc.setObservationDate(ConversionUtils.toDateString(d.getObservationdate()));
             currentdoc.setReviewerId(d.getReviewer());
             currentdoc.setReviewDateTime(ConversionUtils.toTimestampString(d.getReviewdatetime()));
             currentdoc.setReviewDateTimeDate(d.getReviewdatetime());
             currentdoc.setContentDateTime(d.getContentdatetime());
+            currentdoc.setDocPublic(String.valueOf(d.getPublic1()));
+            // ctl module/moduleId enriched below for the attached branch.
 
             if (d.isRestrictToProgram() != null) {
                 currentdoc.setRestrictToProgram(d.isRestrictToProgram());
@@ -468,6 +474,7 @@ public final class EDocUtil {
         }
 
         if (attached) { //listing attached documents only
+            enrichAttachedWithCtl(attachedDocs);
             resultDocs = attachedDocs;
         } else { //remove attached documents from full document list
             for (Object[] o : ctlDocs) {
@@ -509,12 +516,92 @@ public final class EDocUtil {
     }
 
     /**
+     * Enriches each attached EDoc with a CtlDocument module/moduleId. Provider
+     * bindings are preferred over demographic so a doc uploaded to a provider's
+     * library classifies as a provider doc even when it also has a demographic
+     * binding. Docs with no ctl row at all are left unclassified and fall through
+     * to the patient section (via {@link #isProviderModule}(null) == false).
+     *
+     * <p>Runs one batch ctl lookup for the whole attachment list to keep this
+     * O(1) queries regardless of attachment count.</p>
+     */
+    private static void enrichAttachedWithCtl(List<EDoc> attachedDocs) {
+        if (attachedDocs.isEmpty()) return;
+
+        List<Integer> docNos = new ArrayList<>(attachedDocs.size());
+        for (EDoc eDoc : attachedDocs) docNos.add(Integer.parseInt(eDoc.getDocId()));
+
+        Map<Integer, CtlDocument> preferredCtl = new HashMap<>();
+        for (CtlDocument c : ctlDocumentDao.findByDocumentNos(docNos)) {
+            Integer docNo = c.getId().getDocumentNo();
+            CtlDocument current = preferredCtl.get(docNo);
+            if (current == null || preferProvider(c, current)) {
+                preferredCtl.put(docNo, c);
+            }
+        }
+
+        for (EDoc eDoc : attachedDocs) {
+            CtlDocument ctl = preferredCtl.get(Integer.parseInt(eDoc.getDocId()));
+            if (ctl != null) {
+                eDoc.setModule(ctl.getId().getModule());
+                eDoc.setModuleId(String.valueOf(ctl.getId().getModuleId()));
+            }
+        }
+    }
+
+    /** Tiebreaker for multi-ctl docs: a provider binding replaces a non-provider one. */
+    private static boolean preferProvider(CtlDocument candidate, CtlDocument current) {
+        return isProviderModule(candidate.getId().getModule())
+                && !isProviderModule(current.getId().getModule());
+    }
+
+    /**
      * End Fetches consult documents
      */
 
 
     public static ArrayList<EDoc> listDocs(LoggedInInfo loggedInInfo, String module, String moduleid, String docType, String publicDoc, EDocSort sort) {
         return listDocs(loggedInInfo, module, moduleid, docType, publicDoc, sort, "active");
+    }
+
+    /**
+     * Retrieves private documents belonging to the currently logged-in provider.
+     *
+     * @param loggedInInfo LoggedInInfo the logged-in user's session information
+     * @return List&lt;EDoc&gt; list of the provider's private documents sorted by observation date,
+     *         or an empty list if the provider number is null
+     * @since 2026-02-18
+     */
+    public static List<EDoc> getProviderPrivateDocs(LoggedInInfo loggedInInfo) {
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        if (providerNo == null) {
+            return Collections.emptyList();
+        }
+        return listDocs(loggedInInfo, "providers", providerNo, null, PRIVATE, EDocSort.OBSERVATIONDATE);
+    }
+
+    /**
+     * Retrieves public (shared) documents uploaded by any provider.
+     *
+     * <p>Results are global, not scoped to the logged-in provider: when
+     * {@code PUBLIC} is passed to {@link #listDocs}, the underlying
+     * {@code DocumentDaoImpl.findDocuments()} queries {@code d.public1 = 1}
+     * without filtering by {@code moduleId}. The {@code providerNo} argument
+     * is still required by the shared {@code listDocs} signature but does
+     * not restrict results.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the logged-in user's session information
+     * @return List&lt;EDoc&gt; all public provider documents sorted by observation date;
+     *         empty list when no provider is in context (defensive — the query
+     *         itself does not depend on provider identity)
+     * @since 2026-02-20
+     */
+    public static List<EDoc> getProviderPublicDocs(LoggedInInfo loggedInInfo) {
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        if (providerNo == null) {
+            return Collections.emptyList();
+        }
+        return listDocs(loggedInInfo, "providers", providerNo, null, PUBLIC, EDocSort.OBSERVATIONDATE);
     }
 
     public static EDoc getEDocFromDocId(String docId) {
@@ -545,9 +632,10 @@ public final class EDocUtil {
             currentdoc.setDateTimeStampAsDate(d.getUpdatedatetime());
             currentdoc.setDateTimeStamp(ConversionUtils.toTimestampString(d.getUpdatedatetime()));
             currentdoc.setFileName(d.getDocfilename());
+            currentdoc.setDocPublic(String.valueOf(d.getPublic1()));
             currentdoc.setStatus(d.getStatus());
             currentdoc.setContentType(d.getContenttype());
-            currentdoc.setObservationDate(d.getObservationdate());
+            currentdoc.setObservationDate(ConversionUtils.toDateString(d.getObservationdate()));
             currentdoc.setReviewerId(d.getReviewer());
             currentdoc.setReviewDateTime(ConversionUtils.toTimestampString(d.getReviewdatetime()));
             currentdoc.setReviewDateTimeDate(d.getReviewdatetime());

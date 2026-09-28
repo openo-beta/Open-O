@@ -240,18 +240,13 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
         }
     }
 
-    /**
-     * Finds all documents for the specified demographic id
-     *
-     * @param demoNo
-     */
     @SuppressWarnings("unchecked")
     @Override
-    public List<Integer> findDocumentNosForDemographic(Integer demographicNo, List<Integer> docNos) {
+    public List<Integer> findValidAttachmentDocNos(Integer demographicNo, List<Integer> docNos) {
         if (docNos == null || docNos.isEmpty()) return Collections.emptyList();
         Query query = entityManager.createQuery(
                 "SELECT c.id.documentNo FROM CtlDocument c " +
-                "WHERE c.id.module = 'demographic' AND c.id.moduleId = :demographicNo " +
+                "WHERE ((c.id.module = 'demographic' AND c.id.moduleId = :demographicNo) OR c.id.module IN ('provider','providers')) " +
                 "AND c.status != 'D' AND c.id.documentNo IN :docNos");
         query.setParameter("demographicNo", demographicNo);
         query.setParameter("docNos", docNos);

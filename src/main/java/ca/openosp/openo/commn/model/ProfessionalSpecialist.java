@@ -23,12 +23,21 @@
 
 package ca.openosp.openo.commn.model;
 
+import ca.openosp.openo.integration.fhir.r4.interfaces.ContactInterface;
+import ca.openosp.openo.commn.constants.ContactRelationship;
+import ca.openosp.openo.commn.constants.ContactType;
 import org.apache.commons.lang3.StringUtils;
-import ca.openosp.openo.integration.fhir.interfaces.ContactInterface;
-import ca.openosp.openo.integration.fhir.resources.constants.ContactRelationship;
-import ca.openosp.openo.integration.fhir.resources.constants.ContactType;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 

@@ -80,7 +80,7 @@ public final class RefI12Handler extends ChainnedMessageAdapter<REF_I12> {
                     logger.debug("xpn/name=" + name);
                     return (name);
                 }
-            } catch (HL7Exception e) {
+            } catch (Exception e) {
                 logger.error("Unexpected error.", e);
             }
         }

@@ -35,4 +35,6 @@ public interface PreventionDao extends AbstractDao<Prevention> {
     List<Prevention> findUniqueByDemographicId(Integer demographicId);
 
     List<Integer> findNewPreventionsSinceDemoKey(String keyName);
+
+    List<Prevention> findActiveByDemoIdWithDates(Integer demoId, Date startDate, Date endDate);
 }

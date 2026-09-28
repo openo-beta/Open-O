@@ -3,6 +3,7 @@ package ca.openosp.openo.documentManager;
 
 import ca.openosp.openo.commn.model.EFormData;
 import ca.openosp.openo.documentManager.data.AttachmentLabResultData;
+import ca.openosp.openo.documentManager.data.AttachmentSections;
 import ca.openosp.openo.commn.model.enumerator.DocumentType;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.PDFGenerationException;
@@ -312,6 +313,67 @@ public interface DocumentAttachmentManager {
      * @return {@code true} if every document belongs to the patient; {@code false} otherwise
      */
     public boolean validateDocumentsBelongToPatient(LoggedInInfo loggedInInfo, Integer demographicNo, String[] documents);
+
+    /**
+     * Merges the items attached to a consult/eForm into the attachment window's sections so
+     * every attached item is listed and can be unchecked to detach it. Each attached item is
+     * added to the top of its section unless that section already lists it — e.g. deleted items,
+     * other providers' private docs, and docs no longer listed for this patient or facility. Also
+     * records the attached doc/eForm ids (for pre-checking) and the ids of attached private docs
+     * owned by another provider (for labelling).
+     *
+     * @param loggedInInfo   LoggedInInfo the current user's session (for current-provider comparison)
+     * @param attachedDocs   List&lt;EDoc&gt; the docs attached to the current consult/eForm; may be null/empty
+     * @param attachedEForms List&lt;EFormData&gt; the eForms attached to the current consult/eForm; may be null/empty
+     * @param sections       AttachmentSections the sections to merge into; mutated in place
+     */
+    public void mergeAttachedIntoSections(LoggedInInfo loggedInInfo, List<EDoc> attachedDocs, List<EFormData> attachedEForms, AttachmentSections sections);
+
+    /**
+     * Returns the EDocs currently attached to a consultation request, or an empty
+     * list when {@code requestId} is absent or the consultation isn't this patient's.
+     * Used by the attachment-dialog flow to render pre-checked and cross-provider
+     * markers alongside the patient's document library.
+     *
+     * @param loggedInInfo  LoggedInInfo the current user's session
+     * @param demographicNo String the patient's demographic number; the consultation must belong to this patient
+     * @param requestId     String the consultation request id; {@code null} short-circuits to an empty list
+     * @return List&lt;EDoc&gt; attached EDocs, or empty list when {@code requestId} is {@code null} or not this patient's
+     */
+    public List<EDoc> getAttachedDocsForConsult(LoggedInInfo loggedInInfo, String demographicNo, String requestId);
+
+    /**
+     * Returns the EDocs currently attached to an eForm instance, or an empty
+     * list when {@code fdid} is absent or the eForm isn't this patient's. Used by
+     * the attachment-dialog flow to render pre-checked and cross-provider markers
+     * alongside the patient's document library.
+     *
+     * @param loggedInInfo  LoggedInInfo the current user's session
+     * @param demographicNo String the patient's demographic number; the eForm must belong to this patient
+     * @param fdid          String the form-data id; {@code null} short-circuits to an empty list
+     * @return List&lt;EDoc&gt; attached EDocs, or empty list when {@code fdid} is {@code null} or not this patient's
+     */
+    public List<EDoc> getAttachedDocsForEForm(LoggedInInfo loggedInInfo, String demographicNo, String fdid);
+
+    /**
+     * Returns the eForms currently attached to a consultation request, deleted ones included,
+     * or an empty list when {@code requestId} is absent or the consultation isn't this patient's.
+     *
+     * @param demographicNo String the patient's demographic number; the consultation must belong to this patient
+     * @param requestId     String the consultation request id; {@code null} short-circuits to an empty list
+     * @return List&lt;EFormData&gt; attached eForms, or empty list when {@code requestId} is {@code null} or not this patient's
+     */
+    public List<EFormData> getAttachedEFormsForConsult(String demographicNo, String requestId);
+
+    /**
+     * Returns the eForms currently attached to an eForm instance, deleted ones included,
+     * or an empty list when {@code fdid} is absent or the eForm isn't this patient's.
+     *
+     * @param demographicNo String the patient's demographic number; the eForm must belong to this patient
+     * @param fdid          String the form-data id; {@code null} short-circuits to an empty list
+     * @return List&lt;EFormData&gt; attached eForms, or empty list when {@code fdid} is {@code null} or not this patient's
+     */
+    public List<EFormData> getAttachedEFormsForEForm(String demographicNo, String fdid);
 }
 
 	

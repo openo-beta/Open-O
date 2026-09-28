@@ -111,15 +111,15 @@ public class PATHL7Handler implements MessageHandler {
     }
 
     public String getFirstName() {
-        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName().getGivenName().getValue()));
+        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName(0).getGivenName().getValue()));
     }
 
     public String getMiddleName() {
-        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName().getXpn3_MiddleInitialOrName().getValue()));
+        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName(0).getXpn3_MiddleInitialOrName().getValue()));
     }
 
     public String getLastName() {
-        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName().getFamilyName().getValue()));
+        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName(0).getFamilyName().getValue()));
     }
 
     public String getDOB() {
@@ -540,7 +540,7 @@ public class PATHL7Handler implements MessageHandler {
                         }
                     }
                 }
-            } catch (HL7Exception e) {
+            } catch (Exception e) {
                 logger.error("Error", e);
                 return false;
             }

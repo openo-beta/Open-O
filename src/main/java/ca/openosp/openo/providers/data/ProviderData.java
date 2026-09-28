@@ -646,7 +646,10 @@ public class ProviderData {
         String firstname = null;
         String lastname = null;
         if (searchStr.indexOf(",") != -1) {
-            String[] array = searchStr.split(",");
+            // Use -1 limit so split preserves a trailing empty string: "lastname,".split(",")
+            // returns ["lastname", ""] instead of ["lastname"], avoiding an ArrayIndexOutOfBoundsException
+            // when only the lastname is entered before the comma.
+            String[] array = searchStr.split(",", -1);
             lastname = array[0].trim();
             if (array.length > 1) {
                 firstname = array[1].trim();

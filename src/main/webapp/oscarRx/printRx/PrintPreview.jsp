@@ -164,7 +164,8 @@
                                                 '${requestScope.providerNo}',
                                                 '${e:forJavaScript(requestScope.pharmacyName)}',
                                                 '${e:forJavaScript(requestScope.pharmacyFax)}',
-                                                '${requestScope.prescribedBy}');">
+                                                '${requestScope.prescribedBy}',
+                                                '${e:forJavaScript(requestScope.pharmacyPhone)}');">
                                     Print &amp; Add to encounter note
                                 </button>
 
@@ -207,13 +208,15 @@
                                                     '${requestScope.providerNo}',
                                                     '${e:forJavaScript(requestScope.pharmacyName)}',
                                                     '${e:forJavaScript(requestScope.pharmacyFax)}',
-                                                    '${requestScope.prescribedBy}');
+                                                    '${requestScope.prescribedBy}',
+                                                    '${e:forJavaScript(requestScope.pharmacyPhone)}').then(function() {
                                                         sendFax('${e:forJavaScript(param.scriptId)}',
                                                     '${requestScope.signatureRequestId}',
                                                     ${requestScope.useSC != null ? requestScope.useSC : false},
                                                     '${e:forJavaScript(requestScope.selectedAddress != null ? requestScope.selectedAddress : '')}',
                                                     '${ctx}'
-                                                        );"
+                                                        );
+                                                    });"
                                                 <c:if test="${requestScope.isFaxDisabled}">
                                                     disabled="disabled"
                                                 </c:if>>

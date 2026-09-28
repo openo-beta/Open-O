@@ -127,9 +127,9 @@
 
     String ackLabFunc;
     if (skipComment) {
-        ackLabFunc = "handleLab('acknowledgeForm_" + segmentID + "','" + segmentID + "','ackLab');";
+        ackLabFunc = "handleLab('acknowledgeForm_" + Encode.forJavaScript(String.valueOf(segmentID)) + "','" + Encode.forJavaScript(String.valueOf(segmentID)) + "','ackLab');";
     } else {
-        ackLabFunc = "getComment('" + segmentID + "','ackLab');";
+        ackLabFunc = "getComment('" + Encode.forJavaScript(String.valueOf(segmentID)) + "','ackLab');";
     }
 
     Long reqIDL = LabRequestReportLink.getIdByReport("hl7TextMessage", Long.valueOf(segmentID.trim()));
@@ -419,7 +419,7 @@
                                 <% if (!ackFlag) { %>
                                 <input type="button"
                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnAcknowledge"/>"
-                                       onclick="<%=Encode.forJavaScript(String.valueOf(ackLabFunc))%>">
+                                       onclick="<%=Encode.forHtmlAttribute(ackLabFunc)%>">
                                 <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnComment"/>"
                                        onclick="return getComment('<%=Encode.forJavaScript(String.valueOf(segmentID))%>','addComment');">
                                 <% } %>
@@ -1344,7 +1344,7 @@
                     <td align="left" width="50%">
                         <% if (!ackFlag) { %>
                         <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnAcknowledge"/>"
-                               onclick="<%=Encode.forJavaScript(String.valueOf(ackLabFunc))%>">
+                               onclick="<%=Encode.forHtmlAttribute(ackLabFunc)%>">
                         <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnComment"/>"
                                onclick="getComment('<%=Encode.forJavaScript(String.valueOf(segmentID))%>','addComment')">
                         <% } %>

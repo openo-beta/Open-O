@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function(){
     /**
      * Trigger these functions every time this page loads.
      */
+    applyDejaVuFont();
     removeElements();
     hideElements();
     addNavElement();
@@ -151,18 +152,39 @@ jQuery(document).on('click', '*[data-poload]', function () {
             eformFloatingToolbar.classList.add("disabled-toolbar");
 
             jQuery('#attachDocumentList').find(".delegateAttachment").each(function (index, data) {
-                let delegate = "#" + this.id.split("_")[1];
+                let delegateKey = this.id.split("_")[1];
+
+                // DOC sections share name="docNo" with distinct ids; look up by name+value.
+                // Skip if server-pre-attached; else mark as unsaved client-side selection.
+                if (jQuery(this).data("delegate-type") === "doc") {
+                    let docValue = this.value;
+                    let matches = jQuery('#attachDocumentsForm').find('input[name="docNo"][value="' + docValue + '"]');
+                    if (matches.filter('[data-pre-attached="true"]').length > 0) {
+                        return;
+                    }
+                    matches.prop("checked", true).attr("data-pre-attached", "true");
+                    return;
+                }
+
+                let delegate = "#" + delegateKey;
                 let element = jQuery('#attachDocumentsForm').find(delegate);
-                if (element.length === 0) {
+                // addFormIfNotFound only knows encounter forms; an unlisted attachment of any other
+                // type has no checkbox to pre-check, so skip it instead of aborting the whole loop.
+                if (element.length === 0 && data.name === "formNo") {
                     element = addFormIfNotFound(data, demographicNo, delegate);
                 }
-                element.attr("checked", true);
+                if (element.length === 0) {
+                    return;
+                }
+                element.prop("checked", true).attr("data-pre-attached", "true");
 
                 // Expand list if selected lab is older version
                 if (element.attr('data-version')) {
                     expandLabVersionList(element.parent().parent().parent().find('.collapse-arrow'));
                 }
             });
+
+            syncPreCheckedToDelegates('#attachDocumentList', false);
         }
     }).dialog({
         title: title,
@@ -186,6 +208,10 @@ jQuery(document).on('click', '*[data-poload]', function () {
         beforeClose: function (event, ui) {
             // before the dialog is closed:
 
+            if (!confirmPrivateDocsIfAny('#attachDocumentsForm')) {
+                return false;
+            }
+
             // check if list exists, if yes then empty it otherwise create new
             if (jQuery('#attachDocumentList').length === 0) {
                 const attachDocumentList = jQuery('<div>', {'id': 'attachDocumentList'});
@@ -193,18 +219,16 @@ jQuery(document).on('click', '*[data-poload]', function () {
             }
             jQuery('#attachDocumentList').empty();
 
-            // pass the checked documents to the eForm document list(attachDocumentList)
-            jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
-            ).each(function (index, data) {
-                let element = jQuery(this);
-                let input = jQuery("<input />", {
-                    type: 'hidden',
-                    name: element.attr('name'),
-                    value: element.val(),
-                    id: "delegate_" + element.attr('id'),
-                    class: 'delegateAttachment'
-                });
-                jQuery('#attachDocumentList').append(input);
+            // Cross-section dedupe: same docNo can render in patient + provider sections.
+            const seenDelegates = new Set();
+            jQuery('#attachDocumentsForm').find(
+                ".attachable_check:checkbox:checked:not(input[disabled='disabled'])"
+            ).each(function () {
+                const $el = jQuery(this);
+                const key = $el.attr('name') + "::" + $el.val();
+                if (seenDelegates.has(key)) return;
+                seenDelegates.add(key);
+                jQuery('#attachDocumentList').append(buildDelegateInput($el));
             });
 
             // show total attachments
@@ -229,7 +253,7 @@ function addFormIfNotFound(form, demographicNo, delegate) {
     const formDate = document.getElementById("entry_" + formId).getAttribute('data-formDate');
 
     const checkbox = jQuery('<input>', {
-        class: 'form_check',
+        class: 'form_check attachable_check',
         type: 'checkbox',
         name: checkboxName,
         id: formId,
@@ -436,12 +460,12 @@ function remotePrint() {
 		}
 
 		/*
-		 * for situations when the eForm does not contain dirty form
-		 * detection; save it everytime.
+		 * either the eForm has no dirty form detection, or dirty form
+		 * detection did not flag a change; confirm before saving.
 		 */
-		else if(typeof needToConfirm === 'undefined') {
+		else if(confirm("You haven't manually edited this document, would you like to save a copy to the patient's chart regardless?")) {
 			remoteSave();
-	}
+		}
 }
 
 function hailMary() {
@@ -862,4 +886,105 @@ function HideSpin() {
 				document.getElementById('remoteEmailButton').style.display = 'none';
 			}
 		}
+	}
+
+	/**
+	 * The family name the fields are forced to. A made-up name, so a form's own font
+	 * declarations can never clash with it.
+	 */
+	const EFORM_FONT_FAMILY = "OpenO eForm Sans";
+
+	/**
+	 * Two rules that keep a line the same width on both sides. font-synthesis stops the browser
+	 * inventing a bold or italic it has no file for. text-rendering turns kerning on in
+	 * wkhtmltopdf, which has it off by default. !important, because some forms carry
+	 * text-rendering rules of their own. Keep identical to TEXT_STYLE_CSS in EFormFieldFont.
+	 */
+	const EFORM_TEXT_STYLE = "*{font-synthesis:none;}*{text-rendering:optimizeLegibility !important;}";
+
+	/** The DejaVu Sans files shipped with OpenO, one per weight and style. */
+	const DEJAVU_FACES = [
+		{file: "DejaVuSans.ttf", weight: "normal", style: "normal"},
+		{file: "DejaVuSans-Bold.ttf", weight: "bold", style: "normal"},
+		{file: "DejaVuSans-Oblique.ttf", weight: "normal", style: "italic"},
+		{file: "DejaVuSans-BoldOblique.ttf", weight: "bold", style: "italic"}
+	];
+
+	/**
+	 * Every field a provider types into, plus the body so labels inherit the font. Elements
+	 * that name their own font, such as icons and the toolbar, are left alone. Keep identical
+	 * to the selector in EFormFieldFont.
+	 */
+	const EFORM_FONT_SELECTOR = "html body,"
+		+ "input:not([type=button]):not([type=submit]):not([type=reset])"
+		+ ":not([type=image]):not([type=checkbox]):not([type=radio]):not([type=file])"
+		+ ":not([type=hidden]):not(#remote_eform_subject),"
+		+ "select,"
+		+ "textarea,"
+		+ "[contenteditable]:not([contenteditable=false])";
+
+	/**
+	 * Forces the DejaVu Sans fonts on eForm text in the browser, matching what wkhtmltopdf is
+	 * given on the server, so both draw it the same way.
+	 *
+	 * Loads the four faces, registers them under the forced name and under "DejaVu Sans" for
+	 * forms that ask for it directly, applies the field rule once all four have loaded, then
+	 * tells the provider. The server half is EFormFieldFont.apply.
+	 */
+	function applyDejaVuFont() {
+		if (document.getElementById("eform-field-font")) {
+			return;
+		}
+
+		if (!window.FontFace || !document.fonts) {
+			reportDejaVuFaces(false);
+			return;
+		}
+
+		const context = document.getElementById("context");
+		const path = (context ? context.value : "..") + "/library/eforms/dejavufonts/ttf/";
+
+		Promise.all(DEJAVU_FACES.map(function (face) {
+			const source = "url('" + path + face.file + "') format('truetype')";
+			const options = {weight: face.weight, style: face.style};
+			return Promise.all([
+				new FontFace(EFORM_FONT_FAMILY, source, options).load(),
+				new FontFace("DejaVu Sans", source, options).load()
+			]);
+		})).then(function (loaded) {
+			loaded.forEach(function (pair) {
+				pair.forEach(function (face) {
+					document.fonts.add(face);
+				});
+			});
+
+			const style = document.createElement("style");
+			style.id = "eform-field-font";
+			style.textContent = EFORM_TEXT_STYLE + EFORM_FONT_SELECTOR
+				+ "{font-family:'" + EFORM_FONT_FAMILY + "',sans-serif !important;}";
+			document.head.appendChild(style);
+			reportDejaVuFaces(true);
+		}, function () {
+			reportDejaVuFaces(false);
+		});
+	}
+
+	/**
+	 * Shows the provider whether the DejaVu Sans fonts were applied. Stays quiet when a save,
+	 * download or error message is already on screen.
+	 *
+	 * @param {boolean} added whether all four faces loaded
+	 */
+	function reportDejaVuFaces(added) {
+		const error = document.getElementById("error");
+		const autoclose = document.getElementById("isSuccess_Autoclose");
+		if ((error && error.value === "true") || (autoclose && autoclose.value === "true")
+			|| typeof createAndShowAlert !== "function" || oscarAlert) {
+			return;
+		}
+
+		createAndShowAlert("eform-font-alert", added
+			? "the fonts on this eForm have been automatically replaced with a different font to maximize compatibility when faxing or saving. If this automatic replacement is causing a problem, please contact your service provider or review the source code for more details."
+			: "The DejaVu Sans fonts could not be loaded. Text may wrap differently in the saved document.",
+			added ? "info" : "danger", 5, undefined);
 	}

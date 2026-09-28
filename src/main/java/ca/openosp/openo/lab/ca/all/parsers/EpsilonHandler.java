@@ -106,7 +106,7 @@ public class EpsilonHandler extends DefaultGenericHandler {
         try {
             return msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR()
                     .getPriority().getValue();
-        } catch (HL7Exception e) {
+        } catch (Exception e) {
             return ("");
         }
     }
