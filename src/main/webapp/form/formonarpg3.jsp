@@ -586,10 +586,11 @@
                value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
         <input type="hidden" name="submit" value="exit"/>
         <%
+            //historyet is a query fragment: encode the values here, never the whole fragment (that turns "&" into "%26")
             String historyet = "";
             if (request.getParameter("historyet") != null) {
                 out.println("<input type=\"hidden\" name=\"historyet\" value=\"" + Encode.forHtmlAttribute(request.getParameter("historyet")) + "\">");
-                historyet = "&historyet=" + request.getParameter("historyet");
+                historyet = "&historyet=" + Encode.forUriComponent(request.getParameter("historyet"));
             }
         %>
 
@@ -616,9 +617,9 @@
                 </td>
 
                 <td align="right"><b>View:</b> <a
-                        href="javascript: popupPage('form/formonarpg1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo+historyet))%>&view=1');">
+                        href="javascript: popupPage('form/formonarpg1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%><%=Encode.forHtmlAttribute(historyet)%>&view=1');">
                     AR1</a> | <a
-                        href="javascript: popupPage('form/formonarpg3.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo+historyet))%>&view=1');">AR2
+                        href="javascript: popupPage('form/formonarpg3.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%><%=Encode.forHtmlAttribute(historyet)%>&view=1');">AR2
                     <font size=-2>(pg.2)</font></a></td>
                 <td align="right"><b>Edit:</b> <a
                         href="form/formonarpg1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>">AR1</a>

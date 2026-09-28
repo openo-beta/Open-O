@@ -2417,10 +2417,11 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                        value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
                 <input type="hidden" name="submit" value="exit"/>
                 <%
+                    //historyet is a query fragment: encode the values here, never the whole fragment (that turns "&" into "%26")
                     String historyet = "";
                     if (request.getParameter("historyet") != null) {
                         out.println("<input type=\"hidden\" name=\"historyet\" value=\"" + Encode.forHtmlAttribute(request.getParameter("historyet")) + "\">");
-                        historyet = "&historyet=" + request.getParameter("historyet");
+                        historyet = "&historyet=" + Encode.forUriComponent(request.getParameter("historyet"));
                     }
                 %>
 
@@ -2445,7 +2446,7 @@ if (!fedb.equals("") && fedb.length()==10 ) {
                             &nbsp;&nbsp;&nbsp;
                             <b>View:</b> <a
                                 href="javascript:void(0);"
-                                onclick="popupPage(960,700,'form/formonarenhancedpg1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo+historyet))%>&view=1');">
+                                onclick="popupPage(960,700,'form/formonarenhancedpg1.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%><%=Encode.forHtmlAttribute(historyet)%>&view=1');">
                             AR1</a> &nbsp;&nbsp;&nbsp;
                             <b>Edit:</b> <a
                                 href="javascript:void(0);"

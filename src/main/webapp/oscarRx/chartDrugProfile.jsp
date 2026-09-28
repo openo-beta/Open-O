@@ -64,18 +64,19 @@
 
     StringBuffer sb = new StringBuffer();
     Hashtable h = new Hashtable();
+    //drugForGraph is a query fragment: encode the values here, never the whole fragment (that turns "&" into "%26")
     String drugForGraph = "";
     if (request.getParameterValues("drug") != null) {
         String[] drugs = request.getParameterValues("drug");
         for (String d : drugs) {
-            sb.append("&drug=" + d);
+            sb.append("&drug=" + Encode.forUriComponent(d));
             h.put(d, "drug");
         }
     } else {
         for (int idx = 0; idx < arr.length; ++idx) {
             RxPrescriptionData.Prescription drug = arr[idx];
             if (!drug.isCustom()) {
-                sb.append("&drug=" + drug.getRegionalIdentifier());
+                sb.append("&drug=" + Encode.forUriComponent(String.valueOf(drug.getRegionalIdentifier())));
                 h.put(drug.getRegionalIdentifier(), "drug");
             }
         }
@@ -136,7 +137,7 @@
             </table>
 
 
-            <img src="<%= request.getContextPath() %>/oscarEncounter/GraphMeasurements.do?method=ChartMeds&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%><%=Encode.forUriComponent(String.valueOf(drugForGraph))%>"/>
+            <img src="<%= request.getContextPath() %>/oscarEncounter/GraphMeasurements.do?method=ChartMeds&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%><%=Encode.forHtmlAttribute(drugForGraph)%>"/>
 
 
             <fieldset>
