@@ -493,13 +493,14 @@ background-color:rgb(212, 212, 254);
                                         if (bMultisites) {
                                             siteName = theRequests.siteName.get(i);
                                         }
-                                        if (status.equals("1") && dateGreaterThan(date, Calendar.WEEK_OF_YEAR, -1)) {
-                                            tickerList.add(demo);
-                                        }
-
                                         //multisites. skip record if not belong to same site
                                         if (isSiteAccessPrivacy || isTeamAccessPrivacy) {
                                             if (!mgrSite.contains(siteName)) continue;
+                                        }
+
+                                        //collect only after the site check, so the tickler link can't include other sites' patients
+                                        if (status.equals("1") && dateGreaterThan(date, Calendar.WEEK_OF_YEAR, -1)) {
+                                            tickerList.add(demo);
                                         }
                                         overdue = false;
 
