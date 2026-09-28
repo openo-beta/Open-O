@@ -2675,7 +2675,7 @@ public class OLISHL7Handler implements MessageHandler {
 
         }
         if (terser.get(docSeg + "1") != null) {
-            docName = docName + " " + FORMAT_MODIFIER_SPAN + modifier + " " + terser.get(docSeg + "1") + FORMAT_SPAN_END;
+            docName = docName + " " + "<span style=\"margin-left:15px; font-size:8px; color:#333333;\">" + modifier + " " + terser.get(docSeg + "1") + "</span>";
         }
 
         return (docName);
@@ -2833,28 +2833,6 @@ public class OLISHL7Handler implements MessageHandler {
         return sb.toString();
     }
 
-    // Markup formatString and getFullDocName emit into lab text
-    static final String FORMAT_LINE_BREAK = "<br/>";
-    static final String FORMAT_CENTER_START = "<center>";
-    static final String FORMAT_CENTER_END = "</center>";
-    static final String FORMAT_HIGHLIGHT_SPAN = "<span style=\"color:#767676\">";
-    static final String FORMAT_MODIFIER_SPAN = "<span style=\"margin-left:15px; font-size:8px; color:#333333;\">";
-    static final String FORMAT_SPAN_END = "</span>";
-    static final String FORMAT_NBSP = "&nbsp;";
-    static final String FORMAT_MICRO = "&#181;";
-
-    /**
-     * The markup {@link #formatString(String)} and the doctor-name builder emit.
-     * Display code passes this to
-     * {@code HtmlEncodingUtils.encodeForHtmlAllowingMarkup} so only this markup
-     * renders and everything else in lab text stays escaped.
-     */
-    public static final String[] FORMATTING_MARKUP = {
-            FORMAT_LINE_BREAK, FORMAT_CENTER_START, FORMAT_CENTER_END,
-            FORMAT_HIGHLIGHT_SPAN, FORMAT_MODIFIER_SPAN, FORMAT_SPAN_END,
-            FORMAT_NBSP, FORMAT_MICRO
-    };
-
     public String parseOperator(String op) {
         if (op == null || op.equals("")) {
             return "";
@@ -2866,15 +2844,15 @@ public class OLISHL7Handler implements MessageHandler {
         if (piece.equals(".BR")) {
             boolean old = centered;
             centered = false;
-            return old ? FORMAT_CENTER_END : FORMAT_LINE_BREAK;
+            return old ? "</center>" : "<br/>";
 
         } else if (piece.equals(".H")) {
-            return FORMAT_HIGHLIGHT_SPAN;
+            return "<span style=\"color:#767676\">";
         } else if (piece.equals(".N")) {
-            return FORMAT_SPAN_END;
+            return "</span>";
         } else if (piece.equals(".CE")) {
             centered = true;
-            return (centered ? FORMAT_CENTER_END : "") + FORMAT_LINE_BREAK + FORMAT_CENTER_START;
+            return (centered ? "</center>" : "") + "<br/><center>";
 
         } else if (piece.equals(".FE")) {
             // TODO: Implement
@@ -2891,7 +2869,7 @@ public class OLISHL7Handler implements MessageHandler {
         } else if (piece.equals("SLASHHACK")) {
             return "\\";
         } else if (piece.equals("MUHACK")) {
-            return FORMAT_MICRO;
+            return "&#181;";
         } else {
             matchFound = false;
         }
@@ -2905,7 +2883,7 @@ public class OLISHL7Handler implements MessageHandler {
             if (matchFound) {
                 // Get all groups for this match
                 String result = parseParamsAndFormat(matcher.group(1), matcher.group(2), centered);
-                if (result.contains(FORMAT_CENTER_END)) {
+                if (result.contains("</center>")) {
                     centered = false;
                 }
                 return result == null ? "" : result;
@@ -2920,10 +2898,10 @@ public class OLISHL7Handler implements MessageHandler {
         if (operator.equals("SP")) {
             while (opInt > 0) {
                 if (centered) {
-                    result += FORMAT_CENTER_END;
+                    result += "</center>";
                     centered = false;
                 }
-                result += FORMAT_LINE_BREAK;
+                result += "<br/>";
                 opInt--;
             }
         } else if (operator.equals("IN")) {
@@ -2932,7 +2910,7 @@ public class OLISHL7Handler implements MessageHandler {
             // TODO: Implement
         } else if (operator.equals("SK")) {
             while (opInt > 0) {
-                result += FORMAT_NBSP;
+                result += "&nbsp;";
                 opInt--;
             }
         } else {
