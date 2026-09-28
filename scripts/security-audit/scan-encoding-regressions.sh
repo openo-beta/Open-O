@@ -202,6 +202,51 @@ pattern_A12() {
         "${JSP_FILES[@]}" "$SCAN_PATH" 2>/dev/null
 }
 
+# A13: Encode.forUriComponent wrapping a query fragment ("&name=value..."), which turns the
+# "&"/"=" separators into %26/%3D so each parameter merges into the previous one.
+# Two passes per file (perl: mawk has no capture groups, and the argument needs balanced parens):
+#   1. collect variables assigned a fragment literal ("&view=0", "&x" + i, "&" + module,
+#      "a=1&b=2&") or request.getQueryString(), including ones built with sb.append("&...")
+#      then sb.toString()
+#   2. flag forUriComponent(...) whose argument holds such a literal or variable, or a query
+#      string kept in a session/request attribute
+# Heuristic: a fragment assembled in another file or a Java class is not seen.
+# Exempt: param=<%=Encode.forUriComponent(...)%>, where CalendarPopup.jsp expects the whole
+# fragment as one encoded value.
+pattern_A13() {
+    grep -rlE 'Encode\.forUriComponent\(' "${JSP_FILES[@]}" "$SCAN_PATH" 2>/dev/null | xargs -r perl -0777 -ne '
+        my @lines = split /\n/, $_, -1;
+        my $fragLit = qr/"[^"\n]*&(?:[A-Za-z_]\w*)?(?:=|")/;
+        # Java code only (<% %> and <%! %>), so JavaScript and HTML attributes such as href="..." are not read as assignments
+        my $code = join "\n", /<%(?![-=@])(.*?)%>/gs;
+        my (%sb, %frag);
+        $sb{$1} = 1 while $code =~ /\b(\w+)\.append\(\s*"&/g;
+        while ($code =~ /(?:^|[;{}]|\)|\belse)\s*(?:final\s+)?(?:String\s+)?(\w+)\s*\+?=\s*([^=;][^;]*)/mg) {
+            my ($var, $rhs) = ($1, $2);
+            $frag{$var} = 1 if $rhs =~ $fragLit || $rhs =~ /getQueryString\(\)/ || ($rhs =~ /^(\w+)\.toString\(\)/ && $sb{$1});
+        }
+        for my $i (0 .. $#lines) {
+            my $line = $lines[$i];
+            while ($line =~ /Encode\s*\.\s*forUriComponent\(/g) {
+                my ($start, $pos, $depth, $arg) = ($-[0], pos($line), 1, "");
+                while ($pos < length($line) && $depth > 0) {
+                    my $c = substr($line, $pos++, 1);
+                    $depth++ if $c eq "(";
+                    $depth-- if $c eq ")";
+                    $arg .= $c if $depth > 0;
+                }
+                next if substr($line, 0, $start) =~ /param=<%=\s*$/;
+                # a whole query string, directly or stored in a session/request attribute (e.g. "infirmaryView_OscarQue")
+                my $hit = $arg =~ $fragLit || $arg =~ /getQueryString\(\)|getAttribute\(\s*"[^"]*(?:Que|Query|QueryString)"\s*\)/;
+                # match variable names outside string literals, so getParameter("historyet") is not the historyet variable
+                (my $argCode = $arg) =~ s/"(?:[^"\\]|\\.)*"/""/g;
+                for my $v (keys %frag) { $hit ||= $argCode =~ /(?<![\w.])\Q$v\E\b(?!\s*\()/; }
+                if ($hit) { print "$ARGV:", $i + 1, ":$line\n"; last; }
+            }
+        }
+    '
+}
+
 # A8: HTML attribute value containing user data without forHtmlAttribute encoding
 # value="<%=request.getParameter(...)%>" -- raw, no encoding at all
 pattern_A8() {
@@ -419,6 +464,12 @@ report_pattern A12 high \
     "Value not enclosed in quotes — attribute injection trivial via space character. forHtmlAttribute helps but quoted form is safer." \
     "Quote the attribute: value=\"<%=...%>\"" \
     pattern_A12
+
+report_pattern A13 high \
+    "Encode.forUriComponent wrapping a query fragment (\"&name=value...\")" \
+    "The & and = separators become %26/%3D, so the fragment merges into the previous parameter's value: a 500 (Integer.parseInt(\"25&view=0\")), a silently dropped parameter, or a corrupted value." \
+    "Encode each value where the fragment is built (\"&view=\" + Encode.forUriComponent(v)), then output the fragment raw if it is a constant, or with the encoder for the surrounding context (e.g. Encode.forHtmlAttribute in an href)." \
+    pattern_A13
 
 echo
 echo "${BOLD}========== MEDIUM SEVERITY ==========${RESET}"
