@@ -225,24 +225,27 @@ pattern_A13() {
             my ($var, $rhs) = ($1, $2);
             $frag{$var} = 1 if $rhs =~ $fragLit || $rhs =~ /getQueryString\(\)/ || ($rhs =~ /^(\w+)\.toString\(\)/ && $sb{$1});
         }
-        for my $i (0 .. $#lines) {
-            my $line = $lines[$i];
-            while ($line =~ /Encode\s*\.\s*forUriComponent\(/g) {
-                my ($start, $pos, $depth, $arg) = ($-[0], pos($line), 1, "");
-                while ($pos < length($line) && $depth > 0) {
-                    my $c = substr($line, $pos++, 1);
-                    $depth++ if $c eq "(";
-                    $depth-- if $c eq ")";
-                    $arg .= $c if $depth > 0;
-                }
-                next if substr($line, 0, $start) =~ /param=<%=\s*$/;
-                # a whole query string, directly or stored in a session/request attribute (e.g. "infirmaryView_OscarQue")
-                my $hit = $arg =~ $fragLit || $arg =~ /getQueryString\(\)|getAttribute\(\s*"[^"]*(?:Que|Query|QueryString)"\s*\)/;
-                # match variable names outside string literals, so getParameter("historyet") is not the historyet variable
-                (my $argCode = $arg) =~ s/"(?:[^"\\]|\\.)*"/""/g;
-                for my $v (keys %frag) { $hit ||= $argCode =~ /(?<![\w.])\Q$v\E\b(?!\s*\()/; }
-                if ($hit) { print "$ARGV:", $i + 1, ":$line\n"; last; }
+        # scan the whole file, so a call whose argument spans several lines is still read in full
+        my ($text, %reported) = ($_);
+        while ($text =~ /Encode\s*\.\s*forUriComponent\(/g) {
+            my ($start, $pos, $depth, $arg) = ($-[0], pos($text), 1, "");
+            while ($pos < length($text) && $depth > 0) {
+                my $c = substr($text, $pos++, 1);
+                $depth++ if $c eq "(";
+                $depth-- if $c eq ")";
+                $arg .= $c if $depth > 0;
             }
+            my $lineStart = rindex($text, "\n", $start) + 1;
+            next if substr($text, $lineStart, $start - $lineStart) =~ /param=<%=\s*$/;
+            # a whole query string, directly or stored in a session/request attribute (e.g. "infirmaryView_OscarQue")
+            my $hit = $arg =~ $fragLit || $arg =~ /getQueryString\(\)|getAttribute\(\s*"[^"]*(?:Que|Query|QueryString)"\s*\)/;
+            # match variable names outside string literals, so getParameter("historyet") is not the historyet variable
+            (my $argCode = $arg) =~ s/"(?:[^"\\]|\\.)*"/""/g;
+            for my $v (keys %frag) { $hit ||= $argCode =~ /(?<![\w.])\Q$v\E\b(?!\s*\()/; }
+            next unless $hit;
+            # report the line the call starts on, once per line
+            my $lineNo = (substr($text, 0, $start) =~ tr/\n//) + 1;
+            print "$ARGV:$lineNo:$lines[$lineNo - 1]\n" unless $reported{$lineNo}++;
         }
     '
 }
