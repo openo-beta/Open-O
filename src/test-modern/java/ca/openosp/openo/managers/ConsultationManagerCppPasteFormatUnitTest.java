@@ -88,6 +88,15 @@ class ConsultationManagerCppPasteFormatUnitTest {
     }
 
     @Test
+    @DisplayName("should preserve each note's own whitespace when multi line without heading")
+    void shouldPreserveNoteWhitespace_whenMultiLineWithoutHeading() {
+        String note = ConsultationManagerImpl.formatIssueNotes(
+                Arrays.asList("Smoker \n", " Lives alone"), false, null);
+
+        assertThat(note).isEqualTo("Smoker \n\n Lives alone\n");
+    }
+
+    @Test
     @DisplayName("should paste nothing when the section has no notes")
     void shouldReturnEmpty_whenNoNotes() {
         String note = ConsultationManagerImpl.formatIssueNotes(

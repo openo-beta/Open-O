@@ -909,7 +909,9 @@
                 data: data,
                 dataType: 'JSON',
                 success: function (data) {
-                    jQuery(target).val(jQuery(target).val() + "\n" + data.note);
+                    if (data.note) {
+                        jQuery(target).val(jQuery(target).val() + "\n" + data.note);
+                    }
                 }
             });
         }
@@ -2770,7 +2772,7 @@ if (userAgent != null) {
                                             <input id="fetchLongTermMedications_clinicalInformation" type="button"
                                                    class="btn medicationData" value="Long Term Medications"/>
                                             <a href="#" title="Paste preferences" class="pastePrefCog"
-                                               onclick="popupPage(230,860,'${ctx}/setProviderStaleDate.do?method=viewConsultPasteFmt'); return false;">&#9881;&#xFE0E;</a>
+                                               onclick="popupPage(230,860,'<%=Encode.forJavaScriptAttribute(request.getContextPath())%>/setProviderStaleDate.do?method=viewConsultPasteFmt'); return false;">&#9881;&#xFE0E;</a>
                                             <% } %>
                                         </td>
                                     </tr>
@@ -2821,7 +2823,7 @@ if (userAgent != null) {
                                             <input id="fetchLongTermMedications_concurrentProblems" type="button"
                                                    class="btn medicationData" value="Long Term Medications"/>
                                             <a href="#" title="Paste preferences" class="pastePrefCog"
-                                               onclick="popupPage(230,860,'${ctx}/setProviderStaleDate.do?method=viewConsultPasteFmt'); return false;">&#9881;&#xFE0E;</a>
+                                               onclick="popupPage(230,860,'<%=Encode.forJavaScriptAttribute(request.getContextPath())%>/setProviderStaleDate.do?method=viewConsultPasteFmt'); return false;">&#9881;&#xFE0E;</a>
                                             <% } %>
                                         </td>
                                     </tr>
