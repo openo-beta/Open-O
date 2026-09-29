@@ -1113,14 +1113,18 @@ public class ProviderProperty2Action extends ActionSupport {
 
         UserProperty saveProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.CONSULTATION_REQ_PASTE_FMT);
 
-        if (saveProperty == null) {
+        // saving the preselected "multi" creates no row: a missing row means each form's own
+        // default, and formBCAR2020Attachments.jsp treats a missing row as single line
+        if (saveProperty == null && !"multi".equalsIgnoreCase(fmt)) {
             saveProperty = new UserProperty();
             saveProperty.setProviderNo(providerNo);
             saveProperty.setName(UserProperty.CONSULTATION_REQ_PASTE_FMT);
         }
 
-        saveProperty.setValue(fmt);
-        this.userPropertyDAO.saveProp(saveProperty);
+        if (saveProperty != null) {
+            saveProperty.setValue(fmt);
+            this.userPropertyDAO.saveProp(saveProperty);
+        }
 
         UserProperty headingProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.CONSULT_PASTE_HEADING);
 
