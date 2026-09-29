@@ -39,6 +39,7 @@ import ca.openosp.openo.casemgmt.service.CaseManagementManager.IssueType;
 import ca.openosp.openo.commn.model.Allergy;
 import ca.openosp.openo.commn.model.Drug;
 import ca.openosp.openo.managers.AllergyManager;
+import ca.openosp.openo.managers.ConsultationManager;
 import ca.openosp.openo.managers.PrescriptionManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
@@ -59,6 +60,7 @@ public class ConsultationClinicalData2Action extends ActionSupport {
     private PrescriptionManager prescriptionManager = SpringUtils.getBean(PrescriptionManager.class);
     private CaseManagementManager caseManagementManager = SpringUtils.getBean(CaseManagementManager.class);
     private AllergyManager allergyManager = SpringUtils.getBean(AllergyManager.class);
+    private ConsultationManager consultationManager = SpringUtils.getBean(ConsultationManager.class);
 
     public ConsultationClinicalData2Action() {
         // Default
@@ -201,24 +203,12 @@ public class ConsultationClinicalData2Action extends ActionSupport {
     public String fetchIssueNote() {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        String issueType = request.getParameter("issueType");
         String demographicNo = request.getParameter("demographicNo");
-        IssueType issueTypeEnum = IssueType.valueOf(issueType.toUpperCase());
-        Issue issue = caseManagementManager.getIssueByCode(issueTypeEnum);
-        List<CaseManagementNote> issueNoteList = caseManagementManager.getActiveNotes(loggedInInfo, demographicNo, new String[]{issue.getId() + ""});
+        IssueType issueTypeEnum = IssueType.valueOf(request.getParameter("issueType").toUpperCase());
 
         ObjectNode json = objectMapper.createObjectNode();
         json.put("noteType", issueTypeEnum.name());
-        StringBuilder stringBuilder = new StringBuilder();
-
-        if (issueNoteList != null) {
-            for (CaseManagementNote issueNote : issueNoteList) {
-                stringBuilder.append(issueNote.getNote());
-                stringBuilder.append("\n");
-            }
-        }
-
-        json.put("note", stringBuilder.toString());
+        json.put("note", consultationManager.getCppPasteNote(loggedInInfo, demographicNo, issueTypeEnum));
 
         response.setContentType("text/javascript");
         try {

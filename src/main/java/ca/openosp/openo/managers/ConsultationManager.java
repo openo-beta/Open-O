@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.itextpdf.text.DocumentException;
+import ca.openosp.openo.casemgmt.service.CaseManagementManager.IssueType;
 import ca.openosp.openo.commn.model.ConsultDocs;
 import ca.openosp.openo.commn.model.ConsultResponseDoc;
 import ca.openosp.openo.commn.model.ConsultationRequest;
@@ -115,4 +116,17 @@ public interface ConsultationManager {
     public Map<String, ConsultationRequestExt> getExtsAsMap(List<ConsultationRequestExt> extras);
 
     public Map<String, String> getExtValuesAsMap(List<ConsultationRequestExt> extras);
+
+    /**
+     * Builds the text a CPP section pastes into the consultation request, honouring the
+     * provider's CPP Paste Format preference: Single Line joins the notes on one line
+     * separated by commas, Multi Line keeps one note per line, and the heading preference
+     * starts the paste with the section title.
+     *
+     * @param loggedInInfo LoggedInInfo the current session, also the provider whose preferences apply
+     * @param demographicNo String the patient whose notes are pasted
+     * @param issueType IssueType the CPP section to paste
+     * @return String the pasted text, empty when the section has no notes
+     */
+    public String getCppPasteNote(LoggedInInfo loggedInInfo, String demographicNo, IssueType issueType);
 }
