@@ -855,7 +855,7 @@ public class ConsultationManagerImpl implements ConsultationManager {
             IssueType.RISKFACTORS, "Risk Factors");
 
     @Override
-    public String getCppPasteNote(LoggedInInfo loggedInInfo, String demographicNo, IssueType issueType) {
+    public String getCppPasteNote(LoggedInInfo loggedInInfo, String demographicNo, IssueType issueType, boolean applyPastePreferences) {
         Issue issue = caseManagementManager.getIssueByCode(issueType);
         List<CaseManagementNote> issueNotes = caseManagementManager.getActiveNotes(loggedInInfo, demographicNo, new String[]{String.valueOf(issue.getId())});
 
@@ -866,21 +866,29 @@ public class ConsultationManagerImpl implements ConsultationManager {
             }
         }
 
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-        String heading = null;
-        if (wantsPasteHeading(providerNo)) {
-            heading = PASTE_HEADINGS.get(issueType);
+        return formatPasteNote(loggedInInfo, notes, PASTE_HEADINGS.get(issueType), applyPastePreferences);
+    }
+
+    @Override
+    public String formatPasteNote(LoggedInInfo loggedInInfo, List<String> entries, String heading, boolean applyPastePreferences) {
+        if (!applyPastePreferences) {
+            return formatIssueNotes(entries, false, null);
         }
-        return formatIssueNotes(notes, isSingleLinePasteFormat(providerNo), heading);
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        String pastedHeading = null;
+        if (wantsPasteHeading(providerNo)) {
+            pastedHeading = heading;
+        }
+        return formatIssueNotes(entries, isSingleLinePasteFormat(providerNo), pastedHeading);
     }
 
     /**
-     * Builds the text a CPP section pastes into the consultation request.
+     * Builds the text a section pastes into the consultation request.
      *
-     * @param notes List<String> the section's note texts, in paste order
+     * @param notes List<String> the section's entries, in paste order
      * @param singleLine boolean true joins the notes on one line separated by commas, false keeps one note per line
      * @param heading String section title to start the paste with, or null for no heading
-     * @return String the pasted text, empty when the section has no notes
+     * @return String the pasted text, empty when the section has no entries
      */
     static String formatIssueNotes(List<String> notes, boolean singleLine, String heading) {
         List<String> entries = notes.stream()
