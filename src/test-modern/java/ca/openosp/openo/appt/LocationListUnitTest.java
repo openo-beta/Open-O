@@ -531,8 +531,8 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         @ParameterizedTest
         @NullAndEmptySource
         @ValueSource(strings = {"  "})
-        @DisplayName("should choose Not specified when the booking has no location")
-        void shouldChooseNotSpecified_whenNoLocation(String location) {
+        @DisplayName("should choose the blank option when the booking has no location")
+        void shouldChooseBlankOption_whenNoLocation(String location) {
             assertThat(locations.choiceFor(null, location)).isEqualTo(new LocationList.Choice("", null));
         }
 
@@ -654,8 +654,8 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should clear the location when Not specified is chosen, even with a Legacy Location on offer")
-        void shouldClearLocation_whenNotSpecifiedChosen() {
+        @DisplayName("should clear the location when the blank option is chosen, even with a Legacy Location on offer")
+        void shouldClearLocation_whenBlankOptionChosen() {
             request.setParameter("location", "Room 5 (old)");
             request.setParameter("locationCode", "");
 

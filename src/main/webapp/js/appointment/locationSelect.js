@@ -6,7 +6,7 @@
 
 /**
  * Chooses the active location whose name matches, ignoring case and surrounding spaces, as when an
- * appointment type names its location. "Not specified", a Legacy Location and an inactive location
+ * appointment type names its location. The blank option, a Legacy Location and an inactive location
  * are never chosen, and the choice is left as it is when nothing matches.
  *
  * @param {HTMLSelectElement} select the locationCode dropdown
@@ -28,8 +28,9 @@ function selectLocationByName(select, name) {
 
 /**
  * Chooses a location by its code, as pasting a copied appointment does. A code the dropdown doesn't
- * offer, such as a location disabled since the copy, or a copied Legacy Location, falls back to
- * "Not specified", so a paste never leaves the dropdown blank or keeps the target's own Legacy Location.
+ * offer, such as a location disabled since the copy, or a copied Legacy Location, falls back to the
+ * blank option. Leaving no option chosen would look the same but post no locationCode, and the save
+ * would then keep the target's own Legacy Location.
  *
  * @param {HTMLSelectElement} select the locationCode dropdown
  * @param {string} code the location code, or blank

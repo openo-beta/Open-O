@@ -3,13 +3,13 @@
     ca.openosp.openo.appt.LocationList#isLocationMode() is true. It posts locationCode, and a
     hidden location holding the Legacy Location, if any; LocationList.applyPostedLocation saves them.
 
-    The first choice is "Not specified", which saves no location. An appointment with a Legacy
-    Location (location text with no item) also gets that text as a choice, posted as
-    LocationList.LEGACY_VALUE and marked data-legacy, so saving it unchanged keeps the text.
+    The first choice is blank and gives a Blank Location, as in the Type and Reason dropdowns. An
+    appointment with a Legacy Location (location text with no item) also gets that text as a choice,
+    posted as LocationList.LEGACY_VALUE and marked data-legacy, so saving it unchanged keeps the text.
 
     Attributes:
       choices   List<LookupListItem> the items to offer, in display order
-      selected  String the chosen option's value (see LocationList.Choice), or blank for "Not specified"
+      selected  String the chosen option's value (see LocationList.Choice), or blank for a Blank Location
       legacy    String the Legacy Location to offer, or blank
 
     @since 2026-09-15
@@ -24,7 +24,7 @@
 <%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <fmt:setBundle basename="oscarResources"/>
 <select name="locationCode" class="form-control" tabindex="4">
-    <option value=""><fmt:message key="appointment.location.notSpecified"/></option>
+    <option value=""></option>
     <c:if test="${not empty legacy}">
         <c:set var="legacyValue"><%= LocationList.LEGACY_VALUE %></c:set>
         <option value="${legacyValue}" data-legacy ${legacyValue eq selected ? 'selected' : ''}><c:out value="${legacy}"/></option>
