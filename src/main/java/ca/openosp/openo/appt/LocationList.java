@@ -47,17 +47,17 @@ public final class LocationList {
 
     /**
      * A booking's location dropdown, as the form posts it: the option chosen, and the Legacy Location
-     * offered besides "Not specified" and the items.
+     * offered besides the blank option and the items.
      *
-     * @param value String the chosen option's value: blank for "Not specified", {@link #LEGACY_VALUE},
-     *              or an item's id
+     * @param value String the chosen option's value: an item's id, {@link #LEGACY_VALUE}, or blank for
+     *              a Blank Location
      * @param legacy String the Legacy Location offered, or blank when there is none
      * @since 2026-09-23
      */
     public record Choice(String value, String legacy) {
 
         /**
-         * @return Integer the chosen item's id, or null when "Not specified" or the Legacy Location is chosen
+         * @return Integer the chosen item's id, or null for a Blank Location or the Legacy Location
          */
         public Integer code() {
             return parseCode(value);
@@ -135,7 +135,7 @@ public final class LocationList {
      *       the Legacy Location the edit screen offered, is kept.</li>
      *   <li>An item of the list, active or not: its id becomes the location code and its label,
      *       cut to the column width, the location text.</li>
-     *   <li>Blank ("Not specified"), or anything else: the location code and text are cleared.</li>
+     *   <li>Blank, or anything else: the location code and text are cleared, leaving a Blank Location.</li>
      * </ul>
      *
      * @param appointment Appointment the appointment about to be saved
@@ -181,7 +181,7 @@ public final class LocationList {
      * Works out the choice an edit screen's dropdown starts on for a saved booking: its item, when
      * its location code is one; otherwise the active item its location text names, ignoring case and
      * surrounding spaces, so a location typed before the list existed is linked on the next save;
-     * otherwise its location text as a Legacy Location, chosen; or "Not specified" when it has none.
+     * otherwise its location text as a Legacy Location, chosen; or blank when it is a Blank Location.
      *
      * @param code Integer the booking's location code, or null
      * @param location String the booking's location text, or null
