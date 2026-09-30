@@ -2038,7 +2038,7 @@ function updateCPPNote() {
         }
 
         //we check if we are dealing with a new note or not
-        if (strNid.charAt(0) == "0") {
+        if (strNid.charAt(0) === "0") {
             document.forms["caseManagementEntryForm"].noteId.value = "0";
             document.forms["caseManagementEntryForm"].newNoteIdx.value = nId;
             document.forms["caseManagementEntryForm"].note_edit.value = "new";
