@@ -51,7 +51,6 @@
 <%@page import="ca.openosp.openo.commn.model.EForm" %>
 <%@page import="ca.openosp.openo.commn.model.EncounterForm" %>
 <%@page import="ca.openosp.openo.commn.dao.CtlBillingServiceDao" %>
-<%@page import="ca.openosp.openo.commn.model.CtlBillingService" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.ArrayList" %>
@@ -71,7 +70,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.title"/></title>
         <script src="<%=request.getContextPath()%>/csrfguard" type="text/javascript"></script>
-        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
         <script language="JavaScript">
 
             function setfocus() {
@@ -175,14 +174,14 @@
             }
 
             function showHideBillPref() {
-                $("billingONpref").toggle();
+                $("#billingONpref").toggle();
             }
 
             function showHideERxPref() {
                 //$("eRxPref").toggle();
             }
         </script>
-        <style type="text/css">
+        <style>
             .preferenceTable td {
                 border: solid white 2px;
             }
@@ -234,8 +233,7 @@
         // String defaultBillingLocation = providerPreference.getDefaultBillingLocation()!=null?providerPreference.getDefaultBillingLocation():"no";
     %>
 
-    <body bgproperties="fixed" onLoad="setfocus();showHideBillPref();showHideERxPref();" topmargin="0" leftmargin="0"
-          rightmargin="0" style="font-family:sans-serif">
+    <body onLoad="setfocus();showHideBillPref();showHideERxPref();">
     <FORM NAME="UPDATEPRE" METHOD="post" ACTION="providerupdatepreference.jsp" onSubmit="return(checkTypeInAll())">
 
         <div style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>;text-align:center;font-weight:bold">
@@ -407,14 +405,14 @@
             </tr>
             <tr>
                 <td class="preferenceLabel">
-                    Show Weekends in Week View:
+                    <label for="schedule.week_view_weekends">Show Weekends in Week View:</label>
                 </td>
                 <td class="preferenceValue">
                     <%
                         UserProperty showWeekendsProp = propertyDao.getProp(providerNo, UserProperty.SCHEDULE_WEEK_VIEW_WEEKENDS);
                         boolean weekendsEnabled = showWeekendsProp == null || Boolean.parseBoolean(showWeekendsProp.getValue());
                     %>
-                    <input type="checkbox" name="schedule.week_view_weekends"
+                    <input type="checkbox" id="schedule.week_view_weekends" name="schedule.week_view_weekends"
                            value="true" <%=weekendsEnabled ? "checked=\"checked\"" : ""%> />
                 </td>
             </tr>
@@ -443,15 +441,8 @@
                     </select>
                 </td>
                 <script>
-                    Event.observe('rxInteractionWarningLevel', 'change', function (event) {
-                        var value = $('rxInteractionWarningLevel').getValue();
-
-                        new Ajax.Request('<c:out value="${ctx}"/>/provider/rxInteractionWarningLevel.do?method=update&value=' + value, {
-                            method: 'get',
-                            onSuccess: function (transport) {
-                            }
-                        });
-
+                    $('#rxInteractionWarningLevel').change(function () {
+                        $.post('<c:out value="${ctx}"/>/provider/rxInteractionWarningLevel.do', {method: "update", value: this.value});
                     });
 
                 </script>
@@ -488,15 +479,8 @@
                 </td>
             </tr>
             <script>
-                Event.observe('reviewMsg', 'change', function (event) {
-                    var value = $('reviewMsg').getValue();
-
-                    new Ajax.Request('<c:out value="${ctx}"/>/setProviderStaleDate.do?method=OscarMsgRecvd&value=' + value + '&provider_no=<%=Encode.forUriComponent(String.valueOf(providerNo))%>', {
-                        method: 'get',
-                        onSuccess: function (transport) {
-                        }
-                    });
-
+                $('#reviewMsg').change(function () {
+                    $.post('<c:out value="${ctx}"/>/setProviderStaleDate.do', {method: "OscarMsgRecvd", value: this.value});
                 });
             </script>
         </table>
