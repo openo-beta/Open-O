@@ -35,6 +35,7 @@ import org.junit.Test;
 import ca.openosp.openo.commn.dao.utils.EntityDataGenerator;
 import ca.openosp.openo.commn.dao.utils.SchemaUtils;
 import ca.openosp.openo.commn.dao.AppointmentStatusDao;
+import ca.openosp.openo.commn.model.Appointment;
 import ca.openosp.openo.commn.model.AppointmentStatus;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
@@ -42,6 +43,7 @@ import ca.openosp.openo.utility.SpringUtils;
 public class AppointmentStatusDaoTest extends DaoTestFixtures {
 
     protected AppointmentStatusDao dao = SpringUtils.getBean(AppointmentStatusDao.class);
+    private OscarAppointmentDao appointmentDao = SpringUtils.getBean(OscarAppointmentDao.class);
 
 
     @Before
@@ -164,11 +166,15 @@ public class AppointmentStatusDaoTest extends DaoTestFixtures {
     }
 
     @Test
-    public void testCheckStatusUsuage() {
-        List<AppointmentStatus> statuses = new ArrayList<AppointmentStatus>();
-        AppointmentStatus a = new AppointmentStatus();
-        a.setStatus("test");
-        statuses.add(a);
-        dao.checkStatusUsuage(statuses);
+    public void testIsInUse() throws Exception {
+        Appointment signedHere = new Appointment();
+        EntityDataGenerator.generateTestDataForModelClass(signedHere);
+        signedHere.setStatus("HS");
+        appointmentDao.persist(signedHere);
+
+        assertTrue("a signed appointment counts", dao.isInUse("H"));
+        assertFalse("h is a different status from H", dao.isInUse("h"));
+        assertFalse(dao.isInUse("P"));
+        assertFalse(dao.isInUse(""));
     }
 }
