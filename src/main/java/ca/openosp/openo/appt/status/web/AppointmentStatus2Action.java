@@ -41,7 +41,8 @@ import ca.openosp.openo.managers.SecurityInfoManager;
  * with, and must be posted (see {@link AppointmentSettingsAction}):</p>
  * <ul>
  *   <li>{@code reset}: puts every editable status back to its seeded description, colour and icon</li>
- *   <li>{@code changestatus}: enables or disables {@code statusID} ({@code iActive} 1 or 0)</li>
+ *   <li>{@code changestatus}: enables or disables {@code statusID} ({@code iActive} 1 or 0); a status
+ *       that appointments use can't be disabled</li>
  *   <li>{@code updateDescription}, {@code updateColour}, {@code updateIcon}: sets status {@code ID}
  *       to {@code value}; posted by the item style editor on the list page</li>
  * </ul>
@@ -69,14 +70,29 @@ public class AppointmentStatus2Action extends AppointmentSettingsAction {
                 appointmentStatusMgr.reset();
                 return true;
             }, () -> "every editable status restored to its default description, colour and icon");
-            case "changestatus" -> changeAudited(dispatch,
-                    () -> appointmentStatusMgr.changeStatus(intParameter("statusID"), intParameter("iActive")),
+            case "changestatus" -> changeAudited(dispatch, this::changeActive,
                     () -> "appointment_status id " + intParameter("statusID") + ": active set to " + intParameter("iActive"));
             case "updateDescription" -> changeStyle(dispatch, "description", appointmentStatusMgr::updateDescription);
             case "updateColour" -> changeStyle(dispatch, "colour", appointmentStatusMgr::updateColour);
             case "updateIcon" -> changeStyle(dispatch, "icon", appointmentStatusMgr::updateIcon);
             default -> show();
         };
+    }
+
+    /*
+     * Enables or disables status statusID. Disable refuses a status that appointments use, since the
+     * schedule can't draw an appointment whose status is inactive.
+     */
+    private boolean changeActive() {
+        int id = intParameter("statusID");
+        int active = intParameter("iActive");
+        if (active == 0) {
+            AppointmentStatus status = appointmentStatusMgr.getStatus(id);
+            if (status != null && appointmentStatusMgr.isInUse(status.getStatus())) {
+                throw new ChangeRefusedException("admin.appt.status.mgr.msg.inUse", status.getDescription());
+            }
+        }
+        return appointmentStatusMgr.changeStatus(id, active);
     }
 
     /* Sets status ID's description, colour or icon to the posted value. */
@@ -111,10 +127,11 @@ public class AppointmentStatus2Action extends AppointmentSettingsAction {
         request.setAttribute("allStatus", allStatus);
         request.setAttribute("iconSet", AppointmentStatusMgr.ICON_SET);
         request.setAttribute("descriptionMaxLength", AppointmentStatusMgr.DESCRIPTION_MAX_LENGTH);
-        int iUseStatus = appointmentStatusMgr.checkStatusUsuage(allStatus);
-        if (iUseStatus > 0) {
-            request.setAttribute("useStatus", allStatus.get(iUseStatus).getStatus());
-        }
+        // Disable refuses a status in use, so this only finds one made inactive before that, or elsewhere.
+        allStatus.stream()
+                .filter(status -> status.getActive() == 0 && appointmentStatusMgr.isInUse(status.getStatus()))
+                .findFirst()
+                .ifPresent(status -> request.setAttribute("useStatus", status.getStatus()));
         return SUCCESS;
     }
 }

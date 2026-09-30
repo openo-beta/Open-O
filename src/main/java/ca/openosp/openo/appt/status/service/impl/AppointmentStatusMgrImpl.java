@@ -159,8 +159,8 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
         return true;
     }
 
-    public int checkStatusUsuage(List<AppointmentStatus> allStatus) {
-        return appointStatusDao.checkStatusUsuage(allStatus);
+    public boolean isInUse(String statusCode) {
+        return appointStatusDao.isInUse(statusCode);
     }
 
     public void reset() {

@@ -20,18 +20,21 @@
 <%--
     Appointment Status Manager.
 
-    Lists every appointment status. For a user who may change them, an editable status gets pencil
-    buttons that open the item style editor (js/appointment/itemStyleEditor.js) for its description,
-    colour and icon, and an Enable or Disable button; Disable confirms first, since it affects every
-    appointment still using the status. A locked status (editable=0) is read-only. Reset, after a confirm, puts every editable status back to its
+    Lists every appointment status, greying inactive ones. For a user who may change them, an
+    editable status gets pencil buttons that open the item style editor
+    (js/appointment/itemStyleEditor.js) for its description, colour and icon, and an Enable or
+    Disable button; the server refuses Disable for a status that appointments use. A locked status
+    (editable=0) is read-only. Reset, after a confirm, puts every editable status back to its
     seeded description, colour and icon. Every change posts back to AppointmentStatus2Action.
 
     Request attributes, set by AppointmentStatus2Action (appointment/apptStatusSetting.do):
       allStatus             List<AppointmentStatus> every status
       iconSet               List<String> the images a status may use, under /images
       descriptionMaxLength  Integer the description column's width
-      useStatus             String code of a disabled status still used by appointments, if any
+      useStatus             String code of an inactive status that appointments use, if any
       saveFailed            Boolean true when the last change was rejected
+      saveFailedKey         String the message for a change refused with a reason, if any
+      saveFailedParam       String that message's parameter, if it takes one
       statusTabEnabled      Boolean whether to show the Status tab
       canChange             Boolean whether the user may change statuses
 
@@ -92,7 +95,11 @@
 </div>
 
 <c:if test="${saveFailed}">
-    <div class="alert alert-danger" role="alert"><fmt:message key="admin.appt.settings.msg.saveFailed"/></div>
+    <div class="alert alert-danger" role="alert">
+        <fmt:message key="${empty saveFailedKey ? 'admin.appt.settings.msg.saveFailed' : saveFailedKey}">
+            <c:if test="${not empty saveFailedParam}"><fmt:param value="${e:forHtml(saveFailedParam)}"/></c:if>
+        </fmt:message>
+    </div>
 </c:if>
 <c:if test="${not empty useStatus}">
     <div class="alert alert-warning" role="alert">
@@ -103,7 +110,6 @@
 </c:if>
 
 <fmt:message key="admin.appt.status.mgr.label.lockedTitle" var="lockedTitle"/>
-<fmt:message key="admin.appt.status.mgr.msg.confirmDisable" var="confirmDisable"/>
 
 <div class="table-responsive">
     <table id="statusTable" class="table table-sm table-striped align-middle"
@@ -125,7 +131,8 @@
         <tbody>
         <c:forEach items="${allStatus}" var="status">
             <c:set var="editable" value="${status.editable == 1}"/>
-            <tr>
+            <c:set var="active" value="${status.active > 0}"/>
+            <tr class="${active ? '' : 'text-muted'}">
                 <td class="text-nowrap"><c:out value="${status.status}"/></td>
                 <td class="text-nowrap">
                     <c:out value="${status.description}"/>
@@ -146,18 +153,18 @@
                         <appt:itemStyleEditButton kind="icon" itemId="${status.id}" current="${status.icon}"/>
                     </c:if>
                 </td>
-                <td><fmt:message key="${status.active > 0 ? 'global.yes' : 'global.no'}"/></td>
+                <td><fmt:message key="${active ? 'global.yes' : 'global.no'}"/></td>
                 <c:if test="${canChange}">
                     <td>
                         <c:choose>
                             <c:when test="${editable}">
-                                <form method="post" action="<c:url value='${statusAction}'/>"<c:if test="${status.active > 0}"> data-confirm="${e:forHtmlAttribute(confirmDisable)}"</c:if>>
+                                <form method="post" action="<c:url value='${statusAction}'/>">
                                     <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>">
                                     <input type="hidden" name="dispatch" value="changestatus">
                                     <input type="hidden" name="statusID" value="${e:forHtmlAttribute(status.id)}">
-                                    <input type="hidden" name="iActive" value="${status.active > 0 ? 0 : 1}">
+                                    <input type="hidden" name="iActive" value="${active ? 0 : 1}">
                                     <button type="submit" class="btn btn-sm btn-outline-primary">
-                                        <fmt:message key="${status.active > 0 ? 'admin.appt.status.mgr.btn.disable' : 'admin.appt.status.mgr.btn.enable'}"/>
+                                        <fmt:message key="${active ? 'admin.appt.status.mgr.btn.disable' : 'admin.appt.status.mgr.btn.enable'}"/>
                                     </button>
                                 </form>
                             </c:when>
@@ -187,8 +194,7 @@
             }
         });
 
-        // Reset overwrites every editable status's description, colour and icon, with no undo, and
-        // Disable affects every appointment still using the status.
+        // Reset overwrites every editable status's description, colour and icon, with no undo.
         document.querySelectorAll('form[data-confirm]').forEach(function (form) {
             form.addEventListener('submit', function (event) {
                 if (!window.confirm(form.dataset.confirm)) {

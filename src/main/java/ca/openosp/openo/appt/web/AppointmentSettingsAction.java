@@ -98,7 +98,7 @@ public abstract class AppointmentSettingsAction extends ActionSupport {
          * @param messageKey String the message to show instead of the generic one
          * @param messageParam String the message's single parameter, or null if it takes none
          */
-        protected ChangeRefusedException(String messageKey, String messageParam) {
+        public ChangeRefusedException(String messageKey, String messageParam) {
             super(messageKey);
             this.messageKey = messageKey;
             this.messageParam = messageParam;
