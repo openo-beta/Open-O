@@ -885,13 +885,13 @@ public class ConsultationManagerImpl implements ConsultationManager {
     static String formatIssueNotes(List<String> notes, boolean singleLine, String heading) {
         List<String> entries = notes.stream()
                 .filter(note -> note != null && !note.isBlank())
-                .map(String::trim)
                 .collect(Collectors.toList());
         if (entries.isEmpty()) {
             return "";
         }
         if (singleLine) {
             String entriesOnOneLine = entries.stream()
+                    .map(String::trim)
                     .map(StringUtils::lineBreaks)
                     .collect(Collectors.joining(", "));
             if (heading != null) {
@@ -901,8 +901,10 @@ public class ConsultationManagerImpl implements ConsultationManager {
         }
         if (heading != null) {
             // a blank line after the banner and between notes, so each note reads as its own item
-            return "=====" + heading + "=====\n\n" + String.join("\n\n", entries) + "\n";
+            return "=====" + heading + "=====\n\n"
+                    + entries.stream().map(String::trim).collect(Collectors.joining("\n\n")) + "\n";
         }
+        // the pre-preference output: notes untouched, one line break after each
         return String.join("\n", entries) + "\n";
     }
 
