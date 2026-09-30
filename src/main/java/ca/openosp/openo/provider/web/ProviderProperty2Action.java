@@ -1076,6 +1076,8 @@ public class ProviderProperty2Action extends ActionSupport {
 
         if (prop == null) {
             prop = new UserProperty();
+            // multi line is the default, so the popup preselects it until the provider saves a choice
+            prop.setValue("multi");
         }
 
         ArrayList<LabelValueBean> serviceList = new ArrayList<LabelValueBean>();
@@ -1085,11 +1087,13 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("dropOpts", serviceList);
 
         request.setAttribute("dateProperty", prop);
+        request.setAttribute("checkboxProperty", this.userPropertyDAO.getProp(providerNo, UserProperty.CONSULT_PASTE_HEADING));
 
         request.setAttribute("providertitle", "provider.setConsulReqtPasteFmt.title");
         request.setAttribute("providermsgPrefs", "provider.setConsulReqtPasteFmt.msgPrefs");
         request.setAttribute("providermsgProvider", "provider.setConsulReqtPasteFmt.msgProvider");
         request.setAttribute("providermsgEdit", "provider.setConsulReqtPasteFmt.msgEdit");
+        request.setAttribute("providermsgCheckbox", "provider.setConsulReqtPasteFmt.msgHeading");
         request.setAttribute("providerbtnSubmit", "provider.setConsulReqtPasteFmt.btnSubmit");
         request.setAttribute("providermsgSuccess", "provider.setConsulReqtPasteFmt.msgSuccess");
         request.setAttribute("method", "saveConsultPasteFmt");
@@ -1117,6 +1121,18 @@ public class ProviderProperty2Action extends ActionSupport {
 
         saveProperty.setValue(fmt);
         this.userPropertyDAO.saveProp(saveProperty);
+
+        UserProperty headingProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.CONSULT_PASTE_HEADING);
+
+        if (headingProperty == null) {
+            headingProperty = new UserProperty();
+            headingProperty.setProviderNo(providerNo);
+            headingProperty.setName(UserProperty.CONSULT_PASTE_HEADING);
+        }
+
+        // an unchecked checkbox sends no parameter, so absence means false
+        headingProperty.setValue(String.valueOf("true".equals(request.getParameter("checkboxValue"))));
+        this.userPropertyDAO.saveProp(headingProperty);
 
         request.setAttribute("status", "success");
         request.setAttribute("providertitle", "provider.setConsulReqtPasteFmt.title");

@@ -537,6 +537,17 @@
 
         <style type="text/css">
 
+            /* cog that opens the CPP Paste Format preference popup; the stroke thickens the glyph */
+            a.pastePrefCog {
+                margin-left: 4px;
+                font-size: 18px;
+                font-weight: bold;
+                -webkit-text-stroke: 0.6px #333;
+                color: #333;
+                text-decoration: none;
+                vertical-align: middle;
+            }
+
             /* Ocean refer style */
             span.oceanRefer {
                 display: flex;
@@ -2758,6 +2769,8 @@ if (userAgent != null) {
                                                    class="btn medicationData" value="Active Medications"/>
                                             <input id="fetchLongTermMedications_clinicalInformation" type="button"
                                                    class="btn medicationData" value="Long Term Medications"/>
+                                            <a href="#" title="Paste preferences" class="pastePrefCog"
+                                               onclick="popupPage(230,860,'${ctx}/setProviderStaleDate.do?method=viewConsultPasteFmt'); return false;">&#9881;&#xFE0E;</a>
                                             <% } %>
                                         </td>
                                     </tr>
@@ -2807,6 +2820,8 @@ if (userAgent != null) {
                                                    class="btn medicationData" value="Active Medications"/>
                                             <input id="fetchLongTermMedications_concurrentProblems" type="button"
                                                    class="btn medicationData" value="Long Term Medications"/>
+                                            <a href="#" title="Paste preferences" class="pastePrefCog"
+                                               onclick="popupPage(230,860,'${ctx}/setProviderStaleDate.do?method=viewConsultPasteFmt'); return false;">&#9881;&#xFE0E;</a>
                                             <% } %>
                                         </td>
                                     </tr>
