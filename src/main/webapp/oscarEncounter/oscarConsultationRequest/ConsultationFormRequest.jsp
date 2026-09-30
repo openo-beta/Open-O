@@ -903,6 +903,8 @@
     <script type="text/javascript">
 
         function getClinicalData(data, target) {
+            // the CPP Paste Format preference applies only to the two fields whose button bars carry its cog
+            data.pastePreferences = (target === "#clinicalInformation" || target === "#concurrentProblems");
             jQuery.ajax({
                 method: "POST",
                 url: "${ pageContext.request.contextPath }/oscarConsultationRequest/consultationClinicalData.do",
