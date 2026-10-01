@@ -1300,8 +1300,9 @@ Ontario, Canada
                                     %>
                                 </select>
                                 <% } else if (locationMode) { %>
+                                <%-- The Default Location only on first display: a patient search posts back staff's choice. --%>
                                 <appt:locationSelect choices="<%=locations.getActiveItems()%>"
-                                                     selected='<%=bFirstDisp ? null : request.getParameter("locationCode")%>'/>
+                                                     selected='<%=bFirstDisp ? locations.getNewBookingValue(loggedInInfo) : request.getParameter("locationCode")%>'/>
                                 <% } else { %>
 	            <input type="TEXT" name="location" tabindex="4" tabindex="4" value="<%=loc%>" class="form-control">
                                 <% } %>
