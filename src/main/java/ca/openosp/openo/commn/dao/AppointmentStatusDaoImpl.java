@@ -2,7 +2,6 @@
 
 package ca.openosp.openo.commn.dao;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -56,51 +55,27 @@ public class AppointmentStatusDaoImpl extends AbstractDaoImpl<AppointmentStatus>
         return null;
     }
 
-    @Override
-    public void modifyStatus(int ID, String strDesc, String strColor) {
-        AppointmentStatus appts = find(ID);
-        if (appts != null) {
-            appts.setDescription(strDesc);
-            appts.setColor(strColor);
-        }
-    }
-
-    public void changeStatus(int ID, int iActive) {
-        AppointmentStatus appts = find(ID);
-        if (appts != null) {
-            appts.setActive(iActive);
-        }
-    }
-
-    /**
-     * I don't know about this one...but i'm just converting it to a JPA entity for
-     * now.
-     *
-     * @param allStatus
-     * @return int
+    /*
+     * One call is one transaction (AbstractDaoImpl is @Transactional), so the batch is all or nothing.
+     * Not batchPersist-style: those use their own EntityManager and commit every 25 rows.
      */
     @Override
-    public int checkStatusUsuage(List<AppointmentStatus> allStatus) {
-        int iUsuage = 0;
-        AppointmentStatus apptStatus = null;
-        String sql = null;
-        for (int i = 0; i < allStatus.size(); i++) {
-            apptStatus = allStatus.get(i);
-            if (apptStatus.getActive() == 1)
-                continue;
-            sql = "select count(*) as total from appointment a where a.status like ?1 ";
-            // sql = sql + "collate latin1_general_cs";
+    public void mergeAll(List<AppointmentStatus> statuses) {
+        statuses.forEach(this::merge);
+    }
 
-            Query q = entityManager.createNativeQuery(sql);
-            q.setParameter(1, apptStatus.getStatus() + "%");
-            Object result = q.getSingleResult();
-
-            iUsuage = ((BigInteger) result).intValue();
-            if (iUsuage > 0) {
-                iUsuage = i;
-                break;
-            }
+    /*
+     * ascii() compares the first letter by its character code, so h and H stay apart whatever the
+     * column's collation, and the S or V a signed or verified appointment adds is ignored.
+     */
+    @Override
+    public boolean isInUse(String statusCode) {
+        if (statusCode == null || statusCode.isEmpty()) {
+            return false;
         }
-        return iUsuage;
+        Query q = entityManager.createNativeQuery("select 1 from appointment a where ascii(a.status) = ascii(?1)");
+        q.setParameter(1, statusCode);
+        q.setMaxResults(1);
+        return !q.getResultList().isEmpty();
     }
 }

@@ -1814,6 +1814,9 @@
                                 <include>**/managers/**/*Test.java</include>
                                 <include>**/documentManager/**/*UnitTest.java</include>
                                 <include>**/eform/**/*Test.java</include>
+                                <include>**/appt/**/*Test.java</include>
+                                <include>**/commn/dao/**/*Test.java</include>
+                                <include>**/webserv/transfer_objects/**/*Test.java</include>
                             </includes>
                             <excludes>
                                 <!-- Exclude archive tests from modern test run -->
