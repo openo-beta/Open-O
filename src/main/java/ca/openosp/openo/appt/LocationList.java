@@ -200,6 +200,33 @@ public final class LocationList {
     }
 
     /**
+     * Works out the option a new booking's dropdown starts on: the Default Location while it is
+     * active, otherwise the blank option for a Blank Location. An edit screen never starts on it.
+     *
+     * @param loggedInInfo LoggedInInfo the current user; no privilege is needed
+     * @return String the Default Location's id, or blank
+     * @since 2026-09-30
+     */
+    public String getNewBookingValue(LoggedInInfo loggedInInfo) {
+        LookupListItem item = getDefault(loggedInInfo);
+        return item != null && item.isActive() ? String.valueOf(item.getId()) : "";
+    }
+
+    /**
+     * Finds the Default Location, active or not: the Location tab marks it either way, and it is
+     * used again once an inactive one is enabled. It is read on every call.
+     *
+     * @param loggedInInfo LoggedInInfo the current user; no privilege is needed
+     * @return LookupListItem the item an administrator made the default, or null when there is none
+     *         or it is no item of this list
+     * @since 2026-09-30
+     */
+    public LookupListItem getDefault(LoggedInInfo loggedInInfo) {
+        LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
+        return find(lookupListManager.findAppointmentLocationDefault(loggedInInfo));
+    }
+
+    /**
      * Names an appointment's location as the schedule shows it: what the booking screen offered.
      * Outside site setups, a location code that is an item of this list shows the item's current
      * name, as its chip does. In a site setup, the saved location text: the site's name, or with

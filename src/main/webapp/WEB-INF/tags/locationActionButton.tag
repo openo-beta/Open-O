@@ -1,14 +1,15 @@
 <%--
     One Appointment Settings, Location tab change, as its own posted form: moving a location along
-    the order, disabling it, or enabling it. Changes are posted because the CSRF guard
-    only checks posts (see AppointmentSettingsAction).
+    the order, making it the default or removing the default, disabling it, or enabling it. Changes
+    are posted because the CSRF guard only checks posts (see AppointmentSettingsAction).
 
     A glyph renders an icon button labelled for screen readers; without one the label is the button's
     text. A confirm message is asked before the form is submitted, by the page's script.
 
     Attributes:
       action    String the form's context-relative action, e.g. /appointment/apptLocationSetting.do
-      dispatch  String the change to apply: moveUp, moveDown, deactivate or restore
+      dispatch  String the change to apply: moveUp, moveDown, makeDefault, removeDefault, deactivate
+                or restore
       itemId    the location's LookupListItem id
       labelKey  String the message key naming the change
       glyph     String a glyphicon class for an icon button, or nothing for a text button

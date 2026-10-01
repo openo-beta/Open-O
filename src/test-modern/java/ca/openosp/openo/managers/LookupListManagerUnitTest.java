@@ -5,8 +5,10 @@ import java.util.List;
 import ca.openosp.openo.commn.dao.LookupListDao;
 import ca.openosp.openo.commn.dao.LookupListItemDao;
 import ca.openosp.openo.commn.dao.OscarLogDao;
+import ca.openosp.openo.commn.dao.SystemPreferencesDao;
 import ca.openosp.openo.commn.model.LookupList;
 import ca.openosp.openo.commn.model.LookupListItem;
+import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -24,6 +26,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
+import org.mockito.ArgumentCaptor;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,8 +46,9 @@ import static org.mockito.Mockito.when;
  * Unit tests for the lookupListItem changes in {@link LookupListManager}:
  * {@code updateLookupListItemColour}, {@code updateLookupListItemIcon},
  * {@code updateLookupListItemLabel}, {@code restoreLookupListItem} and
- * {@code moveLookupListItem}; and for {@code findAppointmentLocationList}, the one place the
- * Location List is resolved.
+ * {@code moveLookupListItem}; for {@code findAppointmentLocationList}, the one place the
+ * Location List is resolved; and for {@code findAppointmentLocationDefault} and
+ * {@code setAppointmentLocationDefault}, the one place its Default Location is stored.
  *
  * <p>Both values end up in class and style attributes on the schedule, so the tests pin the
  * whitelist: a valid value is stored, blank clears it, anything else is rejected before the
@@ -67,6 +71,9 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
 
     @Mock
     private LookupListItemDao lookupListItemDao;
+
+    @Mock
+    private SystemPreferencesDao systemPreferencesDao;
 
     @Mock
     private SecurityInfoManager securityInfoManager;
@@ -112,6 +119,92 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
             assertThat(manager.findAppointmentLocationList(loggedInInfo)).isSameAs(locationList);
 
             verify(securityInfoManager, never()).hasPrivilege(any(), any(), any(), any());
+        }
+    }
+
+    @Nested
+    @DisplayName("findAppointmentLocationDefault and setAppointmentLocationDefault")
+    class LocationDefault {
+
+        private final SystemPreferences.APPOINTMENT_LOCATION_KEYS key =
+                SystemPreferences.APPOINTMENT_LOCATION_KEYS.appointment_default_location;
+
+        @Test
+        @DisplayName("should find the default's id without a privilege check")
+        void shouldFindDefault_whenAnyUser() {
+            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(new SystemPreferences(key.name(), "58"));
+
+            assertThat(manager.findAppointmentLocationDefault(loggedInInfo)).isEqualTo(58);
+
+            verify(securityInfoManager, never()).hasPrivilege(any(), any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("should find no default when none was ever set")
+        void shouldFindNoDefault_whenNeverSet() {
+            assertThat(manager.findAppointmentLocationDefault(loggedInInfo)).isNull();
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"", "abc", "-13", "0"})
+        @DisplayName("should find no default when the stored value is cleared or not an id")
+        void shouldFindNoDefault_whenValueNotAnId(String value) {
+            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(new SystemPreferences(key.name(), value));
+
+            assertThat(manager.findAppointmentLocationDefault(loggedInInfo)).isNull();
+        }
+
+        private SystemPreferences saved() {
+            ArgumentCaptor<SystemPreferences> preference = ArgumentCaptor.forClass(SystemPreferences.class);
+            verify(systemPreferencesDao).saveEntity(preference.capture());
+            return preference.getValue();
+        }
+
+        @Test
+        @DisplayName("should store the first default as a new system preference")
+        void shouldCreatePreference_whenNoDefaultYet() {
+            manager.setAppointmentLocationDefault(loggedInInfo, ITEM_ID);
+
+            SystemPreferences preference = saved();
+            assertThat(preference.getName()).isEqualTo("appointment_default_location");
+            assertThat(preference.getValue()).isEqualTo(String.valueOf(ITEM_ID));
+        }
+
+        @Test
+        @DisplayName("should replace the default in the existing preference and log the old and the new")
+        void shouldReplaceDefault_whenOneIsSet() {
+            SystemPreferences existing = new SystemPreferences(key.name(), "3");
+            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(existing);
+
+            manager.setAppointmentLocationDefault(loggedInInfo, ITEM_ID);
+
+            assertThat(saved()).isSameAs(existing);
+            assertThat(existing.getValue()).isEqualTo(String.valueOf(ITEM_ID));
+            logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
+                    eq("LookupListManager.setAppointmentLocationDefault"), contains("was [3], now [" + ITEM_ID + "]")));
+        }
+
+        @Test
+        @DisplayName("should clear the default when given none")
+        void shouldClearDefault_whenGivenNull() {
+            SystemPreferences existing = new SystemPreferences(key.name(), "3");
+            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(existing);
+
+            manager.setAppointmentLocationDefault(loggedInInfo, null);
+
+            assertThat(saved().getValue()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should refuse the change and save nothing without _admin update")
+        void shouldDeny_whenUserLacksAdminUpdate() {
+            when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null))
+                    .thenReturn(false);
+
+            assertThatThrownBy(() -> manager.setAppointmentLocationDefault(loggedInInfo, ITEM_ID))
+                    .hasMessage("Access Denied");
+
+            verify(systemPreferencesDao, never()).saveEntity(any());
         }
     }
 

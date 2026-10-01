@@ -28,15 +28,17 @@
 
     Lists the places an appointment can be booked in one table, as the Status tab lists statuses:
     the active locations in the order the booking screens offer them, then the inactive ones by
-    name, each with the chip it shows on the schedule. A user who may change them gets pencil
-    buttons that open the item style editor (js/appointment/itemStyleEditor.js) for the name, colour
-    and icon, buttons to move an active location along the order, an Enable or Disable button on
-    each row, and a link to the Look-Up List Manager, where locations are added. Changes post back
-    to AppointmentLocation2Action.
+    name, each with the chip it shows on the schedule. The Default Location is marked, for every
+    user. A user who may change them gets pencil buttons that open the item style editor
+    (js/appointment/itemStyleEditor.js) for the name, colour and icon, buttons to move an active
+    location along the order, a button to make an active location the default or to remove the
+    default, an Enable or Disable button on each row, and a link to the Look-Up List Manager, where
+    locations are added. Changes post back to AppointmentLocation2Action.
 
     Request attributes, set by AppointmentLocation2Action (appointment/apptLocationSetting.do):
       locations              List<LookupListItem> the active locations in order, then the inactive by name
       activeLocationCount    Integer how many of locations are active, all of them first
+      defaultLocation        LookupListItem the Default Location, active or not, or null for none
       locationListName       String the Location List's name, for the Look-Up List Manager link
       canChange              Boolean whether the user may change locations
       canDeactivate          Boolean whether the user may disable one
@@ -73,6 +75,7 @@
 <fmt:message key="admin.appt.location.msg.confirmLastDisable" var="confirmLastDisable"/>
 <%-- An unstyled location draws the default chip; its empty Colour and Icon cells say so on hover. --%>
 <fmt:message key="admin.appt.location.label.defaultStyle" var="defaultStyleLabel"/>
+<fmt:message key="admin.appt.location.label.default" var="defaultBadge"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -134,8 +137,15 @@
                 <tbody>
                 <c:forEach items="${locations}" var="item" varStatus="loop">
                     <tr id="location-${e:forHtmlAttribute(item.id)}" class="${item.active ? '' : 'text-muted'}">
+                        <c:set var="isDefault" value="${item.id eq defaultLocation.id}"/>
                         <td>
                             <c:out value="${item.label}"/>
+                            <%-- An inactive default is kept, so it is used again once the location is enabled. --%>
+                            <c:if test="${isDefault}">
+                                <fmt:message key="${item.active ? 'admin.appt.location.msg.default' : 'admin.appt.location.msg.defaultInactive'}"
+                                             var="defaultHint"/>
+                                <span class="badge bg-secondary" title="${e:forHtmlAttribute(defaultHint)}">${e:forHtml(defaultBadge)}<span class="visually-hidden"> ${e:forHtml(defaultHint)}</span></span>
+                            </c:if>
                             <c:if test="${canChange}">
                                 <appt:itemStyleEditButton kind="description" itemId="${item.id}"
                                                           current="${item.label}" label="${editNameLabel}"/>
@@ -167,27 +177,31 @@
                         <td><fmt:message key="${item.active ? 'global.yes' : 'global.no'}"/></td>
                         <c:if test="${canChange}">
                             <td class="text-nowrap">
+                                <c:if test="${item.active and activeLocationCount > 1}">
+                                    <appt:locationActionButton action="${locationAction}" dispatch="moveUp"
+                                                               itemId="${item.id}" labelKey="admin.appt.location.btn.moveUp"
+                                                               glyph="glyphicon-chevron-up" disabled="${loop.first}"/>
+                                    <appt:locationActionButton action="${locationAction}" dispatch="moveDown"
+                                                               itemId="${item.id}" labelKey="admin.appt.location.btn.moveDown"
+                                                               glyph="glyphicon-chevron-down"
+                                                               disabled="${loop.index == activeLocationCount - 1}"/>
+                                </c:if>
+                                <%-- Only an active location can be made the default, but an inactive default can be removed. --%>
+                                <c:if test="${item.active or isDefault}">
+                                    <appt:locationActionButton action="${locationAction}" dispatch="${isDefault ? 'removeDefault' : 'makeDefault'}"
+                                                               itemId="${item.id}"
+                                                               labelKey="${isDefault ? 'admin.appt.location.btn.removeDefault' : 'admin.appt.location.btn.makeDefault'}"/>
+                                </c:if>
                                 <c:choose>
-                                    <c:when test="${item.active}">
-                                        <c:if test="${activeLocationCount > 1}">
-                                            <appt:locationActionButton action="${locationAction}" dispatch="moveUp"
-                                                                       itemId="${item.id}" labelKey="admin.appt.location.btn.moveUp"
-                                                                       glyph="glyphicon-chevron-up" disabled="${loop.first}"/>
-                                            <appt:locationActionButton action="${locationAction}" dispatch="moveDown"
-                                                                       itemId="${item.id}" labelKey="admin.appt.location.btn.moveDown"
-                                                                       glyph="glyphicon-chevron-down"
-                                                                       disabled="${loop.index == activeLocationCount - 1}"/>
-                                        </c:if>
-                                        <c:if test="${canDeactivate}">
-                                            <appt:locationActionButton action="${locationAction}" dispatch="deactivate"
-                                                                       itemId="${item.id}" labelKey="admin.appt.location.btn.disable"
-                                                                       confirm="${activeLocationCount == 1 ? confirmLastDisable : ''}"/>
-                                        </c:if>
-                                    </c:when>
-                                    <c:otherwise>
+                                    <c:when test="${not item.active}">
                                         <appt:locationActionButton action="${locationAction}" dispatch="restore"
                                                                    itemId="${item.id}" labelKey="admin.appt.location.btn.enable"/>
-                                    </c:otherwise>
+                                    </c:when>
+                                    <c:when test="${canDeactivate}">
+                                        <appt:locationActionButton action="${locationAction}" dispatch="deactivate"
+                                                                   itemId="${item.id}" labelKey="admin.appt.location.btn.disable"
+                                                                   confirm="${activeLocationCount == 1 ? confirmLastDisable : ''}"/>
+                                    </c:when>
                                 </c:choose>
                             </td>
                         </c:if>

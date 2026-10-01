@@ -26,15 +26,20 @@ package ca.openosp.openo.managers;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
 
 import ca.openosp.openo.commn.dao.LookupListDao;
 import ca.openosp.openo.commn.dao.LookupListItemDao;
+import ca.openosp.openo.commn.dao.SystemPreferencesDao;
 import ca.openosp.openo.commn.model.LookupList;
 import ca.openosp.openo.commn.model.LookupListItem;
+import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.utility.LoggedInInfo;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +52,8 @@ public class LookupListManager {
     private static final Pattern COLOUR = Pattern.compile("#[0-9a-fA-F]{6}");
     private static final Pattern ICON = Pattern.compile("glyphicon-[a-z0-9-]+");
     private static final String APPOINTMENT_LOCATION_LIST = "appointmentLocationCode";
+    private static final SystemPreferences.APPOINTMENT_LOCATION_KEYS APPOINTMENT_LOCATION_DEFAULT =
+            SystemPreferences.APPOINTMENT_LOCATION_KEYS.appointment_default_location;
 
     /** The width of LookupListItem.label; a screen with a narrower store of its own caps it lower. */
     private static final int LABEL_MAX_LENGTH = 255;
@@ -55,6 +62,8 @@ public class LookupListManager {
     private LookupListDao lookupListDao;
     @Autowired
     private LookupListItemDao lookupListItemDao;
+    @Autowired
+    private SystemPreferencesDao systemPreferencesDao;
     @Autowired
     SecurityInfoManager securityInfoManager;
 
@@ -82,6 +91,46 @@ public class LookupListManager {
      */
     public LookupList findAppointmentLocationList(LoggedInInfo loggedInInfo) {
         return findLookupListByName(loggedInInfo, APPOINTMENT_LOCATION_LIST);
+    }
+
+    /**
+     * Finds the Default Location: the Location List item new bookings start on, which may since have
+     * been disabled. It is a clinic-wide system preference. Like {@link #findLookupListByName}, it
+     * needs no privilege, because booking screens read it for every user.
+     *
+     * @param loggedInInfo LoggedInInfo the current user
+     * @return Integer the item's id, or null when none is set or the stored value is not an id
+     * @since 2026-09-30
+     */
+    public Integer findAppointmentLocationDefault(LoggedInInfo loggedInInfo) {
+        SystemPreferences preference = systemPreferencesDao.findPreferenceByName(APPOINTMENT_LOCATION_DEFAULT);
+        int id = preference == null ? 0 : NumberUtils.toInt(preference.getValue(), 0);
+        return id > 0 ? id : null;
+    }
+
+    /**
+     * Makes a Location List item the Default Location, in place of any other, or clears it. Which
+     * items may be the default is for the caller to decide.
+     *
+     * @param loggedInInfo LoggedInInfo the current user, who needs _admin update
+     * @param lookupListItemId Integer the item to make the default, or null for none
+     * @throws RuntimeException if the user lacks _admin update
+     * @since 2026-09-30
+     */
+    public void setAppointmentLocationDefault(LoggedInInfo loggedInInfo, Integer lookupListItemId) {
+
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null)) {
+            throw new RuntimeException("Access Denied");
+        }
+
+        SystemPreferences preference = Objects.requireNonNullElseGet(systemPreferencesDao.findPreferenceByName(APPOINTMENT_LOCATION_DEFAULT),
+                () -> new SystemPreferences(APPOINTMENT_LOCATION_DEFAULT.name()));
+        String previous = preference.getValue();
+        preference.setValue(lookupListItemId == null ? "" : String.valueOf(lookupListItemId));
+        preference.setUpdateDate(new Date());
+        systemPreferencesDao.saveEntity(preference);
+        LogAction.addLogSynchronous(loggedInInfo, "LookupListManager.setAppointmentLocationDefault",
+                "Default Location lookupListItem Id was [" + previous + "], now [" + preference.getValue() + "]");
     }
 
     public LookupList addLookupList(LoggedInInfo loggedInInfo, LookupList lookupList) {

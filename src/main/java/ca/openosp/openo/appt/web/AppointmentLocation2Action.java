@@ -23,6 +23,8 @@ import ca.openosp.openo.utility.SpringUtils;
  *       blank value clears a colour or an icon.</li>
  *   <li>{@code restore} enables an inactive location, {@code deactivate} disables an active one,
  *       and {@code moveUp} and {@code moveDown} change where an active one sits in the order.</li>
+ *   <li>{@code makeDefault} makes an active location the Default Location, the one new bookings
+ *       start on, in place of any other; {@code removeDefault} leaves no default.</li>
  *   <li>Anything else renders the page.</li>
  * </ul>
  *
@@ -64,6 +66,8 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
                     lookupListManager.moveLookupListItem(getLoggedInInfo(), item.getId(), true));
             case "moveDown" -> changeLocation((locations, item) ->
                     lookupListManager.moveLookupListItem(getLoggedInInfo(), item.getId(), false));
+            case "makeDefault" -> changeLocation(this::makeDefault);
+            case "removeDefault" -> changeLocation(this::removeDefault);
             default -> show();
         };
     }
@@ -100,6 +104,7 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
         request.setAttribute("locationListName", list == null ? null : list.getName());
         request.setAttribute("locations", locations.getItemsActiveFirst());
         request.setAttribute("activeLocationCount", locations.getActiveItems().size());
+        request.setAttribute("defaultLocation", locations.getDefault(getLoggedInInfo()));
         request.setAttribute("canDeactivate", isCanDeactivate());
         // The Add link opens the Look-Up List Manager, whose Add needs write, not update.
         request.setAttribute("canAdd", hasAnyPrivilege(ADMIN, SecurityInfoManager.WRITE));
@@ -149,6 +154,27 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
         }
 
         return lookupListManager.removeLookupListItem(getLoggedInInfo(), item.getId());
+    }
+
+    /* Makes a location the default; an inactive one can't be, because no new booking offers it. */
+    private boolean makeDefault(LocationList locations, LookupListItem item) {
+        if (!item.isActive()) {
+            throw new IllegalArgumentException("an inactive location can't be the default: " + item.getId());
+        }
+
+        lookupListManager.setAppointmentLocationDefault(getLoggedInInfo(), item.getId());
+        return true;
+    }
+
+    /*
+     * Removes the default, but only while it is still this location: a page left open while another
+     * location was made the default must not remove that one.
+     */
+    private boolean removeDefault(LocationList locations, LookupListItem item) {
+        if (item.getId().equals(lookupListManager.findAppointmentLocationDefault(getLoggedInInfo()))) {
+            lookupListManager.setAppointmentLocationDefault(getLoggedInInfo(), null);
+        }
+        return true;
     }
 
     private static void requireNameFree(LocationList locations, String name, LookupListItem item) {
