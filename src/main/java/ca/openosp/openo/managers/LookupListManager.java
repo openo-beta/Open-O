@@ -51,7 +51,8 @@ public class LookupListManager {
 
     private static final Pattern COLOUR = Pattern.compile("#[0-9a-fA-F]{6}");
     private static final Pattern ICON = Pattern.compile("glyphicon-[a-z0-9-]+");
-    private static final String APPOINTMENT_LOCATION_LIST = "appointmentLocationCode";
+    /** The name of the Location List; {@link #findAppointmentLocationList} is how code should find the list. */
+    public static final String APPOINTMENT_LOCATION_LIST = "appointmentLocationCode";
     private static final SystemPreferences.APPOINTMENT_LOCATION_KEYS APPOINTMENT_LOCATION_DEFAULT =
             SystemPreferences.APPOINTMENT_LOCATION_KEYS.appointment_default_location;
     private static final SystemPreferences.APPOINTMENT_LOCATION_KEYS APPOINTMENT_LOCATION_REQUIRED =
@@ -83,9 +84,9 @@ public class LookupListManager {
 
     /**
      * Finds the Location List: the one lookup list whose items are the places an appointment can be
-     * booked. Every appointment screen resolves the list here, so this is the only place that knows
-     * which list it is. Like {@link #findLookupListByName}, it needs no privilege, because booking
-     * screens load it for every user.
+     * booked. Every appointment screen resolves the list here; the Look-Up List Manager recognises it
+     * by {@link #APPOINTMENT_LOCATION_LIST}. Like {@link #findLookupListByName}, it needs no
+     * privilege, because booking screens load it for every user.
      *
      * @param loggedInInfo LoggedInInfo the current user
      * @return LookupList the Location List with all its items, active or not, or null if it is missing

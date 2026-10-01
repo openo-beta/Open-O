@@ -1,5 +1,6 @@
 /*
- * Item Style editor dialog (appointment/itemStyleEditorDialog.jspf).
+ * Item Style editor dialog (appointment/itemStyleEditorDialog.jspf), and the colour swatch on the
+ * pages that use it.
  *
  * Fits the window: the title and buttons stay in view and only the body between them scrolls. In an
  * iframe, itemStyleEditor.js sets --item-style-editor-room to the height the browser window shows.
@@ -53,4 +54,13 @@
 /* The current icon when it is outside the set: spans the grid so its caption fits. */
 .item-style-editor-choice-current {
     grid-column: 1 / -1;
+}
+
+/* A colour's swatch, beside its hex value; ItemStyleEditor.paintSwatches() fills it. */
+.item-style-swatch {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    vertical-align: middle;
+    border: 1px solid var(--bs-gray-500, #adb5bd);
 }

@@ -31,7 +31,10 @@ import ca.openosp.openo.utility.SpringUtils;
  */
 public abstract class AppointmentSettingsAction extends ActionSupport {
 
-    /** Read on any one of these opens an Appointment Settings page; the pages' JSP gates match. */
+    /**
+     * Read on any one of these opens an Appointment Settings page; the pages' JSP gates, and the
+     * Look-Up List Manager's link to the Location tab, match.
+     */
     protected static final List<String> SEC_OBJECTS = List.of("_admin", "_admin.userAdmin", "_admin.schedule");
 
     /** The result that redirects back to the page after a saved change. */

@@ -69,15 +69,6 @@
     <link href="${ctx}/css/glyphicons-standalone.css" rel="stylesheet">
     <link href="${ctx}/css/itemStyleEditor.css" rel="stylesheet">
     <script src="${ctx}/js/appointment/itemStyleEditor.js"></script>
-    <style>
-        .status-swatch {
-            display: inline-block;
-            width: 1rem;
-            height: 1rem;
-            vertical-align: middle;
-            border: 1px solid var(--bs-gray-500, #adb5bd);
-        }
-    </style>
 </head>
 <body class="p-3">
 <%@ include file="appointmentSettingsNav.jspf" %>
@@ -141,7 +132,7 @@
                     </c:if>
                 </td>
                 <td class="text-nowrap">
-                    <span class="status-swatch" data-colour="${e:forHtmlAttribute(status.color)}"></span>
+                    <span class="item-style-swatch" data-colour="${e:forHtmlAttribute(status.color)}"></span>
                     <c:out value="${status.color}"/>
                     <c:if test="${editable and canChange}">
                         <appt:itemStyleEditButton kind="colour" itemId="${status.id}" current="${status.color}"/>
@@ -187,12 +178,7 @@
     (function () {
         const table = document.getElementById('statusTable');
 
-        // Colours are only ever applied as #rrggbb, so a stored value cannot inject other CSS.
-        table.querySelectorAll('.status-swatch').forEach(function (swatch) {
-            if (/^#[0-9a-fA-F]{6}$/.test(swatch.dataset.colour)) {
-                swatch.style.backgroundColor = swatch.dataset.colour;
-            }
-        });
+        ItemStyleEditor.paintSwatches();
 
         // Reset overwrites every editable status's description, colour and icon, with no undo.
         document.querySelectorAll('form[data-confirm]').forEach(function (form) {
