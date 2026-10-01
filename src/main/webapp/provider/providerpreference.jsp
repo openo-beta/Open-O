@@ -24,7 +24,6 @@
 
 --%>
 <%
-    String deepcolor = "#CCCCFF", weakcolor = "#EEEEFF";
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     String providerNo = loggedInInfo.getLoggedInProviderNo();
 
@@ -251,11 +250,11 @@
     <div class="container">
     <FORM NAME="UPDATEPRE" METHOD="post" ACTION="providerupdatepreference.jsp" onSubmit="return(checkTypeInAll())">
 
-        <div style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>;text-align:center;font-weight:bold">
+        <h2>
             <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.description"/>
-        </div>
+        </h2>
 
-        <table class="preferenceTable" style="width:100%;border-collapse:collapse;background-color:<%=Encode.forHtmlAttribute(String.valueOf(weakcolor))%>;">
+        <table class="preferenceTable" style="width:100%;border-collapse:collapse;">
             <tr>
                 <td class="preferenceLabel">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.preference.formStartHour"/>
@@ -446,7 +445,7 @@
 
         </table>
 
-        <div style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>;text-align:center;font-weight:bold">
+        <div style="text-align:left;font-weight:bold">
             <INPUT TYPE="submit" VALUE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.btnSubmit"/>' SIZE="7">
             <INPUT TYPE="RESET" VALUE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>' onClick="window.close();">
         </div>
@@ -460,8 +459,7 @@
                 <oscar:oscarPropertiesCheck property="TORONTO_RFQ" value="no">
                     <tr>
                         <td><a href=#
-                                              onClick="popupPage(230,600,'<%= request.getContextPath() %>/casemgmt/newCaseManagementEnable.jsp');return false;">Enable
-                            OSCAR CME UI</a>
+                                              onClick="popupPage(230,600,'<%= request.getContextPath() %>/casemgmt/newCaseManagementEnable.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEnableCmeUi"/></a>
                         </td>
                     </tr>
                 </oscar:oscarPropertiesCheck>
@@ -504,8 +502,8 @@
                     <tr>
                         <td>
                             <div id="billingONpref">
-                                <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.labelDefaultBillForm"/>:
-                                <select name="default_servicetype">
+                                <label for="default_servicetype"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.labelDefaultBillForm"/>:</label>
+                                <select id="default_servicetype" name="default_servicetype">
                                     <option value="no">-- no --</option>
                                     <%
                                         if (providerPreference != null) {
@@ -547,19 +545,11 @@
                 </tr>
                 <tr>
                     <td><a href=#
-                                          onClick="popupPage(230,860,'providerColourPicker.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditColour"/></a></td>
-                </tr>
-                <tr>
-                    <td><a href=#
                                           onClick="popupPage(500,860,'providerPrinter.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetDefaultPrinter"/></a></td>
                 </tr>
                 <tr>
                     <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewRxPageSize');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetRxPageSize"/></a></td>
-                </tr>
-                <tr>
-                    <td><a href=#
-                                          onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewUseRx3');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetRx3"/></a></td>
                 </tr>
                 <tr>
                     <td><a href=#
@@ -724,7 +714,7 @@
                             <tr>
                                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelFacility"/>:</td>
                                 <td><input name="erx_facility" type="text" value="<%=Encode.forHtmlAttribute(String.valueOf(eRxFacility))%>"
-                                           title="The Facility ID assigned to you by the External Prescriber"/><br></td>
+                                           title="The Facility ID assigned to you by the External Prescriber"/></td>
                             </tr>
                             <tr>
                                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelTrainingMode"/>:</td>
@@ -743,6 +733,7 @@
         </tr>
         </security:oscarSec>
         </oscar:oscarPropertiesCheck>
+        <oscar:oscarPropertiesCheck property="billregion" value="ON" defaultVal="BC">
         <tr>
             <td><a href=#
                                   onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewDashboardPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewDashboardPrefs"/></a></td>
@@ -756,6 +747,7 @@
             <td><a href=#
                                   onClick="popupPage(700,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewLabMacroPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewLabMacroPrefs"/></a></td>
         </tr>
+        </oscar:oscarPropertiesCheck>
         <tr>
             <td><a href=#
                                   onClick="popupPage(280,730,'<%=request.getContextPath()%>/setTicklerPreferences.do?method=viewTicklerTaskAssignee');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewTicklerPreferences"/></a></td>
