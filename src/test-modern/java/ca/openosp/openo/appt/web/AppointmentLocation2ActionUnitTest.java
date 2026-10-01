@@ -167,14 +167,25 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should mark the Default Location for any reader, even while it is inactive")
+        @DisplayName("should mark the Default Location for any reader")
         void shouldMarkDefault_whenRead() {
+            grant("_admin.schedule", SecurityInfoManager.READ);
+            defaultLocation(11);
+
+            action.execute();
+
+            assertThat(request.getAttribute("defaultLocation")).isSameAs(room);
+        }
+
+        @Test
+        @DisplayName("should mark no Default Location when the one set is inactive")
+        void shouldMarkNoDefault_whenDefaultInactive() {
             grant("_admin.schedule", SecurityInfoManager.READ);
             defaultLocation(12);
 
             action.execute();
 
-            assertThat(request.getAttribute("defaultLocation")).isSameAs(retired);
+            assertThat(request.getAttribute("defaultLocation")).isNull();
         }
 
         @Test

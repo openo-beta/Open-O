@@ -97,9 +97,10 @@ public class LookupListManager {
     }
 
     /**
-     * Finds the Default Location: the Location List item new bookings start on, which may since have
-     * been disabled. It is a clinic-wide system preference. Like {@link #findLookupListByName}, it
-     * needs no privilege, because booking screens read it for every user.
+     * Finds the Default Location: the Location List item new bookings start on. It is a clinic-wide
+     * system preference, stored apart from the item: {@link #removeLookupListItem} clears it, but a
+     * caller must still check the item is active. Like {@link #findLookupListByName}, it needs no
+     * privilege, because booking screens read it for every user.
      *
      * @param loggedInInfo LoggedInInfo the current user
      * @return Integer the item's id, or null when none is set or the stored value is not an id
@@ -256,8 +257,15 @@ public class LookupListManager {
     }
 
     /**
-     * Remove a lookupListItem by it's id.
+     * Disables a lookupListItem by its id. Disabling the Default Location also clears the default,
+     * so enabling the location again doesn't bring it back.
+     *
+     * @param loggedInInfo LoggedInInfo the current user, who needs _admin delete and update
+     * @param lookupListItemId int the item to disable
+     * @return boolean true when the item was disabled
+     * @throws RuntimeException if the user lacks _admin delete or update
      */
+    @Transactional
     public boolean removeLookupListItem(LoggedInInfo loggedInInfo, int lookupListItemId) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.DELETE, null)) {
@@ -270,6 +278,9 @@ public class LookupListManager {
         if (lookupListItem != null) {
             lookupListItem.setActive(Boolean.FALSE);
             id = updateLookupListItem(loggedInInfo, lookupListItem);
+            if (Objects.equals(findAppointmentLocationDefault(loggedInInfo), id)) {
+                setAppointmentLocationDefault(loggedInInfo, null);
+            }
         }
         LogAction.addLogSynchronous(loggedInInfo, "LookupListManager.removeLookupListItem", "Removed lookupListItem Id: " + id);
 
