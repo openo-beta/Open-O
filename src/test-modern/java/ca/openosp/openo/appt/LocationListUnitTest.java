@@ -574,11 +574,11 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should keep an inactive Default Location but start a new booking on the blank option")
-        void shouldStartBlank_whenDefaultInactive() {
+        @DisplayName("should have no default when the one set is inactive")
+        void shouldHaveNoDefault_whenDefaultInactive() {
             defaultSetTo(12);
 
-            assertThat(locations.getDefault(loggedInInfo)).isSameAs(retired);
+            assertThat(locations.getDefault(loggedInInfo)).isNull();
             assertThat(locations.getNewBookingValue(loggedInInfo)).isEmpty();
         }
 
