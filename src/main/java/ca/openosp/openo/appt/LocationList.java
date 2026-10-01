@@ -200,8 +200,8 @@ public final class LocationList {
     }
 
     /**
-     * Works out the option a new booking's dropdown starts on: the Default Location while it is
-     * active, otherwise the blank option for a Blank Location. An edit screen never starts on it.
+     * Works out the option a new booking's dropdown starts on: the Default Location, or the blank
+     * option for a Blank Location when there is none. An edit screen never starts on it.
      *
      * @param loggedInInfo LoggedInInfo the current user; no privilege is needed
      * @return String the Default Location's id, or blank
@@ -209,21 +209,23 @@ public final class LocationList {
      */
     public String getNewBookingValue(LoggedInInfo loggedInInfo) {
         LookupListItem item = getDefault(loggedInInfo);
-        return item != null && item.isActive() ? String.valueOf(item.getId()) : "";
+        return item != null ? String.valueOf(item.getId()) : "";
     }
 
     /**
-     * Finds the Default Location, active or not: the Location tab marks it either way, and it is
-     * used again once an inactive one is enabled. It is read on every call.
+     * Finds the Default Location, which is always active. Disabling a location clears the default,
+     * but the setting is stored apart from the item, so one naming an inactive item reads as none.
+     * It is read on every call.
      *
      * @param loggedInInfo LoggedInInfo the current user; no privilege is needed
-     * @return LookupListItem the item an administrator made the default, or null when there is none
-     *         or it is no item of this list
+     * @return LookupListItem the item an administrator made the default, or null when there is none,
+     *         it is inactive, or it is no item of this list
      * @since 2026-09-30
      */
     public LookupListItem getDefault(LoggedInInfo loggedInInfo) {
         LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
-        return find(lookupListManager.findAppointmentLocationDefault(loggedInInfo));
+        LookupListItem item = find(lookupListManager.findAppointmentLocationDefault(loggedInInfo));
+        return item != null && item.isActive() ? item : null;
     }
 
     /**

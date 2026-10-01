@@ -45,8 +45,8 @@ import static org.mockito.Mockito.when;
 /**
  * Unit tests for the lookupListItem changes in {@link LookupListManager}:
  * {@code updateLookupListItemColour}, {@code updateLookupListItemIcon},
- * {@code updateLookupListItemLabel}, {@code restoreLookupListItem} and
- * {@code moveLookupListItem}; for {@code findAppointmentLocationList}, the one place the
+ * {@code updateLookupListItemLabel}, {@code removeLookupListItem}, {@code restoreLookupListItem}
+ * and {@code moveLookupListItem}; for {@code findAppointmentLocationList}, the one place the
  * Location List is resolved; and for {@code findAppointmentLocationDefault},
  * {@code setAppointmentLocationDefault}, {@code isAppointmentLocationRequired} and
  * {@code setAppointmentLocationRequired}, the one place its Default Location and Location
@@ -457,6 +457,45 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
 
             logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
                     eq("LookupListManager.updateLookupListItemLabel"), contains("midtown")));
+        }
+    }
+
+    @Nested
+    @DisplayName("removeLookupListItem")
+    class Remove {
+
+        private final SystemPreferences.APPOINTMENT_LOCATION_KEYS key =
+                SystemPreferences.APPOINTMENT_LOCATION_KEYS.appointment_default_location;
+
+        @BeforeEach
+        void allowDelete() {
+            item.setActive(true);
+            when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.DELETE, null))
+                    .thenReturn(true);
+        }
+
+        @Test
+        @DisplayName("should disable the item and clear the default when it is the Default Location")
+        void shouldClearDefault_whenItemIsDefault() {
+            SystemPreferences existing = new SystemPreferences(key.name(), String.valueOf(ITEM_ID));
+            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(existing);
+
+            assertThat(manager.removeLookupListItem(loggedInInfo, ITEM_ID)).isTrue();
+
+            assertThat(item.isActive()).isFalse();
+            assertThat(saved()).isSameAs(existing);
+            assertThat(existing.getValue()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should disable the item and keep the default when another location is the default")
+        void shouldKeepDefault_whenAnotherItemIsDefault() {
+            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(new SystemPreferences(key.name(), "3"));
+
+            assertThat(manager.removeLookupListItem(loggedInInfo, ITEM_ID)).isTrue();
+
+            assertThat(item.isActive()).isFalse();
+            verify(systemPreferencesDao, never()).saveEntity(any());
         }
     }
 

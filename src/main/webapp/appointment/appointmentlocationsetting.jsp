@@ -39,7 +39,7 @@
     Request attributes, set by AppointmentLocation2Action (appointment/apptLocationSetting.do):
       locations              List<LookupListItem> the active locations in order, then the inactive by name
       activeLocationCount    Integer how many of locations are active, all of them first
-      defaultLocation        LookupListItem the Default Location, active or not, or null for none
+      defaultLocation        LookupListItem the Default Location, always active, or null for none
       locationRequired       Boolean whether the Location Requirement is on
       locationListName       String the Location List's name, for the Look-Up List Manager link
       canChange              Boolean whether the user may change locations
@@ -78,6 +78,7 @@
 <%-- An unstyled location draws the default chip; its empty Colour and Icon cells say so on hover. --%>
 <fmt:message key="admin.appt.location.label.defaultStyle" var="defaultStyleLabel"/>
 <fmt:message key="admin.appt.location.label.default" var="defaultBadge"/>
+<fmt:message key="admin.appt.location.msg.default" var="defaultHint"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -165,10 +166,7 @@
                         <c:set var="isDefault" value="${item.id eq defaultLocation.id}"/>
                         <td>
                             <c:out value="${item.label}"/>
-                            <%-- An inactive default is kept, so it is used again once the location is enabled. --%>
                             <c:if test="${isDefault}">
-                                <fmt:message key="${item.active ? 'admin.appt.location.msg.default' : 'admin.appt.location.msg.defaultInactive'}"
-                                             var="defaultHint"/>
                                 <span class="badge bg-secondary" title="${e:forHtmlAttribute(defaultHint)}">${e:forHtml(defaultBadge)}<span class="visually-hidden"> ${e:forHtml(defaultHint)}</span></span>
                             </c:if>
                             <c:if test="${canChange}">
@@ -216,8 +214,7 @@
                                 </c:if>
                             </td>
                             <td class="text-nowrap location-actions">
-                                <%-- Only an active location can be made the default, but an inactive default can be removed. --%>
-                                <c:if test="${item.active or isDefault}">
+                                <c:if test="${item.active}">
                                     <appt:locationActionButton action="${locationAction}" dispatch="${isDefault ? 'removeDefault' : 'makeDefault'}"
                                                                itemId="${item.id}"
                                                                labelKey="${isDefault ? 'admin.appt.location.btn.removeDefault' : 'admin.appt.location.btn.makeDefault'}"/>

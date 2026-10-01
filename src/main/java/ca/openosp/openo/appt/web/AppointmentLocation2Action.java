@@ -21,8 +21,9 @@ import ca.openosp.openo.utility.SpringUtils;
  *   <li>{@code updateColour}, {@code updateIcon} and {@code updateDescription} set the item's
  *       colour, icon or name to {@code value}; the item style editor on the page posts them, and a
  *       blank value clears a colour or an icon.</li>
- *   <li>{@code restore} enables an inactive location, {@code deactivate} disables an active one,
- *       and {@code moveUp} and {@code moveDown} change where an active one sits in the order.</li>
+ *   <li>{@code restore} enables an inactive location, {@code deactivate} disables an active one
+ *       and stops it being the default, and {@code moveUp} and {@code moveDown} change where an
+ *       active one sits in the order.</li>
  *   <li>{@code makeDefault} makes an active location the Default Location, the one new bookings
  *       start on, in place of any other; {@code removeDefault} leaves no default.</li>
  *   <li>{@code updateRequirement} acts on the whole list, not an item: it turns the Location
