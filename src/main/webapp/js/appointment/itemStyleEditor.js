@@ -38,6 +38,8 @@
  *   renders one.
  * - Call ItemStyleEditor.init() with one entry per kind the page edits. A trigger for a
  *   kind the page did not configure does nothing.
+ * - A colour's swatch is an element with class item-style-swatch and data-colour (the colour);
+ *   ItemStyleEditor.paintSwatches() fills every one on the page.
  *
  * The form posts ID, dispatch (updateDescription, updateColour or updateIcon) and value.
  * Clear posts a blank value. Saving an unchanged value closes the dialog without posting.
@@ -46,6 +48,9 @@
  */
 (function (window, document) {
     'use strict';
+
+    /** A colour as the pages store it (#rrggbb), and the only form this script applies as CSS. */
+    const COLOUR = /^#[0-9a-fA-F]{6}$/;
 
     /**
      * Every Glyphicons Halflings class in css/glyphicons-standalone.css, in stylesheet order.
@@ -120,6 +125,18 @@
     }
 
     /**
+     * Fills each colour swatch on the page with its data-colour. Only #rrggbb is applied, so a
+     * stored value cannot inject other CSS; a swatch with any other value stays empty.
+     */
+    function paintSwatches() {
+        document.querySelectorAll('.item-style-swatch').forEach(function (swatch) {
+            if (COLOUR.test(swatch.dataset.colour)) {
+                swatch.style.backgroundColor = swatch.dataset.colour;
+            }
+        });
+    }
+
+    /**
      * Builds one icon choice button.
      *
      * @param {Object} iconSet the icon set descriptor the choice belongs to
@@ -189,7 +206,7 @@
             dispatch: 'updateColour',
             load: function (current) {
                 form.querySelector('.item-style-editor-colour').value =
-                    /^#[0-9a-fA-F]{6}$/.test(current) ? current.toLowerCase() : '#ffffff';
+                    COLOUR.test(current) ? current.toLowerCase() : '#ffffff';
             },
             read: function () {
                 return form.querySelector('.item-style-editor-colour').value;
@@ -348,6 +365,7 @@
     window.ItemStyleEditor = Object.freeze({
         init: init,
         readableIconName: readableIconName,
+        paintSwatches: paintSwatches,
         GLYPHICONS: GLYPHICONS
     });
 })(window, document);
