@@ -13,6 +13,7 @@ import ca.openosp.openo.commn.model.LookupList;
 import ca.openosp.openo.commn.model.LookupListItem;
 import ca.openosp.openo.managers.LookupListManager;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,8 +40,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verifyNoInteractions;
 
 /**
- * Unit tests for {@link LocationList}: item lookup, the choices a booking offers, the Location Mode
- * precedence, and how a booking form's posted choice is saved.
+ * Unit tests for {@link LocationList}: item lookup, the choices a booking offers and the Default
+ * Location it starts on, the Location Mode precedence, and how a booking form's posted choice is saved.
  *
  * @since 2026-09-15
  */
@@ -543,6 +544,59 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
             assertThat(new LocationList.Choice(LocationList.LEGACY_VALUE, "Room 5 (old)").code()).isNull();
             assertThat(new LocationList.Choice("", null).code()).isNull();
             assertThat(new LocationList.Choice(null, null).code()).isNull();
+        }
+    }
+
+    @Nested
+    @DisplayName("Default Location")
+    class DefaultLocation {
+
+        private final LoggedInInfo loggedInInfo = new LoggedInInfo();
+        private LocationList locations;
+
+        @BeforeEach
+        void wrapList() {
+            locations = LocationList.of(locationList);
+        }
+
+        private void defaultSetTo(Integer id) {
+            when(lookupListManager.findAppointmentLocationDefault(loggedInInfo)).thenReturn(id);
+        }
+
+        @Test
+        @DisplayName("should start a new booking on the Default Location while it is active")
+        void shouldStartOnDefault_whenDefaultActive() {
+            defaultSetTo(13);
+
+            assertThat(locations.getDefault(loggedInInfo)).isSameAs(room2);
+            assertThat(locations.getNewBookingValue(loggedInInfo)).isEqualTo("13");
+        }
+
+        @Test
+        @DisplayName("should keep an inactive Default Location but start a new booking on the blank option")
+        void shouldStartBlank_whenDefaultInactive() {
+            defaultSetTo(12);
+
+            assertThat(locations.getDefault(loggedInInfo)).isSameAs(retired);
+            assertThat(locations.getNewBookingValue(loggedInInfo)).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should have no default when none is set")
+        void shouldHaveNoDefault_whenNoneSet() {
+            defaultSetTo(null);
+
+            assertThat(locations.getDefault(loggedInInfo)).isNull();
+            assertThat(locations.getNewBookingValue(loggedInInfo)).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should have no default when the one set is no item of the list")
+        void shouldHaveNoDefault_whenDefaultNotInList() {
+            defaultSetTo(99);
+
+            assertThat(locations.getDefault(loggedInInfo)).isNull();
+            assertThat(locations.getNewBookingValue(loggedInInfo)).isEmpty();
         }
     }
 

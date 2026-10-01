@@ -37,7 +37,8 @@ import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link AppointmentLocation2Action}: who may view and change locations, which
- * items a change may touch, the rules on a location's name, and the saved/rejected outcomes.
+ * items a change may touch, the rules on a location's name and on the Default Location, and the
+ * saved/rejected outcomes.
  *
  * @since 2026-09-15
  */
@@ -94,6 +95,10 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
 
     private void grant(String object, String privilege) {
         lenient().when(securityInfoManager.hasPrivilege(loggedInInfo, object, privilege, null)).thenReturn(true);
+    }
+
+    private void defaultLocation(int id) {
+        when(lookupListManager.findAppointmentLocationDefault(loggedInInfo)).thenReturn(id);
     }
 
     @Nested
@@ -161,6 +166,17 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
+        @DisplayName("should mark the Default Location for any reader, even while it is inactive")
+        void shouldMarkDefault_whenRead() {
+            grant("_admin.schedule", SecurityInfoManager.READ);
+            defaultLocation(12);
+
+            action.execute();
+
+            assertThat(request.getAttribute("defaultLocation")).isSameAs(retired);
+        }
+
+        @Test
         @DisplayName("should refuse the page without read on any Appointment Settings object")
         void shouldThrow_whenNoReadPrivilege() {
             assertThatThrownBy(() -> action.execute()).isInstanceOf(SecurityException.class);
@@ -224,8 +240,19 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
         }
 
         @ParameterizedTest
+        @ValueSource(strings = {"makeDefault", "removeDefault"})
+        @DisplayName("should refuse changing the default with update on another Appointment Settings object only")
+        void shouldThrow_whenChangingDefaultWithoutAdminUpdate(String dispatch) {
+            grant("_admin.schedule", SecurityInfoManager.UPDATE);
+
+            assertThatThrownBy(() -> post(dispatch, "11", "")).isInstanceOf(SecurityException.class);
+
+            verify(lookupListManager, never()).setAppointmentLocationDefault(any(), any());
+        }
+
+        @ParameterizedTest
         @ValueSource(strings = {"updateColour", "updateIcon", "updateDescription", "restore", "deactivate",
-                "moveUp", "moveDown"})
+                "moveUp", "moveDown", "makeDefault", "removeDefault"})
         @DisplayName("should refuse a change that is not posted")
         void shouldThrow_whenChangeNotPosted(String dispatch) {
             grant("_admin", SecurityInfoManager.UPDATE);
@@ -477,6 +504,58 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
                 assertThat(post("moveUp", "11", "")).isEqualTo("success");
 
                 assertThat(response.getStatus()).isEqualTo(400);
+            }
+        }
+
+        @Nested
+        @DisplayName("the Default Location")
+        class Default {
+
+            @Test
+            @DisplayName("should make an active location the default and return to its row")
+            void shouldMakeDefault_whenActive() {
+                assertThat(post("makeDefault", "11", "")).isEqualTo("saved");
+
+                verify(lookupListManager).setAppointmentLocationDefault(loggedInInfo, 11);
+                assertThat(action.getAnchor()).isEqualTo("#location-11");
+            }
+
+            @Test
+            @DisplayName("should refuse to make an inactive location the default, since no new booking offers it")
+            void shouldRefuse_whenMakingInactiveDefault() {
+                assertThat(post("makeDefault", "12", "")).isEqualTo("success");
+
+                assertThat(response.getStatus()).isEqualTo(400);
+                verify(lookupListManager, never()).setAppointmentLocationDefault(any(), any());
+            }
+
+            @Test
+            @DisplayName("should refuse to make an item from another lookup list the default")
+            void shouldRefuse_whenMakingDefaultOutsideLocationList() {
+                assertThat(post("makeDefault", "99", "")).isEqualTo("success");
+
+                assertThat(response.getStatus()).isEqualTo(400);
+                verify(lookupListManager, never()).setAppointmentLocationDefault(any(), any());
+            }
+
+            @Test
+            @DisplayName("should remove the default, even while that location is inactive")
+            void shouldRemoveDefault_whenStillDefault() {
+                defaultLocation(12);
+
+                assertThat(post("removeDefault", "12", "")).isEqualTo("saved");
+
+                verify(lookupListManager).setAppointmentLocationDefault(loggedInInfo, null);
+            }
+
+            @Test
+            @DisplayName("should leave the default alone when the page asking to remove it is out of date")
+            void shouldKeepDefault_whenAnotherLocationIsDefault() {
+                defaultLocation(11);
+
+                assertThat(post("removeDefault", "12", "")).isEqualTo("saved");
+
+                verify(lookupListManager, never()).setAppointmentLocationDefault(any(), any());
             }
         }
     }
