@@ -40,8 +40,9 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verifyNoInteractions;
 
 /**
- * Unit tests for {@link LocationList}: item lookup, the choices a booking offers and the Default
- * Location it starts on, the Location Mode precedence, and how a booking form's posted choice is saved.
+ * Unit tests for {@link LocationList}: item lookup, the choices a booking offers, the Default
+ * Location it starts on and whether the Location Requirement applies, the Location Mode precedence,
+ * and how a booking form's posted choice is saved.
  *
  * @since 2026-09-15
  */
@@ -597,6 +598,47 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
 
             assertThat(locations.getDefault(loggedInInfo)).isNull();
             assertThat(locations.getNewBookingValue(loggedInInfo)).isEmpty();
+        }
+    }
+
+    @Nested
+    @DisplayName("Location Requirement")
+    class LocationRequirement {
+
+        private final LoggedInInfo loggedInInfo = new LoggedInInfo();
+
+        @Test
+        @DisplayName("should require a location on a new booking when the requirement is on")
+        void shouldRequire_whenRequirementOn() {
+            when(lookupListManager.isAppointmentLocationRequired(loggedInInfo)).thenReturn(true);
+
+            assertThat(LocationList.of(locationList).isRequiredForNewBooking(loggedInInfo)).isTrue();
+        }
+
+        @Test
+        @DisplayName("should not require a location when the requirement is off")
+        void shouldNotRequire_whenRequirementOff() {
+            when(lookupListManager.isAppointmentLocationRequired(loggedInInfo)).thenReturn(false);
+
+            assertThat(LocationList.of(locationList).isRequiredForNewBooking(loggedInInfo)).isFalse();
+        }
+
+        @Test
+        @DisplayName("should ignore the requirement when no location is active, since bookings take a typed one")
+        void shouldNotRequire_whenNoActiveItem() {
+            locationList.setItems(List.of(retired));
+            lenient().when(lookupListManager.isAppointmentLocationRequired(loggedInInfo)).thenReturn(true);
+
+            assertThat(LocationList.of(locationList).isRequiredForNewBooking(loggedInInfo)).isFalse();
+        }
+
+        @Test
+        @DisplayName("should ignore the requirement in a site setup, which offers its own places")
+        void shouldNotRequire_whenSiteSetup() {
+            properties.setProperty("multisites", "on");
+            lenient().when(lookupListManager.isAppointmentLocationRequired(loggedInInfo)).thenReturn(true);
+
+            assertThat(LocationList.of(locationList).isRequiredForNewBooking(loggedInInfo)).isFalse();
         }
     }
 

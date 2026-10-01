@@ -227,6 +227,20 @@ public final class LocationList {
     }
 
     /**
+     * Whether a new booking must choose a location: the Location Requirement is on and this list is
+     * the clinic's Location Mode. A site setup, or a list with no active location, ignores it. An edit
+     * screen never asks, because a Blank Location is the honest answer when staff aren't sure.
+     *
+     * @param loggedInInfo LoggedInInfo the current user; no privilege is needed
+     * @return boolean true if a new booking can't be saved with a Blank Location
+     * @since 2026-09-30
+     */
+    public boolean isRequiredForNewBooking(LoggedInInfo loggedInInfo) {
+        LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
+        return isLocationMode() && lookupListManager.isAppointmentLocationRequired(loggedInInfo);
+    }
+
+    /**
      * Names an appointment's location as the schedule shows it: what the booking screen offered.
      * Outside site setups, a location code that is an item of this list shows the item's current
      * name, as its chip does. In a site setup, the saved location text: the site's name, or with

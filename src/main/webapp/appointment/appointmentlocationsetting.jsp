@@ -28,17 +28,19 @@
 
     Lists the places an appointment can be booked in one table, as the Status tab lists statuses:
     the active locations in the order the booking screens offer them, then the inactive ones by
-    name, each with the chip it shows on the schedule. The Default Location is marked, for every
-    user. A user who may change them gets pencil buttons that open the item style editor
-    (js/appointment/itemStyleEditor.js) for the name, colour and icon, buttons to move an active
-    location along the order, a button to make an active location the default or to remove the
-    default, an Enable or Disable button on each row, and a link to the Look-Up List Manager, where
-    locations are added. Changes post back to AppointmentLocation2Action.
+    name, each with the chip it shows on the schedule. The Default Location is marked, and a switch
+    above the table shows whether the Location Requirement is on, for every user. A user who may
+    change locations gets the switch enabled, saving on click; pencil buttons that open the item
+    style editor (js/appointment/itemStyleEditor.js) for the name, colour and icon; buttons to move
+    an active location along the order; a button to make an active location the default or to
+    remove the default; an Enable or Disable button on each row; and a link to the Look-Up List
+    Manager, where locations are added. Changes post back to AppointmentLocation2Action.
 
     Request attributes, set by AppointmentLocation2Action (appointment/apptLocationSetting.do):
       locations              List<LookupListItem> the active locations in order, then the inactive by name
       activeLocationCount    Integer how many of locations are active, all of them first
       defaultLocation        LookupListItem the Default Location, active or not, or null for none
+      locationRequired       Boolean whether the Location Requirement is on
       locationListName       String the Location List's name, for the Look-Up List Manager link
       canChange              Boolean whether the user may change locations
       canDeactivate          Boolean whether the user may disable one
@@ -120,6 +122,22 @@
         <p class="text-muted"><fmt:message key="admin.appt.location.msg.empty"/></p>
     </c:when>
     <c:otherwise>
+        <%-- Saves on click, with no confirmation: one more click undoes it, and nothing booked changes. --%>
+        <form method="post" action="<c:url value='${locationAction}'/>" class="mb-3">
+            <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>">
+            <input type="hidden" name="dispatch" value="updateRequirement">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="locationRequirement" name="value"
+                       value="true" aria-describedby="locationRequirementHint"
+                       ${locationRequired ? 'checked' : ''} ${canChange ? '' : 'disabled'}>
+                <label class="form-check-label" for="locationRequirement">
+                    <fmt:message key="admin.appt.location.label.requirement"/>
+                </label>
+                <div id="locationRequirementHint" class="form-text">
+                    <fmt:message key="admin.appt.location.msg.requirementHint"/>
+                </div>
+            </div>
+        </form>
         <div class="table-responsive">
             <table class="table table-sm table-striped align-middle">
                 <thead>
@@ -225,6 +243,14 @@
             icon.title = name;
             icon.setAttribute('aria-label', name);
         });
+
+        // The switch is disabled for a user who can't change it, so it never fires for them.
+        const requirement = document.getElementById('locationRequirement');
+        if (requirement) {
+            requirement.addEventListener('change', function () {
+                requirement.form.submit();
+            });
+        }
 
         // Disabling the last active location sends every booking screen back to a typed box.
         document.querySelectorAll('form[data-confirm]').forEach(function (form) {
