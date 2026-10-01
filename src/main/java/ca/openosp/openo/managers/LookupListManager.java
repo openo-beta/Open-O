@@ -54,6 +54,8 @@ public class LookupListManager {
     private static final String APPOINTMENT_LOCATION_LIST = "appointmentLocationCode";
     private static final SystemPreferences.APPOINTMENT_LOCATION_KEYS APPOINTMENT_LOCATION_DEFAULT =
             SystemPreferences.APPOINTMENT_LOCATION_KEYS.appointment_default_location;
+    private static final SystemPreferences.APPOINTMENT_LOCATION_KEYS APPOINTMENT_LOCATION_REQUIRED =
+            SystemPreferences.APPOINTMENT_LOCATION_KEYS.appointment_location_required;
 
     /** The width of LookupListItem.label; a screen with a narrower store of its own caps it lower. */
     private static final int LABEL_MAX_LENGTH = 255;
@@ -118,19 +120,53 @@ public class LookupListManager {
      * @since 2026-09-30
      */
     public void setAppointmentLocationDefault(LoggedInInfo loggedInInfo, Integer lookupListItemId) {
+        saveAppointmentLocationSetting(loggedInInfo, APPOINTMENT_LOCATION_DEFAULT,
+                lookupListItemId == null ? "" : String.valueOf(lookupListItemId),
+                "LookupListManager.setAppointmentLocationDefault", "Default Location lookupListItem Id");
+    }
+
+    /**
+     * Whether the Location Requirement is on: a new booking can't be saved with a Blank Location. It
+     * is a clinic-wide system preference, off until an administrator turns it on. Like
+     * {@link #findLookupListByName}, it needs no privilege, because booking screens read it for every
+     * user. Whether it applies to a booking screen is for the caller to decide.
+     *
+     * @param loggedInInfo LoggedInInfo the current user
+     * @return boolean true if new bookings must choose a location
+     * @since 2026-09-30
+     */
+    public boolean isAppointmentLocationRequired(LoggedInInfo loggedInInfo) {
+        return systemPreferencesDao.isReadBooleanPreference(APPOINTMENT_LOCATION_REQUIRED);
+    }
+
+    /**
+     * Turns the Location Requirement on or off.
+     *
+     * @param loggedInInfo LoggedInInfo the current user, who needs _admin update
+     * @param required boolean true if new bookings must choose a location
+     * @throws RuntimeException if the user lacks _admin update
+     * @since 2026-09-30
+     */
+    public void setAppointmentLocationRequired(LoggedInInfo loggedInInfo, boolean required) {
+        saveAppointmentLocationSetting(loggedInInfo, APPOINTMENT_LOCATION_REQUIRED, String.valueOf(required),
+                "LookupListManager.setAppointmentLocationRequired", "Location Requirement");
+    }
+
+    /* Saves one Location tab setting, creating its preference on first use, and audits the change. */
+    private void saveAppointmentLocationSetting(LoggedInInfo loggedInInfo, SystemPreferences.APPOINTMENT_LOCATION_KEYS key,
+                                                String value, String logAction, String logName) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null)) {
             throw new RuntimeException("Access Denied");
         }
 
-        SystemPreferences preference = Objects.requireNonNullElseGet(systemPreferencesDao.findPreferenceByName(APPOINTMENT_LOCATION_DEFAULT),
-                () -> new SystemPreferences(APPOINTMENT_LOCATION_DEFAULT.name()));
+        SystemPreferences preference = Objects.requireNonNullElseGet(systemPreferencesDao.findPreferenceByName(key),
+                () -> new SystemPreferences(key.name()));
         String previous = preference.getValue();
-        preference.setValue(lookupListItemId == null ? "" : String.valueOf(lookupListItemId));
+        preference.setValue(value);
         preference.setUpdateDate(new Date());
         systemPreferencesDao.saveEntity(preference);
-        LogAction.addLogSynchronous(loggedInInfo, "LookupListManager.setAppointmentLocationDefault",
-                "Default Location lookupListItem Id was [" + previous + "], now [" + preference.getValue() + "]");
+        LogAction.addLogSynchronous(loggedInInfo, logAction, logName + " was [" + previous + "], now [" + value + "]");
     }
 
     public LookupList addLookupList(LoggedInInfo loggedInInfo, LookupList lookupList) {

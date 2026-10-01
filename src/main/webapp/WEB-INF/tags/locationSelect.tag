@@ -11,6 +11,8 @@
       choices   List<LookupListItem> the items to offer, in display order
       selected  String the chosen option's value (see LocationList.Choice), or blank for a Blank Location
       legacy    String the Legacy Location to offer, or blank
+      required  Boolean true to make the browser refuse a save on the blank option, for a new booking
+                under the Location Requirement (see LocationList.isRequiredForNewBooking)
 
     @since 2026-09-15
 --%>
@@ -18,12 +20,13 @@
 <%@ attribute name="choices" required="true" type="java.util.List" %>
 <%@ attribute name="selected" required="false" %>
 <%@ attribute name="legacy" required="false" %>
+<%@ attribute name="required" required="false" type="java.lang.Boolean" %>
 <%@ tag import="ca.openosp.openo.appt.LocationList" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <fmt:setBundle basename="oscarResources"/>
-<select name="locationCode" class="form-control" tabindex="4">
+<select name="locationCode" class="form-control" tabindex="4" ${required ? 'required' : ''}>
     <option value=""></option>
     <c:if test="${not empty legacy}">
         <c:set var="legacyValue"><%= LocationList.LEGACY_VALUE %></c:set>

@@ -25,6 +25,9 @@ import ca.openosp.openo.utility.SpringUtils;
  *       and {@code moveUp} and {@code moveDown} change where an active one sits in the order.</li>
  *   <li>{@code makeDefault} makes an active location the Default Location, the one new bookings
  *       start on, in place of any other; {@code removeDefault} leaves no default.</li>
+ *   <li>{@code updateRequirement} acts on the whole list, not an item: it turns the Location
+ *       Requirement on when {@code value} is {@code true} and off otherwise, as the page's switch
+ *       posts {@code value} only while it is on.</li>
  *   <li>Anything else renders the page.</li>
  * </ul>
  *
@@ -68,6 +71,7 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
                     lookupListManager.moveLookupListItem(getLoggedInInfo(), item.getId(), false));
             case "makeDefault" -> changeLocation(this::makeDefault);
             case "removeDefault" -> changeLocation(this::removeDefault);
+            case "updateRequirement" -> change(this::updateRequirement);
             default -> show();
         };
     }
@@ -105,6 +109,7 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
         request.setAttribute("locations", locations.getItemsActiveFirst());
         request.setAttribute("activeLocationCount", locations.getActiveItems().size());
         request.setAttribute("defaultLocation", locations.getDefault(getLoggedInInfo()));
+        request.setAttribute("locationRequired", lookupListManager.isAppointmentLocationRequired(getLoggedInInfo()));
         request.setAttribute("canDeactivate", isCanDeactivate());
         // The Add link opens the Look-Up List Manager, whose Add needs write, not update.
         request.setAttribute("canAdd", hasAnyPrivilege(ADMIN, SecurityInfoManager.WRITE));
@@ -174,6 +179,15 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
         if (item.getId().equals(lookupListManager.findAppointmentLocationDefault(getLoggedInInfo()))) {
             lookupListManager.setAppointmentLocationDefault(getLoggedInInfo(), null);
         }
+        return true;
+    }
+
+    /*
+     * Posts the switch's new state rather than a toggle, so a page left open can't flip it back. An
+     * unchecked checkbox posts nothing, which turns the requirement off.
+     */
+    private boolean updateRequirement() {
+        lookupListManager.setAppointmentLocationRequired(getLoggedInInfo(), Boolean.parseBoolean(value()));
         return true;
     }
 

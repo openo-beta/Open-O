@@ -465,11 +465,16 @@ Ontario, Canada
                 $("#keyword").trigger("patient:unlink");
             }
 
-            function onButRepeat() {
-                document.forms[0].action = "appointmentrepeatbooking.jsp";
-                if (calculateEndTime()) {
-                    document.forms[0].submit();
+            // Search saves nothing, so the Location Requirement doesn't stop it (the button is formnovalidate);
+            // the redisplay still reads every other field, so those are still checked.
+            function onSearch() {
+                const form = document.forms['ADDAPPT'];
+                const valid = [...form.elements].every(field => field.name === 'locationCode' || field.reportValidity());
+                if (valid) {
+                    parseSearch();
+                    form.displaymode.value = 'Search ';
                 }
+                return valid;
             }
 
             <% if(apptObj!=null) { %>
@@ -1207,8 +1212,9 @@ Ontario, Canada
                                         value="<%=Encode.forHtmlAttribute(name)%>"
                                     placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formNamePlaceholder"/>">
                                  <span class="input-group-btn">
-                                    <input type="submit" name="searchBtn" id="searchBtn" class="btn btn-default"
-                                           onclick="parseSearch(); document.forms['ADDAPPT'].displaymode.value='Search ';"
+                                    <%-- The form's first submit button, so it is also what Enter presses. --%>
+                                    <input type="submit" name="searchBtn" id="searchBtn" class="btn btn-default" formnovalidate
+                                           onclick="return onSearch();"
                                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnSearch"/>">
                                  </span>
                                 </div>
@@ -1301,7 +1307,8 @@ Ontario, Canada
                                 <% } else if (locationMode) { %>
                                 <%-- The Default Location only on first display: a patient search posts back staff's choice. --%>
                                 <appt:locationSelect choices="<%=locations.getActiveItems()%>"
-                                                     selected='<%=bFirstDisp ? locations.getNewBookingValue(loggedInInfo) : request.getParameter("locationCode")%>'/>
+                                                     selected='<%=bFirstDisp ? locations.getNewBookingValue(loggedInInfo) : request.getParameter("locationCode")%>'
+                                                     required="<%=locations.isRequiredForNewBooking(loggedInInfo)%>"/>
                                 <% } else { %>
 	            <input type="TEXT" name="location" tabindex="4" tabindex="4" value="<%=Encode.forHtmlAttribute(String.valueOf(loc))%>" class="form-control">
                                 <% } %>
@@ -1514,8 +1521,9 @@ Ontario, Canada
                     <% if (!(bDnb || bMultipleSameDayGroupAppt)) { %>
 
                     <% if (!props.getProperty("allowMultipleSameDayGroupAppt", "").equalsIgnoreCase("no")) {%>
+                    <%-- Clears the receipt flag, which Print Receipt leaves set when the browser refuses its save. --%>
                     <input type="submit" id="addButton" class="btn btn-primary"
-                           onclick="document.forms['ADDAPPT'].displaymode.value='Add Appointment'"
+                           onclick="document.forms['ADDAPPT'].displaymode.value='Add Appointment';document.forms['ADDAPPT'].printReceipt.value='';"
                            tabindex="6"
                            value="<% if (isMobileOptimized) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnAddAppointmentMobile"/>
                    <% } else { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnAddAppointment"/><% } %>"
@@ -1579,9 +1587,10 @@ Ontario, Canada
                     <% }%>
 
                     <% if (!props.getProperty("allowMultipleSameDayGroupAppt", "").equalsIgnoreCase("no")) {%>
-                    <input type="button" id="apptRepeatButton" class="btn"
+                    <%-- A submit like the other saves, so the browser checks it and the form's action never changes. --%>
+                    <input type="submit" id="apptRepeatButton" class="btn" formaction="appointmentrepeatbooking.jsp"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnRepeat"/>"
-                           onclick="onButRepeat()" <%=Encode.forHtml(String.valueOf(disabled))%>>
+                           <%=Encode.forHtml(String.valueOf(disabled))%>>
                     <% } %>
                     <input type="RESET" id="backButton" class="btn btn-link"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>" onClick="cancelPageLock();window.close();">

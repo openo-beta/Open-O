@@ -28,6 +28,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
@@ -37,8 +38,8 @@ import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link AppointmentLocation2Action}: who may view and change locations, which
- * items a change may touch, the rules on a location's name and on the Default Location, and the
- * saved/rejected outcomes.
+ * items a change may touch, the rules on a location's name and on the Default Location, the
+ * Location Requirement's switch, and the saved/rejected outcomes.
  *
  * @since 2026-09-15
  */
@@ -177,6 +178,17 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
+        @DisplayName("should show whether the Location Requirement is on to any reader")
+        void shouldShowRequirement_whenRead() {
+            grant("_admin.schedule", SecurityInfoManager.READ);
+            when(lookupListManager.isAppointmentLocationRequired(loggedInInfo)).thenReturn(true);
+
+            action.execute();
+
+            assertThat(request.getAttribute("locationRequired")).isEqualTo(true);
+        }
+
+        @Test
         @DisplayName("should refuse the page without read on any Appointment Settings object")
         void shouldThrow_whenNoReadPrivilege() {
             assertThatThrownBy(() -> action.execute()).isInstanceOf(SecurityException.class);
@@ -250,17 +262,28 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
             verify(lookupListManager, never()).setAppointmentLocationDefault(any(), any());
         }
 
+        @Test
+        @DisplayName("should refuse switching the Location Requirement with update on another Appointment Settings object only")
+        void shouldThrow_whenSwitchingRequirementWithoutAdminUpdate() {
+            grant("_admin.schedule", SecurityInfoManager.UPDATE);
+
+            assertThatThrownBy(() -> post("updateRequirement", "", "true")).isInstanceOf(SecurityException.class);
+
+            verify(lookupListManager, never()).setAppointmentLocationRequired(any(), anyBoolean());
+        }
+
         @ParameterizedTest
         @ValueSource(strings = {"updateColour", "updateIcon", "updateDescription", "restore", "deactivate",
-                "moveUp", "moveDown", "makeDefault", "removeDefault"})
+                "moveUp", "moveDown", "makeDefault", "removeDefault", "updateRequirement"})
         @DisplayName("should refuse a change that is not posted")
         void shouldThrow_whenChangeNotPosted(String dispatch) {
             grant("_admin", SecurityInfoManager.UPDATE);
             request.setMethod("GET");
 
-            assertThatThrownBy(() -> post(dispatch, "11", "")).isInstanceOf(SecurityException.class);
+            assertThatThrownBy(() -> post(dispatch, "11", "true")).isInstanceOf(SecurityException.class);
 
             verify(lookupListManager, never()).findAppointmentLocationList(any());
+            verify(lookupListManager, never()).setAppointmentLocationRequired(any(), anyBoolean());
         }
 
         @Nested
@@ -556,6 +579,37 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
                 assertThat(post("removeDefault", "12", "")).isEqualTo("saved");
 
                 verify(lookupListManager, never()).setAppointmentLocationDefault(any(), any());
+            }
+        }
+
+        @Nested
+        @DisplayName("the Location Requirement")
+        class Requirement {
+
+            /* Posts the switch as the page does: value=true while it is on, nothing once it is off. */
+            private String switchTo(boolean on) {
+                request.setParameter("dispatch", "updateRequirement");
+                if (on) {
+                    request.setParameter("value", "true");
+                }
+                return action.execute();
+            }
+
+            @Test
+            @DisplayName("should turn the requirement on and return to the top of the page")
+            void shouldTurnOn_whenSwitchedOn() {
+                assertThat(switchTo(true)).isEqualTo("saved");
+
+                verify(lookupListManager).setAppointmentLocationRequired(loggedInInfo, true);
+                assertThat(action.getAnchor()).isEmpty();
+            }
+
+            @Test
+            @DisplayName("should turn the requirement off when the switch posts nothing, as an unchecked one does")
+            void shouldTurnOff_whenSwitchedOff() {
+                assertThat(switchTo(false)).isEqualTo("saved");
+
+                verify(lookupListManager).setAppointmentLocationRequired(loggedInInfo, false);
             }
         }
     }
