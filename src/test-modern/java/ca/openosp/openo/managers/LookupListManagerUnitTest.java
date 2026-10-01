@@ -47,8 +47,10 @@ import static org.mockito.Mockito.when;
  * {@code updateLookupListItemColour}, {@code updateLookupListItemIcon},
  * {@code updateLookupListItemLabel}, {@code restoreLookupListItem} and
  * {@code moveLookupListItem}; for {@code findAppointmentLocationList}, the one place the
- * Location List is resolved; and for {@code findAppointmentLocationDefault} and
- * {@code setAppointmentLocationDefault}, the one place its Default Location is stored.
+ * Location List is resolved; and for {@code findAppointmentLocationDefault},
+ * {@code setAppointmentLocationDefault}, {@code isAppointmentLocationRequired} and
+ * {@code setAppointmentLocationRequired}, the one place its Default Location and Location
+ * Requirement are stored.
  *
  * <p>Both values end up in class and style attributes on the schedule, so the tests pin the
  * whitelist: a valid value is stored, blank clears it, anything else is rejected before the
@@ -106,6 +108,13 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
         logActionMock.close();
     }
 
+    /* The one system preference a Location tab setting saved. */
+    private SystemPreferences saved() {
+        ArgumentCaptor<SystemPreferences> preference = ArgumentCaptor.forClass(SystemPreferences.class);
+        verify(systemPreferencesDao).saveEntity(preference.capture());
+        return preference.getValue();
+    }
+
     @Nested
     @DisplayName("findAppointmentLocationList")
     class LocationListResolver {
@@ -154,12 +163,6 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
             assertThat(manager.findAppointmentLocationDefault(loggedInInfo)).isNull();
         }
 
-        private SystemPreferences saved() {
-            ArgumentCaptor<SystemPreferences> preference = ArgumentCaptor.forClass(SystemPreferences.class);
-            verify(systemPreferencesDao).saveEntity(preference.capture());
-            return preference.getValue();
-        }
-
         @Test
         @DisplayName("should store the first default as a new system preference")
         void shouldCreatePreference_whenNoDefaultYet() {
@@ -202,6 +205,60 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
                     .thenReturn(false);
 
             assertThatThrownBy(() -> manager.setAppointmentLocationDefault(loggedInInfo, ITEM_ID))
+                    .hasMessage("Access Denied");
+
+            verify(systemPreferencesDao, never()).saveEntity(any());
+        }
+    }
+
+    @Nested
+    @DisplayName("isAppointmentLocationRequired and setAppointmentLocationRequired")
+    class LocationRequirement {
+
+        private final SystemPreferences.APPOINTMENT_LOCATION_KEYS key =
+                SystemPreferences.APPOINTMENT_LOCATION_KEYS.appointment_location_required;
+
+        @Test
+        @DisplayName("should read the requirement without a privilege check")
+        void shouldReadRequirement_whenAnyUser() {
+            when(systemPreferencesDao.isReadBooleanPreference(key)).thenReturn(true);
+
+            assertThat(manager.isAppointmentLocationRequired(loggedInInfo)).isTrue();
+
+            verify(securityInfoManager, never()).hasPrivilege(any(), any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("should store the first change as a new system preference")
+        void shouldCreatePreference_whenNeverSet() {
+            manager.setAppointmentLocationRequired(loggedInInfo, true);
+
+            SystemPreferences preference = saved();
+            assertThat(preference.getName()).isEqualTo("appointment_location_required");
+            assertThat(preference.getValue()).isEqualTo("true");
+        }
+
+        @Test
+        @DisplayName("should turn the requirement off in the existing preference and log the old and the new")
+        void shouldTurnOff_whenOn() {
+            SystemPreferences existing = new SystemPreferences(key.name(), "true");
+            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(existing);
+
+            manager.setAppointmentLocationRequired(loggedInInfo, false);
+
+            assertThat(saved()).isSameAs(existing);
+            assertThat(existing.getValue()).isEqualTo("false");
+            logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
+                    eq("LookupListManager.setAppointmentLocationRequired"), contains("was [true], now [false]")));
+        }
+
+        @Test
+        @DisplayName("should refuse the change and save nothing without _admin update")
+        void shouldDeny_whenUserLacksAdminUpdate() {
+            when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null))
+                    .thenReturn(false);
+
+            assertThatThrownBy(() -> manager.setAppointmentLocationRequired(loggedInInfo, true))
                     .hasMessage("Access Denied");
 
             verify(systemPreferencesDao, never()).saveEntity(any());
