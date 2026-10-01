@@ -2553,7 +2553,7 @@ INSERT INTO LookupListItem(lookupListId, `value`, label, displayOrder, active, c
 (@lookupListId, 'Immunization'           , 'Immunization'   , 3 , 1, 'oscar', CURRENT_TIMESTAMP),
 (@lookupListId, 'Testing'                , 'Testing'        , 4 , 1, 'oscar', CURRENT_TIMESTAMP);
 
-INSERT INTO LookupList(name, listTitle, description, categoryId, active, createdBy, dateCreated) VALUES('appointmentLocationCode', 'Appointment Locations', 'Select list for the appointment location', null, 1, 'oscar', CURRENT_TIMESTAMP);
+INSERT INTO LookupList(name, listTitle, description, categoryId, active, createdBy, dateCreated) VALUES('appointmentLocationCode', 'Appointment Locations', 'The places an appointment can be booked.', null, 1, 'oscar', CURRENT_TIMESTAMP);
 
 insert into issue (code,description,role,update_date,type,sortOrderId) values ('TicklerNote','Tickler Note', 'nurse',now(),'system', 0);
 

@@ -39,13 +39,13 @@
     <input type="hidden" name="ID" value="${e:forHtmlAttribute(itemId)}">
     <c:choose>
         <c:when test="${not empty glyph}">
-            <button type="submit" class="btn btn-sm btn-outline-secondary" title="${e:forHtmlAttribute(label)}"
+            <button type="submit" class="btn btn-sm btn-outline-primary" title="${e:forHtmlAttribute(label)}"
                     aria-label="${e:forHtmlAttribute(label)}" ${disabled ? 'disabled' : ''}>
                 <span class="glyphicon ${e:forHtmlAttribute(glyph)}" aria-hidden="true"></span>
             </button>
         </c:when>
         <c:otherwise>
-            <button type="submit" class="btn btn-sm btn-outline-secondary" ${disabled ? 'disabled' : ''}>
+            <button type="submit" class="btn btn-sm btn-outline-primary" ${disabled ? 'disabled' : ''}>
                 <c:out value="${label}"/>
             </button>
         </c:otherwise>

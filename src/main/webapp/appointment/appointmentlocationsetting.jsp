@@ -87,6 +87,12 @@
     <link href="${ctx}/css/glyphicons-standalone.css" rel="stylesheet">
     <link href="${ctx}/css/itemStyleEditor.css" rel="stylesheet">
     <script src="${ctx}/js/appointment/itemStyleEditor.js"></script>
+    <style>
+        /* The action cells fit their buttons, so the table's spare width goes to the other columns. */
+        .location-actions {
+            width: 1%;
+        }
+    </style>
 </head>
 <body class="p-3" data-name-max-length="<%= ca.openosp.openo.appt.LocationList.LABEL_MAX_LENGTH %>">
 <%@ include file="appointmentSettingsNav.jspf" %>
@@ -148,7 +154,8 @@
                     <th scope="col"><fmt:message key="admin.appt.location.label.chip"/></th>
                     <th scope="col"><fmt:message key="admin.appt.location.label.active"/></th>
                     <c:if test="${canChange}">
-                        <th scope="col"><fmt:message key="admin.appt.location.label.actions"/></th>
+                        <%-- One cell per kind of change, so each kind lines up down the table. --%>
+                        <th scope="col" colspan="3"><fmt:message key="admin.appt.location.label.actions"/></th>
                     </c:if>
                 </tr>
                 </thead>
@@ -171,7 +178,10 @@
                         </td>
                         <td class="text-nowrap">
                             <c:choose>
-                                <c:when test="${not empty item.colour}"><c:out value="${item.colour}"/></c:when>
+                                <c:when test="${not empty item.colour}">
+                                    <span class="item-style-swatch" data-colour="${e:forHtmlAttribute(item.colour)}"></span>
+                                    <c:out value="${item.colour}"/>
+                                </c:when>
                                 <c:otherwise><span class="text-muted" role="img" title="${e:forHtmlAttribute(defaultStyleLabel)}" aria-label="${e:forHtmlAttribute(defaultStyleLabel)}">&mdash;</span></c:otherwise>
                             </c:choose>
                             <c:if test="${canChange}">
@@ -194,7 +204,7 @@
                         <td><appt:locationChip item="${item}"/></td>
                         <td><fmt:message key="${item.active ? 'global.yes' : 'global.no'}"/></td>
                         <c:if test="${canChange}">
-                            <td class="text-nowrap">
+                            <td class="text-nowrap location-actions">
                                 <c:if test="${item.active and activeLocationCount > 1}">
                                     <appt:locationActionButton action="${locationAction}" dispatch="moveUp"
                                                                itemId="${item.id}" labelKey="admin.appt.location.btn.moveUp"
@@ -204,12 +214,16 @@
                                                                glyph="glyphicon-chevron-down"
                                                                disabled="${loop.index == activeLocationCount - 1}"/>
                                 </c:if>
+                            </td>
+                            <td class="text-nowrap location-actions">
                                 <%-- Only an active location can be made the default, but an inactive default can be removed. --%>
                                 <c:if test="${item.active or isDefault}">
                                     <appt:locationActionButton action="${locationAction}" dispatch="${isDefault ? 'removeDefault' : 'makeDefault'}"
                                                                itemId="${item.id}"
                                                                labelKey="${isDefault ? 'admin.appt.location.btn.removeDefault' : 'admin.appt.location.btn.makeDefault'}"/>
                                 </c:if>
+                            </td>
+                            <td class="text-nowrap location-actions">
                                 <c:choose>
                                     <c:when test="${not item.active}">
                                         <appt:locationActionButton action="${locationAction}" dispatch="restore"
@@ -243,6 +257,8 @@
             icon.title = name;
             icon.setAttribute('aria-label', name);
         });
+
+        ItemStyleEditor.paintSwatches();
 
         // The switch is disabled for a user who can't change it, so it never fires for them.
         const requirement = document.getElementById('locationRequirement');
