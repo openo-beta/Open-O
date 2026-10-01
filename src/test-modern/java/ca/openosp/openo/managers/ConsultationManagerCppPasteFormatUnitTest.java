@@ -43,7 +43,7 @@ import static org.mockito.Mockito.when;
  *
  * <p>The contract: Single Line joins the notes with commas on one line, Multi Line keeps one
  * note per line; a heading is an inline "Social History:" prefix on Single Line and a
- * =====Social History===== banner with blank lines on Multi Line; an empty section pastes
+ * =====Social History===== banner and a blank line on Multi Line; an empty section pastes
  * nothing, not even a heading.</p>
  */
 @DisplayName("ConsultationManager CPP paste formatting")
@@ -112,12 +112,12 @@ class ConsultationManagerCppPasteFormatUnitTest {
     }
 
     @Test
-    @DisplayName("should start with a banner and separate notes with blank lines when multi line with heading")
-    void shouldStartWithBannerAndBlankLines_whenMultiLineWithHeading() {
+    @DisplayName("should start with a banner and a blank line, then one note per line, when multi line with heading")
+    void shouldStartWithBannerThenOneNotePerLine_whenMultiLineWithHeading() {
         String note = ConsultationManagerImpl.formatIssueNotes(
                 Arrays.asList("Smoker", "Lives alone"), false, "Social History");
 
-        assertThat(note).isEqualTo("=====Social History=====\n\nSmoker\n\nLives alone\n");
+        assertThat(note).isEqualTo("=====Social History=====\n\nSmoker\nLives alone\n");
     }
 
     @Test
@@ -173,7 +173,7 @@ class ConsultationManagerCppPasteFormatUnitTest {
         String note = consultationManager.formatPasteNote(loggedInInfo,
                 Arrays.asList("Metformin 500mg", "Ramipril 5mg"), "Active Medications", true);
 
-        assertThat(note).isEqualTo("=====Active Medications=====\n\nMetformin 500mg\n\nRamipril 5mg\n");
+        assertThat(note).isEqualTo("=====Active Medications=====\n\nMetformin 500mg\nRamipril 5mg\n");
     }
 
     @Test

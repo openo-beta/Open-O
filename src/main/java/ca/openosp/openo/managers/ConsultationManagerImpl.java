@@ -908,9 +908,9 @@ public class ConsultationManagerImpl implements ConsultationManager {
             return entriesOnOneLine + "\n";
         }
         if (heading != null) {
-            // a blank line after the banner and between notes, so each note reads as its own item
+            // a blank line after the banner, then one note per line
             return "=====" + heading + "=====\n\n"
-                    + entries.stream().map(String::trim).collect(Collectors.joining("\n\n")) + "\n";
+                    + entries.stream().map(String::trim).collect(Collectors.joining("\n")) + "\n";
         }
         // the pre-preference output: notes untouched, one line break after each
         return String.join("\n", entries) + "\n";
