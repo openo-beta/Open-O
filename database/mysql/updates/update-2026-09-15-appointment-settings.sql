@@ -22,6 +22,6 @@ ALTER TABLE appointmentArchive
 -- The Location List ships empty: booking screens keep free-text locations
 -- until it has an active item.
 INSERT INTO LookupList (name, listTitle, description, categoryId, active, createdBy, dateCreated)
-SELECT 'appointmentLocationCode', 'Appointment Locations', 'The places an appointment can be booked.', NULL, 1, 'oscar', NOW()
+SELECT 'appointmentLocationCode', 'Appointment Locations', 'Places where an appointment can be booked are added here.', NULL, 1, 'oscar', NOW()
 FROM DUAL
 WHERE NOT EXISTS (SELECT 1 FROM LookupList WHERE name = 'appointmentLocationCode');
