@@ -845,9 +845,12 @@
             jQuery("#attachDocumentDisplay").load(poload, function (response, status, xhr) {
                 if (status === "success") {
                     // Pre-check the picker boxes for attachments already staged on this add form.
+                    // Match by name+value, since a docNo can be a patient doc, public eDoc or private eDoc.
                     $form.find(".delegateAttachment").each(function () {
-                        var checkboxId = this.name + this.value;
-                        jQuery('#attachDocumentsForm').find('#' + jQuery.escapeSelector(checkboxId)).prop('checked', true);
+                        var delegate = this;
+                        jQuery('#attachDocumentsForm').find('.attachable_check').filter(function () {
+                            return this.name === delegate.name && this.value === delegate.value;
+                        }).prop('checked', true).attr('data-pre-attached', 'true');
                     });
                 }
             }).dialog({
@@ -865,13 +868,21 @@
                     closeBtn.html("Save and Close");
                 },
                 beforeClose: function (event, ui) {
+                    if (!confirmPrivateDocsIfAny('#attachDocumentsForm')) {
+                        return false;
+                    }
                     // Rebuild the add form's staged attachment set from the picker's checked boxes.
                     $form.find(".delegateAttachment").remove();
                     jQuery('#attachmentNames ul').empty();
+                    // Track which delegates we've added so each one is only added once.
+                    var seenDelegates = {};
                     jQuery('#attachDocumentsForm')
-                        .find(".document_check:checked, .lab_check:checked, .form_check:checked, .eForm_check:checked, .hrm_check:checked")
+                        .find(".attachable_check:checked:not(input[disabled='disabled'])")
                         .each(function () {
                             var element = jQuery(this);
+                            var key = element.attr('name') + element.val();
+                            if (seenDelegates[key]) return;
+                            seenDelegates[key] = true;
                             jQuery("<input />", {
                                 type: 'hidden',
                                 name: element.attr('name'),
