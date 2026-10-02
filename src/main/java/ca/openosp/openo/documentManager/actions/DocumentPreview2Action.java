@@ -295,9 +295,9 @@ public class DocumentPreview2Action extends ActionSupport {
         // No tickler equivalent of getAttachedDocsForConsult/getAttachedDocsForEForm yet, so the
         // picker shows the patient's documents only. A document attached by another provider from
         // their private set is therefore not listed here.
-        populateCommonDocs(loggedInInfo, demographicNo, Collections.emptyList());
         List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
-        request.setAttribute("allEForms", allEForms);
+        populateCommonDocs(loggedInInfo, demographicNo, allEForms,
+                Collections.emptyList(), Collections.emptyList());
 
         return "fetchDocuments";
     }
