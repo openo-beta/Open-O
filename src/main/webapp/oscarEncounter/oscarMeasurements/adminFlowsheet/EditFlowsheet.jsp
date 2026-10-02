@@ -229,7 +229,8 @@
     String demographicStr = new String();
     String demoStash = new String();
     if (demographic != null) {
-        demographicStr = "&demographic=" + demographic;
+        //demographicStr is a query fragment: encode the values here, never the whole fragment (that turns "&" into "%26")
+        demographicStr = "&demographic=" + Encode.forUriComponent(demographic);
         session.setAttribute("demoNo" + session.getAttribute("user"), demographic);
     } else {
         String demoNo = (String) session.getAttribute("demoNo" + session.getAttribute("user"));
@@ -362,7 +363,7 @@
                     String flowsheetPath = "oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp";
             %>
 
-            <a href="<%= request.getContextPath() %>/<%=Encode.forHtmlAttribute(String.valueOf(flowsheetPath))%>?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic))%>&template=<%=Encode.forUriComponent(String.valueOf(flowsheet))%><%=Encode.forUriComponent(String.valueOf(tracker))%>"
+            <a href="<%= request.getContextPath() %>/<%=Encode.forHtmlAttribute(String.valueOf(flowsheetPath))%>?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic))%>&template=<%=Encode.forUriComponent(String.valueOf(flowsheet))%><%=tracker%>"
                class="btn btn-small" title="go back to <%=Encode.forHtmlAttribute(String.valueOf(flowsheet))%> flowsheet"><i class="icon-backward"></i></a>
 
             <%}%>
@@ -475,7 +476,7 @@ Flowsheet: <span style="font-weight:normal"><c:out value="${requestScope.display
 		         		    if(mFlowsheet.getFlowSheetItem(mstring).getPreventionType()!=null){ %>
 		         		<i class="icon-lock action-icon" style="opacity:0.6;" title="Prevention item - managed in Prevention module"></i>
 		                <%} else {%>
-		                <a href="UpdateFlowsheet.jsp?flowsheet=<%=Encode.forUriComponent(String.valueOf(temp))%>&measurement=<%=Encode.forUriComponent(String.valueOf(mstring))%><%=Encode.forUriComponent(String.valueOf(demographicStr))%><%=Encode.forUriComponent(String.valueOf(htQueryString))%><%=Encode.forUriComponent(String.valueOf(scope==null?"":"&scope="+scope))%>" title="Edit" class="action-icon"><i class="icon-pencil"></i></a>
+		                <a href="UpdateFlowsheet.jsp?flowsheet=<%=Encode.forUriComponent(String.valueOf(temp))%>&measurement=<%=Encode.forUriComponent(String.valueOf(mstring))%><%=Encode.forHtmlAttribute(demographicStr)%><%=htQueryString%><%=scope == null ? "" : "&scope=" + Encode.forUriComponent(scope)%>" title="Edit" class="action-icon"><i class="icon-pencil"></i></a>
 		                <%}%>
 		               <%
 		                boolean isHidden = mFlowsheet.getFlowSheetItem(mstring).isHide();
@@ -489,19 +490,19 @@ Flowsheet: <span style="font-weight:normal"><c:out value="${requestScope.display
 		                } else if (isHidden) {
 		                    // Clickable restore for same-level hides
 		               %>
-		                   <a href="FlowSheetCustomAction.do?method=restore&flowsheet=<%=Encode.forUriComponent(String.valueOf(temp))%>&measurement=<%=Encode.forUriComponent(String.valueOf(mstring))%><%=Encode.forUriComponent(String.valueOf(demographicStr))%><%=Encode.forUriComponent(String.valueOf(scope==null?"":"&scope="+scope))%>" title="Show this measurement" class="action-icon"><i class="icon-eye-close"></i></a>
+		                   <a href="FlowSheetCustomAction.do?method=restore&flowsheet=<%=Encode.forUriComponent(String.valueOf(temp))%>&measurement=<%=Encode.forUriComponent(String.valueOf(mstring))%><%=Encode.forHtmlAttribute(demographicStr)%><%=scope == null ? "" : "&scope=" + Encode.forUriComponent(scope)%>" title="Show this measurement" class="action-icon"><i class="icon-eye-close"></i></a>
 		               <%
 		                } else {
 		                    // Clickable hide
 		               %>
-		                   <a href="FlowSheetCustomAction.do?method=hide&flowsheet=<%=Encode.forUriComponent(String.valueOf(temp))%>&measurement=<%=Encode.forUriComponent(String.valueOf(mstring))%><%=Encode.forUriComponent(String.valueOf(demographicStr))%><%=Encode.forUriComponent(String.valueOf(scope==null?"":"&scope="+scope))%>" title="Hide this measurement" class="action-icon"><i class="icon-eye-open"></i></a>
+		                   <a href="FlowSheetCustomAction.do?method=hide&flowsheet=<%=Encode.forUriComponent(String.valueOf(temp))%>&measurement=<%=Encode.forUriComponent(String.valueOf(mstring))%><%=Encode.forHtmlAttribute(demographicStr)%><%=scope == null ? "" : "&scope=" + Encode.forUriComponent(scope)%>" title="Hide this measurement" class="action-icon"><i class="icon-eye-open"></i></a>
 		               <% } %>
 		               <%
 		                // Show Revert button if current scope has an UPDATE customization
 		                boolean hasUpdate = hasUpdateCustomization(custList, mstring, scope, demographic, (String) session.getAttribute("user"));
 		                if (hasUpdate) {
 		               %>
-		                   <a href="FlowSheetCustomAction.do?method=revertUpdate&flowsheet=<%=Encode.forUriComponent(String.valueOf(temp))%>&measurement=<%=Encode.forUriComponent(String.valueOf(mstring))%><%=Encode.forUriComponent(String.valueOf(demographicStr))%><%=Encode.forUriComponent(String.valueOf(htQueryString))%><%=Encode.forUriComponent(String.valueOf(scope==null?"":"&scope="+scope))%>"
+		                   <a href="FlowSheetCustomAction.do?method=revertUpdate&flowsheet=<%=Encode.forUriComponent(String.valueOf(temp))%>&measurement=<%=Encode.forUriComponent(String.valueOf(mstring))%><%=Encode.forHtmlAttribute(demographicStr)%><%=htQueryString%><%=scope == null ? "" : "&scope=" + Encode.forUriComponent(scope)%>"
 		                      title="Revert to settings from higher scope" class="action-icon"
 		                      onclick="return confirm('Revert this measurement to settings from higher scope?');"><i class="icon-refresh"></i></a>
 		               <% } %>
@@ -575,7 +576,7 @@ Flowsheet: <span style="font-weight:normal"><c:out value="${requestScope.display
                                         <% if (isHigherScope) { %>
                                         <i class="icon-lock action-icon" style="opacity:0.4;" title="Cannot remove - created at <%=Encode.forHtmlAttribute(String.valueOf(custLevel))%> level"></i>
                                         <% } else { %>
-                                        <a href="FlowSheetCustomAction.do?method=archiveMod&id=<%=Encode.forUriComponent(String.valueOf(cust.getId()))%>&flowsheet=<%=Encode.forUriComponent(String.valueOf(flowsheet))%><%=Encode.forUriComponent(String.valueOf(demographicStr))%><%=Encode.forUriComponent(String.valueOf(htQueryString))%><%=Encode.forUriComponent(String.valueOf(scope==null?"":"&scope="+scope))%>"
+                                        <a href="FlowSheetCustomAction.do?method=archiveMod&id=<%=Encode.forUriComponent(String.valueOf(cust.getId()))%>&flowsheet=<%=Encode.forUriComponent(String.valueOf(flowsheet))%><%=Encode.forHtmlAttribute(demographicStr)%><%=htQueryString%><%=scope == null ? "" : "&scope=" + Encode.forUriComponent(scope)%>"
                                            class="action-icon"><i class="icon-trash"></i></a>
                                         <% } %>
                                     </td>

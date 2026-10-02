@@ -482,9 +482,9 @@ display:inline-block;
 
                     <div style="width:100%;text-align:right">
                         <%if (request.getParameter("demographic") == null) { %>
-                        <a href="EditFlowsheet.jsp?flowsheet=<%=Encode.forUriComponent(String.valueOf(flowsheet))%><%=Encode.forUriComponent(String.valueOf(htQueryString))%><%=Encode.forUriComponent(String.valueOf(scope != null ? "&scope=" + scope : ""))%>" class="btn">Cancel</a>
+                        <a href="EditFlowsheet.jsp?flowsheet=<%=Encode.forUriComponent(String.valueOf(flowsheet))%><%=htQueryString%><%=scope != null ? "&scope=" + Encode.forUriComponent(scope) : ""%>" class="btn">Cancel</a>
                         <%} else { %>
-                        <a href="EditFlowsheet.jsp?flowsheet=<%=Encode.forUriComponent(String.valueOf(flowsheet))%>&demographic=<%=Encode.forUriComponent(String.valueOf(demographic))%><%=Encode.forUriComponent(String.valueOf(htQueryString))%><%=Encode.forUriComponent(String.valueOf(scope != null ? "&scope=" + scope : ""))%>"
+                        <a href="EditFlowsheet.jsp?flowsheet=<%=Encode.forUriComponent(String.valueOf(flowsheet))%>&demographic=<%=Encode.forUriComponent(String.valueOf(demographic))%><%=htQueryString%><%=scope != null ? "&scope=" + Encode.forUriComponent(scope) : ""%>"
                            class="btn">Cancel</a>
                         <%} %>
                         <input type="submit" class="btn btn-primary" value="Update"/>

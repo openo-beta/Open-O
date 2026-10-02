@@ -604,13 +604,14 @@ background-color:rgb(212, 212, 254);
                                         if (bMultisites) {
                                             siteName = theRequests.siteName.get(i);
                                         }
-                                        if (status.equals("1") && dateGreaterThan(date, Calendar.WEEK_OF_YEAR, -1)) {
-                                            tickerList.add(demo);
-                                        }
-
                                         //multisites. skip record if not belong to same site
                                         if (isSiteAccessPrivacy || isTeamAccessPrivacy) {
                                             if (!mgrSite.contains(siteName)) continue;
+                                        }
+
+                                        //collect only after the site check, so the tickler link can't include other sites' patients
+                                        if (status.equals("1") && dateGreaterThan(date, Calendar.WEEK_OF_YEAR, -1)) {
+                                            tickerList.add(demo);
                                         }
                                         overdue = false;
 
@@ -737,17 +738,18 @@ background-color:rgb(212, 212, 254);
             </td>
             <td class="MainTableBottomRowRightColumn">
                 <% if (tickerList.size() > 0) {
+                    //queryStr is a query string: encode the values here, never the whole string (that turns "&" into "%26")
                     String queryStr = "";
                     for (int i = 0; i < tickerList.size(); i++) {
                         String demo = (String) tickerList.get(i);
                         if (i == 0) {
-                            queryStr += "demo=" + demo;
+                            queryStr += "demo=" + Encode.forUriComponent(demo);
                         } else {
-                            queryStr += "&demo=" + demo;
+                            queryStr += "&demo=" + Encode.forUriComponent(demo);
                         }
                     }%>
                 <a target="_blank"
-                   href="<%= request.getContextPath() %>/tickler/AddTickler.do?<%=Encode.forUriComponent(String.valueOf(queryStr))%>&message=<%=Encode.forUriComponent(String.valueOf("Patient has Consultation Letter with a status of 'Nothing Done' for over one week"))%>">Add
+                   href="<%= request.getContextPath() %>/tickler/AddTickler.do?<%=Encode.forHtmlAttribute(queryStr)%>&message=<%=Encode.forUriComponent(String.valueOf("Patient has Consultation Letter with a status of 'Nothing Done' for over one week"))%>">Add
                     Tickler for Consults with ND for more than one week</a>
                 <%}%>
             </td>

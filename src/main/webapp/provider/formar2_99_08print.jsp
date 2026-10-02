@@ -668,6 +668,7 @@
 
 <%
     String fedb = request.getParameter("xml_fedb");
+    //urlparam is a query fragment: encode the values here, never the whole fragment (that turns "&" into "%26")
     String urlparam = "";
 
     int width = 200, height = 235;
@@ -686,14 +687,14 @@
                 dy = Float.parseFloat(arG.getHt(request.getParameter("xml_sv" + i + "sf")));
                 x = (int) ((ox + (dx - 19) * width / (11.5 * 2)) - 2);
                 y = (int) ((oy - (dy - 11.818) * height / (5.636 * 5)) - 1);
-                urlparam += "&x" + (i - 1) + "=" + x + "|" + y;
+                urlparam += "&x" + (i - 1) + "=" + Encode.forUriComponent(x + "|" + y);
             }
         }
 %>
 <div ID="graphic"
      STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(3+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(653+ooy))%>px; width:501px; height:280px;">
     <embed type="image/svg+xml"
-        src="<%= request.getContextPath() %>/form/formar2svg.jsp?bgimage=<%=Encode.forUriComponent(String.valueOf("../images/formar2_99_08gra.gif"))%>&bgimagewidth=222&bgimageheight=276<%=Encode.forUriComponent(String.valueOf(urlparam))%>"
+        src="<%= request.getContextPath() %>/form/formar2svg.jsp?bgimage=<%=Encode.forUriComponent(String.valueOf("../images/formar2_99_08gra.gif"))%>&bgimagewidth=222&bgimageheight=276<%=Encode.forHtmlAttribute(urlparam)%>"
            width="221" height="276" wmode="transparent"/>
 </div>
 <%
