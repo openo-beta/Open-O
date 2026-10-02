@@ -2,39 +2,104 @@ CREATE TABLE OLISResultNomenclature (
   id INT NOT NULL AUTO_INCREMENT,
   nameId  VARCHAR(10),
   name TEXT,
-  PRIMARY KEY(id)
+  effectiveDate DATE NULL,
+  endDate DATE NULL,
+  status VARCHAR(16) NOT NULL DEFAULT 'ACTIVE',
+  externalCodeVersion VARCHAR(8) NULL,
+  successorCode VARCHAR(10) NULL,
+  sortKey VARCHAR(32) NULL,
+  PRIMARY KEY(id),  
+  INDEX idx_OLISResultNomenclature_status_endDate (status, endDate),
+  INDEX idx_OLISResultNomenclature_nameId (nameId)
 );
 
--- Data file last updated March 10, 2023
--- https://ehealthontario.on.ca/en/olis-nomenclature/download/olis-nomenclatures/prod/v2.69
+-- Data file generated from OLIS Nomenclatures V3.04_PROD, released April 28, 2026
+-- Source: https://ehealthontario.on.ca/en/OLIS-nomenclature/download/olis-nomenclatures/prod/v3.04
+-- When a new version is released, admins should run Admin → "OLIS — Import Nomenclature"
 LOAD DATA LOCAL INFILE 'OLISTestResultNomenclature.csv'
 INTO TABLE OLISResultNomenclature
 FIELDS TERMINATED BY '\t'
 OPTIONALLY ENCLOSED BY '\"' 
 LINES TERMINATED BY '\n'
-(nameId, name);
+(nameId, name, status, effectiveDate, endDate, externalCodeVersion, sortKey);
 
 CREATE TABLE OLISRequestNomenclature (
   id INT NOT NULL AUTO_INCREMENT,
   nameId  VARCHAR(10),
   name TEXT,
   category VARCHAR(20),
-  PRIMARY KEY(id)
+  effectiveDate DATE NULL,
+  endDate DATE NULL,
+  status VARCHAR(16) NOT NULL DEFAULT 'ACTIVE',
+  externalCodeVersion VARCHAR(8) NULL,
+  successorCode VARCHAR(10) NULL,
+  sortKey VARCHAR(32) NULL,
+  PRIMARY KEY(id),  
+  INDEX idx_OLISRequestNomenclature_status_endDate (status, endDate),
+  INDEX idx_OLISRequestNomenclature_nameId (nameId)
 );
 
--- Data file last updated March 10, 2023
--- https://ehealthontario.on.ca/en/olis-nomenclature/download/olis-nomenclatures/prod/v2.69
+-- Data file generated from OLIS Nomenclatures V3.04_PROD, released April 28, 2026
+-- Source: https://ehealthontario.on.ca/en/OLIS-nomenclature/download/olis-nomenclatures/prod/v3.04
 LOAD DATA LOCAL INFILE 'OLISTestRequestNomenclature.csv'
 INTO TABLE OLISRequestNomenclature
 FIELDS TERMINATED BY '\t'
 OPTIONALLY ENCLOSED BY '\"' 
 LINES TERMINATED BY '\n'
-(nameId, name, category);
+(nameId, name, category, status, effectiveDate, endDate, externalCodeVersion, sortKey);
+
+CREATE TABLE IF NOT EXISTS OLISMicroorganismNomenclature (
+  id INT NOT NULL AUTO_INCREMENT,
+  microorganismCode VARCHAR(32),
+  microorganismType VARCHAR(64),
+  taxonomicLevel VARCHAR(64),
+  microorganismName VARCHAR(512),
+  alternateName1 VARCHAR(512),
+  alternateName2 VARCHAR(512),
+  shortName VARCHAR(255),
+  source VARCHAR(128),
+  externalLink VARCHAR(512),
+  reportable VARCHAR(16),
+  reportableContext VARCHAR(128),
+  effectiveStartDate VARCHAR(20),
+  effectiveEndDate VARCHAR(20),
+  changeNote VARCHAR(512),
+  comments VARCHAR(512),
+  PRIMARY KEY(id),
+  UNIQUE KEY uk_OLISMicroorganismNomenclature_code (microorganismCode)
+);
+
+
+LOAD DATA LOCAL INFILE 'OLISMicroorganismNomenclature.csv'
+INTO TABLE OLISMicroorganismNomenclature
+FIELDS TERMINATED BY '\t'
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(microorganismCode, microorganismType, taxonomicLevel, microorganismName,
+ alternateName1, alternateName2, shortName, source, externalLink, reportable,
+ reportableContext, effectiveStartDate, effectiveEndDate, changeNote, comments);
+
+CREATE TABLE IF NOT EXISTS OLISSourceNomenclature (
+  id INT NOT NULL AUTO_INCREMENT,
+  value VARCHAR(64),
+  description VARCHAR(512),
+  PRIMARY KEY(id),
+  INDEX idx_OLISSourceNomenclature_value (value)
+);
+
+LOAD DATA LOCAL INFILE 'OLISSourceNomenclature.csv'
+INTO TABLE OLISSourceNomenclature
+FIELDS TERMINATED BY '\t'
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(value, @description)
+SET description = NULLIF(@description, '\\N');
 
 CREATE TABLE OLISProviderPreferences (
   providerId  VARCHAR(10),
   startTime VARCHAR(20),
   lastRun datetime,
+  filterPatients tinyint(1),
   PRIMARY KEY(providerId)
 );
 
@@ -73,5 +138,33 @@ CREATE TABLE OLISQueryLog (
   uuid varchar(255),
   requestingHIC varchar(30),
   demographicNo integer,
+  olisTransactionId varchar(255),
   PRIMARY KEY(id)
 );
+
+CREATE TABLE OLISFacility (
+  id INT NOT NULL AUTO_INCREMENT,
+  licenceNumber VARCHAR(10) NOT NULL,
+  facilityClass VARCHAR(8) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  addressLine1 VARCHAR(80) NULL,
+  addressLine2 VARCHAR(40) NULL,
+  city VARCHAR(40) NULL,
+  postalCode VARCHAR(10) NULL,
+  oid VARCHAR(40) NOT NULL,
+  status VARCHAR(16) NOT NULL DEFAULT 'ACTIVE',
+  PRIMARY KEY(id),
+  UNIQUE KEY uk_OLISFacility_class_licence (facilityClass, licenceNumber),
+  INDEX idx_OLISFacility_class_status_name (facilityClass, status, name)
+);
+
+
+-- Data file generated from the eHealth Ontario Lab and SCC Extract
+-- Source: https://ehealthontario.on.ca/en/support/lab-results/olis-whats-new/olis-client-support
+-- When a new extract is released, admins should run Admin → "OLIS — Import Lab/SCC"
+LOAD DATA LOCAL INFILE 'OLISFacility.csv'
+INTO TABLE OLISFacility
+FIELDS TERMINATED BY '\t'
+OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+(licenceNumber, facilityClass, name, addressLine1, addressLine2, city, postalCode, oid, status);

@@ -61,6 +61,31 @@ import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 public class OLISUtils {
     static Logger logger = MiscUtils.getLogger();
 
+    /**
+     * Compares two strings for OLIS result/request ordering, treating an empty
+     * string as sorting <em>after</em> a populated one (the OLIS rule "if no sort
+     * key / no value, sort last"). When both are populated or both empty, compares
+     * case-insensitively. Used by the CV04/05/06/15 sort comparators.
+     *
+     * <p>Derived from the oscarpro {@code OLISUtils.compareStringEmptyIsMore}
+     * (GPLv2).</p>
+     *
+     * @param s1 String the primary value
+     * @param s2 String the value to compare against
+     * @return int &gt; 0 if s1 is empty (or alphabetically greater) than s2;
+     *         &lt; 0 if s2 is empty (or s1 alphabetically smaller); 0 if equal
+     * @since 2026-06-17
+     */
+    public static int compareStringEmptyIsMore(String s1, String s2) {
+        if (s1.isEmpty() && !s2.isEmpty()) {
+            return 1;
+        } else if (s2.isEmpty() && !s1.isEmpty()) {
+            return -1;
+        } else {
+            return s1.toLowerCase().compareTo(s2.toLowerCase());
+        }
+    }
+
     static Hl7TextInfoDao hl7TextInfoDao = SpringUtils.getBean(Hl7TextInfoDao.class);
 
     static final public String CMLIndentifier = "2.16.840.1.113883.3.59.1:5407";// Canadian Medical Laboratories
@@ -75,7 +100,7 @@ public class OLISUtils {
         DocumentBuilderFactory.newInstance().newDocumentBuilder();
         SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
 
-        InputStream is = OLISPoller.class.getResourceAsStream("/org/oscarehr/olis/response.xsd");
+        InputStream is = OLISUtils.class.getResourceAsStream("/org/oscarehr/olis/response.xsd");
 
         Source schemaFile = new StreamSource(is);
 

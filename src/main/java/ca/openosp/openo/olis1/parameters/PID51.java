@@ -28,7 +28,9 @@ public class PID51 implements Parameter {
 
     @Override
     public String toOlisString() {
-        return getQueryCode() + "^" + (value != null ? value : "");
+        // Escape HL7 delimiters: the patient surname is free-text request input and
+        // must not be able to break the @PID.5.1^<value> query-segment structure.
+        return getQueryCode() + "^" + Parameter.escapeHl7(value);
     }
 
     @Override

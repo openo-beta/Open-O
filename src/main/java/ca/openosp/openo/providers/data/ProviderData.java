@@ -651,7 +651,9 @@ public class ProviderData {
             // when only the lastname is entered before the comma.
             String[] array = searchStr.split(",", -1);
             lastname = array[0].trim();
-            firstname = array[1].trim();
+            if (array.length > 1) {
+                firstname = array[1].trim();
+            }
         } else {
             lastname = searchStr.trim();
         }

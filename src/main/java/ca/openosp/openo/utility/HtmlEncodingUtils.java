@@ -92,4 +92,54 @@ public final class HtmlEncodingUtils {
         }
         return sb.toString();
     }
+
+    /**
+     * Strip any upstream HTML markup/entities from {@code value}, HTML-encode
+     * the resulting plain text, then re-inject {@code <br />} for the line
+     * breaks the markup carried.
+     *
+     * <p>Use this for OLIS lab comment fields, where
+     * {@link ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler} pre-bakes
+     * markup ({@code <br/>}, {@code <span style=...>}, {@code &nbsp;}) into the
+     * text. Routing through {@link HtmlTextCleaner#toPlainText(String)} first
+     * removes that markup (so it does not render as a literal {@code &nbsp;}
+     * wall or visible {@code <span>} tags), {@link Encode#forHtml(String)} then
+     * escapes the clean text, and finally each newline becomes a <i>trusted</i>
+     * {@code <br />} so multi-line comments still render across lines.
+     *
+     * <p>Only the literal {@code <br />} we insert is unescaped — it carries no
+     * user data and cannot host script — so this is XSS-safe.
+     *
+     * @param value the raw (possibly markup-laced) comment text; {@code null}
+     *              produces an empty string
+     * @return the cleaned, encoded string with line breaks rendered as
+     *         {@code <br />}
+     */
+    public static String encodeCleanTextWithBreaks(String value) {
+        return Encode.forHtml(HtmlTextCleaner.toPlainText(value)).replace("\n", "<br />");
+    }
+
+    /**
+     * HTML-encode already-plain {@code value} and render its {@code \n}
+     * newlines as {@code <br />}.
+     *
+     * <p>Use this for text that is <em>already plain</em> — no HTML markup or
+     * entities to strip — such as OLIS comment fields once they have been
+     * decoded by {@link ca.openosp.openo.lab.ca.all.parsers.Hl7FormattedText}.
+     * Unlike {@link #encodeCleanTextWithBreaks(String)} it does not run the
+     * jsoup {@link HtmlTextCleaner} pass, so genuine {@code \n} line breaks
+     * survive (jsoup would otherwise collapse them as whitespace).
+     *
+     * <p>Only the literal {@code <br />} we insert is unescaped — it carries no
+     * user data and cannot host script — so this is XSS-safe.
+     *
+     * @param value the plain text; {@code null} produces an empty string
+     * @return the encoded string with {@code \n} rendered as {@code <br />}
+     */
+    public static String encodeTextWithNewlineBreaks(String value) {
+        if (value == null) {
+            return "";
+        }
+        return Encode.forHtml(value).replace("\n", "<br />");
+    }
 }

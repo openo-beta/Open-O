@@ -16,6 +16,7 @@ import ca.openosp.openo.olis1.parameters.ZBX1;
 import ca.openosp.openo.olis1.parameters.ZPD1;
 import ca.openosp.openo.olis1.parameters.ZPD3;
 import ca.openosp.openo.olis1.parameters.ZRP1;
+import ca.openosp.openo.olis1.parameters.ZSD;
 
 /**
  * Z02 - Retrieve Laboratory Information for Order ID
@@ -28,6 +29,7 @@ public class Z02Query extends Query {
     private ZRP1 requestingHic = new ZRP1(); // mandatory
     private ZPD1 consentToViewBlockedInformation = null;
     private ZPD3 patientConsentBlockAllIndicator = null;
+    private ZSD substituteDecisionMaker = null;
     private PID3 patientIdentifier = new PID3(); // mandatory
     private ORC4 placerGroupNumber = new ORC4(); // mandatory
 
@@ -47,6 +49,9 @@ public class Z02Query extends Query {
 
         if (patientConsentBlockAllIndicator != null)
             query += patientConsentBlockAllIndicator.toOlisString() + "~";
+
+        if (substituteDecisionMaker != null)
+            query += substituteDecisionMaker.toOlisString() + "~";
 
         if (patientIdentifier != null)
             query += patientIdentifier.toOlisString() + "~";
@@ -80,6 +85,11 @@ public class Z02Query extends Query {
 
     public void setPatientConsentBlockAllIndicator(ZPD3 patientConsentBlockAllIndicator) {
         this.patientConsentBlockAllIndicator = patientConsentBlockAllIndicator;
+    }
+
+    @Override
+    public void setSubstituteDecisionMaker(ZSD substituteDecisionMaker) {
+        this.substituteDecisionMaker = substituteDecisionMaker;
     }
 
     public void setPatientIdentifier(PID3 patientIdentifier) {
