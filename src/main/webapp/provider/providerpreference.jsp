@@ -221,8 +221,8 @@
                 font-weight: bold;
             }
 
-            /* centre the label against a single-line input or checkbox, also when the label wraps */
-            .preferenceTable tr:has(> td > .form-control, > td > .form-select, > td > .input-group, > td > input[type=checkbox]) > td {
+            /* centre the label against a single-line input or a lone checkbox, also when the label wraps */
+            .preferenceTable tr:has(> td > .form-control, > td > .form-select, > td > .input-group, > td > input[type=checkbox]:only-child) > td {
                 vertical-align: middle;
             }
 
@@ -450,6 +450,7 @@
                     <c:set var="weekends" value="${userProperty[UserPropertyKey.SCHEDULE_WEEK_VIEW_WEEKENDS.name]}"/>
                     <input type="checkbox" id="schedule.week_view_weekends" name="schedule.week_view_weekends"
                            value="true" ${empty weekends or weekends ? 'checked' : ''} />
+                    <div><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.weekendsHelp"/></div>
                 </td>
             </tr>
             <tr>
