@@ -668,7 +668,7 @@
 
                                 %>
                                 <td nowrap bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor.toString()))%>" valign="top">
-                                    <a href='providercontrol.jsp?<%=Encode.forUriComponent(String.valueOf(caisi))%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(dateGrid[i][j])))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName")))%>&displaymode=day&dboperation=searchappointmentday'>
+                                    <a href='providercontrol.jsp?<%=caisi%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(dateGrid[i][j])))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName")))%>&displaymode=day&dboperation=searchappointmentday'>
                                         <span class='date'>&nbsp;<%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%> </span>
                                         <span size="-2" color="blue"><%=Encode.forHtml(String.valueOf(strHolidayName.toString()))%>
                                 <%
@@ -788,7 +788,7 @@
                                             %>
                                             <td align='center' bgcolor='#FOFOFO'><font
                                                     FACE='VERDANA,ARIAL,HELVETICA' SIZE='2'> <a
-                                                    href='providercontrol.jsp?<%=Encode.forUriComponent(String.valueOf(caisi))%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(dateGrid[i][j+1]==0?1:dateGrid[i][j+1]))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=week&dboperation=searchapptweek'>
+                                                    href='providercontrol.jsp?<%=caisi%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(dateGrid[i][j+1]==0?1:dateGrid[i][j+1]))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=week&dboperation=searchapptweek'>
                                                         <%=Encode.forHtml(String.valueOf((i + 1)))%>
                                             </font></td>
                                             <%
@@ -799,7 +799,7 @@
                                                     if (dateGrid[i][j] == day) {
                                             %>
                                             <td align='center'><a
-                                                    href='providercontrol.jsp?<%=Encode.forUriComponent(String.valueOf(caisi))%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(day)))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=day&dboperation=searchappointmentday'>
+                                                    href='providercontrol.jsp?<%=caisi%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(day)))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=day&dboperation=searchappointmentday'>
                                                 <font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2" color="red">
                                                     <div class='specialtxt'><%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%>
                                                     </div>
@@ -808,7 +808,7 @@
                                             %>
                                             <td align='center'><font FACE='VERDANA,ARIAL,HELVETICA'
                                                                      SIZE='2' color='white'><a
-                                                    href='providercontrol.jsp?<%=Encode.forUriComponent(String.valueOf(caisi))%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(dateGrid[i][j])))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName")))%>&displaymode=day&dboperation=searchappointmentday'>
+                                                    href='providercontrol.jsp?<%=caisi%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(dateGrid[i][j])))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName")))%>&displaymode=day&dboperation=searchappointmentday'>
                                                 <%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%>
                                             </a></font></td>
                                             <%
@@ -892,7 +892,7 @@
                                             %>
                                             <td align='center' bgcolor='#FOFOFO'><font
                                                     FACE='VERDANA,ARIAL,HELVETICA' SIZE='2'> <a
-                                                    href='providercontrol.jsp?<%=Encode.forUriComponent(String.valueOf(caisi))%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(dateGrid[i][j+1]==0?1:dateGrid[i][j+1]))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=week&dboperation=searchapptweek'>
+                                                    href='providercontrol.jsp?<%=caisi%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(dateGrid[i][j+1]==0?1:dateGrid[i][j+1]))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=week&dboperation=searchapptweek'>
                                                         <%=Encode.forHtml(String.valueOf((i + 1)))%>
                                             </font></td>
                                             <%
@@ -903,7 +903,7 @@
                                                     if (dateGrid[i][j] == day) {
                                             %>
                                             <td align='center'><a
-                                                    href='providercontrol.jsp?<%=Encode.forUriComponent(String.valueOf(caisi))%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(day)))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=day&dboperation=searchappointmentday'>
+                                                    href='providercontrol.jsp?<%=caisi%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(day)))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName") ))%>&displaymode=day&dboperation=searchappointmentday'>
                                                 <font FACE="VERDANA,ARIAL,HELVETICA" SIZE="2" color="red">
                                                     <div class='specialtxt'><%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%>
                                                     </div>
@@ -912,7 +912,7 @@
                                             %>
                                             <td align='center'><font FACE='VERDANA,ARIAL,HELVETICA'
                                                                      SIZE='2' color='white'><a
-                                                    href='providercontrol.jsp?<%=Encode.forUriComponent(String.valueOf(caisi))%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(dateGrid[i][j])))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName")))%>&displaymode=day&dboperation=searchappointmentday'>
+                                                    href='providercontrol.jsp?<%=caisi%>year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(month)))%>&day=<%=Encode.forUriComponent(String.valueOf(MyDateFormat.getDigitalXX(dateGrid[i][j])))%>&view=<%=Encode.forUriComponent(view==0?"0":("1&curProvider="+request.getParameter("curProvider")+"&curProviderName="+request.getParameter("curProviderName")))%>&displaymode=day&dboperation=searchappointmentday'>
                                                 <%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%>
                                             </a></font></td>
                                             <%
