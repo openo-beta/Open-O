@@ -537,6 +537,17 @@
 
         <style type="text/css">
 
+            /* cog that opens the CPP Paste Format preference popup; the stroke thickens the glyph */
+            a.pastePrefCog {
+                margin-left: 4px;
+                font-size: 18px;
+                font-weight: bold;
+                -webkit-text-stroke: 0.6px #333;
+                color: #333;
+                text-decoration: none;
+                vertical-align: middle;
+            }
+
             /* Ocean refer style */
             span.oceanRefer {
                 display: flex;
@@ -892,13 +903,17 @@
     <script type="text/javascript">
 
         function getClinicalData(data, target) {
+            // the CPP Paste Format preference applies only to the two fields whose button bars carry its cog
+            data.pastePreferences = (target === "#clinicalInformation" || target === "#concurrentProblems");
             jQuery.ajax({
                 method: "POST",
                 url: "${ pageContext.request.contextPath }/oscarConsultationRequest/consultationClinicalData.do",
                 data: data,
                 dataType: 'JSON',
                 success: function (data) {
-                    jQuery(target).val(jQuery(target).val() + "\n" + data.note);
+                    if (data.note) {
+                        jQuery(target).val(jQuery(target).val() + "\n" + data.note);
+                    }
                 }
             });
         }
@@ -2758,6 +2773,8 @@ if (userAgent != null) {
                                                    class="btn medicationData" value="Active Medications"/>
                                             <input id="fetchLongTermMedications_clinicalInformation" type="button"
                                                    class="btn medicationData" value="Long Term Medications"/>
+                                            <a href="#" title="Paste preferences" class="pastePrefCog"
+                                               onclick="popupPage(230,860,'<%=Encode.forJavaScriptAttribute(request.getContextPath())%>/setProviderStaleDate.do?method=viewConsultPasteFmt'); return false;">&#9881;&#xFE0E;</a>
                                             <% } %>
                                         </td>
                                     </tr>
@@ -2807,6 +2824,8 @@ if (userAgent != null) {
                                                    class="btn medicationData" value="Active Medications"/>
                                             <input id="fetchLongTermMedications_concurrentProblems" type="button"
                                                    class="btn medicationData" value="Long Term Medications"/>
+                                            <a href="#" title="Paste preferences" class="pastePrefCog"
+                                               onclick="popupPage(230,860,'<%=Encode.forJavaScriptAttribute(request.getContextPath())%>/setProviderStaleDate.do?method=viewConsultPasteFmt'); return false;">&#9881;&#xFE0E;</a>
                                             <% } %>
                                         </td>
                                     </tr>
@@ -3193,8 +3212,13 @@ if (userAgent != null) {
 
                             let delegate = "#" + delegateKey;
                             let element = jQuery('#attachDocumentsForm').find(delegate);
-                            if (element.length === 0) {
+                            // addFormIfNotFound only knows encounter forms; an unlisted attachment of any other
+                            // type has no checkbox to pre-check, so skip it instead of aborting the whole loop.
+                            if (element.length === 0 && data.name === "formNo") {
                                 element = addFormIfNotFound(data, '<%=demo%>', delegate);
+                            }
+                            if (element.length === 0) {
+                                return;
                             }
                             let oldType = element.attr("class").split(" ")[0];
                             element.attr("checked", true).removeClass(oldType).addClass(oldType.split("_")[0] + "_pre_check");

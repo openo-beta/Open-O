@@ -459,6 +459,7 @@
 			
 			<result name="eams">/eaaps/displayEctEaaps.do</result>
         </action>
+        <action name="oscarEncounter/formExists" class="ca.openosp.openo.encounter.pageUtil.EctDisplayForm2Action" method="checkExisting"/>
         <action name="oscarEncounter/displayForms" class="ca.openosp.openo.encounter.pageUtil.EctDisplayForm2Action">
             <result name="labs">/oscarEncounter/displayLabs.do</result>
 			<result name="forms">/oscarEncounter/displayForms.do</result>
@@ -943,6 +944,7 @@
         <action name="oscarEncounter/ViewConsultation" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequests2Action">
             <result name="success">/oscarEncounter/oscarConsultationRequest/ViewConsultationRequests.jsp</result>
         </action>
+        <action name="oscarEncounter/searchConsultationConsultants" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewConsultationRequests2Action" method="searchConsultants"/>
         <action name="oscarEncounter/ViewRequest" class="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewRequest2Action">
             <result name="failESend">/oscarEncounter/ViewRequest.do</result>
             <result name="success">/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp</result>

@@ -1755,6 +1755,7 @@
                                 <include>**/test/**/*Tests.java</include>
                                 <include>**/tickler/**/*Test.java</include>
                                 <include>**/managers/**/*Test.java</include>
+                                <include>**/documentManager/**/*UnitTest.java</include>
                                 <include>**/eform/**/*Test.java</include>
                             </includes>
                             <excludes>
