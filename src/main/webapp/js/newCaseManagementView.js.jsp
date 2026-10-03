@@ -3211,20 +3211,23 @@ function autoSave(async) {
         }
     }
 
-    function printInfo(img, item) {
-        var selected = ctx + "/oscarEncounter/graphics/printerGreen.png";
-        var unselected = ctx + "/oscarEncounter/graphics/printer.png";
+    var printOptionNames = ["CPP", "Rx", "Labs", "Preventions", "Allergies"];
 
+    // Copies a print checkbox into the hidden form field the server reads
+    function printInfo(checkbox, item) {
+        $(item).value = $(checkbox).checked ? "true" : "false";
+    }
 
-        if ($F(item) == "true") {
-            $(img).src = unselected;
-            $(item).value = "false";
-        } else {
-            $(img).src = selected;
-            $(item).value = "true";
+    // Hidden print fields are re-rendered with the notes so check
+    // the checkboxes to ensure their state is synced.
+    function syncPrintOptions() {
+        for (var i = 0; i < printOptionNames.length; i++) {
+            var checkbox = $("chkPrint" + printOptionNames[i]);
+            var field = $("print" + printOptionNames[i]);
+            if (field) {
+                field.value = checkbox && checkbox.checked ? "true" : "false";
+            }
         }
-
-        return false;
     }
 
     function noteIsQeued(noteId) {
@@ -3426,6 +3429,8 @@ function autoSave(async) {
 
     var nothing2PrintMsg;
     function printNotes() {
+        syncPrintOptions();
+
         if ($("printopDates").checked && !printDateRange()) {
             return false;
         } else if ($("printopAll").checked) {
@@ -3491,14 +3496,11 @@ function autoSave(async) {
             }
         }
 
-        if ($F("printCPP") == "true")
-            printInfo("imgPrintCPP", "printCPP");
-
-        if ($F("printRx") == "true")
-            printInfo("imgPrintRx", "printRx");
-
-        if ($F("printAllergies") == "true")
-            printInfo("imgPrintAllergies", "printAllergies");
+        for (idx = 0; idx < printOptionNames.length; idx++) {
+            if ($("chkPrint" + printOptionNames[idx]))
+                $("chkPrint" + printOptionNames[idx]).checked = false;
+        }
+        syncPrintOptions();
 
         // Clear date fields
         if ($("printStartDate"))

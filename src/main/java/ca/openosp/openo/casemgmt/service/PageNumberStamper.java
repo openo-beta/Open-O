@@ -34,6 +34,8 @@ public class PageNumberStamper extends FooterSupport {
 
     protected PdfTemplate total;
 
+    private int lastWrittenPage = 0;
+
     public PageNumberStamper(int offset) {
         setBaseOffset(offset);
     }
@@ -42,7 +44,8 @@ public class PageNumberStamper extends FooterSupport {
         PdfContentByte cb = writer.getDirectContent();
         cb.saveState();
 
-        String text = "Page " + writer.getPageNumber() + " of ";
+        lastWrittenPage = writer.getPageNumber();
+        String text = "Page " + lastWrittenPage + " of ";
 
         // height where text starts
         float textBase = document.bottom() - getBaseOffset();
@@ -71,7 +74,7 @@ public class PageNumberStamper extends FooterSupport {
         total.beginText();
         total.setFontAndSize(getFont(), getFontSize());
         total.setTextMatrix(0, 0);
-        total.showText(String.valueOf(writer.getPageNumber()));
+        total.showText(String.valueOf(lastWrittenPage));
         total.endText();
     }
 
