@@ -3211,20 +3211,11 @@ function autoSave(async) {
         }
     }
 
-    function printInfo(img, item) {
-        var selected = ctx + "/oscarEncounter/graphics/printerGreen.png";
-        var unselected = ctx + "/oscarEncounter/graphics/printer.png";
-
-
-        if ($F(item) == "true") {
-            $(img).src = unselected;
-            $(item).value = "false";
-        } else {
-            $(img).src = selected;
-            $(item).value = "true";
-        }
-
-        return false;
+    // Flips a print option and keeps its checkbox in sync with the hidden form field
+    function printInfo(checkbox, item) {
+        var enabled = $F(item) != "true";
+        $(item).value = enabled ? "true" : "false";
+        $(checkbox).checked = enabled;
     }
 
     function noteIsQeued(noteId) {
@@ -3492,13 +3483,19 @@ function autoSave(async) {
         }
 
         if ($F("printCPP") == "true")
-            printInfo("imgPrintCPP", "printCPP");
+            printInfo("chkPrintCPP", "printCPP");
 
         if ($F("printRx") == "true")
-            printInfo("imgPrintRx", "printRx");
+            printInfo("chkPrintRx", "printRx");
+
+        if ($F("printLabs") == "true")
+            printInfo("chkPrintLabs", "printLabs");
+
+        if ($F("printPreventions") == "true")
+            printInfo("chkPrintPreventions", "printPreventions");
 
         if ($F("printAllergies") == "true")
-            printInfo("imgPrintAllergies", "printAllergies");
+            printInfo("chkPrintAllergies", "printAllergies");
 
         // Clear date fields
         if ($("printStartDate"))
