@@ -82,31 +82,26 @@
             <div id="observation${caseManagementEntryForm.caseNote.id}" style="float: right; margin-right: 3px;">
     </c:otherwise>
 </c:choose>
-</div>
 
-<div style="margin: 0 3px 0 0;"><span style="float: right;">
     <c:choose>
         <c:when test="${not empty ajaxsave}">
-            <fmt:setBundle basename="oscarResources"/>
-            <fmt:message key="oscarEncounter.encounterDate.title"/>&nbsp;
+            <label for="obs${caseManagementEntryForm.caseNote.id}"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterDate.title"/>:&nbsp;</label>
             <span id="obs${caseManagementEntryForm.caseNote.id}">
                 <fmt:formatDate value="${caseManagementEntryForm.caseNote.observation_date}" pattern="dd-MMM-yyyy H:mm"/>
             </span>&nbsp;
-            <fmt:setBundle basename="oscarResources"/>
-            <fmt:message key="oscarEncounter.noteRev.title"/>
-            <a href="#" onclick="return showHistory('${caseManagementEntryForm.caseNote.id}', event);">
+            <label for="caseNoteRevision${caseManagementEntryForm.caseNote.id}"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteRev.title"/></label>
+            <a href="#" id="caseNoteRevision${caseManagementEntryForm.caseNote.id}" onclick="return showHistory('${caseManagementEntryForm.caseNote.id}', event);">
                 ${caseManagementEntryForm.caseNote.revision}
             </a>
         </c:when>
         <c:otherwise>
-            <fmt:setBundle basename="oscarResources"/>
-            <fmt:message key="oscarEncounter.encounterDate.title"/>&nbsp;
-            <img src="${ctx}/images/cal.gif" id="observationDate_cal" alt="calendar">&nbsp;
+            <label for="observationDate"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterDate.title"/>:&nbsp;
+            <img src="${ctx}/images/cal.gif" id="observationDate_cal" alt="calendar">&nbsp;</label>
             <input type="text" id="observationDate" name="observation_date" ondblclick="this.value='';"
-                   style="border: none; width: 140px;" readonly
+                   style="width: 140px;" readonly
                    value="<fmt:formatDate value="${caseManagementEntryForm.caseNote.observation_date}" pattern="dd-MMM-yyyy H:mm"/>">
-            rev
-            <a href="#" onclick="return showHistory('${caseManagementEntryForm.caseNote.id}', event);">
+            <label><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteRev.title"/></label>
+            <a href="javascript:void(0)" onclick="return showHistory('${caseManagementEntryForm.caseNote.id}', event);">
                 ${caseManagementEntryForm.caseNote.revision}
             </a>
         </c:otherwise>
@@ -472,10 +467,10 @@
     }
 
     const observationDateInput = document.getElementById("observationDate");
-    if (observationDateInput) {
-        observationDateInput.style.color = txtColour;
-        observationDateInput.style.backgroundColor = background;
-    }
+    // if (observationDateInput) {
+    //     observationDateInput.style.color = txtColour;
+    //     observationDateInput.style.backgroundColor = background;
+    // }
 
 
 	const summaryId = "summary" + "${noteIndex}";
