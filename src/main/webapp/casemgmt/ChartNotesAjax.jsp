@@ -539,7 +539,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                 url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/documentManager/showDocument.jsp?inWindow=true&segmentID=" + encodedDispDocNo +"');";
                 url = url + "return false;";
 
-							String editUrl = "window.open('/oscar/annotation/annotation.jsp?display=Documents&amp;table_id=" + encodedDispDocNo + "&amp;demo=" + encodedDemographicNo + "','anwin','width=400,height=500');";
+							String editUrl = "window.open('" + request.getContextPath() + "/annotation/annotation.jsp?display=Documents&amp;table_id=" + encodedDispDocNo + "&amp;demo=" + encodedDemographicNo + "','anwin','width=400,height=500');";
 
                 if (note.getRemoteFacilityId() == null) // only allow editing for local notes
                 {
@@ -966,12 +966,11 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
         if ('<%=Encode.forJavaScript(String.valueOf(singleLineFormat))%>' == 'true') {
             var staleIds = new Array();
 
-            jQuery("img[id^='quitImg']").each(function () {
-                if (jQuery(this).attr('src').indexOf('/oscarEncounter/graphics/triangle_down.gif') != -1) {
-                    var iid = jQuery(this).attr('id');
-                    jQuery(this).trigger('click');
-                    staleIds.push(iid);
-                }
+            // expand buttons of shortened notes in the note bar
+            jQuery("div.note-control[name='fullViewTrigger']").each(function () {
+                var iid = jQuery(this).attr('id');
+                jQuery(this).trigger('click');
+                staleIds.push(iid);
             });
 
             for (var i = 0; i < staleIds.length; i++) {

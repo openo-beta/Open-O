@@ -1533,12 +1533,13 @@ div.note div.note-contents div[id^='observation'] a {
 }
 
 /* note bar: icon buttons across the top of a note */
-div.noteRounded div.note-contents {
+div.noteRounded div.note-contents, div.newNote div.note-contents {
 	display: flex;
 	flex-direction: column;
 }
 
-div.noteRounded div.note-contents div.note-control-panel {
+/* notes made with New Note are div.newNote, not div.noteRounded */
+div.noteRounded div.note-contents div.note-control-panel, div.newNote div.note-contents div.note-control-panel {
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-end;
@@ -1561,7 +1562,7 @@ div.note-contents div.note-controls {
 }
 
 /* buttons are listed collapse, print, edit, annotation and shown in reverse */
-div.noteRounded div.note-contents div.note-controls, div.note:not(.noteRounded) div.note-contents {
+div.noteRounded div.note-contents div.note-controls, div.newNote div.note-contents div.note-controls, div.note:not(.noteRounded) div.note-contents {
 	flex-direction: row-reverse !important;
 }
 

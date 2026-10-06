@@ -443,8 +443,8 @@
         }
         updatedNoteId = newId;
 
-        // Assuming noteTxt comes from request attribute or is passed in a similar way
-        var noteTxt = "${fn:escapeXml(noteTxt)}"; // Escape any special characters in noteTxt
+        // the saved note text, encoded for a JavaScript string; completeChangeToView escapes it for HTML
+        var noteTxt = "${e:forJavaScript(caseManagementEntryForm.caseNote.note)}";
         completeChangeToView(noteTxt, newId);
 
         if (origId.substr(0, 1) == "0") {

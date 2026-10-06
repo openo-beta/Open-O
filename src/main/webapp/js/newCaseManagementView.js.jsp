@@ -62,7 +62,9 @@
 
     // one button of the note bar; onclick must not contain double quotes
     function noteControl(id, icon, title, onclick, name) {
-        return "<div class='note-control' id='" + id + "' title='" + title + "'" + (name ? " name='" + name + "'" : "") +
+        // tooltips come from the language files and may contain quotes (e.g. French l'affichage)
+        var safeTitle = String(title).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+        return "<div class='note-control' id='" + id + "' title=\"" + safeTitle + "\"" + (name ? " name='" + name + "'" : "") +
             " onclick=\"" + onclick + "\">" + noteIcons[icon] + "<\/div>";
     }
 
@@ -90,6 +92,14 @@
             "window.open('" + ctx + "/annotation/annotation.jsp?atbname=" + attribName + "&table_id=" + nId + "&display=EChartNote&demo=" + demographicNo + "','anwin','width=400,height=500');$('annotation_attribname').value='" + attribName + "'; return false;");
     }
 
+    // first characters of a note's shown text, as safe HTML (line breaks become spaces, tags are not cut)
+    function noteTextStart(txtId, length) {
+        var tmp = document.createElement("div");
+        tmp.innerHTML = $(txtId).innerHTML.replace(/<br\s*\/?>/gi, " ");
+        var text = (tmp.textContent || "").substr(0, length);
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
     // id of the clicked element, or of its note when it has no id with a number (e.g. the bar itself)
     function clickedNoteElementId(e) {
         var el = Event.element(e);
@@ -100,12 +110,22 @@
         return note != null ? note.id : el.id;
     }
 
-    // remove the bar of a note before building it again
-    function removeNoteControlPanel(noteDivId) {
+    // put buttons in the bar of a note, replacing its collapse/expand, print, edit and annotation buttons;
+    // the rest of the bar (Rx View link, eSend, remote or group note label) stays; returns the bar
+    function setNoteControls(noteDivId, controls) {
         var panel = $(noteDivId).down('.note-control-panel');
-        if (panel != null) {
-            panel.remove();
+        if (panel == null) {
+            new Insertion.Top(noteDivId, noteControlPanel([]));
+            panel = $(noteDivId).down('.note-control-panel');
         }
+        var controlsDiv = panel.down('.note-controls');
+        controlsDiv.getElementsBySelector('.note-control').each(function (control) {
+            if (/^(quitImg|xpImg|print|edit|anno)\d/.test(control.id)) {
+                control.remove();
+            }
+        });
+        new Insertion.Top(controlsDiv, controls.join(""));
+        return panel;
     }
 
     // show whether a note is picked for printing: yellow print icon, or the green printer image on older markup
@@ -1514,14 +1534,6 @@ function updateCPPNote() {
             Element.remove("observationDate");
             Element.remove("observationDate_cal");
 
-            var observationId = "observation" + nId;
-
-            var html = $(observationId).innerHTML;
-
-            html = html.substr(0, html.indexOf(":") + 1) + " <span id='obs" + nId + "'>" + observationDate + "<\/span>" + html.substr(html.indexOf(":") + 1);
-
-            $(observationId).update(html);
-
         }
 
         if ($("autosaveTime") != null)
@@ -1575,9 +1587,9 @@ function updateCPPNote() {
             if (nId.substr(0, 1) != "0") {
                 controls.push(annotationNoteControl(nId));
             }
-            removeNoteControlPanel(parent);
-            new Insertion.Top(parent, input);
-            new Insertion.Top(parent, noteControlPanel(controls));
+            new Insertion.After(setNoteControls(parent, controls), input);
+            // a note picked for printing stays highlighted
+            showPrintSelected(nId, noteIsQeued("" + nId) >= 0);
 
             $(parent).style.height = "auto";
 
@@ -1603,6 +1615,8 @@ function updateCPPNote() {
 
         }
 
+        // the note is plain text: escape it before it is shown as HTML
+        note = note.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         note = note.replace(/\n/g, "<br>");
         // if (largeNote(note)) {
         //     var btmImg = "<img title='Minimize Display' id='bottomQuitImg" + newId + "' alt='Minimize Display' onclick='minView(event)' style='float:right; margin-right:5px; margin-bottom:3px;' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
@@ -1612,9 +1626,9 @@ function updateCPPNote() {
         var input = "<span id='txt" + newId + "'>" + note + "<\/span>";
 
         // note bar: collapse, print, edit
-        removeNoteControlPanel(parent);
-        new Insertion.Top(parent, input);
-        new Insertion.Top(parent, noteControlPanel([collapseNoteControl(newId), printNoteControl(newId), editNoteControl(newId)]));
+        new Insertion.After(setNoteControls(parent, [collapseNoteControl(newId), printNoteControl(newId), editNoteControl(newId)]), input);
+        // a note picked for printing stays highlighted
+        showPrintSelected(newId, noteIsQeued("" + newId) >= 0);
 
         $(parent).style.height = "auto";
 
@@ -1639,8 +1653,7 @@ function updateCPPNote() {
 
         // one-line summary under the bar: date and the start of the note
         var txtId = "txt" + nId;
-        var line = $(txtId).innerHTML.substr(0, 90);
-        line = line.replace(/<br>/g, " ");
+        var line = noteTextStart(txtId, 90);
         var dateValue = $(dateId) != null ? $(dateId).innerHTML : "";
         dateValue = dateValue.substring(0, dateValue.indexOf(" "));
         // the date sits inside the line: the note is a flex column, so two divs would be two rows
@@ -1702,7 +1715,8 @@ function updateCPPNote() {
                 postBody: params,
                 evalScripts: true,
                 onSuccess: function (response) {
-                    $(noteTxtArea).update(response.responseText);
+                    // the reply starts and ends with blank lines; keep one line break at the end like the full-text path
+                    $(noteTxtArea).update(response.responseText.replace(/^\s+|\s+$/g, "") + "\n");
                     adjustCaseNote();
                     $(noteTxtArea).focus();
                     setCaretPosition($(noteTxtArea), $(noteTxtArea).value.length);
@@ -1784,7 +1798,9 @@ function updateCPPNote() {
             jQuery(observationDivId).append(imgTag2);
             jQuery(observationDivId).css('font-size', '10px');
         } else {
-            new Insertion.Top(txt, imgTag1);
+            // in the bar when the note has one (email notes)
+            const barControls = $(txt).down('.note-controls');
+            new Insertion.Top(barControls != null ? barControls : txt, imgTag1);
         }
         Element.stopObserving(noteTxtId, 'click', fullView);
     }
@@ -1793,7 +1809,7 @@ function updateCPPNote() {
         const noteId = "n" + id;
         const noteTxtId = "txt" + id;
         const quitImgId = "quitImg" + id;
-        const line = $(noteTxtId).innerHTML.substr(0, 50).replace(/<br>/g, " ");
+        const line = noteTextStart(noteTxtId, 50);
         $(noteTxtId).update(line);
         // only part of the note is shown now: editing must fetch the whole note, not copy the shown text
         if ($("full" + id) != null) {
@@ -1812,7 +1828,9 @@ function updateCPPNote() {
         document.getElementById(quitImgId)?.remove();
     if (isEmailNote) {
         const maxDisplayImg = "<img title='Maximize Display' id='fullImg" + id + "' alt='Maximize Display' onclick='fullView(event)' style='float: right;' src='" + ctx + "/oscarEncounter/graphics/triangle_down.gif' />";
-        new Insertion.Top("n" + id, maxDisplayImg);
+        // in the bar when the note has one
+        const emailControls = $("n" + id).down('.note-controls');
+        new Insertion.Top(emailControls != null ? emailControls : "n" + id, maxDisplayImg);
     } else {
         Element.observe(noteTxtId, 'click', fullView);
     }
@@ -1996,8 +2014,8 @@ function updateCPPNote() {
         for (var i = 0; i < nodes.length; ++i) {
             nodes[i].remove();
         }
-        // and the note bar; a bar with only the print button is added below
-        removeNoteControlPanel(txt);
+        // and the bar buttons; the print button is put back below
+        setNoteControls(txt, []);
 
 
         var editAnchor = "edit" + nId;
@@ -2038,7 +2056,7 @@ function updateCPPNote() {
         new Insertion.Top(txt, input);
         var strNid = "" + nId;
         if (strNid.substr(0, 1) != "0") {
-            new Insertion.Top(txt, noteControlPanel([printNoteControl(nId)]));
+            setNoteControls(txt, [printNoteControl(nId)]);
             // keep the print pick visible while editing
             showPrintSelected(nId, noteIsQeued(strNid) >= 0);
         }
@@ -3665,14 +3683,6 @@ function autoSave(async) {
                 Element.remove("observationDate");
                 Element.remove("observationDate_cal");
 
-                var observationId = "observation" + nId;
-
-                var html = $(observationId).innerHTML;
-
-                html = html.substr(0, html.indexOf(":") + 1) + " <span id='obs" + nId + "'>" + observationDate + "<\/span>" + html.substr(html.indexOf(":") + 1);
-
-                $(observationId).update(html);
-
             }
 
             if ($("autosaveTime") != null)
@@ -3725,9 +3735,9 @@ function autoSave(async) {
                 if (nId.substr(0, 1) != "0") {
                     controls.push(annotationNoteControl(nId));
                 }
-                removeNoteControlPanel(parent);
-                new Insertion.Top(parent, input);
-                new Insertion.Top(parent, noteControlPanel(controls));
+                new Insertion.After(setNoteControls(parent, controls), input);
+                // a note picked for printing stays highlighted
+                showPrintSelected(nId, noteIsQeued("" + nId) >= 0);
 
                 $(parent).style.height = "auto";
 
