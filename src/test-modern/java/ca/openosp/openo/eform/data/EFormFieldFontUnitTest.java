@@ -163,7 +163,7 @@ class EFormFieldFontUnitTest extends OpenOUnitTestBase {
 
         assertThat(rendered).contains("input[type=checkbox],input[type=radio]{-webkit-appearance:none;min-width:13px;");
         assertThat(rendered).contains("input:checked{background:#000;");
-        assertThat(rendered).contains("select:not([multiple]){-webkit-appearance:none;");
+        assertThat(rendered).contains("select:not([multiple]):not([size]),select[size='0']:not([multiple]),select[size='1']:not([multiple]){-webkit-appearance:none;");
         assertThat(rendered).contains("input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;");
     }
 }
