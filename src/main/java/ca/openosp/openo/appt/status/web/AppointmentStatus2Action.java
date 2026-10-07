@@ -125,7 +125,6 @@ public class AppointmentStatus2Action extends AppointmentSettingsAction {
     protected String view() {
         List<AppointmentStatus> allStatus = appointmentStatusMgr.getAllStatus();
         request.setAttribute("allStatus", allStatus);
-        request.setAttribute("iconSet", AppointmentStatusMgr.ICON_SET);
         request.setAttribute("descriptionMaxLength", AppointmentStatusMgr.DESCRIPTION_MAX_LENGTH);
         // Disable refuses a status in use, so this only finds one made inactive before that, or elsewhere.
         allStatus.stream()

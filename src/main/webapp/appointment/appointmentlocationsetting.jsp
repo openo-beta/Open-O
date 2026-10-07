@@ -191,8 +191,7 @@
                         <td class="text-nowrap">
                             <c:choose>
                                 <c:when test="${not empty item.icon}">
-                                    <span class="glyphicon ${e:forHtmlAttribute(item.icon)} location-icon" role="img"
-                                          data-icon="${e:forHtmlAttribute(item.icon)}"></span>
+                                    <span class="item-style-icon" data-icon="${e:forHtmlAttribute(item.icon)}"></span>
                                 </c:when>
                                 <c:otherwise><span class="text-muted" role="img" title="${e:forHtmlAttribute(defaultStyleLabel)}" aria-label="${e:forHtmlAttribute(defaultStyleLabel)}">&mdash;</span></c:otherwise>
                             </c:choose>
@@ -250,15 +249,6 @@
 <%@ include file="itemStyleEditorDialog.jspf" %>
 <script>
     (function () {
-        // The icon's readable name shows on hover and is read out, as the Status tab shows icons alone.
-        document.querySelectorAll('.location-icon').forEach(function (icon) {
-            const name = ItemStyleEditor.readableIconName(icon.dataset.icon);
-            icon.title = name;
-            icon.setAttribute('aria-label', name);
-        });
-
-        ItemStyleEditor.paintSwatches();
-
         // The switch is disabled for a user who can't change it, so it never fires for them.
         const requirement = document.getElementById('locationRequirement');
         if (requirement) {
@@ -279,7 +269,7 @@
         ItemStyleEditor.init({
             description: {maxLength: Number(document.body.dataset.nameMaxLength)},
             colour: {clearable: true},
-            icon: {clearable: true, iconSet: {kind: 'glyphicon', names: ItemStyleEditor.GLYPHICONS}}
+            icon: {clearable: true}
         });
     })();
 </script>

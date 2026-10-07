@@ -324,12 +324,13 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
     @DisplayName("updateLookupListItemIcon")
     class Icon {
 
-        @Test
-        @DisplayName("should store the icon when it is a glyphicon class name")
-        void shouldStoreIcon_whenGlyphiconClass() {
-            assertThat(manager.updateLookupListItemIcon(loggedInInfo, ITEM_ID, "glyphicon-map-marker")).isTrue();
+        @ParameterizedTest
+        @ValueSource(strings = {"glyphicon-map-marker", "here.gif", "thumb.png"})
+        @DisplayName("should store the icon when it is in the Icon Set, a glyph or an image")
+        void shouldStoreIcon_whenInIconSet(String icon) {
+            assertThat(manager.updateLookupListItemIcon(loggedInInfo, ITEM_ID, icon)).isTrue();
 
-            assertThat(item.getIcon()).isEqualTo("glyphicon-map-marker");
+            assertThat(item.getIcon()).isEqualTo(icon);
             verify(lookupListItemDao).merge(item);
         }
 
@@ -346,9 +347,9 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
 
         @ParameterizedTest
         @ValueSource(strings = {"home", "glyphicon-", "glyphicon-Home", "fa-home", "glyphicon home",
-                "glyphicon-home\" onclick=\"x"})
-        @DisplayName("should reject the icon and save nothing when it is not a glyphicon class name")
-        void shouldRejectIcon_whenNotGlyphiconClass(String icon) {
+                "glyphicon-home\" onclick=\"x", "glyphicon-nope", "Shere.gif", "../here.gif"})
+        @DisplayName("should reject the icon and save nothing when it is not in the Icon Set")
+        void shouldRejectIcon_whenNotInIconSet(String icon) {
             assertThatThrownBy(() -> manager.updateLookupListItemIcon(loggedInInfo, ITEM_ID, icon))
                     .isInstanceOf(IllegalArgumentException.class);
 

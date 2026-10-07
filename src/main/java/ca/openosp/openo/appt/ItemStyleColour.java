@@ -16,7 +16,10 @@ public final class ItemStyleColour {
     /** A colour as the settings pages save it: {@code #rrggbb}, or {@code #rrggbbaa} when see-through. */
     public static final Pattern PATTERN = Pattern.compile("#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?");
 
-    /** The schedule's appointment text colour, rgb(0,40,60): the icon colour on light or see-through chips. */
+    /**
+     * The schedule's appointment text colour, rgb(0,40,60): the icon colour on light or see-through
+     * chips, and a glyph status icon's colour.
+     */
     public static final String DARK = "#00283c";
 
     /** The icon colour on dark chips. */

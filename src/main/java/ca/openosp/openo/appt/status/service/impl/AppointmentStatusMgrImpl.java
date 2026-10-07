@@ -32,6 +32,7 @@ import java.util.function.BiConsumer;
 
 import org.apache.commons.lang3.StringUtils;
 
+import ca.openosp.openo.appt.IconSet;
 import ca.openosp.openo.appt.ItemStyleColour;
 import ca.openosp.openo.commn.dao.AppointmentStatusDao;
 import ca.openosp.openo.commn.model.AppointmentStatus;
@@ -136,8 +137,8 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
     }
 
     public boolean updateIcon(int id, String icon) {
-        if (icon == null || !ICON_SET.contains(icon)) {
-            throw new IllegalArgumentException("appointment status icon must be one of " + ICON_SET);
+        if (!IconSet.contains(icon)) {
+            throw new IllegalArgumentException("appointment status icon must be in the Icon Set");
         }
         return updateEditable(id, icon, AppointmentStatus::setIcon);
     }

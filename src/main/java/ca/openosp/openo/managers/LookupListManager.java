@@ -30,8 +30,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.regex.Pattern;
+import java.util.function.Predicate;
 
+import ca.openosp.openo.appt.IconSet;
 import ca.openosp.openo.appt.ItemStyleColour;
 import ca.openosp.openo.commn.dao.LookupListDao;
 import ca.openosp.openo.commn.dao.LookupListItemDao;
@@ -50,7 +51,6 @@ import ca.openosp.openo.log.LogAction;
 @Service
 public class LookupListManager {
 
-    private static final Pattern ICON = Pattern.compile("glyphicon-[a-z0-9-]+");
     /** The name of the Location List; {@link #findAppointmentLocationList} is how code should find the list. */
     public static final String APPOINTMENT_LOCATION_LIST = "appointmentLocationCode";
     private static final SystemPreferences.APPOINTMENT_LOCATION_KEYS APPOINTMENT_LOCATION_DEFAULT =
@@ -325,7 +325,7 @@ public class LookupListManager {
      * @since 2026-09-15
      */
     public boolean updateLookupListItemColour(LoggedInInfo loggedInInfo, int lookupListItemId, String colour) {
-        return updateLookupListItemStyle(loggedInInfo, lookupListItemId, colour, ItemStyleColour.PATTERN, LookupListItem::setColour);
+        return updateLookupListItemStyle(loggedInInfo, lookupListItemId, colour, ItemStyleColour.PATTERN.asMatchPredicate(), LookupListItem::setColour);
     }
 
     /**
@@ -333,14 +333,14 @@ public class LookupListManager {
      *
      * @param loggedInInfo LoggedInInfo the current user, who needs _admin update
      * @param lookupListItemId int the item to change
-     * @param icon String a glyphicon class name such as glyphicon-home, or null or blank to clear it
+     * @param icon String an icon in {@link IconSet#ICONS}, an image or a glyph, or null or blank to clear it
      * @return boolean true if the item exists and was updated, false if there is no such item
      * @throws RuntimeException if the user lacks _admin update
-     * @throws IllegalArgumentException if icon is neither blank nor a glyphicon class name
+     * @throws IllegalArgumentException if icon is neither blank nor in the Icon Set
      * @since 2026-09-15
      */
     public boolean updateLookupListItemIcon(LoggedInInfo loggedInInfo, int lookupListItemId, String icon) {
-        return updateLookupListItemStyle(loggedInInfo, lookupListItemId, icon, ICON, LookupListItem::setIcon);
+        return updateLookupListItemStyle(loggedInInfo, lookupListItemId, icon, IconSet::contains, LookupListItem::setIcon);
     }
 
     /**
@@ -487,19 +487,19 @@ public class LookupListManager {
     }
 
     /*
-     * Style values are later written into class and style attributes, so only
-     * values matching the pattern are stored; blank means clear.
+     * Style values are later written into class, src and style attributes, so only
+     * values the check accepts are stored; blank means clear.
      */
     private boolean updateLookupListItemStyle(LoggedInInfo loggedInInfo, int lookupListItemId, String value,
-                                              Pattern pattern, BiConsumer<LookupListItem, String> setter) {
+                                              Predicate<String> valid, BiConsumer<LookupListItem, String> setter) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null)) {
             throw new RuntimeException("Access Denied");
         }
 
         String style = value == null || value.isBlank() ? null : value.trim();
-        if (style != null && !pattern.matcher(style).matches()) {
-            throw new IllegalArgumentException("lookupListItem style value must match " + pattern.pattern());
+        if (style != null && !valid.test(style)) {
+            throw new IllegalArgumentException("lookupListItem style value is not allowed");
         }
 
         LookupListItem lookupListItem = findLookupListItemById(loggedInInfo, lookupListItemId);

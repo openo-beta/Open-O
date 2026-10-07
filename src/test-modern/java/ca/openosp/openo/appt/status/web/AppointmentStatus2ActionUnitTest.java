@@ -111,7 +111,6 @@ public class AppointmentStatus2ActionUnitTest extends OpenOUnitTestBase {
             assertThat(action.execute()).isEqualTo("success");
 
             assertThat(request.getAttribute("allStatus")).isNotNull();
-            assertThat(request.getAttribute("iconSet")).isEqualTo(AppointmentStatusMgr.ICON_SET);
         }
 
         @Test

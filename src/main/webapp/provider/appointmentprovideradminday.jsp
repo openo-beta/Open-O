@@ -1888,9 +1888,8 @@
                                                             } else {
                                                             %>
 
-                                                            <img src="<%= request.getContextPath() %>/images/<%=Encode.forHtmlAttribute(String.valueOf(as.getImageName()))%>"
-                                                                 border="0" height="10"
-                                                                 alt="<%=Encode.forHtmlAttribute(statusTitle)%>">
+                                                            <appt:statusIcon icon="<%=String.valueOf(as.getIcon())%>" signOff="<%=as.getSignOff()%>"
+                                                                             label="<%=statusTitle%>"/>
 
                                                             <%
                                                                     }

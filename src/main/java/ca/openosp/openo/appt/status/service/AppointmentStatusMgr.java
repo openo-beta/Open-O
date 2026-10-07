@@ -34,18 +34,6 @@ import ca.openosp.openo.commn.model.AppointmentStatus;
 public interface AppointmentStatusMgr {
 
     /**
-     * The images, under /images, that a status may use as its icon. The day view shows a signed or
-     * verified appointment with the S- or V-prefixed copy, so only images that have both are listed.
-     *
-     * @since 2026-09-15
-     */
-    List<String> ICON_SET = List.of(
-            "starbill.gif", "todo.gif", "here.gif", "picked.gif", "empty.gif", "noshow.gif", "cancel.gif", "billed.gif",
-            "thumb.png",
-            "1.gif", "2.gif", "3.gif", "4.gif", "5.gif", "6.gif", "7.gif", "8.gif",
-            "9.gif", "10.gif", "11.gif", "12.gif", "13.gif", "14.gif", "15.gif", "16.gif");
-
-    /**
      * Width of the appointment_status.description column.
      *
      * @since 2026-09-15
@@ -98,9 +86,9 @@ public interface AppointmentStatusMgr {
      * Sets an editable status's icon.
      *
      * @param id int the appointment_status id
-     * @param icon String the new icon, one of {@link #ICON_SET}
+     * @param icon String the new icon, one of {@link ca.openosp.openo.appt.IconSet#ICONS}: an image or a glyph
      * @return boolean true when saved; false when there is no such status or it is locked (editable=0)
-     * @throws IllegalArgumentException if the icon is not in {@link #ICON_SET}
+     * @throws IllegalArgumentException if the icon is not in the Icon Set
      * @since 2026-09-15
      */
     public boolean updateIcon(int id, String icon);
