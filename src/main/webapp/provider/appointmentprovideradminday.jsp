@@ -1900,9 +1900,8 @@
                                                             } else {
                                                             %>
 
-                                                            <img src="<%= request.getContextPath() %>/images/<%=as.getImageName()%>"
-                                                                 border="0" height="10"
-                                                                 alt="<c:out value='<%=(as.getTitleString(request.getLocale()).length()>0)?as.getTitleString(request.getLocale()):as.getTitle()%>' /> ">
+                                                            <appt:statusIcon icon="<%=String.valueOf(as.getIcon())%>" signOff="<%=as.getSignOff()%>"
+                                                                             label="<%=(as.getTitleString(request.getLocale()).length()>0)?as.getTitleString(request.getLocale()):as.getTitle()%>"/>
 
                                                             <%
                                                                     }
