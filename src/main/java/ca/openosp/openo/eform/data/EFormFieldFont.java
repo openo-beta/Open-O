@@ -53,13 +53,15 @@ public final class EFormFieldFont {
             + "border:1px solid #000;background:#fff;vertical-align:middle;}"
           + "input[type=radio]{border-radius:50%;}"
           + "input:checked{background:#000;box-shadow:inset 0 0 0 2px #fff;}"
-          + "select:not([multiple]){-webkit-appearance:none;border:1px solid #000;border-radius:0;"
+          + "select:not([multiple]):not([size]),select[size='0']:not([multiple]),select[size='1']:not([multiple])"
+            + "{-webkit-appearance:none;border:1px solid #000;border-radius:0;"
             + "padding:1px 20px 1px 3px;background-color:#fff;background-repeat:no-repeat;background-position:100% 50%;"
             + "background-size:7px 7px,14px 7px;background-image:"
             + "-webkit-gradient(linear,0 0,7 7,color-stop(0.5,#000),color-stop(0.5,#fff)),"
             + "-webkit-gradient(linear,0 7,7 0,color-stop(0.5,transparent),color-stop(0.5,#000));}"
-          + "input[type=range]{-webkit-appearance:none;min-width:120px;height:2px;border:0;background:#000;"
-            + "vertical-align:middle;}"
+          + "input[type=range]{-webkit-appearance:none;min-width:120px;min-height:10px;border:0;vertical-align:middle;"
+            + "background:-webkit-gradient(linear,left top,left bottom,from(#000),to(#000)) no-repeat 0 50%;"
+            + "background-size:100% 2px;}"
           + "input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border:0;"
             + "border-radius:50%;background:#000;}";
 
