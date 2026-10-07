@@ -29,10 +29,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
+import ca.openosp.openo.appt.ItemStyleColour;
 import ca.openosp.openo.commn.dao.AppointmentStatusDao;
 import ca.openosp.openo.commn.model.AppointmentStatus;
 import ca.openosp.openo.utility.SpringUtils;
@@ -46,8 +46,6 @@ import ca.openosp.openo.appt.status.service.AppointmentStatusMgr;
 public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
 
     private static AppointmentStatusDao appointStatusDao = SpringUtils.getBean(AppointmentStatusDao.class);
-
-    private static final Pattern COLOUR = Pattern.compile("#[0-9a-fA-F]{6}");
 
     private record StatusStyle(String description, String colour, String icon) {
     }
@@ -131,8 +129,8 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
 
     public boolean updateColour(int id, String colour) {
         String value = StringUtils.trimToEmpty(colour);
-        if (!COLOUR.matcher(value).matches()) {
-            throw new IllegalArgumentException("appointment status colour must match " + COLOUR.pattern());
+        if (!ItemStyleColour.PATTERN.matcher(value).matches()) {
+            throw new IllegalArgumentException("appointment status colour must match " + ItemStyleColour.PATTERN.pattern());
         }
         return updateEditable(id, value, AppointmentStatus::setColor);
     }

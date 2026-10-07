@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
 
+import ca.openosp.openo.appt.ItemStyleColour;
 import ca.openosp.openo.commn.dao.LookupListDao;
 import ca.openosp.openo.commn.dao.LookupListItemDao;
 import ca.openosp.openo.commn.dao.SystemPreferencesDao;
@@ -49,7 +50,6 @@ import ca.openosp.openo.log.LogAction;
 @Service
 public class LookupListManager {
 
-    private static final Pattern COLOUR = Pattern.compile("#[0-9a-fA-F]{6}");
     private static final Pattern ICON = Pattern.compile("glyphicon-[a-z0-9-]+");
     /** The name of the Location List; {@link #findAppointmentLocationList} is how code should find the list. */
     public static final String APPOINTMENT_LOCATION_LIST = "appointmentLocationCode";
@@ -313,18 +313,19 @@ public class LookupListManager {
     }
 
     /**
-     * Sets or clears the colour a lookupListItem is drawn in.
+     * Sets or clears the colour a lookupListItem is drawn in. A fully see-through colour
+     * ({@code #rrggbb00}) is kept as it is, so raising its opacity later brings its hue back.
      *
      * @param loggedInInfo LoggedInInfo the current user, who needs _admin update
      * @param lookupListItemId int the item to change
-     * @param colour String a #rrggbb hex colour, or null or blank to clear it
+     * @param colour String a #rrggbb hex colour, #rrggbbaa when see-through, or null or blank to clear it
      * @return boolean true if the item exists and was updated, false if there is no such item
      * @throws RuntimeException if the user lacks _admin update
-     * @throws IllegalArgumentException if colour is neither blank nor #rrggbb
+     * @throws IllegalArgumentException if colour is neither blank, #rrggbb nor #rrggbbaa
      * @since 2026-09-15
      */
     public boolean updateLookupListItemColour(LoggedInInfo loggedInInfo, int lookupListItemId, String colour) {
-        return updateLookupListItemStyle(loggedInInfo, lookupListItemId, colour, COLOUR, LookupListItem::setColour);
+        return updateLookupListItemStyle(loggedInInfo, lookupListItemId, colour, ItemStyleColour.PATTERN, LookupListItem::setColour);
     }
 
     /**
