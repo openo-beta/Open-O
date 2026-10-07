@@ -49,6 +49,7 @@
 <%@ page import="ca.openosp.openo.PMmodule.model.ProgramProvider" %>
 
 <%@ page import="ca.openosp.openo.appt.LocationList" %>
+<%@ page import="ca.openosp.openo.appt.ItemStyleColour" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.utility.MiscUtils" %>
@@ -1860,7 +1861,7 @@
                                                          //multi-site. if a site have been selected, only display appointment in that site
                                                    if (!bMultisites || (selectedSite == null && CurrentSiteMap.get(sitename) != null) || sitename.equals(selectedSite)) {
                                                     %>
-                                                    <td class="appt" bgcolor='<%=as.getBgColor()%>'
+                                                    <td class="appt" bgcolor='<%=ItemStyleColour.overWhite(as.getBgColor())%>'
                                                         rowspan="<%=iRows%>"
                                                         nowrap>
                                                         <!-- multisites : add colour-coded to the "location" value of that appointment. -->

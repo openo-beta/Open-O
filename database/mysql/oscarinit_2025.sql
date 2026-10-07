@@ -890,10 +890,15 @@ ALTER TABLE emailLog ADD COLUMN footer BLOB DEFAULT NULL AFTER body;
 --
 ALTER TABLE LookupListItem
   ADD COLUMN IF NOT EXISTS icon varchar(255) NULL AFTER label,
-  ADD COLUMN IF NOT EXISTS colour varchar(7) NULL AFTER icon;
+  ADD COLUMN IF NOT EXISTS colour varchar(9) NULL AFTER icon;
 ALTER TABLE appointment
   ADD COLUMN IF NOT EXISTS locationCode int(11) NULL AFTER location,
   MODIFY location varchar(80) NULL DEFAULT NULL;
 ALTER TABLE appointmentArchive
   ADD COLUMN IF NOT EXISTS locationCode int(11) NULL AFTER location,
   MODIFY location varchar(80) NULL DEFAULT NULL;
+
+-- Status colours may be see-through (#rrggbbaa); a status icon may be a glyph icon (longest name 32 characters).
+ALTER TABLE appointment_status
+  MODIFY color char(9) NOT NULL DEFAULT '#cccccc',
+  MODIFY icon char(40) NOT NULL DEFAULT '''''';

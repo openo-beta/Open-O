@@ -86,9 +86,10 @@ public interface AppointmentStatusMgr {
      * Sets an editable status's background colour.
      *
      * @param id int the appointment_status id
-     * @param colour String the new colour as #rrggbb; surrounding whitespace is trimmed
+     * @param colour String the new colour as #rrggbb, or #rrggbbaa when see-through; surrounding
+     *     whitespace is trimmed
      * @return boolean true when saved; false when there is no such status or it is locked (editable=0)
-     * @throws IllegalArgumentException if the colour is not #rrggbb
+     * @throws IllegalArgumentException if the colour is neither #rrggbb nor #rrggbbaa
      * @since 2026-09-15
      */
     public boolean updateColour(int id, String colour);
