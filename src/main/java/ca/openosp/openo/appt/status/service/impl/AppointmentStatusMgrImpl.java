@@ -113,6 +113,7 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
         return appointStatusDao.find(ID);
     }
 
+    @Override
     public boolean changeStatus(int id, int active) {
         if (active != 0 && active != 1) {
             throw new IllegalArgumentException("appointment status active must be 0 or 1");
@@ -120,6 +121,7 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
         return updateEditable(id, active, AppointmentStatus::setActive);
     }
 
+    @Override
     public boolean updateDescription(int id, String description) {
         String value = StringUtils.trimToEmpty(description);
         if (value.isEmpty() || value.length() > DESCRIPTION_MAX_LENGTH) {
@@ -128,6 +130,7 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
         return updateEditable(id, value, AppointmentStatus::setDescription);
     }
 
+    @Override
     public boolean updateColour(int id, String colour) {
         String value = StringUtils.trimToEmpty(colour);
         if (!ItemStyleColour.PATTERN.matcher(value).matches()) {
@@ -136,6 +139,7 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
         return updateEditable(id, value, AppointmentStatus::setColor);
     }
 
+    @Override
     public boolean updateIcon(int id, String icon) {
         if (!IconSet.contains(icon)) {
             throw new IllegalArgumentException("appointment status icon must be in the Icon Set");
@@ -158,10 +162,12 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
         return true;
     }
 
+    @Override
     public boolean isInUse(String statusCode) {
         return appointStatusDao.isInUse(statusCode);
     }
 
+    @Override
     public void reset() {
         List<AppointmentStatus> changed = new ArrayList<>();
         for (AppointmentStatus status : appointStatusDao.findAll()) {

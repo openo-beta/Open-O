@@ -82,6 +82,7 @@ public final class ItemStyleColour {
         return channel(colour, 7);
     }
 
+    /* Only ever given a colour PATTERN or SEE_THROUGH has matched, so these are always two hex digits. */
     private static int channel(String colour, int start) {
         return Integer.parseInt(colour.substring(start, start + 2), 16);
     }
