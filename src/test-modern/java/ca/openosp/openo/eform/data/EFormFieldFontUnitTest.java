@@ -153,4 +153,17 @@ class EFormFieldFontUnitTest extends OpenOUnitTestBase {
         }
         return count;
     }
+
+    @Test
+    @DisplayName("should draw checkboxes and radios as CSS boxes when the eForm is rendered")
+    void shouldDrawFormControlsAsCssBoxes_whenEFormIsRendered() {
+        String html = "<!doctype html><html><head></head><body><input type=\"checkbox\" checked></body></html>";
+
+        String rendered = applyTo(html);
+
+        assertThat(rendered).contains("input[type=checkbox],input[type=radio]{-webkit-appearance:none;min-width:13px;");
+        assertThat(rendered).contains("input:checked{background:#000;");
+        assertThat(rendered).contains("select:not([multiple]){-webkit-appearance:none;");
+        assertThat(rendered).contains("input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;");
+    }
 }

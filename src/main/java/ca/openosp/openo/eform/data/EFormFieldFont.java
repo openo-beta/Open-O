@@ -40,6 +40,29 @@ public final class EFormFieldFont {
     private static final String TEXT_STYLE_CSS =
             "*{font-synthesis:none;}*{text-rendering:optimizeLegibility !important;}";
 
+    /**
+     * Form controls drawn with CSS. The PDF converter paints the native checkbox, radio, select
+     * arrow and slider at a fixed device-pixel size, so at the eForm resolution they shrink to
+     * dots. The problem is in wkhtmltopdf itself, reported and still open:
+     * https://github.com/wkhtmltopdf/wkhtmltopdf/issues/4216. A CSS drawing scales with the
+     * page. Only minimum sizes are set, the browser's defaults, so any width and height the
+     * form gives its controls still apply.
+     */
+    private static final String FORM_CONTROL_CSS =
+            "input[type=checkbox],input[type=radio]{-webkit-appearance:none;min-width:13px;min-height:13px;"
+            + "border:1px solid #000;background:#fff;vertical-align:middle;}"
+          + "input[type=radio]{border-radius:50%;}"
+          + "input:checked{background:#000;box-shadow:inset 0 0 0 2px #fff;}"
+          + "select:not([multiple]){-webkit-appearance:none;border:1px solid #000;border-radius:0;"
+            + "padding:1px 20px 1px 3px;background-color:#fff;background-repeat:no-repeat;background-position:100% 50%;"
+            + "background-size:7px 7px,14px 7px;background-image:"
+            + "-webkit-gradient(linear,0 0,7 7,color-stop(0.5,#000),color-stop(0.5,#fff)),"
+            + "-webkit-gradient(linear,0 7,7 0,color-stop(0.5,transparent),color-stop(0.5,#000));}"
+          + "input[type=range]{-webkit-appearance:none;min-width:120px;height:2px;border:0;background:#000;"
+            + "vertical-align:middle;}"
+          + "input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border:0;"
+            + "border-radius:50%;background:#000;}";
+
     /** The forced family, mapped to the DejaVu Sans fonts installed on the server. */
     private static final String INSTALLED_FONT_CSS =
             "@font-face{font-family:'" + FIELD_FONT_FAMILY + "';font-weight:normal;font-style:normal;src:local('DejaVu Sans');}"
@@ -66,7 +89,8 @@ public final class EFormFieldFont {
 
     /**
      * Removes the form's own @font-face rules, which the PDF converter cannot load, and writes one
-     * style mapping the field font to the DejaVu Sans installed on the server.
+     * style mapping the field font to the DejaVu Sans installed on the server and drawing
+     * checkboxes and radios as CSS boxes.
      *
      * @param document org.jsoup.nodes.Document the parsed eForm
      */
@@ -93,7 +117,7 @@ public final class EFormFieldFont {
         Element style = document.createElement("style");
         style.attr("id", FIELD_FONT_STYLE_ID);
         // a DataNode, not text: jsoup escapes a text node even inside <style>
-        style.appendChild(new DataNode(TEXT_STYLE_CSS + INSTALLED_FONT_CSS
+        style.appendChild(new DataNode(TEXT_STYLE_CSS + FORM_CONTROL_CSS + INSTALLED_FONT_CSS
                 + FONT_SELECTOR + "{font-family:'" + FIELD_FONT_FAMILY + "',sans-serif !important;}"));
         head.appendChild(style);
     }
