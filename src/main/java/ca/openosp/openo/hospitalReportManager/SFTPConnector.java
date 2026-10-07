@@ -143,6 +143,10 @@ public class SFTPConnector {
 
         java.util.Properties confProp = new java.util.Properties();
         confProp.put("StrictHostKeyChecking", "no");
+        // The OMD HRM SFTP server only offers aes256-cbc and aes128-cbc, which JSch
+        // leaves out of its default cipher list. Add them for this session only.
+        confProp.put("cipher.c2s", JSch.getConfig("cipher.c2s") + ",aes256-cbc,aes128-cbc");
+        confProp.put("cipher.s2c", JSch.getConfig("cipher.s2c") + ",aes256-cbc,aes128-cbc");
         sess.setConfig(confProp);
 
         try {
