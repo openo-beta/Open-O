@@ -29,7 +29,6 @@
 
     Request attributes, set by AppointmentStatus2Action (appointment/apptStatusSetting.do):
       allStatus             List<AppointmentStatus> every status
-      iconSet               List<String> the images a status may use, under /images
       descriptionMaxLength  Integer the description column's width
       useStatus             String code of an inactive status that appointments use, if any
       saveFailed            Boolean true when the last change was rejected
@@ -106,8 +105,6 @@
 
 <div class="table-responsive">
     <table id="statusTable" class="table table-sm table-striped align-middle"
-           data-icon-base="${e:forHtmlAttribute(ctx)}/images/"
-           data-icon-names="<c:forEach items='${iconSet}' var='icon' varStatus='loop'>${e:forHtmlAttribute(icon)}${loop.last ? '' : ' '}</c:forEach>"
            data-description-max-length="${e:forHtmlAttribute(descriptionMaxLength)}">
         <thead>
         <tr>
@@ -141,7 +138,7 @@
                     </c:if>
                 </td>
                 <td class="text-nowrap">
-                    <img src="${e:forHtmlAttribute(ctx)}/images/${e:forHtmlAttribute(status.icon)}" alt="${e:forHtmlAttribute(status.icon)}">
+                    <span class="item-style-icon" data-icon="${e:forHtmlAttribute(status.icon)}"></span>
                     <c:if test="${editable and canChange}">
                         <appt:itemStyleEditButton kind="icon" itemId="${status.id}" current="${status.icon}"/>
                     </c:if>
@@ -180,8 +177,6 @@
     (function () {
         const table = document.getElementById('statusTable');
 
-        ItemStyleEditor.paintSwatches();
-
         // Reset overwrites every editable status's description, colour and icon, with no undo.
         document.querySelectorAll('form[data-confirm]').forEach(function (form) {
             form.addEventListener('submit', function (event) {
@@ -194,10 +189,7 @@
         ItemStyleEditor.init({
             description: {maxLength: Number(table.dataset.descriptionMaxLength)},
             colour: {clearable: false},
-            icon: {
-                clearable: false,
-                iconSet: {kind: 'image', base: table.dataset.iconBase, names: table.dataset.iconNames.split(' ')}
-            }
+            icon: {clearable: false}
         });
     })();
 </script>

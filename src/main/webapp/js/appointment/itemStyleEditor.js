@@ -32,16 +32,19 @@
  *
  * Page contract:
  * - Include itemStyleEditorDialog.jspf, css/itemStyleEditor.css and this script; add
- *   css/glyphicons-standalone.css when an icon set is of kind 'glyphicon', and Coloris
+ *   css/glyphicons-standalone.css when the page edits or shows icons, and Coloris
  *   (library/coloris/0.25.0/coloris.min.css and .js, before this script) when the page edits colours.
  * - Each edit trigger carries data-item-style-edit (description, colour or icon),
  *   data-item-id and data-current (the value being edited). WEB-INF/tags/itemStyleEditButton.tag
  *   renders one.
- * - Call ItemStyleEditor.init() with one entry per kind the page edits. A trigger for a
+ * - Call ItemStyleEditor.init() once, with one entry per kind the page edits. A trigger for a
  *   kind the page did not configure does nothing.
  * - A colour's swatch is an element with class item-style-swatch and data-colour (the colour);
- *   ItemStyleEditor.paintSwatches() fills every one on the page, and the colour picker offers
- *   their colours as the ones in use.
+ *   init() fills every one on the page, and the colour picker offers their colours as the ones in
+ *   use. An icon is an element with class item-style-icon and data-icon (the icon); init() draws it
+ *   and names it for screen readers.
+ * - The icons offered are the Icon Set, which the dialog's icon grid carries. A name starting
+ *   glyphicon- is a glyph, drawn with its class; any other is an image file (as IconSet.isGlyph).
  *
  * The form posts ID, dispatch (updateDescription, updateColour or updateIcon) and value.
  * Clear posts a blank value. Saving an unchanged value closes the dialog without posting.
@@ -71,70 +74,20 @@
         '#1a5fb4', '#26a269', '#e5a50a', '#c64600', '#a51d2d', '#613583', '#63452c', '#9a9996', '#000000'
     ]);
 
-    /**
-     * Every Glyphicons Halflings class in css/glyphicons-standalone.css, in stylesheet order.
-     */
-    const GLYPHICONS = Object.freeze([
-        'glyphicon-asterisk', 'glyphicon-plus', 'glyphicon-euro', 'glyphicon-minus', 'glyphicon-cloud',
-        'glyphicon-envelope', 'glyphicon-pencil', 'glyphicon-glass', 'glyphicon-music', 'glyphicon-search',
-        'glyphicon-heart', 'glyphicon-star', 'glyphicon-star-empty', 'glyphicon-user', 'glyphicon-film',
-        'glyphicon-th-large', 'glyphicon-th', 'glyphicon-th-list', 'glyphicon-ok', 'glyphicon-remove',
-        'glyphicon-zoom-in', 'glyphicon-zoom-out', 'glyphicon-off', 'glyphicon-signal', 'glyphicon-cog',
-        'glyphicon-trash', 'glyphicon-home', 'glyphicon-file', 'glyphicon-time', 'glyphicon-road',
-        'glyphicon-download-alt', 'glyphicon-download', 'glyphicon-upload', 'glyphicon-inbox',
-        'glyphicon-play-circle', 'glyphicon-repeat', 'glyphicon-refresh', 'glyphicon-list-alt',
-        'glyphicon-flag', 'glyphicon-headphones', 'glyphicon-volume-off', 'glyphicon-volume-down',
-        'glyphicon-volume-up', 'glyphicon-qrcode', 'glyphicon-barcode', 'glyphicon-tag', 'glyphicon-tags',
-        'glyphicon-book', 'glyphicon-print', 'glyphicon-font', 'glyphicon-bold', 'glyphicon-italic',
-        'glyphicon-text-height', 'glyphicon-text-width', 'glyphicon-align-left', 'glyphicon-align-center',
-        'glyphicon-align-right', 'glyphicon-align-justify', 'glyphicon-list', 'glyphicon-indent-left',
-        'glyphicon-indent-right', 'glyphicon-facetime-video', 'glyphicon-picture', 'glyphicon-map-marker',
-        'glyphicon-adjust', 'glyphicon-tint', 'glyphicon-edit', 'glyphicon-share', 'glyphicon-check',
-        'glyphicon-move', 'glyphicon-step-backward', 'glyphicon-fast-backward', 'glyphicon-backward',
-        'glyphicon-play', 'glyphicon-pause', 'glyphicon-stop', 'glyphicon-forward',
-        'glyphicon-fast-forward', 'glyphicon-step-forward', 'glyphicon-eject', 'glyphicon-chevron-left',
-        'glyphicon-chevron-right', 'glyphicon-plus-sign', 'glyphicon-minus-sign', 'glyphicon-remove-sign',
-        'glyphicon-ok-sign', 'glyphicon-question-sign', 'glyphicon-info-sign', 'glyphicon-screenshot',
-        'glyphicon-remove-circle', 'glyphicon-ok-circle', 'glyphicon-ban-circle', 'glyphicon-arrow-left',
-        'glyphicon-arrow-right', 'glyphicon-arrow-up', 'glyphicon-arrow-down', 'glyphicon-share-alt',
-        'glyphicon-resize-full', 'glyphicon-resize-small', 'glyphicon-exclamation-sign', 'glyphicon-gift',
-        'glyphicon-leaf', 'glyphicon-eye-open', 'glyphicon-eye-close', 'glyphicon-warning-sign',
-        'glyphicon-plane', 'glyphicon-random', 'glyphicon-comment', 'glyphicon-magnet',
-        'glyphicon-chevron-up', 'glyphicon-chevron-down', 'glyphicon-retweet', 'glyphicon-shopping-cart',
-        'glyphicon-folder-close', 'glyphicon-folder-open', 'glyphicon-resize-vertical',
-        'glyphicon-resize-horizontal', 'glyphicon-hdd', 'glyphicon-bullhorn', 'glyphicon-certificate',
-        'glyphicon-thumbs-up', 'glyphicon-thumbs-down', 'glyphicon-hand-right', 'glyphicon-hand-left',
-        'glyphicon-hand-up', 'glyphicon-hand-down', 'glyphicon-circle-arrow-right',
-        'glyphicon-circle-arrow-left', 'glyphicon-circle-arrow-up', 'glyphicon-circle-arrow-down',
-        'glyphicon-globe', 'glyphicon-tasks', 'glyphicon-filter', 'glyphicon-fullscreen',
-        'glyphicon-dashboard', 'glyphicon-heart-empty', 'glyphicon-link', 'glyphicon-phone',
-        'glyphicon-usd', 'glyphicon-gbp', 'glyphicon-sort', 'glyphicon-sort-by-alphabet',
-        'glyphicon-sort-by-alphabet-alt', 'glyphicon-sort-by-order', 'glyphicon-sort-by-order-alt',
-        'glyphicon-sort-by-attributes', 'glyphicon-sort-by-attributes-alt', 'glyphicon-unchecked',
-        'glyphicon-expand', 'glyphicon-collapse-down', 'glyphicon-collapse-up', 'glyphicon-log-in',
-        'glyphicon-flash', 'glyphicon-log-out', 'glyphicon-new-window', 'glyphicon-record',
-        'glyphicon-save', 'glyphicon-open', 'glyphicon-saved', 'glyphicon-import', 'glyphicon-export',
-        'glyphicon-send', 'glyphicon-floppy-disk', 'glyphicon-floppy-saved', 'glyphicon-floppy-remove',
-        'glyphicon-floppy-save', 'glyphicon-floppy-open', 'glyphicon-credit-card', 'glyphicon-transfer',
-        'glyphicon-cutlery', 'glyphicon-header', 'glyphicon-compressed', 'glyphicon-earphone',
-        'glyphicon-phone-alt', 'glyphicon-tower', 'glyphicon-stats', 'glyphicon-sd-video',
-        'glyphicon-hd-video', 'glyphicon-subtitles', 'glyphicon-sound-stereo', 'glyphicon-sound-dolby',
-        'glyphicon-sound-5-1', 'glyphicon-sound-6-1', 'glyphicon-sound-7-1', 'glyphicon-copyright-mark',
-        'glyphicon-registration-mark', 'glyphicon-cloud-download', 'glyphicon-cloud-upload',
-        'glyphicon-tree-conifer', 'glyphicon-tree-deciduous', 'glyphicon-briefcase', 'glyphicon-calendar',
-        'glyphicon-pushpin', 'glyphicon-paperclip', 'glyphicon-camera', 'glyphicon-lock', 'glyphicon-bell',
-        'glyphicon-bookmark', 'glyphicon-fire', 'glyphicon-wrench'
-    ]);
+    /** A glyph icon's names start with this; any other icon is an image file. */
+    const GLYPH_PREFIX = 'glyphicon-';
 
     let dialog;
     let form;
     let config = {};
     let editing = null;
+    /** The Icon Set, from the dialog's icon grid: {base: the images' URL prefix, names}. */
+    let iconSet;
     /** The colour kind's value to save, kept up to date from the picker's coloris:pick events. */
     let picked = '';
 
     /**
-     * Turns an icon value into words, for the choice's tooltip and for screen readers:
+     * Turns an icon value into words, for tooltips and screen readers:
      * glyphicon-map-marker becomes "Map marker", empty.gif becomes "Empty".
      *
      * @param {string} name the icon value
@@ -143,6 +96,38 @@
     function readableIconName(name) {
         const words = name.replace(/^glyphicon-/, '').replace(/\.[a-z]+$/, '').replace(/-/g, ' ').trim();
         return words.charAt(0).toUpperCase() + words.slice(1);
+    }
+
+    /**
+     * Draws one icon, without a name of its own: the element around it names it.
+     *
+     * @param {string} name the icon value
+     * @returns {HTMLElement} a glyph's span, or an image
+     */
+    function iconElement(name) {
+        if (name.startsWith(GLYPH_PREFIX)) {
+            const glyph = document.createElement('span');
+            glyph.className = 'glyphicon ' + name;
+            glyph.setAttribute('aria-hidden', 'true');
+            return glyph;
+        }
+        const img = document.createElement('img');
+        img.src = iconSet.base + name;
+        img.alt = '';
+        return img;
+    }
+
+    /**
+     * Draws each icon element on the page from its data-icon, named on hover and for screen readers.
+     */
+    function drawIcons() {
+        document.querySelectorAll('.item-style-icon').forEach(function (icon) {
+            const name = readableIconName(icon.dataset.icon);
+            icon.replaceChildren(iconElement(icon.dataset.icon));
+            icon.setAttribute('role', 'img');
+            icon.title = name;
+            icon.setAttribute('aria-label', name);
+        });
     }
 
     /**
@@ -247,12 +232,11 @@
     /**
      * Builds one icon choice button.
      *
-     * @param {Object} iconSet the icon set descriptor the choice belongs to
      * @param {string} name the icon value to save
      * @param {string} [notInSetLabel] caption marking the current icon when it is outside the set
      * @returns {HTMLButtonElement} the choice button
      */
-    function buildChoice(iconSet, name, notInSetLabel) {
+    function buildChoice(name, notInSetLabel) {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'btn btn-light item-style-editor-choice';
@@ -260,18 +244,7 @@
         button.title = readableIconName(name);
         button.setAttribute('aria-label', button.title);
         button.setAttribute('aria-pressed', 'false');
-
-        if (iconSet.kind === 'image') {
-            const img = document.createElement('img');
-            img.src = iconSet.base + name;
-            img.alt = '';
-            button.appendChild(img);
-        } else {
-            const glyph = document.createElement('span');
-            glyph.className = 'glyphicon ' + name;
-            glyph.setAttribute('aria-hidden', 'true');
-            button.appendChild(glyph);
-        }
+        button.appendChild(iconElement(name));
 
         if (notInSetLabel) {
             const caption = document.createElement('small');
@@ -326,14 +299,13 @@
         },
         icon: {
             dispatch: 'updateIcon',
-            load: function (current, kindConfig) {
+            load: function (current) {
                 const grid = form.querySelector('.item-style-editor-icons');
-                const names = kindConfig.iconSet.names;
-                const choices = names.map(function (name) {
-                    return buildChoice(kindConfig.iconSet, name);
+                const choices = iconSet.names.map(function (name) {
+                    return buildChoice(name);
                 });
-                if (current && names.indexOf(current) === -1) {
-                    choices.unshift(buildChoice(kindConfig.iconSet, current, grid.dataset.notInSetLabel));
+                if (current && iconSet.names.indexOf(current) === -1) {
+                    choices.unshift(buildChoice(current, grid.dataset.notInSetLabel));
                 }
                 grid.replaceChildren(...choices);
                 selectIcon(current);
@@ -431,18 +403,22 @@
     }
 
     /**
-     * Wires the dialog and the page's edit triggers. Call once, after the dialog markup.
+     * Fills the page's swatches, draws its icons, and wires the dialog and the page's edit triggers.
+     * Call once, after the dialog markup.
      *
      * @param {Object} options one entry per kind the page edits: description, colour, icon
      * @param {boolean} [options.<kind>.clearable] whether to offer Clear, which saves a blank value
      * @param {number} [options.description.maxLength] the description column's width
-     * @param {Object} options.icon.iconSet the icon set descriptor: {kind: 'image', base, names} or
-     *     {kind: 'glyphicon', names}
      */
     function init(options) {
         dialog = document.getElementById('itemStyleEditor');
         form = dialog.querySelector('form');
         config = options;
+        const grid = form.querySelector('.item-style-editor-icons');
+        iconSet = {base: grid.dataset.iconBase, names: grid.dataset.iconNames.split(' ')};
+
+        paintSwatches();
+        drawIcons();
 
         if (Object.hasOwn(config, 'colour')) {
             // Coloris builds its picker once the page has loaded.
@@ -484,9 +460,6 @@
     }
 
     window.ItemStyleEditor = Object.freeze({
-        init: init,
-        readableIconName: readableIconName,
-        paintSwatches: paintSwatches,
-        GLYPHICONS: GLYPHICONS
+        init: init
     });
 })(window, document);

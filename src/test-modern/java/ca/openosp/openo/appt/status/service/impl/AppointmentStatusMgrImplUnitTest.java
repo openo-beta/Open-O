@@ -1,5 +1,6 @@
 package ca.openosp.openo.appt.status.service.impl;
 
+import ca.openosp.openo.appt.IconSet;
 import ca.openosp.openo.appt.status.service.AppointmentStatusMgr;
 import ca.openosp.openo.commn.dao.AppointmentStatusDao;
 import ca.openosp.openo.commn.model.AppointmentStatus;
@@ -13,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
@@ -57,13 +57,6 @@ import static org.mockito.Mockito.when;
 public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
 
     private static final int STATUS_ID = 3;
-    private static final String ICON_SET_SOURCE =
-            "ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImplUnitTest#iconSet";
-
-    static List<String> iconSet() {
-        return AppointmentStatusMgr.ICON_SET;
-    }
-
     @Mock
     private AppointmentStatusDao appointmentStatusDao;
 
@@ -172,8 +165,8 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
     class Icon {
 
         @ParameterizedTest
-        @MethodSource(ICON_SET_SOURCE)
-        @DisplayName("should save any icon in the icon set")
+        @ValueSource(strings = {"here.gif", "16.gif", "glyphicon-home", "glyphicon-sort-by-attributes-alt"})
+        @DisplayName("should save an icon in the Icon Set, image or glyph")
         void shouldSaveIcon_whenInIconSet(String icon) {
             assertThat(manager.updateIcon(STATUS_ID, icon)).isTrue();
 
@@ -183,25 +176,14 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
 
         @ParameterizedTest
         @NullAndEmptySource
-        @ValueSource(strings = {"lts.gif", "Shere.gif", "../here.gif", " here.gif", "here.gif\" onerror=\"x"})
-        @DisplayName("should reject the icon and load nothing when it is not in the icon set")
+        @ValueSource(strings = {"lts.gif", "Shere.gif", "../here.gif", " here.gif", "here.gif\" onerror=\"x", "glyphicon-nope"})
+        @DisplayName("should reject the icon and load nothing when it is not in the Icon Set")
         void shouldRejectIcon_whenNotInIconSet(String icon) {
             assertThatThrownBy(() -> manager.updateIcon(STATUS_ID, icon))
                     .isInstanceOf(IllegalArgumentException.class);
 
             verify(appointmentStatusDao, never()).find(anyInt());
             verify(appointmentStatusDao, never()).merge(any());
-        }
-
-        @ParameterizedTest
-        @MethodSource(ICON_SET_SOURCE)
-        @DisplayName("should list only images that have signed and verified variants")
-        void shouldHaveSignedAndVerifiedVariants_whenInIconSet(String icon) {
-            Path images = Path.of("src/main/webapp/images");
-
-            assertThat(images.resolve(icon)).exists();
-            assertThat(images.resolve("S" + icon)).exists();
-            assertThat(images.resolve("V" + icon)).exists();
         }
     }
 
@@ -366,7 +348,7 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should restore only icons in the icon set and descriptions that fit the column")
+        @DisplayName("should restore only status images and descriptions that fit the column")
         void shouldRestoreValidStyles_whenEveryCodeReset() throws IOException {
             List<AppointmentStatus> table = new ArrayList<>();
             for (AppointmentStatus seeded : seedRows()) {
@@ -376,7 +358,7 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
             resetAndCaptureSaved(table);
 
             assertThat(table).allSatisfy(status -> {
-                assertThat(AppointmentStatusMgr.ICON_SET).contains(status.getIcon());
+                assertThat(IconSet.IMAGES).contains(status.getIcon());
                 assertThat(status.getDescription()).hasSizeLessThanOrEqualTo(AppointmentStatusMgr.DESCRIPTION_MAX_LENGTH);
                 assertThat(status.getColor()).matches("#[0-9a-fA-F]{6}");
             });

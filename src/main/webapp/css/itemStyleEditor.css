@@ -62,6 +62,14 @@
 }
 
 /*
+ * An image icon in a settings table, 10px tall as the schedule draws it, so the Customized images
+ * (55x24 files) don't show larger here than they ever do there.
+ */
+.item-style-icon img {
+    height: 10px;
+}
+
+/*
  * The colour picker (Coloris), inline in the dialog: the presets on top in 9 columns, then the
  * colours in use, the colour area, the hue and opacity sliders, and the value.
  */
@@ -108,7 +116,7 @@
 }
 
 /*
- * A colour's swatch, beside its hex value; ItemStyleEditor.paintSwatches() sets its colour, and the
+ * A colour's swatch, beside its hex value; js/appointment/itemStyleEditor.js sets its colour, and the
  * checks show through a see-through one.
  */
 .item-style-swatch {
