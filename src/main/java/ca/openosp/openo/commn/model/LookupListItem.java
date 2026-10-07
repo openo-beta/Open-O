@@ -102,7 +102,7 @@ public class LookupListItem extends AbstractModel<Integer> {
     /**
      * Returns the colour this item is drawn in, such as on an appointment location chip.
      *
-     * @return String a {@code #rrggbb} hex colour, or null when unset
+     * @return String a {@code #rrggbb} hex colour, {@code #rrggbbaa} when see-through, or null when unset
      */
     public String getColour() {
         return colour;
@@ -112,7 +112,7 @@ public class LookupListItem extends AbstractModel<Integer> {
      * Sets the colour this item is drawn in. Validation lives in
      * {@link ca.openosp.openo.managers.LookupListManager#updateLookupListItemColour}.
      *
-     * @param colour String a {@code #rrggbb} hex colour, or null to clear it
+     * @param colour String a {@code #rrggbb} hex colour, {@code #rrggbbaa} when see-through, or null to clear it
      */
     public void setColour(String colour) {
         this.colour = colour;

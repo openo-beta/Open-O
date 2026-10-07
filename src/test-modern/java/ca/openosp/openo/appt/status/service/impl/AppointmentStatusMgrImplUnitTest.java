@@ -145,9 +145,19 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
         }
 
         @ParameterizedTest
+        @ValueSource(strings = {"#1a2b3c80", "#1a2b3c00"})
+        @DisplayName("should save a see-through colour as it is, fully see-through included")
+        void shouldSaveColour_whenSeeThrough(String colour) {
+            assertThat(manager.updateColour(STATUS_ID, colour)).isTrue();
+
+            assertThat(status.getColor()).isEqualTo(colour);
+            verify(appointmentStatusDao).merge(status);
+        }
+
+        @ParameterizedTest
         @NullAndEmptySource
-        @ValueSource(strings = {"red", "#fff", "112233", "#12345g", "#1122334", "#112233;background:url(x)"})
-        @DisplayName("should reject the colour and load nothing when it is not #rrggbb")
+        @ValueSource(strings = {"red", "#fff", "112233", "#12345g", "#1122334", "#112233445", "#1122334g", "#112233;background:url(x)"})
+        @DisplayName("should reject the colour and load nothing when it is neither #rrggbb nor #rrggbbaa")
         void shouldRejectColour_whenNotHexColour(String colour) {
             assertThatThrownBy(() -> manager.updateColour(STATUS_ID, colour))
                     .isInstanceOf(IllegalArgumentException.class);

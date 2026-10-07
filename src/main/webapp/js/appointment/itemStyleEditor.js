@@ -32,25 +32,44 @@
  *
  * Page contract:
  * - Include itemStyleEditorDialog.jspf, css/itemStyleEditor.css and this script; add
- *   css/glyphicons-standalone.css when an icon set is of kind 'glyphicon'.
+ *   css/glyphicons-standalone.css when an icon set is of kind 'glyphicon', and Coloris
+ *   (library/coloris/0.25.0/coloris.min.css and .js, before this script) when the page edits colours.
  * - Each edit trigger carries data-item-style-edit (description, colour or icon),
  *   data-item-id and data-current (the value being edited). WEB-INF/tags/itemStyleEditButton.tag
  *   renders one.
  * - Call ItemStyleEditor.init() with one entry per kind the page edits. A trigger for a
  *   kind the page did not configure does nothing.
  * - A colour's swatch is an element with class item-style-swatch and data-colour (the colour);
- *   ItemStyleEditor.paintSwatches() fills every one on the page.
+ *   ItemStyleEditor.paintSwatches() fills every one on the page, and the colour picker offers
+ *   their colours as the ones in use.
  *
  * The form posts ID, dispatch (updateDescription, updateColour or updateIcon) and value.
  * Clear posts a blank value. Saving an unchanged value closes the dialog without posting.
+ * A colour posts as the picker reports it, #rrggbb or #rrggbbaa when see-through; a fully
+ * see-through colour keeps its hue, so raising its opacity later brings it back.
  *
  * @since 2026-09-15
  */
 (function (window, document) {
     'use strict';
 
-    /** A colour as the pages store it (#rrggbb), and the only form this script applies as CSS. */
-    const COLOUR = /^#[0-9a-fA-F]{6}$/;
+    /** A colour as the pages store it, #rrggbb or #rrggbbaa, and the only form this script applies as CSS. */
+    const COLOUR = /^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$/;
+
+    /** Where the colour picker starts for an item with no colour: fully see-through. */
+    const NO_COLOUR = '#ffffff00';
+
+    /**
+     * The colour picker's presets: the GNOME palette GTK's colour chooser offers, light to dark,
+     * listed row by row so that css/itemStyleEditor.css's 9 columns give one hue per column.
+     */
+    const PRESETS = Object.freeze([
+        '#99c1f1', '#8ff0a4', '#f9f06b', '#ffbe6f', '#f66151', '#dc8add', '#cdab8f', '#ffffff', '#77767b',
+        '#62a0ea', '#57e389', '#f8e45c', '#ffa348', '#ed333b', '#c061cb', '#b5835a', '#f6f5f4', '#5e5c64',
+        '#3584e4', '#33d17a', '#f6d32d', '#ff7800', '#e01b24', '#9141ac', '#986a44', '#deddda', '#3d3846',
+        '#1c71d8', '#2ec27e', '#f5c211', '#e66100', '#c01c28', '#813d9c', '#865e3c', '#c0bfbc', '#241f31',
+        '#1a5fb4', '#26a269', '#e5a50a', '#c64600', '#a51d2d', '#613583', '#63452c', '#9a9996', '#000000'
+    ]);
 
     /**
      * Every Glyphicons Halflings class in css/glyphicons-standalone.css, in stylesheet order.
@@ -111,6 +130,8 @@
     let form;
     let config = {};
     let editing = null;
+    /** The colour kind's value to save, kept up to date from the picker's coloris:pick events. */
+    let picked = '';
 
     /**
      * Turns an icon value into words, for the choice's tooltip and for screen readers:
@@ -125,13 +146,100 @@
     }
 
     /**
-     * Fills each colour swatch on the page with its data-colour. Only #rrggbb is applied, so a
-     * stored value cannot inject other CSS; a swatch with any other value stays empty.
+     * Fills each colour swatch on the page with its data-colour. Only #rrggbb and #rrggbbaa are
+     * applied, so a stored value cannot inject other CSS; a swatch with any other value shows only
+     * its checks.
      */
     function paintSwatches() {
         document.querySelectorAll('.item-style-swatch').forEach(function (swatch) {
             if (COLOUR.test(swatch.dataset.colour)) {
-                swatch.style.backgroundColor = swatch.dataset.colour;
+                swatch.style.setProperty('--item-style-swatch-colour', swatch.dataset.colour);
+            }
+        });
+    }
+
+    /**
+     * Lists the colours the page already uses (its swatches' data-colour), once each.
+     *
+     * @returns {string[]} the colours in use, in page order, in lower case
+     */
+    function coloursInUse() {
+        const colours = [];
+        document.querySelectorAll('.item-style-swatch').forEach(function (swatch) {
+            const colour = (swatch.dataset.colour || '').toLowerCase();
+            if (COLOUR.test(colour) && colours.indexOf(colour) === -1) {
+                colours.push(colour);
+            }
+        });
+        return colours;
+    }
+
+    /**
+     * Builds the colour picker (Coloris) into its host in the dialog: inline, so it stays inside the
+     * modal, with transparency, and the presets followed by the colours in use under their own
+     * heading. Coloris keeps one picker per page and is configured again on each open.
+     */
+    function setUpPicker() {
+        const host = form.querySelector('.item-style-editor-picker');
+        const inUse = coloursInUse();
+        Coloris({
+            parent: host,
+            inline: true,
+            alpha: true,
+            format: 'hex',
+            swatches: PRESETS.concat(inUse),
+            a11y: {
+                input: host.dataset.valueLabel,
+                hueSlider: host.dataset.hueLabel,
+                alphaSlider: host.dataset.opacityLabel,
+                instruction: host.dataset.areaLabel,
+                marker: host.dataset.markerLabel
+            }
+        });
+        const picker = host.querySelector('.clr-picker');
+        const opacity = picker.querySelector('#clr-alpha-slider');
+
+        // Its fields would otherwise post with the form; the value posts through the value field.
+        picker.querySelectorAll('[name]').forEach(function (field) {
+            field.removeAttribute('name');
+        });
+        // Coloris writes this label as HTML, so it is set here, as text.
+        picker.querySelector('#clr-swatch-label').textContent = host.dataset.swatchLabel;
+        // Its preview doubles as a close button for a pop-up picker; inline there is nothing to close.
+        const close = picker.querySelector('#clr-close');
+        close.tabIndex = -1;
+        close.setAttribute('aria-hidden', 'true');
+        // The presets fill whole rows, so the colours in use start a row of their own.
+        if (inUse.length > 0) {
+            const heading = document.createElement('p');
+            heading.className = 'item-style-editor-in-use';
+            heading.textContent = host.dataset.inUseLabel;
+            picker.querySelector('#clr-swatch-' + PRESETS.length).before(heading);
+        }
+
+        document.addEventListener('coloris:pick', function (event) {
+            // An emptied value box picks blank, which only a clearable colour may save.
+            if (event.detail.color || config.colour.clearable) {
+                picked = event.detail.color;
+            }
+        });
+
+        host.addEventListener('pointerdown', function (event) {
+            // Coloris measures the colour area only when told to, and the dialog moves and scrolls.
+            Coloris.updatePosition();
+            // Choosing a shade or hue of a fully see-through colour would show nothing, so it turns solid.
+            if (opacity.value === '0' && event.target.closest('.clr-gradient, .clr-hue')) {
+                opacity.value = '100';
+                opacity.dispatchEvent(new Event('input', {bubbles: true}));
+            }
+        }, true);
+
+        // Coloris holds Tab inside the picker, which would keep the keyboard from the dialog's
+        // buttons; Tab moves on as usual here, with Coloris's focus rings still shown.
+        host.addEventListener('keydown', function (event) {
+            if (event.key === 'Tab') {
+                event.stopPropagation();
+                picker.classList.add('clr-keyboard-nav');
             }
         });
     }
@@ -188,7 +296,8 @@
 
     /**
      * How each kind fills its control from the current value and reads the value to save back.
-     * The pressed icon choice is the icon kind's state; there is no separate field for it.
+     * The pressed icon choice is the icon kind's state, and picked the colour kind's; neither has
+     * a field of its own. An optional opened runs once the dialog shows.
      */
     const KINDS = Object.freeze({
         description: {
@@ -205,11 +314,14 @@
         colour: {
             dispatch: 'updateColour',
             load: function (current) {
-                form.querySelector('.item-style-editor-colour').value =
-                    COLOUR.test(current) ? current.toLowerCase() : '#ffffff';
+                picked = COLOUR.test(current) ? current : '';
+            },
+            // Coloris measures the picker as it is configured, so it is set once the dialog shows.
+            opened: function () {
+                Coloris({inline: true, defaultColor: picked || NO_COLOUR});
             },
             read: function () {
-                return form.querySelector('.item-style-editor-colour').value;
+                return picked;
             }
         },
         icon: {
@@ -250,6 +362,7 @@
         });
         // The visible field's label names the dialog for screen readers.
         dialog.setAttribute('aria-labelledby', 'itemStyleEditorTitle-' + kind);
+        dialog.dataset.kind = kind;
         form.querySelector('[data-action="clear"]').hidden = !config[kind].clearable;
         KINDS[kind].load(current, config[kind]);
 
@@ -259,6 +372,9 @@
             fitToVisibleArea();
             window.parent.addEventListener('scroll', fitToVisibleArea);
             window.parent.addEventListener('resize', fitToVisibleArea);
+        }
+        if (KINDS[kind].opened) {
+            KINDS[kind].opened();
         }
     }
 
@@ -327,6 +443,11 @@
         dialog = document.getElementById('itemStyleEditor');
         form = dialog.querySelector('form');
         config = options;
+
+        if (Object.hasOwn(config, 'colour')) {
+            // Coloris builds its picker once the page has loaded.
+            Coloris.ready(setUpPicker);
+        }
 
         form.addEventListener('submit', onSubmit);
         dialog.addEventListener('close', stopFitting);

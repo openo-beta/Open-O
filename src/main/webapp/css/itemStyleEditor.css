@@ -16,6 +16,11 @@
     flex-direction: column;
 }
 
+/* The colour picker is taller than the other kinds' fields. */
+.item-style-editor[data-kind="colour"] {
+    max-height: min(40rem, var(--item-style-editor-room, calc(100vh - 2rem)));
+}
+
 .item-style-editor > form {
     flex: 1 1 auto;
     min-height: 0;
@@ -56,11 +61,63 @@
     grid-column: 1 / -1;
 }
 
-/* A colour's swatch, beside its hex value; ItemStyleEditor.paintSwatches() fills it. */
+/*
+ * The colour picker (Coloris), inline in the dialog: the presets on top in 9 columns, then the
+ * colours in use, the colour area, the hue and opacity sliders, and the value.
+ */
+.item-style-editor-picker .clr-picker {
+    width: 100%;
+    box-shadow: none;
+}
+
+.item-style-editor-picker .clr-swatches {
+    order: -1;
+    width: 100%;
+    margin: 0;
+}
+
+.item-style-editor-picker .clr-swatches div {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 4px;
+    padding-bottom: 8px;
+}
+
+.item-style-editor-picker .clr-swatches button {
+    width: 100%;
+    height: 24px;
+    margin: 0;
+    border-radius: 3px;
+}
+
+/* The heading before the colours in use, a full row of the swatch grid. */
+.item-style-editor-in-use {
+    grid-column: 1 / -1;
+    margin: 4px 0 0;
+    font-size: 0.875rem;
+    color: var(--bs-secondary, #6c757d);
+}
+
+.item-style-editor-picker .clr-gradient {
+    height: 140px;
+}
+
+/* A dark ring around the marker's white border, so it shows on light colours as well as dark ones. */
+.item-style-editor-picker .clr-marker {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.55);
+}
+
+/*
+ * A colour's swatch, beside its hex value; ItemStyleEditor.paintSwatches() sets its colour, and the
+ * checks show through a see-through one.
+ */
 .item-style-swatch {
     display: inline-block;
     width: 1rem;
     height: 1rem;
     vertical-align: middle;
     border: 1px solid var(--bs-gray-500, #adb5bd);
+    background:
+        linear-gradient(var(--item-style-swatch-colour, transparent), var(--item-style-swatch-colour, transparent)),
+        repeating-conic-gradient(#ccc 0 25%, #fff 0 50%) 0 0 / 8px 8px;
 }

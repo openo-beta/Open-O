@@ -67,7 +67,9 @@
     <title><fmt:message key="admin.appt.status.mgr.title"/></title>
     <link href="${ctx}/library/bootstrap/5.0.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="${ctx}/css/glyphicons-standalone.css" rel="stylesheet">
+    <link href="${ctx}/library/coloris/0.25.0/coloris.min.css" rel="stylesheet">
     <link href="${ctx}/css/itemStyleEditor.css" rel="stylesheet">
+    <script src="${ctx}/library/coloris/0.25.0/coloris.min.js"></script>
     <script src="${ctx}/js/appointment/itemStyleEditor.js"></script>
 </head>
 <body class="p-3">

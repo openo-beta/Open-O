@@ -291,8 +291,18 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
         }
 
         @ParameterizedTest
-        @ValueSource(strings = {"red", "#fff", "112233", "#12345g", "#1122334", "#112233;background:url(x)"})
-        @DisplayName("should reject the colour and save nothing when it is not #rrggbb")
+        @ValueSource(strings = {"#1a2b3c80", "#1a2b3c00"})
+        @DisplayName("should store a see-through colour as it is, keeping its hue even when fully see-through")
+        void shouldStoreColour_whenSeeThrough(String colour) {
+            assertThat(manager.updateLookupListItemColour(loggedInInfo, ITEM_ID, colour)).isTrue();
+
+            assertThat(item.getColour()).isEqualTo(colour);
+            verify(lookupListItemDao).merge(item);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"red", "#fff", "112233", "#12345g", "#1122334", "#112233445", "#1122334g", "#112233;background:url(x)"})
+        @DisplayName("should reject the colour and save nothing when it is neither #rrggbb nor #rrggbbaa")
         void shouldRejectColour_whenNotHexColour(String colour) {
             assertThatThrownBy(() -> manager.updateLookupListItemColour(loggedInInfo, ITEM_ID, colour))
                     .isInstanceOf(IllegalArgumentException.class);
