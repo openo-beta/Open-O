@@ -537,9 +537,9 @@
                     </tr>
                     <tr id="billingONpref">
                         <td>
-                            <div>
-                                <label for="default_servicetype"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.labelDefaultBillForm"/>:</label>
-                                <select id="default_servicetype" name="default_servicetype">
+                            <div class="d-flex align-items-center gap-2">
+                                <label for="default_servicetype" class="col-form-label fw-bold"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.labelDefaultBillForm"/>:</label>
+                                <select id="default_servicetype" name="default_servicetype" class="form-select w-auto">
                                     <option value="no">-- no --</option>
                                     <%
                                         if (providerPreference != null) {
