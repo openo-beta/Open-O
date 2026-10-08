@@ -62,6 +62,7 @@ public class AppointmentStatus2Action extends AppointmentSettingsAction {
      * @return String {@code success} to render the list, or {@code saved} to redirect back to it
      * @throws SecurityException if the user lacks the privilege, or a change was not posted
      */
+    @Override
     public String execute() {
         // The admin menu links here with no dispatch, and a switch on null throws.
         String dispatch = Objects.toString(request.getParameter("dispatch"), "view");
