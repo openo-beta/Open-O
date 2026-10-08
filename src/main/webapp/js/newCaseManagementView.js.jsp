@@ -1735,8 +1735,8 @@ function updateCPPNote() {
     }
 
     function toggleCollapseViewForAll() {
-        // collapse buttons of the note bar, and the arrow images of email notes
-        jQuery('[name="collapseViewTrigger"], [title="Minimize Display"]').each(function () {
+        // collapse buttons of the note bar
+        jQuery('[name="collapseViewTrigger"]').each(function () {
             $(this).click();
         });
     }
@@ -1781,26 +1781,19 @@ function updateCPPNote() {
             }
         );
 
-        var imgTag1 = "<img title='Minimize Display' id='quitImg" + nId + "' onclick='minNonEditableNoteView(" + nId + ")' style='float:right; margin-right:5px; margin-top: 2px;' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
-        const imgTag2 = "<img title='Minimize Display' id='quitImg" + nId + "' alt='Minimize Display' onclick='minNonEditableNoteView(" + nId + ")' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
-
         document.getElementById(img)?.remove();
 
-    const isEmailNote = document.getElementById("emailNote" + nId) !== null;
-
         $(txt).style.height = 'auto';
-        const observationDivId = "#observation" + nId;
+        // the collapse button goes in the note bar: it replaces the expand button, or is added for
+        // notes rendered without one (CPP, eForm and encounter form notes expanded by a click on the text)
+        const collapseControl = noteControl("quitImg" + nId, "collapse", collapseNoteTitle, "minNonEditableNoteView(" + nId + ")", "collapseViewTrigger");
         const control = document.getElementById("quitImg" + nId);
-    if (control != null && control.classList.contains("note-control")) {
-            // the expand button in the note bar becomes the collapse button
-            control.outerHTML = noteControl("quitImg" + nId, "collapse", collapseNoteTitle, "minNonEditableNoteView(" + nId + ")", "collapseViewTrigger");
-        } else if (jQuery(observationDivId).length > 0 && !isEmailNote) {
-            jQuery(observationDivId).append(imgTag2);
-            jQuery(observationDivId).css('font-size', '10px');
+        const barControls = $(txt).down('.note-controls');
+        if (control != null && control.classList.contains("note-control")) {
+            control.outerHTML = collapseControl;
         } else {
-            // in the bar when the note has one (email notes)
-            const barControls = $(txt).down('.note-controls');
-            new Insertion.Top(barControls != null ? barControls : txt, imgTag1);
+            document.getElementById("quitImg" + nId)?.remove();
+            new Insertion.Top(barControls != null ? barControls : txt, collapseControl);
         }
         Element.stopObserving(noteTxtId, 'click', fullView);
     }
@@ -1816,24 +1809,19 @@ function updateCPPNote() {
             $("full" + id).value = "false";
         }
 
-    const isEmailNote = document.getElementById("emailNote" + id) !== null;
-    const observationDivId = "#observation" + id;
+    // the collapse button in the note bar becomes the expand button; a click on the text expands too
+    const expandControl = noteControl(quitImgId, "expand", expandNoteTitle, "fullView(event)", "fullViewTrigger");
     const control = document.getElementById(quitImgId);
     if (control != null && control.classList.contains("note-control")) {
-        // the collapse button in the note bar becomes the expand button
-        control.outerHTML = noteControl(quitImgId, "expand", expandNoteTitle, "fullView(event)", "fullViewTrigger");
-        Element.observe(noteTxtId, 'click', fullView);
-        return;
-    }
-        document.getElementById(quitImgId)?.remove();
-    if (isEmailNote) {
-        const maxDisplayImg = "<img title='Maximize Display' id='fullImg" + id + "' alt='Maximize Display' onclick='fullView(event)' style='float: right;' src='" + ctx + "/oscarEncounter/graphics/triangle_down.gif' />";
-        // in the bar when the note has one
-        const emailControls = $("n" + id).down('.note-controls');
-        new Insertion.Top(emailControls != null ? emailControls : "n" + id, maxDisplayImg);
+        control.outerHTML = expandControl;
     } else {
-        Element.observe(noteTxtId, 'click', fullView);
+        control?.remove();
+        const barControls = $(noteId).down('.note-controls');
+        if (barControls != null) {
+            new Insertion.Top(barControls, expandControl);
+        }
     }
+    Element.observe(noteTxtId, 'click', fullView);
 }
 
     function resetEdit(e) {
@@ -2053,7 +2041,13 @@ function updateCPPNote() {
         caseNote = "caseNote_note" + nId;
 
         var input = "<textarea tabindex='7' cols='84' rows='10' wrap='hard' class='txtArea boxsizingBorder edit-textarea' style='line-height:1.1em;' name='caseNote_note' id='" + caseNote + "'>" + payload + "<\/textarea>";
-        new Insertion.Top(txt, input);
+        // the textarea goes right under the note bar, as in the server-rendered edit view
+        var editPanel = $(txt).down('.note-control-panel');
+        if (editPanel != null) {
+            new Insertion.After(editPanel, input);
+        } else {
+            new Insertion.Top(txt, input);
+        }
         var strNid = "" + nId;
         if (strNid.substr(0, 1) != "0") {
             setNoteControls(txt, [printNoteControl(nId)]);

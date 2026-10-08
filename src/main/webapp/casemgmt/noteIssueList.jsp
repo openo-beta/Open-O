@@ -89,10 +89,12 @@
             <span id="obs${caseManagementEntryForm.caseNote.id}">
                 <fmt:formatDate value="${caseManagementEntryForm.caseNote.observation_date}" pattern="dd-MMM-yyyy H:mm"/>
             </span>&nbsp;
+            <c:if test="${not empty caseManagementEntryForm.caseNote.id}">
             <label for="caseNoteRevision${caseManagementEntryForm.caseNote.id}"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteRev.title"/></label>
             <a href="#" id="caseNoteRevision${caseManagementEntryForm.caseNote.id}" onclick="return showHistory('${caseManagementEntryForm.caseNote.id}', event);">
                 ${caseManagementEntryForm.caseNote.revision}
             </a>
+            </c:if>
         </c:when>
         <c:otherwise>
             <label for="observationDate"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterDate.title"/>:&nbsp;
@@ -100,10 +102,13 @@
             <input type="text" id="observationDate" name="observation_date" ondblclick="this.value='';"
                    style="width: 140px;" readonly
                    value="<fmt:formatDate value="${caseManagementEntryForm.caseNote.observation_date}" pattern="dd-MMM-yyyy H:mm"/>">
+            <%-- a new note has no id and no history yet --%>
+            <c:if test="${not empty caseManagementEntryForm.caseNote.id}">
             <label><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteRev.title"/></label>
             <a href="javascript:void(0)" onclick="return showHistory('${caseManagementEntryForm.caseNote.id}', event);">
                 ${caseManagementEntryForm.caseNote.revision}
             </a>
+            </c:if>
         </c:otherwise>
     </c:choose>
 </div>

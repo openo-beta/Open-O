@@ -453,7 +453,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                 if (note.getRemoteFacilityId() != null) // if it's a remote note, say where if came from on the top of the note
                 {
             %>
-            <div class="note-control">
+            <div class="note-label">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteFrom.label"/>&nbsp;<%=Encode.forHtml(String.valueOf(note.getLocation()))%>
                 ,<%=Encode.forHtml(String.valueOf(note.getProviderName()))%>
             </div>
@@ -463,7 +463,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                 if (note.isGroupNote()) // if it's a remote note, say where if came from on the top of the note
                 {
             %>
-            <div class="note-control">
+            <div class="note-label">
                 Group Note - Editable note in this <a href="javascript:void(0)"
                                                       onClick="popupPage(700,1000,'Master1','<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(note.getLocation()))%>&displaymode=edit&dboperation=search_detail');return false;">client</a>
             </div>
@@ -633,15 +633,18 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
             <%
             } else if (note.isEmailNote()) {
                 String url = "viewEmailByLogId(1100,1000,'" + request.getContextPath() + "/admin/ManageEmails.do?method=resendEmail&logId=" + Encode.forUriComponent(String.valueOf(dispDocNo)) + "');" + "return false;";
+							// email notes get their collapse/expand button here, in the bar like the other notes
 							if (fulltxt) {
 								%>
-									<img title='Minimize Display' id='quitImg<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>' style='float: right;' alt='Minimize Display' onclick='minNonEditableNoteView(<%=Encode.forJavaScript(String.valueOf(globalNoteId))%>)' src='<%=Encode.forHtmlAttribute(String.valueOf(ctx))%>/oscarEncounter/graphics/triangle_up.gif'>
+            <div class="note-control" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.MinDisplay.title"/>" id='quitImg<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>'
+                 name="collapseViewTrigger" onclick="minNonEditableNoteView(<%=Encode.forJavaScript(String.valueOf(globalNoteId))%>)"><%=ICON_COLLAPSE%></div>
 								<%
 							} else {
                                 // STRUTS2 TODO - below image MaxDisplay.title might need further setup to be available to the fmt bundle below
                                 // moved over from commit by Italiya 2025-02-10 as part of merging changes during STRUTS2 migration
                                %>
-                                    <img title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.MaxDisplay.title"/>" id='fullImg<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>' alt="Maximize Display" onclick="fullView(event)" style='float: right;' src='<%=Encode.forHtmlAttribute(String.valueOf(ctx))%>/oscarEncounter/graphics/triangle_down.gif' />
+            <div class="note-control" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.MaxDisplay.title"/>" id='quitImg<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>'
+                 name="fullViewTrigger" onclick="fullView(event)"><%=ICON_EXPAND%></div>
                                <%
                             }
                             %>
@@ -964,18 +967,11 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
         }
         %>
         if ('<%=Encode.forJavaScript(String.valueOf(singleLineFormat))%>' == 'true') {
-            var staleIds = new Array();
-
-            // expand buttons of shortened notes in the note bar
+            // expand buttons of shortened notes in the note bar (one click each: the button becomes the
+            // collapse button once clicked, so a second click would collapse the note again)
             jQuery("div.note-control[name='fullViewTrigger']").each(function () {
-                var iid = jQuery(this).attr('id');
                 jQuery(this).trigger('click');
-                staleIds.push(iid);
             });
-
-            for (var i = 0; i < staleIds.length; i++) {
-                jQuery("#" + staleIds[i]).trigger('click');
-            }
         }
 
     });
