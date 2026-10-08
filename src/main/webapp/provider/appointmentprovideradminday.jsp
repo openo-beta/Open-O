@@ -62,6 +62,7 @@
 <%@ taglib uri="/WEB-INF/special_tag.tld" prefix="special" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
 <!-- Struts for i18n -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -2203,9 +2204,12 @@
                                                             <c:out value="${fn:substring(eform.eFormName, 0, truncateLimit)}"/>
                                                             </a>
                                                         </c:forEach>
+                                                        <%-- the two tokens a quick link may carry (see the preference page) --%>
+                                                        <c:set var="contextPathToken" value="${'${'}contextPath}"/>
+                                                        <c:set var="demographicIdToken" value="${'${'}demographicId}"/>
                                                         <c:forEach items="${quickLinksList}" var="quickLink">
-                                                            |<a href="javascript:void(0)" onClick='popupPage2("<c:out
-                                                                value="${quickLink.url}"/>")' title='<c:out
+                                                            <c:set var="quickLinkUrl" value="${fn:replace(fn:replace(quickLink.url, contextPathToken, pageContext.servletContext.contextPath), demographicIdToken, appointment.demographicNo)}"/>
+                                                            |<a href="javascript:void(0)" onClick='popupPage2("${e:forJavaScript(quickLinkUrl)}")' title='<c:out
                                                                 value="${quickLink.name}"/>'>
                                                             <c:out value="${fn:substring(quickLink.name, 0, truncateLimit)}"/>
                                                             </a>

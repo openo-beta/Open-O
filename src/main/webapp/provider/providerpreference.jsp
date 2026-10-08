@@ -395,34 +395,39 @@
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.quickLinksToDisplayOnAppointmentScreen"/>
                 </td>
                 <td class="preferenceValue">
+                    <%-- the links already added: name, url, Remove; the name column lines up with the Name / Url labels below --%>
                     <div style="max-height:10em;overflow-y:auto;">
+                        <table class="table mb-0">
                         <%
                             Collection<ProviderPreference.QuickLink> quickLinks = ProviderPreferencesUIBean.getQuickLinks(providerNo);
                             for (ProviderPreference.QuickLink quickLink : quickLinks) {
                         %>
-                        <div>
-                            <input type="button" class="btn btn-light border" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="REMOVE"/>"
-                                   onclick="document.location='providerPreferenceQuickLinksAction.jsp?action=remove&name='+escape('<%=Encode.forJavaScript(quickLink.getName())%>')"/>
-                            <%=Encode.forHtml(quickLink.getName())%>
-                            : <%=Encode.forHtml(quickLink.getUrl())%>
-                        </div>
+                        <tr>
+                            <td style="border:none;text-align:right;width:8em;white-space:nowrap"><strong><%=Encode.forHtml(quickLink.getName())%></strong></td>
+                            <td style="border:none;word-break:break-all"><%=Encode.forHtml(quickLink.getUrl())%></td>
+                            <td style="border:none;text-align:right;white-space:nowrap">
+                                <input type="button" class="btn btn-light border btn-sm" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="REMOVE"/>"
+                                       onclick="quickLinkAction({action: 'remove', name: '<%=Encode.forJavaScript(quickLink.getName())%>'})"/>
+                            </td>
+                        </tr>
                         <%
                             }
                         %>
+                        </table>
                     </div>
                     <table class="table">
                         <tr>
-                            <td style="border:none;text-align:right">
+                            <td style="border:none;text-align:right;width:8em">
                                 <label for="quickLinkName"><fmt:setBundle basename="oscarResources"/><fmt:message key="NAME"/></label></td>
                             <td style="border:none"><input type="text" class="form-control" id="quickLinkName" name="quickLinkName"/></td>
                         </tr>
                         <tr>
-                            <td style="border:none;text-align:right">
+                            <td style="border:none;text-align:right;width:8em">
                                 <label for="quickLinkUrl"><fmt:setBundle basename="oscarResources"/><fmt:message key="URL"/></label></td>
                             <td style="border:none">
                                 <input type="text" class="form-control" id="quickLinkUrl" name="quickLinkUrl"/>
-                                <div>(expanded tokens in the url are ${contextPath}
-                                    and ${demographicId})
+                                <div>(expanded tokens in the url are \${contextPath}
+                                    and \${demographicId})
                                 </div>
                             </td>
                         </tr>
@@ -430,10 +435,15 @@
                             <td style="border:none"></td>
                             <td style="border:none">
                                 <script type="text/javascript">
+                                    // POST, so the CSRF token goes with it; the page reloads to show the new list
+                                    function quickLinkAction(params) {
+                                        $.post('providerPreferenceQuickLinksAction.jsp', params)
+                                            .done(function () { location.reload(); })
+                                            .fail(function () { alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerupdatepreference.msgUpdateFailure"/>'); });
+                                    }
+
                                     function addQuickLink() {
-                                        name = escape(document.UPDATEPRE.quickLinkName.value);
-                                        url = escape(document.UPDATEPRE.quickLinkUrl.value);
-                                        document.location = "providerPreferenceQuickLinksAction.jsp?action=add&name=" + name + "&url=" + url;
+                                        quickLinkAction({action: 'add', name: document.UPDATEPRE.quickLinkName.value, url: document.UPDATEPRE.quickLinkUrl.value});
                                     }
                                 </script>
                                 <input type="button" class="btn btn-light border" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ADD"/>" onclick="addQuickLink()"/>
