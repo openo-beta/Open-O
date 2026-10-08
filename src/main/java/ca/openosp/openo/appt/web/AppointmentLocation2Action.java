@@ -56,6 +56,7 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
      * @return String {@code success} to render the list, or {@code saved} to redirect back to it
      * @throws SecurityException if the user lacks the privilege, or a change was not posted
      */
+    @Override
     public String execute() {
         String dispatch = Objects.toString(request.getParameter("dispatch"), "view");
         return switch (dispatch) {
