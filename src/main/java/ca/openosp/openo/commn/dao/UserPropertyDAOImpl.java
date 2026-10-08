@@ -100,6 +100,7 @@ public class UserPropertyDAOImpl extends AbstractDaoImpl<UserProperty> implement
      * @param property UserPropertyKey the setting to read
      * @return UserProperty the stored row, or null when the provider has not set it
      */
+    @Override
     public UserProperty getProp(String prov, UserPropertyKey property) {
         return getProp(prov, property.getName());
     }
