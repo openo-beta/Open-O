@@ -528,7 +528,7 @@
         <% if ("ocean".equals(props.get("cme_js"))) {
             int randomNo = new Random().nextInt();%>
         <script id="mainScript"
-                src="${ pageContext.request.contextPath }/js/custom/ocean/conreq.js?no-cache=<%=Encode.forJavaScript(String.valueOf(randomNo))%>&autoRefresh=true"
+                src="${ pageContext.request.contextPath }/js/custom/ocean/conreq.js?no-cache=<%=Encode.forHtmlAttribute(String.valueOf(randomNo))%>&autoRefresh=true"
                 ocean-host="<%=Encode.forHtmlAttribute(props.getProperty("ocean_host"))%>"></script>
         <% } %>
         <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/css/healthCareTeam.css"/>
