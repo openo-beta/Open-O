@@ -503,7 +503,7 @@
 
             <tr>
                 <td><a href=#
-                                      onClick="popupPage(230,600,'providerDefaultDxCode.jsp?provider_no=<%=Encode.forUriComponent(request.getParameter("provider_no"))%>');return false;">Edit
+                                      onClick="popupPage(230,600,'providerDefaultDxCode.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(providerNo))%>');return false;">Edit
                     Default Billing Diagnostic Code</a>
                 </td>
             </tr>
@@ -766,21 +766,21 @@
         </tr>
         </security:oscarSec>
         </oscar:oscarPropertiesCheck>
-        <oscar:oscarPropertiesCheck property="billregion" value="ON" defaultVal="BC">
         <tr>
             <td><a href=#
                                   onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewDashboardPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewDashboardPrefs"/></a></td>
         </tr>
+        <%-- the prevention preferences are the Ontario DHIR warnings --%>
+        <oscar:oscarPropertiesCheck property="billregion" value="ON">
         <tr>
             <td><a href=#
                                   onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewPreventionPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewPreventionPrefs"/></a></td>
         </tr>
-
+        </oscar:oscarPropertiesCheck>
         <tr>
             <td><a href=#
                                   onClick="popupPage(700,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewLabMacroPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewLabMacroPrefs"/></a></td>
         </tr>
-        </oscar:oscarPropertiesCheck>
         <tr>
             <td><a href=#
                                   onClick="popupPage(280,730,'<%=request.getContextPath()%>/setTicklerPreferences.do?method=viewTicklerTaskAssignee');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewTicklerPreferences"/></a></td>
