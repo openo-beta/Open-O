@@ -24,7 +24,6 @@
 
 --%>
 <%
-    String deepcolor = "#CCCCFF", weakcolor = "#EEEEFF";
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
     String providerNo = loggedInInfo.getLoggedInProviderNo();
 
@@ -40,8 +39,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.OscarProperties" %>
-<%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
-<%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 
 <%@page import="ca.openosp.openo.commn.model.ProviderPreference" %>
@@ -51,28 +48,41 @@
 <%@page import="ca.openosp.openo.commn.model.EForm" %>
 <%@page import="ca.openosp.openo.commn.model.EncounterForm" %>
 <%@page import="ca.openosp.openo.commn.dao.CtlBillingServiceDao" %>
-<%@page import="ca.openosp.openo.commn.model.CtlBillingService" %>
-<%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@page import="java.util.List" %>
-<%@page import="java.util.ArrayList" %>
-<%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
-<%@page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.managers.UserPropertyManager" %>
+<%@ page import="ca.openosp.openo.commn.model.enumerator.UserPropertyKey" %>
 
 <%!
     CtlBillingServiceDao ctlBillingServiceDao = SpringUtils.getBean(CtlBillingServiceDao.class);
-    UserPropertyDAO propertyDao = SpringUtils.getBean(UserPropertyDAO.class);
+    UserPropertyManager userPropertyManager = SpringUtils.getBean(UserPropertyManager.class);
+%>
+<%
+    /*
+     * Settings come from two tables:
+     *  - property (UserProperty), read here as a map for the EL below
+     *  - ProviderPreference
+     */
+    pageContext.setAttribute("userProperty", userPropertyManager.getAllUserProperties(loggedInInfo));
 %>
 
 <html>
 
     <head>
         <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/library/bootstrap/5.0.2/css/bootstrap.min.css"/>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.title"/></title>
         <script src="<%=request.getContextPath()%>/csrfguard" type="text/javascript"></script>
-        <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/library/bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
         <script language="JavaScript">
+
+            $(document).ready(function () {
+                $('#rxInteractionWarningLevel').change(function () {
+                    $.post('<c:out value="${ctx}"/>/provider/rxInteractionWarningLevel.do', {method: "update", value: this.value});
+                });
+            });
 
             function setfocus() {
                 this.focus();
@@ -175,34 +185,50 @@
             }
 
             function showHideBillPref() {
-                $("billingONpref").toggle();
+                $("#billingONpref").toggle();
             }
 
             function showHideERxPref() {
                 //$("eRxPref").toggle();
             }
         </script>
-        <style type="text/css">
-            .preferenceTable td {
-                border: solid white 2px;
+        <style>
+            :root *:not(h2) {
+                font-family: Arial, "Helvetica Neue", Helvetica, sans-serif !important;
+                font-size: 12px;
+                overscroll-behavior: none;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            :root a {
+                color: blue;
+                text-decoration: none;
             }
 
             .preferenceLabel {
                 text-align: right;
                 width: 25%;
-                padding-right: 8px;
-                font-size: 13px;
                 font-weight: bold;
                 vertical-align: top;
             }
 
             .preferenceUnits {
-                font-size: 9px;
                 font-weight: normal;
             }
 
-            .preferenceValue {
-                font-size: 12px;
+            .preferenceTable label {
+                font-weight: bold;
+            }
+
+            /* centre the label against a single-line input or a lone checkbox, also when the label wraps */
+            .preferenceTable tr:has(> td > .form-control, > td > .form-select, > td > .input-group, > td > input[type=checkbox]:only-child) > td {
+                vertical-align: middle;
+            }
+
+            /* quick link labels: push down by the input's padding and border to line up with the text in the input */
+            .preferenceTable table td:has(> label) {
+                padding-top: calc(.5rem + .375rem + 1px);
             }
 
             table.eRxTableCenter {
@@ -234,22 +260,22 @@
         // String defaultBillingLocation = providerPreference.getDefaultBillingLocation()!=null?providerPreference.getDefaultBillingLocation():"no";
     %>
 
-    <body bgproperties="fixed" onLoad="setfocus();showHideBillPref();showHideERxPref();" topmargin="0" leftmargin="0"
-          rightmargin="0" style="font-family:sans-serif">
+    <body onLoad="setfocus();showHideBillPref();showHideERxPref();">
+    <div class="container-md">
     <FORM NAME="UPDATEPRE" METHOD="post" ACTION="providerupdatepreference.jsp" onSubmit="return(checkTypeInAll())">
 
-        <div style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>;text-align:center;font-weight:bold">
+        <h2 style="margin:auto 15px;">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.description"/>
-        </div>
+        </h2>
 
-        <table class="preferenceTable" style="width:100%;border-collapse:collapse;background-color:<%=Encode.forHtmlAttribute(String.valueOf(weakcolor))%>;">
+        <table class="table table-striped preferenceTable">
             <tr>
                 <td class="preferenceLabel">
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.preference.formStartHour"/>
                     <span class="preferenceUnits">(0-23)</span>
                 </td>
                 <td class="preferenceValue">
-                    <INPUT TYPE="TEXT" NAME="start_hour" VALUE='<%=Encode.forHtmlAttribute(String.valueOf(startHour))%>' size="2" maxlength="2">
+                    <INPUT class="form-control" TYPE="TEXT" NAME="start_hour" VALUE='<%=Encode.forHtmlAttribute(String.valueOf(startHour))%>' size="2" maxlength="2">
                 </td>
             </tr>
             <tr>
@@ -258,7 +284,7 @@
                     <span class="preferenceUnits">(0-23)</span>
                 </td>
                 <td class="preferenceValue">
-                    <INPUT TYPE="TEXT" NAME="end_hour" VALUE='<%=Encode.forHtmlAttribute(String.valueOf(endHour))%>' size="2" maxlength="2">
+                    <INPUT class="form-control" TYPE="TEXT" NAME="end_hour" VALUE='<%=Encode.forHtmlAttribute(String.valueOf(endHour))%>' size="2" maxlength="2">
                 </td>
             </tr>
             <tr>
@@ -267,7 +293,7 @@
                     <span class="preferenceUnits"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.preference.min"/></span>
                 </td>
                 <td class="preferenceValue">
-                    <INPUT TYPE="TEXT" NAME="every_min" VALUE='<%=Encode.forHtmlAttribute(String.valueOf(everyMin))%>' size="2" maxlength="2">
+                    <INPUT class="form-control" TYPE="TEXT" NAME="every_min" VALUE='<%=Encode.forHtmlAttribute(String.valueOf(everyMin))%>' size="2" maxlength="2">
                 </td>
             </tr>
             <tr>
@@ -275,9 +301,11 @@
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.preference.formGroupNo"/>
                 </td>
                 <td class="preferenceValue">
-                    <INPUT TYPE="TEXT" NAME="mygroup_no" VALUE='<%=Encode.forHtmlAttribute(String.valueOf(myGroupNo))%>' size="12" maxlength="10">
-                    <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.viewedit"/>"
-                           onClick="popupPage(360,680,'providerdisplaymygroup.jsp' );return false;"/>
+                    <div class="input-group">
+                        <INPUT class="form-control" TYPE="TEXT" NAME="mygroup_no" VALUE='<%=Encode.forHtmlAttribute(String.valueOf(myGroupNo))%>' size="12" maxlength="10">
+                        <input type="button" class="btn btn-light border" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.viewedit"/>"
+                               onClick="popupPage(360,680,'providerdisplaymygroup.jsp' );return false;"/>
+                    </div>
                 </td>
             </tr>
             <!-- ticklerPlus removed -->
@@ -285,13 +313,13 @@
             <!-- QR Code on prescriptions setting -->
             <tr>
                 <td class="preferenceLabel">
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.qrCodeOnPrescriptions"/>
+                    <label for="prescriptionQrCodes"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.qrCodeOnPrescriptions"/></label>
                 </td>
                 <td class="preferenceValue">
                     <%
                         boolean checked = PrescriptionQrCodeUIBean.isPrescriptionQrCodeEnabledForProvider(providerNo);
                     %>
-                    <input type="checkbox" name="prescriptionQrCodes" <%=checked ? "checked=\"checked\"" : ""%> />
+                    <input type="checkbox" id="prescriptionQrCodes" name="prescriptionQrCodes" <%=checked ? "checked=\"checked\"" : ""%> />
                 </td>
             </tr>
 
@@ -301,7 +329,7 @@
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.appointmentScreenLinkNameDisplayLength"/>
                 </td>
                 <td class="preferenceValue">
-                    <input type="text" name="appointmentScreenFormsNameDisplayLength"
+                    <input type="text" class="form-control" name="appointmentScreenFormsNameDisplayLength"
                            value='<%=Encode.forHtmlAttribute(String.valueOf(providerPreference.getAppointmentScreenLinkNameDisplayLength()))%>' size="2">
                 </td>
             </tr>
@@ -310,17 +338,21 @@
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.formsToDisplayOnAppointmentScreen"/>
                 </td>
                 <td class="preferenceValue">
-                    <div style="height:10em;border:solid grey 1px;overflow:auto;white-space:nowrap;width:45em">
+                    <div style="height:10em;overflow-y:auto;">
                         <%
                             List<EncounterForm> encounterForms = ProviderPreferencesUIBean.getAllEncounterForms();
                             Collection<String> checkedEncounterFormNames = ProviderPreferencesUIBean.getCheckedEncounterFormNames(providerNo);
+                            int formIndex = 0;
                             for (EncounterForm encounterForm : encounterForms) {
                                 String nameEscaped = Encode.forHtml(encounterForm.getFormName());
                                 String checkedString = (checkedEncounterFormNames.contains(encounterForm.getFormName()) ? "checked=\"checked\"" : "");
+                                formIndex++;
                         %>
-                        <input type="checkbox" name="encounterFormName"
-                               value="<%=nameEscaped%>" <%=checkedString%> /> <%=nameEscaped%>
-                        <br/>
+                        <div>
+                            <input type="checkbox" id="encounterFormName<%=formIndex%>" name="encounterFormName"
+                                   value="<%=nameEscaped%>" <%=checkedString%> />
+                            <label for="encounterFormName<%=formIndex%>"><%=nameEscaped%></label>
+                        </div>
                         <%
                             }
                         %>
@@ -332,7 +364,7 @@
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.eFormsToDisplayOnAppointmentScreen"/>
                 </td>
                 <td class="preferenceValue">
-                    <div style="height:10em;border:solid grey 1px;overflow:auto;white-space:nowrap;width:45em">
+                    <div style="height:10em;overflow-y:auto;">
                         <%
                             List<EForm> eforms = ProviderPreferencesUIBean.getAllEForms();
                             Collection<ProviderPreference.EformLink> checkedEFormIds = ProviderPreferencesUIBean.getCheckedEFormIds(providerNo);
@@ -347,9 +379,11 @@
                                 }
 
                         %>
-                        <input type="checkbox" name="eformId"
-                               value="<%=Encode.forHtmlAttribute(String.valueOf(eform.getId()))%>" <%=checkedString%> /> <%=Encode.forHtml(eform.getFormName())%>
-                        <br/>
+                        <div>
+                            <input type="checkbox" id="eformId<%=Encode.forHtmlAttribute(String.valueOf(eform.getId()))%>" name="eformId"
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(eform.getId()))%>" <%=checkedString%> />
+                            <label for="eformId<%=Encode.forHtmlAttribute(String.valueOf(eform.getId()))%>"><%=Encode.forHtml(eform.getFormName())%></label>
+                        </div>
                         <%
                             }
                         %>
@@ -361,31 +395,39 @@
                     <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.quickLinksToDisplayOnAppointmentScreen"/>
                 </td>
                 <td class="preferenceValue">
-                    <div style="height:10em;border:solid grey 1px;overflow:auto;white-space:nowrap;width:45em">
+                    <%-- the links already added: name, url, Remove; the name column lines up with the Name / Url labels below --%>
+                    <div style="max-height:10em;overflow-y:auto;">
+                        <table class="table mb-0">
                         <%
                             Collection<ProviderPreference.QuickLink> quickLinks = ProviderPreferencesUIBean.getQuickLinks(providerNo);
                             for (ProviderPreference.QuickLink quickLink : quickLinks) {
                         %>
-                        <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="REMOVE"/>"
-                               onclick="document.location='providerPreferenceQuickLinksAction.jsp?action=remove&name='+escape('<%=Encode.forJavaScript(quickLink.getName())%>')"/>
-                        <%=Encode.forHtml(quickLink.getName())%>
-                        : <%=Encode.forHtml(quickLink.getUrl())%>
-                        <br/>
+                        <tr>
+                            <td style="border:none;text-align:right;width:8em;white-space:nowrap"><strong><%=Encode.forHtml(quickLink.getName())%></strong></td>
+                            <td style="border:none;word-break:break-all"><%=Encode.forHtml(quickLink.getUrl())%></td>
+                            <td style="border:none;text-align:right;white-space:nowrap">
+                                <input type="button" class="btn btn-light border btn-sm" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="REMOVE"/>"
+                                       onclick="quickLinkAction({action: 'remove', name: '<%=Encode.forJavaScript(quickLink.getName())%>'})"/>
+                            </td>
+                        </tr>
                         <%
                             }
                         %>
+                        </table>
                     </div>
-                    <table style="border:none;border-collapse:collapse">
+                    <table class="table">
                         <tr>
-                            <td style="border:none;text-align:right"><fmt:setBundle basename="oscarResources"/><fmt:message key="NAME"/></td>
-                            <td style="border:none"><input type="text" name="quickLinkName"/></td>
+                            <td style="border:none;text-align:right;width:8em">
+                                <label for="quickLinkName"><fmt:setBundle basename="oscarResources"/><fmt:message key="NAME"/></label></td>
+                            <td style="border:none"><input type="text" class="form-control" id="quickLinkName" name="quickLinkName"/></td>
                         </tr>
                         <tr>
-                            <td style="border:none;text-align:right;vertical-align:top"><fmt:setBundle basename="oscarResources"/><fmt:message key="URL"/></td>
+                            <td style="border:none;text-align:right;width:8em">
+                                <label for="quickLinkUrl"><fmt:setBundle basename="oscarResources"/><fmt:message key="URL"/></label></td>
                             <td style="border:none">
-                                <input type="text" name="quickLinkUrl"/>
-                                <div style="font-size:9px">(expanded tokens in the url are ${contextPath}
-                                    and ${demographicId})
+                                <input type="text" class="form-control" id="quickLinkUrl" name="quickLinkUrl"/>
+                                <div>(expanded tokens in the url are \${contextPath}
+                                    and \${demographicId})
                                 </div>
                             </td>
                         </tr>
@@ -393,13 +435,18 @@
                             <td style="border:none"></td>
                             <td style="border:none">
                                 <script type="text/javascript">
+                                    // POST, so the CSRF token goes with it; the page reloads to show the new list
+                                    function quickLinkAction(params) {
+                                        $.post('providerPreferenceQuickLinksAction.jsp', params)
+                                            .done(function () { location.reload(); })
+                                            .fail(function () { alert('<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerupdatepreference.msgUpdateFailure"/>'); });
+                                    }
+
                                     function addQuickLink() {
-                                        name = escape(document.UPDATEPRE.quickLinkName.value);
-                                        url = escape(document.UPDATEPRE.quickLinkUrl.value);
-                                        document.location = "providerPreferenceQuickLinksAction.jsp?action=add&name=" + name + "&url=" + url;
+                                        quickLinkAction({action: 'add', name: document.UPDATEPRE.quickLinkName.value, url: document.UPDATEPRE.quickLinkUrl.value});
                                     }
                                 </script>
-                                <input type="button" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ADD"/>" onclick="addQuickLink()"/>
+                                <input type="button" class="btn btn-light border" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ADD"/>" onclick="addQuickLink()"/>
                             </td>
                         </tr>
                     </table>
@@ -407,145 +454,78 @@
             </tr>
             <tr>
                 <td class="preferenceLabel">
-                    Show Weekends in Week View:
+                    <label for="schedule.week_view_weekends">Show Weekends in Week View</label>
                 </td>
                 <td class="preferenceValue">
-                    <%
-                        UserProperty showWeekendsProp = propertyDao.getProp(providerNo, UserProperty.SCHEDULE_WEEK_VIEW_WEEKENDS);
-                        boolean weekendsEnabled = showWeekendsProp == null || Boolean.parseBoolean(showWeekendsProp.getValue());
-                    %>
-                    <input type="checkbox" name="schedule.week_view_weekends"
-                           value="true" <%=weekendsEnabled ? "checked=\"checked\"" : ""%> />
+                    <c:set var="weekends" value="${userProperty[UserPropertyKey.SCHEDULE_WEEK_VIEW_WEEKENDS.name]}"/>
+                    <input type="checkbox" id="schedule.week_view_weekends" name="schedule.week_view_weekends"
+                           value="true" ${empty weekends or weekends ? 'checked' : ''} />
+                    <div><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.weekendsHelp"/></div>
                 </td>
             </tr>
             <tr>
-                <%
-
-                    UserProperty prop = propertyDao.getProp(providerNo, "rxInteractionWarningLevel");
-                    String warningLevel = "0";
-                    if (prop != null) {
-                        warningLevel = prop.getValue();
-                    }
-                %>
                 <td class="preferenceLabel">
-                    <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.rxInteractionWarningLevel"/>
+                    <label for="rxInteractionWarningLevel"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.rxInteractionWarningLevel"/></label>
                 </td>
                 <td class="preferenceValue">
-                    <select id="rxInteractionWarningLevel">
-                        <option value="0" <%=(warningLevel.equals("0") ? "selected=\"selected\"" : "") %>>Not
-                            Specified
-                        </option>
-                        <option value="1" <%=(warningLevel.equals("1") ? "selected=\"selected\"" : "") %>>Low</option>
-                        <option value="2" <%=(warningLevel.equals("2") ? "selected=\"selected\"" : "") %>>Medium
-                        </option>
-                        <option value="3" <%=(warningLevel.equals("3") ? "selected=\"selected\"" : "") %>>High</option>
-                        <option value="4" <%=(warningLevel.equals("4") ? "selected=\"selected\"" : "") %>>None</option>
-                    </select>
-                </td>
-                <script>
-                    Event.observe('rxInteractionWarningLevel', 'change', function (event) {
-                        var value = $('rxInteractionWarningLevel').getValue();
-
-                        new Ajax.Request('<c:out value="${ctx}"/>/provider/rxInteractionWarningLevel.do?method=update&value=' + value, {
-                            method: 'get',
-                            onSuccess: function (transport) {
-                            }
-                        });
-
-                    });
-
-                </script>
-            </tr>
-
-            <tr>
-                <%
-                    Integer h = 0;
-                    Integer mins = 0;
-                    prop = propertyDao.getProp(providerNo, UserProperty.OSCAR_MSG_RECVD);
-                    if (prop != null) {
-                        String[] tmp = prop.getValue().split(":");
-                        h = Integer.valueOf(tmp[0]);
-                        mins = Integer.valueOf(tmp[1]);
-                    }
-                %>
-                <td class="preferenceLabel">
-                    Select when you want to receive Review Messages
-
-                </td>
-                <td preferenceValue>
-                    <select id="reviewMsg" name="reviewMsg">
-                        <%
-                            for (int hr = 0; hr < 24; ++hr) {
-                                for (int min = 0; min < 60; min += 30) {
-                        %>
-                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(String.valueOf(hr)+":"+String.valueOf(min)))%>" <%= hr == h && min == mins ? "selected" : ""%> ><%=Encode.forHtml(String.valueOf(String.valueOf(hr) + " : " + String.valueOf(min) + (min == 0 ? "0" : "")))%>
-                        </option>
-                        <%
-                                }
-                            }
-                        %>
+                    <select id="rxInteractionWarningLevel" class="form-select">
+                        <c:set var="rxLevel" value="${userProperty[UserPropertyKey.RX_INTERACTION_WARNING_LEVEL.name]}"/>
+                        <option value="0" ${rxLevel eq '0' ? 'selected' : ''}>Not Specified</option>
+                        <option value="1" ${rxLevel eq '1' ? 'selected' : ''}>Low</option>
+                        <option value="2" ${rxLevel eq '2' ? 'selected' : ''}>Medium</option>
+                        <option value="3" ${rxLevel eq '3' ? 'selected' : ''}>High</option>
+                        <option value="4" ${rxLevel eq '4' ? 'selected' : ''}>None</option>
                     </select>
                 </td>
             </tr>
-            <script>
-                Event.observe('reviewMsg', 'change', function (event) {
-                    var value = $('reviewMsg').getValue();
 
-                    new Ajax.Request('<c:out value="${ctx}"/>/setProviderStaleDate.do?method=OscarMsgRecvd&value=' + value + '&provider_no=<%=Encode.forUriComponent(String.valueOf(providerNo))%>', {
-                        method: 'get',
-                        onSuccess: function (transport) {
-                        }
-                    });
-
-                });
-            </script>
         </table>
 
-        <div style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(deepcolor))%>;text-align:center;font-weight:bold">
-            <INPUT TYPE="submit" VALUE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.btnSubmit"/>' SIZE="7">
-            <INPUT TYPE="RESET" VALUE='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>' onClick="window.close();">
+        <div style="text-align:right;font-weight:bold;padding-bottom:10px;">
+            <input type="submit" class="btn btn-primary" value='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerpreference.btnSubmit"/>'>
+            <input type="reset" class="btn btn-danger" value='<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/>' onClick="window.close();">
         </div>
 
         <INPUT TYPE="hidden" NAME="color_template" VALUE='deepblue'>
 
 
-        <table width="100%" BGCOLOR="eeeeee">
+        <table class="table table-striped table-sm">
 
             <caisi:isModuleLoad moduleName="NEW_CME_SWITCH">
                 <oscar:oscarPropertiesCheck property="TORONTO_RFQ" value="no">
                     <tr>
-                        <TD align="center"><a href=#
-                                              onClick="popupPage(230,600,'<%= request.getContextPath() %>/casemgmt/newCaseManagementEnable.jsp');return false;">Enable
-                            OSCAR CME UI</a> &nbsp;&nbsp;&nbsp;
+                        <td><a href=#
+                                              onClick="popupPage(230,600,'<%= request.getContextPath() %>/casemgmt/newCaseManagementEnable.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEnableCmeUi"/></a>
+                        </td>
                     </tr>
                 </oscar:oscarPropertiesCheck>
             </caisi:isModuleLoad>
 
             <tr>
-                <td align="center"><a href=#
-                                      onClick="popupPage(230,600,'providerDefaultDxCode.jsp?provider_no=<%=Encode.forUriComponent(request.getParameter("provider_no"))%>');return false;">Edit
-                    Default Billing Diagnostic Code</a>&nbsp;&nbsp;&nbsp;
+                <td><a href=#
+                                      onClick="popupPage(230,600,'providerDefaultDxCode.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(providerNo))%>');return false;">Edit
+                    Default Billing Diagnostic Code</a>
                 </td>
             </tr>
             <tr>
 
-                <TD align="center"><a href=#
-                                      onClick="popupPage(370,700,'providerchangepassword.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnChangePassword"/></a> &nbsp;&nbsp;&nbsp;
+                <td><a href=#
+                                      onClick="popupPage(370,700,'providerchangepassword.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnChangePassword"/></a>
                 </td>
             </tr>
             <tr>
-                <td align="center"><a href=#
+                <td><a href=#
                                       onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewDefaultSex');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetDefaultSex"/></a></td>
             </tr>
             <tr>
-                <td align="center"><a href=#
+                <td><a href=#
                                       onClick="popupPage(230,860,'providerSignature.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditSignature"/></a>
                 </td>
             </tr>
             <oscar:oscarPropertiesCheck property="TORONTO_RFQ" value="no" defaultVal="true">
                 <security:oscarSec roleName="<%=roleName$%>" objectName="_billing" rights="r">
                     <tr>
-                        <td align="center">
+                        <td>
                             <% String br = OscarProperties.getInstance().getProperty("billregion");
                                 if (br.equals("BC")) { %>
                             <a href=#
@@ -555,11 +535,11 @@
                             <% } %>
                         </td>
                     </tr>
-                    <tr>
-                        <td align="center">
-                            <div id="billingONpref">
-                                <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.labelDefaultBillForm"/>:
-                                <select name="default_servicetype">
+                    <tr id="billingONpref">
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <label for="default_servicetype" class="col-form-label fw-bold"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.labelDefaultBillForm"/>:</label>
+                                <select id="default_servicetype" name="default_servicetype" class="form-select w-auto">
                                     <option value="no">-- no --</option>
                                     <%
                                         if (providerPreference != null) {
@@ -588,147 +568,136 @@
                     </tr>
                 </security:oscarSec>
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(400,860,'providerAddress.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditAddress"/></a></td>
                 </tr>
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(400,860,'providerPhone.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditPhoneNumber"/></a></td>
                 </tr>
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(400,860,'providerFax.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditFaxNumber"/></a></td>
                 </tr>
                 <tr>
-                    <td align="center"><a href=#
-                                          onClick="popupPage(230,860,'providerColourPicker.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditColour"/></a></td>
-                </tr>
-                <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(500,860,'providerPrinter.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetDefaultPrinter"/></a></td>
                 </tr>
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewRxPageSize');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetRxPageSize"/></a></td>
                 </tr>
                 <tr>
-                    <td align="center"><a href=#
-                                          onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewUseRx3');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetRx3"/></a></td>
-                </tr>
-                <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewCppSingleLine');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetCppSingleLine"/></a></td>
                 </tr>
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewShowPatientDOB');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetShowPatientDOB"/></a></td>
                 </tr>
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewDefaultQuantity');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.SetDefaultPrescriptionQuantity"/></a></td>
                 </tr>
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=view&provider_no=<%=Encode.forUriComponent(String.valueOf(providerNo))%>');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditStaleDate"/></a></td>
                 </tr>
 
 
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewConsultationRequestCuffOffDate');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetConsultationCutoffTimePeriod"/></a></td>
                 </tr>
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewConsultationRequestTeamWarning');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetConsultationTeam"/></a></td>
                 </tr>
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewWorkLoadManagement');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetWorkLoadManagement"/></a></td>
                 </tr>
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewConsultPasteFmt');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetConsultPasteFmt"/></a></td>
                 </tr>
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewFavouriteEformGroup');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetEformGroup"/></a></td>
                 </tr>
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewHCType');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetHCType"/></a></td>
                 </tr>
                 <% if (OscarProperties.getInstance().hasProperty("ONTARIO_MD_INCOMINGREQUESTOR")) {%>
                 <tr>
-                    <td align="center"><a href=#
+                    <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewOntarioMDId');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetmyOntarioMD"/></a></td>
                 </tr>
                 <%}%>
             </oscar:oscarPropertiesCheck>
 
             <tr>
-                <td align="center"><a href=# onClick="popupPage(400,860,'<%=request.getContextPath()%>/provider/CppPreferences.do');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.cppPrefs"/></a></td>
+                <td><a href=# onClick="popupPage(400,860,'<%=request.getContextPath()%>/provider/CppPreferences.do');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.cppPrefs"/></a></td>
             </tr>
 
             <tr>
-                <td align="center"><a href=#
+                <td><a href=#
                                       onClick="popupPage(400,860,'<%=request.getContextPath()%>/provider/OlisPreferences.do');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.olisPrefs"/></a></td>
             </tr>
             <tr>
-                <td align="center"><a href=#
+                <td><a href=#
                                       onClick="popupPage(500,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewCommentLab');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnDisableAckCommentLab"/></a></td>
             </tr>
             <tr>
-                <td align="center"><a href=#
+                <td><a href=#
                                       onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewLabRecall');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnLabRecallSettings"/></a></td>
             </tr>
             <tr>
-                <td align="center"><a href=#
+                <td><a href=#
                                       onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewEncounterWindowSize');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditDefaultEncounterWindowSize"/></a></td>
             </tr>
             <tr>
-                <td align="center"><a href=#
+                <td><a href=#
                                       onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewQuickChartSize');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditDefaultQuickChartSize"/></a></td>
             </tr>
             <tr>
-                <td align="center"><a href=#
+                <td><a href=#
                                       onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewEDocBrowserInDocumentReport');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetEDocBrowserInDocumentReport"/></a></td>
             </tr>
             <tr>
-                <td align="center"><a href=#
+                <td><a href=#
                                       onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewEDocBrowserInMasterFile');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetEDocBrowserInMasterFile"/></a></td>
             </tr>
             <tr>
-                <td align="center"><a href=#
+                <td><a href=#
                                       onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewPatientNameLength');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditSetPatientNameLength"/></a></td>
             </tr>
             <tr>
-                <td align="center"><a href=#
+                <td><a href=#
                                       onClick="popupPage(230,860,'<%= request.getContextPath() %>/admin/displayDocumentDescriptionTemplate.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetDocumentDescriptionTemplate"/></a></td>
             </tr>
             <tr>
-                <td align="center"><a href=# onClick="popupPage(500,900,'clients.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditClients"/></a></td>
+                <td><a href=# onClick="popupPage(500,900,'clients.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditClients"/></a></td>
             </tr>
             <tr>
-                <td align="center"><a href=#
+                <td><a href=#
                                       onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewDisplayDocumentAs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetDisplayDocumentAs"/></a></td>
             </tr>
             <tr>
-                <td align="center"><a href=#
-            </tr>
-            <tr>
-                <td align="center"><a href=#
+                <td><a href=#
                                       onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewAppointmentCardPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditSetAppointmentCardPrefs"/></a></td>
             </tr>
 
             <oscar:oscarPropertiesCheck property="util.erx.enabled" value="true">
             <security:oscarSec roleName="<%=roleName$%>" objectName="_rx" rights="r">
             <tr>
-                <td align="center">
+                <td>
                     <a href=# onClick="showHideERxPref();return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.btnPrefLink"/></a>
                 </td>
             </tr>
             <tr>
-                <td align="center">
+                <td>
                     <div id="eRxPref">
                                 <%
             	String eRxEnabledChecked="unchecked";
@@ -759,7 +728,7 @@
                     if(eRxFacility==null || "null".equalsIgnoreCase(eRxFacility)) eRxFacility="";
                 }
                 %>
-                        <table class="eRxTableCenter">
+                        <table class="table eRxTableCenter">
                             <tr>
                                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelEnable"/>:</td>
                                 <td><input name="erx_enable" title="Enable the External Prescriber"
@@ -767,27 +736,27 @@
                             </tr>
                             <tr>
                                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelUser"/>:</td>
-                                <td><input name="erx_username" type="text" value="<%=Encode.forHtmlAttribute(String.valueOf(eRxUsername))%>"
+                                <td><input name="erx_username" class="form-control" type="text" value="<%=Encode.forHtmlAttribute(String.valueOf(eRxUsername))%>"
                                            title="Username to access the External Prescriber"/></td>
                             </tr>
                             <tr>
                                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelPassword"/>:</td>
-                                <td><input name="erx_password" type="password" value="<%=Encode.forHtmlAttribute(String.valueOf(eRxPassword))%>"
+                                <td><input name="erx_password" class="form-control" type="password" value="<%=Encode.forHtmlAttribute(String.valueOf(eRxPassword))%>"
                                            title="Password to access the External Prescriber"/></td>
-                            <tr>
                             </tr>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelFacility"/>:</td>
-                            <td><input name="erx_facility" type="text" value="<%=Encode.forHtmlAttribute(String.valueOf(eRxFacility))%>"
-                                       title="The Facility ID assigned to you by the External Prescriber"/><br></td>
                             <tr>
+                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelFacility"/>:</td>
+                                <td><input name="erx_facility" class="form-control" type="text" value="<%=Encode.forHtmlAttribute(String.valueOf(eRxFacility))%>"
+                                           title="The Facility ID assigned to you by the External Prescriber"/></td>
                             </tr>
-                            <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelTrainingMode"/>:</td>
-                            <td><input name="erx_training_mode" type="checkbox"
-                                       title="Enable Training Mode" <%=Encode.forHtml(String.valueOf(eRxTrainingModeChecked))%> /></td>
-            </tr>
+                            <tr>
+                                <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelTrainingMode"/>:</td>
+                                <td><input name="erx_training_mode" type="checkbox"
+                                           title="Enable Training Mode" <%=Encode.forHtml(String.valueOf(eRxTrainingModeChecked))%> /></td>
+                            </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.eRx.labelURL"/>:</td>
-                <td><input name="erx_sso_url" type="text" value="<%=Encode.forHtmlAttribute(String.valueOf(eRx_SSO_URL))%>"
+                <td><input name="erx_sso_url" class="form-control" type="text" value="<%=Encode.forHtmlAttribute(String.valueOf(eRx_SSO_URL))%>"
                            title="The URL to access the Web Interface from OSCAR Rx"/></td>
             </tr>
 
@@ -798,24 +767,26 @@
         </security:oscarSec>
         </oscar:oscarPropertiesCheck>
         <tr>
-            <td align="center"><a href=#
+            <td><a href=#
                                   onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewDashboardPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewDashboardPrefs"/></a></td>
         </tr>
+        <%-- the prevention preferences are the Ontario DHIR warnings --%>
+        <oscar:oscarPropertiesCheck property="billregion" value="ON">
         <tr>
-            <td align="center"><a href=#
+            <td><a href=#
                                   onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewPreventionPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewPreventionPrefs"/></a></td>
         </tr>
-
+        </oscar:oscarPropertiesCheck>
         <tr>
-            <td align="center"><a href=#
+            <td><a href=#
                                   onClick="popupPage(700,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewLabMacroPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewLabMacroPrefs"/></a></td>
         </tr>
         <tr>
-            <td align="center"><a href=#
+            <td><a href=#
                                   onClick="popupPage(280,730,'<%=request.getContextPath()%>/setTicklerPreferences.do?method=viewTicklerTaskAssignee');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnViewTicklerPreferences"/></a></td>
         </tr>
         </table>
     </FORM>
-
+    </div>
     </body>
 </html>

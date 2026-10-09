@@ -23,6 +23,18 @@
     Ontario, Canada
 
 --%>
+
+<%--
+    Schedule day view: one column per provider with the day's appointments and schedule template,
+    the appointment links (encounter forms, eForms and quick links, with ${contextPath} and ${demographicId}
+    replaced), and the day, week and month navigation.
+
+    Parameters: year, month, day (the day shown), view (0 every provider of the group, 1 one provider), viewall,
+    curProvider and curProviderName, provider_no, displaymode, module, record, caseload,
+    programIdForLocation, GoToCaisiViewFromOscarView.
+
+    @since 2002-11-08
+--%>
 <!DOCTYPE html>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="ca.openosp.openo.commn.dao.MyGroupAccessRestrictionDao" %>
@@ -62,6 +74,7 @@
 <%@ taglib uri="/WEB-INF/special_tag.tld" prefix="special" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
 <!-- Struts for i18n -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -2203,9 +2216,12 @@
                                                             <c:out value="${fn:substring(eform.eFormName, 0, truncateLimit)}"/>
                                                             </a>
                                                         </c:forEach>
+                                                        <%-- the two tokens a quick link may carry (see the preference page) --%>
+                                                        <c:set var="contextPathToken" value="${'${'}contextPath}"/>
+                                                        <c:set var="demographicIdToken" value="${'${'}demographicId}"/>
                                                         <c:forEach items="${quickLinksList}" var="quickLink">
-                                                            |<a href="javascript:void(0)" onClick='popupPage2("<c:out
-                                                                value="${quickLink.url}"/>")' title='<c:out
+                                                            <c:set var="quickLinkUrl" value="${fn:replace(fn:replace(quickLink.url, contextPathToken, pageContext.servletContext.contextPath), demographicIdToken, appointment.demographicNo)}"/>
+                                                            |<a href="javascript:void(0)" onClick='popupPage2("${e:forJavaScript(quickLinkUrl)}")' title='<c:out
                                                                 value="${quickLink.name}"/>'>
                                                             <c:out value="${fn:substring(quickLink.name, 0, truncateLimit)}"/>
                                                             </a>

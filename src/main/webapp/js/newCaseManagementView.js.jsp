@@ -46,6 +46,103 @@
     var addIssueFunc;
     var needToReleaseLock = true;
 
+    // icons of the note bar (Bootstrap Icons); the same markup is built in ChartNotesAjax.jsp
+    var noteIcons = {
+        collapse: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-bar-contract" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 14.854a.5.5 0 0 0 .708 0L8 11.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708m0-13.708a.5.5 0 0 1 .708 0L8 4.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8"/><\/svg>',
+        expand: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-bar-expand" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.646 10.146a.5.5 0 0 1 .708 0L8 13.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708m0-4.292a.5.5 0 0 0 .708 0L8 2.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8"/><\/svg>',
+        print: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16"><path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/><path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1"/><\/svg>',
+        edit: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16"><path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/><path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/><\/svg>',
+        annotation: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-text" viewBox="0 0 16 16"><path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2z"/><path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/><\/svg>'
+    };
+
+    // tooltips of the note bar buttons (edit and annotation use editLabel and annotationLabel)
+    var collapseNoteTitle = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.MinDisplay.title"/>";
+    var expandNoteTitle = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.MaxDisplay.title"/>";
+    var printNoteTitle = "<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.print.title"/>";
+
+    // one button of the note bar; onclick must not contain double quotes
+    function noteControl(id, icon, title, onclick, name) {
+        // tooltips come from the language files and may contain quotes (e.g. French l'affichage)
+        var safeTitle = String(title).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+        return "<div class='note-control' id='" + id + "' title=\"" + safeTitle + "\"" + (name ? " name='" + name + "'" : "") +
+            " onclick=\"" + onclick + "\">" + noteIcons[icon] + "<\/div>";
+    }
+
+    // the bar across the top of a note; buttons are listed collapse, print, edit, annotation
+    function noteControlPanel(controls) {
+        return "<div class='note-control-panel'><div class='note-controls'>" + controls.join("") + "<\/div><\/div>";
+    }
+
+    function collapseNoteControl(nId) {
+        return noteControl("quitImg" + nId, "collapse", collapseNoteTitle, "minView(event)", "collapseViewTrigger");
+    }
+
+    function printNoteControl(nId) {
+        return noteControl("print" + nId, "print", printNoteTitle, "togglePrint(" + nId + ", event)");
+    }
+
+    function editNoteControl(nId) {
+        var func = $F("editWarn" + nId) == "true" ? "noPrivs(event);" : "editNote(event);";
+        return noteControl("edit" + nId, "edit", editLabel, func + " return false;");
+    }
+
+    function annotationNoteControl(nId) {
+        var attribName = "anno" + (new Date().getTime());
+        return noteControl("anno" + nId, "annotation", annotationLabel,
+            "window.open('" + ctx + "/annotation/annotation.jsp?atbname=" + attribName + "&table_id=" + nId + "&display=EChartNote&demo=" + demographicNo + "','anwin','width=400,height=500');$('annotation_attribname').value='" + attribName + "'; return false;");
+    }
+
+    // first characters of a note's shown text, as safe HTML (line breaks become spaces, tags are not cut)
+    function noteTextStart(txtId, length) {
+        var tmp = document.createElement("div");
+        tmp.innerHTML = $(txtId).innerHTML.replace(/<br\s*\/?>/gi, " ");
+        var text = (tmp.textContent || "").substr(0, length);
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    // id of the clicked element, or of its note when it has no id with a number (e.g. the bar itself)
+    function clickedNoteElementId(e) {
+        var el = Event.element(e);
+        if (/\d+/.test(el.id)) {
+            return el.id;
+        }
+        var note = el.up('div.note-contents');
+        return note != null ? note.id : el.id;
+    }
+
+    // put buttons in the bar of a note, replacing its collapse/expand, print, edit and annotation buttons;
+    // the rest of the bar (Rx View link, eSend, remote or group note label) stays; returns the bar
+    function setNoteControls(noteDivId, controls) {
+        var panel = $(noteDivId).down('.note-control-panel');
+        if (panel == null) {
+            new Insertion.Top(noteDivId, noteControlPanel([]));
+            panel = $(noteDivId).down('.note-control-panel');
+        }
+        var controlsDiv = panel.down('.note-controls');
+        controlsDiv.getElementsBySelector('.note-control').each(function (control) {
+            if (/^(quitImg|xpImg|print|edit|anno)\d/.test(control.id)) {
+                control.remove();
+            }
+        });
+        new Insertion.Top(controlsDiv, controls.join(""));
+        return panel;
+    }
+
+    // show whether a note is picked for printing: yellow print icon, or the green printer image on older markup
+    function showPrintSelected(noteId, selected) {
+        var control = $("print" + noteId);
+        if (control == null) {
+            return;
+        }
+        if (control.tagName == "IMG") {
+            control.src = ctx + "/oscarEncounter/graphics/" + (selected ? "printerGreen.png" : "printer.png");
+        } else if (selected) {
+            control.addClassName("print-highlight");
+        } else {
+            control.removeClassName("print-highlight");
+        }
+    }
+
     var X = 10;
     var small = 60;
     var normal = 166;
@@ -1437,14 +1534,6 @@ function updateCPPNote() {
             Element.remove("observationDate");
             Element.remove("observationDate_cal");
 
-            var observationId = "observation" + nId;
-
-            var html = $(observationId).innerHTML;
-
-            html = html.substr(0, html.indexOf(":") + 1) + " <span id='obs" + nId + "'>" + observationDate + "<\/span>" + html.substr(html.indexOf(":") + 1);
-
-            $(observationId).update(html);
-
         }
 
         if ($("autosaveTime") != null)
@@ -1482,43 +1571,25 @@ function updateCPPNote() {
         tmp = tmp.replace(/\n/g, "<br>");
 
         if (!saving) {
-            if (largeNote(tmp)) {
-                var btmImg = "<img title='Minimize Display' id='bottomQuitImg" + nId + "' alt='Minimize Display' onclick='minView(event)' style='float:right; margin-right:5px; margin-bottom:3px; ' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
-                new Insertion.Before(sig, btmImg);
-            }
+            // if (largeNote(tmp)) {
+            //     var btmImg = "<img title='Minimize Display' id='bottomQuitImg" + nId + "' alt='Minimize Display' onclick='minView(event)' style='float:right; margin-right:5px; margin-bottom:3px; ' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
+            //     new Insertion.Before(sig, btmImg);
+            // }
 
-            var printImg = "print" + nId;
-            var img = "<img title='Minimize Display' id='quitImg" + nId + "' onclick='minView(event)' style='float:right; margin-right:5px; margin-top: 2px;' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
-            var printimg = "<img title='Print' id='" + printImg + "' alt='Toggle Print Note' onclick='togglePrint(" + nId + ", event)' style='float:right; margin-right:5px; margin-top: 2px;' src='" + ctx + "/oscarEncounter/graphics/printer.png'>";
             var input = "<div id='txt" + nId + "'>" + tmp + "<\/div>";
 
-            var func;
-            var editWarn = "editWarn" + nId;
-            if ($F(editWarn) == "true") {
-                func = "noPrivs(event);";
-            } else {
-                func = "editNote(event);";
-            }
-
-            var editAnchor = "<a title='Edit' id='edit" + nId + "' href='#' onclick='" + func + " return false;' style='float: right; margin-right: 5px;'>" + editLabel + "</a>";
-            var editId = "edit" + nId;
-
-            var attribName = "anno" + (new Date().getTime());
-            var attribAnchor = "<input id='anno" + nId + "' height='10px;' width='10px' type='image' src='" + ctx + "/oscarEncounter/graphics/annotation.png' title='" + annotationLabel + "' style='float: right; margin-right: 5px; margin-bottom: 3px;'" +
-                "onclick=\"window.open('" + ctx + "/annotation/annotation.jsp?atbname=" + attribName + "&table_id=" + nId + "&display=EChartNote&demo=" + demographicNo + "','anwin','width=400,height=500');$('annotation_attribname').value='" + attribName + "'; return false;\">";
-
-            new Insertion.Top(parent, editAnchor);
-            new Insertion.After(editId, input);
-
-
+            // note bar: collapse, print, edit, annotation (a new, never saved note has no print or annotation)
+            var controls = [collapseNoteControl(nId)];
             if (nId.substr(0, 1) != "0") {
-                Element.remove(printImg);
-                new Insertion.Before(editId, printimg);
-                new Insertion.After(editId, attribAnchor);
-                new Insertion.Top(parent, img);
+                controls.push(printNoteControl(nId));
             }
-
-            new Insertion.Top(parent, img);
+            controls.push(editNoteControl(nId));
+            if (nId.substr(0, 1) != "0") {
+                controls.push(annotationNoteControl(nId));
+            }
+            new Insertion.After(setNoteControls(parent, controls), input);
+            // a note picked for printing stays highlighted
+            showPrintSelected(nId, noteIsQeued("" + nId) >= 0);
 
             $(parent).style.height = "auto";
 
@@ -1544,96 +1615,53 @@ function updateCPPNote() {
 
         }
 
+        // the note is plain text: escape it before it is shown as HTML
+        note = note.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         note = note.replace(/\n/g, "<br>");
-        if (largeNote(note)) {
-            var btmImg = "<img title='Minimize Display' id='bottomQuitImg" + newId + "' alt='Minimize Display' onclick='minView(event)' style='float:right; margin-right:5px; margin-bottom:3px;' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
-            new Insertion.Top(parent, btmImg);
-        }
+        // if (largeNote(note)) {
+        //     var btmImg = "<img title='Minimize Display' id='bottomQuitImg" + newId + "' alt='Minimize Display' onclick='minView(event)' style='float:right; margin-right:5px; margin-bottom:3px;' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
+        //     new Insertion.Top(parent, btmImg);
+        // }
 
         var input = "<span id='txt" + newId + "'>" + note + "<\/span>";
 
-        var imgId = "quitImg" + newId;
-        var printId = "print" + newId;
-        var img = "<img title='Minimize Display' id='" + imgId + "' onclick='minView(event)' style='float:right; margin-right:5px; margin-top: 2px;' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'/>";
-        var printimg = "<img title='Print' id='" + printId + "' alt='Toggle Print Note' onclick='togglePrint(" + newId + ", event)' style='float:right; margin-right:5px; margin-top: 2px;' src='" + ctx + "/oscarEncounter/graphics/printer.png'>";
-        if ($(printId) != null) {
-            Element.remove(printId);
-        }
-
-        var func;
-        var editWarn = "editWarn" + newId;
-        if ($F(editWarn) == "true") {
-            func = "noPrivs(event);";
-        } else {
-            func = "editNote(event);";
-        }
-
-        var anchor = "<a title='Edit' id='edit" + newId + "' href='#' onclick='" + func + " return false;' style='float: right; margin-right: 5px;'>" + editLabel + "</a>";
-
-        new Insertion.Top(parent, input);
-        new Insertion.Top(parent, anchor);
-        new Insertion.Top(parent, printimg);
-        new Insertion.Top(parent, img);
+        // note bar: collapse, print, edit
+        new Insertion.After(setNoteControls(parent, [collapseNoteControl(newId), printNoteControl(newId), editNoteControl(newId)]), input);
+        // a note picked for printing stays highlighted
+        showPrintSelected(newId, noteIsQeued("" + newId) >= 0);
 
         $(parent).style.height = "auto";
 
     }
 
     function minView(e) {
-        var divHeight = "1.1em";
-        var txt = Event.element(e).parentNode.id;
-        //alert(txt);
-        var nId = txt.substr(1);
-        var img = Event.element(e).id;
+        // the clicked collapse button carries the note id
+        var control = Event.element(e);
+        var regEx = /\d+/;
+        var nId = regEx.exec(control.id);
+        var txt = "n" + nId;
         var dateId = "obs" + nId;
         var content = "c" + nId;
         var date = "d" + nId;
-        var editAnchor = "edit" + nId;
 
         Event.stop(e);
-        var imgs = $(txt).getElementsBySelector("img");
-        for (i = 0; i < imgs.length; ++i) {
-            if (imgs[i].id.indexOf("quitImg") > -1) {
-                Element.remove(imgs[i]);
-                break;
-            }
-        }
 
-        Element.remove(editAnchor);
+        // the collapse button becomes the expand button
+        control.replace(noteControl("xpImg" + nId, "expand", expandNoteTitle, "xpandView(event)", "expandViewTrigger"));
 
         $(txt).style.overflow = "hidden";
-        //shrink(txt, 14);
-        $(txt).setStyle('height', '14px');
-        //$(txt).style.height = divHeight;
 
+        // one-line summary under the bar: date and the start of the note
         var txtId = "txt" + nId;
-        var line = $(txtId).innerHTML.substr(0, 90);
-        line = line.replace(/<br>/g, " ");
+        var line = noteTextStart(txtId, 90);
         var dateValue = $(dateId) != null ? $(dateId).innerHTML : "";
         dateValue = dateValue.substring(0, dateValue.indexOf(" "));
-        line = "<div id='" + date + "' style='width:10%;'><b>" + dateValue + "<\/b><\/div><div id='" + content + "' style='float:left; width:70%;'>" + line + "<\/div>";
+        // the date sits inside the line: the note is a flex column, so two divs would be two rows
+        line = "<div id='" + content + "' style='white-space:nowrap; overflow:hidden; text-overflow:ellipsis;'><b id='" + date + "' style='margin-right:10px;'>" + dateValue + "<\/b>" + line + "<\/div>";
         $("txt" + nId).hide();
         $("sig" + nId).hide();
-        new Insertion.Top(txt, line);
+        new Insertion.After($(txt).down('.note-control-panel'), line);
 
-
-        //img = "<img title='Print' id='print" + nId + "' alt='Toggle Print Note' onclick='togglePrint(" + nId + ", event)' style='float:right; margin-right:5px;' src='" + ctx + "/oscarEncounter/graphics/printer.png'>";
-        //new Insertion.Top(txt, img);
-
-        var print = 'print' + nId;
-        var func;
-        var editWarn = "editWarn" + nId;
-        if ($F(editWarn) === "true") {
-            func = "noPrivs(event);";
-        } else {
-            func = "editNote(event);";
-        }
-        var anchor = "<a title='Edit' id='edit" + nId + "' href='#' onclick='" + func + " return false;' style='float: right; margin-right: 5px;'>Edit</a>";
-        new Insertion.After(print, anchor);
-
-
-        img = "<img title='Maximize Display' alt='Maximize Display' id='xpImg" + nId + "' name='expandViewTrigger' onclick='xpandView(event)' style='float:right; margin-right:5px; margin-top: 2px;' src='" + ctx + "/oscarEncounter/graphics/triangle_down.gif'>";
-        new Insertion.Top(txt, img);
         Element.observe(txt, 'click', xpandView);
     }
 
@@ -1649,7 +1677,7 @@ function updateCPPNote() {
 
 // this func fires only if maximize button is clicked after fullView
     function xpandView(e) {
-        var id = Event.element(e).id;
+        var id = clickedNoteElementId(e);
         xpandViewById(id);
         Event.stop(e);
     }
@@ -1662,16 +1690,12 @@ function updateCPPNote() {
         var content = "c" + nId;
         var date = "d" + nId;
 
-        var imgTag = "<img title='Minimize Display' id='quitImg" + nId + "' onclick='minView(event)' style='float:right; margin-right:5px; margin-top: 2px;' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
-
-
-        Element.remove(img);
+        // the expand button becomes the collapse button again
+        $(img).replace(collapseNoteControl(nId));
         Element.remove(date);
         Element.remove(content);
 
-
         $(txt).style.height = 'auto';
-        new Insertion.Top(txt, imgTag);
         $("txt" + nId).show();
         $("sig" + nId).show();
         Element.stopObserving(txt, 'click', xpandView);
@@ -1691,7 +1715,8 @@ function updateCPPNote() {
                 postBody: params,
                 evalScripts: true,
                 onSuccess: function (response) {
-                    $(noteTxtArea).update(response.responseText);
+                    // the reply starts and ends with blank lines; keep one line break at the end like the full-text path
+                    $(noteTxtArea).update(response.responseText.replace(/^\s+|\s+$/g, "") + "\n");
                     adjustCaseNote();
                     $(noteTxtArea).focus();
                     setCaretPosition($(noteTxtArea), $(noteTxtArea).value.length);
@@ -1710,7 +1735,8 @@ function updateCPPNote() {
     }
 
     function toggleCollapseViewForAll() {
-        jQuery('[title="Minimize Display"]').each(function () {
+        // collapse buttons of the note bar
+        jQuery('[name="collapseViewTrigger"]').each(function () {
             $(this).click();
         });
     }
@@ -1721,7 +1747,7 @@ function updateCPPNote() {
 
 //this func fires only if maximize button is clicked
     function fullView(e) {
-        var id = Event.element(e).id;
+        var id = clickedNoteElementId(e);
         fullViewById(id);
         Event.stop(e);
     }
@@ -1755,20 +1781,19 @@ function updateCPPNote() {
             }
         );
 
-        var imgTag1 = "<img title='Minimize Display' id='quitImg" + nId + "' onclick='minNonEditableNoteView(" + nId + ")' style='float:right; margin-right:5px; margin-top: 2px;' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
-        const imgTag2 = "<img title='Minimize Display' id='quitImg" + nId + "' alt='Minimize Display' onclick='minNonEditableNoteView(" + nId + ")' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
-
         document.getElementById(img)?.remove();
 
-    const isEmailNote = document.getElementById("emailNote" + nId) !== null;
-
         $(txt).style.height = 'auto';
-        const observationDivId = "#observation" + nId;
-    if (jQuery(observationDivId).length > 0 && !isEmailNote) {
-            jQuery(observationDivId).append(imgTag2);
-            jQuery(observationDivId).css('font-size', '10px');
+        // the collapse button goes in the note bar: it replaces the expand button, or is added for
+        // notes rendered without one (CPP, eForm and encounter form notes expanded by a click on the text)
+        const collapseControl = noteControl("quitImg" + nId, "collapse", collapseNoteTitle, "minNonEditableNoteView(" + nId + ")", "collapseViewTrigger");
+        const control = document.getElementById("quitImg" + nId);
+        const barControls = $(txt).down('.note-controls');
+        if (control != null && control.classList.contains("note-control")) {
+            control.outerHTML = collapseControl;
         } else {
-            new Insertion.Top(txt, imgTag1);
+            document.getElementById("quitImg" + nId)?.remove();
+            new Insertion.Top(barControls != null ? barControls : txt, collapseControl);
         }
         Element.stopObserving(noteTxtId, 'click', fullView);
     }
@@ -1777,18 +1802,26 @@ function updateCPPNote() {
         const noteId = "n" + id;
         const noteTxtId = "txt" + id;
         const quitImgId = "quitImg" + id;
-        const line = $(noteTxtId).innerHTML.substr(0, 50).replace(/<br>/g, " ");
+        const line = noteTextStart(noteTxtId, 50);
         $(noteTxtId).update(line);
-        document.getElementById(quitImgId)?.remove();
+        // only part of the note is shown now: editing must fetch the whole note, not copy the shown text
+        if ($("full" + id) != null) {
+            $("full" + id).value = "false";
+        }
 
-    const isEmailNote = document.getElementById("emailNote" + id) !== null;
-    const observationDivId = "#observation" + id;
-    if (isEmailNote) {
-        const maxDisplayImg = "<img title='Maximize Display' id='fullImg" + id + "' alt='Maximize Display' onclick='fullView(event)' style='float: right;' src='" + ctx + "/oscarEncounter/graphics/triangle_down.gif' />";
-        new Insertion.Top("n" + id, maxDisplayImg);
+    // the collapse button in the note bar becomes the expand button; a click on the text expands too
+    const expandControl = noteControl(quitImgId, "expand", expandNoteTitle, "fullView(event)", "fullViewTrigger");
+    const control = document.getElementById(quitImgId);
+    if (control != null && control.classList.contains("note-control")) {
+        control.outerHTML = expandControl;
     } else {
-        Element.observe(noteTxtId, 'click', fullView);
+        control?.remove();
+        const barControls = $(noteId).down('.note-controls');
+        if (barControls != null) {
+            new Insertion.Top(barControls, expandControl);
+        }
     }
+    Element.observe(noteTxtId, 'click', fullView);
 }
 
     function resetEdit(e) {
@@ -1969,6 +2002,8 @@ function updateCPPNote() {
         for (var i = 0; i < nodes.length; ++i) {
             nodes[i].remove();
         }
+        // and the bar buttons; the print button is put back below
+        setNoteControls(txt, []);
 
 
         var editAnchor = "edit" + nId;
@@ -2006,12 +2041,19 @@ function updateCPPNote() {
         caseNote = "caseNote_note" + nId;
 
         var input = "<textarea tabindex='7' cols='84' rows='10' wrap='hard' class='txtArea boxsizingBorder edit-textarea' style='line-height:1.1em;' name='caseNote_note' id='" + caseNote + "'>" + payload + "<\/textarea>";
-        new Insertion.Top(txt, input);
-        var printimg = "<div class='tool-button print-button'><img title='Print' id='print" + nId + "' alt='Toggle Print Note' onclick='togglePrint(" + nId + ", event)' style='float:right; margin-right:5px;' src='" + ctx + "/oscarEncounter/graphics/printer.png'></div>";
-
+        // the textarea goes right under the note bar, as in the server-rendered edit view
+        var editPanel = $(txt).down('.note-control-panel');
+        if (editPanel != null) {
+            new Insertion.After(editPanel, input);
+        } else {
+            new Insertion.Top(txt, input);
+        }
         var strNid = "" + nId;
-        if (strNid.substr(0, 1) != "0")
-            new Insertion.Top(txt, printimg);
+        if (strNid.substr(0, 1) != "0") {
+            setNoteControls(txt, [printNoteControl(nId)]);
+            // keep the print pick visible while editing
+            showPrintSelected(nId, noteIsQeued(strNid) >= 0);
+        }
 
         if ($F(isFull) == "true") {
             //position cursor at end of text
@@ -2038,7 +2080,7 @@ function updateCPPNote() {
         }
 
         //we check if we are dealing with a new note or not
-        if (strNid.charAt(0) == "0") {
+        if (strNid.charAt(0) === "0") {
             document.forms["caseManagementEntryForm"].noteId.value = "0";
             document.forms["caseManagementEntryForm"].newNoteIdx.value = nId;
             document.forms["caseManagementEntryForm"].note_edit.value = "new";
@@ -2938,7 +2980,7 @@ function updateCPPNote() {
         }
 
         // the extra BR NBSP at the ends are for IE fix for selection box is out of scrolling pane view.
-        var div = "<div id='" + id + "' class='newNote'><input type='hidden' id='signed" + newNoteIdx + "' value='false'><input type='hidden' id='editWarn" + newNoteIdx + "' value='false'><div id='n" + newNoteIdx + "'><input type='hidden' id='full" + newNoteIdx + "' value='true'>" +
+        var div = "<div id='" + id + "' class='newNote'><input type='hidden' id='signed" + newNoteIdx + "' value='false'><input type='hidden' id='editWarn" + newNoteIdx + "' value='false'><div id='n" + newNoteIdx + "' class='note-contents'><input type='hidden' id='full" + newNoteIdx + "' value='true'>" +
             "<input type='hidden' id='bgColour" + newNoteIdx + "' value='color:white;background-color:#CCCCFF;'>" + input + "<div class='sig' style='display:inline;' id='" + sigId + "'><\/div>" + passwd + "<\/div><\/div><br \/>&nbsp;<br \/>&nbsp;<br \/>&nbsp;<br \/>";
 
 
@@ -3010,7 +3052,7 @@ function autoSave(async) {
     var demoNo = demographicNo;
     var cmeFrm = document.forms["caseManagementEntryForm"];
     var nId = cmeFrm.noteId.value < 0 ? 0 : cmeFrm.noteId.value;
-    var params = "method=autosave&demographicNo=" + demoNo + "&programId=" + programId + "&note_id=" + nId + "&note=" + escape($F(caseNote));
+    var params = "method=autosave&demographicNo=" + demoNo + "&programId=" + programId + "&note_id=" + nId + "&note=" + encodeURIComponent($F(caseNote));
 
         new Ajax.Request(url, {
                 method: 'post',
@@ -3246,8 +3288,6 @@ function autoSave(async) {
 
     function togglePrint(noteId, e) {
         e.preventDefault();
-        var selected = ctx + "/oscarEncounter/graphics/printerGreen.png";
-        var unselected = ctx + "/oscarEncounter/graphics/printer.png";
         var imgId = "print" + noteId;
         var idx;
         var idx2;
@@ -3261,7 +3301,7 @@ function autoSave(async) {
         //else insert note into print queue
         idx = noteIsQeued(noteId);
         if (idx >= 0) {
-            $(imgId).src = unselected;
+            showPrintSelected(noteId, false);
 
             //if we're slicing first note off list
             if (idx == 0) {
@@ -3285,7 +3325,7 @@ function autoSave(async) {
 
             $("notes2print").value = tmp;
         } else {
-            $(imgId).src = selected;
+            showPrintSelected(noteId, true);
             if ($F("notes2print").length > 0)
                 $("notes2print").value += "," + noteId;
             else
@@ -3300,7 +3340,7 @@ function autoSave(async) {
         var imgId = "print" + noteId;
 
         //$(imgId).src = ctx + "/oscarEncounter/graphics/printerGreen.png"; //imgPrintgreen.src;
-        $(imgId).src = imgPrintgreen.src;
+        showPrintSelected(noteId, true);
         if ($F("notes2print").length > 0)
             $("notes2print").value += "," + noteId;
         else
@@ -3309,12 +3349,11 @@ function autoSave(async) {
     }
 
     function removePrintQueue(noteId, idx) {
-        var unselected = ctx + "/oscarEncounter/graphics/printer.png";
         var imgId = "print" + noteId;
         var tmp = "";
         var idx2;
 
-        $(imgId).src = unselected; //imgPrintgrey.src;
+        showPrintSelected(noteId, false);
 
         //if we're slicing first note off list
         if (idx == 0) {
@@ -3638,14 +3677,6 @@ function autoSave(async) {
                 Element.remove("observationDate");
                 Element.remove("observationDate_cal");
 
-                var observationId = "observation" + nId;
-
-                var html = $(observationId).innerHTML;
-
-                html = html.substr(0, html.indexOf(":") + 1) + " <span id='obs" + nId + "'>" + observationDate + "<\/span>" + html.substr(html.indexOf(":") + 1);
-
-                $(observationId).update(html);
-
             }
 
             if ($("autosaveTime") != null)
@@ -3683,42 +3714,24 @@ function autoSave(async) {
             tmp = tmp.replace(/\n/g, "<br>");
 
             if (!saving) {
-                if (largeNote(tmp)) {
-                    var btmImg = "<img title='Minimize Display' id='bottomQuitImg" + nId + "' alt='Minimize Display' onclick='minView(event)' style='float:right; margin-right:5px; margin-bottom:3px; ' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
-                    new Insertion.Before(sig, btmImg);
-                }
-                var printImg = "print" + nId;
-                var img = "<img title='Minimize Display' id='quitImg" + nId + "' onclick='minView(event)' style='float:right; margin-right:5px; margin-top: 2px;' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
-                var printimg = "<img title='Print' id='" + printImg + "' alt='Toggle Print Note' onclick='togglePrint(" + nId + ", event)' style='float:right; margin-right:5px; margin-top: 2px;' src='" + ctx + "/oscarEncounter/graphics/printer.png'>";
+                // if (largeNote(tmp)) {
+                //     var btmImg = "<img title='Minimize Display' id='bottomQuitImg" + nId + "' alt='Minimize Display' onclick='minView(event)' style='float:right; margin-right:5px; margin-bottom:3px; ' src='" + ctx + "/oscarEncounter/graphics/triangle_up.gif'>";
+                //     new Insertion.Before(sig, btmImg);
+                // }
                 var input = "<div id='txt" + nId + "'>" + tmp + "<\/div>";
 
-                var func;
-                var editWarn = "editWarn" + nId;
-                if ($F(editWarn) == "true") {
-                    func = "noPrivs(event);";
-                } else {
-                    func = "editNote(event);";
-                }
-
-                var editAnchor = "<a title='Edit' id='edit" + nId + "' href='#' onclick='" + func + " return false;' style='float: right; margin-right: 5px;'>" + editLabel + "</a>";
-                var editId = "edit" + nId;
-
-                var attribName = "anno" + (new Date().getTime());
-                var attribAnchor = "<input id='anno" + nId + "' height='10px;' width='10px' type='image' src='" + ctx + "/oscarEncounter/graphics/annotation.png' title='" + annotationLabel + "' style='float: right; margin-right: 5px; margin-bottom: 3px;'" +
-                    "onclick=\"window.open('" + ctx + "/annotation/annotation.jsp?atbname=" + attribName + "&table_id=" + nId + "&display=EChartNote&demo=" + demographicNo + "','anwin','width=400,height=500');$('annotation_attribname').value='" + attribName + "'; return false;\">";
-
-                new Insertion.Top(parent, editAnchor);
-                new Insertion.After(editId, input);
-
-
+                // note bar: collapse, print, edit, annotation (a new, never saved note has no print or annotation)
+                var controls = [collapseNoteControl(nId)];
                 if (nId.substr(0, 1) != "0") {
-                    Element.remove(printImg);
-                    new Insertion.Before(editId, printimg);
-                    new Insertion.After(editId, attribAnchor);
-                    new Insertion.Top(parent, img);
+                    controls.push(printNoteControl(nId));
                 }
-
-                new Insertion.Top(parent, img);
+                controls.push(editNoteControl(nId));
+                if (nId.substr(0, 1) != "0") {
+                    controls.push(annotationNoteControl(nId));
+                }
+                new Insertion.After(setNoteControls(parent, controls), input);
+                // a note picked for printing stays highlighted
+                showPrintSelected(nId, noteIsQeued("" + nId) >= 0);
 
                 $(parent).style.height = "auto";
 

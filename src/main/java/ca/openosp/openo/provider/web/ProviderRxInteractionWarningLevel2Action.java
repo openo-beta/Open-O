@@ -34,6 +34,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.dao.UserPropertyDAO;
 import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.commn.model.enumerator.UserPropertyKey;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
@@ -49,19 +51,36 @@ public class ProviderRxInteractionWarningLevel2Action extends ActionSupport {
     private static final Logger logger = MiscUtils.getLogger();
 
     private UserPropertyDAO propertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     public String execute() {
         return update();
     }
 
     public String update() {
-        String value = request.getParameter("value");
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_pref", SecurityInfoManager.UPDATE, null)) {
+            throw new SecurityException("missing required sec object (_pref)");
+        }
+
+        // POST only, so CSRFGuard checks the token
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            return null;
+        }
+
+        // Only the levels offered on the preference page: 0 not specified, 1 low, 2 medium, 3 high, 4 none
+        String value = request.getParameter("value");
+        if (value == null || !value.matches("[0-4]")) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+
         String providerNo = loggedInInfo.getLoggedInProviderNo();
-        UserProperty prop = propertyDao.getProp(providerNo, "rxInteractionWarningLevel");
+        UserProperty prop = propertyDao.getProp(providerNo, UserPropertyKey.RX_INTERACTION_WARNING_LEVEL);
         if (prop == null) {
             prop = new UserProperty();
-            prop.setName("rxInteractionWarningLevel");
+            prop.setName(UserPropertyKey.RX_INTERACTION_WARNING_LEVEL.getName());
             prop.setProviderNo(providerNo);
         }
         prop.setValue(value);

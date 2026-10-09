@@ -2,12 +2,11 @@
 
 package ca.openosp.openo.commn.dao;
 
-import java.util.HashMap;
+import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.commn.model.enumerator.UserPropertyKey;
+
 import java.util.List;
 import java.util.Map;
-
-
-import ca.openosp.openo.commn.model.UserProperty;
 
 public interface UserPropertyDAO extends AbstractDao<UserProperty> {
     void delete(UserProperty prop);
@@ -23,6 +22,8 @@ public interface UserPropertyDAO extends AbstractDao<UserProperty> {
     List<UserProperty> getAllProperties(String name, List<String> list);
 
     List<UserProperty> getPropValues(String name, String value);
+
+    UserProperty getProp(String prov, UserPropertyKey property);
 
     UserProperty getProp(String prov, String name);
 
