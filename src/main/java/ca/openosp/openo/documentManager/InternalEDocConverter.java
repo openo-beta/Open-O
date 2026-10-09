@@ -19,13 +19,33 @@ public class InternalEDocConverter implements EDocConverterInterface {
 
     private static final Logger logger = MiscUtils.getLogger();
 
+    /** The renderer's own resolution: one device pixel per CSS pixel. */
+    public static final int DEFAULT_LAYOUT_DPI = 96;
+
     /**
-     * Resolution the page is laid out at. If not set, the renderer defaults to 96, one device
-     * pixel per CSS pixel, and rounds font and line sizes to whole device pixels; at ten device
-     * pixels per CSS pixel nothing the forms use is rounded, so text wraps where the browser
-     * wraps it.
+     * Resolution eForms are laid out at. The renderer rounds font and line sizes to whole
+     * device pixels; at ten device pixels per CSS pixel nothing the forms use is rounded, so
+     * text wraps where the browser wraps it.
      */
-    private static final int LAYOUT_DPI = 960;
+    public static final int EFORM_LAYOUT_DPI = 960;
+
+    private final int dpi;
+
+    /**
+     * A converter laying documents out at {@link #DEFAULT_LAYOUT_DPI}.
+     */
+    public InternalEDocConverter() {
+        this(DEFAULT_LAYOUT_DPI);
+    }
+
+    /**
+     * A converter laying documents out at the given resolution.
+     *
+     * @param dpi int device pixels per inch the page is laid out at
+     */
+    public InternalEDocConverter(int dpi) {
+        this.dpi = dpi;
+    }
 
     /**
      * Converts HTML to PDF using the internal io.woo.htmltopdf library.
@@ -59,7 +79,7 @@ public class InternalEDocConverter implements EDocConverterInterface {
                 .warning(message -> logger.warn("PDF conversion: " + message))
                 .error(message -> logger.error("PDF conversion: " + message))
                 .pageSize(PdfPageSize.Letter)
-                .dpi(LAYOUT_DPI)
+                .dpi(dpi)
                 .convert()) {
             IOUtils.copy(in, os);
         }
