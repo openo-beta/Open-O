@@ -94,6 +94,7 @@ Ontario, Canada
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.appt.JdbcApptImpl" %>
 <%@ page import="ca.openosp.openo.appt.ApptUtil" %>
+<%@ page import="ca.openosp.openo.appt.LocationList" %>
 <%@ page import="ca.openosp.openo.appt.ApptData" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 
@@ -101,6 +102,7 @@ Ontario, Canada
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="appt" %>
 
 <fmt:setBundle basename="oscarResources"/>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
@@ -162,6 +164,8 @@ Ontario, Canada
     LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
     LookupList reasonCodes = lookupListManager.findLookupListByName(loggedInInfo, "reasonCode");
     pageContext.setAttribute("reasonCodes", reasonCodes);
+    LocationList locations = LocationList.load(loggedInInfo);
+    boolean locationMode = locations.isLocationMode();
 
     int iPageSize = 5;
 
@@ -198,6 +202,7 @@ Ontario, Canada
         <script src="<%= request.getContextPath() %>/js/global.js"></script>
         <script src="<%= request.getContextPath() %>/js/checkDate.js"></script>
         <script src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
+        <script src="<%= request.getContextPath() %>/js/appointment/locationSelect.js"></script>
 
         <style>
 
@@ -460,11 +465,16 @@ Ontario, Canada
                 $("#keyword").trigger("patient:unlink");
             }
 
-            function onButRepeat() {
-                document.forms[0].action = "appointmentrepeatbooking.jsp";
-                if (calculateEndTime()) {
-                    document.forms[0].submit();
+            // Search saves nothing, so the Location Requirement doesn't stop it (the button is formnovalidate);
+            // the redisplay still reads every other field, so those are still checked.
+            function onSearch() {
+                const form = document.forms['ADDAPPT'];
+                const valid = [...form.elements].every(field => field.name === 'locationCode' || field.reportValidity());
+                if (valid) {
+                    parseSearch();
+                    form.displaymode.value = 'Search ';
                 }
+                return valid;
             }
 
             <% if(apptObj!=null) { %>
@@ -504,7 +514,11 @@ Ontario, Canada
                 document.forms[0].notes.value = "<%= Encode.forJavaScriptBlock(apptObj.getNotes()) %>";
                 document.forms[0].resources.value = "<%=Encode.forJavaScriptBlock(apptObj.getResources())%>";
                 document.forms[0].type.value = "<%=Encode.forJavaScriptBlock(apptObj.getType())%>";
+                <% if (locationMode) { %>
+                selectLocationCode(document.forms[0].locationCode, "<%=Encode.forJavaScriptBlock(StringUtils.defaultString(apptObj.getLocationCode()))%>");
+                <% } else { %>
                 document.forms[0].location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
+                <% } %>
                 if ('<%=Encode.forJavaScript(String.valueOf(apptObj.getUrgency()))%>' == 'critical') {
                     document.forms[0].urgency.checked = "checked";
                 }
@@ -515,7 +529,7 @@ Ontario, Canada
                 statusCode = statusCode.substring(0, 1); //the selector only supports setting the first status
                 document.forms[0].status.value = statusCode;
                 <%}%>
-                <%if("true".equals(pros.getProperty("appointment.paste.location","false"))) {%>
+                <%if(!locationMode && "true".equals(pros.getProperty("appointment.paste.location","false"))) {%>
                 document.forms[0].location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
                 <%}%>
 
@@ -544,7 +558,10 @@ Ontario, Canada
                 document.forms['ADDAPPT'].duration.value = durSel;
                 document.forms['ADDAPPT'].resources.value = resSel;
                 var loc = document.forms['ADDAPPT'].location;
-                if (loc.nodeName === 'SELECT') {
+                // The Location List takes the type's location by name, and no free text.
+                if (document.forms['ADDAPPT'].locationCode) {
+                    selectLocationByName(document.forms['ADDAPPT'].locationCode, locSel);
+                } else if (loc.nodeName === 'SELECT') {
                     for (c = 0; c < loc.length; c++) {
                         if (loc.options[c].innerHTML == locSel) {
                             loc.selectedIndex = c;
@@ -1195,8 +1212,9 @@ Ontario, Canada
                                         value="<%=Encode.forHtmlAttribute(name)%>"
                                     placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formNamePlaceholder"/>">
                                  <span class="input-group-btn">
-                                    <input type="submit" name="searchBtn" id="searchBtn" class="btn btn-default"
-                                           onclick="parseSearch(); document.forms['ADDAPPT'].displaymode.value='Search ';"
+                                    <%-- The form's first submit button, so it is also what Enter presses. --%>
+                                    <input type="submit" name="searchBtn" id="searchBtn" class="btn btn-default" formnovalidate
+                                           onclick="return onSearch();"
                                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnSearch"/>">
                                  </span>
                                 </div>
@@ -1286,6 +1304,11 @@ Ontario, Canada
                                     }
                                     %>
                                 </select>
+                                <% } else if (locationMode) { %>
+                                <%-- The Default Location only on first display: a patient search posts back staff's choice. --%>
+                                <appt:locationSelect choices="<%=locations.getActiveItems()%>"
+                                                     selected='<%=bFirstDisp ? locations.getNewBookingValue(loggedInInfo) : request.getParameter("locationCode")%>'
+                                                     required="<%=locations.isRequiredForNewBooking(loggedInInfo)%>"/>
                                 <% } else { %>
 	            <input type="TEXT" name="location" tabindex="4" tabindex="4" value="<%=Encode.forHtmlAttribute(String.valueOf(loc))%>" class="form-control">
                                 <% } %>
@@ -1498,8 +1521,9 @@ Ontario, Canada
                     <% if (!(bDnb || bMultipleSameDayGroupAppt)) { %>
 
                     <% if (!props.getProperty("allowMultipleSameDayGroupAppt", "").equalsIgnoreCase("no")) {%>
+                    <%-- Clears the receipt flag, which Print Receipt leaves set when the browser refuses its save. --%>
                     <input type="submit" id="addButton" class="btn btn-primary"
-                           onclick="document.forms['ADDAPPT'].displaymode.value='Add Appointment'"
+                           onclick="document.forms['ADDAPPT'].displaymode.value='Add Appointment';document.forms['ADDAPPT'].printReceipt.value='';"
                            tabindex="6"
                            value="<% if (isMobileOptimized) { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnAddAppointmentMobile"/>
                    <% } else { %><fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnAddAppointment"/><% } %>"
@@ -1563,9 +1587,10 @@ Ontario, Canada
                     <% }%>
 
                     <% if (!props.getProperty("allowMultipleSameDayGroupAppt", "").equalsIgnoreCase("no")) {%>
-                    <input type="button" id="apptRepeatButton" class="btn"
+                    <%-- A submit like the other saves, so the browser checks it and the form's action never changes. --%>
+                    <input type="submit" id="apptRepeatButton" class="btn" formaction="appointmentrepeatbooking.jsp"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="appointment.addappointment.btnRepeat"/>"
-                           onclick="onButRepeat()" <%=Encode.forHtml(String.valueOf(disabled))%>>
+                           <%=Encode.forHtml(String.valueOf(disabled))%>>
                     <% } %>
                     <input type="RESET" id="backButton" class="btn btn-link"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>" onClick="cancelPageLock();window.close();">

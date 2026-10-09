@@ -86,11 +86,28 @@ public final class ApptStatusData {
         apptStatus = status;
     }
 
-    public String getImageName() {
+    /**
+     * Returns the icon the schedule draws for the appointment's status. For an image, a signed or
+     * verified appointment gets the image's S- or V-prefixed copy. A glyph status's icon is the glyph
+     * itself, and {@link #getSignOff()} says which square to draw it on.
+     *
+     * @return String an image under /images, or a glyph class (see {@link IconSet#isGlyph})
+     */
+    public String getIcon() {
         if (strEditable != null && strEditable.equalsIgnoreCase("yes"))
             return getStr("icon");
         else
             return getStr(aStatus, aImageName);
+    }
+
+    /**
+     * Returns whether the appointment is signed or verified, as the second letter of its status.
+     *
+     * @return String "S" when signed, "V" when verified, or "" when neither
+     * @since 2026-10-07
+     */
+    public String getSignOff() {
+        return apptStatus != null && apptStatus.length() >= 2 ? apptStatus.substring(1, 2) : "";
     }
 
     public String getNextStatus() {
@@ -289,7 +306,8 @@ public final class ApptStatusData {
             if (kind.equals("icon")) {
                 if (strStatus.equals(s.getStatus())) {
                     rstr = s.getIcon();
-                    if (strOtherIcon.length() == 1)
+                    // A glyph has no S or V copy; getSignOff() marks it instead.
+                    if (strOtherIcon.length() == 1 && !IconSet.isGlyph(rstr))
                         return strOtherIcon + rstr;
                     else
                         return rstr;

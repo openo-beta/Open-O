@@ -32,17 +32,84 @@ import ca.openosp.openo.commn.model.AppointmentStatus;
  * @author toby
  */
 public interface AppointmentStatusMgr {
+
+    /**
+     * Width of the appointment_status.description column.
+     *
+     * @since 2026-09-15
+     */
+    int DESCRIPTION_MAX_LENGTH = 30;
+
     public List<AppointmentStatus> getAllStatus();
 
     public List<AppointmentStatus> getAllActiveStatus();
 
     public AppointmentStatus getStatus(int ID);
 
-    public void changeStatus(int ID, int iActive);
+    /**
+     * Enables or disables an editable status. Locked statuses (editable=0) stay as seeded, as they
+     * do for every other change.
+     *
+     * @param id int the appointment_status id
+     * @param active int 1 to enable the status, 0 to disable it
+     * @return boolean true when saved; false when there is no such status or it is locked (editable=0)
+     * @throws IllegalArgumentException if active is neither 0 nor 1
+     * @since 2026-09-23
+     */
+    public boolean changeStatus(int id, int active);
 
-    public void modifyStatus(int ID, String strDesc, String strColor);
+    /**
+     * Renames an editable status.
+     *
+     * @param id int the appointment_status id
+     * @param description String the new description; surrounding whitespace is trimmed
+     * @return boolean true when saved; false when there is no such status or it is locked (editable=0)
+     * @throws IllegalArgumentException if the trimmed description is blank or longer than
+     *     {@link #DESCRIPTION_MAX_LENGTH}
+     * @since 2026-09-15
+     */
+    public boolean updateDescription(int id, String description);
 
-    public int checkStatusUsuage(List<AppointmentStatus> allStatus);
+    /**
+     * Sets an editable status's background colour.
+     *
+     * @param id int the appointment_status id
+     * @param colour String the new colour as #rrggbb, or #rrggbbaa when see-through; surrounding
+     *     whitespace is trimmed
+     * @return boolean true when saved; false when there is no such status or it is locked (editable=0)
+     * @throws IllegalArgumentException if the colour is neither #rrggbb nor #rrggbbaa
+     * @since 2026-09-15
+     */
+    public boolean updateColour(int id, String colour);
 
+    /**
+     * Sets an editable status's icon.
+     *
+     * @param id int the appointment_status id
+     * @param icon String the new icon, one of {@link ca.openosp.openo.appt.IconSet#ICONS}: an image or a glyph
+     * @return boolean true when saved; false when there is no such status or it is locked (editable=0)
+     * @throws IllegalArgumentException if the icon is not in the Icon Set
+     * @since 2026-09-15
+     */
+    public boolean updateIcon(int id, String icon);
+
+    /**
+     * Whether a status is in use: at least one appointment, on any date, has it. Signed and verified
+     * appointments count, and codes are compared case-sensitively, since h and H are different statuses.
+     *
+     * @param statusCode String the status code
+     * @return boolean true if at least one appointment has the status
+     * @since 2026-09-30
+     */
+    public boolean isInUse(String statusCode);
+
+    /**
+     * Puts every editable status (editable=1) back to its Default Status Style: the description,
+     * colour and icon it is seeded with. Statuses are matched by status code, not id, because ids
+     * differ between installs. Locked statuses, codes without a default, and whether a status is
+     * active are left alone, and no missing status is added. All changes are saved together.
+     *
+     * @since 2026-09-21
+     */
     public void reset();
 }

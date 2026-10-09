@@ -17,8 +17,14 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 --%>
+<%--
+    Appointment Settings entry point, linked from the admin menus. Opens the Status tab when
+    ENABLE_EDIT_APPT_STATUS is on, otherwise the Location tab.
 
-<% 
-    String contextPath = request.getContextPath();
-    response.sendRedirect(contextPath + "/appointment/apptStatusSetting.do?dispatch=view"); 
+    @since 2008-04-21
+--%>
+<%@ page import="ca.openosp.openo.appt.web.AppointmentSettingsAction" %>
+<%
+    String tab = AppointmentSettingsAction.isStatusTabEnabled() ? "/appointment/apptStatusSetting.do" : "/appointment/apptLocationSetting.do";
+    response.sendRedirect(request.getContextPath() + tab);
 %>

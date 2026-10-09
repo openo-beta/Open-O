@@ -72,7 +72,9 @@ public class SiteDaoImpl extends AbstractDaoImpl<Site> implements SiteDao {
                 query.setParameter(2, old.getName());
                 query.executeUpdate();
 
-                query = entityManager.createNativeQuery("update appointment set location = ?1 where location = ?2");
+                // A Location List code no longer matches the renamed text, so clear it, as
+                // LocationList.setLocationText does for every other location text change.
+                query = entityManager.createNativeQuery("update appointment set location = ?1, locationCode = null where location = ?2");
                 query.setParameter(1, s.getName());
                 query.setParameter(2, old.getName());
                 query.executeUpdate();

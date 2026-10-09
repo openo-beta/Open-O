@@ -79,6 +79,7 @@ public class AppointmentArchive extends AbstractModel<Integer> {
     private String notes;
     private String reason;
     private String location;
+    private Integer locationCode;
     private String resources;
     private String type;
     private String style;
@@ -186,6 +187,26 @@ public class AppointmentArchive extends AbstractModel<Integer> {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    /**
+     * Gets the Location List item the appointment had when archived.
+     *
+     * @return Integer the LookupListItem id, or null when no item was chosen
+     * @since 2026-09-15
+     */
+    public Integer getLocationCode() {
+        return locationCode;
+    }
+
+    /**
+     * Sets the Location List item the appointment had when archived.
+     *
+     * @param locationCode Integer the LookupListItem id, or null for none
+     * @since 2026-09-15
+     */
+    public void setLocationCode(Integer locationCode) {
+        this.locationCode = locationCode;
     }
 
     public String getResources() {
