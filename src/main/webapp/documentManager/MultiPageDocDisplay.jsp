@@ -42,6 +42,7 @@
 
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.utility.WebUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -231,7 +232,7 @@
                     <table border="0">
                         <tr>
                             <td><fmt:setBundle basename="oscarResources"/><fmt:message key="inboxmanager.document.DocumentUploaded"/></td>
-                            <td><%=Encode.forHtml(String.valueOf(curdoc.getDateTimeStamp()))%>
+                            <td><%=Encode.forHtml(ConversionUtils.toTimestampString(curdoc.getContentDateTime()))%>
                             </td>
                         </tr>
                         <tr>
