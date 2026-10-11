@@ -202,8 +202,20 @@ this.focus();
 
 function popupPage(vheight,vwidth,varpage) {
 var page = "" + varpage;
+var windowname = "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.apptProvider"/>";
+// Pages on another site, such as the Resource link, get their own window name
+// so they never share a window with an OpenO page.
+var site = null;
+try {
+    site = new URL(page, document.baseURI);
+} catch (e) {
+    // An address the browser cannot read keeps the window name it was given.
+}
+if (site && (site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
+    windowname = "oscarExternal_" + windowname;
+}
 windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
-var popup=window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.apptProvider"/>", windowprops);
+var popup=window.open(page, windowname, windowprops);
 if (popup != null) {
 if (popup.opener == null) {
 popup.opener = self;
@@ -269,6 +281,17 @@ windowname = typeof(windowname)!= 'undefined' ? windowname : 'apptProviderSearch
 vheight = typeof(vheight) != 'undefined' ? vheight : '700px';
 vwidth = typeof(vwidth) != 'undefined' ? vwidth : '1024px';
 var page = "" + varpage;
+// Pages on another site, such as the Resource link, get their own window name
+// so they never share a window with an OpenO page.
+var site = null;
+try {
+    site = new URL(page, document.baseURI);
+} catch (e) {
+    // An address the browser cannot read keeps the window name it was given.
+}
+if (site && (site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
+    windowname = "oscarExternal_" + (windowname || site.host);
+}
 windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
 var popup = window.open(page, windowname, windowprops);
 if (popup != null) {
@@ -282,8 +305,20 @@ popup.focus();
 <!--messenger code block-->
 function popupOscarRx(vheight,vwidth,varpage) {
 var page = varpage;
+var windowname = "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>_appt";
+// Pages on another site, such as the Resource link, get their own window name
+// so they never share a window with an OpenO page.
+var site = null;
+try {
+    site = new URL(page, document.baseURI);
+} catch (e) {
+    // An address the browser cannot read keeps the window name it was given.
+}
+if (site && (site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
+    windowname = "oscarExternal_" + windowname;
+}
 windowprops = "height="+vheight+",width="+vwidth+",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
-var popup=window.open(varpage, "<fmt:setBundle basename="oscarResources"/><fmt:message key="global.oscarRx"/>_appt", windowprops);
+var popup=window.open(page, windowname, windowprops);
 if (popup != null) {
 if (popup.opener == null) {
 popup.opener = self;
