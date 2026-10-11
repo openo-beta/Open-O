@@ -45,7 +45,9 @@ import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.OtherIdManager;
 import ca.openosp.openo.managers.DemographicManager;
+import ca.openosp.openo.olis.dao.OLISProviderPreferencesDao;
 import ca.openosp.openo.olis.dao.OLISSystemPreferencesDao;
+import ca.openosp.openo.olis.model.OLISProviderPreferences;
 import ca.openosp.openo.olis.model.OLISSystemPreferences;
 import ca.openosp.openo.utility.DbConnectionFilter;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -89,10 +91,26 @@ public final class MessageUploader {
      * Insert the lab into the proper tables of the database
      */
     public static String routeReport(LoggedInInfo loggedInInfo, String serviceName, String type, String hl7Body, int fileId, RouteReportResults results) throws Exception {
-        return routeReport(loggedInInfo, serviceName, Factory.getHandler(type, hl7Body), hl7Body, fileId, results, type);
+        return routeReport(loggedInInfo, serviceName, Factory.getHandler(type, hl7Body), hl7Body, fileId, results, type, null);
+    }
+
+    /**
+     * OLIS polling entry point — carries the provider the Z04 poll ran on behalf of so that
+     * unmatched-result routing can honour that provider's {@code OLISProviderPreferences}
+     * override before falling back to the system-level setting (OLIS02.03).
+     *
+     * @param olisPollingProviderNo String the provider_no the OLIS poll ran for, or {@code null}
+     *                              for non-polling callers (manual upload, other lab types)
+     */
+    public static String routeReport(LoggedInInfo loggedInInfo, String serviceName, String type, String hl7Body, int fileId, RouteReportResults results, String olisPollingProviderNo) throws Exception {
+        return routeReport(loggedInInfo, serviceName, Factory.getHandler(type, hl7Body), hl7Body, fileId, results, type, olisPollingProviderNo);
     }
 
     public static String routeReport(LoggedInInfo loggedInInfo, String serviceName, MessageHandler h, String hl7Body, int fileId, RouteReportResults results, String type) throws Exception {
+        return routeReport(loggedInInfo, serviceName, h, hl7Body, fileId, results, type, null);
+    }
+
+    public static String routeReport(LoggedInInfo loggedInInfo, String serviceName, MessageHandler h, String hl7Body, int fileId, RouteReportResults results, String type, String olisPollingProviderNo) throws Exception {
 
         String retVal = "";
 
@@ -273,8 +291,23 @@ public final class MessageUploader {
 			OLISSystemPreferencesDao olisPrefDao = (OLISSystemPreferencesDao)SpringUtils.getBean("OLISSystemPreferencesDao");
             OLISSystemPreferences olisPreferences = olisPrefDao.getPreferences();
 
+            // OLIS02.03: honour the polling provider's per-provider override first; a null
+            // override (or no polling provider, e.g. manual upload) falls back to the
+            // system-level filterPatients setting.
+            Boolean providerFilterOverride = null;
+            if (olisPollingProviderNo != null) {
+                OLISProviderPreferencesDao olisProviderPrefDao = SpringUtils.getBean(OLISProviderPreferencesDao.class);
+                OLISProviderPreferences providerPreferences = olisProviderPrefDao.findById(olisPollingProviderNo);
+                if (providerPreferences != null) {
+                    providerFilterOverride = providerPreferences.getFilterPatients();
+                }
+            }
+            boolean filterPatients = (providerFilterOverride != null)
+                    ? providerFilterOverride
+                    : olisPreferences.isFilterPatients();
+
             try (Connection connection = DbConnectionFilter.getThreadLocalDbConnection()) {
-                if (olisPreferences.isFilterPatients()) {
+                if (filterPatients) {
                     //set as unclaimed
                     providerRouteReport(String.valueOf(insertID), null, connection, String.valueOf(0), type);
                 } else {
@@ -398,6 +431,7 @@ public final class MessageUploader {
             for (int i = 0; i < docNums.size(); i++) {
 
                 if (docNums.get(i) != null && !((String) docNums.get(i)).trim().equals("")) {
+                    String searchValue;
                     if ("ON".equals(OscarProperties.getInstance().getProperty("billregion", "ON"))) {
                         StringBuilder practitionerNum = new StringBuilder(((String) docNums.get(i)).trim());
                         if (sqlSearchOn.equalsIgnoreCase("ohip_no")) {
@@ -405,11 +439,14 @@ public final class MessageUploader {
                                 practitionerNum.insert(0, "0");
                             }
                         }
-                        sql = "select provider_no from provider where " + sqlSearchOn + " = '" + practitionerNum.toString() + "'" + sqlOrderByLength + sqlLimit;
+                        searchValue = practitionerNum.toString();
+                        sql = "select provider_no from provider where " + sqlSearchOn + " = ?" + sqlOrderByLength + sqlLimit;
                     } else {
-                        sql = "select provider_no from provider where " + sqlSearchOn + " LIKE '" + ((String) docNums.get(i)) + "'" + sqlOrderByLength + sqlLimit;
+                        searchValue = (String) docNums.get(i);
+                        sql = "select provider_no from provider where " + sqlSearchOn + " LIKE ?" + sqlOrderByLength + sqlLimit;
                     }
                     pstmt = conn.prepareStatement(sql);
+                    pstmt.setString(1, searchValue);
                     ResultSet rs = pstmt.executeQuery();
                     while (rs.next()) {
                         providerNums.add(Misc.getString(rs, "provider_no"));
@@ -490,10 +527,16 @@ public final class MessageUploader {
                 return null;
             }
 
-            sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " last_name = '" + lastName + "' and " + " year_of_birth = '" + dobYear + "' and " + " month_of_birth = '" + dobMonth + "' and " + " date_of_birth = '" + dobDay + "' and " + " sex = '" + sex + "' ";
+            sql = "select demographic_no, provider_no from demographic where hin=? and last_name = ? and year_of_birth = ? and month_of_birth = ? and date_of_birth = ? and sex = ?";
 
             logger.debug(sql);
             PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, hinMod);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, dobYear);
+            pstmt.setString(4, dobMonth);
+            pstmt.setString(5, dobDay);
+            pstmt.setString(6, sex);
             ResultSet rs = pstmt.executeQuery();
             int count = 0;
 
@@ -566,10 +609,16 @@ public final class MessageUploader {
                 return null;
             }
 
-            sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " last_name = '" + lastName + "' and " + " year_of_birth = '" + dobYear + "' and " + " month_of_birth = '" + dobMonth + "' and " + " date_of_birth = '" + dobDay + "' and " + " sex = '" + sex + "' ";
+            sql = "select demographic_no, provider_no from demographic where hin=? and last_name = ? and year_of_birth = ? and month_of_birth = ? and date_of_birth = ? and sex = ?";
 
             logger.debug(sql);
             PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, hinMod);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, dobYear);
+            pstmt.setString(4, dobMonth);
+            pstmt.setString(5, dobDay);
+            pstmt.setString(6, sex);
             ResultSet rs = pstmt.executeQuery();
             int count = 0;
 
@@ -618,12 +667,14 @@ public final class MessageUploader {
             }
 
             if (result != null) {
-                sql = "insert into patientLabRouting (demographic_no, lab_no,lab_type,dateModified,created) values ('" + ((result != null && result.getDemographicNo() != null) ? result.getDemographicNo().toString() : "0") + "', '" + labId + "','HL7',now(),now())";
+                sql = "insert into patientLabRouting (demographic_no, lab_no,lab_type,dateModified,created) values (?, ?,'HL7',now(),now())";
                 Connection c = null;
                 PreparedStatement pstmt = null;
                 try {
                     c = DbConnectionFilter.getThreadLocalDbConnection();
                     pstmt = c.prepareStatement(sql);
+                    pstmt.setString(1, (result.getDemographicNo() != null) ? result.getDemographicNo().toString() : "0");
+                    pstmt.setInt(2, labId);
                     pstmt.executeUpdate();
 
                 } finally {
@@ -637,7 +688,9 @@ public final class MessageUploader {
 
             }
         } catch (SQLException sqlE) {
-            logger.info("NO MATCHING PATIENT FOR LAB id =" + labId);
+            // Patient already matched above; a failure here is the head-record lookup,
+            // measurement population, or routing insert — not "no matching patient".
+            logger.error("Error routing matched lab to its patient (lab id = " + labId + ")", sqlE);
             throw sqlE;
         }
 
@@ -687,15 +740,30 @@ public final class MessageUploader {
 				// HIN is ALWAYS required for lab matching. Please do not revert this code. Previous iterations have caused fatal patient miss-matches.
 				if(hinMod != null && !hinMod.trim().isEmpty()) {
 					if (OscarProperties.getInstance().getBooleanProperty("LAB_NOMATCH_NAMES", "yes")) {
-						sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " year_of_birth like '" + dobYear + "' and " + " month_of_birth like '" + dobMonth + "' and " + " date_of_birth like '" + dobDay + "' and " + " sex like '" + sex + "%' ";
+						sql = "select demographic_no, provider_no from demographic where hin=? and year_of_birth like ? and month_of_birth like ? and date_of_birth like ? and sex like ?";
 					} else {
-						sql = "select demographic_no, provider_no from demographic where hin='" + hinMod + "' and " + " last_name like '" + lastName + "%' and " + " first_name like '" + firstName + "%' and " + " year_of_birth like '" + dobYear + "' and " + " month_of_birth like '" + dobMonth + "' and " + " date_of_birth like '" + dobDay + "' and " + " sex like '" + sex + "%' ";
+						sql = "select demographic_no, provider_no from demographic where hin=? and last_name like ? and first_name like ? and year_of_birth like ? and month_of_birth like ? and date_of_birth like ? and sex like ?";
 					}
 				}
 
 				if( sql != null ) {
 					logger.debug(sql);
 					PreparedStatement pstmt = conn.prepareStatement(sql);
+					if (OscarProperties.getInstance().getBooleanProperty("LAB_NOMATCH_NAMES", "yes")) {
+						pstmt.setString(1, hinMod);
+						pstmt.setString(2, dobYear);
+						pstmt.setString(3, dobMonth);
+						pstmt.setString(4, dobDay);
+						pstmt.setString(5, sex + "%");
+					} else {
+						pstmt.setString(1, hinMod);
+						pstmt.setString(2, lastName + "%");
+						pstmt.setString(3, firstName + "%");
+						pstmt.setString(4, dobYear);
+						pstmt.setString(5, dobMonth);
+						pstmt.setString(6, dobDay);
+						pstmt.setString(7, sex + "%");
+					}
 					ResultSet rs = pstmt.executeQuery();
 					int count = 0;
 

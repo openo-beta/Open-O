@@ -121,4 +121,57 @@ class HtmlEncodingUtilsTest {
         String result = HtmlEncodingUtils.encodeForHtmlWithSemicolonBreaks("a;b;");
         assertThat(result).isEqualTo("a<br />b<br />");
     }
+
+    // --- encodeCleanTextWithBreaks (OLIS markup-laced comments) ---
+
+    @Test
+    @DisplayName("clean breaks: returns empty for null")
+    void cleanBreaksShouldReturnEmptyForNull() {
+        assertThat(HtmlEncodingUtils.encodeCleanTextWithBreaks(null)).isEmpty();
+    }
+
+    @Test
+    @DisplayName("clean breaks: leaves plain single-line text unchanged")
+    void cleanBreaksShouldLeavePlainTextUnchanged() {
+        assertThat(HtmlEncodingUtils.encodeCleanTextWithBreaks("Specimen slightly hemolyzed"))
+                .isEqualTo("Specimen slightly hemolyzed");
+    }
+
+    @Test
+    @DisplayName("clean breaks: converts OLIS <br/> markup to rendered line breaks")
+    void cleanBreaksShouldRenderMultilineBreaks() {
+        // OLISHL7Handler.formatString pre-bakes <br/> for HL7 \.br\ operators.
+        // (jsoup leaves a harmless space ahead of each break placeholder; it
+        // collapses on render, so assert on structure rather than exact spacing.)
+        String result = HtmlEncodingUtils.encodeCleanTextWithBreaks("Line one<br/>Line two<br/>Line three");
+        assertThat(result).doesNotContain("<br/>");
+        assertThat(result.split("<br />", -1)).hasSize(3);
+        assertThat(result).contains("Line one", "Line two", "Line three");
+    }
+
+    @Test
+    @DisplayName("clean breaks: strips pre-baked &nbsp; and <span> markup")
+    void cleanBreaksShouldStripOlisMarkup() {
+        // OLIS bakes every space to &nbsp; and wraps formatted runs in <span style=...>
+        String result = HtmlEncodingUtils.encodeCleanTextWithBreaks(
+                "DR.&nbsp;SMITH <span style=\"font-weight:bold\">MD&nbsp;12345</span>");
+        assertThat(result)
+                .doesNotContain("&nbsp;")
+                .doesNotContain("<span")
+                .doesNotContain("&lt;span")
+                .isEqualTo("DR. SMITH MD 12345");
+    }
+
+    @Test
+    @DisplayName("clean breaks: drops injected script, only trusted <br /> survives")
+    void cleanBreaksShouldDropInjectedScript() {
+        // jsoup runs before encoding, so a <script> element is removed outright
+        // (its content is not text) — even safer than escaping it.
+        String result = HtmlEncodingUtils.encodeCleanTextWithBreaks("safe<br/><script>alert(1)</script>");
+        assertThat(result)
+                .doesNotContain("<script>")
+                .doesNotContain("alert(1)")
+                .contains("safe")
+                .contains("<br />");
+    }
 }

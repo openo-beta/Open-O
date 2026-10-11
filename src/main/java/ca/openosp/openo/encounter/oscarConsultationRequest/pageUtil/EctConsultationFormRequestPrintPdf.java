@@ -57,8 +57,10 @@ import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.clinic.ClinicData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
+import ca.openosp.openo.lab.ca.all.pageUtil.OLISLabPDFCreator;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.util.ConcatPDF;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
@@ -290,8 +292,12 @@ public class EctConsultationFormRequestPrintPdf {
             String fileName = OscarProperties.getInstance().getDocumentDirectory() + "//" + handler.getPatientName().replaceAll("\\s", "_") + "_" + handler.getMsgDate() + "_LabReport.pdf";
 
             try (OutputStream os = new FileOutputStream(fileName)) {
-                LabPDFCreator pdf = new LabPDFCreator(request, os);
-                pdf.printPdf();
+                boolean isOlis = handler instanceof OLISHL7Handler;
+                if (isOlis) {
+                    new OLISLabPDFCreator(os, request, segmentId, (OLISHL7Handler) handler).printPdf();
+                } else {
+                    new LabPDFCreator(request, os, handler).printPdf();
+                }
                 pdfDocs.add(fileName);
             } catch (Exception e) {
                 request.setAttribute("printError", Boolean.valueOf(true));

@@ -573,8 +573,15 @@ public class LabDataController {
             for (String labSegmentId : labNums) {
                 LabResultData matchingResult = labMap.get(labSegmentId);
 
-                LocalDate dateA = result.getDateObj().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                LocalDate dateB = matchingResult.getDateObj().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                // getDateObj() returns null for labs where the source-specific labType
+                // branch in LabResultData.getDateObj() can't populate dateTimeObr (eg.
+                // OLIS-routed HL7 labs whose dateTime field isn't set when LabResultData
+                // is built). Without these null-checks, the toInstant() deref NPEs and
+                // the existing null guard at the monthsBetween line below is unreachable.
+                Date dA = result.getDateObj();
+                Date dB = matchingResult.getDateObj();
+                LocalDate dateA = (dA == null) ? null : dA.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDate dateB = (dB == null) ? null : dB.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
                 // Calculate the difference in months between the two dates
                 long monthsBetween = (dateA == null || dateB == null) ? 5 : Math.abs(ChronoUnit.MONTHS.between(dateA, dateB));

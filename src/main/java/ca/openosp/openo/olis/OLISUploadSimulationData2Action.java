@@ -9,6 +9,8 @@
  */
 package ca.openosp.openo.olis;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.List;
@@ -16,65 +18,82 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.DefaultFileItemFactory;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
+import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.olis1.Driver;
 
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
-public class OLISUploadSimulationData2Action extends ActionSupport {
+public class OLISUploadSimulationData2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     @Override
     public String execute() {
+        if (!securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin", "w", null)) {
+            throw new SecurityException("missing required sec object");
+        }
 
         Logger logger = MiscUtils.getLogger();
 
-        String simulationData = null;
-        boolean simulationError = false;
+        if (simulateFileOnDisk == null) {
+            request.setAttribute("result", "Please select a file to upload before submitting.");
+            return SUCCESS;
+        }
 
-        try {
-            FileUpload upload = new FileUpload(new DefaultFileItemFactory());
-            @SuppressWarnings("unchecked")
-            List<FileItem> items = upload.parseRequest(request);
-            for (FileItem item : items) {
-                if (item.isFormField()) {
-                    String name = item.getFieldName();
-                    if (name.equals("simulateError")) {
-                        simulationError = true;
-                    }
-                } else {
-                    if (item.getFieldName().equals("simulateFile")) {
-                        InputStream is = item.getInputStream();
-                        StringWriter writer = new StringWriter();
-                        IOUtils.copy(is, writer, "UTF-8");
-                        simulationData = writer.toString();
-                    }
-                }
-            }
+        String simulationData = null;
+        try (InputStream is = new FileInputStream(simulateFileOnDisk)) {
+            StringWriter writer = new StringWriter();
+            IOUtils.copy(is, writer, "UTF-8");
+            simulationData = writer.toString();
 
             if (simulationData != null && simulationData.length() > 0) {
-                if (simulationError) {
+                if (simulateError) {
                     Driver.readResponseFromXML(LoggedInInfo.getLoggedInInfoFromSession(request), request, simulationData);
                     simulationData = (String) request.getAttribute("olisResponseContent");
                     request.getSession().setAttribute("errors", request.getAttribute("errors"));
                 }
                 request.getSession().setAttribute("olisResponseContent", simulationData);
                 request.setAttribute("result", "File successfully uploaded");
+            } else {
+                request.setAttribute("result", "Uploaded file was empty");
             }
         } catch (Exception e) {
-            MiscUtils.getLogger().error("Error", e);
+            logger.error("Error reading uploaded OLIS simulation file", e);
+            request.setAttribute("result", "Error reading uploaded file");
         }
 
         return SUCCESS;
+    }
+
+    private File simulateFileOnDisk;
+    private boolean simulateError;
+
+
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            UploadedFile simulateFile = uploadedFiles.get(0);
+            this.simulateFileOnDisk = PathValidationUtils.toFile(simulateFile);
+        }
+    }
+
+    public void setSimulateError(String simulateErrorParam) {
+        // HTML checkbox sends "on" when checked, no param when unchecked.
+        // Treat any non-empty / non-"false" presence as true.
+        this.simulateError = simulateErrorParam != null
+                && !"false".equalsIgnoreCase(simulateErrorParam)
+                && !simulateErrorParam.isEmpty();
     }
 }

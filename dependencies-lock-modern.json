@@ -16,14 +16,6 @@
     "optional" : false,
     "integrity" : "sha512:Fk96WeLnoxM1/LPhcKF4BMqudKGSv1yNdr+QgZ628YPpzeFbSeHYtXE7FfxmOHGAi/XjojvhYo+2B09trwZQrA=="
   }, {
-    "groupId" : "ca.ssha.www",
-    "artifactId" : "olis-service",
-    "version" : "20111111",
-    "scope" : "compile",
-    "type" : "jar",
-    "optional" : false,
-    "integrity" : "sha512:wESlz+a7J/+0sK6n/skG+7nuVObWMVMI+o7wdRkepc9yEJL2JtZPUSf8yGLGnQV18I6wqUfCE85+dZyGLZfeNg=="
-  }, {
     "groupId" : "ca.uhn.hapi.fhir",
     "artifactId" : "hapi-fhir-base",
     "version" : "6.10.5",
@@ -1618,6 +1610,14 @@
     "type" : "jar",
     "optional" : false,
     "integrity" : "sha512:KrUj/ODzyqiG2581XSPEfq4etnJpgI8jA5QEEHPRZFcBBcR2XaP3VOoGxIfgOg1zM96GMR00O6ptiPcqd6qswQ=="
+  }, {
+    "groupId" : "org.apache.axis2",
+    "artifactId" : "axis2-transport-local",
+    "version" : "1.8.2",
+    "scope" : "compile",
+    "type" : "jar",
+    "optional" : false,
+    "integrity" : "sha512:nNWhkkuXrt/qhkfNIz8JccJoWdE4j9HBU9iefha1OTOkzS18o3H7QQsF8pvgc/nGisJDVJGQQtIhWSrrb5qhKg=="
   }, {
     "groupId" : "org.apache.axis2",
     "artifactId" : "axis2",

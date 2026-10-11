@@ -49,6 +49,10 @@ import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.form.util.FormTransportContainer;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
+import ca.openosp.openo.lab.ca.all.pageUtil.OLISLabPDFCreator;
+import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 import ca.openosp.openo.util.ConcatPDF;
@@ -160,14 +164,27 @@ public class EctConsultationFormRequestPrintAction22Action extends ActionSupport
                         ByteOutputStream byteOutputStream = new ByteOutputStream();
                 ) {
                     request.setAttribute("segmentID", labs.get(i).segmentID);
-                    LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream);
-                    labPDFCreator.printPdf();
-                    labPDFCreator.addEmbeddedDocuments(tempLabPDF, byteOutputStream);
+                    // Parse each lab once and reuse the handler in the chosen creator.
+                    MessageHandler handler = Factory.getHandler(labs.get(i).segmentID);
+                    boolean isOlis = handler instanceof OLISHL7Handler;
+                    if (isOlis) {
+                        new OLISLabPDFCreator(fileOutputStream, request, labs.get(i).segmentID, (OLISHL7Handler) handler).printPdf();
+                        buffer = java.nio.file.Files.readAllBytes(tempLabPDF.toPath());
+                    } else {
+                        LabPDFCreator labPDFCreator = new LabPDFCreator(request, fileOutputStream, handler);
+                        labPDFCreator.printPdf();
+                        labPDFCreator.addEmbeddedDocuments(tempLabPDF, byteOutputStream);
+                        buffer = byteOutputStream.getBytes();
+                    }
 
                     // Transferring PDF to an input stream to be concatenated with
-                    // the rest of the documents.
-                    buffer = byteOutputStream.getBytes();
-                    bis = new ByteInputStream(buffer, byteOutputStream.getCount());
+                    // the rest of the documents. The OLIS path reads an exactly-sized
+                    // array via Files.readAllBytes, but ByteOutputStream.getBytes()
+                    // returns the oversized backing buffer, so use getCount() there.
+                    int byteCount = isOlis
+                            ? buffer.length
+                            : byteOutputStream.getCount();
+                    bis = new ByteInputStream(buffer, byteCount);
                     streams.add(bis);
                     alist.add(bis);
                 }

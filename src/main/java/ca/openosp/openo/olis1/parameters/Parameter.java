@@ -21,4 +21,25 @@ public interface Parameter {
     public void setValue(Integer part, Integer part2, Object value);
 
     public String getQueryCode();
+
+    /**
+     * Escapes the HL7 v2 delimiter characters in a free-text parameter value so a
+     * value containing {@code ~ ^ \ &} cannot corrupt the {@code @CODE^value~...}
+     * OLIS query-segment structure. The escape character is substituted first so the
+     * escape sequences introduced for the other delimiters are not re-escaped.
+     *
+     * @param value String the raw parameter value; may be null
+     * @return String the delimiter-escaped value, or an empty string when {@code value} is null
+     * @since 2026-06-18
+     */
+    static String escapeHl7(String value) {
+        if (value == null) {
+            return "";
+        }
+        return value
+                .replace("\\", "\\E\\")
+                .replace("~", "\\R\\")
+                .replace("^", "\\S\\")
+                .replace("&", "\\T\\");
+    }
 }
