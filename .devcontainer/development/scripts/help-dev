@@ -86,6 +86,7 @@ GIT WORKFLOW:
   git diff                View uncommitted changes
   git log --oneline -10   Recent commits
   gh pr create            Create pull request
+  package-prs --help      Cherry-pick PR merge commits into a package branch
 
 =============================================================
 Type 'make help' for build options or 'server help' for server management
