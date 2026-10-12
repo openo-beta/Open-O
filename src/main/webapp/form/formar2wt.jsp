@@ -71,6 +71,7 @@
 <%
     String fedb = props.getProperty("c_finalEDB", "");
     String cppw = props.getProperty("c_ppWt", "");
+    //urlparam is a query fragment: encode the values here, never the whole fragment (that turns "&" into "%26")
     String urlparam = "";
 
     int width = 373, height = 366;
@@ -94,7 +95,7 @@
                 if (dy < 0 || dy > 28) continue;
                 x = (int) ((ox + (dx - 8) * width / (9 * 4)) - 2);
                 y = (int) ((oy - (dy - 0) * height / (6 * 2)) - 1);
-                urlparam += "&x" + (i - 1) + "=" + x + "|" + y;
+                urlparam += "&x" + (i - 1) + "=" + Encode.forUriComponent(x + "|" + y);
             }
         }
         for (int i = 18; i < 35; i++) {
@@ -109,14 +110,14 @@
                 if (dy < 0 || dy > 28) continue;
                 x = (int) ((ox + (dx - 8) * width / (9 * 4)) - 2);
                 y = (int) ((oy - (dy - 0) * height / (6 * 2)) - 1);
-                urlparam += "&x" + (i - 1) + "=" + x + "|" + y;
+                urlparam += "&x" + (i - 1) + "=" + Encode.forUriComponent(x + "|" + y);
             }
         }
 %>
 <div ID="graphic"
      STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(100+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(50+ooy))%>px; width:600px; height:600px;">
     <embed type="image/svg+xml"
-           src="formar2wtsvg.jsp?bgimage=<%=Encode.forUriComponent(String.valueOf("graphics/pregnancyweightgain.jpg"))%>&bgimagewidth=580&bgimageheight=498<%=Encode.forUriComponent(String.valueOf(urlparam))%>"
+           src="formar2wtsvg.jsp?bgimage=<%=Encode.forUriComponent(String.valueOf("graphics/pregnancyweightgain.jpg"))%>&bgimagewidth=580&bgimageheight=498<%=Encode.forHtmlAttribute(urlparam)%>"
            width="600" height="600" wmode="transparent"/>
 </div>
 <%

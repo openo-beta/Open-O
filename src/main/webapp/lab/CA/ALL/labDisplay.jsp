@@ -2962,7 +2962,7 @@ request.setAttribute("missingTests", missingTests);
 
             %>
             <td align="<%=Encode.forHtmlAttribute(String.valueOf(align))%>"><a
-                    href="<%=request.getContextPath() %>/lab/DownloadEmbeddedDocumentFromLab.do?labNo=<%= Encode.forHtmlAttribute(segmentID) %>&segment=<%=j%>&group=<%=k%><%=Encode.forUriComponent(String.valueOf(legacy))%>">PDF
+                    href="<%=request.getContextPath() %>/lab/DownloadEmbeddedDocumentFromLab.do?labNo=<%= Encode.forHtmlAttribute(segmentID) %>&segment=<%=j%>&group=<%=k%><%=legacy%>">PDF
                 Report</a></td>
             <%
             } else {
