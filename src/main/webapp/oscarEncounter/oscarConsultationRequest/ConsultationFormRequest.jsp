@@ -61,6 +61,7 @@
 <%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
 <%@page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewRequest2Action" %>
+<%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ConsultationRequestCopy" %>
 <%@page import="ca.openosp.openo.utility.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.utility.DigitalSignatureUtils" %>
@@ -151,6 +152,21 @@
             consultUtil.estRequestFromId(loggedInInfo, requestId);
         }
 
+        // A copy is a new request prefilled from a saved one (the edit view's copy button). It belongs to
+        // the source's patient, so a link that names a different patient is refused.
+        String copyFromId = (requestId == null && segmentId == null) ? WebUtils.positiveIntParamOrNull(request.getParameter("copyFrom")) : null;
+        boolean copyMode = copyFromId != null;
+        if (copyMode) {
+            if (!ConsultationRequestCopy.prefill(loggedInInfo, Integer.valueOf(copyFromId), request.getLocale(), consultUtil)) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            if (demo != null && !demo.equals(consultUtil.demoNo)) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+        }
+
         if (demo == null) {
             demo = consultUtil.demoNo;
         }
@@ -217,14 +233,16 @@
 			// Get attached documents and labs
 		 --%>
     <%
-        if (requestId != null && Integer.parseInt(requestId) > 0) {
-            List<EDoc> attachedDocuments = EDocUtil.listDocs(loggedInInfo, demo, requestId, EDocUtil.ATTACHED);
+        // a copy starts with everything attached to the request it was copied from, deleted items included
+        String attachmentsRequestId = copyMode ? copyFromId : requestId;
+        if (attachmentsRequestId != null && Integer.parseInt(attachmentsRequestId) > 0) {
+            List<EDoc> attachedDocuments = EDocUtil.listDocs(loggedInInfo, demo, attachmentsRequestId, EDocUtil.ATTACHED);
             CommonLabResultData commonLabResultData = new CommonLabResultData();
-            List<LabResultData> attachedLabs = commonLabResultData.populateLabResultsData(loggedInInfo, demo, requestId, CommonLabResultData.ATTACHED);
+            List<LabResultData> attachedLabs = commonLabResultData.populateLabResultsData(loggedInInfo, demo, attachmentsRequestId, CommonLabResultData.ATTACHED);
             ConsultationManager consultationManager = SpringUtils.getBean(ConsultationManager.class);
-            List<EctFormData.PatientForm> attachedForms = consultationManager.getAttachedForms(loggedInInfo, Integer.parseInt(requestId), Integer.parseInt(demo));
-            List<EFormData> attachedEForms = consultationManager.getAttachedEForms(requestId);
-            ArrayList<HashMap<String, ? extends Object>> attachedHRMDocuments = consultationManager.getAttachedHRMDocuments(loggedInInfo, demo, requestId);
+            List<EctFormData.PatientForm> attachedForms = consultationManager.getAttachedForms(loggedInInfo, Integer.parseInt(attachmentsRequestId), Integer.parseInt(demo));
+            List<EFormData> attachedEForms = consultationManager.getAttachedEForms(attachmentsRequestId);
+            ArrayList<HashMap<String, ? extends Object>> attachedHRMDocuments = consultationManager.getAttachedHRMDocuments(loggedInInfo, demo, attachmentsRequestId);
 
             Collections.sort(attachedLabs);
             List<LabResultData> attachedLabsSortedByVersions = new ArrayList<>();
@@ -1301,6 +1319,36 @@
             }
         }
 
+        // Only changes the user makes count as unsaved, so the page's own setup (loading the
+        // specialists, filling defaults) never does.
+        var consultFormChanged = false;
+        document.addEventListener('input', function (e) {
+            if (e.isTrusted) {
+                consultFormChanged = true;
+            }
+        }, true);
+        document.addEventListener('change', function (e) {
+            if (e.isTrusted) {
+                consultFormChanged = true;
+            }
+        }, true);
+
+        /**
+         * Opens a new consultation request prefilled from this saved one, in its own window. The copy is
+         * built from the saved version, so unsaved changes here are confirmed first.
+         */
+        function copyToNewConsultationRequest() {
+            var signatureChanged = typeof isSignatureDirty !== 'undefined' && isSignatureDirty;
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgCopyUnsavedChanges" var="copyUnsavedChangesMsg"/>
+            if ((consultFormChanged || signatureChanged) && !confirm('${e:forJavaScript(copyUnsavedChangesMsg)}')) {
+                return false;
+            }
+            var url = ctx + '/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp?de='
+                + encodeURIComponent(demographicNo) + '&copyFrom=' + encodeURIComponent(requestId);
+            window.open(url, '_blank', 'height=700,width=960,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes');
+            return false;
+        }
+
     </script>
 
     <oscar:oscarPropertiesCheck value="true" property="ENABLE_HEALTH_CARE_TEAM_IN_CONSULTATION_REQUESTS"
@@ -1757,6 +1805,12 @@ if (userAgent != null) {
                     EctViewRequest2Action.fillFormValues(thisForm, segmentId);
                     thisForm.setSiteName(consultUtil.siteName);
                     defaultSiteName = consultUtil.siteName;
+                } else if (copyMode) {
+                    // the fields ConsultationRequestCopy picked, and new-request defaults for the rest
+                    EctViewRequest2Action.fillFormValues(thisForm, consultUtil);
+                    thisForm.setStatus("1");
+                    thisForm.setSiteName(consultUtil.siteName);
+                    defaultSiteName = consultUtil.siteName;
                 } else if (request.getAttribute("validateError") == null) {
                     //  new request
                     if (demo != null) {
@@ -1935,7 +1989,7 @@ if (userAgent != null) {
                                                 <%-- <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.attachDoc"/> --%>
                                             <a href="javascript:void(0);" id="attachDocumentPanelBtn"
                                                title="Add Attachment"
-                                               data-poload="${ ctx }/previewDocs.do?method=fetchConsultDocuments&amp;demographicNo=<%=demo%>&amp;requestId=<%=requestId%>">
+                                               data-poload="${ ctx }/previewDocs.do?method=fetchConsultDocuments&amp;demographicNo=<%=demo%>&amp;requestId=<%=attachmentsRequestId%>">
                                                 Manage Attachments
                                             </a>
                                             <input type="hidden" id="isOceanEReferral"
@@ -1944,7 +1998,7 @@ if (userAgent != null) {
                                             } else { %>
                                             <a href="javascript:void(0);" id="attachDocumentPanelBtn"
                                                title="Add Attachment"
-                                               data-poload="${ ctx }/previewDocs.do?method=fetchConsultDocuments&amp;demographicNo=<%=demo%>&amp;requestId=<%=requestId%>">
+                                               data-poload="${ ctx }/previewDocs.do?method=fetchConsultDocuments&amp;demographicNo=<%=demo%>&amp;requestId=<%=attachmentsRequestId%>">
                                                 Manage Attachments
                                             </a>
 
@@ -1962,7 +2016,7 @@ if (userAgent != null) {
                                                 <c:forEach items="${ attachedEForms }" var="attachedEForm">
                                                     <tr id="entry_eFormNo${ attachedEForm.id }">
                                                         <td>
-                                                            <c:out value="${ attachedEForm.formName }"/>
+                                                            <c:out value="${ attachedEForm.formName }"/><c:if test="${ not attachedEForm.current }"> (deleted)</c:if>
                                                             <input name="eFormNo" value="${ attachedEForm.id }"
                                                                    id="delegate_eFormNo${ attachedEForm.id }"
                                                                    class="delegateAttachment" type="hidden">
@@ -1982,7 +2036,7 @@ if (userAgent != null) {
                                                 <c:forEach items="${ attachedDocuments }" var="attachedDocument">
                                                     <tr id="entry_docNo${ attachedDocument.docId }">
                                                         <td>
-                                                            <c:out value="${ attachedDocument.description }"/>
+                                                            <c:out value="${ attachedDocument.description }"/><c:if test="${ fn:contains(attachedDocument.status, 'D') }"> (deleted)</c:if>
                                                             <input name="docNo" value="${ attachedDocument.docId }"
                                                                    id="delegate_docNo${ attachedDocument.docId }"
                                                                    data-delegate-type="doc"
@@ -2131,6 +2185,16 @@ if (userAgent != null) {
                                 </c:if>
 
                                 <% } %>
+                            </td>
+                        </tr>
+                        <% } %>
+                        <% if (request.getAttribute("id") != null) { %>
+                        <%-- on its own row: it saves nothing here, and eReferrals (updated in Ocean) have no other buttons --%>
+                        <tr>
+                            <td class="tite4 controlPanel" colspan=2>
+                                <input name="copyToNew" type="button"
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnCopyToNewConsultationRequest"/>"
+                                       onclick="return copyToNewConsultationRequest();"/>
                             </td>
                         </tr>
                         <% } %>
