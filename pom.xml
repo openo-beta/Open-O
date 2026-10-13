@@ -1814,6 +1814,7 @@
                                 <include>**/managers/**/*Test.java</include>
                                 <include>**/documentManager/**/*UnitTest.java</include>
                                 <include>**/eform/**/*Test.java</include>
+                                <include>**/encounter/oscarConsultationRequest/**/*UnitTest.java</include>
                             </includes>
                             <excludes>
                                 <!-- Exclude archive tests from modern test run -->
