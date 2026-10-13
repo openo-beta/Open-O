@@ -86,7 +86,7 @@
 
         function validateChange() {
             var str = "You haven't saved the change yet. Please save first.";
-            if (flag == true) {
+            if (flag === true) {
                 alert(str);
                 return false;
             }
@@ -95,7 +95,7 @@
 
         function validateBack() {
             var str = "You haven't saved the change yet. Please save first.";
-            if (flag == true) {
+            if (flag === true) {
                 alert(str);
                 return false;
             } else {
@@ -116,7 +116,7 @@
         }
 
         function validateEnounter() {
-            if (document.caseManagementEntryForm.elements["caseNote.encounter_type"].value == "" || document.caseManagementEntryForm.elements["caseNote.encounter_type"].value == " ") {
+            if (document.caseManagementEntryForm.elements["caseNote.encounter_type"].value === "" || document.caseManagementEntryForm.elements["caseNote.encounter_type"].value === " ") {
                 return false;
             } else {
                 return true;
@@ -128,11 +128,10 @@
 
             if (document.caseManagementEntryForm.sign.checked) signed = true;
 
-            if (newNote == true && signed == true) {
-
-                if (issueChanged == true) return true;
-                else return false;
+            if (newNote === true && signed === true) {
+                return issueChanged === true;
             }
+
             return true;
         }
 
@@ -164,7 +163,7 @@
 
             <oscarProp:oscarPropertiesCheck property="oncall" value="yes">
             var s = document.caseManagementEntryForm.elements['caseNote.encounter_type'];
-            if (s.options[s.selectedIndex].value == 'telephone encounter weekdays 8am-6pm' || s.options[s.selectedIndex].value == 'telephone encounter weekends or 6pm-8am') {
+            if (s.options[s.selectedIndex].value === 'telephone encounter weekdays 8am-6pm' || s.options[s.selectedIndex].value === 'telephone encounter weekends or 6pm-8am') {
                 document.caseManagementEntryForm.elements['chain'].value = '/OnCallQuestionnaire.do?method=form&providerNo=' + document.caseManagementEntryForm.providerNo.value + '&type=' + s.options[s.selectedIndex].value;
             }
             </oscarProp:oscarPropertiesCheck>
@@ -195,7 +194,7 @@
                 var demographicNo = '<c:out value="${param.demographicNo}"/>';
                 var noteId = '<%=request.getParameter("noteId") != null ? request.getParameter("noteId") : request.getAttribute("noteId") != null ? request.getAttribute("noteId") : ""%>';
                 var programId = '<c:out value="${case_program_id}"/>';
-                XMLHttpRequestObject.send("method=autosave&demographicNo=" + demographicNo + "&programId=" + programId + "&note_id=" + noteId + "&note=" + escape(obj.value));
+                XMLHttpRequestObject.send("method=autosave&demographicNo=" + demographicNo + "&programId=" + programId + "&note_id=" + noteId + "&note=" + encodeURIComponent(obj.value));
             }
 
             setTimer();

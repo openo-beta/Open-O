@@ -544,7 +544,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                 int hash = Math.abs(winName.hashCode());
 
                 String encodedDispDocNo = Encode.forUriComponent(dispDocNo);
-                url = "popupPage(1000,1200,'" + hash + "', '" + request.getContextPath() + "/documentManager/showDocument.jsp?inWindow=true&segmentID=" + encodedDispDocNo +"');";
+                url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/documentManager/showDocument.jsp?inWindow=true&segmentID=" + encodedDispDocNo +"');";
                 url = url + "return false;";
 
 							String editUrl = "window.open('/oscar/annotation/annotation.jsp?display=Documents&amp;table_id=" + encodedDispDocNo + "&amp;demo=" + demographicNo + "','anwin','width=400,height=500');";
@@ -575,7 +575,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                 int hash = Math.abs(winName.hashCode());
 
                 String encodedDispDocNo = Encode.forUriComponent(dispDocNo);
-                url = "popupPage(1000,1200,'" + hash + "', '" + request.getContextPath() + "/documentManager/showDocument.jsp?inWindow=true&segmentID=" + encodedDispDocNo +"');";
+                url = "popupPage(700,800,'" + hash + "', '" + request.getContextPath() + "/documentManager/showDocument.jsp?inWindow=true&segmentID=" + encodedDispDocNo +"');";
                 url = url + "return false;";
             %>
             <div class="view-links"

@@ -50,6 +50,7 @@ import ca.openosp.openo.casemgmt.service.CaseManagementPrint;
 import ca.openosp.openo.casemgmt.service.ClientImageManager;
 import ca.openosp.openo.casemgmt.web.CaseManagementViewAction.IssueDisplay;
 import ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean;
+import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.TicklerManager;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -86,6 +87,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
     private IssueDAO issueDao = (IssueDAO) SpringUtils.getBean(IssueDAO.class);
     private CasemgmtNoteLockDao casemgmtNoteLockDao = SpringUtils.getBean(CasemgmtNoteLockDao.class);
     private TicklerManager ticklerManager = SpringUtils.getBean(TicklerManager.class);
+    private DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
 
     
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -210,7 +212,8 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         logger.debug("Get demo and providers no");
         String demono = getDemographicNo(request);
-        Integer demographicNo = Integer.parseInt(demono);
+        Integer demographicNo = 0;
+        Demographic demographic = demographicManager.getDemographic(loggedInInfo, demono);
         current = System.currentTimeMillis();
         logger.debug("Get demo and providers no " + String.valueOf(current - start));
         start = current;
@@ -223,9 +226,16 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             logger.warn("Error parsing programId:" + programIdString, e);
         }
 
-        request.setAttribute("demoName", getDemoName(demono));
-        request.setAttribute("demoAge", getDemoAge(demono));
-        request.setAttribute("demoDOB", getDemoDOB(demono));
+        if (demographic != null) {
+            demographicNo = demographic.getDemographicNo();
+            request.setAttribute("demoName", demographic.getFirstName() + " " + demographic.getLastName());
+            request.setAttribute("demoAge", demographic.getAge());
+            request.setAttribute("demoDOB", demographic.getFormattedDob());
+        } else {
+            request.setAttribute("demoName", "");
+            request.setAttribute("demoAge", "");
+            request.setAttribute("demoDOB", "");
+        }
 
         /* process the request from other module */
         if (!"casemgmt".equalsIgnoreCase(request.getParameter("from"))) {
