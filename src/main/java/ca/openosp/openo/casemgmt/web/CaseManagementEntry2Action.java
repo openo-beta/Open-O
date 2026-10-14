@@ -212,7 +212,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         logger.debug("Get demo and providers no");
         String demono = getDemographicNo(request);
-        Integer demographicNo = 0;
+        Integer demographicNo = Integer.parseInt(demono);
         Demographic demographic = demographicManager.getDemographic(loggedInInfo, demono);
         current = System.currentTimeMillis();
         logger.debug("Get demo and providers no " + String.valueOf(current - start));
@@ -227,7 +227,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         }
 
         if (demographic != null) {
-            demographicNo = demographic.getDemographicNo();
             request.setAttribute("demoName", demographic.getFirstName() + " " + demographic.getLastName());
             request.setAttribute("demoAge", demographic.getAge());
             request.setAttribute("demoDOB", demographic.getFormattedDob());
@@ -2613,7 +2612,8 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         String noteid = request.getParameter("noteId");
 
-        List<CaseManagementNote> history = caseManagementMgr.getHistory(noteid);
+        // a note that was never saved has no id and no history
+        List<CaseManagementNote> history = (noteid == null || noteid.isBlank()) ? new ArrayList<>() : caseManagementMgr.getHistory(noteid);
         for (CaseManagementNote caseManagementNote : history) {
             caseManagementNote.setNote(caseManagementNote.getNote().replace("\n", "<br/>"));
         }

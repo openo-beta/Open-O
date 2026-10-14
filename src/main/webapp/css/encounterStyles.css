@@ -1570,6 +1570,11 @@ div.note-control {
 	cursor: pointer;
 }
 
+/* text in the bar that is not a button: where a remote note comes from, the group note notice */
+div.note-label {
+	padding: 0 5px;
+}
+
 div.note-control:hover {
 	color: blue;
 }
