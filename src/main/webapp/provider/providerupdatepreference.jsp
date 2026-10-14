@@ -24,6 +24,18 @@
 
 --%>
 
+<%--
+    Saves the provider preference form posted by providerpreference.jsp: schedule hours and period,
+    group, forms, eForms and quick links for the appointment screen, default billing form, eRx settings,
+    and the per-provider property rows (weekends in the week view, tickler warning provider).
+    Puts the saved preference and its session copies (default_servicetype, default_pmm, defaultDxCode, ...)
+    in the session, refreshes the opener window and closes this popup.
+
+    Parameters: the fields of the UPDATEPRE form, plus case_program_id, site and ticklerforproviderno.
+
+    @since 2002-11-08
+--%>
+
 <%@page import="ca.openosp.openo.utility.SessionConstants" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 

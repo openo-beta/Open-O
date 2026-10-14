@@ -23,6 +23,18 @@
     Ontario, Canada
 
 --%>
+
+<%--
+    Schedule day view: one column per provider with the day's appointments and schedule template,
+    the appointment links (encounter forms, eForms and quick links, with ${contextPath} and ${demographicId}
+    replaced), and the day, week and month navigation.
+
+    Parameters: year, month, day (the day shown), view (0 every provider of the group, 1 one provider), viewall,
+    curProvider and curProviderName, provider_no, displaymode, module, record, caseload,
+    programIdForLocation, GoToCaisiViewFromOscarView.
+
+    @since 2002-11-08
+--%>
 <!DOCTYPE html>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="ca.openosp.openo.commn.dao.MyGroupAccessRestrictionDao" %>
