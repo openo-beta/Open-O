@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.dao.UserPropertyDAO;
 import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.commn.model.enumerator.UserPropertyKey;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
@@ -76,10 +77,10 @@ public class ProviderRxInteractionWarningLevel2Action extends ActionSupport {
         }
 
         String providerNo = loggedInInfo.getLoggedInProviderNo();
-        UserProperty prop = propertyDao.getProp(providerNo, "rxInteractionWarningLevel");
+        UserProperty prop = propertyDao.getProp(providerNo, UserPropertyKey.RX_INTERACTION_WARNING_LEVEL);
         if (prop == null) {
             prop = new UserProperty();
-            prop.setName("rxInteractionWarningLevel");
+            prop.setName(UserPropertyKey.RX_INTERACTION_WARNING_LEVEL.getName());
             prop.setProviderNo(providerNo);
         }
         prop.setValue(value);

@@ -140,7 +140,8 @@ public enum UserPropertyKey {
     EMAIL_COMMUNICATION("email_communication"),
 
     SCHEDULE_WEEK_VIEW_WEEKENDS("schedule.week_view_weekends"),
-    RX_INTERACTION_WARNING_LEVEL("rxInteractionWarningLevel");
+    RX_INTERACTION_WARNING_LEVEL("rxInteractionWarningLevel"),
+    CONSULT_PASTE_HEADING("consult_paste_heading");
 
     private final String name;
 
