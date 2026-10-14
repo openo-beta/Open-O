@@ -480,6 +480,49 @@
                 </td>
             </tr>
 
+<%--            <tr>--%>
+<%--                <%--%>
+<%--                    Integer h = 0;--%>
+<%--                    Integer mins = 0;--%>
+<%--                    prop = propertyDao.getProp(providerNo, UserProperty.OSCAR_MSG_RECVD);--%>
+<%--                    if (prop != null) {--%>
+<%--                        String[] tmp = prop.getValue().split(":");--%>
+<%--                        h = Integer.valueOf(tmp[0]);--%>
+<%--                        mins = Integer.valueOf(tmp[1]);--%>
+<%--                    }--%>
+<%--                %>--%>
+<%--                <td class="preferenceLabel">--%>
+<%--                    Select when you want to receive Review Messages--%>
+
+<%--                </td>--%>
+<%--                <td preferenceValue>--%>
+<%--                    <select id="reviewMsg" name="reviewMsg">--%>
+<%--                        <%--%>
+<%--                            for (int hr = 0; hr < 24; ++hr) {--%>
+<%--                                for (int min = 0; min < 60; min += 30) {--%>
+<%--                        %>--%>
+<%--                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(String.valueOf(hr)+":"+String.valueOf(min)))%>" <%= hr == h && min == mins ? "selected" : ""%> ><%=Encode.forHtml(String.valueOf(String.valueOf(hr) + " : " + String.valueOf(min) + (min == 0 ? "0" : "")))%>--%>
+<%--                        </option>--%>
+<%--                        <%--%>
+<%--                                }--%>
+<%--                            }--%>
+<%--                        %>--%>
+<%--                    </select>--%>
+<%--                </td>--%>
+<%--            </tr>--%>
+<%--            <script>--%>
+<%--                Event.observe('reviewMsg', 'change', function (event) {--%>
+<%--                    var value = $('reviewMsg').getValue();--%>
+
+<%--                    new Ajax.Request('<c:out value="${ctx}"/>/setProviderStaleDate.do?method=OscarMsgRecvd&value=' + value + '&provider_no=<%=Encode.forUriComponent(String.valueOf(providerNo))%>', {--%>
+<%--                        method: 'get',--%>
+<%--                        onSuccess: function (transport) {--%>
+<%--                        }--%>
+<%--                    });--%>
+
+<%--                });--%>
+<%--            </script>--%>
+
         </table>
 
         <div style="text-align:right;font-weight:bold;padding-bottom:10px;">
@@ -580,6 +623,10 @@
                     <td><a href=#
                                           onClick="popupPage(400,860,'providerFax.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditFaxNumber"/></a></td>
                 </tr>
+<%--                <tr>--%>
+<%--                    <td><a href=#--%>
+<%--                                          onClick="popupPage(230,860,'providerColourPicker.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditColour"/></a></td>--%>
+<%--                </tr>--%>
                 <tr>
                     <td><a href=#
                                           onClick="popupPage(500,860,'providerPrinter.jsp');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetDefaultPrinter"/></a></td>
@@ -588,6 +635,10 @@
                     <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewRxPageSize');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetRxPageSize"/></a></td>
                 </tr>
+<%--                <tr>--%>
+<%--                    <td><a href=#--%>
+<%--                                          onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewUseRx3');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetRx3"/></a></td>--%>
+<%--                </tr>--%>
                 <tr>
                     <td><a href=#
                                           onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewCppSingleLine');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetCppSingleLine"/></a></td>
