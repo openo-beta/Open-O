@@ -60,7 +60,7 @@ public final class ConsultationRequestCopy {
      * @param locale Locale the locale for the copied-from note
      * @param target EctConsultationFormRequestUtil a page utility not yet established from any request
      * @return boolean true if the source request was found and copied, false if it does not exist
-     * @throws SecurityException if the user lacks read access to consultations
+     * @throws SecurityException if the user lacks read access to consultations, or to the source's patient
      * @since 2026-10-13
      */
     public static boolean prefill(LoggedInInfo loggedInInfo, Integer sourceRequestId, Locale locale, EctConsultationFormRequestUtil target) {
@@ -73,6 +73,9 @@ public final class ConsultationRequestCopy {
         ConsultationRequest source = consultationRequestDao.find(sourceRequestId);
         if (source == null) {
             return false;
+        }
+        if (!securityInfoManager.isAllowedAccessToPatientRecord(loggedInInfo, source.getDemographicId())) {
+            throw new SecurityException("missing required access to the patient record");
         }
 
         target.demoNo = String.valueOf(source.getDemographicId());

@@ -153,11 +153,23 @@
         }
 
         // A copy is a new request prefilled from a saved one (the edit view's copy button). It belongs to
-        // the source's patient, so a link that names a different patient is refused.
-        String copyFromId = (requestId == null && segmentId == null) ? WebUtils.positiveIntParamOrNull(request.getParameter("copyFrom")) : null;
+        // the source's patient, so a link that names a different patient, or no valid request, is refused.
+        String copyFromParam = (requestId == null && segmentId == null) ? request.getParameter("copyFrom") : null;
+        String copyFromId = WebUtils.positiveIntParamOrNull(copyFromParam);
         boolean copyMode = copyFromId != null;
+        if (copyFromParam != null && !copyMode) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
         if (copyMode) {
-            if (!ConsultationRequestCopy.prefill(loggedInInfo, Integer.valueOf(copyFromId), request.getLocale(), consultUtil)) {
+            boolean copied;
+            try {
+                copied = ConsultationRequestCopy.prefill(loggedInInfo, Integer.valueOf(copyFromId), request.getLocale(), consultUtil);
+            } catch (SecurityException e) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+            if (!copied) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
@@ -1319,33 +1331,69 @@
             }
         }
 
-        // Only changes the user makes count as unsaved, so the page's own setup (loading the
-        // specialists, filling defaults) never does.
-        var consultFormChanged = false;
-        document.addEventListener('input', function (e) {
-            if (e.isTrusted) {
-                consultFormChanged = true;
+        // The form as the page set it up, taken at the user's first click or keypress. Comparing against it
+        // catches every change, including ones made by buttons (the imports, Clear Date & Time) that fire no
+        // input event, while the page's own setup (loading the specialists, filling defaults) never counts.
+        // Text that arrives with no click or keypress first (dictation, autofill, a drop) marks the form directly.
+        var consultFormBaseline = null;
+        var consultFormChangedBeforeBaseline = false;
+
+        function serializeConsultForm() {
+            return new URLSearchParams(new FormData(document.forms['EctConsultationFormRequest2Form'])).toString();
+        }
+
+        function takeConsultFormBaseline(e) {
+            if (e.isTrusted && consultFormBaseline === null) {
+                consultFormBaseline = serializeConsultForm();
             }
-        }, true);
-        document.addEventListener('change', function (e) {
-            if (e.isTrusted) {
-                consultFormChanged = true;
+        }
+
+        function markConsultFormChangedBeforeBaseline(e) {
+            if (e.isTrusted && consultFormBaseline === null) {
+                consultFormChangedBeforeBaseline = true;
             }
-        }, true);
+        }
+
+        document.addEventListener('mousedown', takeConsultFormBaseline, true);
+        document.addEventListener('keydown', takeConsultFormBaseline, true);
+        document.addEventListener('input', markConsultFormChangedBeforeBaseline, true);
+        document.addEventListener('change', markConsultFormChangedBeforeBaseline, true);
+
+        function isConsultFormChanged() {
+            return consultFormChangedBeforeBaseline
+                || (consultFormBaseline !== null && serializeConsultForm() !== consultFormBaseline);
+        }
+
+        // the copy this page opened; once submitted, its window moves on to the confirmation page
+        var copyWindow = null;
+
+        function isCopyStillOpen() {
+            try {
+                return copyWindow !== null && !copyWindow.closed
+                    && (copyWindow.location.href === 'about:blank' || copyWindow.location.href.indexOf('copyFrom=') !== -1);
+            } catch (e) {
+                return false;
+            }
+        }
 
         /**
          * Opens a new consultation request prefilled from this saved one, in its own window. The copy is
-         * built from the saved version, so unsaved changes here are confirmed first.
+         * built from the saved version, so unsaved changes here are confirmed first. While a copy is still
+         * open and unsubmitted, clicking again brings it back instead of opening a second one.
          */
         function copyToNewConsultationRequest() {
+            if (isCopyStillOpen()) {
+                copyWindow.focus();
+                return false;
+            }
             var signatureChanged = typeof isSignatureDirty !== 'undefined' && isSignatureDirty;
             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgCopyUnsavedChanges" var="copyUnsavedChangesMsg"/>
-            if ((consultFormChanged || signatureChanged) && !confirm('${e:forJavaScript(copyUnsavedChangesMsg)}')) {
+            if ((isConsultFormChanged() || signatureChanged) && !confirm('${e:forJavaScript(copyUnsavedChangesMsg)}')) {
                 return false;
             }
             var url = ctx + '/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp?de='
                 + encodeURIComponent(demographicNo) + '&copyFrom=' + encodeURIComponent(requestId);
-            window.open(url, '_blank', 'height=700,width=960,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes');
+            copyWindow = window.open(url, '_blank', 'height=700,width=960,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes');
             return false;
         }
 
