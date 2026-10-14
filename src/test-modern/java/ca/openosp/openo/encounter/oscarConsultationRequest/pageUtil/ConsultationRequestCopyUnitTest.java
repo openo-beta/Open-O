@@ -99,6 +99,7 @@ class ConsultationRequestCopyUnitTest extends OpenOUnitTestBase {
         loggedInInfo = mock(LoggedInInfo.class);
         when(securityInfoManager.hasPrivilege(eq(loggedInInfo), eq("_con"), eq("r"), ArgumentMatchers.<String>isNull()))
                 .thenReturn(true);
+        when(securityInfoManager.isAllowedAccessToPatientRecord(loggedInInfo, PATIENT)).thenReturn(true);
 
         source = savedRequest(SOURCE_ID);
         when(consultationRequestDao.find(SOURCE_ID)).thenReturn(source);
@@ -149,17 +150,24 @@ class ConsultationRequestCopyUnitTest extends OpenOUnitTestBase {
         @Test
         @DisplayName("should not copy the site when multisites is off")
         void shouldNotCopySite_whenMultisitesDisabled() {
-            assertThat(copy().siteName).isNull();
+            withMultisites("off", () -> assertThat(copy().siteName).isNull());
         }
 
         @Test
         @DisplayName("should copy the site when multisites is on")
         void shouldCopySite_whenMultisitesEnabled() {
+            withMultisites("on", () -> assertThat(copy().siteName).isEqualTo("North Site"));
+        }
+
+        /**
+         * Runs a check with the global multisites property set, then puts the property back.
+         */
+        private void withMultisites(String value, Runnable check) {
             OscarProperties properties = OscarProperties.getInstance();
             String original = properties.getProperty("multisites");
-            properties.setProperty("multisites", "on");
+            properties.setProperty("multisites", value);
             try {
-                assertThat(copy().siteName).isEqualTo("North Site");
+                check.run();
             } finally {
                 if (original == null) {
                     properties.remove("multisites");
@@ -354,6 +362,19 @@ class ConsultationRequestCopyUnitTest extends OpenOUnitTestBase {
 
             assertThatThrownBy(() -> ConsultationRequestCopy.prefill(loggedInInfo, SOURCE_ID, Locale.ENGLISH, util))
                     .isInstanceOf(SecurityException.class);
+            assertThat(util.reasonForConsultation).isNull();
+        }
+
+        @Test
+        @DisplayName("should refuse when the user is blocked from the source's patient")
+        void shouldThrowSecurityException_whenUserCannotAccessPatientRecord() {
+            when(securityInfoManager.isAllowedAccessToPatientRecord(loggedInInfo, PATIENT)).thenReturn(false);
+
+            EctConsultationFormRequestUtil util = new EctConsultationFormRequestUtil();
+
+            assertThatThrownBy(() -> ConsultationRequestCopy.prefill(loggedInInfo, SOURCE_ID, Locale.ENGLISH, util))
+                    .isInstanceOf(SecurityException.class);
+            assertThat(util.demoNo).isNull();
             assertThat(util.reasonForConsultation).isNull();
         }
     }
