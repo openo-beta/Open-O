@@ -31,6 +31,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
