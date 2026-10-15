@@ -164,7 +164,7 @@
         if (copyMode) {
             boolean copied;
             try {
-                copied = ConsultationRequestCopy.prefill(loggedInInfo, Integer.valueOf(copyFromId), request.getLocale(), consultUtil);
+                copied = ConsultationRequestCopy.prefill(loggedInInfo, Integer.valueOf(copyFromId), consultUtil);
             } catch (SecurityException e) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
                 return;

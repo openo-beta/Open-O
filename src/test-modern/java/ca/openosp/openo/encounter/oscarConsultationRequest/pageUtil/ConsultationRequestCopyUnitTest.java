@@ -15,11 +15,8 @@ import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
-import ca.openosp.openo.utility.LocaleUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -31,7 +28,6 @@ import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -40,14 +36,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link ConsultationRequestCopy#prefill(LoggedInInfo, Integer, Locale, EctConsultationFormRequestUtil)},
+ * Unit tests for {@link ConsultationRequestCopy#prefill(LoggedInInfo, Integer, EctConsultationFormRequestUtil)},
  * which prefills a new consultation request from a saved one for the "Copy to New Consultation Request"
  * button.
  *
  * <p>The contract is a whitelist. The clinical text, urgency, team and (with multisites) site are copied.
  * The service, referring practitioner and letterhead are copied only while what they name is still
- * active. Everything else, such as the specialist, status, appointment, signature and eReferral data,
- * keeps its new-request default. The appointment notes get one line naming the source request.</p>
+ * active. Everything else, such as the specialist, status, appointment, appointment notes, signature and
+ * eReferral data, keeps its new-request default.</p>
  */
 @DisplayName("ConsultationRequestCopy prefill from a saved request")
 @Tag("unit")
@@ -62,8 +58,6 @@ class ConsultationRequestCopyUnitTest extends OpenOUnitTestBase {
     private static final String LETTERHEAD_PROVIDER = "999998";
     private static final Date REFERRAL_DATE = new GregorianCalendar(2026, Calendar.JANUARY, 15).getTime();
 
-    private static String originalBaseName;
-
     private ConsultationRequestDao consultationRequestDao;
     private ConsultationRequestExtDao consultationRequestExtDao;
     private ConsultationServiceDao consultationServiceDao;
@@ -71,18 +65,6 @@ class ConsultationRequestCopyUnitTest extends OpenOUnitTestBase {
     private SecurityInfoManager securityInfoManager;
     private LoggedInInfo loggedInInfo;
     private ConsultationRequest source;
-
-    @BeforeAll
-    static void useOscarResources() {
-        // the web app points LocaleUtils at oscarResources on startup; a unit test has to do it itself
-        originalBaseName = LocaleUtils.BASE_NAME;
-        LocaleUtils.BASE_NAME = "oscarResources";
-    }
-
-    @AfterAll
-    static void restoreBaseName() {
-        LocaleUtils.BASE_NAME = originalBaseName;
-    }
 
     @BeforeEach
     void setUp() throws Exception {
@@ -111,7 +93,7 @@ class ConsultationRequestCopyUnitTest extends OpenOUnitTestBase {
 
     private EctConsultationFormRequestUtil copy() {
         EctConsultationFormRequestUtil util = new EctConsultationFormRequestUtil();
-        assertThat(ConsultationRequestCopy.prefill(loggedInInfo, SOURCE_ID, Locale.ENGLISH, util)).isTrue();
+        assertThat(ConsultationRequestCopy.prefill(loggedInInfo, SOURCE_ID, util)).isTrue();
         return util;
     }
 
@@ -183,8 +165,8 @@ class ConsultationRequestCopyUnitTest extends OpenOUnitTestBase {
     class DefaultFields {
 
         @Test
-        @DisplayName("should leave the specialist, status, dates, signature and eReferral data unset")
-        void shouldLeaveSpecialistStatusDatesSignatureAndEReferralUnset_whenSourceHasThem() {
+        @DisplayName("should leave the specialist, status, dates, appointment notes, signature and eReferral data unset")
+        void shouldLeaveSpecialistStatusDatesNotesSignatureAndEReferralUnset_whenSourceHasThem() {
             EctConsultationFormRequestUtil util = copy();
 
             assertThat(util.specialist).isNull();
@@ -192,6 +174,7 @@ class ConsultationRequestCopyUnitTest extends OpenOUnitTestBase {
             assertThat(util.referalDate).isNull();
             assertThat(util.appointmentDate).isNull();
             assertThat(util.appointmentHour).isNull();
+            assertThat(util.appointmentNotes).isNull();
             assertThat(util.signatureImg).isNull();
             assertThat(util.pwb).isNull();
             assertThat(util.getAppointmentInstructions()).isNull();
@@ -297,46 +280,6 @@ class ConsultationRequestCopyUnitTest extends OpenOUnitTestBase {
     }
 
     @Nested
-    @DisplayName("copied-from note")
-    class CopiedFromNote {
-
-        @Test
-        @DisplayName("should name the specialist, referral date and source id")
-        void shouldNameSpecialistDateAndId_whenSourceHasSpecialist() {
-            assertThat(copy().appointmentNotes)
-                    .isEqualTo("Copied from the referral to Dr. C, John dated 2026-01-15 (#288).");
-        }
-
-        @Test
-        @DisplayName("should name the referral date and source id when the source has no specialist")
-        void shouldNameDateAndId_whenSourceHasNoSpecialist() {
-            source.setProfessionalSpecialist(null);
-
-            assertThat(copy().appointmentNotes).isEqualTo("Copied from the referral dated 2026-01-15 (#288).");
-        }
-
-        @Test
-        @DisplayName("should name only the source id when the source has no referral date")
-        void shouldNameIdOnly_whenSourceHasNoReferralDate() {
-            source.setReferralDate(null);
-
-            assertThat(copy().appointmentNotes).isEqualTo("Copied from referral #288.");
-        }
-
-        @Test
-        @DisplayName("should not group the digits of a large source id")
-        void shouldNotGroupDigits_whenSourceIdIsLarge() throws Exception {
-            Integer largeId = 12345;
-            when(consultationRequestDao.find(largeId)).thenReturn(savedRequest(largeId));
-
-            EctConsultationFormRequestUtil util = new EctConsultationFormRequestUtil();
-            ConsultationRequestCopy.prefill(loggedInInfo, largeId, Locale.ENGLISH, util);
-
-            assertThat(util.appointmentNotes).endsWith("(#12345).");
-        }
-    }
-
-    @Nested
     @DisplayName("guards")
     class Guards {
 
@@ -347,7 +290,7 @@ class ConsultationRequestCopyUnitTest extends OpenOUnitTestBase {
 
             EctConsultationFormRequestUtil util = new EctConsultationFormRequestUtil();
 
-            assertThat(ConsultationRequestCopy.prefill(loggedInInfo, SOURCE_ID, Locale.ENGLISH, util)).isFalse();
+            assertThat(ConsultationRequestCopy.prefill(loggedInInfo, SOURCE_ID, util)).isFalse();
             assertThat(util.demoNo).isNull();
             assertThat(util.reasonForConsultation).isNull();
         }
@@ -360,7 +303,7 @@ class ConsultationRequestCopyUnitTest extends OpenOUnitTestBase {
 
             EctConsultationFormRequestUtil util = new EctConsultationFormRequestUtil();
 
-            assertThatThrownBy(() -> ConsultationRequestCopy.prefill(loggedInInfo, SOURCE_ID, Locale.ENGLISH, util))
+            assertThatThrownBy(() -> ConsultationRequestCopy.prefill(loggedInInfo, SOURCE_ID, util))
                     .isInstanceOf(SecurityException.class);
             assertThat(util.reasonForConsultation).isNull();
         }
@@ -372,7 +315,7 @@ class ConsultationRequestCopyUnitTest extends OpenOUnitTestBase {
 
             EctConsultationFormRequestUtil util = new EctConsultationFormRequestUtil();
 
-            assertThatThrownBy(() -> ConsultationRequestCopy.prefill(loggedInInfo, SOURCE_ID, Locale.ENGLISH, util))
+            assertThatThrownBy(() -> ConsultationRequestCopy.prefill(loggedInInfo, SOURCE_ID, util))
                     .isInstanceOf(SecurityException.class);
             assertThat(util.demoNo).isNull();
             assertThat(util.reasonForConsultation).isNull();

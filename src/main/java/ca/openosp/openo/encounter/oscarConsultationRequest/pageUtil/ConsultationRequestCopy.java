@@ -7,25 +7,19 @@ import ca.openosp.openo.commn.dao.ConsultationRequestExtDao;
 import ca.openosp.openo.commn.dao.ConsultationServiceDao;
 import ca.openosp.openo.commn.model.ConsultationRequest;
 import ca.openosp.openo.commn.model.ConsultationServices;
-import ca.openosp.openo.commn.model.ProfessionalSpecialist;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.managers.SecurityInfoManager;
-import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.StringUtils;
-import ca.openosp.openo.utility.LocaleUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
-
-import java.text.MessageFormat;
-import java.util.Locale;
 
 /**
  * Prefills a new consultation request from a saved one, for the "Copy to New Consultation Request"
  * button on the consultation edit view.
  *
  * <p>The copy is a whitelist written into the page's {@link EctConsultationFormRequestUtil}. Anything
- * not listed keeps its new-request default, so the source's specialist, status, appointment, follow-up
- * date, signature and eReferral data never carry over.</p>
+ * not listed keeps its new-request default, so the source's specialist, status, appointment, appointment
+ * notes, follow-up date, signature and eReferral data never carry over.</p>
  * <ul>
  *   <li>reason, clinical information, concurrent problems, medications and allergies, as written on
  *       the source</li>
@@ -34,15 +28,10 @@ import java.util.Locale;
  *   <li>the referring practitioner, while that provider is still active</li>
  *   <li>the letterhead, unless it names a provider who is no longer active</li>
  * </ul>
- * <p>The appointment notes get one line naming the source request.</p>
  *
  * @since 2026-10-13
  */
 public final class ConsultationRequestCopy {
-
-    private static final String MSG_COPIED_FROM = "oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgCopiedFrom";
-    private static final String MSG_COPIED_FROM_DATED = "oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgCopiedFromDated";
-    private static final String MSG_COPIED_FROM_SPECIALIST = "oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgCopiedFromSpecialist";
 
     // the team list's "no team" placeholder
     private static final String NO_TEAM = "-1";
@@ -57,13 +46,12 @@ public final class ConsultationRequestCopy {
      *
      * @param loggedInInfo LoggedInInfo the current user's session information
      * @param sourceRequestId Integer the id of the consultation request to copy from
-     * @param locale Locale the locale for the copied-from note
      * @param target EctConsultationFormRequestUtil a page utility not yet established from any request
      * @return boolean true if the source request was found and copied, false if it does not exist
      * @throws SecurityException if the user lacks read access to consultations, or to the source's patient
      * @since 2026-10-13
      */
-    public static boolean prefill(LoggedInInfo loggedInInfo, Integer sourceRequestId, Locale locale, EctConsultationFormRequestUtil target) {
+    public static boolean prefill(LoggedInInfo loggedInInfo, Integer sourceRequestId, EctConsultationFormRequestUtil target) {
         SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_con", "r", null)) {
             throw new SecurityException("missing required sec object (_con)");
@@ -116,26 +104,10 @@ public final class ConsultationRequestCopy {
             }
         }
 
-        target.appointmentNotes = copiedFromNote(source, locale);
         return true;
     }
 
     private static boolean isActive(Provider provider) {
         return provider != null && "1".equals(provider.getStatus());
-    }
-
-    private static String copiedFromNote(ConsultationRequest source, Locale locale) {
-        String id = String.valueOf(source.getId());
-        if (source.getReferralDate() == null) {
-            return MessageFormat.format(LocaleUtils.getMessage(locale, MSG_COPIED_FROM), id);
-        }
-
-        String referralDate = ConversionUtils.toDateString(source.getReferralDate());
-        ProfessionalSpecialist specialist = source.getProfessionalSpecialist();
-        if (specialist == null) {
-            return MessageFormat.format(LocaleUtils.getMessage(locale, MSG_COPIED_FROM_DATED), referralDate, id);
-        }
-        return MessageFormat.format(LocaleUtils.getMessage(locale, MSG_COPIED_FROM_SPECIALIST),
-                specialist.getFormattedTitle(), referralDate, id);
     }
 }
