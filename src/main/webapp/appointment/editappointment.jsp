@@ -1088,10 +1088,12 @@
                         <% } else if (locationMode) {
                             LocationList.Choice locationChoice = bFirstDisp ? locations.choiceFor(appt.getLocationCode(), loc)
                                     : new LocationList.Choice(request.getParameter("locationCode"), loc);
+                            // A patient search shows the page again without the appointment, so read its saved location again.
+                            Appointment saved = bFirstDisp ? appt : appointmentDao.find(Integer.parseInt(appointment_no));
                         %>
                         <appt:locationSelect choices="<%=locations.getChoices(locationChoice.code())%>" selected="<%=locationChoice.value()%>"
-                                             legacy="<%=locationChoice.legacy()%>" savedCode="<%=appt.getLocationCode()%>"
-                                             savedName="<%=locations.getDisplayName(appt)%>"/>
+                                             legacy="<%=locationChoice.legacy()%>" savedCode="<%=saved == null ? null : saved.getLocationCode()%>"
+                                             savedName="<%=saved == null ? null : locations.getDisplayName(saved)%>"/>
                         <% } else { %>
 		        <input type="text" class="form-control" name="location" tabindex="4"
                        value="<%=Encode.forHtmlAttribute(bFirstDisp?appt.getLocation():request.getParameter("location"))%>" >
