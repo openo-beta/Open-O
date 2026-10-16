@@ -28,14 +28,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import ca.openosp.openo.appt.IconSet;
 import ca.openosp.openo.appt.ItemStyleColour;
+import ca.openosp.openo.appt.LocationList;
 import ca.openosp.openo.commn.dao.LookupListDao;
 import ca.openosp.openo.commn.dao.LookupListItemDao;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
 import ca.openosp.openo.commn.dao.SystemPreferencesDao;
 import ca.openosp.openo.commn.model.LookupList;
 import ca.openosp.openo.commn.model.LookupListItem;
@@ -67,6 +70,8 @@ public class LookupListManager {
     private LookupListItemDao lookupListItemDao;
     @Autowired
     private SystemPreferencesDao systemPreferencesDao;
+    @Autowired
+    private OscarAppointmentDao appointmentDao;
     @Autowired
     SecurityInfoManager securityInfoManager;
 
@@ -346,17 +351,24 @@ public class LookupListManager {
     /**
      * Renames a lookupListItem.
      *
-     * <p>Screens that saved the old name keep it: an appointment stores the location's name at
-     * booking time, not a reference to it.</p>
+     * <p>A Location List location is also renamed on its appointments from
+     * {@link LocationList#firstRenamedDate()} on, in the same transaction, whichever screen renames
+     * it, and its name may be at most {@link LocationList#LABEL_MAX_LENGTH} characters, because an
+     * appointment saves a copy of it. Earlier appointments keep the name they were saved with: a
+     * location records where a visit happened, while an upcoming appointment says where the patient
+     * is going. Each renamed appointment is archived first and recorded as updated by the user (see
+     * {@link OscarAppointmentDao#renameLocationFrom}); saving the name it already has renames none.</p>
      *
      * @param loggedInInfo LoggedInInfo the current user, who needs _admin update
      * @param lookupListItemId int the item to rename
      * @param label String the new name, which is trimmed
      * @return boolean true if the item exists and was renamed, false if there is no such item
      * @throws RuntimeException if the user lacks _admin update
-     * @throws IllegalArgumentException if label is blank or longer than the column
+     * @throws IllegalArgumentException if label is blank or longer than the column, or than an
+     *         appointment's copy for a Location List location
      * @since 2026-09-17
      */
+    @Transactional
     public boolean updateLookupListItemLabel(LoggedInInfo loggedInInfo, int lookupListItemId, String label) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null)) {
@@ -367,13 +379,16 @@ public class LookupListManager {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("lookupListItem label must not be blank");
         }
-        if (name.length() > LABEL_MAX_LENGTH) {
-            throw new IllegalArgumentException("lookupListItem label must be at most " + LABEL_MAX_LENGTH + " characters");
-        }
 
         LookupListItem lookupListItem = findLookupListItemById(loggedInInfo, lookupListItemId);
         if (lookupListItem == null) {
             return false;
+        }
+
+        boolean appointmentLocation = isAppointmentLocation(loggedInInfo, lookupListItem);
+        int maxLength = appointmentLocation ? LocationList.LABEL_MAX_LENGTH : LABEL_MAX_LENGTH;
+        if (name.length() > maxLength) {
+            throw new IllegalArgumentException("lookupListItem label must be at most " + maxLength + " characters");
         }
 
         String previous = lookupListItem.getLabel();
@@ -382,7 +397,38 @@ public class LookupListManager {
         LogAction.addLogSynchronous(loggedInInfo, "LookupListManager.updateLookupListItemLabel",
                 "Renamed lookupListItem Id: " + lookupListItemId + ", was [" + previous + "], now [" + name + "]");
 
+        if (appointmentLocation && !name.equals(previous)) {
+            Date from = LocationList.firstRenamedDate();
+            int renamed = appointmentDao.renameLocationFrom(lookupListItemId, name, from, loggedInInfo.getLoggedInProviderNo());
+            LogAction.addLogSynchronous(loggedInInfo, "LookupListManager.updateLookupListItemLabel",
+                    "Renamed lookupListItem Id: " + lookupListItemId + " on " + renamed + " appointments from " + from);
+        }
+
         return true;
+    }
+
+    /* Whether an item is a Location List location, whose name appointments save a copy of. */
+    private boolean isAppointmentLocation(LoggedInInfo loggedInInfo, LookupListItem lookupListItem) {
+        LookupList locationList = findAppointmentLocationList(loggedInInfo);
+        return locationList != null && Objects.equals(locationList.getId(), lookupListItem.getLookupListId());
+    }
+
+    /**
+     * Counts each Location List location's appointments from {@link LocationList#firstRenamedDate()}
+     * on, whatever their status: the ones renaming it would rename.
+     *
+     * @param loggedInInfo LoggedInInfo the current user, who needs _admin read
+     * @return Map&lt;Integer, Long&gt; the count by location id; a location with none is left out
+     * @throws RuntimeException if the user lacks _admin read
+     * @since 2026-10-16
+     */
+    public Map<Integer, Long> countUpcomingAppointmentsByLocation(LoggedInInfo loggedInInfo) {
+
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.READ, null)) {
+            throw new RuntimeException("Access Denied");
+        }
+
+        return appointmentDao.countByLocationCodeFrom(LocationList.firstRenamedDate());
     }
 
     /**

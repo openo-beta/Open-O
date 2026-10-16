@@ -1,6 +1,8 @@
 package ca.openosp.openo.appt;
 
+import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +32,10 @@ import ca.openosp.openo.utility.SpringUtils;
  * <p>When the Location List is the clinic's Location Mode (see {@link #isLocationMode()}), the
  * booking screens offer its items in place of the free-text location. Choosing an item saves its id
  * as the appointment's location code and a snapshot of its label as the location text, so screens
- * that only read the text keep working and a renamed item doesn't rewrite past appointments.</p>
+ * that only read the text keep working. Every screen shows that saved name: renaming a location
+ * also renames it on its appointments from today on
+ * ({@link LookupListManager#updateLookupListItemLabel}), and earlier
+ * appointments keep the name they were saved with.</p>
  *
  * <p>It also decides how the schedule marks and names an appointment's location, which depends on
  * whether the clinic books by a site setup (sites, schedule sites or CAISI programs) instead.</p>
@@ -134,7 +139,9 @@ public final class LocationList {
      *   <li>{@link #LEGACY_VALUE}: the location code is cleared and the posted {@code location} text,
      *       the Legacy Location the edit screen offered, is kept.</li>
      *   <li>An item of the list, active or not: its id becomes the location code and its label,
-     *       cut to the column width, the location text.</li>
+     *       cut to the column width, the location text. An appointment dated before today that
+     *       stays at its item keeps its saved name, so editing it doesn't give it a name the
+     *       location only took later.</li>
      *   <li>Blank, or anything else: the location code and text are cleared, leaving a Blank Location.</li>
      * </ul>
      *
@@ -155,8 +162,37 @@ public final class LocationList {
         }
 
         LookupListItem item = load(LoggedInInfo.getLoggedInInfoFromSession(request)).find(parseCode(posted));
-        appointment.setLocationCode(item == null ? null : item.getId());
-        appointment.setLocation(item == null ? "" : StringUtils.left(item.getLabel(), LABEL_MAX_LENGTH));
+        if (item == null) {
+            appointment.setLocationCode(null);
+            appointment.setLocation("");
+        } else if (!keepsSavedName(appointment, item)) {
+            appointment.setLocationCode(item.getId());
+            appointment.setLocation(StringUtils.left(item.getLabel(), LABEL_MAX_LENGTH));
+        }
+    }
+
+    /*
+     * Whether an appointment staying at its item keeps the name it was saved with: it is dated before
+     * the first date a rename reaches. The date is the one about to be saved, so an appointment moved
+     * to that date or later takes the item's current name, as the rename would have given it.
+     */
+    private static boolean keepsSavedName(Appointment appointment, LookupListItem item) {
+        Date date = appointment.getAppointmentDate();
+        return item.getId().equals(appointment.getLocationCode())
+                && StringUtils.isNotBlank(appointment.getLocation())
+                && date != null && date.before(firstRenamedDate());
+    }
+
+    /**
+     * The first appointment date a location's rename reaches: today. Appointments from it on take
+     * the new name ({@link LookupListManager#updateLookupListItemLabel}); earlier ones keep the name
+     * they were saved with, and an edit keeps it too ({@link #applyPostedLocation}).
+     *
+     * @return Date today at midnight, as the appointment date column stores a date
+     * @since 2026-10-16
+     */
+    public static Date firstRenamedDate() {
+        return java.sql.Date.valueOf(LocalDate.now());
     }
 
     /**
@@ -243,20 +279,17 @@ public final class LocationList {
     }
 
     /**
-     * Names an appointment's location as the schedule shows it: what the booking screen offered.
-     * Outside site setups, a location code that is an item of this list shows the item's current
-     * name, as its chip does. In a site setup, the saved location text: the site's name, or with
-     * CAISI program locations the program's location, or its name when it has none, since a
-     * booking saves the program's id.
+     * Names an appointment's location as the schedule shows it: the saved location text, which for
+     * a Location List item is its name on the appointment's date, as reports and integrations read
+     * it. With CAISI program locations it is the program's location, or its name when it has none,
+     * since a booking saves the program's id.
      *
      * @param appointment Appointment the appointment shown
      * @return String the location's name, or blank when the appointment has none
      * @since 2026-09-21
      */
     public String getDisplayName(Appointment appointment) {
-        LookupListItem item = getChipItem(appointment);
-        String name = item != null ? item.getLabel()
-                : siteSetup().programs() ? programName(appointment.getLocation()) : appointment.getLocation();
+        String name = siteSetup().programs() ? programName(appointment.getLocation()) : appointment.getLocation();
         return name == null || "null".equals(name) ? "" : name.trim();
     }
 
