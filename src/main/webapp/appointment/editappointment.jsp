@@ -1206,6 +1206,7 @@
 
         <% AppointmentTypeDao appDao = SpringUtils.getBean(AppointmentTypeDao.class);
                                 List<AppointmentType> types = appDao.listAll();
+                                String selectedType = bFirstDisp ? appt.getType() : request.getParameter("type");
                 for(AppointmentType type : types) {
                             %>
                     <option data-dur="<%= type.getDuration() %>"
@@ -1213,7 +1214,7 @@
                             data-loc="<%= Encode.forHtmlAttribute(type.getLocation()) %>"
                             data-notes="<%= Encode.forHtmlAttribute(type.getNotes()) %>"
                             data-resources="<%= Encode.forHtmlAttribute(type.getResources()) %>"
-                            <%= type.getName().equalsIgnoreCase(appt.getType()) ? "selected" : ""%>>
+                            <%= type.getName().equalsIgnoreCase(selectedType) ? "selected" : ""%>>
                         <%=Encode.forHtml(type.getName())%>
                             </option>
                             <% } %>
