@@ -65,6 +65,7 @@
 <%@page import="ca.openosp.openo.utility.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.utility.DigitalSignatureUtils" %>
+<%@ page import="ca.openosp.openo.utility.HtmlEncodingUtils" %>
 <%@ page import="ca.openosp.openo.ui.servlet.ImageRenderingServlet" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
@@ -2555,7 +2556,8 @@ if (userAgent != null) {
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgAddress"/>
                                         </td>
-                                        <td class="tite1"><%=Encode.forHtml(String.valueOf(thisForm.getPatientAddress().replace("null", "")))%>
+                                        <%-- the address lines are joined with <br>, which the PDFs also rely on --%>
+                                        <td class="tite1"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(thisForm.getPatientAddress().replace("null", ""))%>
                                         </td>
                                     </tr>
                                     <tr>
