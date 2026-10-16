@@ -20,7 +20,8 @@ import ca.openosp.openo.utility.SpringUtils;
  * <ul>
  *   <li>{@code updateColour}, {@code updateIcon} and {@code updateDescription} set the item's
  *       colour, icon or name to {@code value}; the item style editor on the page posts them, and a
- *       blank value clears a colour or an icon.</li>
+ *       blank value clears a colour or an icon. A new name also renames the location on its
+ *       appointments from today on.</li>
  *   <li>{@code restore} enables an inactive location, {@code deactivate} disables an active one
  *       and stops it being the default, and {@code moveUp} and {@code moveDown} change where an
  *       active one sits in the order.</li>
@@ -113,6 +114,10 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
         request.setAttribute("defaultLocation", locations.getDefault(getLoggedInInfo()));
         request.setAttribute("locationRequired", lookupListManager.isAppointmentLocationRequired(getLoggedInInfo()));
         request.setAttribute("canDeactivate", isCanDeactivate());
+        // A rename asks first when it would also rename upcoming appointments, so the page needs their count.
+        if (canChange()) {
+            request.setAttribute("upcomingCounts", lookupListManager.countUpcomingAppointmentsByLocation(getLoggedInInfo()));
+        }
         // The Add link opens the Look-Up List Manager, whose Add needs write, not update.
         request.setAttribute("canAdd", hasAnyPrivilege(ADMIN, SecurityInfoManager.WRITE));
         return SUCCESS;

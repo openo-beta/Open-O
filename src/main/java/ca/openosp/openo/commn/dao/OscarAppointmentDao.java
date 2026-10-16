@@ -146,4 +146,28 @@ public interface OscarAppointmentDao extends AbstractDao<Appointment> {
 
     public List<Object[]> listProviderAppointmentCounts(Date sDate, Date eDate);
 
+    /**
+     * Counts the appointments at each Location List location from a date on, whatever their status.
+     *
+     * @param from Date the first appointment date counted
+     * @return Map&lt;Integer, Long&gt; the count by location code; a location with none is left out
+     * @since 2026-10-16
+     */
+    public Map<Integer, Long> countByLocationCodeFrom(Date from);
+
+    /**
+     * Gives the appointments at a Location List location, from a date on, a new location name, as
+     * when the location is renamed. Each is archived first, as an edit does, and is recorded as
+     * updated by the user. Earlier appointments keep the name they were saved with. It runs as two
+     * statements, not one save per appointment, so call it inside a transaction.
+     *
+     * @param locationCode int the location's LookupListItem id
+     * @param location String the new name to save, at most the column's 80 characters
+     * @param from Date the first appointment date renamed
+     * @param providerNo String the provider number recorded as the last to update them
+     * @return int how many appointments were renamed
+     * @since 2026-10-16
+     */
+    public int renameLocationFrom(int locationCode, String location, Date from, String providerNo);
+
 }

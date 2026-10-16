@@ -1,5 +1,6 @@
 package ca.openosp.openo.appt;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 /**
  * Unit tests for {@link LocationList}: item lookup, the choices a booking offers, the Default
  * Location it starts on and whether the Location Requirement applies, the Location Mode precedence,
- * and how a booking form's posted choice is saved.
+ * how a booking form's posted choice is saved, and the saved name an appointment shows.
  *
  * @since 2026-09-15
  */
@@ -295,20 +296,20 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         private final Appointment appointment = new Appointment();
 
         @Test
-        @DisplayName("should name the item's current name when the code is an item of the list")
-        void shouldUseCurrentName_whenCodeIsItem() {
+        @DisplayName("should use the name saved with the appointment, not the item's current name")
+        void shouldUseSavedName_whenCodeIsItem() {
             appointment.setLocationCode(13);
-            appointment.setLocation("Room 2 (booked name)");
+            appointment.setLocation("Room Two");
 
-            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("Room 2");
+            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("Room Two");
         }
 
         @Test
-        @DisplayName("should name an inactive item without marking it")
-        void shouldUseName_whenItemInactive() {
+        @DisplayName("should not fall back to the item's name when the appointment saved none")
+        void shouldBeBlank_whenItemButNoSavedName() {
             appointment.setLocationCode(12);
 
-            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("Old Annex");
+            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEmpty();
         }
 
         @Test
@@ -771,6 +772,64 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
 
             assertThat(appointment.getLocationCode()).isNull();
             assertThat(appointment.getLocation()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should keep the saved name when an appointment before today stays at its renamed item")
+        void shouldKeepSavedName_whenPastAppointmentKeepsItem() {
+            // A date read from the database is a java.sql.Date, whose toInstant() throws.
+            appointment.setAppointmentDate(java.sql.Date.valueOf(LocalDate.now().minusDays(1)));
+            appointment.setLocationCode(13);
+            appointment.setLocation("Room Two");
+            request.setParameter("locationCode", "13");
+
+            LocationList.applyPostedLocation(appointment, request);
+
+            assertThat(appointment.getLocationCode()).isEqualTo(13);
+            assertThat(appointment.getLocation()).isEqualTo("Room Two");
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 7})
+        @DisplayName("should take the item's current name when an appointment from today on stays at its item")
+        void shouldTakeCurrentName_whenAppointmentFromTodayKeepsItem(int daysAhead) {
+            appointment.setAppointmentDate(java.sql.Date.valueOf(LocalDate.now().plusDays(daysAhead)));
+            appointment.setLocationCode(13);
+            appointment.setLocation("Room Two");
+            request.setParameter("locationCode", "13");
+
+            LocationList.applyPostedLocation(appointment, request);
+
+            assertThat(appointment.getLocation()).isEqualTo("Room 2");
+        }
+
+        @Test
+        @DisplayName("should take the current name when an appointment before today moves to another item")
+        void shouldTakeCurrentName_whenPastAppointmentChangesItem() {
+            appointment.setAppointmentDate(java.sql.Date.valueOf(LocalDate.now().minusDays(1)));
+            appointment.setLocationCode(11);
+            appointment.setLocation("Room One");
+            request.setParameter("locationCode", "13");
+
+            LocationList.applyPostedLocation(appointment, request);
+
+            assertThat(appointment.getLocationCode()).isEqualTo(13);
+            assertThat(appointment.getLocation()).isEqualTo("Room 2");
+        }
+
+        @ParameterizedTest
+        @NullAndEmptySource
+        @ValueSource(strings = " ")
+        @DisplayName("should take the current name when an appointment before today saved no name")
+        void shouldTakeCurrentName_whenPastAppointmentHasNoSavedName(String saved) {
+            appointment.setAppointmentDate(java.sql.Date.valueOf(LocalDate.now().minusDays(1)));
+            appointment.setLocationCode(13);
+            appointment.setLocation(saved);
+            request.setParameter("locationCode", "13");
+
+            LocationList.applyPostedLocation(appointment, request);
+
+            assertThat(appointment.getLocation()).isEqualTo("Room 2");
         }
     }
 }
