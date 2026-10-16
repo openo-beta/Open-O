@@ -13,6 +13,10 @@
       legacy    String the Legacy Location to offer, or blank
       required  Boolean true to make the browser refuse a save on the blank option, for a new booking
                 under the Location Requirement (see LocationList.isRequiredForNewBooking)
+      savedCode Integer the location code an edited appointment was saved with, or null
+      savedName String the name it shows (LocationList.getDisplayName), shown for that item in place
+                of the item's own: an appointment dated before a rename keeps the old name, and saving
+                it keeps it
 
     @since 2026-09-15
 --%>
@@ -21,6 +25,8 @@
 <%@ attribute name="selected" required="false" %>
 <%@ attribute name="legacy" required="false" %>
 <%@ attribute name="required" required="false" type="java.lang.Boolean" %>
+<%@ attribute name="savedCode" required="false" type="java.lang.Integer" %>
+<%@ attribute name="savedName" required="false" %>
 <%@ tag import="ca.openosp.openo.appt.LocationList" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -36,11 +42,12 @@
          The option's text is kept free of stray whitespace, and an inactive one is marked, because
          js/appointment/locationSelect.js matches a location by name. --%>
     <c:forEach items="${choices}" var="item">
+        <c:set var="itemName" value="${item.id eq savedCode and not empty savedName ? savedName : item.label}"/>
         <c:choose>
-            <c:when test="${item.active}"><c:set var="optionLabel" value="${item.label}"/></c:when>
+            <c:when test="${item.active}"><c:set var="optionLabel" value="${itemName}"/></c:when>
             <c:otherwise>
                 <fmt:message key="appointment.location.inactiveItem" var="optionLabel">
-                    <fmt:param value="${item.label}"/>
+                    <fmt:param value="${itemName}"/>
                 </fmt:message>
             </c:otherwise>
         </c:choose>

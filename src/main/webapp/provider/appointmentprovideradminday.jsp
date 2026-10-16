@@ -1860,6 +1860,8 @@
 
                                                          //multi-site. if a site have been selected, only display appointment in that site
                                                    if (!bMultisites || (selectedSite == null && CurrentSiteMap.get(sitename) != null) || sitename.equals(selectedSite)) {
+                                                       // The chip and both tooltips show the location name the appointment saved.
+                                                       String apptLocation = locations.getDisplayName(appointment);
                                                     %>
                                                     <td class="appt" bgcolor='<%=ItemStyleColour.overWhite(as.getBgColor())%>'
                                                         rowspan="<%=iRows%>"
@@ -1869,7 +1871,7 @@
                                                         <span title="<%= sitename %>"
                                                               style="background-color:<%=siteBgColor.get(sitename)%>;">&nbsp;</span>|
                                                         <%} else {%>
-                                                        <appt:locationChip item="<%=locations.getChipItem(appointment)%>"/>
+                                                        <appt:locationChip item="<%=locations.getChipItem(appointment)%>" name="<%=apptLocation%>"/>
                                                         <%} %>
 
                                                         <%
@@ -1920,8 +1922,6 @@
                                                         <% } %>
                                                             <%--|--%>
                                                         <%
-                                                            // Both tooltips name the location the chip or site marker shows.
-                                                            String apptLocation = locations.getDisplayName(appointment);
                                                             String locationLine = apptLocation.isEmpty() ? "" : "&#013;&#010;location: " + Encode.forHtmlAttribute(apptLocation);
                                                             if (demographic_no == 0) {
                                                         %>

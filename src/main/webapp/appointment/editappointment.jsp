@@ -1091,7 +1091,8 @@
                                     : new LocationList.Choice(request.getParameter("locationCode"), loc);
                         %>
                         <appt:locationSelect choices="<%=locations.getChoices(locationChoice.code())%>" selected="<%=locationChoice.value()%>"
-                                             legacy="<%=locationChoice.legacy()%>"/>
+                                             legacy="<%=locationChoice.legacy()%>" savedCode="<%=appt.getLocationCode()%>"
+                                             savedName="<%=locations.getDisplayName(appt)%>"/>
                         <% } else { %>
 		        <input type="text" class="form-control" name="location" tabindex="4"
                        value="<%=Encode.forHtmlAttribute(bFirstDisp?appt.getLocation():request.getParameter("location"))%>" >
