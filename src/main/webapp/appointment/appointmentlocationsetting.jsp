@@ -31,7 +31,8 @@
     name, each with the chip it shows on the schedule. The Default Location is marked, and a switch
     above the table shows whether the Location Requirement is on, for every user. A user who may
     change locations gets the switch enabled, saving on click; pencil buttons that open the item
-    style editor (js/appointment/itemStyleEditor.js) for the name, colour and icon; buttons to move
+    style editor (js/appointment/itemStyleEditor.js) for the name, colour and icon, where a new name
+    asks first when it would also rename upcoming appointments; buttons to move
     an active location along the order; a button to make an active location the default or to
     remove the default; an Enable or Disable button on each row; and a link to the Look-Up List
     Manager, where locations are added. Changes post back to AppointmentLocation2Action.
@@ -45,6 +46,9 @@
       canChange              Boolean whether the user may change locations
       canDeactivate          Boolean whether the user may disable one
       canAdd                 Boolean whether the user may add one in the Look-Up List Manager
+      upcomingCounts         Map<Integer, Long> each location's appointments from today on, which a
+                             rename also renames, by location id; set only when the user may change
+                             locations, and a location with none is left out
       saveFailed             Boolean true when the last change was rejected
       saveFailedKey          String the message for a change refused with a reason, if any
       saveFailedParam        String that message's parameter, if it takes one
@@ -75,6 +79,9 @@
 <c:set var="itemStyleEditorDescriptionTitleKey" value="admin.appt.location.label.editName"/>
 <fmt:message key="admin.appt.location.label.editName" var="editNameLabel"/>
 <fmt:message key="admin.appt.location.msg.confirmLastDisable" var="confirmLastDisable"/>
+<%-- Shown without parameters, so {old}, {new} and {count} reach the page's script as they are. --%>
+<fmt:message key="admin.appt.location.msg.confirmRename" var="confirmRename"/>
+<fmt:message key="admin.appt.location.msg.confirmRenameOne" var="confirmRenameOne"/>
 <%-- An unstyled location draws the default chip; its empty Colour and Icon cells say so on hover. --%>
 <fmt:message key="admin.appt.location.label.defaultStyle" var="defaultStyleLabel"/>
 <fmt:message key="admin.appt.location.label.default" var="defaultBadge"/>
@@ -97,7 +104,8 @@
         }
     </style>
 </head>
-<body class="p-3" data-name-max-length="<%= ca.openosp.openo.appt.LocationList.LABEL_MAX_LENGTH %>">
+<body class="p-3" data-name-max-length="<%= ca.openosp.openo.appt.LocationList.LABEL_MAX_LENGTH %>"
+      data-confirm-rename="${e:forHtmlAttribute(confirmRename)}" data-confirm-rename-one="${e:forHtmlAttribute(confirmRenameOne)}">
 <%@ include file="appointmentSettingsNav.jspf" %>
 
 <div class="d-flex align-items-center mb-3">
@@ -164,7 +172,8 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${locations}" var="item" varStatus="loop">
-                    <tr id="location-${e:forHtmlAttribute(item.id)}" class="${item.active ? '' : 'text-muted'}">
+                    <tr id="location-${e:forHtmlAttribute(item.id)}" class="${item.active ? '' : 'text-muted'}"
+                        data-upcoming="${e:forHtmlAttribute(upcomingCounts[item.id])}">
                         <c:set var="isDefault" value="${item.id eq defaultLocation.id}"/>
                         <td>
                             <c:out value="${item.label}"/>
@@ -266,8 +275,21 @@
             });
         });
 
+        // A new name also renames the location on its appointments from today on, so say how many first.
+        function confirmRename(id, name, current) {
+            const count = Number(document.getElementById('location-' + id).dataset.upcoming) || 0;
+            if (count === 0) {
+                return true;
+            }
+            const message = count === 1 ? document.body.dataset.confirmRenameOne : document.body.dataset.confirmRename;
+            const values = {old: current, new: name, count: count.toLocaleString()};
+            return window.confirm(message.replace(/\{(old|new|count)\}/g, function (placeholder, key) {
+                return values[key];
+            }));
+        }
+
         ItemStyleEditor.init({
-            description: {maxLength: Number(document.body.dataset.nameMaxLength)},
+            description: {maxLength: Number(document.body.dataset.nameMaxLength), confirm: confirmRename},
             colour: {clearable: true},
             icon: {clearable: true}
         });

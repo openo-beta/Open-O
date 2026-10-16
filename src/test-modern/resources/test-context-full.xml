@@ -266,6 +266,7 @@
     <bean id="UserPropertyDAO" class="ca.openosp.openo.commn.dao.UserPropertyDAOImpl" autowire="byName" />
     <bean id="DxresearchDAO" class="ca.openosp.openo.commn.dao.DxresearchDAOImpl" autowire="byName" />
     <bean id="appointmentArchiveDao" class="ca.openosp.openo.commn.dao.AppointmentArchiveDaoImpl" autowire="byName" />
+    <bean id="oscarAppointmentDao" class="ca.openosp.openo.commn.dao.OscarAppointmentDaoImpl" autowire="byName" />
     <bean id="DxDao" class="ca.openosp.openo.commn.dao.DxDaoImpl" autowire="byName" />
     <bean id="eChartDao" class="ca.openosp.openo.commn.dao.EChartDaoImpl" autowire="byName" />
     <bean id="encounterWindowDao" class="ca.openosp.openo.commn.dao.EncounterWindowDaoImpl" autowire="byName" />
