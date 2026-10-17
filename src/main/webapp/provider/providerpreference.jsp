@@ -710,10 +710,6 @@
             </tr>
             <tr>
                 <td align="center"><a href=#
-                                      onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewDisplayDocumentAs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetDisplayDocumentAs"/></a></td>
-            </tr>
-            <tr>
-                <td align="center"><a href=#
             </tr>
             <tr>
                 <td align="center"><a href=#
