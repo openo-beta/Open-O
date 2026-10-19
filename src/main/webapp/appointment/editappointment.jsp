@@ -1088,9 +1088,12 @@
                         <% } else if (locationMode) {
                             LocationList.Choice locationChoice = bFirstDisp ? locations.choiceFor(appt.getLocationCode(), loc)
                                     : new LocationList.Choice(request.getParameter("locationCode"), loc);
+                            // A patient search shows the page again without the appointment, so read its saved location again.
+                            Appointment saved = bFirstDisp ? appt : appointmentDao.find(Integer.parseInt(appointment_no));
                         %>
                         <appt:locationSelect choices="<%=locations.getChoices(locationChoice.code())%>" selected="<%=locationChoice.value()%>"
-                                             legacy="<%=locationChoice.legacy()%>"/>
+                                             legacy="<%=locationChoice.legacy()%>" savedCode="<%=saved == null ? null : saved.getLocationCode()%>"
+                                             savedName="<%=saved == null ? null : locations.getDisplayName(saved)%>"/>
                         <% } else { %>
 		        <input type="text" class="form-control" name="location" tabindex="4"
                        value="<%=Encode.forHtmlAttribute(bFirstDisp?appt.getLocation():request.getParameter("location"))%>" >
@@ -1202,6 +1205,7 @@
 
         <% AppointmentTypeDao appDao = SpringUtils.getBean(AppointmentTypeDao.class);
                                 List<AppointmentType> types = appDao.listAll();
+                                String selectedType = bFirstDisp ? appt.getType() : request.getParameter("type");
                 for(AppointmentType type : types) {
                             %>
                     <option data-dur="<%=Encode.forHtmlAttribute(String.valueOf(type.getDuration()))%>"
@@ -1209,7 +1213,7 @@
                             data-loc="<%= Encode.forHtmlAttribute(type.getLocation()) %>"
                             data-notes="<%= Encode.forHtmlAttribute(type.getNotes()) %>"
                             data-resources="<%= Encode.forHtmlAttribute(type.getResources()) %>"
-                            <%= type.getName().equalsIgnoreCase(appt.getType()) ? "selected" : ""%>>
+                            <%= type.getName().equalsIgnoreCase(selectedType) ? "selected" : ""%>>
                         <%=Encode.forHtml(type.getName())%>
                             </option>
                             <% } %>
