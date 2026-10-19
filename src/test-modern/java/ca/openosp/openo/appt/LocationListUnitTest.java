@@ -33,6 +33,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
@@ -649,12 +650,22 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
 
         private final MockHttpServletRequest request = new MockHttpServletRequest("POST", "/appointment/appointmentcontrol.jsp");
         private final Appointment appointment = new Appointment();
+        private final LocalDate today = LocalDate.of(2026, 10, 16);
+        private MockedStatic<LocationList> pinnedToday;
 
         @BeforeEach
         void existingAppointment() {
             appointment.setLocation("Before");
             appointment.setLocationCode(7);
             request.setParameter("location", "");
+            // Pin today, so a run across midnight can't move it between the test's dates and the save's
+            pinnedToday = mockStatic(LocationList.class, CALLS_REAL_METHODS);
+            pinnedToday.when(LocationList::firstRenamedDate).thenReturn(java.sql.Date.valueOf(today));
+        }
+
+        @AfterEach
+        void unpinToday() {
+            pinnedToday.close();
         }
 
         @Test
@@ -778,7 +789,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         @DisplayName("should keep the saved name when an appointment before today stays at its renamed item")
         void shouldKeepSavedName_whenPastAppointmentKeepsItem() {
             // A date read from the database is a java.sql.Date, whose toInstant() throws.
-            appointment.setAppointmentDate(java.sql.Date.valueOf(LocalDate.now().minusDays(1)));
+            appointment.setAppointmentDate(java.sql.Date.valueOf(today.minusDays(1)));
             appointment.setLocationCode(13);
             appointment.setLocation("Room Two");
             request.setParameter("locationCode", "13");
@@ -793,7 +804,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         @ValueSource(ints = {0, 7})
         @DisplayName("should take the item's current name when an appointment from today on stays at its item")
         void shouldTakeCurrentName_whenAppointmentFromTodayKeepsItem(int daysAhead) {
-            appointment.setAppointmentDate(java.sql.Date.valueOf(LocalDate.now().plusDays(daysAhead)));
+            appointment.setAppointmentDate(java.sql.Date.valueOf(today.plusDays(daysAhead)));
             appointment.setLocationCode(13);
             appointment.setLocation("Room Two");
             request.setParameter("locationCode", "13");
@@ -806,7 +817,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         @Test
         @DisplayName("should take the current name when an appointment before today moves to another item")
         void shouldTakeCurrentName_whenPastAppointmentChangesItem() {
-            appointment.setAppointmentDate(java.sql.Date.valueOf(LocalDate.now().minusDays(1)));
+            appointment.setAppointmentDate(java.sql.Date.valueOf(today.minusDays(1)));
             appointment.setLocationCode(11);
             appointment.setLocation("Room One");
             request.setParameter("locationCode", "13");
@@ -822,7 +833,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         @ValueSource(strings = " ")
         @DisplayName("should take the current name when an appointment before today saved no name")
         void shouldTakeCurrentName_whenPastAppointmentHasNoSavedName(String saved) {
-            appointment.setAppointmentDate(java.sql.Date.valueOf(LocalDate.now().minusDays(1)));
+            appointment.setAppointmentDate(java.sql.Date.valueOf(today.minusDays(1)));
             appointment.setLocationCode(13);
             appointment.setLocation(saved);
             request.setParameter("locationCode", "13");

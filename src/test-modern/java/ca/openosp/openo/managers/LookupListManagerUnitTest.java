@@ -1,6 +1,5 @@
 package ca.openosp.openo.managers;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +39,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -74,6 +74,7 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
 
     private static final int ITEM_ID = 7;
     private static final int LOCATION_LIST_ID = 5;
+    private static final java.sql.Date TODAY = java.sql.Date.valueOf("2026-10-16");
 
     @Mock
     private LookupListDao lookupListDao;
@@ -95,6 +96,7 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
 
     private final LoggedInInfo loggedInInfo = new LoggedInInfo();
     private MockedStatic<LogAction> logActionMock;
+    private MockedStatic<LocationList> locationListMock;
     private LookupListItem item;
 
     @BeforeEach
@@ -102,6 +104,9 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
         // LogAction's static initializer looks up OscarLogDao, so register it before mocking LogAction
         registerMock(OscarLogDao.class, mock(OscarLogDao.class));
         logActionMock = mockStatic(LogAction.class);
+        // Pin today, so a run across midnight can't give the manager another date than the test expects
+        locationListMock = mockStatic(LocationList.class, CALLS_REAL_METHODS);
+        locationListMock.when(LocationList::firstRenamedDate).thenReturn(TODAY);
 
         lenient().when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null))
                 .thenReturn(true);
@@ -116,6 +121,7 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
     @AfterEach
     void tearDown() {
         logActionMock.close();
+        locationListMock.close();
     }
 
     /* The one system preference a Location tab setting saved. */
@@ -485,8 +491,6 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
     @DisplayName("updateLookupListItemLabel on a Location List location")
     class LocationLabel {
 
-        private final java.sql.Date today = java.sql.Date.valueOf(LocalDate.now());
-
         @BeforeEach
         void locationListItem() {
             Provider provider = new Provider();
@@ -504,13 +508,13 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
         @ValueSource(strings = {"Midtown Clinic", "  Midtown Clinic  "})
         @DisplayName("should rename the location and its appointments from today on, as the user")
         void shouldRenameUpcomingAppointments_whenRenamed(String label) {
-            when(appointmentDao.renameLocationFrom(ITEM_ID, "Midtown Clinic", today, "999998")).thenReturn(3);
+            when(appointmentDao.renameLocationFrom(ITEM_ID, "Midtown Clinic", TODAY, "999998")).thenReturn(3);
 
             assertThat(manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, label)).isTrue();
 
             assertThat(item.getLabel()).isEqualTo("Midtown Clinic");
             verify(lookupListItemDao).merge(item);
-            verify(appointmentDao).renameLocationFrom(ITEM_ID, "Midtown Clinic", today, "999998");
+            verify(appointmentDao).renameLocationFrom(ITEM_ID, "Midtown Clinic", TODAY, "999998");
             logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
                     eq("LookupListManager.updateLookupListItemLabel"), contains("on 3 appointments")));
         }
@@ -520,7 +524,7 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
         void shouldRenameUpcomingAppointments_whenOnlyCaseChanges() {
             manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, "MIDTOWN");
 
-            verify(appointmentDao).renameLocationFrom(ITEM_ID, "MIDTOWN", today, "999998");
+            verify(appointmentDao).renameLocationFrom(ITEM_ID, "MIDTOWN", TODAY, "999998");
         }
 
         @Test
@@ -566,7 +570,7 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
         void shouldCountFromToday_whenAsked() {
             Map<Integer, Long> counts = Map.of(ITEM_ID, 3L);
             when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.READ, null)).thenReturn(true);
-            when(appointmentDao.countByLocationCodeFrom(java.sql.Date.valueOf(LocalDate.now()))).thenReturn(counts);
+            when(appointmentDao.countByLocationCodeFrom(TODAY)).thenReturn(counts);
 
             assertThat(manager.countUpcomingAppointmentsByLocation(loggedInInfo)).isSameAs(counts);
         }
