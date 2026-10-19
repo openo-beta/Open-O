@@ -37,12 +37,13 @@ function popupPage(vheight, vwidth, varpage) { //open a new popup window
 }
 
 function openPatient(demographicNo) {
-    popupPage(700, 1200, '../demographic/demographiccontrol.jsp?demographic_no=' + demographicNo + '&displaymode=edit&dboperation=search_detail');
+    // The page sets <base href> to the context root, so every popup URL must start from it
+    popupPage(700, 1200, ctx + '/demographic/demographiccontrol.jsp?demographic_no=' + demographicNo + '&displaymode=edit&dboperation=search_detail');
 
 }
 
 function openReport(id) {
-    popupPage(700, 1200, 'Display.do?id=' + id + '&duplicateLabIds=');
+    popupPage(700, 1200, ctx + '/hospitalReportManager/Display.do?id=' + id + '&duplicateLabIds=');
 
 }
 
