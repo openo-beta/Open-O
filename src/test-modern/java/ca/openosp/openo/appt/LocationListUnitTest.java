@@ -650,22 +650,12 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
 
         private final MockHttpServletRequest request = new MockHttpServletRequest("POST", "/appointment/appointmentcontrol.jsp");
         private final Appointment appointment = new Appointment();
-        private final LocalDate today = LocalDate.of(2026, 10, 16);
-        private MockedStatic<LocationList> pinnedToday;
 
         @BeforeEach
         void existingAppointment() {
             appointment.setLocation("Before");
             appointment.setLocationCode(7);
             request.setParameter("location", "");
-            // Pin today, so a run across midnight can't move it between the test's dates and the save's
-            pinnedToday = mockStatic(LocationList.class, CALLS_REAL_METHODS);
-            pinnedToday.when(LocationList::firstRenamedDate).thenReturn(java.sql.Date.valueOf(today));
-        }
-
-        @AfterEach
-        void unpinToday() {
-            pinnedToday.close();
         }
 
         @Test
@@ -785,62 +775,82 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
             assertThat(appointment.getLocation()).isEmpty();
         }
 
-        @Test
-        @DisplayName("should keep the saved name when an appointment before today stays at its renamed item")
-        void shouldKeepSavedName_whenPastAppointmentKeepsItem() {
-            // A date read from the database is a java.sql.Date, whose toInstant() throws.
-            appointment.setAppointmentDate(java.sql.Date.valueOf(today.minusDays(1)));
-            appointment.setLocationCode(13);
-            appointment.setLocation("Room Two");
-            request.setParameter("locationCode", "13");
+        @Nested
+        @DisplayName("saved name, by appointment date")
+        class SavedNameByDate {
 
-            LocationList.applyPostedLocation(appointment, request);
+            private final LocalDate today = LocalDate.of(2026, 10, 16);
+            private MockedStatic<LocationList> pinnedToday;
 
-            assertThat(appointment.getLocationCode()).isEqualTo(13);
-            assertThat(appointment.getLocation()).isEqualTo("Room Two");
-        }
+            @BeforeEach
+            void pinToday() {
+                // Pin today, so a run across midnight can't move it between the test's dates and the save's
+                pinnedToday = mockStatic(LocationList.class, CALLS_REAL_METHODS);
+                pinnedToday.when(LocationList::firstRenamedDate).thenReturn(java.sql.Date.valueOf(today));
+            }
 
-        @ParameterizedTest
-        @ValueSource(ints = {0, 7})
-        @DisplayName("should take the item's current name when an appointment from today on stays at its item")
-        void shouldTakeCurrentName_whenAppointmentFromTodayKeepsItem(int daysAhead) {
-            appointment.setAppointmentDate(java.sql.Date.valueOf(today.plusDays(daysAhead)));
-            appointment.setLocationCode(13);
-            appointment.setLocation("Room Two");
-            request.setParameter("locationCode", "13");
+            @AfterEach
+            void unpinToday() {
+                pinnedToday.close();
+            }
 
-            LocationList.applyPostedLocation(appointment, request);
+            @Test
+            @DisplayName("should keep the saved name when an appointment before today stays at its renamed item")
+            void shouldKeepSavedName_whenPastAppointmentKeepsItem() {
+                // A date read from the database is a java.sql.Date, whose toInstant() throws.
+                appointment.setAppointmentDate(java.sql.Date.valueOf(today.minusDays(1)));
+                appointment.setLocationCode(13);
+                appointment.setLocation("Room Two");
+                request.setParameter("locationCode", "13");
 
-            assertThat(appointment.getLocation()).isEqualTo("Room 2");
-        }
+                LocationList.applyPostedLocation(appointment, request);
 
-        @Test
-        @DisplayName("should take the current name when an appointment before today moves to another item")
-        void shouldTakeCurrentName_whenPastAppointmentChangesItem() {
-            appointment.setAppointmentDate(java.sql.Date.valueOf(today.minusDays(1)));
-            appointment.setLocationCode(11);
-            appointment.setLocation("Room One");
-            request.setParameter("locationCode", "13");
+                assertThat(appointment.getLocationCode()).isEqualTo(13);
+                assertThat(appointment.getLocation()).isEqualTo("Room Two");
+            }
 
-            LocationList.applyPostedLocation(appointment, request);
+            @ParameterizedTest
+            @ValueSource(ints = {0, 7})
+            @DisplayName("should take the item's current name when an appointment from today on stays at its item")
+            void shouldTakeCurrentName_whenAppointmentFromTodayKeepsItem(int daysAhead) {
+                appointment.setAppointmentDate(java.sql.Date.valueOf(today.plusDays(daysAhead)));
+                appointment.setLocationCode(13);
+                appointment.setLocation("Room Two");
+                request.setParameter("locationCode", "13");
 
-            assertThat(appointment.getLocationCode()).isEqualTo(13);
-            assertThat(appointment.getLocation()).isEqualTo("Room 2");
-        }
+                LocationList.applyPostedLocation(appointment, request);
 
-        @ParameterizedTest
-        @NullAndEmptySource
-        @ValueSource(strings = " ")
-        @DisplayName("should take the current name when an appointment before today saved no name")
-        void shouldTakeCurrentName_whenPastAppointmentHasNoSavedName(String saved) {
-            appointment.setAppointmentDate(java.sql.Date.valueOf(today.minusDays(1)));
-            appointment.setLocationCode(13);
-            appointment.setLocation(saved);
-            request.setParameter("locationCode", "13");
+                assertThat(appointment.getLocation()).isEqualTo("Room 2");
+            }
 
-            LocationList.applyPostedLocation(appointment, request);
+            @Test
+            @DisplayName("should take the current name when an appointment before today moves to another item")
+            void shouldTakeCurrentName_whenPastAppointmentChangesItem() {
+                appointment.setAppointmentDate(java.sql.Date.valueOf(today.minusDays(1)));
+                appointment.setLocationCode(11);
+                appointment.setLocation("Room One");
+                request.setParameter("locationCode", "13");
 
-            assertThat(appointment.getLocation()).isEqualTo("Room 2");
+                LocationList.applyPostedLocation(appointment, request);
+
+                assertThat(appointment.getLocationCode()).isEqualTo(13);
+                assertThat(appointment.getLocation()).isEqualTo("Room 2");
+            }
+
+            @ParameterizedTest
+            @NullAndEmptySource
+            @ValueSource(strings = " ")
+            @DisplayName("should take the current name when an appointment before today saved no name")
+            void shouldTakeCurrentName_whenPastAppointmentHasNoSavedName(String saved) {
+                appointment.setAppointmentDate(java.sql.Date.valueOf(today.minusDays(1)));
+                appointment.setLocationCode(13);
+                appointment.setLocation(saved);
+                request.setParameter("locationCode", "13");
+
+                LocationList.applyPostedLocation(appointment, request);
+
+                assertThat(appointment.getLocation()).isEqualTo("Room 2");
+            }
         }
     }
 }
