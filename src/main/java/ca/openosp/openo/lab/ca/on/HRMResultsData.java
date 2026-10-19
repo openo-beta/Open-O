@@ -13,6 +13,7 @@ package ca.openosp.openo.lab.ca.on;
 
 import java.util.*;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.model.Demographic;
@@ -140,8 +141,12 @@ public class HRMResultsData {
             lbData.resultStatus = hrmReport.getResultStatus();
 
             String duplicateKey = hrmReport.getSendingFacilityId() + ':' + hrmReport.getSendingFacilityReportNo() + ':' + hrmReport.getDeliverToUserId();
-            String[] patientName = lbData.patientName.split(",");
-            if (lbData.healthNumber.contains(hinSearch) || patientName[0].contains(lastNameSearch) || patientName[1].contains(firstNameSearch)) {
+            // the HRM health card number and the patient name are optional, so an unmatched report can leave them empty
+            String healthNumber = StringUtils.defaultString(lbData.healthNumber);
+            String[] patientName = StringUtils.defaultString(lbData.patientName).split(",", -1);
+            String reportLastName = patientName.length > 0 ? patientName[0] : "";
+            String reportFirstName = patientName.length > 1 ? patientName[1] : "";
+            if (healthNumber.contains(hinSearch) || reportLastName.contains(lastNameSearch) || reportFirstName.contains(firstNameSearch)) {
                 // if no duplicate
                 if (!labResults.containsKey(duplicateKey)) {
                     labResults.put(duplicateKey, lbData);
