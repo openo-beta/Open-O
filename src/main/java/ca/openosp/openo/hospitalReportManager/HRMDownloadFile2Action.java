@@ -99,7 +99,7 @@ public class HRMDownloadFile2Action extends ActionSupport {
             case ".pdf" -> "application/pdf";
             case ".tiff" -> "image/tiff";
             case ".rtf" -> "text/enriched";
-            case ".jpg" -> "image/jpeg";
+            case ".jpg", ".jpeg" -> "image/jpeg";
             case ".gif" -> "image/gif";
             case ".png" -> "image/png";
             case ".html" -> "text/html";

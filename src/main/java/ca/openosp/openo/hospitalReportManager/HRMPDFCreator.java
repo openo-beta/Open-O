@@ -29,6 +29,8 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.io.RandomAccessSourceFactory;
+import com.itextpdf.text.pdf.codec.TiffImage;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.model.EFormData;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
@@ -45,8 +47,10 @@ import ca.openosp.openo.documentManager.ConvertToEdoc;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
+
+import javax.swing.text.BadLocationException;
+import javax.swing.text.rtf.RTFEditorKit;
 
 public class HRMPDFCreator extends PdfPageEventHelper {
     private Logger logger = MiscUtils.getLogger();
@@ -102,85 +106,8 @@ public class HRMPDFCreator extends PdfPageEventHelper {
                 }
 
                 document.close();
-            } else if (hrmReport.getFileExtension() != null && (hrmReport.getFileExtension().equals(".gif") || hrmReport.getFileExtension().equals(".jpg") || hrmReport.getFileExtension().equals(".png"))) {
-                document = new Document();
-
-                PdfWriter writer = PdfWriter.getInstance(document, outputStream);
-                writer.setPageEvent(this);
-
-                document.setPageSize(PageSize.LETTER);
-
-                //Sets the margins to 0 so that the entire page is used
-                document.setMargins(0, 0, 0, 0);
-                document.open();
-
-                //Add confidentiality statement to PDF
-                float footerHeight = 0f;
-                HRMProviderConfidentialityStatementDao hrmProviderConfidentialityStatementDao = SpringUtils.getBean(HRMProviderConfidentialityStatementDao.class);
-                String confidentialityStatement = hrmProviderConfidentialityStatementDao.getConfidentialityStatementForProvider(loggedInInfo.getLoggedInProviderNo());
-                PdfPTable confidentialityStatementTable = null;
-                if (confidentialityStatement != null && confidentialityStatement.trim().length() > 0) {
-                    BaseFont baseFont = BaseFont.createFont(BaseFont.COURIER, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-                    Font font = new Font(baseFont, 10, Font.NORMAL);
-                    Font italicFont = new Font(baseFont, 10, Font.ITALIC);
-                    //Creates a cell to be used as a separator line
-                    PdfPCell separator = new PdfPCell();
-                    separator.setBorder(PdfPCell.BOTTOM);
-                    separator.setFixedHeight(0.1f);
-                    //Creates a cell to be used to insert a small amount of space
-                    PdfPCell space = new PdfPCell();
-                    space.setBorder(0);
-                    space.setFixedHeight(2f);
-                    //Creates the main page table
-                    confidentialityStatementTable = new PdfPTable(1);
-                    confidentialityStatementTable.setTotalWidth(PageSize.LETTER.getWidth());
-                    confidentialityStatementTable.setLockedWidth(true);
-                    PdfPCell cell = new PdfPCell();
-                    cell.setBorder(0);
-
-                    confidentialityStatementTable.addCell(separator);
-                    cell.setPhrase(new Phrase("Confidentiality Statement:", italicFont));
-                    confidentialityStatementTable.addCell(cell);
-                    cell.setPhrase(new Phrase(confidentialityStatement, font));
-                    confidentialityStatementTable.addCell(cell);
-                    confidentialityStatementTable.addCell(space);
-
-                    footerHeight += confidentialityStatementTable.getTotalHeight() + 5;
-                }
-
-                //Translates the binary content into an image
-                Image image = Image.getInstance(hrmReport.getBinaryContent());
-                //Scales the image in case one of the dimensions is bigger than the document
-
-                image.scaleToFit(document.getPageSize().getWidth(), document.getPageSize().getHeight() - footerHeight);
-
-                //Checks if the scaled width is bigger than the document width and that the height can fit the width
-                if (image.getScaledWidth() >= document.getPageSize().getWidth() && image.getScaledHeight() <= document.getPageSize().getWidth()) {
-                    //Rotates the image 90 degrees so that it displays portrait style on the document
-                    image.setRotationDegrees(90);
-                    //Rescales the image so that it fits the page better
-
-                    image.scaleToFit(document.getPageSize().getWidth(), document.getPageSize().getHeight() - footerHeight);
-
-                }
-
-                document.add(image);
-
-                if (confidentialityStatementTable != null) {
-                    //Adds the table to the document
-                    document.add(confidentialityStatementTable);
-                }
-
-                document.close();
-            } else if (hrmReport.getFileExtension() != null && (hrmReport.getFileExtension().equals(".html"))) {
-                EFormData eFormData = new EFormData();
-                byte[] htmlHrmReportData = hrmReport.getBinaryContent();
-                eFormData.setFormData(new String(htmlHrmReportData, StandardCharsets.UTF_8));
-                Path path = ConvertToEdoc.saveAsTempPDF(eFormData);
-                outputStream.write(Files.readAllBytes(path));
             } else {
-                logger.info("HRM Report is binary, only printing the attachment");
-                outputStream.write(hrmReport.getBinaryContent());
+                outputStream.write(renderAttachment());
             }
 
             outputStream.flush();
@@ -191,7 +118,192 @@ public class HRMPDFCreator extends PdfPageEventHelper {
         }
     }
 
+    /**
+     * Tells whether the attachment is an image iText can read directly.
+     *
+     * @param extension String the FileExtensionAndVersion value from the report, for example ".jpeg"
+     * @return boolean true for gif, jpg, jpeg and png
+     */
+    private static boolean isImageExtension(String extension) {
+        return ".gif".equals(extension) || ".jpg".equals(extension) || ".jpeg".equals(extension) || ".png".equals(extension);
+    }
+
+    /**
+     * Opens a letter-size PDF on the given stream with this class as page event handler.
+     *
+     * @param target   OutputStream where the PDF bytes go
+     * @param fullPage boolean true removes the margins so an image can use the whole page
+     * @throws DocumentException if the writer cannot be created
+     */
+    private void openDocument(OutputStream target, boolean fullPage) throws DocumentException {
+        document = new Document();
+        PdfWriter writer = PdfWriter.getInstance(document, target);
+        writer.setPageEvent(this);
+        document.setPageSize(PageSize.LETTER);
+        if (fullPage) {
+            document.setMargins(0, 0, 0, 0);
+        }
+        document.open();
+    }
+
+    /**
+     * Builds the confidentiality statement block printed under an image page.
+     *
+     * @return PdfPTable the statement block, or null when the printing provider has no statement
+     * @throws IOException       if the font cannot be created
+     * @throws DocumentException if the font cannot be created
+     */
+    private PdfPTable buildConfidentialityStatementTable() throws IOException, DocumentException {
+        HRMProviderConfidentialityStatementDao hrmProviderConfidentialityStatementDao = SpringUtils.getBean(HRMProviderConfidentialityStatementDao.class);
+        String confidentialityStatement = hrmProviderConfidentialityStatementDao.getConfidentialityStatementForProvider(loggedInInfo.getLoggedInProviderNo());
+        if (confidentialityStatement == null || confidentialityStatement.trim().length() == 0) {
+            return null;
+        }
+        BaseFont baseFont = BaseFont.createFont(BaseFont.COURIER, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+        Font font = new Font(baseFont, 10, Font.NORMAL);
+        Font italicFont = new Font(baseFont, 10, Font.ITALIC);
+        PdfPCell separator = new PdfPCell();
+        separator.setBorder(PdfPCell.BOTTOM);
+        separator.setFixedHeight(0.1f);
+        PdfPCell space = new PdfPCell();
+        space.setBorder(0);
+        space.setFixedHeight(2f);
+        PdfPTable table = new PdfPTable(1);
+        table.setTotalWidth(PageSize.LETTER.getWidth());
+        table.setLockedWidth(true);
+        PdfPCell cell = new PdfPCell();
+        cell.setBorder(0);
+        table.addCell(separator);
+        cell.setPhrase(new Phrase("Confidentiality Statement:", italicFont));
+        table.addCell(cell);
+        cell.setPhrase(new Phrase(confidentialityStatement, font));
+        table.addCell(cell);
+        table.addCell(space);
+        return table;
+    }
+
+    /**
+     * Adds one image to the current page, scaled to the page and rotated when it is wider than tall,
+     * with the confidentiality statement under it.
+     *
+     * @param image                        Image the page content
+     * @param confidentialityStatementTable PdfPTable the statement block, or null to print none
+     * @throws DocumentException if the image cannot be added
+     */
+    private void addImagePage(Image image, PdfPTable confidentialityStatementTable) throws DocumentException {
+        float footerHeight = confidentialityStatementTable != null ? confidentialityStatementTable.getTotalHeight() + 5 : 0f;
+        image.scaleToFit(document.getPageSize().getWidth(), document.getPageSize().getHeight() - footerHeight);
+        if (image.getScaledWidth() >= document.getPageSize().getWidth() && image.getScaledHeight() <= document.getPageSize().getWidth()) {
+            image.setRotationDegrees(90);
+            image.scaleToFit(document.getPageSize().getWidth(), document.getPageSize().getHeight() - footerHeight);
+        }
+        document.add(image);
+        if (confidentialityStatementTable != null) {
+            document.add(confidentialityStatementTable);
+        }
+    }
+
+    /**
+     * Reads the plain text out of an RTF attachment.
+     *
+     * @param rtf byte[] the decoded attachment
+     * @return String the text without RTF markup
+     * @throws IOException if the RTF cannot be parsed
+     */
+    private static String extractRtfText(byte[] rtf) throws IOException {
+        RTFEditorKit kit = new RTFEditorKit();
+        javax.swing.text.Document textDocument = kit.createDefaultDocument();
+        try (InputStream in = new ByteArrayInputStream(rtf)) {
+            kit.read(in, textDocument, 0);
+            return textDocument.getText(0, textDocument.getLength());
+        } catch (BadLocationException e) {
+            throw new IOException("Could not read the RTF text", e);
+        }
+    }
+
+    /**
+     * Builds a one-page PDF saying the attachment cannot be printed, so the merge still gets a PDF.
+     *
+     * @param extension String the attachment extension named in the notice
+     * @return byte[] the notice page
+     * @throws DocumentException if the page cannot be written
+     */
+    private byte[] unsupportedAttachmentPage(String extension) throws DocumentException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        openDocument(buffer, false);
+        document.add(new Paragraph("This report has a " + extension + " attachment that cannot be printed. Open the report and use the download link."));
+        document.close();
+        return buffer.toByteArray();
+    }
+
+    /**
+     * Turns the binary attachment into PDF bytes: pdf as received, gif/jpg/jpeg/png and tiff as image pages,
+     * rtf as a text report, html through the eForm converter. Anything else, or an attachment that fails to
+     * render, becomes a one-page notice so the caller always gets a PDF.
+     *
+     * @return byte[] a complete PDF
+     * @throws IOException       if the notice page cannot be written
+     * @throws DocumentException if the notice page cannot be written
+     */
+    private byte[] renderAttachment() throws IOException, DocumentException {
+        String extension = hrmReport.getFileExtension();
+        try {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            if (".pdf".equals(extension)) {
+                // The PDF is printed as it was received, once it is known to open as a PDF
+                byte[] pdf = hrmReport.getBinaryContent();
+                new PdfReader(pdf).close();
+                return pdf;
+            } else if (isImageExtension(extension)) {
+                openDocument(buffer, true);
+                addImagePage(Image.getInstance(hrmReport.getBinaryContent()), buildConfidentialityStatementTable());
+                document.close();
+            } else if (".tiff".equals(extension)) {
+                openDocument(buffer, true);
+                PdfPTable confidentialityStatementTable = buildConfidentialityStatementTable();
+                // A TIFF file can hold several pages; each one becomes a page of the PDF
+                RandomAccessFileOrArray tiff = new RandomAccessFileOrArray(new RandomAccessSourceFactory().createSource(hrmReport.getBinaryContent()));
+                int pageCount = TiffImage.getNumberOfPages(tiff);
+                for (int page = 1; page <= pageCount; page++) {
+                    if (page > 1) {
+                        document.newPage();
+                    }
+                    addImagePage(TiffImage.getTiffImage(tiff, page), confidentialityStatementTable);
+                }
+                document.close();
+            } else if (".rtf".equals(extension)) {
+                // The RTF text is laid out like a text report, with the statement and the metadata box
+                openDocument(buffer, false);
+                generateHRMReport(hrmReport, extractRtfText(hrmReport.getBinaryContent()));
+                document.close();
+            } else if (".html".equals(extension)) {
+                EFormData eFormData = new EFormData();
+                eFormData.setFormData(new String(hrmReport.getBinaryContent(), StandardCharsets.UTF_8));
+                return Files.readAllBytes(ConvertToEdoc.saveAsTempPDF(eFormData));
+            } else {
+                // Not a PDF; a raw copy would break the PDF merge in PrintHRMReport2Action
+                return unsupportedAttachmentPage(extension);
+            }
+            return buffer.toByteArray();
+        } catch (Exception e) {
+            logger.error("Could not render the " + extension + " attachment of HRM document " + hrmDocument.getId() + " for printing", e);
+            return unsupportedAttachmentPage(extension);
+        }
+    }
+
     private void generateHRMReport(HRMReport hrmReport) throws IOException, DocumentException {
+        generateHRMReport(hrmReport, hrmReport.getFirstReportTextContent());
+    }
+
+    /**
+     * Lays out the report header, the given body text, the confidentiality statement and the metadata box.
+     *
+     * @param hrmReport  HRMReport the report being printed
+     * @param reportText String the text to print as the report body
+     * @throws IOException       if the font cannot be created
+     * @throws DocumentException if the table cannot be added to the PDF
+     */
+    private void generateHRMReport(HRMReport hrmReport, String reportText) throws IOException, DocumentException {
         BaseFont baseFont = BaseFont.createFont(BaseFont.COURIER, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
         Font font = new Font(baseFont, 10, Font.NORMAL);
         Font italicFont = new Font(baseFont, 10, Font.ITALIC);
@@ -246,7 +358,7 @@ public class HRMPDFCreator extends PdfPageEventHelper {
 
         //Outputs the main content from the report
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-        cell.setPhrase(new Phrase(hrmReport.getFirstReportTextContent(), font));
+        cell.setPhrase(new Phrase(reportText, font));
         mainPage.addCell(cell);
         mainPage.addCell(space);
 

@@ -483,7 +483,7 @@
                     // This ensures compatibility with reports uploaded before UTF-8 encoding migration
                     String noMessageIdHash = document.getReportHash();
 
-                    if (hrmReport.getFileExtension() != null && (".gif".equals(hrmReport.getFileExtension()) || ".jpg".equals(hrmReport.getFileExtension()) || ".png".equals(hrmReport.getFileExtension()))) {
+                    if (hrmReport.getFileExtension() != null && (".gif".equals(hrmReport.getFileExtension()) || ".jpg".equals(hrmReport.getFileExtension()) || ".jpeg".equals(hrmReport.getFileExtension()) || ".png".equals(hrmReport.getFileExtension()))) {
             %><img
                 src="<%=request.getContextPath() %>/hospitalReportManager/HRMDownloadFile.do?hash=<%=Encode.forUriComponent(String.valueOf(noMessageIdHash))%>"/><br/><%
             }
@@ -501,7 +501,7 @@
         </a>&nbsp;&nbsp;
             <br/>
             <%
-                if (hrmReport.getFileExtension() != null && (".pdf".equals(hrmReport.getFileExtension()) || ".gif".equals(hrmReport.getFileExtension()) || ".jpg".equals(hrmReport.getFileExtension()) || ".png".equals(hrmReport.getFileExtension()))) {
+                if (hrmReport.getFileExtension() != null && (".pdf".equals(hrmReport.getFileExtension()) || ".gif".equals(hrmReport.getFileExtension()) || ".jpg".equals(hrmReport.getFileExtension()) || ".jpeg".equals(hrmReport.getFileExtension()) || ".png".equals(hrmReport.getFileExtension()))) {
             %>
             <span>(Please use the link above to download the attachement.)</span>
             <%
