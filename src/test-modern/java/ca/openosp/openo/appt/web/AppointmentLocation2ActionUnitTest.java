@@ -1,6 +1,7 @@
 package ca.openosp.openo.appt.web;
 
 import java.util.List;
+import java.util.Map;
 
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.commn.model.LookupList;
@@ -216,6 +217,20 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
             grant("_admin", SecurityInfoManager.UPDATE);
             action.execute();
             assertThat(request.getAttribute("canChange")).isEqualTo(true);
+        }
+
+        @Test
+        @DisplayName("should count each location's upcoming appointments, which a rename asks about, only for a user who may change them")
+        void shouldCountUpcomingAppointments_whenAdminUpdate() {
+            Map<Integer, Long> counts = Map.of(11, 3L);
+            when(lookupListManager.countUpcomingAppointmentsByLocation(loggedInInfo)).thenReturn(counts);
+            grant("_admin.schedule", SecurityInfoManager.READ);
+            action.execute();
+            assertThat(request.getAttribute("upcomingCounts")).isNull();
+
+            grant("_admin", SecurityInfoManager.UPDATE);
+            action.execute();
+            assertThat(request.getAttribute("upcomingCounts")).isSameAs(counts);
         }
 
         @Test

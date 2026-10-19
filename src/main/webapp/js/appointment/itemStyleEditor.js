@@ -47,7 +47,8 @@
  *   glyphicon- is a glyph, drawn with its class; any other is an image file (as IconSet.isGlyph).
  *
  * The form posts ID, dispatch (updateDescription, updateColour or updateIcon) and value.
- * Clear posts a blank value. Saving an unchanged value closes the dialog without posting.
+ * Clear posts a blank value. Saving an unchanged value closes the dialog without posting, and a
+ * kind configured with confirm asks it before saving a changed one.
  * A colour posts as the picker reports it, #rrggbb or #rrggbbaa when see-through; a fully
  * see-through colour keeps its hue, so raising its opacity later brings it back.
  *
@@ -395,9 +396,10 @@
     function onSubmit(event) {
         event.preventDefault();
         const value = KINDS[editing.kind].read();
+        const confirm = config[editing.kind].confirm;
         if (value === editing.initial) {
             dialog.close();
-        } else {
+        } else if (!confirm || confirm(editing.id, value, editing.initial)) {
             save(value);
         }
     }
@@ -408,6 +410,9 @@
      *
      * @param {Object} options one entry per kind the page edits: description, colour, icon
      * @param {boolean} [options.<kind>.clearable] whether to offer Clear, which saves a blank value
+     * @param {function(string, string, string): boolean} [options.<kind>.confirm] asked before a
+     *        changed value is saved, with the item id, the new value and the current one; false
+     *        keeps the dialog open
      * @param {number} [options.description.maxLength] the description column's width
      */
     function init(options) {

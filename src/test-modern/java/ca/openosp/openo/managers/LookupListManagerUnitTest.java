@@ -1,13 +1,17 @@
 package ca.openosp.openo.managers;
 
 import java.util.List;
+import java.util.Map;
 
+import ca.openosp.openo.appt.LocationList;
 import ca.openosp.openo.commn.dao.LookupListDao;
 import ca.openosp.openo.commn.dao.LookupListItemDao;
+import ca.openosp.openo.commn.dao.OscarAppointmentDao;
 import ca.openosp.openo.commn.dao.OscarLogDao;
 import ca.openosp.openo.commn.dao.SystemPreferencesDao;
 import ca.openosp.openo.commn.model.LookupList;
 import ca.openosp.openo.commn.model.LookupListItem;
+import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
@@ -35,6 +39,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -50,7 +55,8 @@ import static org.mockito.Mockito.when;
  * Location List is resolved; and for {@code findAppointmentLocationDefault},
  * {@code setAppointmentLocationDefault}, {@code isAppointmentLocationRequired} and
  * {@code setAppointmentLocationRequired}, the one place its Default Location and Location
- * Requirement are stored.
+ * Requirement are stored; and for how {@code updateLookupListItemLabel} carries a location's
+ * new name to its upcoming appointments, which {@code countUpcomingAppointmentsByLocation} counts.
  *
  * <p>Both values end up in class and style attributes on the schedule, so the tests pin the
  * whitelist: a valid value is stored, blank clears it, anything else is rejected before the
@@ -67,6 +73,8 @@ import static org.mockito.Mockito.when;
 public class LookupListManagerUnitTest extends OpenOUnitTestBase {
 
     private static final int ITEM_ID = 7;
+    private static final int LOCATION_LIST_ID = 5;
+    private static final java.sql.Date TODAY = java.sql.Date.valueOf("2026-10-16");
 
     @Mock
     private LookupListDao lookupListDao;
@@ -78,6 +86,9 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
     private SystemPreferencesDao systemPreferencesDao;
 
     @Mock
+    private OscarAppointmentDao appointmentDao;
+
+    @Mock
     private SecurityInfoManager securityInfoManager;
 
     @InjectMocks
@@ -85,6 +96,7 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
 
     private final LoggedInInfo loggedInInfo = new LoggedInInfo();
     private MockedStatic<LogAction> logActionMock;
+    private MockedStatic<LocationList> locationListMock;
     private LookupListItem item;
 
     @BeforeEach
@@ -92,6 +104,9 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
         // LogAction's static initializer looks up OscarLogDao, so register it before mocking LogAction
         registerMock(OscarLogDao.class, mock(OscarLogDao.class));
         logActionMock = mockStatic(LogAction.class);
+        // Pin today, so a run across midnight can't give the manager another date than the test expects
+        locationListMock = mockStatic(LocationList.class, CALLS_REAL_METHODS);
+        locationListMock.when(LocationList::firstRenamedDate).thenReturn(TODAY);
 
         lenient().when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null))
                 .thenReturn(true);
@@ -106,6 +121,7 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
     @AfterEach
     void tearDown() {
         logActionMock.close();
+        locationListMock.close();
     }
 
     /* The one system preference a Location tab setting saved. */
@@ -468,6 +484,105 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
 
             logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
                     eq("LookupListManager.updateLookupListItemLabel"), contains("midtown")));
+        }
+    }
+
+    @Nested
+    @DisplayName("updateLookupListItemLabel on a Location List location")
+    class LocationLabel {
+
+        @BeforeEach
+        void locationListItem() {
+            Provider provider = new Provider();
+            provider.setProviderNo("999998");
+            loggedInInfo.setLoggedInProvider(provider);
+
+            LookupList locationList = new LookupList();
+            locationList.setId(LOCATION_LIST_ID);
+            lenient().when(lookupListDao.findByName(LookupListManager.APPOINTMENT_LOCATION_LIST)).thenReturn(locationList);
+            item.setLookupListId(LOCATION_LIST_ID);
+            item.setLabel("Midtown");
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"Midtown Clinic", "  Midtown Clinic  "})
+        @DisplayName("should rename the location and its appointments from today on, as the user")
+        void shouldRenameUpcomingAppointments_whenRenamed(String label) {
+            when(appointmentDao.renameLocationFrom(ITEM_ID, "Midtown Clinic", TODAY, "999998")).thenReturn(3);
+
+            assertThat(manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, label)).isTrue();
+
+            assertThat(item.getLabel()).isEqualTo("Midtown Clinic");
+            verify(lookupListItemDao).merge(item);
+            verify(appointmentDao).renameLocationFrom(ITEM_ID, "Midtown Clinic", TODAY, "999998");
+            logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
+                    eq("LookupListManager.updateLookupListItemLabel"), contains("on 3 appointments")));
+        }
+
+        @Test
+        @DisplayName("should rename the appointments when only the name's case changes")
+        void shouldRenameUpcomingAppointments_whenOnlyCaseChanges() {
+            manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, "MIDTOWN");
+
+            verify(appointmentDao).renameLocationFrom(ITEM_ID, "MIDTOWN", TODAY, "999998");
+        }
+
+        @Test
+        @DisplayName("should leave appointments alone when the name is unchanged")
+        void shouldNotRenameAppointments_whenNameUnchanged() {
+            assertThat(manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, " Midtown ")).isTrue();
+
+            verify(appointmentDao, never()).renameLocationFrom(anyInt(), any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("should keep a location's name short enough for an appointment's copy")
+        void shouldThrow_whenLongerThanAppointmentColumn() {
+            String tooLong = "x".repeat(LocationList.LABEL_MAX_LENGTH + 1);
+
+            assertThatThrownBy(() -> manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, tooLong))
+                    .isInstanceOf(IllegalArgumentException.class);
+
+            verify(lookupListItemDao, never()).merge(any());
+            verify(appointmentDao, never()).renameLocationFrom(anyInt(), any(), any(), any());
+            assertThat(manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, "x".repeat(LocationList.LABEL_MAX_LENGTH))).isTrue();
+        }
+
+        @Test
+        @DisplayName("should rename only the item, up to the column's width, when it is on another list")
+        void shouldNotRenameAppointments_whenNotLocationListItem() {
+            item.setLookupListId(LOCATION_LIST_ID + 1);
+            String longName = "x".repeat(LocationList.LABEL_MAX_LENGTH + 1);
+
+            assertThat(manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, longName)).isTrue();
+
+            verify(lookupListItemDao).merge(item);
+            verify(appointmentDao, never()).renameLocationFrom(anyInt(), any(), any(), any());
+        }
+    }
+
+    @Nested
+    @DisplayName("countUpcomingAppointmentsByLocation")
+    class CountUpcomingAppointments {
+
+        @Test
+        @DisplayName("should count each location's appointments from today on")
+        void shouldCountFromToday_whenAsked() {
+            Map<Integer, Long> counts = Map.of(ITEM_ID, 3L);
+            when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.READ, null)).thenReturn(true);
+            when(appointmentDao.countByLocationCodeFrom(TODAY)).thenReturn(counts);
+
+            assertThat(manager.countUpcomingAppointmentsByLocation(loggedInInfo)).isSameAs(counts);
+        }
+
+        @Test
+        @DisplayName("should refuse the count without _admin read")
+        void shouldThrow_whenNoPrivilege() {
+            assertThatThrownBy(() -> manager.countUpcomingAppointmentsByLocation(loggedInInfo))
+                    .isInstanceOf(RuntimeException.class)
+                    .hasMessage("Access Denied");
+
+            verify(appointmentDao, never()).countByLocationCodeFrom(any());
         }
     }
 
