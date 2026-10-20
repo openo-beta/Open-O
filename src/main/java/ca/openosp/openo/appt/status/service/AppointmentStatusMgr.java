@@ -104,16 +104,6 @@ public interface AppointmentStatusMgr {
     public boolean updateIcon(int id, String icon);
 
     /**
-     * Whether a status is in use: at least one appointment, on any date, has it. Signed and verified
-     * appointments count, and codes are compared case-sensitively, since h and H are different statuses.
-     *
-     * @param statusCode String the status code
-     * @return boolean true if at least one appointment has the status
-     * @since 2026-09-30
-     */
-    public boolean isInUse(String statusCode);
-
-    /**
      * Puts every editable status (editable=1) back to its Default Status Style: the description,
      * colour and icon it is seeded with. Statuses are matched by status code, not id, because ids
      * differ between installs. Locked statuses, codes without a default, and whether a status is

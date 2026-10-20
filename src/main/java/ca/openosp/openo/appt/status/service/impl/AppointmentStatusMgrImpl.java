@@ -178,11 +178,6 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
     }
 
     @Override
-    public boolean isInUse(String statusCode) {
-        return appointStatusDao.isInUse(statusCode);
-    }
-
-    @Override
     public void reset() {
         List<AppointmentStatus> changed = new ArrayList<>();
         for (AppointmentStatus status : appointStatusDao.findAll()) {

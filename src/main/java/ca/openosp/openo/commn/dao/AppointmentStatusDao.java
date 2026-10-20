@@ -21,14 +21,4 @@ public interface AppointmentStatusDao extends AbstractDao<AppointmentStatus> {
      * @since 2026-09-21
      */
     public void mergeAll(List<AppointmentStatus> statuses);
-
-    /**
-     * Whether any appointment, on any date, has the status. Signed and verified appointments count,
-     * and codes are compared case-sensitively, since h and H are different statuses.
-     *
-     * @param statusCode String the status code
-     * @return boolean true if at least one appointment has the status; false for a null or empty code
-     * @since 2026-09-30
-     */
-    public boolean isInUse(String statusCode);
 }

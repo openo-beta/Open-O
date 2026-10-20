@@ -1,12 +1,10 @@
 package ca.openosp.openo.appt.status.web;
 
 import java.util.HashMap;
-import java.util.List;
 
 import ca.openosp.openo.appt.status.service.AppointmentStatusMgr;
 import ca.openosp.openo.commn.dao.AppointmentStatusDao;
 import ca.openosp.openo.commn.dao.OscarLogDao;
-import ca.openosp.openo.commn.model.AppointmentStatus;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
@@ -46,9 +44,8 @@ import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link AppointmentStatus2Action}: the privilege and POST checks in front of every
- * change, routing of the item style editor's dispatch values, the saved/rejected outcomes, the
- * refusal to disable a status in use, the "used before" warning, and the audit row each saved
- * change writes.
+ * change, routing of the item style editor's dispatch values, the saved/rejected outcomes, and
+ * the audit row each saved change writes.
  *
  * @since 2026-09-15
  */
@@ -226,50 +223,31 @@ public class AppointmentStatus2ActionUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should enable the posted status without checking whether appointments use it")
+        @DisplayName("should enable the posted status")
         void shouldEnable_whenChangeStatusPosted() {
             when(appointmentStatusMgr.changeStatus(8, 1)).thenReturn(true);
 
             assertThat(postChangeStatus("8", "1")).isEqualTo("saved");
 
-            verify(appointmentStatusMgr, never()).isInUse(anyString());
             logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
                     eq("AppointmentStatus2Action.changestatus"), contains("id 8: active set to 1")));
         }
 
         @Test
-        @DisplayName("should disable a status that no appointment uses")
-        void shouldDisable_whenStatusNotInUse() {
-            when(appointmentStatusMgr.getStatus(10)).thenReturn(status(10, "e", "Customized 5", 1));
+        @DisplayName("should disable the posted status, whether or not appointments use it")
+        void shouldDisable_whenChangeStatusPosted() {
             when(appointmentStatusMgr.changeStatus(10, 0)).thenReturn(true);
 
             assertThat(postChangeStatus("10", "0")).isEqualTo("saved");
 
-            verify(appointmentStatusMgr).isInUse("e");
             logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
                     eq("AppointmentStatus2Action.changestatus"), contains("id 10: active set to 0")));
         }
 
         @Test
-        @DisplayName("should refuse to disable a status that appointments use, naming it")
-        void shouldRefuseDisable_whenStatusInUse() {
-            when(appointmentStatusMgr.getStatus(3)).thenReturn(status(3, "H", "Here", 1));
-            when(appointmentStatusMgr.isInUse("H")).thenReturn(true);
-
-            assertThat(postChangeStatus("3", "0")).isEqualTo("success");
-
-            assertThat(response.getStatus()).isEqualTo(400);
-            assertThat(request.getAttribute("saveFailedKey")).isEqualTo("admin.appt.status.mgr.msg.inUse");
-            assertThat(request.getAttribute("saveFailedParam")).isEqualTo("Here");
-            verify(appointmentStatusMgr, never()).changeStatus(anyInt(), anyInt());
-            logActionMock.verifyNoInteractions();
-        }
-
-        @Test
         @DisplayName("should show the list with an error when the status to enable or disable is locked")
         void shouldShowError_whenChangeStatusRefused() {
-            // status() leaves editable at 0, so No Show is locked; it is not in use, so the lock refuses it.
-            when(appointmentStatusMgr.getStatus(11)).thenReturn(status(11, "N", "No Show", 1));
+            // The manager refuses a locked status, such as No Show.
             when(appointmentStatusMgr.changeStatus(11, 0)).thenReturn(false);
 
             assertThat(postChangeStatus("11", "0")).isEqualTo("success");
@@ -332,63 +310,6 @@ public class AppointmentStatus2ActionUnitTest extends OpenOUnitTestBase {
             assertThat(response.getStatus()).isEqualTo(400);
             verify(appointmentStatusMgr, never()).updateColour(anyInt(), anyString());
         }
-    }
-
-    @Nested
-    @DisplayName("used before warning")
-    class UsedBeforeWarning {
-
-        @BeforeEach
-        void showList() {
-            grant("_admin", SecurityInfoManager.READ);
-            request.setMethod("GET");
-        }
-
-        @Test
-        @DisplayName("should name the first inactive status that appointments use")
-        void shouldNameInactiveStatusInUse_whenListShown() {
-            when(appointmentStatusMgr.getAllStatus()).thenReturn(List.of(
-                    status(1, "t", "To Do", 1), status(8, "c", "Customized 3", 0), status(9, "d", "Customized 4", 0)));
-            when(appointmentStatusMgr.isInUse("c")).thenReturn(false);
-            when(appointmentStatusMgr.isInUse("d")).thenReturn(true);
-
-            action.execute();
-
-            assertThat(request.getAttribute("useStatus")).isEqualTo("d");
-            verify(appointmentStatusMgr, never()).isInUse("t");
-        }
-
-        @Test
-        @DisplayName("should name the first status in the list when it is the one in use")
-        void shouldNameFirstStatus_whenItIsInactiveAndInUse() {
-            when(appointmentStatusMgr.getAllStatus()).thenReturn(List.of(
-                    status(8, "c", "Customized 3", 0), status(9, "d", "Customized 4", 0)));
-            when(appointmentStatusMgr.isInUse("c")).thenReturn(true);
-
-            action.execute();
-
-            assertThat(request.getAttribute("useStatus")).isEqualTo("c");
-        }
-
-        @Test
-        @DisplayName("should not warn when no inactive status is in use")
-        void shouldNotWarn_whenNoInactiveStatusInUse() {
-            when(appointmentStatusMgr.getAllStatus()).thenReturn(List.of(
-                    status(3, "H", "Here", 1), status(8, "c", "Customized 3", 0)));
-
-            action.execute();
-
-            assertThat(request.getAttribute("useStatus")).isNull();
-        }
-    }
-
-    private static AppointmentStatus status(int id, String code, String description, int active) {
-        AppointmentStatus status = new AppointmentStatus();
-        status.setId(id);
-        status.setStatus(code);
-        status.setDescription(description);
-        status.setActive(active);
-        return status;
     }
 
     @Test
