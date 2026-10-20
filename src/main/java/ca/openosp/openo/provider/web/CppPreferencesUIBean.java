@@ -26,6 +26,8 @@
 
 package ca.openosp.openo.provider.web;
 
+import org.owasp.encoder.Encode;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -846,7 +848,7 @@ public class CppPreferencesUIBean {
         if (value.equals(currentValue)) {
             selected = " selected=\"selected\" ";
         }
-        sb.append("<option value=\"" + value + "\" " + selected + ">" + label + "</option>\n");
+        sb.append("<option value=\"" + Encode.forHtmlAttribute(value) + "\" " + selected + ">" + Encode.forHtml(label) + "</option>\n");
         return sb.toString();
     }
 
@@ -856,7 +858,7 @@ public class CppPreferencesUIBean {
             checked = " checked=\"checked\" ";
         }
         StringBuilder sb = new StringBuilder();
-        sb.append("<input type=\"checkbox\" name=\"" + value + "\" " + checked + " />" + label);
+        sb.append("<input type=\"checkbox\" name=\"" + Encode.forHtmlAttribute(value) + "\" " + checked + " />" + Encode.forHtml(label));
         return sb.toString();
     }
 

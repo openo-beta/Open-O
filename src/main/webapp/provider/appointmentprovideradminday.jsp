@@ -755,8 +755,9 @@
 
         //later in the code there is a complex inline ternary function that uses view as a parameter.
         //the following code "caches" the result of this function (as viewString) before setting view=1
-        String curProviderString = request.getParameter("curProvider") != null ? "&curProvider=" + request.getParameter("curProvider") : "";
-        String curProviderNameString = request.getParameter("curProviderName") != null ? "&curProviderName=" + request.getParameter("curProviderName") : "";
+        //viewString is a query fragment: encode the values here, never the whole fragment (that turns "&" into "%26")
+        String curProviderString = request.getParameter("curProvider") != null ? "&curProvider=" + Encode.forUriComponent(request.getParameter("curProvider")) : "";
+        String curProviderNameString = request.getParameter("curProviderName") != null ? "&curProviderName=" + Encode.forUriComponent(request.getParameter("curProviderName")) : "";
         String viewString = view == 0 ? "&view=0" : "&view=1" + curProviderString + curProviderNameString;
 
         //Edge case: If the 'displaymode' is set to 'day' and 'viewall' is not equal to 1, then 'view' will be set to 1 to display all links.
@@ -1126,7 +1127,7 @@
         <tr id="ivoryBar">
             <td id="dateAndCalendar">
                 <a class="redArrow"
-                   href="providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(isWeekView?(day-7):(day-1)))%><%=Encode.forUriComponent(String.valueOf(viewString))%>&displaymode=day&dboperation=searchappointmentday<%=Encode.forUriComponent(String.valueOf(isWeekView?"&provider_no="+provNum:""))%>&viewall=<%=Encode.forUriComponent(String.valueOf(viewall))%>">
+                   href="providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(isWeekView?(day-7):(day-1)))%><%=Encode.forHtmlAttribute(viewString)%>&displaymode=day&dboperation=searchappointmentday<%=isWeekView ? "&provider_no=" + Encode.forUriComponent(provNum) : ""%>&viewall=<%=Encode.forUriComponent(String.valueOf(viewall))%>">
                     <span class="glyphicon glyphicon-step-backward"
                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewPrevDay"/>"></span>
                 </a>
@@ -1138,7 +1139,7 @@
                     }
                 %></span></b>
                 <a class="redArrow"
-                   href="providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(isWeekView?(day+7):(day+1)))%><%=Encode.forUriComponent(String.valueOf(viewString))%>&displaymode=day&dboperation=searchappointmentday<%=Encode.forUriComponent(String.valueOf(isWeekView?"&provider_no="+provNum:""))%>&viewall=<%=Encode.forUriComponent(String.valueOf(viewall))%>">
+                   href="providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=<%=Encode.forUriComponent(String.valueOf(isWeekView?(day+7):(day+1)))%><%=Encode.forHtmlAttribute(viewString)%>&displaymode=day&dboperation=searchappointmentday<%=isWeekView ? "&provider_no=" + Encode.forUriComponent(provNum) : ""%>&viewall=<%=Encode.forUriComponent(String.valueOf(viewall))%>">
                     <span class="glyphicon glyphicon-step-forward"
                           title="<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewNextDay"/>"></span>
                 </a>
@@ -1170,14 +1171,14 @@
                 <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
                     <security:oscarSec roleName="<%=roleName$%>" objectName="_day" rights="r">
                         <a class="rightButton top"
-                           href="providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&day=<%=Encode.forUriComponent(String.valueOf(curDay))%><%=Encode.forUriComponent(String.valueOf(viewString))%>&displaymode=day&dboperation=searchappointmentday"
+                           href="providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&day=<%=Encode.forUriComponent(String.valueOf(curDay))%><%=Encode.forHtmlAttribute(viewString)%>&displaymode=day&dboperation=searchappointmentday"
                            TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewDaySched"/>'
                            OnMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewDaySched"/>' ; return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.today"/></a>
                     </security:oscarSec>
                     <security:oscarSec roleName="<%=roleName$%>" objectName="_month" rights="r">
 
                         <a
-                                href="providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=1<%=Encode.forUriComponent(String.valueOf(viewString))%>&displaymode=month&dboperation=searchappointmentmonth"
+                                href="providercontrol.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&day=1<%=Encode.forHtmlAttribute(viewString)%>&displaymode=month&dboperation=searchappointmentmonth"
                                 TITLE='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewMonthSched"/>'
                                 OnMouseOver="window.status='<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.viewMonthSched"/>' ; return true"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.month"/></a>
 
