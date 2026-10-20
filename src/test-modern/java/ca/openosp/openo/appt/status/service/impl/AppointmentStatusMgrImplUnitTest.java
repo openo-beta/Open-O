@@ -35,12 +35,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for the status changes in {@link AppointmentStatusMgrImpl}: {@code updateDescription},
- * {@code updateColour}, {@code updateIcon} and {@code reset}.
+ * {@code updateColour}, {@code updateIcon} and {@code reset}, and for {@code getStatusChoices}, the
+ * edit screen's list, and the schedule's status cache.
  *
  * <p>The colour and icon end up in style and src attributes on the schedule, so the tests pin the
  * rules: a valid value is saved, an invalid one is rejected before the status is loaded, and a
@@ -271,6 +273,105 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
 
             assertThat(status.getDescription()).isEqualTo("Here");
             assertThat(status.getColor()).isEqualTo("#00ee00");
+        }
+    }
+
+    @Nested
+    @DisplayName("getStatusChoices")
+    class StatusChoices {
+
+        private final AppointmentStatus here = choice(3, "H", 1);
+        private final AppointmentStatus picked = choice(4, "P", 0);
+        private final AppointmentStatus emptyRoom = choice(5, "E", 1);
+
+        @BeforeEach
+        void allStatusesOutOfOrder() {
+            when(appointmentStatusDao.findAll()).thenReturn(List.of(emptyRoom, picked, here));
+        }
+
+        @Test
+        @DisplayName("should offer only the active statuses, by id, when the appointment's status is active")
+        void shouldOfferActiveStatuses_whenOwnStatusActive() {
+            assertThat(manager.getStatusChoices("H")).containsExactly(here, emptyRoom);
+        }
+
+        @Test
+        @DisplayName("should also offer the appointment's own status, in its place, when it was disabled")
+        void shouldOfferOwnStatus_whenOwnStatusDisabled() {
+            assertThat(manager.getStatusChoices("P")).containsExactly(here, picked, emptyRoom);
+        }
+
+        @Test
+        @DisplayName("should not offer a disabled status whose code differs only in case")
+        void shouldLeaveOutDisabledStatus_whenCodeDiffersInCase() {
+            assertThat(manager.getStatusChoices("p")).containsExactly(here, emptyRoom);
+        }
+
+        private AppointmentStatus choice(int id, String code, int active) {
+            AppointmentStatus choice = new AppointmentStatus();
+            choice.setId(id);
+            choice.setStatus(code);
+            choice.setActive(active);
+            return choice;
+        }
+    }
+
+    @Nested
+    @DisplayName("status cache")
+    class StatusCache {
+
+        private Object originalCache;
+        private boolean originalCacheIsDirty;
+
+        @BeforeEach
+        void emptyCache() {
+            originalCache = ReflectionTestUtils.getField(AppointmentStatusMgrImpl.class, "cachedStatuses");
+            originalCacheIsDirty = AppointmentStatusMgrImpl.isCacheIsDirty();
+            ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cachedStatuses", null);
+            AppointmentStatusMgrImpl.setCacheIsDirty(false);
+        }
+
+        @AfterEach
+        void restoreCache() {
+            ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cachedStatuses", originalCache);
+            AppointmentStatusMgrImpl.setCacheIsDirty(originalCacheIsDirty);
+        }
+
+        @Test
+        @DisplayName("should load the statuses once, by id, and once more after a status is saved")
+        void shouldReloadOnce_whenStatusSaved() {
+            AppointmentStatus here = status(3, "H");
+            AppointmentStatus toDo = status(1, "t");
+            when(appointmentStatusDao.findAll()).thenReturn(new ArrayList<>(List.of(here, toDo)), new ArrayList<>(List.of(toDo)));
+
+            AppointmentStatusMgrImpl.getCachedStatuses();
+            assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).containsExactly(toDo, here);
+
+            AppointmentStatusMgrImpl.setCacheIsDirty(true);
+            AppointmentStatusMgrImpl.getCachedStatuses();
+            assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).containsExactly(toDo);
+
+            verify(appointmentStatusDao, times(2)).findAll();
+            assertThat(AppointmentStatusMgrImpl.isCacheIsDirty()).isFalse();
+        }
+
+        @Test
+        @DisplayName("should list the active statuses without touching the cache")
+        void shouldLeaveCache_whenActiveStatusesListed() {
+            AppointmentStatusMgrImpl.setCacheIsDirty(true);
+
+            manager.getAllActiveStatus();
+
+            verify(appointmentStatusDao).findActive();
+            verify(appointmentStatusDao, never()).findAll();
+            assertThat(AppointmentStatusMgrImpl.isCacheIsDirty()).isTrue();
+        }
+
+        private AppointmentStatus status(int id, String code) {
+            AppointmentStatus status = new AppointmentStatus();
+            status.setId(id);
+            status.setStatus(code);
+            return status;
         }
     }
 

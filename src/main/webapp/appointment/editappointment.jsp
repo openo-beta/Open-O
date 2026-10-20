@@ -161,7 +161,6 @@
     String apptStatusHere = pros.getProperty("appt_status_here");
 
     AppointmentStatusMgr apptStatusMgr = new AppointmentStatusMgrImpl();
-    List allStatus = apptStatusMgr.getAllActiveStatus();
 
     String useProgramLocation = OscarProperties.getInstance().getProperty("useProgramLocation");
     String moduleNames = OscarProperties.getInstance().getProperty("ModuleNames");
@@ -199,6 +198,7 @@
         signOrVerify = statusCode.substring(1, 2);
         statusCode = statusCode.substring(0, 1);
     }
+    List allStatus = apptStatusMgr.getStatusChoices(statusCode);
     if (bFirstDisp) {
         demono = String.valueOf(appt.getDemographicNo());
     } else if (request.getParameter("demographic_no") != null && !request.getParameter("demographic_no").equals("")) {
@@ -1175,11 +1175,14 @@
                             if (strEditable != null && strEditable.equalsIgnoreCase("yes")) { %>
 
                 <select name="status" class="form-control" style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(((AppointmentStatus)allStatus.get(curSelect)).getColor()))%>" onchange='this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor' >
-                            <% for (int i = 0; i < allStatus.size(); i++) { %>
-                            <option class="<%=Encode.forHtmlAttribute(String.valueOf(((AppointmentStatus)allStatus.get(i)).getStatus()))%>"
-                                    style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(((AppointmentStatus)allStatus.get(i)).getColor()))%>"
-                                    value="<%=Encode.forHtmlAttribute(String.valueOf(((AppointmentStatus)allStatus.get(i)).getStatus()+signOrVerify))%>"
-                                    <%=((AppointmentStatus) allStatus.get(i)).getStatus().equals(statusCode) ? "SELECTED" : ""%>><%=Encode.forHtml(String.valueOf(((AppointmentStatus) allStatus.get(i)).getDescription()))%>
+                            <% for (int i = 0; i < allStatus.size(); i++) {
+                                AppointmentStatus statusChoice = (AppointmentStatus) allStatus.get(i); %>
+                            <option class="<%=Encode.forHtmlAttribute(String.valueOf(statusChoice.getStatus()))%>"
+                                    style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(statusChoice.getColor()))%>"
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(statusChoice.getStatus()+signOrVerify))%>"
+                                    <%=statusChoice.getStatus().equals(statusCode) ? "SELECTED" : ""%>><%
+                                if (statusChoice.getActive() == 1) { %><%=Encode.forHtml(String.valueOf(statusChoice.getDescription()))%><%
+                                } else { %><fmt:message key="appointment.status.inactiveItem"><fmt:param value="<%=Encode.forHtml(String.valueOf(statusChoice.getDescription()))%>"/></fmt:message><% } %>
                             </option>
                             <% } %>
                         </select> <%
