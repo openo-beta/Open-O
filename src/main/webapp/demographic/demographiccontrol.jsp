@@ -33,8 +33,6 @@
 <%@page import="ca.openosp.openo.web.DemographicSearchHelper" %>
 <%@page import="java.util.GregorianCalendar" %>
 <%@page import="ca.openosp.openo.caisi_integrator.ws.MatchingDemographicParameters" %>
-<%@ page import="java.io.UnsupportedEncodingException" %>
-<%@ page import="java.net.URLEncoder" %>
 
 
 <%@ page import="ca.openosp.OscarProperties" %>
@@ -68,19 +66,13 @@
         
         if (keyword == null) {
             keyword = ""; // Default to an empty string
-        } else {
-            // Encode the keyword to ensure any special characters (like '%') are properly encoded
-            try {
-                // If keyword contains a '%' sign, encode it as %25
-                keyword = java.net.URLEncoder.encode(keyword, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace(); // Log the error or handle it
-                keyword = ""; // Default to empty string if error occurs
-            }
         }
-       
-        if (keyword.indexOf("*") != -1 || keyword.indexOf("%") != -1) 
-        {
+
+        // A '%' or '*' in the keyword signals a wildcard search. The keyword must be
+        // used verbatim here - it feeds the integrator match parameters and is bound as
+        // a SQL parameter downstream, so URL-encoding it would corrupt wildcards (and
+        // characters such as apostrophes in names).
+        if (keyword.indexOf("*") != -1 || keyword.indexOf("%") != -1) {
             regularexp = "like";
         }
 

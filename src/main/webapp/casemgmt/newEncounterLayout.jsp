@@ -93,6 +93,44 @@
         </script>
 
         <script src="<c:out value="${ctx}"/>/share/javascript/prototype.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            // Lock prototype.js's `$` and `$F` so nothing on the page can
+            // overwrite them after this point.
+            //
+            // Why: third-party integrations loaded into this page (browser
+            // extensions, userscripts, or embedded toolbars) sometimes pull in
+            // their own copy of jQuery and effectively run `window.$ = jQuery`.
+            // That overwrites prototype's `$`, so when prototype's own methods
+            // later call `$(element)` internally they receive a jQuery wrapper
+            // instead of a DOM node and throw inside `Form.Element.getValue`
+            // / `_getElementsByXPath`. In the encounter window this silently
+            // kills Sign & Save and Sign Save & Bill -- the button click does
+            // nothing and the user has to refresh. It happens only when the
+            // third-party script wins the race to assign `$` before the user
+            // clicks, which is why the failure looks random in practice.
+            // The fix is to stop those overwrites at the source: lock the
+            // global so the rogue assignment is a no-op.
+            //
+            // Why `writable: false` and not a get/set accessor: prototype
+            // declares `function $()` at the top of a classic script, which
+            // in modern engines creates a non-configurable global binding.
+            // Converting a non-configurable data property into an accessor
+            // is not allowed and would throw. Tightening `writable: true ->
+            // false` IS allowed on a non-configurable property, and it is
+            // enough: subsequent `window.$ = ...` assignments silently fail
+            // in non-strict callers (or throw in strict ones), and prototype's
+            // `$` survives either way.
+            (function () {
+                if (typeof window.$ === 'function') {
+                    try { Object.defineProperty(window, '$', { writable: false }); }
+                    catch (e) { /* property may already be locked; safe to ignore */ }
+                }
+                if (typeof window.$F === 'function') {
+                    try { Object.defineProperty(window, '$F', { writable: false }); }
+                    catch (e) { /* property may already be locked; safe to ignore */ }
+                }
+            })();
+        </script>
         <script src="<c:out value="${ctx}"/>/share/javascript/scriptaculous.js" type="text/javascript"></script>
 
         <script type="text/javascript" src="<c:out value="${ctx}"/>/js/messenger/messenger.js"></script>

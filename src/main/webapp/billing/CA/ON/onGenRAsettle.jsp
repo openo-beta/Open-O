@@ -89,10 +89,7 @@
         dao.merge(raHeader);
         recordAffected1++;
     }
-%>
 
-<script LANGUAGE="JavaScript">
-    self.close();
-    self.opener.refresh();
-</script>
+    response.sendRedirect(request.getContextPath() + "/billing/CA/ON/genRA.jsp");
+%>
 

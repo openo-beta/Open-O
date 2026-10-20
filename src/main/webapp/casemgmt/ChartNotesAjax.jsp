@@ -1124,7 +1124,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
             encounterText = "\n[" + apptDate + " .: " + reason + "]\n";
         }
 
-        encounterText = Encode.forJavaScript(encounterText);
+        // Return raw; the sole caller JS-encodes at the output point.
         return encounterText;
     }
 

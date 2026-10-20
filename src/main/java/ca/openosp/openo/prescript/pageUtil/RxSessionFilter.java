@@ -30,6 +30,7 @@ public class RxSessionFilter implements Filter {
     private static final Logger logger = MiscUtils.getLogger();
     private static final String LEGACY_KEY = "RxSessionBean";
     private static final String PATIENT_KEY = "Patient";
+    private static final String STAGING_PAGE_PATH = "/oscarRx/SearchDrug3.jsp";
 
     /**
      * {@inheritDoc}
@@ -104,6 +105,17 @@ public class RxSessionFilter implements Filter {
                             session.setAttribute(PATIENT_KEY, patient);
                         }
                     }
+                }
+            }
+
+            // On a direct browser load/refresh of the staging page, drop drugs already
+            // persisted by a completed save (unsaved drafts, drugId == 0, are kept).
+            // Action entries (e.g. choosePatient.do) forward here and reconcile themselves;
+            // this REQUEST-scoped filter skips forwards, so there is no double-clear.
+            if (STAGING_PAGE_PATH.equals(request.getServletPath())) {
+                RxSessionBean currentBean = (RxSessionBean) session.getAttribute(LEGACY_KEY);
+                if (currentBean != null) {
+                    currentBean.removePersistedStashItems();
                 }
             }
         }

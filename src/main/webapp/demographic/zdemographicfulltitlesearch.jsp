@@ -63,36 +63,61 @@
     }
     
     function formatDateInput(input) {
-        // Remove any non-digit characters
-        var value = input.value.replace(/\D/g, '');
-        
-        // Format as YYYY-MM-DD
-        if (value.length > 0) {
-            // Ensure we only take the first 8 digits
-            value = value.substring(0, Math.min(8, value.length));
-            
-            // Add hyphens
-            if (value.length > 4) {
-                value = value.substring(0, 4) + '-' + value.substring(4);
-            }
-            if (value.length > 7) {
-                value = value.substring(0, 7) + '-' + value.substring(7);
+        var old = input.value;
+        var atEnd = input.selectionStart === old.length;
+        // Keep only digits, the yyyy-mm-dd separators, and the % wildcard.
+        var out = old.replace(/[^0-9%-]/g, '');
+
+        // Auto-insert hyphens only when a plain date is typed at the end of the field.
+        // Wildcards (%) and mid-field edits are left as typed, so % survives and the
+        // caret is never yanked to the end.
+        if (atEnd && out.indexOf('%') === -1) {
+            var d = out.replace(/-/g, '').substring(0, 8);
+            if (d.length > 6) out = d.substring(0, 4) + '-' + d.substring(4, 6) + '-' + d.substring(6);
+            else if (d.length > 4) out = d.substring(0, 4) + '-' + d.substring(4);
+            else out = d;
+            // Preserve a hyphen the user just typed so 2024-07- can be built before a %.
+            var typedHyphen = old.charAt(input.selectionStart - 1) === '-';
+            if (typedHyphen && out.charAt(out.length - 1) !== '-' && (d.length === 4 || d.length === 6)) {
+                out += '-';
             }
         }
-        
-        input.value = value;
+
+        if (out === old) return;
+
+        // Restore the caret after the same number of non-hyphen characters (or at the end
+        // when appending) instead of letting it jump.
+        var keep = old.slice(0, input.selectionStart).replace(/-/g, '').length;
+        input.value = out;
+        if (atEnd) {
+            input.setSelectionRange(out.length, out.length);
+            return;
+        }
+        var pos = 0, seen = 0;
+        while (pos < out.length && seen < keep) {
+            if (out.charAt(pos) !== '-') seen++;
+            pos++;
+        }
+        input.setSelectionRange(pos, pos);
     }
-    
+
     function checkTypeIn() {
         var dob = document.titlesearch.keyword;
         if (document.titlesearch.search_mode.value == "search_dob") {
-            // Remove hyphens for validation
-            var dobValue = dob.value.replace(/-/g, '');
-            
-            // Check if we have enough digits
-            if (dobValue.length < 8) {
-                alert("Date format must be YYYY-MM-DD");
-                return false;
+            if (dob.value.indexOf('%') !== -1) {
+                // Wildcard search (e.g. everyone born in July 2024). The backend splits
+                // the value on '-' into year/month/day, so pad any missing trailing
+                // groups with '%': 2024-07% or 2024-% become 2024-07%-% / 2024-%-%.
+                var parts = dob.value.split('-');
+                while (parts.length < 3) parts.push('%');
+                dob.value = parts.slice(0, 3).join('-');
+            } else {
+                // A non-wildcard DOB search still needs a full yyyy-mm-dd date
+                var dobValue = dob.value.replace(/-/g, '');
+                if (dobValue.length < 8) {
+                    alert("Date format must be YYYY-MM-DD (use % as a wildcard, e.g. 2024-07-%)");
+                    return false;
+                }
             }
         }
         return true;

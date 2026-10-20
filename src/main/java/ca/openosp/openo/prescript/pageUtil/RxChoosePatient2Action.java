@@ -95,6 +95,8 @@ public final class RxChoosePatient2Action extends ActionSupport {
             bean = new RxSessionBean();
             bean.setProviderNo(user_no);
             bean.setDemographicNo(demographicNoInt);
+        } else {
+            bean.removePersistedStashItems();
         }
         RxSessionBean.saveToSession(request, bean);
 

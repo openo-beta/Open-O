@@ -40,7 +40,7 @@
 <%@page import="org.hl7.fhir.dstu3.model.Patient" %>
 <%@page import="org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
-<%@page import="ca.openosp.openo.integration.fhir.builder.AbstractFhirMessageBuilder" %>
+<%@page import="ca.openosp.openo.integration.fhir.dstu3.builder.AbstractFhirMessageBuilder" %>
 <%@page import="org.hl7.fhir.dstu3.model.Bundle" %>
 <%@page import="java.util.Map" %>
 <%@page import="java.io.InputStream" %>
