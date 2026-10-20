@@ -20,7 +20,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.transaction.support.TransactionSynchronizationUtils;
 
+import javax.persistence.PersistenceException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -321,20 +324,20 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
     class StatusCache {
 
         private Object originalCache;
-        private boolean originalCacheIsDirty;
+        private Object originalCacheIsDirty;
 
         @BeforeEach
         void emptyCache() {
             originalCache = ReflectionTestUtils.getField(AppointmentStatusMgrImpl.class, "cachedStatuses");
-            originalCacheIsDirty = AppointmentStatusMgrImpl.isCacheIsDirty();
+            originalCacheIsDirty = ReflectionTestUtils.getField(AppointmentStatusMgrImpl.class, "cacheIsDirty");
             ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cachedStatuses", null);
-            AppointmentStatusMgrImpl.setCacheIsDirty(false);
+            ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cacheIsDirty", false);
         }
 
         @AfterEach
         void restoreCache() {
             ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cachedStatuses", originalCache);
-            AppointmentStatusMgrImpl.setCacheIsDirty(originalCacheIsDirty);
+            ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cacheIsDirty", originalCacheIsDirty);
         }
 
         @Test
@@ -347,24 +350,67 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
             AppointmentStatusMgrImpl.getCachedStatuses();
             assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).containsExactly(toDo, here);
 
-            AppointmentStatusMgrImpl.setCacheIsDirty(true);
+            here.on_jpa_update();
             AppointmentStatusMgrImpl.getCachedStatuses();
             assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).containsExactly(toDo);
 
             verify(appointmentStatusDao, times(2)).findAll();
-            assertThat(AppointmentStatusMgrImpl.isCacheIsDirty()).isFalse();
+        }
+
+        @Test
+        @DisplayName("should reload once more when the save commits, after a lookup made before the commit")
+        void shouldReloadAgain_whenSaveCommits() {
+            AppointmentStatus hereBeforeSave = status(3, "H");
+            hereBeforeSave.setActive(1);
+            AppointmentStatus hereDisabled = status(3, "H");
+            hereDisabled.setActive(0);
+            when(appointmentStatusDao.findAll()).thenReturn(new ArrayList<>(List.of(hereBeforeSave)), new ArrayList<>(List.of(hereDisabled)));
+            TransactionSynchronizationManager.initSynchronization();
+            try {
+                hereDisabled.on_jpa_update();
+                // A lookup before the commit still reads Here as active.
+                assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).extracting(AppointmentStatus::getActive).containsExactly(1);
+
+                TransactionSynchronizationUtils.triggerAfterCommit();
+
+                assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).extracting(AppointmentStatus::getActive).containsExactly(0);
+            } finally {
+                TransactionSynchronizationManager.clearSynchronization();
+            }
+        }
+
+        @Test
+        @DisplayName("should try the reload again on the next lookup when it fails")
+        void shouldRetryReload_whenReloadFails() {
+            AppointmentStatus here = status(3, "H");
+            AppointmentStatus toDo = status(1, "t");
+            when(appointmentStatusDao.findAll())
+                    .thenReturn(new ArrayList<>(List.of(here)))
+                    .thenThrow(new PersistenceException("database unavailable"))
+                    .thenReturn(new ArrayList<>(List.of(toDo)));
+            AppointmentStatusMgrImpl.getCachedStatuses();
+            here.on_jpa_update();
+
+            assertThatThrownBy(AppointmentStatusMgrImpl::getCachedStatuses).isInstanceOf(PersistenceException.class);
+
+            assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).containsExactly(toDo);
         }
 
         @Test
         @DisplayName("should list the active statuses without touching the cache")
         void shouldLeaveCache_whenActiveStatusesListed() {
-            AppointmentStatusMgrImpl.setCacheIsDirty(true);
+            AppointmentStatus here = status(3, "H");
+            AppointmentStatus toDo = status(1, "t");
+            when(appointmentStatusDao.findAll()).thenReturn(new ArrayList<>(List.of(here)), new ArrayList<>(List.of(toDo)));
+            AppointmentStatusMgrImpl.getCachedStatuses();
+            toDo.on_jpa_update();
 
             manager.getAllActiveStatus();
 
             verify(appointmentStatusDao).findActive();
-            verify(appointmentStatusDao, never()).findAll();
-            assertThat(AppointmentStatusMgrImpl.isCacheIsDirty()).isTrue();
+            verify(appointmentStatusDao, times(1)).findAll();
+            // The save is still pending, so the schedule's next lookup reloads.
+            assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).containsExactly(toDo);
         }
 
         private AppointmentStatus status(int id, String code) {
