@@ -44,6 +44,16 @@ public interface AppointmentStatusMgr {
 
     public List<AppointmentStatus> getAllActiveStatus();
 
+    /**
+     * The statuses an appointment's edit screen offers: the active ones, and its own status if that
+     * was disabled, so the screen shows what the appointment has and saving it changes nothing.
+     *
+     * @param statusCode String the appointment's status code, without its signed or verified mark
+     * @return List<AppointmentStatus> the active statuses and the appointment's own, by id
+     * @since 2026-10-19
+     */
+    public List<AppointmentStatus> getStatusChoices(String statusCode);
+
     public AppointmentStatus getStatus(int ID);
 
     /**
@@ -92,16 +102,6 @@ public interface AppointmentStatusMgr {
      * @since 2026-09-15
      */
     public boolean updateIcon(int id, String icon);
-
-    /**
-     * Whether a status is in use: at least one appointment, on any date, has it. Signed and verified
-     * appointments count, and codes are compared case-sensitively, since h and H are different statuses.
-     *
-     * @param statusCode String the status code
-     * @return boolean true if at least one appointment has the status
-     * @since 2026-09-30
-     */
-    public boolean isInUse(String statusCode);
 
     /**
      * Puts every editable status (editable=1) back to its Default Status Style: the description,

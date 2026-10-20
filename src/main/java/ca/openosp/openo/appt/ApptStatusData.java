@@ -111,10 +111,10 @@ public final class ApptStatusData {
     }
 
     public String getNextStatus() {
-        if ("h".equals(apptStatus)) {
-            return "H";
-        } else if (strEditable != null && strEditable.equalsIgnoreCase("yes"))
+        if (strEditable != null && strEditable.equalsIgnoreCase("yes"))
             return getStr("nextstatus");
+        else if ("h".equals(apptStatus))
+            return "H";
         else
             return getStr(aStatus, aNextStatus);
     }
@@ -241,10 +241,8 @@ public final class ApptStatusData {
         String strStatus = "";
 
 
-        List<AppointmentStatus> apptStatuses = AppointmentStatusMgrImpl.getCachedActiveStatuses();
-
-
-        // Collections.sort(apptStatuses, new BeanComparator("id"));
+        // Disabled statuses too: an appointment whose status was disabled keeps its look.
+        List<AppointmentStatus> apptStatuses = AppointmentStatusMgrImpl.getCachedStatuses();
 
         if (apptStatus.length() >= 2) {
             strOtherIcon = apptStatus.substring(1, 2);
@@ -253,45 +251,14 @@ public final class ApptStatusData {
             strStatus = apptStatus;
         }
 
+        if (kind.equals("nextstatus")) {
+            rstr = getNextActiveStatus(apptStatuses, strStatus);
+            return rstr == null || rstr.isEmpty() ? rstr : rstr + strOtherIcon;
+        }
+
         int i = 0;
         while (i < apptStatuses.size()) {
             AppointmentStatus s = apptStatuses.get(i);
-
-            if (kind.equals("nextstatus")) {
-                if (strStatus.equals("C")) {
-                    i = 0;
-                    s = apptStatuses.get(i);
-
-                    rstr = s.getStatus();
-                    if (strOtherIcon.length() == 1)
-                        return rstr + strOtherIcon;
-                    else
-                        return rstr;
-                }
-
-                if (strStatus.equals("B")) {
-                    return "";
-                }
-
-                if (strStatus.equals(s.getStatus())) {
-                    i++;
-                    s = apptStatuses.get(i);
-
-                    while (s.getActive() == 0 && i < apptStatuses.size()) {
-                        i++;
-                        s = apptStatuses.get(i);
-                    }
-
-                    rstr = s.getStatus();
-
-                    if (strOtherIcon.length() == 1) {
-                        return rstr + strOtherIcon;
-                    } else {
-                        return rstr;
-                    }
-                }
-
-            }
 
             if (kind.equals("desc")) {
                 if (strStatus.equals(s.getStatus())) {
@@ -324,12 +291,12 @@ public final class ApptStatusData {
             // get the short letter colour.  It comes back as an int.
             if (kind.equals("short_letter_colour")) {
                 if (strStatus.equals(s.getStatus())) {
-                    Integer colour = Integer.valueOf(s.getShortLetterColour());
-
                     // return null if it's null
-                    if (colour == null) {
+                    if (s.getShortLetterColour() == null) {
                         return null;
                     }
+
+                    Integer colour = Integer.valueOf(s.getShortLetterColour());
 
                     // convert it to a hex number and add a hex code in front
                     return "#" + Integer.toHexString(colour).toUpperCase();
@@ -349,5 +316,37 @@ public final class ApptStatusData {
         return rstr;
     }
 
-
+    /*
+     * The status a click on the schedule moves an appointment on to: the first active status after
+     * its own, which may be disabled. Cancelled starts again at the first active status, and
+     * Confirmed moves on to Here wherever it sits in the table, or past Here while Here is disabled.
+     * Billed and the last active status go no further, giving blank. A code with no status gives null.
+     */
+    private static String getNextActiveStatus(List<AppointmentStatus> statuses, String status) {
+        if (status.equals("B")) {
+            return "";
+        }
+        List<String> codes = statuses.stream().map(AppointmentStatus::getStatus).toList();
+        int from;
+        if (status.equals("C")) {
+            from = 0;
+        } else if (status.equals("h")) {
+            from = codes.indexOf("H");
+            if (from == -1) {
+                return null;
+            }
+        } else {
+            int own = codes.indexOf(status);
+            if (own == -1) {
+                return null;
+            }
+            from = own + 1;
+        }
+        return statuses.stream()
+                .skip(from)
+                .filter(s -> s.getActive() == 1)
+                .map(AppointmentStatus::getStatus)
+                .findFirst()
+                .orElse("");
+    }
 }
