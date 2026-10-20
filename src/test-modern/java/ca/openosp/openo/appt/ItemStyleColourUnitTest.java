@@ -23,21 +23,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ItemStyleColourUnitTest {
 
     @Nested
-    @DisplayName("PATTERN")
-    class Pattern {
+    @DisplayName("isColour")
+    class IsColour {
 
         @ParameterizedTest
         @ValueSource(strings = {"#1a2B3c", "#1a2b3c80", "#FFFFFF00"})
         @DisplayName("should accept #rrggbb and #rrggbbaa")
         void shouldAccept_whenHexColour(String colour) {
-            assertThat(ItemStyleColour.PATTERN.matcher(colour).matches()).isTrue();
+            assertThat(ItemStyleColour.isColour(colour)).isTrue();
         }
 
         @ParameterizedTest
-        @ValueSource(strings = {"red", "#fff", "#1122334", "#112233445", "#1122334g", "#112233;background:url(x)"})
-        @DisplayName("should reject anything else")
+        @NullAndEmptySource
+        @ValueSource(strings = {"red", "red;top:0", "#fff", "#1122334", "#112233445", "#1122334g", "#112233;background:url(x)"})
+        @DisplayName("should reject anything else, and no value")
         void shouldReject_whenNotHexColour(String colour) {
-            assertThat(ItemStyleColour.PATTERN.matcher(colour).matches()).isFalse();
+            assertThat(ItemStyleColour.isColour(colour)).isFalse();
         }
     }
 
