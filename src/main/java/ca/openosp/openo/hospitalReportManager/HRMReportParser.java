@@ -235,6 +235,7 @@ public class HRMReportParser {
         // Surface warnings raised during parsing (e.g. invalid placeholder dates substituted earlier)
         ctx.addWarnings(report.getUploadWarnings());
 
+        addOutOfProvinceHealthCardWarning(ctx);
         addUnknownSendingFacilityWarning(ctx);
         addUnknownSubClassWarning(ctx);
 
@@ -431,6 +432,26 @@ public class HRMReportParser {
         }
     }
 
+
+    /**
+     * Warns when the report's health card is from another province than the clinic's own,
+     * taken from the hctype property (billregion when hctype is blank). The report is still
+     * accepted; the warning tells the uploading user that the patient match does not look at
+     * the province.
+     *
+     * @param ctx HRMProcessingContext the processing context carrying the report and its warnings
+     */
+    private static void addOutOfProvinceHealthCardWarning(HRMProcessingContext ctx) {
+        String provinceCode = ctx.getReport().getHCNProvinceCode();
+        if (provinceCode == null || provinceCode.trim().isEmpty()) return;
+
+        OscarProperties properties = OscarProperties.getInstance();
+        String clinicProvince = properties.getProperty("hctype", properties.getProperty("billregion", "ON")).trim();
+        String clinicProvinceCode = "CA-" + clinicProvince.toUpperCase();
+        if (clinicProvinceCode.equalsIgnoreCase(provinceCode.trim())) return;
+
+        ctx.addWarning("Health card province is '" + provinceCode.trim() + "', not " + clinicProvinceCode + "; the patient match ignores the province, verify the linked patient.");
+    }
 
     /**
      * UC65: warn when an HRM report arrives from a Sending Facility that has not
