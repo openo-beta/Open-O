@@ -44,6 +44,16 @@ public interface AppointmentStatusMgr {
 
     public List<AppointmentStatus> getAllActiveStatus();
 
+    /**
+     * The statuses an appointment's edit screen offers: the active ones, and its own status if that
+     * was disabled, so the screen shows what the appointment has and saving it changes nothing.
+     *
+     * @param statusCode String the appointment's status code, without its signed or verified mark
+     * @return List<AppointmentStatus> the active statuses and the appointment's own, by id
+     * @since 2026-10-19
+     */
+    public List<AppointmentStatus> getStatusChoices(String statusCode);
+
     public AppointmentStatus getStatus(int ID);
 
     /**

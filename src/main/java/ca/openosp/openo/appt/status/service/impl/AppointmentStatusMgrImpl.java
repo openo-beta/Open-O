@@ -25,6 +25,7 @@ package ca.openosp.openo.appt.status.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -72,20 +73,30 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
             Map.entry("C", new StatusStyle("Cancelled", "#999999", "cancel.gif")),
             Map.entry("B", new StatusStyle("Billed", "#3ea4e1", "billed.gif")));
 
-    private static List<AppointmentStatus> cachedActiveStatuses = null;
-    private static boolean cacheIsDirty = false;
+    private static List<AppointmentStatus> cachedStatuses = null;
+    // Set by AppointmentStatus on every save, from whichever thread saves it.
+    private static volatile boolean cacheIsDirty = false;
 
-    public static List<AppointmentStatus> getCachedActiveStatuses() {
-        if (cachedActiveStatuses == null || cacheIsDirty) {
-            cachedActiveStatuses = appointStatusDao.findActive();
+    /**
+     * Every status, disabled ones too, in id order: the schedule still draws an appointment whose
+     * status was disabled, and moves it on to the next active one. Reloaded once after a status is
+     * saved.
+     *
+     * @return List<AppointmentStatus> every status, by id
+     */
+    public static synchronized List<AppointmentStatus> getCachedStatuses() {
+        if (cachedStatuses == null || cacheIsDirty) {
+            // Cleared before the read, so a save made during it brings another reload.
+            cacheIsDirty = false;
+            setCachedStatuses(appointStatusDao.findAll());
         }
-        return cachedActiveStatuses;
+        return cachedStatuses;
     }
 
     @SuppressWarnings("unchecked")
-    public static synchronized void setCachedActiveStatuses(List<AppointmentStatus> cachedActiveStatuses) {
-        Collections.sort(cachedActiveStatuses, new BeanComparator("id"));
-        AppointmentStatusMgrImpl.cachedActiveStatuses = cachedActiveStatuses;
+    public static synchronized void setCachedStatuses(List<AppointmentStatus> cachedStatuses) {
+        Collections.sort(cachedStatuses, new BeanComparator("id"));
+        AppointmentStatusMgrImpl.cachedStatuses = cachedStatuses;
     }
 
 
@@ -102,11 +113,15 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
     }
 
     public List<AppointmentStatus> getAllActiveStatus() {
-        if (cacheIsDirty) {
-            setCachedActiveStatuses(appointStatusDao.findActive());
-            cacheIsDirty = false;
-        }
         return appointStatusDao.findActive();
+    }
+
+    @Override
+    public List<AppointmentStatus> getStatusChoices(String statusCode) {
+        return appointStatusDao.findAll().stream()
+                .filter(status -> status.getActive() == 1 || status.getStatus().equals(statusCode))
+                .sorted(Comparator.comparing(AppointmentStatus::getId))
+                .toList();
     }
 
     public AppointmentStatus getStatus(int ID) {
