@@ -106,7 +106,7 @@
                     <table width="100%" border="1">
                         <tr>
                             <td colspan="2">
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Enable Custom EChart", CppPreferencesUIBean.ENABLE, bean.getEnable())))%>
+                                <%=CppPreferencesUIBean.getCheckbox("Enable Custom EChart", CppPreferencesUIBean.ENABLE, bean.getEnable())%>
                             </td>
 
                         </tr>
@@ -114,11 +114,11 @@
                             <td>Social History</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.SOCIAL_HISTORY_POS))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getPositionSelect(bean.getSocialHxPosition())))%>
+                                    <%=CppPreferencesUIBean.getPositionSelect(bean.getSocialHxPosition())%>
                                 </select>
                                 <br/>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.SOC_HX_START_DATE, bean.getSocialHxStartDate())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.SOC_HX_RES_DATE, bean.getSocialHxResDate())))%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.SOC_HX_START_DATE, bean.getSocialHxStartDate())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.SOC_HX_RES_DATE, bean.getSocialHxResDate())%>
                             </td>
                         </tr>
 
@@ -126,13 +126,13 @@
                             <td>Medical History</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.MEDICAL_HISTORY_POS))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getPositionSelect(bean.getMedicalHxPosition())))%>
+                                    <%=CppPreferencesUIBean.getPositionSelect(bean.getMedicalHxPosition())%>
                                 </select>
                                 <br/>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.MED_HX_START_DATE, bean.getMedHxStartDate())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.MED_HX_RES_DATE, bean.getMedHxResDate())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Treatment", CppPreferencesUIBean.MED_HX_TREATMENT, bean.getMedHxTreatment())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Procedure Date", CppPreferencesUIBean.MED_HX_PROCEDURE_DATE, bean.getMedHxProcedureDate())))%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.MED_HX_START_DATE, bean.getMedHxStartDate())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.MED_HX_RES_DATE, bean.getMedHxResDate())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Treatment", CppPreferencesUIBean.MED_HX_TREATMENT, bean.getMedHxTreatment())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Procedure Date", CppPreferencesUIBean.MED_HX_PROCEDURE_DATE, bean.getMedHxProcedureDate())%>
                             </td>
                         </tr>
 
@@ -140,12 +140,12 @@
                             <td>Ongoing Concerns</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.ONGOING_CONCERNS_POS))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getPositionSelect(bean.getOngoingConcernsPosition())))%>
+                                    <%=CppPreferencesUIBean.getPositionSelect(bean.getOngoingConcernsPosition())%>
                                 </select>
                                 <br/>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.ONGOING_START_DATE, bean.getOngoingConcernsStartDate())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.ONGOING_RES_DATE, bean.getOngoingConcernsResDate())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Problem Status", CppPreferencesUIBean.ONGOING_PROBLEM_STATUS, bean.getOngoingConcernsProblemStatus())))%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.ONGOING_START_DATE, bean.getOngoingConcernsStartDate())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.ONGOING_RES_DATE, bean.getOngoingConcernsResDate())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Problem Status", CppPreferencesUIBean.ONGOING_PROBLEM_STATUS, bean.getOngoingConcernsProblemStatus())%>
                             </td>
                         </tr>
 
@@ -153,11 +153,11 @@
                             <td>Reminders</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.REMINDERS_POS))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getPositionSelect(bean.getRemindersPosition())))%>
+                                    <%=CppPreferencesUIBean.getPositionSelect(bean.getRemindersPosition())%>
                                 </select>
                                 <br/>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.REMINDERS_START_DATE, bean.getRemindersStartDate())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.REMINDERS_RES_DATE, bean.getRemindersResDate())))%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.REMINDERS_START_DATE, bean.getRemindersStartDate())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.REMINDERS_RES_DATE, bean.getRemindersResDate())%>
                             </td>
                         </tr>
 
@@ -165,7 +165,7 @@
                             <td>Preventions</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.PREVENTIONS_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getPreventionsDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getPreventionsDisplay())%>
                                 </select>
                             </td>
                         </tr>
@@ -174,7 +174,7 @@
                             <td>Disease Registry</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.DX_REGISTRY_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getDxRegistryDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getDxRegistryDisplay())%>
                                 </select>
                             </td>
                         </tr>
@@ -183,7 +183,7 @@
                             <td>Forms</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.FORMS_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getFormsDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getFormsDisplay())%>
                                 </select>
                             </td>
                         </tr>
@@ -192,7 +192,7 @@
                             <td>eForms</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.EFORMS_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getEformsDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getEformsDisplay())%>
                                 </select>
                             </td>
                         </tr>
@@ -201,7 +201,7 @@
                             <td>Documents</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.DOCUMENTS_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getDocumentsDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getDocumentsDisplay())%>
                                 </select>
                             </td>
                         </tr>
@@ -210,7 +210,7 @@
                             <td>Lab Result</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.LABS_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getLabsDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getLabsDisplay())%>
                                 </select>
                             </td>
                         </tr>
@@ -219,7 +219,7 @@
                             <td>Measurements</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.MEASUREMENTS_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getMeasurementsDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getMeasurementsDisplay())%>
                                 </select>
                             </td>
                         </tr>
@@ -228,7 +228,7 @@
                             <td>Consultations</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.CONSULTATIONS_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getConsultationsDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getConsultationsDisplay())%>
                                 </select>
                             </td>
                         </tr>
@@ -237,7 +237,7 @@
                             <td>HRM Documents</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.HRM_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getHrmDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getHrmDisplay())%>
                                 </select>
                             </td>
                         </tr>
@@ -246,11 +246,11 @@
                             <td>Allergies</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.ALLERGIES_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getAllergiesDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getAllergiesDisplay())%>
                                 </select>
                                 <br/>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.ALLERGY_START_DATE, bean.getAllergyStartDate())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Severity", CppPreferencesUIBean.ALLERGY_SEVERITY, bean.getAllergySeverity())))%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.ALLERGY_START_DATE, bean.getAllergyStartDate())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Severity", CppPreferencesUIBean.ALLERGY_SEVERITY, bean.getAllergySeverity())%>
 
                             </td>
                         </tr>
@@ -259,13 +259,13 @@
                             <td>Medications</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.MEDICATIONS_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getMedicationsDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getMedicationsDisplay())%>
                                 </select>
                                 <br/>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.MEDICATION_START_DATE, bean.getMedicationStartDate())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show End Date", CppPreferencesUIBean.MEDICATION_END_DATE, bean.getMedicationEndDate())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Qty", CppPreferencesUIBean.MEDICATION_QTY, bean.getMedicationQty())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Repeats", CppPreferencesUIBean.MEDICATION_REPEATS, bean.getMedicationRepeats())))%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.MEDICATION_START_DATE, bean.getMedicationStartDate())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show End Date", CppPreferencesUIBean.MEDICATION_END_DATE, bean.getMedicationEndDate())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Qty", CppPreferencesUIBean.MEDICATION_QTY, bean.getMedicationQty())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Repeats", CppPreferencesUIBean.MEDICATION_REPEATS, bean.getMedicationRepeats())%>
 
                             </td>
                         </tr>
@@ -274,11 +274,11 @@
                             <td>Other Meds</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.OTHER_MEDS_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getOtherMedsDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getOtherMedsDisplay())%>
                                 </select>
                                 <br/>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.OTHER_MEDS_START_DATE, bean.getOtherMedsStartDate())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.OTHER_MEDS_RES_DATE, bean.getOtherMedsResDate())))%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.OTHER_MEDS_START_DATE, bean.getOtherMedsStartDate())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.OTHER_MEDS_RES_DATE, bean.getOtherMedsResDate())%>
                             </td>
                         </tr>
 
@@ -286,11 +286,11 @@
                             <td>Risk Factors</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.RISK_FACTORS_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getRiskFactorsDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getRiskFactorsDisplay())%>
                                 </select>
                                 <br/>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.RISK_FACTORS_START_DATE, bean.getRiskFactorsStartDate())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.RISK_FACTORS_RES_DATE, bean.getRiskFactorsResDate())))%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.RISK_FACTORS_START_DATE, bean.getRiskFactorsStartDate())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.RISK_FACTORS_RES_DATE, bean.getRiskFactorsResDate())%>
                             </td>
 
                         </tr>
@@ -299,13 +299,13 @@
                             <td>Family History</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.FAMILY_HISTORY_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getFamilyHxDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getFamilyHxDisplay())%>
                                 </select>
                                 <br/>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.FAMILY_HISTORY_START_DATE, bean.getFamilyHistoryStartDate())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.FAMILY_HISTORY_RES_DATE, bean.getFamilyHistoryResDate())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Treatment", CppPreferencesUIBean.FAMILY_HISTORY_TREATMENT, bean.getFamilyHistoryTreatment())))%>
-                                <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getCheckbox("Show Relationship", CppPreferencesUIBean.FAMILY_HISTORY_RELATIONSHIP, bean.getFamilyHistoryRelationship())))%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Start Date", CppPreferencesUIBean.FAMILY_HISTORY_START_DATE, bean.getFamilyHistoryStartDate())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Resolution Date", CppPreferencesUIBean.FAMILY_HISTORY_RES_DATE, bean.getFamilyHistoryResDate())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Treatment", CppPreferencesUIBean.FAMILY_HISTORY_TREATMENT, bean.getFamilyHistoryTreatment())%>
+                                <%=CppPreferencesUIBean.getCheckbox("Show Relationship", CppPreferencesUIBean.FAMILY_HISTORY_RELATIONSHIP, bean.getFamilyHistoryRelationship())%>
 
                             </td>
                         </tr>
@@ -314,7 +314,7 @@
                             <td>Unresolved Issues</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.UNRESOLVED_ISSUES_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getUnresolvedIssuesDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getUnresolvedIssuesDisplay())%>
                                 </select>
                             </td>
                         </tr>
@@ -323,7 +323,7 @@
                             <td>Resolved Issues</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.RESOLVED_ISSUES_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getResolvedIssuesDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getResolvedIssuesDisplay())%>
                                 </select>
                             </td>
                         </tr>
@@ -332,7 +332,7 @@
                             <td>Episodes</td>
                             <td>
                                 <select name="<%=Encode.forHtmlAttribute(String.valueOf(CppPreferencesUIBean.EPISODES_DSP))%>">
-                                    <%=Encode.forHtml(String.valueOf(CppPreferencesUIBean.getDisplaySelect(bean.getEpisodesDisplay())))%>
+                                    <%=CppPreferencesUIBean.getDisplaySelect(bean.getEpisodesDisplay())%>
                                 </select>
                             </td>
                         </tr>

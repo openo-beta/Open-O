@@ -29,7 +29,8 @@
                             http://www.springframework.org/schema/beans/spring-beans.xsd
                             http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 
-    <jaxrs:server address="/" id="healthServer">
+    <!-- Not "/": a root address takes every unmatched path, which hides the CXF service list at /ws/ -->
+    <jaxrs:server address="/health" id="healthServer">
         <jaxrs:serviceBeans>
             <bean class="ca.openosp.openo.app.ApplicationRestController" autowire="byName"/>
         </jaxrs:serviceBeans>
