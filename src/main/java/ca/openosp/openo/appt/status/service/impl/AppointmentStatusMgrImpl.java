@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import org.apache.commons.beanutils.BeanComparator;
 import ca.openosp.openo.appt.IconSet;
@@ -74,13 +76,12 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
             Map.entry("B", new StatusStyle("Billed", "#3ea4e1", "billed.gif")));
 
     private static List<AppointmentStatus> cachedStatuses = null;
-    // Set by AppointmentStatus on every save, from whichever thread saves it.
+    // Set by markCacheDirty on every status save, from whichever thread saves it.
     private static volatile boolean cacheIsDirty = false;
 
     /**
      * Every status, disabled ones too, in id order: the schedule still draws an appointment whose
-     * status was disabled, and moves it on to the next active one. Reloaded once after a status is
-     * saved.
+     * status was disabled, and moves it on to the next active one. Reloaded after a status is saved.
      *
      * @return List<AppointmentStatus> every status, by id
      */
@@ -88,24 +89,39 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
         if (cachedStatuses == null || cacheIsDirty) {
             // Cleared before the read, so a save made during it brings another reload.
             cacheIsDirty = false;
-            setCachedStatuses(appointStatusDao.findAll());
+            try {
+                setCachedStatuses(appointStatusDao.findAll());
+            } catch (RuntimeException e) {
+                // Still stale, so the next lookup tries again.
+                cacheIsDirty = true;
+                throw e;
+            }
         }
         return cachedStatuses;
+    }
+
+    /**
+     * Marks the cache stale after a status is saved: at once, and again when the saving transaction
+     * commits, since a lookup in between would reload the statuses as they were before the save.
+     *
+     * @since 2026-10-20
+     */
+    public static void markCacheDirty() {
+        cacheIsDirty = true;
+        if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    cacheIsDirty = true;
+                }
+            });
+        }
     }
 
     @SuppressWarnings("unchecked")
     public static synchronized void setCachedStatuses(List<AppointmentStatus> cachedStatuses) {
         Collections.sort(cachedStatuses, new BeanComparator("id"));
         AppointmentStatusMgrImpl.cachedStatuses = cachedStatuses;
-    }
-
-
-    public static boolean isCacheIsDirty() {
-        return cacheIsDirty;
-    }
-
-    public static void setCacheIsDirty(boolean cacheIsDirty) {
-        AppointmentStatusMgrImpl.cacheIsDirty = cacheIsDirty;
     }
 
     public List<AppointmentStatus> getAllStatus() {
