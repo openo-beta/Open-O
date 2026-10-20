@@ -27,8 +27,7 @@ package ca.openosp.openo.webserv.rest.conversion;
 import ca.openosp.openo.commn.model.Allergy;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.webserv.rest.to.model.AllergyTo1;
-
-import ca.openosp.openo.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class AllergyConverter extends AbstractConverter<Allergy, AllergyTo1> {
 
@@ -57,7 +56,7 @@ public class AllergyConverter extends AbstractConverter<Allergy, AllergyTo1> {
         t.setOnsetOfReaction(d.getOnsetOfReaction());
         t.setPosition(d.getPosition());
         t.setProviderNo(d.getProviderNo());
-        t.setReaction(StringUtils.isNullOrEmpty(d.getReaction()) ? "No reaction noted" : d.getReaction());
+        t.setReaction(StringUtils.trimToEmpty(d.getReaction()));
         t.setRegionalIdentifier(d.getRegionalIdentifier());
         t.setSeverityOfReaction(d.getSeverityOfReaction());
         t.setStartDate(d.getStartDate());
