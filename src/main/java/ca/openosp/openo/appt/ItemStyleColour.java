@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
  */
 public final class ItemStyleColour {
 
-    /** A colour as the settings pages save it: {@code #rrggbb}, or {@code #rrggbbaa} when see-through. */
-    public static final Pattern PATTERN = Pattern.compile("#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?");
+    /* A colour as the settings pages save it: #rrggbb, or #rrggbbaa when see-through. */
+    private static final Pattern PATTERN = Pattern.compile("#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?");
 
     /**
      * The schedule's appointment text colour, rgb(0,40,60): the icon colour on light or see-through
@@ -34,6 +34,19 @@ public final class ItemStyleColour {
     private static final double ICON_MIN_CONTRAST = 3.0;
 
     private ItemStyleColour() {
+    }
+
+    /**
+     * Whether a value is a colour as the settings pages save it: {@code #rrggbb}, or {@code #rrggbbaa}
+     * when see-through. Anything else, such as a value written into the database by hand, is
+     * refused by the settings pages and drawn as no colour.
+     *
+     * @param colour String the value, or null
+     * @return boolean true for {@code #rrggbb} or {@code #rrggbbaa}
+     * @since 2026-10-20
+     */
+    public static boolean isColour(String colour) {
+        return colour != null && PATTERN.matcher(colour).matches();
     }
 
     /**
@@ -68,7 +81,7 @@ public final class ItemStyleColour {
      * @return String {@link #DARK} or {@link #WHITE}
      */
     public static String iconColour(String colour) {
-        if (colour == null || !PATTERN.matcher(colour).matches()) {
+        if (!isColour(colour)) {
             return DARK;
         }
         // Rounded to whole percent, as the picker shows it, so its 50% (#..7f) counts as 50%.

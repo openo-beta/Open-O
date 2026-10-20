@@ -330,7 +330,7 @@ public class LookupListManager {
      * @since 2026-09-15
      */
     public boolean updateLookupListItemColour(LoggedInInfo loggedInInfo, int lookupListItemId, String colour) {
-        return updateLookupListItemStyle(loggedInInfo, lookupListItemId, colour, ItemStyleColour.PATTERN.asMatchPredicate(), LookupListItem::setColour);
+        return updateLookupListItemStyle(loggedInInfo, lookupListItemId, colour, ItemStyleColour::isColour, LookupListItem::setColour);
     }
 
     /**

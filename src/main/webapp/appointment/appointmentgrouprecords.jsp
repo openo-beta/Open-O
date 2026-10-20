@@ -206,11 +206,12 @@
                 }
 
                 if (request.getParameter("groupappt").equals("Group Update")) {
+                    Appointment original = null;
                     if (request.getParameter("appointment_no" + datano) != null) {
-                        Appointment appt = appointmentDao.find(Integer.parseInt(request.getParameter("appointment_no" + datano)));
-                        if (appt != null) {
-                            appointmentArchiveDao.archiveAppointment(appt);
-                            appointmentDao.remove(appt.getId());
+                        original = appointmentDao.find(Integer.parseInt(request.getParameter("appointment_no" + datano)));
+                        if (original != null) {
+                            appointmentArchiveDao.archiveAppointment(original);
+                            appointmentDao.remove(original.getId());
                             rowsAffected = 1;
 
                         }
@@ -245,6 +246,11 @@
                     a.setName(request.getParameter("keyword"));
                     a.setNotes(request.getParameter("notes"));
                     a.setReason(request.getParameter("reason"));
+                    if (original != null) {
+                        // The replaced appointment's location, so a past one staying there keeps its saved name, as an edit does.
+                        a.setLocation(original.getLocation());
+                        a.setLocationCode(original.getLocationCode());
+                    }
                     LocationList.applyPostedLocation(a, request);
                     a.setResources(request.getParameter("resources"));
                     a.setType(request.getParameter("type"));

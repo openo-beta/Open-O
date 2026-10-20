@@ -164,8 +164,8 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
     @Override
     public boolean updateColour(int id, String colour) {
         String value = StringUtils.trimToEmpty(colour);
-        if (!ItemStyleColour.PATTERN.matcher(value).matches()) {
-            throw new IllegalArgumentException("appointment status colour must match " + ItemStyleColour.PATTERN.pattern());
+        if (!ItemStyleColour.isColour(value)) {
+            throw new IllegalArgumentException("appointment status colour must be #rrggbb or #rrggbbaa");
         }
         return updateEditable(id, value, AppointmentStatus::setColor);
     }
