@@ -131,8 +131,8 @@
                     </tr>
                     <tr>
                         <td align="center"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgSeeChart"/><br>
-                            <%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("currentConcernsNo", ""))))%> &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgNo"/>&nbsp;&nbsp;&nbsp;
-                            <%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("currentConcernsYes", ""))))%>
+                            <%=checkMarks(props.getProperty("currentConcernsNo", ""))%> &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgNo"/>&nbsp;&nbsp;&nbsp;
+                            <%=checkMarks(props.getProperty("currentConcernsYes", ""))%>
                             &nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgyes"/></td>
                     </tr>
                 </table>
@@ -148,9 +148,9 @@
                         <td colspan="2"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgAbN"/></b></td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("headN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("headN", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("headAbN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("headAbN", ""))%>
                         </td>
                         <td align="left" nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgHeadNeck"/>:
                         </td>
@@ -158,9 +158,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("respN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("respN", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("respAbN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("respAbN", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgResp"/>:
                         </td>
@@ -168,9 +168,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("cardioN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("cardioN", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("cardioAbN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("cardioAbN", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgCardio"/>:
                         </td>
@@ -178,9 +178,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("giN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("giN", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("giAbN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("giAbN", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgGI"/>:
                         </td>
@@ -188,9 +188,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("guN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("guN", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("guAbN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("guAbN", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgGU"/>:
                         </td>
@@ -198,9 +198,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("skinN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("skinN", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("skinAbN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("skinAbN", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgSkin"/>:
                         </td>
@@ -208,9 +208,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("mskN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("mskN", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("mskAbN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("mskAbN", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.MSK"/>:
                         </td>
@@ -218,9 +218,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("endocrinN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("endocrinN", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("endocrinAbN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("endocrinAbN", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgEndocrin"/>:
                         </td>
@@ -228,9 +228,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top"><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("otherN", ""))))%>
+                        <td valign="top"><%=checkMarks(props.getProperty("otherN", ""))%>
                         </td>
-                        <td valign="top"><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("otherAbN", ""))))%>
+                        <td valign="top"><%=checkMarks(props.getProperty("otherAbN", ""))%>
                         </td>
                         <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgOther"/>:
                         </td>
@@ -247,10 +247,10 @@
                     <tr>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
-                        <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgGTPAL"/>&nbsp; <%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("noGtpalRevisions", ""))))%>
-                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgNo"/> <%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("yesGtpalRevisions", ""))))%>
+                        <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgGTPAL"/>&nbsp; <%=checkMarks(props.getProperty("noGtpalRevisions", ""))%>
+                            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgNo"/> <%=checkMarks(props.getProperty("yesGtpalRevisions", ""))%>
                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgyes"/><br>
-                            <%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("frontSheet", ""))))%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgFrontSheet"/></td>
+                            <%=checkMarks(props.getProperty("frontSheet", ""))%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgFrontSheet"/></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
@@ -261,9 +261,9 @@
                             /<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgMenopauseUnit"/></td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("papSmearsN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("papSmearsN", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("papSmearsAbN", ""))))%>
+                        <td><%=checkMarks(props.getProperty("papSmearsAbN", ""))%>
                         </td>
                         <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgPreviousPaoSmears"/>:
                             <%=Encode.forHtml(String.valueOf(props.getProperty("papSmears", "")))%>
@@ -283,29 +283,29 @@
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("drugs", ""))))%>
+                        <td><%=checkMarks(props.getProperty("drugs", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgDrugs"/></td>
                         <td>&nbsp;</td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("medSheet", ""))))%>
+                        <td align="right"><%=checkMarks(props.getProperty("medSheet", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgMedSheet"/></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("allergies", ""))))%>
+                        <td><%=checkMarks(props.getProperty("allergies", ""))%>
                         </td>
                         <td colspan="2" nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgAllergies"/></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("frontSheet1", ""))))%>
+                        <td align="right"><%=checkMarks(props.getProperty("frontSheet1", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgFrontSheet"/></td>
                     </tr>
                     <tr>
                         <td>&nbsp;</td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("familyHistory", ""))))%>
+                        <td><%=checkMarks(props.getProperty("familyHistory", ""))%>
                         </td>
                         <td colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgFamilyHist"/></td>
-                        <td align="right"><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("frontSheet2", ""))))%>
+                        <td align="right"><%=checkMarks(props.getProperty("frontSheet2", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgFrontSheet"/></td>
                     </tr>
@@ -327,9 +327,9 @@
                         <td>&nbsp;</td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("smokingNo", ""))))%>
+                        <td><%=checkMarks(props.getProperty("smokingNo", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("smokingYes", ""))))%>
+                        <td><%=checkMarks(props.getProperty("smokingYes", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgSmoking"/>:
                         </td>
@@ -337,9 +337,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("alcoholNo", ""))))%>
+                        <td><%=checkMarks(props.getProperty("alcoholNo", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("alcoholYes", ""))))%>
+                        <td><%=checkMarks(props.getProperty("alcoholYes", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgAlcohol"/>:
                         </td>
@@ -347,9 +347,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("otcNo", ""))))%>
+                        <td><%=checkMarks(props.getProperty("otcNo", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("otcYes", ""))))%>
+                        <td><%=checkMarks(props.getProperty("otcYes", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgIllicitDrugs"/>:
                         </td>
@@ -357,18 +357,18 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("exerciseNo", ""))))%>
+                        <td><%=checkMarks(props.getProperty("exerciseNo", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("exerciseYes", ""))))%>
+                        <td><%=checkMarks(props.getProperty("exerciseYes", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgExercise"/></td>
                         <td align="right"><%=Encode.forHtml(String.valueOf(props.getProperty("exercise", "")))%>
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("nutritionNo", ""))))%>
+                        <td><%=checkMarks(props.getProperty("nutritionNo", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("nutritionYes", ""))))%>
+                        <td><%=checkMarks(props.getProperty("nutritionYes", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgNutrition"/>:
                         </td>
@@ -376,9 +376,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("dentalNo", ""))))%>
+                        <td><%=checkMarks(props.getProperty("dentalNo", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("dentalYes", ""))))%>
+                        <td><%=checkMarks(props.getProperty("dentalYes", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgDentalHygiene"/>:
                         </td>
@@ -386,9 +386,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top"><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("relationshipNo", ""))))%>
+                        <td valign="top"><%=checkMarks(props.getProperty("relationshipNo", ""))%>
                         </td>
-                        <td valign="top"><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("relationshipYes", ""))))%>
+                        <td valign="top"><%=checkMarks(props.getProperty("relationshipYes", ""))%>
                         </td>
                         <td valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgRelationshipIssues"/>:
                         </td>
@@ -396,9 +396,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("sexualityNo", ""))))%>
+                        <td><%=checkMarks(props.getProperty("sexualityNo", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("sexualityYes", ""))))%>
+                        <td><%=checkMarks(props.getProperty("sexualityYes", ""))%>
                         </td>
                         <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgSexualityRisks"/>:
                         </td>
@@ -406,9 +406,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("occupationalNo", ""))))%>
+                        <td><%=checkMarks(props.getProperty("occupationalNo", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("occupationalYes", ""))))%>
+                        <td><%=checkMarks(props.getProperty("occupationalYes", ""))%>
                         </td>
                         <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgOccupationalRisks"/>:
                         </td>
@@ -416,9 +416,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("drivingNo", ""))))%>
+                        <td><%=checkMarks(props.getProperty("drivingNo", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("drivingYes", ""))))%>
+                        <td><%=checkMarks(props.getProperty("drivingYes", ""))%>
                         </td>
                         <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgDrivingSafety"/>:
                         </td>
@@ -426,9 +426,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("travelNo", ""))))%>
+                        <td><%=checkMarks(props.getProperty("travelNo", ""))%>
                         </td>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("travelYes", ""))))%>
+                        <td><%=checkMarks(props.getProperty("travelYes", ""))%>
                         </td>
                         <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgForeignTravel"/>:
                         </td>
@@ -436,9 +436,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top"><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("otherNo", ""))))%>
+                        <td valign="top"><%=checkMarks(props.getProperty("otherNo", ""))%>
                         </td>
-                        <td valign="top"><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("otherYes", ""))))%>
+                        <td valign="top"><%=checkMarks(props.getProperty("otherYes", ""))%>
                         </td>
                         <td nowrap="true" valign="top"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgOther"/>:
                         </td>
@@ -456,48 +456,48 @@
                         <td>&nbsp;</td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("mammogram", ""))))%>
+                        <td><%=checkMarks(props.getProperty("mammogram", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgMammogram"/></td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("breast", ""))))%>
+                        <td><%=checkMarks(props.getProperty("breast", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgBreastSelfTest"/></td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("pap", ""))))%>
+                        <td><%=checkMarks(props.getProperty("pap", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgPapSmear"/></td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("femaleImmunization", ""))))%>
+                        <td><%=checkMarks(props.getProperty("femaleImmunization", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgImmunization"/></td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("precontraceptive", ""))))%>
+                        <td><%=checkMarks(props.getProperty("precontraceptive", ""))%>
                         </td>
                         <td nowrap="true"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgprecontraceptive"/></td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("femaleCardiac", ""))))%>
+                        <td><%=checkMarks(props.getProperty("femaleCardiac", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgCardiacRisk"/></td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("osteoporosis", ""))))%>
+                        <td><%=checkMarks(props.getProperty("osteoporosis", ""))%>
                         </td>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formFemaleAnnualPrint.msgOsteoporosis"/></td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("femaleOther1c", ""))))%>
+                        <td><%=checkMarks(props.getProperty("femaleOther1c", ""))%>
                         </td>
                         <td><%=Encode.forHtml(String.valueOf(props.getProperty("femaleOther1", "")))%>
                         </td>
                     </tr>
                     <tr>
-                        <td><%=Encode.forHtml(String.valueOf(checkMarks(props.getProperty("femaleOther2c", ""))))%>
+                        <td><%=checkMarks(props.getProperty("femaleOther2c", ""))%>
                         </td>
                         <td><%=Encode.forHtml(String.valueOf(props.getProperty("femaleOther2", "")))%>
                         </td>
