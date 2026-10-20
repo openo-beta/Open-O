@@ -20,7 +20,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.transaction.support.TransactionSynchronizationUtils;
 
+import javax.persistence.PersistenceException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,12 +38,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for the status changes in {@link AppointmentStatusMgrImpl}: {@code updateDescription},
- * {@code updateColour}, {@code updateIcon} and {@code reset}.
+ * {@code updateColour}, {@code updateIcon} and {@code reset}, and for {@code getStatusChoices}, the
+ * edit screen's list, and the schedule's status cache.
  *
  * <p>The colour and icon end up in style and src attributes on the schedule, so the tests pin the
  * rules: a valid value is saved, an invalid one is rejected before the status is loaded, and a
@@ -271,6 +276,148 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
 
             assertThat(status.getDescription()).isEqualTo("Here");
             assertThat(status.getColor()).isEqualTo("#00ee00");
+        }
+    }
+
+    @Nested
+    @DisplayName("getStatusChoices")
+    class StatusChoices {
+
+        private final AppointmentStatus here = choice(3, "H", 1);
+        private final AppointmentStatus picked = choice(4, "P", 0);
+        private final AppointmentStatus emptyRoom = choice(5, "E", 1);
+
+        @BeforeEach
+        void allStatusesOutOfOrder() {
+            when(appointmentStatusDao.findAll()).thenReturn(List.of(emptyRoom, picked, here));
+        }
+
+        @Test
+        @DisplayName("should offer only the active statuses, by id, when the appointment's status is active")
+        void shouldOfferActiveStatuses_whenOwnStatusActive() {
+            assertThat(manager.getStatusChoices("H")).containsExactly(here, emptyRoom);
+        }
+
+        @Test
+        @DisplayName("should also offer the appointment's own status, in its place, when it was disabled")
+        void shouldOfferOwnStatus_whenOwnStatusDisabled() {
+            assertThat(manager.getStatusChoices("P")).containsExactly(here, picked, emptyRoom);
+        }
+
+        @Test
+        @DisplayName("should not offer a disabled status whose code differs only in case")
+        void shouldLeaveOutDisabledStatus_whenCodeDiffersInCase() {
+            assertThat(manager.getStatusChoices("p")).containsExactly(here, emptyRoom);
+        }
+
+        private AppointmentStatus choice(int id, String code, int active) {
+            AppointmentStatus choice = new AppointmentStatus();
+            choice.setId(id);
+            choice.setStatus(code);
+            choice.setActive(active);
+            return choice;
+        }
+    }
+
+    @Nested
+    @DisplayName("status cache")
+    class StatusCache {
+
+        private Object originalCache;
+        private Object originalCacheIsDirty;
+
+        @BeforeEach
+        void emptyCache() {
+            originalCache = ReflectionTestUtils.getField(AppointmentStatusMgrImpl.class, "cachedStatuses");
+            originalCacheIsDirty = ReflectionTestUtils.getField(AppointmentStatusMgrImpl.class, "cacheIsDirty");
+            ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cachedStatuses", null);
+            ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cacheIsDirty", false);
+        }
+
+        @AfterEach
+        void restoreCache() {
+            ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cachedStatuses", originalCache);
+            ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cacheIsDirty", originalCacheIsDirty);
+        }
+
+        @Test
+        @DisplayName("should load the statuses once, by id, and once more after a status is saved")
+        void shouldReloadOnce_whenStatusSaved() {
+            AppointmentStatus here = status(3, "H");
+            AppointmentStatus toDo = status(1, "t");
+            when(appointmentStatusDao.findAll()).thenReturn(new ArrayList<>(List.of(here, toDo)), new ArrayList<>(List.of(toDo)));
+
+            AppointmentStatusMgrImpl.getCachedStatuses();
+            assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).containsExactly(toDo, here);
+
+            here.on_jpa_update();
+            AppointmentStatusMgrImpl.getCachedStatuses();
+            assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).containsExactly(toDo);
+
+            verify(appointmentStatusDao, times(2)).findAll();
+        }
+
+        @Test
+        @DisplayName("should reload once more when the save commits, after a lookup made before the commit")
+        void shouldReloadAgain_whenSaveCommits() {
+            AppointmentStatus hereBeforeSave = status(3, "H");
+            hereBeforeSave.setActive(1);
+            AppointmentStatus hereDisabled = status(3, "H");
+            hereDisabled.setActive(0);
+            when(appointmentStatusDao.findAll()).thenReturn(new ArrayList<>(List.of(hereBeforeSave)), new ArrayList<>(List.of(hereDisabled)));
+            TransactionSynchronizationManager.initSynchronization();
+            try {
+                hereDisabled.on_jpa_update();
+                // A lookup before the commit still reads Here as active.
+                assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).extracting(AppointmentStatus::getActive).containsExactly(1);
+
+                TransactionSynchronizationUtils.triggerAfterCommit();
+
+                assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).extracting(AppointmentStatus::getActive).containsExactly(0);
+            } finally {
+                TransactionSynchronizationManager.clearSynchronization();
+            }
+        }
+
+        @Test
+        @DisplayName("should try the reload again on the next lookup when it fails")
+        void shouldRetryReload_whenReloadFails() {
+            AppointmentStatus here = status(3, "H");
+            AppointmentStatus toDo = status(1, "t");
+            when(appointmentStatusDao.findAll())
+                    .thenReturn(new ArrayList<>(List.of(here)))
+                    .thenThrow(new PersistenceException("database unavailable"))
+                    .thenReturn(new ArrayList<>(List.of(toDo)));
+            AppointmentStatusMgrImpl.getCachedStatuses();
+            here.on_jpa_update();
+
+            assertThatThrownBy(AppointmentStatusMgrImpl::getCachedStatuses).isInstanceOf(PersistenceException.class);
+
+            assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).containsExactly(toDo);
+        }
+
+        @Test
+        @DisplayName("should list the active statuses without touching the cache")
+        void shouldLeaveCache_whenActiveStatusesListed() {
+            AppointmentStatus here = status(3, "H");
+            AppointmentStatus toDo = status(1, "t");
+            when(appointmentStatusDao.findAll()).thenReturn(new ArrayList<>(List.of(here)), new ArrayList<>(List.of(toDo)));
+            AppointmentStatusMgrImpl.getCachedStatuses();
+            toDo.on_jpa_update();
+
+            manager.getAllActiveStatus();
+
+            verify(appointmentStatusDao).findActive();
+            verify(appointmentStatusDao, times(1)).findAll();
+            // The save is still pending, so the schedule's next lookup reloads.
+            assertThat(AppointmentStatusMgrImpl.getCachedStatuses()).containsExactly(toDo);
+        }
+
+        private AppointmentStatus status(int id, String code) {
+            AppointmentStatus status = new AppointmentStatus();
+            status.setId(id);
+            status.setStatus(code);
+            return status;
         }
     }
 

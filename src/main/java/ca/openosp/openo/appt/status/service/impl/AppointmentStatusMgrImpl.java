@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import ca.openosp.openo.appt.IconSet;
 import ca.openosp.openo.appt.ItemStyleColour;
@@ -72,29 +74,52 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
             Map.entry("C", new StatusStyle("Cancelled", "#999999", "cancel.gif")),
             Map.entry("B", new StatusStyle("Billed", "#3ea4e1", "billed.gif")));
 
-    private static List<AppointmentStatus> cachedActiveStatuses = null;
-    private static boolean cacheIsDirty = false;
+    private static List<AppointmentStatus> cachedStatuses = null;
+    // Set by markCacheDirty on every status save, from whichever thread saves it.
+    private static volatile boolean cacheIsDirty = false;
 
-    public static List<AppointmentStatus> getCachedActiveStatuses() {
-        if (cachedActiveStatuses == null || cacheIsDirty) {
-            cachedActiveStatuses = appointStatusDao.findActive();
+    /**
+     * Every status, disabled ones too, in id order: the schedule still draws an appointment whose
+     * status was disabled, and moves it on to the next active one. Reloaded after a status is saved.
+     *
+     * @return List<AppointmentStatus> every status, by id
+     */
+    public static synchronized List<AppointmentStatus> getCachedStatuses() {
+        if (cachedStatuses == null || cacheIsDirty) {
+            // Cleared before the read, so a save made during it brings another reload.
+            cacheIsDirty = false;
+            try {
+                setCachedStatuses(appointStatusDao.findAll());
+            } catch (RuntimeException e) {
+                // Still stale, so the next lookup tries again.
+                cacheIsDirty = true;
+                throw e;
+            }
         }
-        return cachedActiveStatuses;
+        return cachedStatuses;
     }
 
-    @SuppressWarnings("unchecked")
-    public static synchronized void setCachedActiveStatuses(List<AppointmentStatus> cachedActiveStatuses) {
-        Collections.sort(cachedActiveStatuses, Comparator.comparing(AppointmentStatus::getId));
-        AppointmentStatusMgrImpl.cachedActiveStatuses = cachedActiveStatuses;
+    /**
+     * Marks the cache stale after a status is saved: at once, and again when the saving transaction
+     * commits, since a lookup in between would reload the statuses as they were before the save.
+     *
+     * @since 2026-10-20
+     */
+    public static void markCacheDirty() {
+        cacheIsDirty = true;
+        if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    cacheIsDirty = true;
+                }
+            });
+        }
     }
 
-
-    public static boolean isCacheIsDirty() {
-        return cacheIsDirty;
-    }
-
-    public static void setCacheIsDirty(boolean cacheIsDirty) {
-        AppointmentStatusMgrImpl.cacheIsDirty = cacheIsDirty;
+    public static synchronized void setCachedStatuses(List<AppointmentStatus> cachedStatuses) {
+        Collections.sort(cachedStatuses, Comparator.comparing(AppointmentStatus::getId));
+        AppointmentStatusMgrImpl.cachedStatuses = cachedStatuses;
     }
 
     public List<AppointmentStatus> getAllStatus() {
@@ -102,11 +127,15 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
     }
 
     public List<AppointmentStatus> getAllActiveStatus() {
-        if (cacheIsDirty) {
-            setCachedActiveStatuses(appointStatusDao.findActive());
-            cacheIsDirty = false;
-        }
         return appointStatusDao.findActive();
+    }
+
+    @Override
+    public List<AppointmentStatus> getStatusChoices(String statusCode) {
+        return appointStatusDao.findAll().stream()
+                .filter(status -> status.getActive() == 1 || status.getStatus().equals(statusCode))
+                .sorted(Comparator.comparing(AppointmentStatus::getId))
+                .toList();
     }
 
     public AppointmentStatus getStatus(int ID) {
@@ -160,11 +189,6 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
         setter.accept(status, value);
         appointStatusDao.merge(status);
         return true;
-    }
-
-    @Override
-    public boolean isInUse(String statusCode) {
-        return appointStatusDao.isInUse(statusCode);
     }
 
     @Override

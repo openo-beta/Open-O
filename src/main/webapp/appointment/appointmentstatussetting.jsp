@@ -23,14 +23,13 @@
     Lists every appointment status, greying inactive ones. For a user who may change them, an
     editable status gets pencil buttons that open the item style editor
     (js/appointment/itemStyleEditor.js) for its description, colour and icon, and an Enable or
-    Disable button; the server refuses Disable for a status that appointments use. A locked status
-    (editable=0) is read-only. Reset, after a confirm, puts every editable status back to its
+    Disable button. Appointments that have a disabled status keep it. A locked status (editable=0)
+    is read-only. Reset, after a confirm, puts every editable status back to its
     seeded description, colour and icon. Every change posts back to AppointmentStatus2Action.
 
     Request attributes, set by AppointmentStatus2Action (appointment/apptStatusSetting.do):
       allStatus             List<AppointmentStatus> every status
       descriptionMaxLength  Integer the description column's width
-      useStatus             String code of an inactive status that appointments use, if any
       saveFailed            Boolean true when the last change was rejected
       saveFailedKey         String the message for a change refused with a reason, if any
       saveFailedParam       String that message's parameter, if it takes one
@@ -90,13 +89,6 @@
     <div class="alert alert-danger" role="alert">
         <fmt:message key="${empty saveFailedKey ? 'admin.appt.settings.msg.saveFailed' : saveFailedKey}">
             <c:if test="${not empty saveFailedParam}"><fmt:param value="${e:forHtml(saveFailedParam)}"/></c:if>
-        </fmt:message>
-    </div>
-</c:if>
-<c:if test="${not empty useStatus}">
-    <div class="alert alert-warning" role="alert">
-        <fmt:message key="admin.appt.status.mgr.msg.usedBefore">
-            <fmt:param value="${e:forHtml(useStatus)}"/>
         </fmt:message>
     </div>
 </c:if>

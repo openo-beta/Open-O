@@ -63,19 +63,4 @@ public class AppointmentStatusDaoImpl extends AbstractDaoImpl<AppointmentStatus>
     public void mergeAll(List<AppointmentStatus> statuses) {
         statuses.forEach(this::merge);
     }
-
-    /*
-     * ascii() compares the first letter by its character code, so h and H stay apart whatever the
-     * column's collation, and the S or V a signed or verified appointment adds is ignored.
-     */
-    @Override
-    public boolean isInUse(String statusCode) {
-        if (statusCode == null || statusCode.isEmpty()) {
-            return false;
-        }
-        Query q = entityManager.createNativeQuery("select 1 from appointment a where ascii(a.status) = ascii(?1)");
-        q.setParameter(1, statusCode);
-        q.setMaxResults(1);
-        return !q.getResultList().isEmpty();
-    }
 }
