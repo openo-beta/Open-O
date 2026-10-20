@@ -111,10 +111,10 @@ public final class ApptStatusData {
     }
 
     public String getNextStatus() {
-        if ("h".equals(apptStatus)) {
-            return getConfirmedNextStatus();
-        } else if (strEditable != null && strEditable.equalsIgnoreCase("yes"))
+        if (strEditable != null && strEditable.equalsIgnoreCase("yes"))
             return getStr("nextstatus");
+        else if ("h".equals(apptStatus))
+            return "H";
         else
             return getStr(aStatus, aNextStatus);
     }
@@ -291,12 +291,12 @@ public final class ApptStatusData {
             // get the short letter colour.  It comes back as an int.
             if (kind.equals("short_letter_colour")) {
                 if (strStatus.equals(s.getStatus())) {
-                    Integer colour = Integer.valueOf(s.getShortLetterColour());
-
                     // return null if it's null
-                    if (colour == null) {
+                    if (s.getShortLetterColour() == null) {
                         return null;
                     }
+
+                    Integer colour = Integer.valueOf(s.getShortLetterColour());
 
                     // convert it to a hex number and add a hex code in front
                     return "#" + Integer.toHexString(colour).toUpperCase();
@@ -318,16 +318,25 @@ public final class ApptStatusData {
 
     /*
      * The status a click on the schedule moves an appointment on to: the first active status after
-     * its own, which may be disabled. Cancelled starts again at the first active status. Billed and
-     * the last active status go no further, giving blank. A code with no status gives null.
+     * its own, which may be disabled. Cancelled starts again at the first active status, and
+     * Confirmed moves on to Here wherever it sits in the table, or past Here while Here is disabled.
+     * Billed and the last active status go no further, giving blank. A code with no status gives null.
      */
     private static String getNextActiveStatus(List<AppointmentStatus> statuses, String status) {
         if (status.equals("B")) {
             return "";
         }
-        int from = 0;
-        if (!status.equals("C")) {
-            int own = statuses.stream().map(AppointmentStatus::getStatus).toList().indexOf(status);
+        List<String> codes = statuses.stream().map(AppointmentStatus::getStatus).toList();
+        int from;
+        if (status.equals("C")) {
+            from = 0;
+        } else if (status.equals("h")) {
+            from = codes.indexOf("H");
+            if (from == -1) {
+                return null;
+            }
+        } else {
+            int own = codes.indexOf(status);
             if (own == -1) {
                 return null;
             }
@@ -339,18 +348,5 @@ public final class ApptStatusData {
                 .map(AppointmentStatus::getStatus)
                 .findFirst()
                 .orElse("");
-    }
-
-    /*
-     * Confirmed moves on to Here, whatever their order in the table. With editable statuses and Here
-     * disabled, it moves on to where a click on Here would.
-     */
-    private String getConfirmedNextStatus() {
-        if (strEditable == null || !strEditable.equalsIgnoreCase("yes")) {
-            return "H";
-        }
-        List<AppointmentStatus> apptStatuses = AppointmentStatusMgrImpl.getCachedStatuses();
-        boolean hereActive = apptStatuses.stream().anyMatch(s -> s.getStatus().equals("H") && s.getActive() == 1);
-        return hereActive ? "H" : getNextActiveStatus(apptStatuses, "H");
     }
 }

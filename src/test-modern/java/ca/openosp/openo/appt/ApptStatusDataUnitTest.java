@@ -115,20 +115,29 @@ public class ApptStatusDataUnitTest extends OpenOUnitTestBase {
         assertThat(apptStatusData("Z").getNextStatus()).isNull();
     }
 
-    @Test
-    @DisplayName("should move Confirmed on to Here")
-    void shouldMoveConfirmedToHere_whenHereActive() {
-        assertThat(apptStatusData("h").getNextStatus()).isEqualTo("H");
+    @ParameterizedTest
+    @CsvSource({"h, H", "hS, HS", "hV, HV"})
+    @DisplayName("should move Confirmed on to Here, signed or verified too")
+    void shouldMoveConfirmedToHere_whenHereActive(String apptStatus, String nextStatus) {
+        assertThat(apptStatusData(apptStatus).getNextStatus()).isEqualTo(nextStatus);
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource({"h, G", "hS, GS", "hV, GV"})
     @DisplayName("should move Confirmed on to where a click on Here would, when Here is disabled")
-    void shouldMoveConfirmedPastHere_whenHereDisabled() {
+    void shouldMoveConfirmedPastHere_whenHereDisabled(String apptStatus, String nextStatus) {
         AppointmentStatusMgrImpl.getCachedStatuses().stream()
                 .filter(status -> status.getStatus().equals("H"))
                 .forEach(here -> here.setActive(0));
 
-        assertThat(apptStatusData("h").getNextStatus()).isEqualTo("G");
+        assertThat(apptStatusData(apptStatus).getNextStatus()).isEqualTo(nextStatus);
+    }
+
+    @Test
+    @DisplayName("should give no short-letter colour for a disabled status without one, so the schedule uses its own")
+    void shouldGiveNoShortLetterColour_whenStatusHasNone() {
+        // Picked is disabled and has no short-letter colour, like every status CDS import adds.
+        assertThat(apptStatusData("P").getShortLetterColour()).isNull();
     }
 
     /* ApptStatusData reads ENABLE_EDIT_APPT_STATUS when it is made; "yes" draws the statuses as edited. */
