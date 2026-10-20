@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
  * Unit tests for how {@link ApptStatusData} draws an appointment's status on the schedule, with
  * editable statuses. A signed or verified image status gets the image's S or V copy, while a glyph
  * status keeps its glyph and reports its sign-off separately. A disabled status keeps its look, and
- * clicking the icon moves the appointment on to the next active status.
+ * clicking the icon moves the appointment on to the next active status, or from Confirmed to Here.
  *
  * @since 2026-10-07
  */
@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
 public class ApptStatusDataUnitTest extends OpenOUnitTestBase {
 
     private List<AppointmentStatus> originalCache;
-    private boolean originalCacheIsDirty;
+    private Object originalCacheIsDirty;
 
     @BeforeEach
     @SuppressWarnings("unchecked")
@@ -45,20 +45,20 @@ public class ApptStatusDataUnitTest extends OpenOUnitTestBase {
         // The manager fills its DAO on class load, so a mock is registered before the class is touched.
         registerMock(AppointmentStatusDao.class, mock(AppointmentStatusDao.class));
         originalCache = (List<AppointmentStatus>) ReflectionTestUtils.getField(AppointmentStatusMgrImpl.class, "cachedStatuses");
-        originalCacheIsDirty = AppointmentStatusMgrImpl.isCacheIsDirty();
+        originalCacheIsDirty = ReflectionTestUtils.getField(AppointmentStatusMgrImpl.class, "cacheIsDirty");
         AppointmentStatus picked = status(3, "P", "picked.gif");
         picked.setDescription("Picked");
         picked.setColor("#FFBBFF");
         picked.setActive(0);
         AppointmentStatusMgrImpl.setCachedStatuses(new ArrayList<>(List.of(
                 status(4, "E", "empty.gif"), picked, status(2, "G", "glyphicon-home"), status(1, "H", "here.gif"))));
-        AppointmentStatusMgrImpl.setCacheIsDirty(false);
+        ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cacheIsDirty", false);
     }
 
     @AfterEach
     void restoreCache() {
         ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cachedStatuses", originalCache);
-        AppointmentStatusMgrImpl.setCacheIsDirty(originalCacheIsDirty);
+        ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cacheIsDirty", originalCacheIsDirty);
     }
 
     @ParameterizedTest
@@ -113,6 +113,22 @@ public class ApptStatusDataUnitTest extends OpenOUnitTestBase {
     @DisplayName("should give no next status for a code with no status")
     void shouldGiveNoNextStatus_whenCodeHasNoStatus() {
         assertThat(apptStatusData("Z").getNextStatus()).isNull();
+    }
+
+    @Test
+    @DisplayName("should move Confirmed on to Here")
+    void shouldMoveConfirmedToHere_whenHereActive() {
+        assertThat(apptStatusData("h").getNextStatus()).isEqualTo("H");
+    }
+
+    @Test
+    @DisplayName("should move Confirmed on to where a click on Here would, when Here is disabled")
+    void shouldMoveConfirmedPastHere_whenHereDisabled() {
+        AppointmentStatusMgrImpl.getCachedStatuses().stream()
+                .filter(status -> status.getStatus().equals("H"))
+                .forEach(here -> here.setActive(0));
+
+        assertThat(apptStatusData("h").getNextStatus()).isEqualTo("G");
     }
 
     /* ApptStatusData reads ENABLE_EDIT_APPT_STATUS when it is made; "yes" draws the statuses as edited. */

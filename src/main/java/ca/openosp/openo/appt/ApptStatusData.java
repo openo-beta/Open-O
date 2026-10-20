@@ -112,7 +112,7 @@ public final class ApptStatusData {
 
     public String getNextStatus() {
         if ("h".equals(apptStatus)) {
-            return "H";
+            return getConfirmedNextStatus();
         } else if (strEditable != null && strEditable.equalsIgnoreCase("yes"))
             return getStr("nextstatus");
         else
@@ -339,5 +339,18 @@ public final class ApptStatusData {
                 .map(AppointmentStatus::getStatus)
                 .findFirst()
                 .orElse("");
+    }
+
+    /*
+     * Confirmed moves on to Here, whatever their order in the table. With editable statuses and Here
+     * disabled, it moves on to where a click on Here would.
+     */
+    private String getConfirmedNextStatus() {
+        if (strEditable == null || !strEditable.equalsIgnoreCase("yes")) {
+            return "H";
+        }
+        List<AppointmentStatus> apptStatuses = AppointmentStatusMgrImpl.getCachedStatuses();
+        boolean hereActive = apptStatuses.stream().anyMatch(s -> s.getStatus().equals("H") && s.getActive() == 1);
+        return hereActive ? "H" : getNextActiveStatus(apptStatuses, "H");
     }
 }
