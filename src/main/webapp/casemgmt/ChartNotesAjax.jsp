@@ -440,7 +440,7 @@ EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManage
                     } else if (fulltxt) {
             %>
             <div class="note-control" title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.MinDisplay.title"/>" id='quitImg<%=Encode.forHtmlAttribute(String.valueOf(globalNoteId))%>'
-                 name="collapseViewTrigger" onclick="minView(event)"><%=ICON_COLLAPSE%></div>
+                 name="collapseViewTrigger" onclick="minNonEditableNoteView(<%=Encode.forJavaScript(String.valueOf(globalNoteId))%>)"><%=ICON_COLLAPSE%></div>
             <%
             } else {
             %>
