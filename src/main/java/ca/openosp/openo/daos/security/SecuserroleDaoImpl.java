@@ -164,13 +164,13 @@ public class SecuserroleDaoImpl extends HibernateDaoSupport implements Secuserro
         Session session = currentSession();
         ;
         try {
-            String queryString = "update Secuserrole as model set model.activeyn ='" + instance.getActiveyn()
-                    + "' , lastUpdateDate=now() "
-                    + " where model.providerNo ='" + instance.getProviderNo() + "'"
-                    + " and model.roleName ='" + instance.getRoleName() + "'"
-                    + " and model.orgcd ='" + instance.getOrgcd() + "'";
+            String queryString = "update Secuserrole as model set model.activeyn = :activeyn, lastUpdateDate=now() where model.providerNo = :providerNo and model.roleName = :roleName and model.orgcd = :orgcd";
 
             Query queryObject = session.createQuery(queryString);
+            queryObject.setParameter("activeyn", instance.getActiveyn());
+            queryObject.setParameter("providerNo", instance.getProviderNo());
+            queryObject.setParameter("roleName", instance.getRoleName());
+            queryObject.setParameter("orgcd", instance.getOrgcd());
 
             return queryObject.executeUpdate();
 
@@ -266,18 +266,16 @@ public class SecuserroleDaoImpl extends HibernateDaoSupport implements Secuserro
          *
          */
         logger.debug("Find staff instance .");
+        Session session = currentSession();
         try {
-
-            String queryString = "select a from Secuserrole a, LstOrgcd b, SecProvider p"
-                    + " where a.providerNo=p.providerNo and b.code ='" + orgcd + "'";
+            String queryString = "select a from Secuserrole a, LstOrgcd b, SecProvider p where a.providerNo=p.providerNo and b.code = :orgcd";
             if (activeOnly)
                 queryString += " and p.status='1'";
+            queryString += " and b.codecsv like '%' || a.orgcd || ',%' and not (a.orgcd like 'R%' or a.orgcd like 'O%')";
 
-            queryString = queryString
-                    + " and b.codecsv like '%' || a.orgcd || ',%'"
-                    + " and not (a.orgcd like 'R%' or a.orgcd like 'O%')";
-
-            return this.getHibernateTemplate().find(queryString);
+            Query query = session.createQuery(queryString);
+            query.setParameter("orgcd", orgcd);
+            return query.list();
 
         } catch (RuntimeException re) {
             logger.error("Find staff failed", re);
@@ -290,31 +288,26 @@ public class SecuserroleDaoImpl extends HibernateDaoSupport implements Secuserro
     public List searchByCriteria(StaffForm staffForm) {
 
         logger.debug("Search staff instance .");
+        Session session = currentSession();
         try {
-
-            String AND = " and ";
-            // String OR = " or ";
-
-            String orgcd = staffForm.getOrgcd();
-
-            String queryString = "select a from Secuserrole a, LstOrgcd b"
-                    + " where b.code ='" + orgcd + "'"
-                    + " and b.codecsv like '%' || a.orgcd || ',%'"
-                    + " and not (a.orgcd like 'R%' or a.orgcd like 'O%')";
+            String queryString = "select a from Secuserrole a, LstOrgcd b where b.code = :orgcd and b.codecsv like '%' || a.orgcd || ',%' and not (a.orgcd like 'R%' or a.orgcd like 'O%')";
 
             String fname = staffForm.getFirstName();
             String lname = staffForm.getLastName();
 
-            if (fname != null && fname.length() > 0) {
-                fname = fname.toLowerCase();
-                queryString = queryString + AND + "lower(a.providerFName) like '%" + fname + "%'";
-            }
-            if (lname != null && lname.length() > 0) {
-                lname = lname.toLowerCase();
-                queryString = queryString + AND + "lower(a.providerLName) like '%" + lname + "%'";
-            }
+            if (fname != null && fname.length() > 0)
+                queryString += " and lower(a.providerFName) like :fname";
+            if (lname != null && lname.length() > 0)
+                queryString += " and lower(a.providerLName) like :lname";
 
-            return this.getHibernateTemplate().find(queryString);
+            Query query = session.createQuery(queryString);
+            query.setParameter("orgcd", staffForm.getOrgcd());
+            if (fname != null && fname.length() > 0)
+                query.setParameter("fname", "%" + fname.toLowerCase() + "%");
+            if (lname != null && lname.length() > 0)
+                query.setParameter("lname", "%" + lname.toLowerCase() + "%");
+
+            return query.list();
 
         } catch (RuntimeException re) {
             logger.error("Search staff failed", re);

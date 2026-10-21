@@ -38,6 +38,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@ page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
     ClinicLocationDao clinicLocationDao = (ClinicLocationDao) SpringUtils.getBean(ClinicLocationDao.class);
@@ -177,34 +178,34 @@
     </tr>
     <tr>
         <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Patient Name: <%=DemoName%>
+                                 size="2">Patient Name: <%=Encode.forHtml(String.valueOf(DemoName))%>
         </font></b></td>
         <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Health# : <%=hin%>
+                                 size="2">Health# : <%=Encode.forHtml(String.valueOf(hin))%>
         </font></b></td>
     </tr>
     <tr>
         <td><font size="2" face="Arial, Helvetica, sans-serif"><b>Sex:
-            <%=DemoSex%>
+            <%=Encode.forHtml(String.valueOf(DemoSex))%>
         </b></font></td>
         <td><font size="2"><b><font
-                face="Arial, Helvetica, sans-serif">D.O.B. : <%=DemoDOB%>
+                face="Arial, Helvetica, sans-serif">D.O.B. : <%=Encode.forHtml(String.valueOf(DemoDOB))%>
         </font></b></font></td>
     </tr>
     <tr>
         <td><b><font size="2" face="Arial, Helvetica, sans-serif">Address:
-            <%=DemoAddress%>
+            <%=Encode.forHtml(String.valueOf(DemoAddress))%>
         </font></b></td>
         <td><b><font size="2" face="Arial, Helvetica, sans-serif">City:
-            <%=DemoCity%>
+            <%=Encode.forHtml(String.valueOf(DemoCity))%>
         </font></b></td>
     </tr>
     <tr>
         <td><b><font size="2" face="Arial, Helvetica, sans-serif">Province:
-            <%=DemoProvince%>
+            <%=Encode.forHtml(String.valueOf(DemoProvince))%>
         </font></b></td>
         <td><b><font size="2" face="Arial, Helvetica, sans-serif">Postal
-            Code: <%=DemoPostal%>
+            Code: <%=Encode.forHtml(String.valueOf(DemoPostal))%>
         </font></b></td>
     </tr>
 </table>
@@ -216,42 +217,42 @@
     </tr>
     <tr>
         <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Billing Type: <%=BillType%>
+                                 size="2">Billing Type: <%=Encode.forHtml(String.valueOf(BillType))%>
         </font></b></td>
         <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Billing Date: <%=BillDate%>
+                                 size="2">Billing Date: <%=Encode.forHtml(String.valueOf(BillDate))%>
         </font></b></td>
     </tr>
     <tr>
         <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Visit Type: <%=visittype%>
+                                 size="2">Visit Type: <%=Encode.forHtml(String.valueOf(visittype))%>
         </font></b></td>
         <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Visit Date: <%=visitdate%>
+                                 size="2">Visit Date: <%=Encode.forHtml(String.valueOf(visitdate))%>
         </font></b></td>
     </tr>
     <tr>
         <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Visit Location: <%=BillLocation%>
+                                 size="2">Visit Location: <%=Encode.forHtml(String.valueOf(BillLocation))%>
         </font></b></td>
         <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Billing Physician#: <%=proFirst%> <%=proLast%>
+                                 size="2">Billing Physician#: <%=Encode.forHtml(String.valueOf(proFirst))%> <%=Encode.forHtml(String.valueOf(proLast))%>
         </font></b></td>
     </tr>
     <tr>
         <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Appointment Physician: <%=apptFirst%> <%=apptLast%>
+                                 size="2">Appointment Physician: <%=Encode.forHtml(String.valueOf(apptFirst))%> <%=Encode.forHtml(String.valueOf(apptLast))%>
         </font></b></td>
         <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Secordary Physician: <%=asstFirst%> <%=asstLast%>
+                                 size="2">Secordary Physician: <%=Encode.forHtml(String.valueOf(asstFirst))%> <%=Encode.forHtml(String.valueOf(asstLast))%>
         </font></b></td>
     </tr>
     <tr>
         <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Creator: <%=crFirst%> <%=crLast%>
+                                 size="2">Creator: <%=Encode.forHtml(String.valueOf(crFirst))%> <%=Encode.forHtml(String.valueOf(crLast))%>
         </font></b></td>
         <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Update Date: <%=UpdateDate%>
+                                 size="2">Update Date: <%=Encode.forHtml(String.valueOf(UpdateDate))%>
         </font></b></td>
     </tr>
 
@@ -291,20 +292,20 @@
 
     <tr>
         <td width="22%"><font face="Arial, Helvetica, sans-serif"
-                              size="2"><%=serviceCode%>
+                              size="2"><%=Encode.forHtml(String.valueOf(serviceCode))%>
         </font></td>
 
         <td width="58%"><font face="Arial, Helvetica, sans-serif"
-                              size="2"><%=serviceDesc%>
+                              size="2"><%=Encode.forHtml(String.valueOf(serviceDesc))%>
         </font></td>
         <td width="6%">
             <div align="right"><font size="2"
-                                     face="Arial, Helvetica, sans-serif"><%=billUnit%>
+                                     face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(billUnit))%>
             </font></div>
         </td>
         <td width="14%">
             <div align="right"><font face="Arial, Helvetica, sans-serif"
-                                     size="2"><%=billAmount.substring(0, billAmount.length() - 2) + "." + billAmount.substring(billAmount.length() - 2)%>
+                                     size="2"><%=Encode.forHtml(String.valueOf(billAmount.substring(0, billAmount.length() - 2) + "." + billAmount.substring(billAmount.length() - 2)))%>
             </font></div>
         </td>
     </tr>
@@ -326,11 +327,11 @@
     </tr>
     <tr>
         <td width="22%"><font face="Arial, Helvetica, sans-serif"
-                              size="2"><%=diagCode%>
+                              size="2"><%=Encode.forHtml(String.valueOf(diagCode))%>
         </font></td>
         <td colspan="3">
             <div align="left"><font face="Arial, Helvetica, sans-serif"
-                                    size="2"><%=diagDesc%>
+                                    size="2"><%=Encode.forHtml(String.valueOf(diagDesc))%>
             </font></div>
         </td>
 
@@ -343,7 +344,7 @@
         </td>
         <td width="14%">
             <div align="right"><font face="Arial, Helvetica, sans-serif"
-                                     size="2"><%=BillTotal%>
+                                     size="2"><%=Encode.forHtml(String.valueOf(BillTotal))%>
             </font></div>
         </td>
     </tr>

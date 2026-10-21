@@ -45,6 +45,7 @@
 
 
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
     <head>
@@ -213,15 +214,15 @@
     <table class="table table-bordered table-striped table-hover table-condensed">
         <tr>
             <td>Temporary Credential Request:</td>
-            <td><%=here%>/ws/oauth/initiate</td>
+            <td><%=Encode.forHtml(String.valueOf(here))%>/ws/oauth/initiate</td>
         </tr>
         <tr>
             <td>Resource Owner Authorization URI:</td>
-            <td><%=here%>/ws/oauth/authorize</td>
+            <td><%=Encode.forHtml(String.valueOf(here))%>/ws/oauth/authorize</td>
         </tr>
         <tr>
             <td>Token Request URI:</td>
-            <td><%=here%>/ws/oauth/token</td>
+            <td><%=Encode.forHtml(String.valueOf(here))%>/ws/oauth/token</td>
         </tr>
     </table>
 

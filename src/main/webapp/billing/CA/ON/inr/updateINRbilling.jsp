@@ -25,6 +25,7 @@
 <%@page import="ca.openosp.openo.billing.CA.dao.BillingInrDao" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
 %>
@@ -143,9 +144,9 @@
                                                   color="#000000" size="1">Demographic Name </font></td>
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
-                                    type="hidden" name="demono" value="<%=demono%> " size="20">
-                                <input type="hidden" name="billinginr_no" value="<%=billinginr_no%>">
-                                <input type="text" name="demo_name" value="<%=demo_name%> "
+                                    type="hidden" name="demono" value="<%=Encode.forHtmlAttribute(String.valueOf(demono))%> " size="20">
+                                <input type="hidden" name="billinginr_no" value="<%=Encode.forHtmlAttribute(String.valueOf(billinginr_no))%>">
+                                <input type="text" name="demo_name" value="<%=Encode.forHtmlAttribute(String.valueOf(demo_name))%> "
                                        size="20" readonly> </font></td>
                             <td rowspan="9" width="21%" valign="middle">
                                 <p><br>
@@ -156,13 +157,13 @@
                             <td width="29%"><font size="1"
                                                   face="Arial, Helvetica, sans-serif">Demographic HIN</font></td>
                             <td width="50%"><input type="text" name="demo_hin"
-                                                   value="<%=demo_hin%> " size="20" readonly></td>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(demo_hin))%> " size="20" readonly></td>
                         </tr>
                         <tr>
                             <td width="29%"><font size="1"
                                                   face="Arial, Helvetica, sans-serif">Demographic DOB</font></td>
                             <td width="50%"><input type="text" name="demo_dob"
-                                                   value="<%=demo_dob%> " size="20" readonly></td>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(demo_dob))%> " size="20" readonly></td>
                         </tr>
                         <tr>
                             <td width="29%"><font face="Arial, Helvetica, sans-serif"
@@ -170,14 +171,14 @@
                             <td width="50%"><font
                                     face="Verdana, Arial, Helvetica, sans-serif" size="1"> <input
                                     type="text" name="service_code" size="10"
-                                    value="<%=request.getParameter("servicecode")%>"> <input
+                                    value="<%=Encode.forHtmlAttribute(request.getParameter("servicecode"))%>"> <input
                                     type="hidden" name="service_unit" value="1"> </font></td>
                         </tr>
                         <tr>
                             <td width="29%"><font size="1"
                                                   face="Arial, Helvetica, sans-serif">Diagnostic Code</font></td>
                             <td width="50%"><input type="text" name="diag_code" size="20"
-                                                   value="<%=request.getParameter("dxcode")%>"></td>
+                                                   value="<%=Encode.forHtmlAttribute(request.getParameter("dxcode"))%>"></td>
                         </tr>
                         <tr>
                             <td width="29%"><font

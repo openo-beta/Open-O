@@ -45,6 +45,7 @@
 
 <%@ page import="ca.openosp.openo.report.oscarMeasurements.pageUtil.*" %>
 <%@ page import="java.util.*, java.sql.*, java.text.*, java.net.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     GregorianCalendar now = new GregorianCalendar();
     int curYear = now.get(Calendar.YEAR);
@@ -75,7 +76,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>

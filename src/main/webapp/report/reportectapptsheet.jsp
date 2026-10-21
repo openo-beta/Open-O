@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -99,13 +100,13 @@
        cellpadding="2">
     <tr bgcolor="#CCCCFF" align="center">
         <TH width="15%"><b><a
-                href="reportectapptsheet.jsp?demographic_no=<%=demographic_no%>&orderby=appointment_date">Appt
+                href="reportectapptsheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&orderby=appointment_date">Appt
             Date</a></b></TH>
         <TH width="10%"><b><a
-                href="reportectapptsheet.jsp?demographic_no=<%=demographic_no%>&orderby=start_time">Start
+                href="reportectapptsheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&orderby=start_time">Start
             Time</a> </b></TH>
         <TH width="10%"><b><a
-                href="reportectapptsheet.jsp?demographic_no=<%=demographic_no%>&orderby=end_time">End
+                href="reportectapptsheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&orderby=end_time">End
             Time</a> </b></TH>
         <TH width="65%"><b>Reason</b></TH>
     </tr>
@@ -126,12 +127,12 @@
             nItems++;
     %>
     <tr bgcolor="<%=bodd?"#EEEEFF":"white"%>">
-        <td align="center"><%=rsdemo.getString("appointment_date")%></a></td>
-        <td align="center"><%=rsdemo.getString("start_time")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("appointment_date")))%></a></td>
+        <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("start_time")))%>
         </td>
-        <td align="center"><%=rsdemo.getString("end_time")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("end_time")))%>
         </td>
-        <td><%=rsdemo.getString("reason")%>
+        <td><%=Encode.forHtml(String.valueOf(rsdemo.getString("reason")))%>
         </td>
     </tr>
     <%
@@ -147,12 +148,12 @@
         nLastPage = Integer.parseInt(strLimit1) - Integer.parseInt(strLimit2);
         if (nLastPage >= 0) {
     %> <a
-        href="reportectapptsheet.jsp?demographic_no=<%=demographic_no%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>">Last
+        href="reportectapptsheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">Last
     Page</a> | <%
     }
     if (nItems == Integer.parseInt(strLimit2)) {
 %> <a
-        href="reportectapptsheet.jsp?demographic_no=<%=demographic_no%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>">
+        href="reportectapptsheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">
     Next Page</a> <%
     }
 %>

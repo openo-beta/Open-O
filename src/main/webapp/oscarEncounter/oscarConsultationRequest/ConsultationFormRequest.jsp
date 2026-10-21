@@ -61,9 +61,11 @@
 <%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
 <%@page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewRequest2Action" %>
+<%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ConsultationRequestCopy" %>
 <%@page import="ca.openosp.openo.utility.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.utility.DigitalSignatureUtils" %>
+<%@ page import="ca.openosp.openo.utility.HtmlEncodingUtils" %>
 <%@ page import="ca.openosp.openo.ui.servlet.ImageRenderingServlet" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
@@ -104,8 +106,6 @@
     <%
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
-        displayServiceUtil.estSpecialist();
-
         //multi-site support
         String appNo = request.getParameter("appNo");
         appNo = (appNo == null ? "" : appNo);
@@ -151,6 +151,33 @@
 
         if (requestId != null) {
             consultUtil.estRequestFromId(loggedInInfo, requestId);
+        }
+
+        // A copy is a new request prefilled from a saved one (the edit view's copy button). It belongs to
+        // the source's patient, so a link that names a different patient, or no valid request, is refused.
+        String copyFromParam = (requestId == null && segmentId == null) ? request.getParameter("copyFrom") : null;
+        String copyFromId = WebUtils.positiveIntParamOrNull(copyFromParam);
+        boolean copyMode = copyFromId != null;
+        if (copyFromParam != null && !copyMode) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        if (copyMode) {
+            boolean copied;
+            try {
+                copied = ConsultationRequestCopy.prefill(loggedInInfo, Integer.valueOf(copyFromId), consultUtil);
+            } catch (SecurityException e) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+            if (!copied) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            if (demo != null && !demo.equals(consultUtil.demoNo)) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
         }
 
         if (demo == null) {
@@ -201,7 +228,7 @@
             }
     %>
     <SCRIPT LANGUAGE="JavaScript">
-        alert('<%= errorMessage %>');
+        alert('<%=Encode.forJavaScript(String.valueOf(errorMessage))%>');
     </SCRIPT>
     <%
         }
@@ -219,14 +246,16 @@
 			// Get attached documents and labs
 		 --%>
     <%
-        if (requestId != null && Integer.parseInt(requestId) > 0) {
-            List<EDoc> attachedDocuments = EDocUtil.listDocs(loggedInInfo, demo, requestId, EDocUtil.ATTACHED);
+        // a copy starts with everything attached to the request it was copied from, deleted items included
+        String attachmentsRequestId = copyMode ? copyFromId : requestId;
+        if (attachmentsRequestId != null && Integer.parseInt(attachmentsRequestId) > 0) {
+            List<EDoc> attachedDocuments = EDocUtil.listDocs(loggedInInfo, demo, attachmentsRequestId, EDocUtil.ATTACHED);
             CommonLabResultData commonLabResultData = new CommonLabResultData();
-            List<LabResultData> attachedLabs = commonLabResultData.populateLabResultsData(loggedInInfo, demo, requestId, CommonLabResultData.ATTACHED);
+            List<LabResultData> attachedLabs = commonLabResultData.populateLabResultsData(loggedInInfo, demo, attachmentsRequestId, CommonLabResultData.ATTACHED);
             ConsultationManager consultationManager = SpringUtils.getBean(ConsultationManager.class);
-            List<EctFormData.PatientForm> attachedForms = consultationManager.getAttachedForms(loggedInInfo, Integer.parseInt(requestId), Integer.parseInt(demo));
-            List<EFormData> attachedEForms = consultationManager.getAttachedEForms(requestId);
-            ArrayList<HashMap<String, ? extends Object>> attachedHRMDocuments = consultationManager.getAttachedHRMDocuments(loggedInInfo, demo, requestId);
+            List<EctFormData.PatientForm> attachedForms = consultationManager.getAttachedForms(loggedInInfo, Integer.parseInt(attachmentsRequestId), Integer.parseInt(demo));
+            List<EFormData> attachedEForms = consultationManager.getAttachedEForms(attachmentsRequestId);
+            ArrayList<HashMap<String, ? extends Object>> attachedHRMDocuments = consultationManager.getAttachedHRMDocuments(loggedInInfo, demo, attachmentsRequestId);
 
             Collections.sort(attachedLabs);
             List<LabResultData> attachedLabsSortedByVersions = new ArrayList<>();
@@ -499,10 +528,10 @@
         <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
         <script>
             var ctx = '<%=request.getContextPath()%>';
-            var requestId = '<%=requestId%>';
-            var demographicNo = '<%=demo%>';
-            var demoNo = '<%=demo%>';
-            var appointmentNo = '<%=appNo%>';
+            var requestId = '<%=Encode.forJavaScript(String.valueOf(requestId))%>';
+            var demographicNo = '<%=Encode.forJavaScript(String.valueOf(demo))%>';
+            var demoNo = '<%=Encode.forJavaScript(String.valueOf(demo))%>';
+            var appointmentNo = '<%=Encode.forJavaScript(String.valueOf(appNo))%>';
         </script>
 
         <script type="text/javascript" src="<%=request.getContextPath()%>/js/global.js"></script>
@@ -530,14 +559,25 @@
         <% if ("ocean".equals(props.get("cme_js"))) {
             int randomNo = new Random().nextInt();%>
         <script id="mainScript"
-                src="${ pageContext.request.contextPath }/js/custom/ocean/conreq.js?no-cache=<%=randomNo%>&autoRefresh=true"
-                ocean-host=<%=Encode.forUriComponent(props.getProperty("ocean_host"))%>></script>
+                src="${ pageContext.request.contextPath }/js/custom/ocean/conreq.js?no-cache=<%=Encode.forHtmlAttribute(String.valueOf(randomNo))%>&autoRefresh=true"
+                ocean-host="<%=Encode.forHtmlAttribute(props.getProperty("ocean_host"))%>"></script>
         <% } %>
         <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/css/healthCareTeam.css"/>
         <link rel="stylesheet" type="text/css"
               href="${ pageContext.request.contextPath }/oscarEncounter/encounterStyles.css">
 
         <style type="text/css">
+
+            /* cog that opens the CPP Paste Format preference popup; the stroke thickens the glyph */
+            a.pastePrefCog {
+                margin-left: 4px;
+                font-size: 18px;
+                font-weight: bold;
+                -webkit-text-stroke: 0.6px #333;
+                color: #333;
+                text-decoration: none;
+                vertical-align: middle;
+            }
 
             /* Ocean refer style */
             span.oceanRefer {
@@ -894,13 +934,17 @@
     <script type="text/javascript">
 
         function getClinicalData(data, target) {
+            // the CPP Paste Format preference applies only to the two fields whose button bars carry its cog
+            data.pastePreferences = (target === "#clinicalInformation" || target === "#concurrentProblems");
             jQuery.ajax({
                 method: "POST",
                 url: "${ pageContext.request.contextPath }/oscarConsultationRequest/consultationClinicalData.do",
                 data: data,
                 dataType: 'JSON',
                 success: function (data) {
-                    jQuery(target).val(jQuery(target).val() + "\n" + data.note);
+                    if (data.note) {
+                        jQuery(target).val(jQuery(target).val() + "\n" + data.note);
+                    }
                 }
             });
         }
@@ -910,7 +954,7 @@
                 var data = new Object();
                 var target = "#" + this.id.split("_")[1];
                 data.method = this.id.split("_")[0];
-                data.demographicNo = <%= demo %>;
+                data.demographicNo = "<%=Encode.forJavaScript(String.valueOf(demo))%>";
                 getClinicalData(data, target)
             });
 
@@ -919,7 +963,7 @@
                 var target = "#" + this.id.split("_")[1];
                 data.method = "fetchIssueNote";
                 data.issueType = this.id.split("_")[0];
-                data.demographicNo = <%= demo %>;
+                data.demographicNo = "<%=Encode.forJavaScript(String.valueOf(demo))%>";
                 getClinicalData(data, target)
             });
         })
@@ -1093,7 +1137,7 @@
                     if (!foundSaved && savedSpecialist && savedSpecialist != "null") {
                         var dropdown = document.EctConsultationFormRequest2Form.specialist;
                         // Replace "All Specialists" with the saved specialist name
-                        dropdown.options[0] = new Option("<%=consultUtil.getSpecailistsName(consultUtil.specialist)%>", savedSpecialist, false, true);
+                        dropdown.options[0] = new Option("<%=Encode.forJavaScript(String.valueOf(consultUtil.getSpecailistsName(consultUtil.specialist)))%>", savedSpecialist, false, true);
                         document.getElementById("consult-disclaimer").style.display = 'inline';
                     } else if (!savedSpecialist || savedSpecialist == "null") {
                         var dropdown = document.EctConsultationFormRequest2Form.specialist;
@@ -1184,7 +1228,7 @@
 
         function updateEFormLink(eformID) {
             if (eformID > 0) {
-                let eFormURL = '<%=request.getContextPath()%>/eform/efmformadd_data.jsp?fid=' + eformID + '&demographic_no=<%=demo%>&appointment=null';
+                let eFormURL = '<%=request.getContextPath()%>/eform/efmformadd_data.jsp?fid=' + eformID + '&demographic_no=<%=Encode.forUriComponent(String.valueOf(demo))%>&appointment=null';
                 document.getElementById("eFormButton").style.display = "inline";
                 document.getElementById("eFormButton").onclick = function () {
                     popup(eFormURL);
@@ -1286,6 +1330,72 @@
                     popup.opener = self;
                 }
             }
+        }
+
+        // The form as the page set it up, taken at the user's first click or keypress. Comparing against it
+        // catches every change, including ones made by buttons (the imports, Clear Date & Time) that fire no
+        // input event, while the page's own setup (loading the specialists, filling defaults) never counts.
+        // Text that arrives with no click or keypress first (dictation, autofill, a drop) marks the form directly.
+        var consultFormBaseline = null;
+        var consultFormChangedBeforeBaseline = false;
+
+        function serializeConsultForm() {
+            return new URLSearchParams(new FormData(document.forms['EctConsultationFormRequest2Form'])).toString();
+        }
+
+        function takeConsultFormBaseline(e) {
+            if (e.isTrusted && consultFormBaseline === null) {
+                consultFormBaseline = serializeConsultForm();
+            }
+        }
+
+        function markConsultFormChangedBeforeBaseline(e) {
+            if (e.isTrusted && consultFormBaseline === null) {
+                consultFormChangedBeforeBaseline = true;
+            }
+        }
+
+        document.addEventListener('mousedown', takeConsultFormBaseline, true);
+        document.addEventListener('keydown', takeConsultFormBaseline, true);
+        document.addEventListener('input', markConsultFormChangedBeforeBaseline, true);
+        document.addEventListener('change', markConsultFormChangedBeforeBaseline, true);
+
+        function isConsultFormChanged() {
+            return consultFormChangedBeforeBaseline
+                || (consultFormBaseline !== null && serializeConsultForm() !== consultFormBaseline);
+        }
+
+        // the copy this page opened; once submitted, its window moves on to the confirmation page
+        var copyWindow = null;
+
+        function isCopyStillOpen() {
+            try {
+                return copyWindow !== null && !copyWindow.closed
+                    && (copyWindow.location.href === 'about:blank' || copyWindow.location.href.indexOf('copyFrom=') !== -1);
+            } catch (e) {
+                return false;
+            }
+        }
+
+        /**
+         * Opens a new consultation request prefilled from this saved one, in its own window. The copy is
+         * built from the saved version, so unsaved changes here are confirmed first. While a copy is still
+         * open and unsubmitted, clicking again brings it back instead of opening a second one.
+         */
+        function copyToNewConsultationRequest() {
+            if (isCopyStillOpen()) {
+                copyWindow.focus();
+                return false;
+            }
+            var signatureChanged = typeof isSignatureDirty !== 'undefined' && isSignatureDirty;
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgCopyUnsavedChanges" var="copyUnsavedChangesMsg"/>
+            if ((isConsultFormChanged() || signatureChanged) && !confirm('${e:forJavaScript(copyUnsavedChangesMsg)}')) {
+                return false;
+            }
+            var url = ctx + '/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp?de='
+                + encodeURIComponent(demographicNo) + '&copyFrom=' + encodeURIComponent(requestId);
+            copyWindow = window.open(url, '_blank', 'height=700,width=960,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes');
+            return false;
         }
 
     </script>
@@ -1471,11 +1581,11 @@ for (Provider providerItem: prList) {
 		String prov_no = "prov_"+providerItem.getProviderNo();
 
 		%>
-        providerData['<%=prov_no%>'] = {};
+        providerData['<%=Encode.forJavaScript(String.valueOf(prov_no))%>'] = {};
 
-        providerData['<%=prov_no%>'].address = "<%=Encode.forHtmlContent(providerItem.getFullAddress())%>";
-        providerData['<%=prov_no%>'].phone = "<%=Encode.forHtmlContent(providerItem.getClinicPhone())%>";
-        providerData['<%=prov_no%>'].fax = "<%=Encode.forHtmlContent(providerItem.getClinicFax())%>";
+        providerData['<%=Encode.forJavaScript(String.valueOf(prov_no))%>'].address = "<%=Encode.forHtmlContent(providerItem.getFullAddress())%>";
+        providerData['<%=Encode.forJavaScript(String.valueOf(prov_no))%>'].phone = "<%=Encode.forHtmlContent(providerItem.getClinicPhone())%>";
+        providerData['<%=Encode.forJavaScript(String.valueOf(prov_no))%>'].fax = "<%=Encode.forHtmlContent(providerItem.getClinicFax())%>";
 
         <%	}
 }
@@ -1488,10 +1598,10 @@ if (OscarProperties.getInstance().getBooleanProperty("consultation_program_lette
 		for (Program program : programList) {
 			String progNo = "prog_" + program.getId();
 %>
-        providerData['<%=progNo %>'] = {};
-        providerData['<%=progNo %>'].address = '<%=(program.getAddress() != null && !program.getAddress().trim().isEmpty()) ? Encode.forHtmlContent(program.getAddress()) : (Encode.forHtmlContent(clinic.getClinicAddress()) + " " + Encode.forHtmlContent(clinic.getClinicCity()) + " " + Encode.forHtmlContent(clinic.getClinicProvince()) + " " + Encode.forHtmlContent(clinic.getClinicPostal())) %>';
-        providerData['<%=progNo %>'].phone = '<%=(program.getPhone() != null && !program.getPhone().trim().isEmpty()) ? Encode.forHtmlContent(program.getPhone()) : Encode.forHtmlContent(clinic.getClinicPhone()) %>';
-        providerData['<%=progNo %>'].fax = '<%=(program.getFax() != null && !program.getFax().trim().isEmpty()) ? Encode.forHtmlContent(program.getFax()) : Encode.forHtmlContent(clinic.getClinicFax()) %>';
+        providerData['<%=Encode.forJavaScript(String.valueOf(progNo))%>'] = {};
+        providerData['<%=Encode.forJavaScript(String.valueOf(progNo))%>'].address = '<%=(program.getAddress() != null && !program.getAddress().trim().isEmpty()) ? Encode.forHtmlContent(program.getAddress()) : (Encode.forHtmlContent(clinic.getClinicAddress()) + " " + Encode.forHtmlContent(clinic.getClinicCity()) + " " + Encode.forHtmlContent(clinic.getClinicProvince()) + " " + Encode.forHtmlContent(clinic.getClinicPostal())) %>';
+        providerData['<%=Encode.forJavaScript(String.valueOf(progNo))%>'].phone = '<%=(program.getPhone() != null && !program.getPhone().trim().isEmpty()) ? Encode.forHtmlContent(program.getPhone()) : Encode.forHtmlContent(clinic.getClinicPhone()) %>';
+        providerData['<%=Encode.forJavaScript(String.valueOf(progNo))%>'].fax = '<%=(program.getFax() != null && !program.getFax().trim().isEmpty()) ? Encode.forHtmlContent(program.getFax()) : Encode.forHtmlContent(clinic.getClinicFax()) %>';
         <%
 		}
 	}
@@ -1501,21 +1611,21 @@ if (OscarProperties.getInstance().getBooleanProperty("consultation_program_lette
         function switchProvider(value) {
             if (value === -1) {
                 document.getElementById("letterheadName").value = value;
-                document.getElementById("letterheadAddress").value = '<%=Encode.forHtmlAttribute(clinic.getClinicAddress()) + " " + Encode.forHtmlAttribute(clinic.getClinicCity()) + " " + Encode.forHtmlAttribute(clinic.getClinicProvince()) + " " + Encode.forHtmlAttribute(clinic.getClinicPostal()) %>';
-                document.getElementById("letterheadAddressSpan").textContent = '<%=Encode.forHtmlContent(clinic.getClinicAddress()) + " " + Encode.forHtmlContent(clinic.getClinicCity()) + " " + Encode.forHtmlContent(clinic.getClinicProvince()) + " " + Encode.forHtmlContent(clinic.getClinicPostal()) %>';
-                document.getElementById("letterheadPhone").value = "<%=Encode.forHtmlAttribute(clinic.getClinicPhone()) %>";
-                document.getElementById("letterheadPhoneSpan").textContent = "<%=Encode.forHtmlContent(clinic.getClinicPhone()) %>";
-                document.getElementById("letterheadFax").value = "<%=Encode.forHtmlAttribute(clinic.getClinicFax()) %>";
+                document.getElementById("letterheadAddress").value = '<%=Encode.forJavaScript(clinic.getClinicAddress() + " " + clinic.getClinicCity() + " " + clinic.getClinicProvince() + " " + clinic.getClinicPostal()) %>';
+                document.getElementById("letterheadAddressSpan").textContent = '<%=Encode.forJavaScript(clinic.getClinicAddress() + " " + clinic.getClinicCity() + " " + clinic.getClinicProvince() + " " + clinic.getClinicPostal()) %>';
+                document.getElementById("letterheadPhone").value = "<%=Encode.forJavaScript(clinic.getClinicPhone()) %>";
+                document.getElementById("letterheadPhoneSpan").textContent = "<%=Encode.forJavaScript(clinic.getClinicPhone()) %>";
+                document.getElementById("letterheadFax").value = "<%=Encode.forJavaScript(clinic.getClinicFax()) %>";
 
-                document.getElementById("letterheadFaxSpan").textContent = "<%=Encode.forHtmlAttribute(clinic.getClinicFax()) %>";
+                document.getElementById("letterheadFaxSpan").textContent = "<%=Encode.forJavaScript(clinic.getClinicFax()) %>";
 
                 let faxAccountOptions = document.getElementById("faxAccount");
                 if (faxAccountOptions) {
-                    faxAccountOptions.value = "<%=Encode.forHtmlAttribute(clinic.getClinicFax()) %>".replace(/[^0-9.]/g, '');
+                    faxAccountOptions.value = "<%=Encode.forJavaScript(clinic.getClinicFax()) %>".replace(/[^0-9.]/g, '');
                     for(let i = 0; i < faxAccountOptions.options.length; i++) {
                         let option = faxAccountOptions.options[i];
-                        if(option.value === "<%=clinic.getClinicFax() %>".replace(/[^0-9.]/g, '')) {
-                            faxAccountOptions.value = "<%=clinic.getClinicFax()%>".replace(/[^0-9.]/g, '');
+                        if(option.value === "<%=Encode.forJavaScript(String.valueOf(clinic.getClinicFax()))%>".replace(/[^0-9.]/g, '')) {
+                            faxAccountOptions.value = "<%=Encode.forJavaScript(String.valueOf(clinic.getClinicFax()))%>".replace(/[^0-9.]/g, '');
                             break;
                         }
                     }
@@ -1557,14 +1667,14 @@ String storedImgUrl=request.getContextPath()+"/imageRenderingServlet?source="+Im
 
         function refreshImage() {
             counter = counter + 1;
-            document.getElementById('signatureImgTag').src = '<%=imageUrl%>&rand=' + counter;
-            document.getElementById('signatureImg').value = '<%=signatureRequestId%>';
+            document.getElementById('signatureImgTag').src = '<%=Encode.forJavaScript(String.valueOf(imageUrl))%>&rand=' + counter;
+            document.getElementById('signatureImg').value = '<%=Encode.forJavaScript(String.valueOf(signatureRequestId))%>';
         }
 
         function showSignatureImage() {
             if (document.getElementById('signatureImg') != null && document.getElementById('signatureImg').value.length > 0) {
 
-                document.getElementById('signatureImgTag').src = "<%=storedImgUrl %>" + document.getElementById('signatureImg').value;
+                document.getElementById('signatureImgTag').src = "<%=Encode.forJavaScript(String.valueOf(storedImgUrl))%>" + document.getElementById('signatureImg').value;
                 document.getElementById('newSignature').value = "false";
                 document.getElementById("signatureFrame").style.display = "none";
                 document.getElementById('signatureShow').style.display = "block";
@@ -1604,7 +1714,7 @@ if (userAgent != null) {
             }
         }
 
-        var requestIdKey = "<%=signatureRequestId %>";
+        var requestIdKey = "<%=Encode.forJavaScript(String.valueOf(signatureRequestId))%>";
 
         function AddOtherFaxProvider() {
             var name = jQuery("#searchHealthCareTeamInput").val();
@@ -1720,7 +1830,7 @@ if (userAgent != null) {
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -1742,6 +1852,12 @@ if (userAgent != null) {
 
                 } else if (segmentId != null) {
                     EctViewRequest2Action.fillFormValues(thisForm, segmentId);
+                    thisForm.setSiteName(consultUtil.siteName);
+                    defaultSiteName = consultUtil.siteName;
+                } else if (copyMode) {
+                    // the fields ConsultationRequestCopy picked, and new-request defaults for the rest
+                    EctViewRequest2Action.fillFormValues(thisForm, consultUtil);
+                    thisForm.setStatus("1");
                     thisForm.setSiteName(consultUtil.siteName);
                     defaultSiteName = consultUtil.siteName;
                 } else if (request.getAttribute("validateError") == null) {
@@ -1789,13 +1905,13 @@ if (userAgent != null) {
         %>
 
         <% if (!props.isConsultationFaxEnabled() || !OscarProperties.getInstance().isPropertyActive("consultation_dynamic_labelling_enabled")) { %>
-        <input type="hidden" name="providerNo" value="<%=providerNo%>">
+        <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(providerNo))%>">
         <% } %>
-        <input type="hidden" name="demographicNo" id="demographicNo" value="<%=demo%>">
-        <input type="hidden" name="requestId" id="requestId" value="<%=requestId%>">
-        <input type="hidden" name="ext_appNo" value="<%=request.getParameter("appNo") %>">
+        <input type="hidden" name="demographicNo" id="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demo))%>">
+        <input type="hidden" name="requestId" id="requestId" value="<%=Encode.forHtmlAttribute(String.valueOf(requestId))%>">
+        <input type="hidden" name="ext_appNo" value="<%=Encode.forHtmlAttribute(request.getParameter("appNo")) %>">
         <input type="hidden" name="source"
-               value="<%=(requestId!=null)?thisForm.getSource():request.getParameter("source") %>">
+               value="<%=Encode.forHtmlAttribute((requestId!=null)?thisForm.getSource():request.getParameter("source"))%>">
         <input type="hidden" id="saved" value="false">
         <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}">
 
@@ -1809,7 +1925,7 @@ if (userAgent != null) {
                                 style="padding-left: 2px; padding-right: 2px; border-right: 2px solid #003399; text-align: left; font-size: 80%; font-weight: bold; width: 100%;"
                             >
                                 <h2>
-                                    <%=thisForm.getPatientName()%> <%=thisForm.getPatientSex()%> <%=thisForm.getPatientAge()%>
+                                    <%=Encode.forHtml(String.valueOf(thisForm.getPatientName()))%> <%=Encode.forHtml(String.valueOf(thisForm.getPatientSex()))%> <%=Encode.forHtml(String.valueOf(thisForm.getPatientAge()))%>
                                 </h2>
                             </td>
                             <% if ("ocean".equals(props.get("cme_js"))) { %>
@@ -1834,7 +1950,7 @@ if (userAgent != null) {
                                         <td class="stat" colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgCreated"/></td>
                                     </tr>
                                     <tr>
-                                        <td class="stat" colspan="2"><%=thisForm.getProviderName()%>
+                                        <td class="stat" colspan="2"><%=Encode.forHtml(String.valueOf(thisForm.getProviderName()))%>
                                         </td>
                                     </tr>
                                 </table>
@@ -1922,16 +2038,16 @@ if (userAgent != null) {
                                                 <%-- <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.attachDoc"/> --%>
                                             <a href="javascript:void(0);" id="attachDocumentPanelBtn"
                                                title="Add Attachment"
-                                               data-poload="${ ctx }/previewDocs.do?method=fetchConsultDocuments&amp;demographicNo=<%=demo%>&amp;requestId=<%=requestId%>">
+                                               data-poload="${ ctx }/previewDocs.do?method=fetchConsultDocuments&amp;demographicNo=<%=Encode.forHtmlAttribute(String.valueOf(demo))%>&amp;requestId=<%=Encode.forHtmlAttribute(String.valueOf(attachmentsRequestId))%>">
                                                 Manage Attachments
                                             </a>
                                             <input type="hidden" id="isOceanEReferral"
-                                                   value="<%=thisForm.iseReferral()%>"/>
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(thisForm.iseReferral()))%>"/>
                                             <%
                                             } else { %>
                                             <a href="javascript:void(0);" id="attachDocumentPanelBtn"
                                                title="Add Attachment"
-                                               data-poload="${ ctx }/previewDocs.do?method=fetchConsultDocuments&amp;demographicNo=<%=demo%>&amp;requestId=<%=requestId%>">
+                                               data-poload="${ ctx }/previewDocs.do?method=fetchConsultDocuments&amp;demographicNo=<%=Encode.forHtmlAttribute(String.valueOf(demo))%>&amp;requestId=<%=Encode.forHtmlAttribute(String.valueOf(attachmentsRequestId))%>">
                                                 Manage Attachments
                                             </a>
 
@@ -1949,7 +2065,7 @@ if (userAgent != null) {
                                                 <c:forEach items="${ attachedEForms }" var="attachedEForm">
                                                     <tr id="entry_eFormNo${ attachedEForm.id }">
                                                         <td>
-                                                            <c:out value="${ attachedEForm.formName }"/>
+                                                            <c:out value="${ attachedEForm.formName }"/><c:if test="${ not attachedEForm.current }"> (deleted)</c:if>
                                                             <input name="eFormNo" value="${ attachedEForm.id }"
                                                                    id="delegate_eFormNo${ attachedEForm.id }"
                                                                    class="delegateAttachment" type="hidden">
@@ -1969,9 +2085,10 @@ if (userAgent != null) {
                                                 <c:forEach items="${ attachedDocuments }" var="attachedDocument">
                                                     <tr id="entry_docNo${ attachedDocument.docId }">
                                                         <td>
-                                                            <c:out value="${ attachedDocument.description }"/>
+                                                            <c:out value="${ attachedDocument.description }"/><c:if test="${ fn:contains(attachedDocument.status, 'D') }"> (deleted)</c:if>
                                                             <input name="docNo" value="${ attachedDocument.docId }"
                                                                    id="delegate_docNo${ attachedDocument.docId }"
+                                                                   data-delegate-type="doc"
                                                                    class="delegateAttachment" type="hidden">
                                                         </td>
                                                     </tr>
@@ -2120,6 +2237,16 @@ if (userAgent != null) {
                             </td>
                         </tr>
                         <% } %>
+                        <% if (request.getAttribute("id") != null) { %>
+                        <%-- on its own row: it saves nothing here, and eReferrals (updated in Ocean) have no other buttons --%>
+                        <tr>
+                            <td class="tite4 controlPanel" colspan=2>
+                                <input name="copyToNew" type="button"
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnCopyToNewConsultationRequest"/>"
+                                       onclick="return copyToNewConsultationRequest();"/>
+                            </td>
+                        </tr>
+                        <% } %>
                         <tr class="consultDemographicData">
                             <td>
                                 <% // Determine if curUser has selected a default practitioner in preferences
@@ -2141,7 +2268,7 @@ if (userAgent != null) {
                                                     for (Provider p : prList) {
                                                         if (p.getProviderNo().compareTo("-1") != 0) {
                                                 %>
-                                                <option value="<%=p.getProviderNo() %>" <%=((consultUtil.providerNo != null && consultUtil.providerNo.equalsIgnoreCase(p.getProviderNo())) || (consultUtil.providerNo == null && referringProviderDefault.equalsIgnoreCase(p.getProviderNo())) ? "selected" : "") %>>
+                                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>" <%=Encode.forHtml(String.valueOf(((consultUtil.providerNo != null && consultUtil.providerNo.equalsIgnoreCase(p.getProviderNo())) || (consultUtil.providerNo == null && referringProviderDefault.equalsIgnoreCase(p.getProviderNo())) ? "selected" : "")))%>>
                                                     <%=Encode.forHtmlContent(p.getFirstName().replace("Dr.", "")) %>&nbsp;<%=Encode.forHtmlContent(p.getSurname()) %>
                                                 </option>
                                                 <% }
@@ -2170,7 +2297,7 @@ if (userAgent != null) {
                                                 } else {
                                                 %>
                                                 <input type="text" id="referalDate" name="referalDate"
-                                                           ondblclick="this.value='';" value="<%=formattedDate%>"/>
+                                                           ondblclick="this.value='';" value="<%=Encode.forHtmlAttribute(String.valueOf(formattedDate))%>"/>
                                                 <%
                                                     }
                                                 %>
@@ -2182,7 +2309,7 @@ if (userAgent != null) {
 
                                             <td class="tite3">
                                                 <input type="text" id="referalDate" name="referalDate" readonly="true"
-                                                           value="<%=formattedDate%>"/>
+                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(formattedDate))%>"/>
                                             </td>
 
                                         </oscar:oscarPropertiesCheck>
@@ -2196,7 +2323,7 @@ if (userAgent != null) {
                                             </td>
                                             <td class="tite3">
                                                 <% if (thisForm.iseReferral() && !thisForm.geteReferralService().isEmpty()) { %>
-                                                <%= thisForm.geteReferralService() %>
+                                                <%=Encode.forHtml(String.valueOf(thisForm.geteReferralService()))%>
                                                 <% } else { %>
                                                 <select id="service" name="service"
                                                              onchange="fillSpecialistSelect(this);"></select>
@@ -2210,7 +2337,7 @@ if (userAgent != null) {
                                         <td class="tite3">
                                             <% if (thisForm.iseReferral()) { %>
 
-                                            <%=thisForm.getProfessionalSpecialistName()%>
+                                            <%=Encode.forHtml(String.valueOf(thisForm.getProfessionalSpecialistName()))%>
 
                                             <% } else if (OscarProperties.getInstance().getBooleanProperty("ENABLE_HEALTH_CARE_TEAM_IN_CONSULTATION_REQUESTS", "true")) { %>
 
@@ -2242,7 +2369,7 @@ if (userAgent != null) {
                                             </td>
                                             <td class="tite4" style="font-size:11px;">
                                                 <a href="javascript:void(0);"
-                                                   onclick="popupPage(500,700,'${ctx}/demographic/Contact.do?method=manageContactList&contactList=HCT&view=detached&demographic_no=<%=demo%>' ); return false;">
+                                                   onclick="popupPage(500,700,'${ctx}/demographic/Contact.do?method=manageContactList&contactList=HCT&view=detached&demographic_no=<%=Encode.forUriComponent(String.valueOf(demo))%>' ); return false;">
                                                     edit Health Care Team
                                                 </a>
                                             </td>
@@ -2280,7 +2407,7 @@ if (userAgent != null) {
                                             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.formPhone"/>
                                         </td>
                                         <td class="tite3"><input readonly type="text" name="phone" class="righty"
-                                                                 value="<%=thisForm.getProfessionalSpecialistPhone()%>"/>
+                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(thisForm.getProfessionalSpecialistPhone()))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -2302,7 +2429,7 @@ if (userAgent != null) {
                                         </td>
                                         <td class="tite3">
                                             <textarea readonly name="address"
-                                                      rows="5"><%=thisForm.getProfessionalSpecialistAddress()%></textarea>
+                                                      rows="5"><%=Encode.forHtml(String.valueOf(thisForm.getProfessionalSpecialistAddress()))%></textarea>
                                         </td>
                                     </tr>
 
@@ -2360,7 +2487,7 @@ if (userAgent != null) {
                                                                 String hourOfday = Integer.toString(i);
                                                                 String selectedHour = (hourOfday.equals(thisForm.getAppointmentHour())) ? "selected" : "";
                                                         %>
-                                                        <option value="<%=hourOfday%>" <%=selectedHour%>><%=hourOfday%>
+                                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(hourOfday))%>" <%=selectedHour%>><%=Encode.forHtml(String.valueOf(hourOfday))%>
                                                         </option>
                                                         <%
                                                             }
@@ -2376,7 +2503,7 @@ if (userAgent != null) {
                                                                 }
                                                                 String selectedMinute = (String.valueOf(i).equals(thisForm.getAppointmentMinute())) ? "selected" : "";
                                                         %>
-                                                        <option value="<%=String.valueOf(i)%>" <%=selectedMinute%>><%=minuteOfhour%>
+                                                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(String.valueOf(i)))%>" <%=selectedMinute%>><%=Encode.forHtml(String.valueOf(minuteOfhour))%>
                                                         </option>
                                                         <%
                                                             }
@@ -2407,8 +2534,8 @@ if (userAgent != null) {
                                                     if (te.equals(defaultSiteName))
                                                         defaultSiteId = siteIds.get(i);
                                                 %>
-                                                <option value="<%=te%>"
-                                                             style='<%="background-color: "+bg%>'><%=te%>
+                                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(te))%>"
+                                                             style='<%=Encode.forHtmlAttribute(String.valueOf("background-color: "+bg))%>'><%=Encode.forHtml(String.valueOf(te))%>
                                                 </option>
                                                 <% }%>
                                             </select>
@@ -2423,55 +2550,56 @@ if (userAgent != null) {
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgPatient"/>
                                         </td>
                                         <td class="tite1"><a href="javascript:void(0);"
-                                                             onClick="popupAttach(600,900,'<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=demo%>&displaymode=edit&dboperation=search_detail')"><%=thisForm.getPatientName()%>
+                                                             onClick="popupAttach(600,900,'<%=request.getContextPath()%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demo))%>&displaymode=edit&dboperation=search_detail')"><%=Encode.forHtml(String.valueOf(thisForm.getPatientName()))%>
                                         </a></td>
                                     </tr>
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgAddress"/>
                                         </td>
-                                        <td class="tite1"><%=thisForm.getPatientAddress().replace("null", "")%>
+                                        <%-- the address lines are joined with <br>, which the PDFs also rely on --%>
+                                        <td class="tite1"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(thisForm.getPatientAddress().replace("null", ""))%>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgPhone"/>
                                         </td>
-                                        <td class="tite1"><%=thisForm.getPatientPhone()%>
+                                        <td class="tite1"><%=Encode.forHtml(String.valueOf(thisForm.getPatientPhone()))%>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgWPhone"/>
                                         </td>
-                                        <td class="tite1"><%=thisForm.getPatientWPhone()%>
+                                        <td class="tite1"><%=Encode.forHtml(String.valueOf(thisForm.getPatientWPhone()))%>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgCellPhone"/>
                                         </td>
-                                        <td class="tite1"><%=thisForm.getPatientCellPhone()%>
+                                        <td class="tite1"><%=Encode.forHtml(String.valueOf(thisForm.getPatientCellPhone()))%>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgEmail"/>
                                         </td>
-                                        <td class="tite1"><%=thisForm.getPatientEmail()%>
+                                        <td class="tite1"><%=Encode.forHtml(String.valueOf(thisForm.getPatientEmail()))%>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgBirthDate"/>
                                         </td>
-                                        <td class="tite1"><%=thisForm.getPatientDOB()%>
+                                        <td class="tite1"><%=Encode.forHtml(String.valueOf(thisForm.getPatientDOB()))%>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgSex"/>
                                         </td>
-                                        <td class="tite1"><%=thisForm.getPatientSex()%>
+                                        <td class="tite1"><%=Encode.forHtml(String.valueOf(thisForm.getPatientSex()))%>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgHealthCard"/>
                                         </td>
-                                        <td class="tite1"><%=thisForm.getPatientHealthNum()%><%=thisForm.getPatientHealthCardVersionCode()%><%=thisForm.getPatientHealthCardType()%>
+                                        <td class="tite1"><%=Encode.forHtml(thisForm.getFormattedHealthCard())%>
                                         </td>
                                     </tr>
                                     <tr id="conReqSendTo">
@@ -2484,7 +2612,7 @@ if (userAgent != null) {
                                                     String te = (String) consultUtil.teamVec.elementAt(i);
                                                     String selectedTeam = (te.equals(thisForm.getSendTo())) ? "selected" : "";
                                             %>
-                                            <option value="<%=te%>" <%=selectedTeam%>><%=te%>
+                                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(te))%>" <%=selectedTeam%>><%=Encode.forHtml(String.valueOf(te))%>
                                             </option>
                                             <%
                                                 }
@@ -2520,7 +2648,7 @@ if (userAgent != null) {
                                         <td class="tite4">EForm
                                         </td>
                                         <td class="tite1">
-                                            <a href="<%=request.getContextPath()%>/eform/efmshowform_data.jsp?fdid=<%=thisForm.getFdid() %>">Click
+                                            <a href="<%=request.getContextPath()%>/eform/efmshowform_data.jsp?fdid=<%=Encode.forUriComponent(String.valueOf(thisForm.getFdid()))%>">Click
                                                 to view</a>
                                         </td>
                                     </tr>
@@ -2545,15 +2673,15 @@ if (userAgent != null) {
                                         <td class="tite1">
                                             <select name="letterheadName" id="letterheadName"
                                                     onchange="switchProvider(this.value)">
-                                                <option value="<%=Encode.forHtmlAttribute(clinic.getClinicName())%>" <%=(consultUtil.letterheadName != null && consultUtil.letterheadName.equalsIgnoreCase(clinic.getClinicName())) ? "selected" : (lhndType.equals("clinic") ? "selected" : "") %>>
+                                                <option value="<%=Encode.forHtmlAttribute(clinic.getClinicName())%>" <%=Encode.forHtml(String.valueOf((consultUtil.letterheadName != null && consultUtil.letterheadName.equalsIgnoreCase(clinic.getClinicName())) ? "selected" : (lhndType.equals("clinic") ? "selected" : "")))%>>
                                                 <%=Encode.forHtmlContent(clinic.getClinicName()) %>
                                                 </option>
                                                 <%
                                                     for (Provider p : prList) {
                                                         if (p.getProviderNo().compareTo("-1") != 0 && (p.getFirstName() != null || p.getSurname() != null)) {
                                                 %>
-                                                <option value="<%=p.getProviderNo() %>"
-                                                        <%=(thisForm.getLetterheadName() != null && !thisForm.getLetterheadName().isEmpty() && thisForm.getLetterheadName().equalsIgnoreCase(p.getProviderNo())) ? "selected" : ((thisForm.getLetterheadName() == null || thisForm.getLetterheadName().isEmpty()) && p.getProviderNo().equalsIgnoreCase(providerDefault) && lhndType.equals("providers") ? "selected" : "") %>>
+                                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>"
+                                                        <%=Encode.forHtml(String.valueOf((thisForm.getLetterheadName() != null && !thisForm.getLetterheadName().isEmpty() && thisForm.getLetterheadName().equalsIgnoreCase(p.getProviderNo())) ? "selected" : ((thisForm.getLetterheadName() == null || thisForm.getLetterheadName().isEmpty()) && p.getProviderNo().equalsIgnoreCase(providerDefault) && lhndType.equals("providers") ? "selected" : "")))%>>
                                                     <%=Encode.forHtmlContent(p.getSurname())%>
                                                     ,&nbsp;<%=Encode.forHtmlContent(p.getFirstName().replace("Dr.", ""))%>
                                                         </option>
@@ -2563,7 +2691,7 @@ if (userAgent != null) {
                                                     if (OscarProperties.getInstance().getBooleanProperty("consultation_program_letterhead_enabled", "true")) {
                                                         for (Program p : programList) {
                                                 %>
-                                                <option value="prog_<%=p.getId() %>" <%=(thisForm.getLetterheadName() != null && thisForm.getLetterheadName().equalsIgnoreCase("prog_" + p.getId()) ? "selected" : "") %>>
+                                                <option value="prog_<%=Encode.forHtmlAttribute(String.valueOf(p.getId()))%>" <%=Encode.forHtml(String.valueOf((thisForm.getLetterheadName() != null && thisForm.getLetterheadName().equalsIgnoreCase("prog_" + p.getId()) ? "selected" : "")))%>>
                                                     <%=Encode.forHtmlContent(p.getName()) %>
                                                 </option>
                                                 <% }
@@ -2573,7 +2701,7 @@ if (userAgent != null) {
                                             <div>
                                                 <input type="checkbox" id="ext_letterheadTitle"
                                                        name="ext_letterheadTitle"
-                                                       value="Dr" <%=(consultUtil.letterheadTitle != null && consultUtil.letterheadTitle.equals("Dr") ? "checked"  : "") %>>
+                                                       value="Dr" <%=(consultUtil.letterheadTitle != null && consultUtil.letterheadTitle.equals("Dr") ? "checked"  : "")%>>
                                                 <label for="ext_letterheadTitle">Include Dr. with name</label>
                                             </div>
                                             <%}%>
@@ -2759,6 +2887,8 @@ if (userAgent != null) {
                                                    class="btn medicationData" value="Active Medications"/>
                                             <input id="fetchLongTermMedications_clinicalInformation" type="button"
                                                    class="btn medicationData" value="Long Term Medications"/>
+                                            <a href="#" title="Paste preferences" class="pastePrefCog"
+                                               onclick="popupPage(230,860,'<%=Encode.forJavaScriptAttribute(request.getContextPath())%>/setProviderStaleDate.do?method=viewConsultPasteFmt'); return false;">&#9881;&#xFE0E;</a>
                                             <% } %>
                                         </td>
                                     </tr>
@@ -2808,6 +2938,8 @@ if (userAgent != null) {
                                                    class="btn medicationData" value="Active Medications"/>
                                             <input id="fetchLongTermMedications_concurrentProblems" type="button"
                                                    class="btn medicationData" value="Long Term Medications"/>
+                                            <a href="#" title="Paste preferences" class="pastePrefCog"
+                                               onclick="popupPage(230,860,'<%=Encode.forJavaScriptAttribute(request.getContextPath())%>/setProviderStaleDate.do?method=viewConsultPasteFmt'); return false;">&#9881;&#xFE0E;</a>
                                             <% } %>
                                         </td>
                                     </tr>
@@ -2887,16 +3019,16 @@ if (userAgent != null) {
 
                                 <input type="hidden" name="newSignature" id="newSignature" value="true"/>
                                 <input type="hidden" name="signatureImg" id="signatureImg"
-                                       value="<%=(consultUtil.signatureImg != null ? consultUtil.signatureImg : "") %>"/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf((consultUtil.signatureImg != null ? consultUtil.signatureImg : "")))%>"/>
                                 <input type="hidden" name="newSignatureImg" id="newSignatureImg"
-                                       value="<%=signatureRequestId %>"/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(signatureRequestId))%>"/>
 
                                 <div id="signatureShow" style="display: none;">
                                     <img id="signatureImgTag" src=""/>
                                 </div>
 
                                 <iframe style="width:500px; height:132px;" id="signatureFrame"
-							src="<%= request.getContextPath() %>/signature_pad/tabletSignature.jsp?inWindow=true&<%=DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY%>=<%=signatureRequestId%>&<%=ModuleType.class.getSimpleName()%>=<%=ModuleType.CONSULTATION%>" ></iframe>
+							src="<%= request.getContextPath() %>/signature_pad/tabletSignature.jsp?inWindow=true&<%=Encode.forUriComponent(String.valueOf(DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY))%>=<%=Encode.forUriComponent(String.valueOf(signatureRequestId))%>&<%=ModuleType.class.getSimpleName()%>=<%=Encode.forUriComponent(String.valueOf(ModuleType.CONSULTATION))%>" ></iframe>
 
                             </td>
                         </tr>
@@ -2969,9 +3101,9 @@ if (userAgent != null) {
                                 // Load services first, then initialize consultation with saved data
                                 loadServicesFromServer(function() {
                                     initializeConsultation(
-                                        '<%=consultUtil.service%>',
+                                        '<%=Encode.forJavaScript(String.valueOf(consultUtil.service))%>',
                                         '<%=((consultUtil.service==null)?"":Encode.forJavaScript(consultUtil.getServiceName(consultUtil.service.toString())))%>',
-                                        '<%=consultUtil.specialist%>',
+                                        '<%=Encode.forJavaScript(String.valueOf(consultUtil.specialist))%>',
                                         '<%=((consultUtil.specialist==null)?"":Encode.forJavaScript(consultUtil.getSpecailistsName(consultUtil.specialist.toString())))%>',
                                         '<%=Encode.forJavaScript(consultUtil.specPhone)%>',
                                         '<%=Encode.forJavaScript(consultUtil.specFax)%>',
@@ -3074,7 +3206,7 @@ if (userAgent != null) {
                 if("${pageScope.lhndType eq 'providers'}" === "true"){
                     switchProvider("${pageScope.providerDefault}");
                 } else if("${pageScope.lhndType eq 'clinic'}" === "true"){
-                    switchProvider("<%=clinic.getClinicName()%>");
+                    switchProvider("<%=Encode.forJavaScript(String.valueOf(clinic.getClinicName()))%>");
                 } else {
                     switchProvider("-1");
                 }
@@ -3172,19 +3304,46 @@ if (userAgent != null) {
                 jQuery("#attachDocumentDisplay").load(trigger.data('poload'), function (response, status, xhr) {
                     if (status === "success") {
                         $mainForm.find(".delegateAttachment").each(function (index, data) {
-                            let delegate = "#" + this.id.split("_")[1];
-                            let element = jQuery('#attachDocumentsForm').find(delegate);
-                            if (element.length === 0) {
-                                element = addFormIfNotFound(data, '<%=demo%>', delegate);
+                            let delegateKey = this.id.split("_")[1];
+
+                            // DOC sections share name="docNo" with distinct ids; look up by name+value.
+                            // Skip if server-pre-attached; else mark as unsaved client-side selection.
+                            if (jQuery(this).data("delegate-type") === "doc") {
+                                let docValue = this.value;
+                                let matches = jQuery('#attachDocumentsForm').find('input[name="docNo"][value="' + docValue + '"]');
+                                if (matches.filter('[data-pre-attached="true"]').length > 0) {
+                                    return;
+                                }
+                                matches.prop("checked", true);
+                                matches.each(function () {
+                                    let $m = jQuery(this);
+                                    let oldType = $m.attr("class").split(" ")[0];
+                                    $m.removeClass(oldType).addClass(oldType.split("_")[0] + "_pre_check");
+                                });
+                                matches.attr("data-pre-attached", "true");
+                                return;
                             }
-                            let elementClassType = element.attr("class").split("_")[0];
-                            element.attr("checked", true).attr("class", elementClassType + "_pre_check");
+
+                            let delegate = "#" + delegateKey;
+                            let element = jQuery('#attachDocumentsForm').find(delegate);
+                            // addFormIfNotFound only knows encounter forms; an unlisted attachment of any other
+                            // type has no checkbox to pre-check, so skip it instead of aborting the whole loop.
+                            if (element.length === 0 && data.name === "formNo") {
+                                element = addFormIfNotFound(data, '<%=Encode.forJavaScript(String.valueOf(demo))%>', delegate);
+                            }
+                            if (element.length === 0) {
+                                return;
+                            }
+                            let oldType = element.attr("class").split(" ")[0];
+                            element.attr("checked", true).removeClass(oldType).addClass(oldType.split("_")[0] + "_pre_check");
 
                             // Expand list if selected lab is older version
                             if (element.attr('data-version')) {
                                 expandLabVersionList(element.parent().parent().parent().find('.collapse-arrow'));
                             }
                         });
+
+                        syncPreCheckedToDelegates($mainForm, true);
 
                         // Disable all EncounterForm (form) checkboxes in the attachment window if a consultation request is created using OceanMD.
                         if (typeof disableFields !== 'undefined' && disableFields === true) {
@@ -3213,34 +3372,40 @@ if (userAgent != null) {
                     beforeClose: function (event, ui) {
                         // before the dialog is closed:
 
+                        // warn on NEW (not pre-attached) private eDoc selections
+                        if (!confirmPrivateDocsIfAny('#attachDocumentsForm')) {
+                            return false;
+                        }
+
+                        // Cross-section dedupe: same docNo can render in patient + provider sections.
+                        var seenDelegates = {};
                         // pass the checked elements to the consultation request form
-                        jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
+                        jQuery('#attachDocumentsForm').find(".document_check:checked:not(input[disabled='disabled']), .providerPrivateDocument_check:checked:not(input[disabled='disabled']), .providerPublicDocument_check:checked:not(input[disabled='disabled']), .lab_check:checked:not(input[disabled='disabled']), .form_check:checked:not(input[disabled='disabled']), .eForm_check:checked:not(input[disabled='disabled']), .hrm_check:checked:not(input[disabled='disabled'])"
                         ).each(function (index, data) {
                             var element = jQuery(this);
-                            var input = jQuery("<input />", {
-                                type: 'hidden',
-                                name: element.attr('name'),
-                                value: element.val(),
-                                id: "delegate_" + element.attr('id'),
-                                class: 'delegateAttachment'
-                            });
+                            var key = element.attr('name') + "::" + element.val();
+                            if (seenDelegates[key]) return;
+                            seenDelegates[key] = true;
+                            var input = buildDelegateInput(element);
+                            // entry_ row id uses name+value (not checkbox id) so the three DOC sections share a row key.
                             var row = jQuery("<tr>", {id: "entry_" + element.attr("name") + element.val()});
                             var column = jQuery("<td>");
                             var target = "#attachedDocumentsTable";
 
-                            if ("lab_check".indexOf(element.attr("class")) !== -1) {
+                            // Route each item to its section by type class (boxes carry multiple classes, e.g. "lab_check attachable_check").
+                            if (element.hasClass("lab_check")) {
                                 target = "#attachedLabsTable";
                             }
 
-                            if ("form_check".indexOf(element.attr("class")) !== -1) {
+                            if (element.hasClass("form_check")) {
                                 target = "#attachedFormsTable";
                             }
 
-                            if ("eForm_check".indexOf(element.attr("class")) != -1) {
+                            if (element.hasClass("eForm_check")) {
                                 target = "#attachedEFormsTable";
                             }
 
-                            if ("hrm_check".indexOf(element.attr("class")) != -1) {
+                            if (element.hasClass("hrm_check")) {
                                 target = "#attachedHRMDocumentsTable";
                             }
                             column.text(element.attr("title"));
@@ -3251,13 +3416,15 @@ if (userAgent != null) {
                         });
 
                         // remove unchecked elements from the request form.
-                        jQuery('#attachDocumentsForm').find(".document_pre_check:not(input[disabled='disabled']), .lab_pre_check:not(input[disabled='disabled']), .form_pre_check:not(input[disabled='disabled']), .eForm_pre_check:not(input[disabled='disabled']), .hrm_pre_check:not(input[disabled='disabled'])").each(function (index, data) {
+                        jQuery('#attachDocumentsForm').find(".document_pre_check:not(input[disabled='disabled']), .providerPrivateDocument_pre_check:not(input[disabled='disabled']), .providerPublicDocument_pre_check:not(input[disabled='disabled']), .lab_pre_check:not(input[disabled='disabled']), .form_pre_check:not(input[disabled='disabled']), .eForm_pre_check:not(input[disabled='disabled']), .hrm_pre_check:not(input[disabled='disabled'])").each(function (index, data) {
                             var checkedElement = jQuery(this);
 
                             if (!checkedElement.is(':checked')) {
-                                var checkedElementClass = checkedElement.attr("class");
-                                $mainForm.find("#entry_" + checkedElement.attr("id")).remove();
-                                checkedElement.attr("class", checkedElementClass.split("_")[0] + "_check");
+                                var oldType = checkedElement.attr("class").split(" ")[0];
+                                $mainForm.find("#entry_" + checkedElement.attr("name") + checkedElement.val()).remove();
+                                checkedElement.removeClass(oldType).addClass(oldType.split("_")[0] + "_check");
+                                // Drop pre-attached so a subsequent re-check fires the private-doc warning.
+                                checkedElement.removeAttr("data-pre-attached");
                             }
                         });
 

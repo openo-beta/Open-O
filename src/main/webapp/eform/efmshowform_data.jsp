@@ -77,6 +77,9 @@
      */
     String fid = request.getParameter("fid");
     String fdid = StringUtils.isNullOrEmpty(request.getParameter("fdid")) ? ((String) request.getAttribute("fdid")) : request.getParameter("fdid");
+    // Validate numeric parameters to prevent injection
+    if (fid != null && !fid.matches("\\d+")) { fid = null; }
+    if (fdid != null && !fdid.matches("\\d+")) { fdid = null; }
     String messageOnFailure = "No eform or appointment is available";
     EForm eForm = null;
     if (fid == null) {  // form exists in patient
@@ -125,7 +128,6 @@
 
     eForm.addCSS(request.getContextPath() + "/library/jquery/jquery-ui-1.12.1.min.css", "all");
     eForm.addBodyJavascript(request.getContextPath() + "/eform/eformFloatingToolbar/eform_floating_toolbar.js");
-    eForm.addFontLibrary(request.getContextPath() + "/share/javascript/eforms/dejavufonts/ttf/DejaVuSans.ttf");
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
     eForm.addHiddenInputElement("context", request.getContextPath());

@@ -123,7 +123,7 @@ public class BpmhFormRetrieve2Action extends ActionSupport {
         bpmhFormHandler.populateFormBean();
 
         PDFController pdfController = new PDFController(ServletActionContext.getServletContext().getRealPath(BPMH_PDF_TEMPLATE));
-        pdfController.setOutputPath(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+        pdfController.setOutputPath(OscarProperties.getInstance().getDocumentDirectory());
         pdfController.writeDataToPDF(form, new String[]{"1"}, demographicNo + "");
 
         form.setEditDate(new Date());

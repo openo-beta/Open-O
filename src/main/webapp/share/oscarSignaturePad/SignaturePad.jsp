@@ -22,6 +22,7 @@
    Centre for Research on Inner City Health, St. Michael's Hospital,
    Toronto, Ontario, Canada
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <!DOCTYPE html>
@@ -84,9 +85,9 @@
         <button id="save" class="btn btn-outline-primary" disabled
                 onclick="saveSignature(
                         '<%=request.getContextPath() %>',
-                        '<%= requestIdKey %>',
-                        '<%= imageUrl %>',
-                        '<%= storedImageUrl %>',
+                        '<%=Encode.forHtml(String.valueOf(requestIdKey))%>',
+                        '<%=Encode.forHtml(String.valueOf(imageUrl))%>',
+                        '<%=Encode.forHtml(String.valueOf(storedImageUrl))%>',
                         );">Save
         </button>
     </div>
@@ -97,11 +98,11 @@
     <input type="hidden" id="signatureImage" name="signatureImage" value=""/>
     <input type="hidden" name="method" value="uploadSignature"/>
     <input type="hidden" name="source" value="IPAD"/>
-    <input type="hidden" name="<%=DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY %>" value="<%= requestIdKey %>"/>
-    <input type="hidden" name="demographicNo" value="<%= request.getParameter("demographicNo") %>"/>
+    <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(DigitalSignatureUtils.SIGNATURE_REQUEST_ID_KEY))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(requestIdKey))%>"/>
+    <input type="hidden" name="demographicNo" value="<%= Encode.forHtmlAttribute(request.getParameter("demographicNo")) %>"/>
     <input type="hidden" name=<%= ModuleType.class.getSimpleName()%>
-            value="<%= request.getParameter(ModuleType.class.getSimpleName()) %>"/>
-    <input type="hidden" name="saveToDB" value="<%=saveToDB%>"/>
+            value="<%=Encode.forHtmlAttribute(request.getParameter(ModuleType.class.getSimpleName()))%>"/>
+    <input type="hidden" name="saveToDB" value="<%=Encode.forHtmlAttribute(String.valueOf(saveToDB))%>"/>
 </form>
 </body>
 </html>

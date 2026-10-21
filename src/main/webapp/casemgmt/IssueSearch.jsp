@@ -28,6 +28,8 @@
 <%-- Updated by Eugene Petruhin on 08 jan 2009 while fixing #2482832 & #2494061 --%>
 
 <%@ page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -59,7 +61,7 @@
 
 <body>
 <form action="<%= request.getContextPath() %>/CaseManagementEntry.do">
-    <c:url value="/casemgmt/CaseManagementEntry.jsp?demographicNo=${param.demographicNo}&providerNo=${param.providerNo}&demoName=${requestScope.demoName}&demoAge=${requestScope.demoAge}&demoDOB=${requestScope.demoDOB}"
+    <c:url value="/casemgmt/CaseManagementEntry.jsp?demographicNo=${e:forHtmlAttribute(param.demographicNo)}&providerNo=${e:forHtmlAttribute(param.providerNo)}&demoName=${requestScope.demoName}&demoAge=${requestScope.demoAge}&demoDOB=${requestScope.demoDOB}"
            var="url"/>
     <script type="text/javascript">
         function backToNote(from) {

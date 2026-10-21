@@ -47,6 +47,7 @@
 <%@page import="ca.openosp.openo.billing.CA.BC.model.Wcb" %>
 <%@page import="ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO" %>
 <%@page import="ca.openosp.openo.entities.Billingmaster" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     BillingServiceDao billingServiceDao = SpringUtils.getBean(BillingServiceDao.class);
     WcbDao wcbDao = SpringUtils.getBean(WcbDao.class);
@@ -116,21 +117,21 @@
 
 %>
 
-ID= <%=wcbId%> &nbsp;&nbsp;
-Amount= <%=bill_amount%> &nbsp;&nbsp;
-DOB= <%=dob%> &nbsp;&nbsp;
+ID= <%=Encode.forHtml(String.valueOf(wcbId))%> &nbsp;&nbsp;
+Amount= <%=Encode.forHtml(String.valueOf(bill_amount))%> &nbsp;&nbsp;
+DOB= <%=Encode.forHtml(String.valueOf(dob))%> &nbsp;&nbsp;
 
-Service Date= <%=w_servicedate%> &nbsp;&nbsp;
-icd9= <%=w_icd9%> &nbsp;&nbsp;
-payee= <%=w_payeeno%> &nbsp;&nbsp;
+Service Date= <%=Encode.forHtml(String.valueOf(w_servicedate))%> &nbsp;&nbsp;
+icd9= <%=Encode.forHtml(String.valueOf(w_icd9))%> &nbsp;&nbsp;
+payee= <%=Encode.forHtml(String.valueOf(w_payeeno))%> &nbsp;&nbsp;
 
-prac= <%=w_pracno%> &nbsp;&nbsp;
-fee= <%=feeItem%> &nbsp;&nbsp;
-location= <%=sLocation%> &nbsp;&nbsp;
-billing_no = <%=billingNo%> &nbsp;&nbsp;
-billingmaster_no= <%=billingmaster%> &nbsp;&nbsp;
+prac= <%=Encode.forHtml(String.valueOf(w_pracno))%> &nbsp;&nbsp;
+fee= <%=Encode.forHtml(String.valueOf(feeItem))%> &nbsp;&nbsp;
+location= <%=Encode.forHtml(String.valueOf(sLocation))%> &nbsp;&nbsp;
+billing_no = <%=Encode.forHtml(String.valueOf(billingNo))%> &nbsp;&nbsp;
+billingmaster_no= <%=Encode.forHtml(String.valueOf(billingmaster))%> &nbsp;&nbsp;
 
-<%=inResult%>
+<%=Encode.forHtml(String.valueOf(inResult))%>
 <br>
 <%
             }

@@ -34,6 +34,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String curProvider_no, userfirstname, userlastname;
     curProvider_no = (String) session.getAttribute("user");
@@ -107,7 +108,7 @@
                     <td width="50%" align="right"><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.add_lot_nr.prevention"/><font color="red">:</font></td>
                     <td>
                         <input type="text" name="prevention" size=30 maxlength="30"
-                               value="<%=request.getParameter("prevention")==null?"":request.getParameter("prevention")%>">
+                               value="<%=Encode.forHtmlAttribute(request.getParameter("prevention")==null?"":request.getParameter("prevention"))%>">
                     </td>
                 </tr>
 
@@ -116,7 +117,7 @@
                     </td>
                     <td><input type="text" name="lotnr" size="20"
                                maxlength="20"
-                               value="<%=request.getParameter("lotnr")==null?"":request.getParameter("lotnr")%>"></td>
+                               value="<%=Encode.forHtmlAttribute(request.getParameter("lotnr")==null?"":request.getParameter("lotnr"))%>"></td>
                 </tr>
 
                 <tr>

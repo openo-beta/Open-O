@@ -28,6 +28,7 @@
 
 <%@ page import="ca.openosp.openo.providers.data.*" %>
 <%@ page import="ca.openosp.openo.providers.data.ProviderColourUpdater" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -95,7 +96,7 @@
 
                 %>
                 <form action="${pageContext.request.contextPath}/setProviderColour.do" method="post">
-                <input type="hidden" name="colour" id="colour" value="<%=colour%>"/>
+                <input type="hidden" name="colour" id="colour" value="<%=Encode.forHtmlAttribute(String.valueOf(colour))%>"/>
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setColour.msgEdit"/>
                 <a href="javascript:TCP.popup(document.forms[0].elements['colour'])"><img
                         width="15" height="13" border="0" src="<%= request.getContextPath() %>/images/sel.gif"></a>

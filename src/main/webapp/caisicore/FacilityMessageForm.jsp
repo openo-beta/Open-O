@@ -37,6 +37,7 @@
 %>
 
 <%@page import="java.util.Calendar" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -80,7 +81,7 @@
                 int day = rightNow.get(Calendar.DAY_OF_MONTH);
                 String formattedDate = year + "-" + month + "-" + day;
             %> <a href="#"
-                  onClick="openBrWindow('calendar/oscarCalendarPopup.jsp?type=caisi&openerForm=facilityMessageForm&amp;openerElement=facility_message.expiry_day&amp;year=<%=year %>&amp;month=<%=month %>','','width=300,height=300')"><img
+                  onClick="openBrWindow('calendar/oscarCalendarPopup.jsp?type=caisi&openerForm=facilityMessageForm&amp;openerElement=facility_message.expiry_day&amp;year=<%=Encode.forUriComponent(String.valueOf(year))%>&amp;month=<%=Encode.forUriComponent(String.valueOf(month))%>','','width=300,height=300')"><img
                     border="0" src="images/calendar.jpg"/></a></td>
             <td></td>
         </tr>
@@ -89,13 +90,13 @@
             <td class="fieldValue">Hour: <select
                     name="expiry_hour">
                 <%for (int x = 1; x < 24; x++) { %>
-                <option value="<%=String.valueOf(x) %>"><%=x %>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(String.valueOf(x)))%>"><%=x %>
                 </option>
                 <% } %>
             </select> &nbsp;&nbsp; Minute: <select
                     name="expiry_minute">
                 <%for (int x = 0; x < 60; x++) {%>
-                <option value="<%=String.valueOf(x) %>"><%=x %>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(String.valueOf(x)))%>"><%=x %>
                 </option>
                 <% } %>
             </select></td>

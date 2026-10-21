@@ -32,6 +32,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.MyGroup" %>
 <%@ page import="ca.openosp.openo.commn.dao.MyGroupDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     MyGroupDao dao = SpringUtils.getBean(MyGroupDao.class);
@@ -95,12 +96,12 @@
                             %>
                             <tr BGCOLOR="<%=bNewNo?"white":"ivory"%>">
                                 <td width="10%" align="center"><input type="checkbox"
-                                                                      name="<%=groupNo+myGroup.getId().getProviderNo()%>"
-                                                                      value="<%=groupNo%>"></td>
-                                <td ALIGN="center"><font face="arial"><%=groupNo%>
+                                                                      name="<%=Encode.forHtmlAttribute(String.valueOf(groupNo+myGroup.getId().getProviderNo()))%>"
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(groupNo))%>"></td>
+                                <td ALIGN="center"><font face="arial"><%=Encode.forHtml(String.valueOf(groupNo))%>
                                 </font></td>
                                 <td ALIGN="center"><font
-                                        face="arial"><%=myGroup.getLastName() + ", " + myGroup.getFirstName()%>
+                                        face="arial"><%=Encode.forHtml(String.valueOf(myGroup.getLastName() + ", " + myGroup.getFirstName()))%>
                                 </font>
                                 </td>
                             </tr>

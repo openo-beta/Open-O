@@ -27,6 +27,8 @@
 package ca.openosp.openo.eform.actions;
 
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -38,10 +40,10 @@ import ca.openosp.openo.eform.data.EFormBase;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
-public class HtmlEdit2Action extends ActionSupport {
+public class HtmlEdit2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -112,7 +114,7 @@ public class HtmlEdit2Action extends ActionSupport {
         return curht;
     }
 
-    private File uploadFile;
+    private UploadedFile uploadFile;
     private String fid = "";
     private String formName = "";
     private String formSubject = "";
@@ -122,12 +124,11 @@ public class HtmlEdit2Action extends ActionSupport {
     private boolean patientIndependent = false;
     private String roleType = "";
 
-    public File getUploadFile() {
-        return uploadFile;
-    }
-
-    public void setUploadFile(File uploadFile) {
-        this.uploadFile = uploadFile;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.uploadFile = uploadedFiles.get(0);
+        }
     }
 
     public String getFid() {

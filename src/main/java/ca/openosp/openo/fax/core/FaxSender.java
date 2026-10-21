@@ -70,7 +70,7 @@ public class FaxSender {
 
         WebClient client;
 
-        String document_dir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String document_dir = OscarProperties.getInstance().getDocumentDirectory();
 
         for (FaxConfig faxConfig : faxConfigList) {
             if (faxConfig.isActive()) {

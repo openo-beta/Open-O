@@ -40,6 +40,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.CtlDiagCodeDao" %>
 <%@ page import="ca.openosp.openo.commn.model.CtlBillingServicePremium" %>
 <%@ page import="ca.openosp.openo.commn.dao.CtlBillingServicePremiumDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     CtlBillingServiceDao ctlBillingServiceDao = SpringUtils.getBean(CtlBillingServiceDao.class);
     CtlDiagCodeDao ctlDiagCodeDao = SpringUtils.getBean(CtlDiagCodeDao.class);
@@ -158,8 +159,8 @@
                                 formID = cbs.getServiceType();
 
                         %>
-                        <option value="<%=formID%>"
-                                <%=clinicview.equals(formID) ? "selected" : ""%>><%=formDesc%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(formID))%>"
+                                <%=clinicview.equals(formID) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(formDesc))%>
                         </option>
                         <%
                             }

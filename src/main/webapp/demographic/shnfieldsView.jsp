@@ -43,6 +43,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DemographicExtDao" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="org.apache.commons.lang3.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String demographic_no = request.getParameter("demo");
@@ -54,7 +55,7 @@
     h.put("1", "Has Given Consent");
     h.put("2", "Has Refused Consent");
 %>
-<li>Consent: <b><%=getText(h, StringUtils.trimToEmpty(demoExt.get("given_consent")))%>
+<li>Consent: <b><%=Encode.forHtml(String.valueOf(getText(h, StringUtils.trimToEmpty(demoExt.get("given_consent")))))%>
 </b>
 </li>
 

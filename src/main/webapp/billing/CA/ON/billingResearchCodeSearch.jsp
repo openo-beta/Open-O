@@ -24,6 +24,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.Ichppccode" %>
 <%@ page import="ca.openosp.openo.commn.dao.IchppccodeDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     IchppccodeDao ichppccodeDao = SpringUtils.getBean(IchppccodeDao.class);
@@ -128,12 +129,12 @@
                 }
         %>
 
-        <tr bgcolor="<%=color%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
             <td width="12%"><font face="Arial, Helvetica, sans-serif"
-                                  size="2"><input type="checkbox" name="code_<%=Dcode%>"><%=Dcode%>
+                                  size="2"><input type="checkbox" name="code_<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"><%=Encode.forHtml(String.valueOf(Dcode))%>
             </font></td>
             <td width="88%"><font face="Arial, Helvetica, sans-serif"
-                                  size="2"><%=DcodeDesc%>
+                                  size="2"><%=Encode.forHtml(String.valueOf(DcodeDesc))%>
             </font></td>
         </tr>
         <%
@@ -141,7 +142,7 @@
         %>
 
         <% if (intCount == 0) { %>
-        <tr bgcolor="<%=color%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
             <td colspan="2"><font face="Arial, Helvetica, sans-serif"
                                   size="2">No match found. <%// =i%>
             </font></td>
@@ -152,7 +153,7 @@
         <% if (intCount == 1) { %>
         <script LANGUAGE="JavaScript">
             <!--
-            CodeAttach('<%=Dcode%>');
+            CodeAttach('<%=Encode.forJavaScript(String.valueOf(Dcode))%>');
             -->
 
         </script>

@@ -50,6 +50,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String formClass = "DischargeSummary";
     String formLink = "formDischargeSummary.jsp";
@@ -98,7 +99,7 @@
 
         function reset() {
             document.forms[0].target = "apptProviderSearch";
-            document.forms[0].action = "/<%=project_home%>/form/formname.do";
+            document.forms[0].action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
         }
 
         function onPrint() {
@@ -327,21 +328,21 @@
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr width="100%">
-            <td align="left"><b>Client Name:</b> <%= props.getProperty("clientName", "") %>
+            <td align="left"><b>Client Name:</b> <%=Encode.forHtml(String.valueOf(props.getProperty("clientName", "")))%>
             </td>
-            <td align="left"><b>DOB<small>(yyyy/mm/dd)</small>: </b> <%= props.getProperty("birthDate", "") %>
+            <td align="left"><b>DOB<small>(yyyy/mm/dd)</small>: </b> <%=Encode.forHtml(String.valueOf(props.getProperty("birthDate", "")))%>
             </td>
-            <td align="left"><b>OHIP#: </b> <%= props.getProperty("ohip", "") %>
+            <td align="left"><b>OHIP#: </b> <%=Encode.forHtml(String.valueOf(props.getProperty("ohip", "")))%>
             </td>
         </tr>
 
         <tr width="100%">
-            <td align="left"><b>Admit Date:</b> <%= props.getProperty("admitDate", "") %>
+            <td align="left"><b>Admit Date:</b> <%=Encode.forHtml(String.valueOf(props.getProperty("admitDate", "")))%>
             </td>
             <td align="left"><b>Discharge Date<small>(yyyy/mm/dd):</small>
-            </b> <%= props.getProperty("dischargeDate", "") %>
+            </b> <%=Encode.forHtml(String.valueOf(props.getProperty("dischargeDate", "")))%>
             </td>
-            <td align="left"><b>Allergies: </b> <%= props.getProperty("allergies", "") %>
+            <td align="left"><b>Allergies: </b> <%=Encode.forHtml(String.valueOf(props.getProperty("allergies", "")))%>
             </td>
     </table>
     <br>
@@ -350,7 +351,7 @@
             <th align="left">Admitting Diagnosis/Primary Diagnosis:</th>
         </tr>
         <tr>
-            <td><%= props.getProperty("admissionNotes", "") %>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("admissionNotes", "")))%>
             </td>
         </tr>
         <tr>
@@ -360,7 +361,7 @@
             <th align="left">Problem List:</th>
         </tr>
         <tr>
-            <td><%= props.getProperty("currentIssues", "") %>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("currentIssues", "")))%>
             </td>
         </tr>
         <tr>
@@ -372,7 +373,7 @@
             </th>
         </tr>
         <tr>
-            <td><%= props.getProperty("briefSummary", "") %>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("briefSummary", "")))%>
             </td>
         </tr>
         <tr>
@@ -384,7 +385,7 @@
             </th>
         </tr>
         <tr>
-            <td><%= props.getProperty("dischargePlan", "") %>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("dischargePlan", "")))%>
             </td>
         </tr>
         <tr>
@@ -405,28 +406,28 @@
             <th>Location</th>
         </tr>
         <tr>
-            <td><%= props.getProperty("doctor1", "") %>&nbsp;</td>
-            <td><%= props.getProperty("phoneNumber1", "") %> &nbsp;</td>
-            <td><%= props.getProperty("date1", "") %>&nbsp;</td>
-            <td><%= props.getProperty("location1", "") %>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("doctor1", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("phoneNumber1", "")))%> &nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("date1", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("location1", "")))%>&nbsp;</td>
         </tr>
         <tr>
-            <td><%= props.getProperty("doctor2", "") %>&nbsp;</td>
-            <td><%= props.getProperty("phoneNumber2", "") %>&nbsp;</td>
-            <td><%= props.getProperty("date2", "") %>&nbsp;</td>
-            <td><%= props.getProperty("location2", "") %>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("doctor2", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("phoneNumber2", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("date2", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("location2", "")))%>&nbsp;</td>
         </tr>
         <tr>
-            <td><%= props.getProperty("doctor3", "") %>&nbsp;</td>
-            <td><%= props.getProperty("phoneNumber3", "") %>&nbsp;</td>
-            <td><%= props.getProperty("date3", "") %>&nbsp;</td>
-            <td><%= props.getProperty("location3", "") %>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("doctor3", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("phoneNumber3", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("date3", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("location3", "")))%>&nbsp;</td>
         </tr>
         <tr>
-            <td><%= props.getProperty("doctor4", "") %>&nbsp;</td>
-            <td><%= props.getProperty("phoneNumber4", "") %>&nbsp;</td>
-            <td><%= props.getProperty("date4", "") %>&nbsp;</td>
-            <td><%= props.getProperty("location4", "") %>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("doctor4", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("phoneNumber4", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("date4", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("location4", "")))%>&nbsp;</td>
         </tr>
     </table>
     <br>
@@ -473,7 +474,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3"><%= props.getProperty("changeMedications", "") %>
+                        <td colspan="3"><%=Encode.forHtml(String.valueOf(props.getProperty("changeMedications", "")))%>
                         <td>
                     </tr>
                 </table>
@@ -494,29 +495,29 @@
             <th>Outcome</th>
         </tr>
         <tr>
-            <td><%= props.getProperty("referralProgram1", "") %>&nbsp;</td>
-            <td><%= props.getProperty("referralMade1", "") %>&nbsp;</td>
-            <td><%= props.getProperty("referralOutcome1", "") %>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralProgram1", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralMade1", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralOutcome1", "")))%>&nbsp;</td>
         </tr>
         <tr>
-            <td><%= props.getProperty("referralProgram2", "") %>&nbsp;</td>
-            <td><%= props.getProperty("referralMade2", "") %>&nbsp;</td>
-            <td><%= props.getProperty("referralOutcome2", "") %>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralProgram2", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralMade2", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralOutcome2", "")))%>&nbsp;</td>
         </tr>
         <tr>
-            <td><%= props.getProperty("referralProgram3", "") %>&nbsp;</td>
-            <td><%= props.getProperty("referralMade3", "") %>&nbsp;</td>
-            <td><%= props.getProperty("referralOutcome3", "") %>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralProgram3", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralMade3", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralOutcome3", "")))%>&nbsp;</td>
         </tr>
         <tr>
-            <td><%= props.getProperty("referralProgram4", "") %>&nbsp;</td>
-            <td><%= props.getProperty("referralMade4", "") %>&nbsp;</td>
-            <td><%= props.getProperty("referralOutcome4", "") %>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralProgram4", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralMade4", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralOutcome4", "")))%>&nbsp;</td>
         </tr>
         <tr>
-            <td><%= props.getProperty("referralProgram5", "") %>&nbsp;</td>
-            <td><%= props.getProperty("referralMade5", "") %>&nbsp;</td>
-            <td><%= props.getProperty("referralOutcome5", "") %>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralProgram5", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralMade5", "")))%>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("referralOutcome5", "")))%>&nbsp;</td>
         </tr>
     </table>
 
@@ -527,7 +528,7 @@
             <th align="left">Notes:</th>
         </tr>
         <tr>
-            <td><%= props.getProperty("notes", "") %>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("notes", "")))%>
             </td>
         </tr>
     </table>
@@ -535,15 +536,15 @@
     <table>
         <tr>
             <th align="left">Infirmary Health Care Provider:</th>
-            <td><%= props.getProperty("providerName", "") %>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("providerName", "")))%>&nbsp;</td>
         </tr>
         <tr>
             <th align="left">Provider's Signature:</th>
-            <td><%= props.getProperty("signature", "") %>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("signature", "")))%>&nbsp;</td>
         </tr>
         <tr>
             <th align="left">Date(yyyy/mm/dd):</th>
-            <td><%= props.getProperty("signatureDate", "") %>&nbsp;</td>
+            <td><%=Encode.forHtml(String.valueOf(props.getProperty("signatureDate", "")))%>&nbsp;</td>
         </tr>
     </table>
     <br>

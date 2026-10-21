@@ -35,6 +35,7 @@
 <%@ page import="ca.openosp.openo.billing.CA.ON.dao.BillingPercLimitDao" %>
 <%@ page import="ca.openosp.openo.util.StringUtils" %>
 <%@ page import="ca.openosp.MyDateFormat" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     BillingServiceDao billingServiceDao = SpringUtils.getBean(BillingServiceDao.class);
     BillingPercLimitDao billingPercLimitDao = SpringUtils.getBean(BillingPercLimitDao.class);
@@ -71,7 +72,7 @@
                     if (bsList.size() >= 0) {
                         bs = bsList.get(0);
                     } else {
-                        msg = serviceCode + " is not updated. Action failed! Try edit it again.";
+                        msg = Encode.forHtmlContent(serviceCode) + " is not updated. Action failed! Try edit it again.";
                         action = "search";
                         alert = "error";
                     }
@@ -116,12 +117,12 @@
                     }
 
                     billingServiceDao.merge(bs);
-                    msg = serviceCode + " is updated.<br>" + "Type in a service code and search first to see if it is available.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is updated.<br>" + "Type in a service code and search first to see if it is available.";
                     alert = "success";
                     action = "search";
                     prop.setProperty("service_code", serviceCode);
                 } else {
-                    msg = serviceCode + " is not updated. Action failed! Try edit it again.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is not updated. Action failed! Try edit it again.";
                     alert = "error";
                     action = "edit" + serviceCode;
                     prop.setProperty("service_code", serviceCode);
@@ -133,7 +134,7 @@
                 }
 
             } else {
-                msg = "You can not save the service code - " + serviceCode + ". Please search the service code first.";
+                msg = "You can not save the service code - " + Encode.forHtmlContent(serviceCode) + ". Please search the service code first.";
                 alert = "error";
                 action = "search";
                 prop.setProperty("service_code", serviceCode);
@@ -190,14 +191,14 @@
                 } else {
                     billingServiceDao.persist(bs);
 
-                    msg = serviceCode + " is added.<br>" + "Type in a service code and search first to see if it is available.";
+                    msg = Encode.forHtmlContent(serviceCode) + " is added.<br>" + "Type in a service code and search first to see if it is available.";
                     alert = "success";
                     action = "search";
                     prop.setProperty("service_code", serviceCode);
                 }
 
             } else {
-                msg = "You can not save the service code - " + serviceCode + ". Please search the service code first.";
+                msg = "You can not save the service code - " + Encode.forHtmlContent(serviceCode) + ". Please search the service code first.";
                 alert = "error";
                 action = "search";
                 prop.setProperty("service_code", serviceCode);
@@ -454,7 +455,7 @@
 
     <div class="container-fluid well">
 
-        <div class="alert alert-<%=alert%>">
+        <div class="alert alert-<%=Encode.forHtmlAttribute(String.valueOf(alert))%>">
             <%=msg%>
         </div>
 
@@ -463,7 +464,7 @@
             <div class="span10">
                 Service Code <small>5 Characters, e.g. A001A</small><br>
                 <div class="input-append">
-                    <input type="text" name="service_code" value="<%=prop.getProperty("service_code", "")%>"
+                    <input type="text" name="service_code" value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("service_code", "")))%>"
                            class="span2" maxlength='5' onblur="upCaseCtrl(this)"/>
                     <button class="btn btn-primary" type="submit" name="submitFrm" value="Search"
                             onclick="javascript:return onSearch();">Search
@@ -482,7 +483,7 @@
                         while (i.hasNext()) {
                             date = i.next();
                     %>
-                    <option value="<%=codes.get(date)%>" <%=prop.getProperty("billingservice_date", "").equalsIgnoreCase(date) ? "selected" : ""%>><%=date%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(codes.get(date)))%>" <%=prop.getProperty("billingservice_date", "").equalsIgnoreCase(date) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(date))%>
                                 <%}%>
                 </select>
 
@@ -492,7 +493,7 @@
 
             <div class="span10">
                 Description <small>50 Characters</small><br>
-                <textarea name="description" class="span6"><%=prop.getProperty("description", "")%></textarea>
+                <textarea name="description" class="span6"><%=Encode.forHtml(String.valueOf(prop.getProperty("description", "")))%></textarea>
             </div>
 
             <div class="span10">
@@ -503,7 +504,7 @@
                     <%
                         for (CssStyle cssStyle : styles) {
                     %>
-                    <option value="<%=cssStyle.getId()+","+cssStyle.getStyle()%>" <%=prop.getProperty("displaystyle", "").equals(cssStyle.getId().toString()) ? "selected" : ""%>><%=cssStyle.getName()%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(cssStyle.getId()+","+cssStyle.getStyle()))%>" <%=prop.getProperty("displaystyle", "").equals(cssStyle.getId().toString()) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(cssStyle.getName()))%>
                     </option>
                     <%
                         }
@@ -516,23 +517,23 @@
 
             <div class="span2">
                 Fee <small> e.g. 18.20</small><br>
-                <input type="text" name="value" value="<%=prop.getProperty("value", "")%>" size='8' maxlength='8'
+                <input type="text" name="value" value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("value", "")))%>" size='8' maxlength='8'
                        pattern="\d+(\.\d{2})?"><br/>
             </div>
 
             <div class="span6">
                 Percentage <small> e.g. 0.20</small><br>
-                <input type="text" name="percentage" value="<%=prop.getProperty("percentage", "")%>" size='8'
+                <input type="text" name="percentage" value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("percentage", "")))%>" size='8'
                        maxlength='8'>
-                min.<input type="text" name="min" value="<%=prop.getProperty("min", "")%>" size='7' maxlength='8'>
-                max.<input type="text" name="max" value="<%=prop.getProperty("max", "")%>" size='7' maxlength='8'>
+                min.<input type="text" name="min" value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("min", "")))%>" size='7' maxlength='8'>
+                max.<input type="text" name="max" value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("max", "")))%>" size='7' maxlength='8'>
             </div>
 
             <div class="span2">
                 <label>Issued Date</label>
                 <div class="input-append">
                     <input type="text" name="billingservice_date" id="billingservice_date"
-                           value="<%=prop.getProperty("billingservice_date", "")%>"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("billingservice_date", "")))%>"
                            pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off"/>
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
@@ -542,7 +543,7 @@
                 <label>Termination Date</label>
                 <div class="input-append">
                     <input type="text" name="termination_date" id="termination_date"
-                           value="<%=prop.getProperty("termination_date", "9999-12-31")%>"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(prop.getProperty("termination_date", "9999-12-31")))%>"
                            pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off"/>
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
@@ -562,14 +563,14 @@
                 <input type="hidden" id="action" name="action" value=''> <input class="btn" type="submit"
                                                                                 name="submitFrm"
                                                                                 value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
-                                                                                onclick="document.getElementById('action').value='<%=action%>';return onSave();">
+                                                                                onclick="document.getElementById('action').value='<%=Encode.forJavaScript(String.valueOf(action))%>';return onSave();">
 
                 <%
                     if (!action2.equals("")) {
                 %>
                 <input class="btn" type="submit" name="submitFrm"
                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnAdd"/>"
-                       onclick="document.getElementById('action').value='<%=action2%>';return onSave();">
+                       onclick="document.getElementById('action').value='<%=Encode.forJavaScript(String.valueOf(action2))%>';return onSave();">
                 <%}%>
             </div>
 

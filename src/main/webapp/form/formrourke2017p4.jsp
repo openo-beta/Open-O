@@ -113,11 +113,11 @@
         <td align="center" nowrap="true" width="100%">
             <% if (formId > 0) { %>
             <a name="length" href="#"
-               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2017&__title=Baby+Growth+Graph1&__cfgfile=<%=growthCharts[0]%>&demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>','<%= "growth1" + demoNo %>');return false;">
+               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2017&__title=Baby+Growth+Graph1&__cfgfile=<%=Encode.forUriComponent(String.valueOf(growthCharts[0]))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>','<%=Encode.forJavaScript(String.valueOf("growth1" + demoNo))%>');return false;">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphLenghtWeight"/>
             </a><br>
             <a name="headCirc" href="#"
-               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2017&__title=Baby+Head+Circumference&__cfgfile=<%=growthCharts[1]%>&demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>','<%= "growth2" + demoNo %>');return false;">
+               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2017&__title=Baby+Head+Circumference&__cfgfile=<%=Encode.forUriComponent(String.valueOf(growthCharts[1]))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>','<%=Encode.forJavaScript(String.valueOf("growth2" + demoNo))%>');return false;">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphHead"/>
             </a> <% } else { %>
             &nbsp; <% } %>
@@ -134,7 +134,7 @@
     <input type="text" maxlength="60" size="30" value="<%= Encode.forHtmlAttribute(props.getProperty("c_pName", "")) %>"
            readonly="true"/>
     &nbsp;&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.msgBirthDate"/> (d/m/yyyy):
-    <input type="text" id="c_birthDate4" size="10" maxlength="10" value="<%= props.getProperty("c_birthDate", "") %>"
+    <input type="text" id="c_birthDate4" size="10" maxlength="10" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("c_birthDate", "")))%>"
            readonly="true"/>
     &nbsp;&nbsp;
     Age: <input type="text" id="currentAge4" size="10" maxlength="10" readonly="true" ondblclick="calcAge();"/>
@@ -170,15 +170,15 @@
     <tr align="center" id="growthAp4">
         <td>
             <a href="javascript:void(0)"
-               onclick="displayDemographicMeasurements('p4_ht18m', 'HT', '<%=demographic.getDemographicNo()%>',
-                       '<%=demographic.getFormattedDob()%>', '<%=appointmentNo%>')">
+               onclick="displayDemographicMeasurements('p4_ht18m', 'HT', '<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>',
+                       '<%=Encode.forHtml(String.valueOf(demographic.getFormattedDob()))%>', '<%=Encode.forHtml(String.valueOf(appointmentNo))%>')">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formHt"/>
             </a>
         </td>
         <td>
             <a href="javascript:void(0)"
-               onclick="displayDemographicMeasurements('p4_wt18m', 'WT', '<%=demographic.getDemographicNo()%>',
-                       '<%=demographic.getFormattedDob()%>', '<%=appointmentNo%>')">
+               onclick="displayDemographicMeasurements('p4_wt18m', 'WT', '<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>',
+                       '<%=Encode.forHtml(String.valueOf(demographic.getFormattedDob()))%>', '<%=Encode.forHtml(String.valueOf(appointmentNo))%>')">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formWt"/>
             </a>
         </td>
@@ -187,15 +187,15 @@
         </td>
         <td>
             <a href="javascript:void(0)"
-               onclick="displayDemographicMeasurements('p4_ht24m', 'HT', '<%=demographic.getDemographicNo()%>',
-                       '<%=demographic.getFormattedDob()%>', '<%=appointmentNo%>')">
+               onclick="displayDemographicMeasurements('p4_ht24m', 'HT', '<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>',
+                       '<%=Encode.forHtml(String.valueOf(demographic.getFormattedDob()))%>', '<%=Encode.forHtml(String.valueOf(appointmentNo))%>')">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formHt"/>
             </a>
         </td>
         <td>
             <a href="javascript:void(0)"
-               onclick="displayDemographicMeasurements('p4_wt24m', 'WT', '<%=demographic.getDemographicNo()%>',
-                       '<%=demographic.getFormattedDob()%>', '<%=appointmentNo%>')">
+               onclick="displayDemographicMeasurements('p4_wt24m', 'WT', '<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>',
+                       '<%=Encode.forHtml(String.valueOf(demographic.getFormattedDob()))%>', '<%=Encode.forHtml(String.valueOf(appointmentNo))%>')">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formWt"/>
             </a>
         </td>
@@ -207,15 +207,15 @@
         </td>
         <td>
             <a href="javascript:void(0)"
-               onclick="displayDemographicMeasurements('p4_ht48m', 'HT', '<%=demographic.getDemographicNo()%>',
-                       '<%=demographic.getFormattedDob()%>', '<%=appointmentNo%>')">
+               onclick="displayDemographicMeasurements('p4_ht48m', 'HT', '<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>',
+                       '<%=Encode.forHtml(String.valueOf(demographic.getFormattedDob()))%>', '<%=Encode.forHtml(String.valueOf(appointmentNo))%>')">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formHt"/>
             </a>
         </td>
         <td>
             <a href="javascript:void(0)"
-               onclick="displayDemographicMeasurements('p4_wt48m', 'WT', '<%=demographic.getDemographicNo()%>',
-                       '<%=demographic.getFormattedDob()%>', '<%=appointmentNo%>')">
+               onclick="displayDemographicMeasurements('p4_wt48m', 'WT', '<%=Encode.forJavaScript(String.valueOf(demographic.getDemographicNo()))%>',
+                       '<%=Encode.forHtml(String.valueOf(demographic.getFormattedDob()))%>', '<%=Encode.forHtml(String.valueOf(appointmentNo))%>')">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formWt"/>
             </a>
         </td>
@@ -229,52 +229,52 @@
     <tr align="center" id="growthBp4">
         <td>
             <input type="text" class="wide" ondblclick="htEnglish2Metric(this)" name="p4_ht18m" id="p4_ht18m" size="4"
-                   maxlength="5" value="<%= props.getProperty("p4_ht18m", "") %>"/>
+                   maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p4_ht18m", "")))%>"/>
         </td>
         <td>
             <input type="text" class="wide" ondblclick="wtEnglish2Metric(this)" name="p4_wt18m" id="p4_wt18m" size="4"
-                   maxlength="5" value="<%= props.getProperty("p4_wt18m", "") %>"/>
+                   maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p4_wt18m", "")))%>"/>
         </td>
         <td>
             <input type="text" class="wide" ondblclick="htEnglish2Metric(this)" name="p4_hc18m" size="4" maxlength="5"
-                   value="<%= props.getProperty("p4_hc18m", "") %>"/>
+                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p4_hc18m", "")))%>"/>
         </td>
         <td>
             <input type="text" class="wide" ondblclick="htEnglish2Metric(this)" name="p4_ht24m" id="p4_ht24m" size="4"
-                   maxlength="5" value="<%= props.getProperty("p4_ht24m", "") %>"/>
+                   maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p4_ht24m", "")))%>"/>
         </td>
         <td>
             <input type="text" class="wide" ondblclick="wtEnglish2Metric(this);" name="p4_wt24m" id="p4_wt24m" size="4"
-                   maxlength="5" value="<%= props.getProperty("p4_wt24m", "") %>"/>
+                   maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p4_wt24m", "")))%>"/>
         </td>
         <td>
             <input type="text" class="wide" ondblclick="htEnglish2Metric(this)" name="p4_hc24m" size="4" maxlength="5"
-                   value="<%= props.getProperty("p4_hc24m", "") %>"/>
+                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p4_hc24m", "")))%>"/>
         </td>
         <td>
             <input type="text" class="wide" ondblclick="htEnglish2Metric(this)" name="p4_bmi24m" size="4" maxlength="5"
-                   value="<%= props.getProperty("p4_bmi24m", "") %>"/>
+                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p4_bmi24m", "")))%>"/>
         </td>
         <td>
             <input type="text" class="wide" ondblclick="htEnglish2Metric(this);" name="p4_ht48m" id="p4_ht48m" size="4"
-                   maxlength="5" value="<%= props.getProperty("p4_ht48m", "") %>"/>
+                   maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p4_ht48m", "")))%>"/>
         </td>
         <td>
             <input type="text" class="wide" ondblclick="wtEnglish2Metric(this);" name="p4_wt48m" id="p4_wt48m" size="4"
-                   maxlength="5" value="<%= props.getProperty("p4_wt48m", "") %>"/>
+                   maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p4_wt48m", "")))%>"/>
         </td>
         <td>
             <input type="text" class="wide" ondblclick="htEnglish2Metric(this);" name="p4_bmi48m" size="4" maxlength="5"
-                   value="<%= props.getProperty("p4_bmi48m", "") %>"/>
+                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p4_bmi48m", "")))%>"/>
         </td>
     </tr>
     <tr align="center">
         <td colspan="3"><textarea id="p4_pConcern18m" name="p4_pConcern18m" class="wide limit-rows" cols="10" rows="5"
-                                  maxlength="450"><%= props.getProperty("p4_pConcern18m", "") %></textarea></td>
+                                  maxlength="450"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_pConcern18m", "")))%></textarea></td>
         <td colspan="4"><textarea id="p4_pConcern24m" name="p4_pConcern24m" class="wide limit-rows" cols="10" rows="5"
-                                  maxlength="450"><%= props.getProperty("p4_pConcern24m", "") %></textarea></td>
+                                  maxlength="450"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_pConcern24m", "")))%></textarea></td>
         <td colspan="3"><textarea id="p4_pConcern48m" name="p4_pConcern48m" class="wide limit-rows" cols="10" rows="5"
-                                  maxlength="450"><%= props.getProperty("p4_pConcern48m", "") %></textarea></td>
+                                  maxlength="450"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_pConcern48m", "")))%></textarea></td>
         <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2017.msgParentConcerns"/></a></td>
     </tr>
     <tr align="center" id="nutritionp4">
@@ -340,7 +340,7 @@
                 <tr>
                     <td colspan="5" style="vertical-align:bottom;">
                         <textarea id="p4_nutrition18m" name="p4_nutrition18m" class="wide" cols="10"
-                                  rows="5"><%= props.getProperty("p4_nutrition18m", "") %></textarea>
+                                  rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_nutrition18m", "")))%></textarea>
                     </td>
                 </tr>
             </table>
@@ -412,7 +412,7 @@
                 <tr>
                     <td colspan="5" style="vertical-align:bottom;">
                         <textarea id="p4_nutrition24m" name="p4_nutrition24m" class="wide" cols="10"
-                                  rows="5"><%= props.getProperty("p4_nutrition24m", "") %></textarea>
+                                  rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_nutrition24m", "")))%></textarea>
                     </td>
                 </tr>
             </table>
@@ -467,7 +467,7 @@
                 <tr>
                     <td colspan="5" style="vertical-align:bottom;">
                         <textarea id="p4_nutrition48m" name="p4_nutrition48m" class="wide" cols="10"
-                                  rows="5"><%= props.getProperty("p4_nutrition48m", "") %></textarea>
+                                  rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_nutrition48m", "")))%></textarea>
                     </td>
                 </tr>
             </table>
@@ -697,7 +697,7 @@
                 <tr>
                     <td colspan="4" style="vertical-align:bottom">
                         <textarea id="p4_education18m" name="p4_education18m" class="wide" cols="10"
-                                  rows="5"><%= props.getProperty("p4_education18m", "") %></textarea>
+                                  rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_education18m", "")))%></textarea>
                     </td>
                 </tr>
             </table>
@@ -975,11 +975,11 @@
                             <tr>
                                 <td style="vertical-align:bottom;">
                                     <textarea id="p4_education24m" name="p4_education24m" style="width: 100%"
-                                              rows="5"><%= props.getProperty("p4_education24m", "") %></textarea>
+                                              rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_education24m", "")))%></textarea>
                                 </td>
                                 <td style="vertical-align:bottom;">
                                     <textarea id="p4_education48m" name="p4_education48m" style="width: 100%"
-                                              rows="5"><%= props.getProperty("p4_education48m", "") %></textarea>
+                                              rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_education48m", "")))%></textarea>
                                 </td>
                             </tr>
                         </table>
@@ -1000,7 +1000,7 @@
                     <td colspan="4">
                         <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2009_4.msgNippissing"/>
                         <textarea id="p4_nippisingattained" name="p4_nippisingattained" class="wide" cols="10"
-                                  rows="2"><%= props.getProperty("p4_nippisingattained", "") %></textarea>
+                                  rows="2"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_nippisingattained", "")))%></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -1104,7 +1104,7 @@
                 <tr>
                     <td colspan="4" style="vertical-align:bottom;">
                         <textarea id="p4_development18m" name="p4_development18m" class="wide" cols="10"
-                                  rows="5"><%= props.getProperty("p4_development18m", "") %></textarea>
+                                  rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_development18m", "")))%></textarea>
                     </td>
                 </tr>
             </table>
@@ -1174,7 +1174,7 @@
                             <tr>
                                 <td colspan="4" style="vertical-align:bottom;">
                                     <textarea id="p4_development24m" name="p4_development24m" class="wide" cols="10"
-                                              rows="5"><%= props.getProperty("p4_development24m", "") %></textarea>
+                                              rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_development24m", "")))%></textarea>
                                 </td>
                             </tr>
                         </table>
@@ -1229,7 +1229,7 @@
                             <tr>
                                 <td colspan="4" style="vertical-align:bottom;">
                                     <textarea id="p4_development48m" name="p4_development48m" class="wide" cols="10"
-                                              rows="5"><%= props.getProperty("p4_development48m", "") %></textarea>
+                                              rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_development48m", "")))%></textarea>
                                 </td>
                             </tr>
                         </table>
@@ -1304,7 +1304,7 @@
                             <tr>
                                 <td colspan="4" style="vertical-align:bottom;">
                                     <textarea id="p4_development36m" name="p4_development36m" class="wide" cols="10"
-                                              rows="5"><%= props.getProperty("p4_development36m", "") %></textarea>
+                                              rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_development36m", "")))%></textarea>
                                 </td>
                             </tr>
                         </table>
@@ -1377,7 +1377,7 @@
                             <tr>
                                 <td colspan="4" style="vertical-align:bottom;">
                                     <textarea id="p4_development60m" name="p4_development60m" class="wide" cols="10"
-                                              rows="5"><%= props.getProperty("p4_development60m", "") %></textarea>
+                                              rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_development60m", "")))%></textarea>
                                 </td>
                             </tr>
                         </table>
@@ -1449,7 +1449,7 @@
                 <tr>
                     <td colspan="4" style="vertical-align:bottom;">
                         <textarea id="p4_physical18m" name="p4_physical18m" class="wide" cols="10"
-                                  rows="5"><%= props.getProperty("p4_physical18m", "") %></textarea>
+                                  rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_physical18m", "")))%></textarea>
                     </td>
                 </tr>
             </table>
@@ -1512,7 +1512,7 @@
                 <tr>
                     <td colspan="4" style="vertical-align:bottom;">
                         <textarea id="p4_physicalm" name="p4_physical24m" class="wide" cols="10"
-                                  rows="5"><%= props.getProperty("p4_physical24m", "") %></textarea>
+                                  rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_physical24m", "")))%></textarea>
                     </td>
                 </tr>
             </table>
@@ -1575,7 +1575,7 @@
                 <tr>
                     <td colspan="4" style="vertical-align:bottom;">
                         <textarea id="p4_physical48m" name="p4_physical48m" class="wide" cols="10"
-                                  rows="5"><%= props.getProperty("p4_physical48m", "") %></textarea>
+                                  rows="5"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_physical48m", "")))%></textarea>
                     </td>
                 </tr>
             </table>
@@ -1590,15 +1590,15 @@
     <tr id="problemsPlansp4">
         <td colspan="3" valign="bottom">
             <textarea id="p4_problems18m" name="p4_problems18m" rows="5" cols="25" class="wide limit-rows"
-                      maxlength="400"><%= props.getProperty("p4_problems18m", "") %></textarea>
+                      maxlength="400"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_problems18m", "")))%></textarea>
         </td>
         <td colspan="4" valign="bottom">
             <textarea id="p4_problems24m" name="p4_problems24m" rows="5" cols="25" class="wide limit-rows"
-                      maxlength="400"><%= props.getProperty("p4_problems24m", "") %></textarea>
+                      maxlength="400"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_problems24m", "")))%></textarea>
         </td>
         <td colspan="3" valign="bottom">
             <textarea id="p4_problems48m" name="p4_problems48m" rows="5" cols="25" class="wide limit-rows"
-                      maxlength="400"><%= props.getProperty("p4_problems48m", "") %></textarea>
+                      maxlength="400"><%=Encode.forHtml(String.valueOf(props.getProperty("p4_problems48m", "")))%></textarea>
         </td>
         <td class="column">
             <a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2017.msgProblemsAndPlans"/>/<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke2017.msgCurrentAndNewReferrals"/></a><br/>
@@ -1651,11 +1651,11 @@
     </tr>
     <tr>
         <td colspan="3"><input type="text" class="wide" style="width: 100%" name="p4_signature18m"
-                               value="<%= props.getProperty("p4_signature18m", "") %>"/></td>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p4_signature18m", "")))%>"/></td>
         <td colspan="4"><input type="text" class="wide" maxlength="42" style="width: 100%" name="p4_signature24m"
-                               value="<%= props.getProperty("p4_signature24m", "") %>"/></td>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p4_signature24m", "")))%>"/></td>
         <td colspan="3"><input type="text" class="wide" style="width: 100%" name="p4_signature48m"
-                               value="<%= props.getProperty("p4_signature48m", "") %>"/></td>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("p4_signature48m", "")))%>"/></td>
         <td class="column"><a><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.formSignature"/></a></td>
     </tr>
 </table>
@@ -1678,10 +1678,10 @@
         </td>
         <td align="center" nowrap="true" width="100%">
             <% if (formId > 0) { %> <a name="length" href="#"
-                                       onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2017&__title=Baby+Growth+Graph1&__cfgfile=<%=growthCharts[0]%>&demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>','<%= "growth1" + demoNo %>');return false;">
+                                       onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2017&__title=Baby+Growth+Graph1&__cfgfile=<%=Encode.forUriComponent(String.valueOf(growthCharts[0]))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>','<%=Encode.forJavaScript(String.valueOf("growth1" + demoNo))%>');return false;">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphLenghtWeight"/></a><br>
             <a name="headCirc" href="#"
-               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2017&__title=Baby+Head+Circumference&__cfgfile=<%=growthCharts[1]%>&demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>','<%= "growth2" + demoNo %>');return false;">
+               onclick="onGraph('<%=request.getContextPath()%>/form/formname.do?submit=graph&form_class=Rourke2017&__title=Baby+Head+Circumference&__cfgfile=<%=Encode.forUriComponent(String.valueOf(growthCharts[1]))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>','<%=Encode.forJavaScript(String.valueOf("growth2" + demoNo))%>');return false;">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formRourke1.btnGraphHead"/></a> <% } else { %>
             &nbsp; <% } %>
         </td>

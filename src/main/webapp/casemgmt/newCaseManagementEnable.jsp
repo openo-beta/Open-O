@@ -35,6 +35,7 @@
 <%@page import="ca.openosp.openo.commn.dao.ProviderPreferenceDao" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.model.ProviderPreference" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -89,12 +90,12 @@
             if (!userNo.equals(provNo))
                 continue;
             if (newDocArr.contains("all") || newDocArr.contains(provNo)) {
-    %> <input type="checkbox" name="encTesters" value="<%=provNo%>" checked><%=p.getLastName()%>,
-    <%=p.getFirstName()%><br>
+    %> <input type="checkbox" name="encTesters" value="<%=Encode.forHtmlAttribute(String.valueOf(provNo))%>" checked><%=Encode.forHtml(String.valueOf(p.getLastName()))%>,
+    <%=Encode.forHtml(String.valueOf(p.getFirstName()))%><br>
     <%
     } else {
-    %> <input type="checkbox" name="encTesters" value="<%=provNo%>"><%=p.getLastName()%>,
-    <%=p.getFirstName()%><br>
+    %> <input type="checkbox" name="encTesters" value="<%=Encode.forHtmlAttribute(String.valueOf(provNo))%>"><%=Encode.forHtml(String.valueOf(p.getLastName()))%>,
+    <%=Encode.forHtml(String.valueOf(p.getFirstName()))%><br>
     <%
             }
         }

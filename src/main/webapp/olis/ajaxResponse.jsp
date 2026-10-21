@@ -9,6 +9,7 @@
 
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <% if (request.getAttribute("result") != null) { %>
-<%=(String) request.getAttribute("result") %>
+<%=Encode.forHtml(String.valueOf((String) request.getAttribute("result")))%>
 <% } %>

@@ -26,6 +26,7 @@
 <%@page import="java.net.URLEncoder" %>
 <%@ page import="ca.openosp.openo.eform.data.*, ca.openosp.OscarProperties, ca.openosp.openo.eform.*, java.util.*" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -78,14 +79,14 @@
         %>
 
         <tr>
-            <td title="<%=curimage%>">
+            <td title="<%=Encode.forHtmlAttribute(String.valueOf(curimage))%>">
                 <a href="#" class="viewImage"
-                   onclick="showImage('<%=fileURL%>', '<%="image" + i%>'); return false;"><%=curimage%>
+                   onclick="showImage('<%=Encode.forJavaScript(String.valueOf(fileURL))%>', '<%=Encode.forJavaScript(String.valueOf("image" + i))%>'); return false;"><%=Encode.forHtml(String.valueOf(curimage))%>
                 </a>
             </td>
 
             <td>
-                <a href="<%= request.getContextPath() %>/eform/deleteImage.do?filename=<%=URLEncoder.encode(curimage, "UTF-8")%>"
+                <a href="<%= request.getContextPath() %>/eform/deleteImage.do?filename=<%=Encode.forUriComponent(String.valueOf(curimage))%>"
                    class="contentLink"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.uploadimages.btnDelete"/></a>
             </td>
         </tr>

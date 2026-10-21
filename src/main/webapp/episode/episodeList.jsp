@@ -37,6 +37,7 @@
 <%@page import="ca.openosp.openo.commn.model.Episode" %>
 <%@page import="ca.openosp.openo.commn.dao.EpisodeDao" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
 
@@ -113,18 +114,18 @@
             %>
             <tr class="gradeB">
                 <td>
-                    <a href="<%=request.getContextPath()%>/Episode.do?method=edit&episode.id=<%=episode.getId()%>"><%=episode.getDescription() %>
+                    <a href="<%=request.getContextPath()%>/Episode.do?method=edit&episode.id=<%=Encode.forUriComponent(String.valueOf(episode.getId()))%>"><%=Encode.forHtml(String.valueOf(episode.getDescription()))%>
                     </a>
                 </td>
-                <td style="text-align:center"><%=startDateStr %>
+                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(startDateStr))%>
                 </td>
-                <td style="text-align:center"><%=endDateStr %>
+                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(endDateStr))%>
                 </td>
-                <td style="text-align:center"><%=episode.getCode() %>
+                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(episode.getCode()))%>
                 </td>
-                <td style="text-align:center"><%=episode.getCodingSystem() %>
+                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(episode.getCodingSystem()))%>
                 </td>
-                <td style="text-align:center"><%=episode.getStatus() %>
+                <td style="text-align:center"><%=Encode.forHtml(String.valueOf(episode.getStatus()))%>
                 </td>
             </tr>
             <%

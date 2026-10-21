@@ -145,6 +145,7 @@
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.util.StringUtils" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 
     <head>
@@ -199,7 +200,7 @@
                 alert("calling addLabToProfile");
                 var url = "<%= request.getContextPath() %>/lab/DisplayLabValue.jsp";
                 var ran_number = Math.round(Math.random() * 1000000);
-                var params = "demographicNo=<%=demographic_no%>&rand=" + ran_number + "&labType=" + labType + "&testName=" + testName;  //hack to get around ie caching the page
+                var params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&rand=" + ran_number + "&labType=" + labType + "&testName=" + testName;  //hack to get around ie caching the page
                 alert(params);
                 new Ajax.Updater('dd', url, {
                     method: 'get',
@@ -230,7 +231,7 @@
 
                 var url = "<%= request.getContextPath() %>/lab/DisplayLabValue.jsp";
                 var ran_number = Math.round(Math.random() * 1000000);
-                var params = "demographicNo=<%=demographic_no%>&rand=" + ran_number + "&labType=" + labType + "&testName=" + testName;  //hack to get around ie caching the page
+                var params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(demographic_no))%>&rand=" + ran_number + "&labType=" + labType + "&testName=" + testName;  //hack to get around ie caching the page
                 ///alert(params);  //'d'+ran_number
                 new Ajax.Updater(newNode, url, {
                     method: 'get',
@@ -277,7 +278,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><oscar:nameage demographicNo="<%=demographic_no%>"/></td>
+                        <td><oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>"/></td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a
                                 href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
@@ -310,7 +311,7 @@
                         %>
 
                         <th><a
-                                href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ALL/labDisplay.jsp?segmentID=<%=lab_no%>&providerNo=<%= session.getValue("user") %>')"><%=UtilDateUtilities.DateToString(labDate, "dd MMM yy")%>
+                                href="javascript:reportWindow('<%= request.getContextPath() %>/lab/CA/ALL/labDisplay.jsp?segmentID=<%=Encode.forUriComponent(String.valueOf(lab_no))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(session.getValue("user")))%>')"><%=Encode.forHtml(String.valueOf(UtilDateUtilities.DateToString(labDate, "dd MMM yy")))%>
                         </a>
                         </th>
                         <%}%>
@@ -323,9 +324,6 @@
                             String loinc_code = (String) iter.next();
                             String testName = (String) nameMap.get(loinc_code);
                             LinkedHashMap IdMap = (LinkedHashMap) measIdMap.get(loinc_code);
-
-                            //preserve spaces in the test names
-                            testName = testName.replaceAll("\\s", "&#160;");
 
                             // display the latest value for the test
                             if (!loinc_code.startsWith("NULL")) {
@@ -343,11 +341,12 @@
                                 }
                     %>
                     <tr>
-                        <td><%=testName%>
+                        <%-- preserve leading whitespace - signals panel child tests (e.g. GLUCOSE under URINALYSIS) --%>
+                        <td><%=Encode.forHtml(String.valueOf(testName)).replaceAll("\\s", "&#160;")%>
                         </td>
-                        <td class="<%= abn %>"><%=StringUtils.maxLenString(latestVal, 9, 8, "...")%>
+                        <td class="<%=Encode.forHtmlAttribute(String.valueOf(abn))%>"><%=Encode.forHtml(String.valueOf(StringUtils.maxLenString(latestVal, 9, 8, "...")))%>
                         </td>
-                        <td><%=latestDate%>
+                        <td><%=Encode.forHtml(String.valueOf(latestDate))%>
                         </td>
                         <%
                             // display all of values from all the labs for the given test
@@ -363,7 +362,7 @@
                                     }
                                 }
                         %>
-                        <td class="<%= abn %>"><%=StringUtils.maxLenString(labVal, 9, 8, "...")%>
+                        <td class="<%=Encode.forHtmlAttribute(String.valueOf(abn))%>"><%=Encode.forHtml(String.valueOf(StringUtils.maxLenString(labVal, 9, 8, "...")))%>
                         </td>
                         <%}%>
                     </tr>
@@ -379,7 +378,7 @@
                             %><%="<br />"%>
                             <%
                             } else {
-                            %><%= testName %>
+                            %><%=Encode.forHtml(String.valueOf(testName))%>
                             <%
                                 }
                             %>

@@ -25,6 +25,7 @@
 --%>
 
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils,ca.openosp.openo.utility.OntarioMD,java.util.Hashtable,org.apache.commons.collections.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -72,7 +73,7 @@
             String val = (String) iter.getValue();
     %>
     <li>
-        <a href="javascript:void(0)" onclick="goOMD('<%=key%>')"><%=val%>
+        <a href="javascript:void(0)" onclick="goOMD('<%=Encode.forJavaScript(String.valueOf(key))%>')"><%=Encode.forHtml(String.valueOf(val))%>
         </a>
     </li>
 

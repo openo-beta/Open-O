@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.net.URLDecoder;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -81,6 +82,8 @@ import ca.openosp.OscarProperties;
 
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
 /**
  * Struts 2 action for Hospital Report Manager (HRM) operations and administration.
@@ -112,7 +115,7 @@ import org.apache.struts2.ServletActionContext;
  *
  * @since 2006-04-20
  */
-public class HRM2Action extends ActionSupport {
+public class HRM2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -129,14 +132,10 @@ public class HRM2Action extends ActionSupport {
     private HRMDocumentToDemographicDao hrmDocumentToDemographicDao = SpringUtils.getBean(HRMDocumentToDemographicDao.class);
 
     // Struts 2 file upload properties for HRM report upload
-    private List<File> hrm_file;
-    private List<String> hrm_fileContentType;
-    private List<String> hrm_fileFileName;
+    private List<UploadedFile> hrm_file;
 
     // Struts 2 file upload properties for private key upload
-    private List<File> privateKeyFile;
-    private List<String> privateKeyFileContentType;
-    private List<String> privateKeyFileFileName;
+    private List<UploadedFile> privateKeyFile;
 
     /**
      * Uploads an HRM report file and adds it to the provider inbox.
@@ -162,14 +161,15 @@ public class HRM2Action extends ActionSupport {
             throw new SecurityException("missing required sec object (_hrm)");
         }
 
-        String downloadDirectory = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String downloadDirectory = OscarProperties.getInstance().getDocumentDirectory();
         JSONObject obj = new JSONObject();
 
         try {
             if (hrm_file != null && !hrm_file.isEmpty()) {
                 for (int i = 0; i < hrm_file.size(); i++) {
-                    File uploadedFile = hrm_file.get(i);
-                    String originalFileName = hrm_fileFileName.get(i);
+                    UploadedFile uf = hrm_file.get(i);
+                    File uploadedFile = PathValidationUtils.toFile(uf);
+                    String originalFileName = uf.getOriginalName();
 
                     // Sanitize filename to prevent path traversal attacks
                     String sanitizedFileName = sanitizeFileName(originalFileName);
@@ -253,7 +253,7 @@ public class HRM2Action extends ActionSupport {
 
         String privateKeyDirectory = OscarProperties.getInstance().getProperty("OMD_DIRECTORY");
         if (privateKeyDirectory == null) {
-            privateKeyDirectory = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + File.separator + ".." + File.separator + "hrm" + File.separator + "OMD";
+            privateKeyDirectory = OscarProperties.getInstance().getDocumentDirectory() + File.separator + ".." + File.separator + "hrm" + File.separator + "OMD";
         }
 
         JSONObject obj = new JSONObject();
@@ -261,8 +261,9 @@ public class HRM2Action extends ActionSupport {
         try {
             if (privateKeyFile != null && !privateKeyFile.isEmpty()) {
                 for (int i = 0; i < privateKeyFile.size(); i++) {
-                    File uploadedFile = privateKeyFile.get(i);
-                    String originalFileName = privateKeyFileFileName.get(i);
+                    UploadedFile uf = privateKeyFile.get(i);
+                    File uploadedFile = PathValidationUtils.toFile(uf);
+                    String originalFileName = uf.getOriginalName();
 
                     // Sanitize filename to prevent path traversal attacks
                     String sanitizedFileName = sanitizeFileName(originalFileName);
@@ -345,7 +346,7 @@ public class HRM2Action extends ActionSupport {
 
             String privateKeyDirectory = OscarProperties.getInstance().getProperty("OMD_DIRECTORY");
             if (privateKeyDirectory == null) {
-                privateKeyDirectory = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + ".." + File.separator + "hrm" + File.separator + "OMD" + File.separator;
+                privateKeyDirectory = OscarProperties.getInstance().getDocumentDirectory() + ".." + File.separator + "hrm" + File.separator + "OMD" + File.separator;
             }
 
 
@@ -825,6 +826,10 @@ public class HRM2Action extends ActionSupport {
 
         String orderingColumnIndex = request.getParameter("order[0][column]"); //idx (eg 0)
         String orderingColumnDirection = request.getParameter("order[0][dir]"); //asc,desc
+        // Validate ordering direction to prevent SQL injection - whitelist to ASC/DESC only
+        if (orderingColumnDirection != null && !"ASC".equalsIgnoreCase(orderingColumnDirection) && !"DESC".equalsIgnoreCase(orderingColumnDirection)) {
+            orderingColumnDirection = "ASC";
+        }
 
 
         String providerNo = request.getParameter("providerNo");
@@ -1026,32 +1031,19 @@ public class HRM2Action extends ActionSupport {
         return sanitized;
     }
 
-    // Struts 2 property injection setters for HRM report upload
-
-    public void setHrm_file(List<File> hrm_file) {
-        this.hrm_file = hrm_file;
-    }
-
-    public void setHrm_fileContentType(List<String> hrm_fileContentType) {
-        this.hrm_fileContentType = hrm_fileContentType;
-    }
-
-    public void setHrm_fileFileName(List<String> hrm_fileFileName) {
-        this.hrm_fileFileName = hrm_fileFileName;
-    }
-
-    // Struts 2 property injection setters for private key upload
-
-    public void setPrivateKeyFile(List<File> privateKeyFile) {
-        this.privateKeyFile = privateKeyFile;
-    }
-
-    public void setPrivateKeyFileContentType(List<String> privateKeyFileContentType) {
-        this.privateKeyFileContentType = privateKeyFileContentType;
-    }
-
-    public void setPrivateKeyFileFileName(List<String> privateKeyFileFileName) {
-        this.privateKeyFileFileName = privateKeyFileFileName;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        this.hrm_file = new ArrayList<>();
+        this.privateKeyFile = new ArrayList<>();
+        if (!uploadedFiles.isEmpty()) {
+            for (UploadedFile uploadedFile : uploadedFiles) {
+                if ("hrm_file".equals(uploadedFile.getInputName())) {
+                    this.hrm_file.add(uploadedFile);
+                } else if ("privateKeyFile".equals(uploadedFile.getInputName())) {
+                    this.privateKeyFile.add(uploadedFile);
+                }
+            }
+        }
     }
 
 }

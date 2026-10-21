@@ -29,8 +29,10 @@
 <%@page import="ca.openosp.openo.PMmodule.model.Program" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProgramDao" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
@@ -62,9 +64,9 @@
     <c:when test="${empty caseManagementEntryForm.caseNote.id}">
         <c:choose>
             <c:when test="${not empty param.newNoteIdx}">
-                <c:set var="noteIndex" value="${param.newNoteIdx}" />
-                <div id="summary${param.newNoteIdx}">
-                    <div id="observation${param.newNoteIdx}" style="float: right; margin-right: 3px;">
+                <c:set var="noteIndex" value="${e:forHtmlAttribute(param.newNoteIdx)}" />
+                <div id="summary${e:forHtmlAttribute(param.newNoteIdx)}">
+                    <div id="observation${e:forHtmlAttribute(param.newNoteIdx)}" style="float: right; margin-right: 3px;">
             </c:when>
             <c:otherwise>
                 <c:set var="noteIndex" value="0" />
@@ -80,33 +82,33 @@
             <div id="observation${caseManagementEntryForm.caseNote.id}" style="float: right; margin-right: 3px;">
     </c:otherwise>
 </c:choose>
-</div>
 
-<div style="margin: 0 3px 0 0;"><span style="float: right;">
     <c:choose>
         <c:when test="${not empty ajaxsave}">
-            <fmt:setBundle basename="oscarResources"/>
-            <fmt:message key="oscarEncounter.encounterDate.title"/>&nbsp;
+            <label for="obs${caseManagementEntryForm.caseNote.id}"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterDate.title"/>:&nbsp;</label>
             <span id="obs${caseManagementEntryForm.caseNote.id}">
                 <fmt:formatDate value="${caseManagementEntryForm.caseNote.observation_date}" pattern="dd-MMM-yyyy H:mm"/>
             </span>&nbsp;
-            <fmt:setBundle basename="oscarResources"/>
-            <fmt:message key="oscarEncounter.noteRev.title"/>
-            <a href="#" onclick="return showHistory('${caseManagementEntryForm.caseNote.id}', event);">
+            <c:if test="${not empty caseManagementEntryForm.caseNote.id}">
+            <label for="caseNoteRevision${caseManagementEntryForm.caseNote.id}"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteRev.title"/></label>
+            <a href="#" id="caseNoteRevision${caseManagementEntryForm.caseNote.id}" onclick="return showHistory('${caseManagementEntryForm.caseNote.id}', event);">
                 ${caseManagementEntryForm.caseNote.revision}
             </a>
+            </c:if>
         </c:when>
         <c:otherwise>
-            <fmt:setBundle basename="oscarResources"/>
-            <fmt:message key="oscarEncounter.encounterDate.title"/>&nbsp;
-            <img src="${ctx}/images/cal.gif" id="observationDate_cal" alt="calendar">&nbsp;
+            <label for="observationDate"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.encounterDate.title"/>:&nbsp;
+            <img src="${ctx}/images/cal.gif" id="observationDate_cal" alt="calendar">&nbsp;</label>
             <input type="text" id="observationDate" name="observation_date" ondblclick="this.value='';"
-                   style="border: none; width: 140px;" readonly
+                   style="width: 140px;" readonly
                    value="<fmt:formatDate value="${caseManagementEntryForm.caseNote.observation_date}" pattern="dd-MMM-yyyy H:mm"/>">
-            rev
-            <a href="#" onclick="return showHistory('${caseManagementEntryForm.caseNote.id}', event);">
+            <%-- a new note has no id and no history yet --%>
+            <c:if test="${not empty caseManagementEntryForm.caseNote.id}">
+            <label><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.noteRev.title"/></label>
+            <a href="javascript:void(0)" onclick="return showHistory('${caseManagementEntryForm.caseNote.id}', event);">
                 ${caseManagementEntryForm.caseNote.revision}
             </a>
+            </c:if>
         </c:otherwise>
     </c:choose>
 </div>
@@ -446,8 +448,8 @@
         }
         updatedNoteId = newId;
 
-        // Assuming noteTxt comes from request attribute or is passed in a similar way
-        var noteTxt = "${fn:escapeXml(noteTxt)}"; // Escape any special characters in noteTxt
+        // the saved note text, encoded for a JavaScript string; completeChangeToView escapes it for HTML
+        var noteTxt = "${e:forJavaScript(caseManagementEntryForm.caseNote.note)}";
         completeChangeToView(noteTxt, newId);
 
         if (origId.substr(0, 1) == "0") {
@@ -459,7 +461,7 @@
             alert("${DateError}");
         </c:if>
     </c:if>
-    const backgroundColorId = "bgColour" + "<%=noteIndex%>";
+    const backgroundColorId = "bgColour" + "<%=Encode.forJavaScript(String.valueOf(noteIndex))%>";
     const backgroundColorInput = document.getElementById(backgroundColorId);
     let txtColour = "#000000";
     let background = "#CCCCFF";
@@ -470,10 +472,10 @@
     }
 
     const observationDateInput = document.getElementById("observationDate");
-    if (observationDateInput) {
-        observationDateInput.style.color = txtColour;
-        observationDateInput.style.backgroundColor = background;
-    }
+    // if (observationDateInput) {
+    //     observationDateInput.style.color = txtColour;
+    //     observationDateInput.style.backgroundColor = background;
+    // }
 
 
 	const summaryId = "summary" + "${noteIndex}";

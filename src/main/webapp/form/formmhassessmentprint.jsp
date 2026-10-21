@@ -42,6 +42,7 @@
 <%@ page import="ca.openosp.openo.form.*, java.util.*" %>
 <%@ page import="ca.openosp.openo.encounter.util.EctFileUtil" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 
@@ -104,31 +105,31 @@
                        class="tableWithBorder">
                     <tr>
                         <td>Name:</td>
-                        <td align="left"><%= props.getProperty("c_pName", "") %>&nbsp;</td>
+                        <td align="left"><%=Encode.forHtml(String.valueOf(props.getProperty("c_pName", "")))%>&nbsp;</td>
                     </tr>
                     <tr>
                         <td>Sex:</td>
-                        <td align="left"><%= props.getProperty("c_sex", "") %>&nbsp;</td>
+                        <td align="left"><%=Encode.forHtml(String.valueOf(props.getProperty("c_sex", "")))%>&nbsp;</td>
                     </tr>
         </tr>
         <td>Address:</td>
-        <td align="left"><%= props.getProperty("c_address", "") %>&nbsp;</td>
+        <td align="left"><%=Encode.forHtml(String.valueOf(props.getProperty("c_address", "")))%>&nbsp;</td>
         </tr>
         <tr>
             <td>Home Phone:</td>
-            <td align="left"><%= props.getProperty("c_homePhone", "") %>&nbsp;</td>
+            <td align="left"><%=Encode.forHtml(String.valueOf(props.getProperty("c_homePhone", "")))%>&nbsp;</td>
         </tr>
         <tr>
             <td>Birth Date <small>(yyyy/mm/dd)</small>:</td>
-            <td align="left"><%= props.getProperty("c_birthDate", "") %>&nbsp;</td>
+            <td align="left"><%=Encode.forHtml(String.valueOf(props.getProperty("c_birthDate", "")))%>&nbsp;</td>
         </tr>
         <tr>
             <td>Referral Date<small>(yyyy/mm/dd)</small>:</td>
-            <td align="left"><%= props.getProperty("c_referralDate", "") %>&nbsp;</td>
+            <td align="left"><%=Encode.forHtml(String.valueOf(props.getProperty("c_referralDate", "")))%>&nbsp;</td>
         </tr>
         <tr>
             <td>Referred By:</td>
-            <td align="left"><%= props.getProperty("c_referredBy", "") %>&nbsp;</td>
+            <td align="left"><%=Encode.forHtml(String.valueOf(props.getProperty("c_referredBy", "")))%>&nbsp;</td>
         </tr>
     </table>
     </td>
@@ -140,13 +141,13 @@
                     <td class="mhSelect">Psychiatric Symptoms:<br>
                         <% String[] aps = list.loadData("mhAssessment/PsychiatricSymptoms.txt", projecthome, path);%>
                         1.
-                        <b><%=props.getProperty("a_aps1", "---").equals("") ? "" : aps[Integer.parseInt(props.getProperty("a_aps1", "---")) - 1] %>
+                        <b><%=Encode.forHtml(String.valueOf(props.getProperty("a_aps1", "---").equals("") ? "" : aps[Integer.parseInt(props.getProperty("a_aps1", "---")) - 1]))%>
                         </b><br>
                         2.
-                        <b><%=props.getProperty("a_aps2", "---").equals("") ? "" : aps[Integer.parseInt(props.getProperty("a_aps2", "---")) - 1] %>
+                        <b><%=Encode.forHtml(String.valueOf(props.getProperty("a_aps2", "---").equals("") ? "" : aps[Integer.parseInt(props.getProperty("a_aps2", "---")) - 1]))%>
                         </b><br>
                         3.
-                        <b><%=props.getProperty("a_aps3", "---").equals("") ? "" : aps[Integer.parseInt(props.getProperty("a_aps3", "---")) - 1] %>
+                        <b><%=Encode.forHtml(String.valueOf(props.getProperty("a_aps3", "---").equals("") ? "" : aps[Integer.parseInt(props.getProperty("a_aps3", "---")) - 1]))%>
                         </b>
                     </td>
                 </tr>
@@ -154,13 +155,13 @@
                     <td class="mhSelect">Psychosocial Issues:<br>
                         <% String[] api = list.loadData("mhAssessment/PsychosocialIssues.txt", projecthome, path); %>
                         1.
-                        <b><%=props.getProperty("a_api1", "---").equals("") ? "" : api[Integer.parseInt(props.getProperty("a_api1", "---")) - 1] %>
+                        <b><%=Encode.forHtml(String.valueOf(props.getProperty("a_api1", "---").equals("") ? "" : api[Integer.parseInt(props.getProperty("a_api1", "---")) - 1]))%>
                         </b><br>
                         2.
-                        <b><%=props.getProperty("a_api2", "---").equals("") ? "" : api[Integer.parseInt(props.getProperty("a_api2", "---")) - 1] %>
+                        <b><%=Encode.forHtml(String.valueOf(props.getProperty("a_api2", "---").equals("") ? "" : api[Integer.parseInt(props.getProperty("a_api2", "---")) - 1]))%>
                         </b><br>
                         3.
-                        <b><%=props.getProperty("a_api3", "---").equals("") ? "" : api[Integer.parseInt(props.getProperty("a_api3", "---")) - 1] %>
+                        <b><%=Encode.forHtml(String.valueOf(props.getProperty("a_api3", "---").equals("") ? "" : api[Integer.parseInt(props.getProperty("a_api3", "---")) - 1]))%>
                         </b>
                     </td>
                 </tr>
@@ -168,13 +169,13 @@
                     <td class="mhSelect">Med/Phy Issues:<br>
                         <% String[] ampi = list.loadData("mhAssessment/MedPhyIssues.txt", projecthome, path); %>
                         1.
-                        <b><%=props.getProperty("a_ampi1", "---").equals("") ? "" : ampi[Integer.parseInt(props.getProperty("a_ampi1", "---")) - 1] %>
+                        <b><%=Encode.forHtml(String.valueOf(props.getProperty("a_ampi1", "---").equals("") ? "" : ampi[Integer.parseInt(props.getProperty("a_ampi1", "---")) - 1]))%>
                         </b><br>
                         2.
-                        <b><%=props.getProperty("a_ampi2", "---").equals("") ? "" : ampi[Integer.parseInt(props.getProperty("a_ampi2", "---")) - 1] %>
+                        <b><%=Encode.forHtml(String.valueOf(props.getProperty("a_ampi2", "---").equals("") ? "" : ampi[Integer.parseInt(props.getProperty("a_ampi2", "---")) - 1]))%>
                         </b><br>
                         3.
-                        <b><%=props.getProperty("a_ampi3", "---").equals("") ? "" : ampi[Integer.parseInt(props.getProperty("a_ampi3", "---")) - 1] %>
+                        <b><%=Encode.forHtml(String.valueOf(props.getProperty("a_ampi3", "---").equals("") ? "" : ampi[Integer.parseInt(props.getProperty("a_ampi3", "---")) - 1]))%>
                         </b>
                     </td>
                 </tr>
@@ -182,19 +183,19 @@
                     <td class="mhSelect">Treatment Plan:<br>
                         <% String[] tp = list.loadData("mhAssessment/TreatmentPlan.txt", projecthome, path); %>
                         1.
-                        <b><%=props.getProperty("a_tp1", "---").equals("") ? "" : tp[Integer.parseInt(props.getProperty("a_tp1", "---")) - 1] %>
+                        <b><%=Encode.forHtml(String.valueOf(props.getProperty("a_tp1", "---").equals("") ? "" : tp[Integer.parseInt(props.getProperty("a_tp1", "---")) - 1]))%>
                         </b><br>
                         2.
-                        <b><%=props.getProperty("a_tp2", "---").equals("") ? "" : tp[Integer.parseInt(props.getProperty("a_tp2", "---")) - 1] %>
+                        <b><%=Encode.forHtml(String.valueOf(props.getProperty("a_tp2", "---").equals("") ? "" : tp[Integer.parseInt(props.getProperty("a_tp2", "---")) - 1]))%>
                         </b><br>
                         3.
-                        <b><%=props.getProperty("a_tp3", "---").equals("") ? "" : tp[Integer.parseInt(props.getProperty("a_tp3", "---")) - 1] %>
+                        <b><%=Encode.forHtml(String.valueOf(props.getProperty("a_tp3", "---").equals("") ? "" : tp[Integer.parseInt(props.getProperty("a_tp3", "---")) - 1]))%>
                         </b>
                     </td>
                 </tr>
                 <tr>
                     <td class="mhSelect">Comments:<br>
-                        <%= props.getProperty("a_assComments", "")%>
+                        <%=Encode.forHtml(String.valueOf(props.getProperty("a_assComments", "")))%>
                     </td>
                 </tr>
             </table>

@@ -84,7 +84,9 @@ public class HealthCardSearch2Action extends ActionSupport {
         }
 
         String json = objectMapper.writeValueAsString(hashMap);
-        response.getOutputStream().write(json.getBytes());
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getOutputStream().write(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
 
 
         return null;

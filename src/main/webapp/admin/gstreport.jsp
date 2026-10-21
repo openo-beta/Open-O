@@ -24,6 +24,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.on.data.JdbcBillingPageUtil" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.administration.GstReport" %>
 <%@ page import="ca.openosp.openo.util.DateUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -110,7 +111,7 @@
     <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.admin.gstReport"/></h3>
 
     <div class="container-fluid well well-small">
-        <div class="span2">Date: <%=DateUtils.sumDate("yyyy-MM-dd", "0")%>
+        <div class="span2">Date: <%=Encode.forHtml(String.valueOf(DateUtils.sumDate("yyyy-MM-dd", "0")))%>
         </div>
         <div class="span2 pull-right">
             <button class="btn" type="button" value="Print" onclick="window.print()"/>
@@ -120,7 +121,7 @@
             <div class="span2">
                 Start:
                 <div class="input-append">
-                    <input type="text" name="xml_vdate" id="xml_vdate" value="<%=startDate%>"
+                    <input type="text" name="xml_vdate" id="xml_vdate" value="<%=Encode.forHtmlAttribute(String.valueOf(startDate))%>"
                            pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off" style="width:90px"/>
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
@@ -128,7 +129,7 @@
             <div class="span2">
                 End:
                 <div class="input-append">
-                    <input type="text" name="xml_appointment_date" id="xml_appointment_date" value="<%=endDate%>"
+                    <input type="text" name="xml_appointment_date" id="xml_appointment_date" value="<%=Encode.forHtmlAttribute(String.valueOf(endDate))%>"
                            pattern="^\d{4}-((0\d)|(1[012]))-(([012]\d)|3[01])$" autocomplete="off" style="width:90px"/>
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
@@ -142,7 +143,7 @@
                             if (pList.size() == 1) {
                                 String temp[] = ((String) pList.get(0)).split("\\|");
                         %>
-                        <option value="<%=temp[0]%>"><%=temp[1]%>, <%=temp[2]%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(temp[0]))%>"><%=Encode.forHtml(String.valueOf(temp[1]))%>, <%=Encode.forHtml(String.valueOf(temp[2]))%>
                         </option>
                         <%
                         } else {
@@ -151,9 +152,9 @@
                         <% for (i = 0; i < pList.size(); i++) {
                             String temp[] = ((String) pList.get(i)).split("\\|");
                         %>
-                        <option value="<%=temp[0]%>"
-                                <%=providerNo.equals(temp[0]) ? "selected" : ""%>><%=temp[1]%>,
-                            <%=temp[2]%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(temp[0]))%>"
+                                <%=providerNo.equals(temp[0]) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(temp[1]))%>,
+                            <%=Encode.forHtml(String.valueOf(temp[2]))%>
                         </option>
                         <% }
                         } %>
@@ -207,18 +208,18 @@
         %>
         <% if (gst.doubleValue() > 0) {%>
         <TR>
-            <TD width="20%" align="center"><%=props.getProperty("date", "")%>
+            <TD width="20%" align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("date", "")))%>
             </TD>
-            <TD width="10%" align="center"><%=props.getProperty("demographic_no", "")%>
+            <TD width="10%" align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("demographic_no", "")))%>
             </TD>
-            <TD width="15%" align="center"><%=props.getProperty("name", "")%>
+            <TD width="15%" align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("name", "")))%>
             </TD>
-            <TD width="15%" align="center"><%=gst%>
+            <TD width="15%" align="center"><%=Encode.forHtml(String.valueOf(gst))%>
             </TD>
             <%//Perhaps show 0.00 if no gst...%>
-            <TD width="15%" align="center"><%=earned%>
+            <TD width="15%" align="center"><%=Encode.forHtml(String.valueOf(earned))%>
             </TD>
-            <TD width="15%" align="center"><%=billed%>
+            <TD width="15%" align="center"><%=Encode.forHtml(String.valueOf(billed))%>
             </TD>
             <%}%>
         </TR>
@@ -227,11 +228,11 @@
             <TD width="20%">Totals:</TD>
             <TD></TD>
             <TD></TD>
-            <TD width="15%" align="center"><%=gsttotal%>
+            <TD width="15%" align="center"><%=Encode.forHtml(String.valueOf(gsttotal))%>
             </TD>
-            <TD width="15%"><%=earnedtotal%>
+            <TD width="15%"><%=Encode.forHtml(String.valueOf(earnedtotal))%>
             </TD>
-            <TD width="15%"><%=billedtotal%>
+            <TD width="15%"><%=Encode.forHtml(String.valueOf(billedtotal))%>
             </TD>
         </TR>
     </TABLE>

@@ -67,6 +67,7 @@
 <%@page import="ca.openosp.openo.commn.dao.BillingONCHeader1Dao" %>
 <%@page import="ca.openosp.openo.commn.model.BillingONCHeader1" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ClinicLocationDao clinicLocationDao = (ClinicLocationDao) SpringUtils.getBean(ClinicLocationDao.class);
     ReportProviderDao reportProviderDao = SpringUtils.getBean(ReportProviderDao.class);
@@ -156,7 +157,7 @@
                             Provider p = providerDao.getProvider(rps.getProviderNo());
                             if (p.getStatus().equals("1")) {
                     %>
-                    <option value="<%=p.getProviderNo()%>"><%=p.getFormattedName()%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(p.getProviderNo()))%>"><%=Encode.forHtml(String.valueOf(p.getFormattedName()))%>
                     </option>
                     <%
                             }
@@ -172,7 +173,7 @@
             <label class="control-label">Service Date Begin</label>
             <div class="controls">
                 <input type="text" id="xml_vdate" name="xml_vdate"
-                       value="<%=xml_vdate%>">
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>">
             </div>
         </div>
         <div class="control-group">
@@ -180,7 +181,7 @@
             <div class="controls">
 
                 <input type="text" id="xml_appointment_date"
-                       name="xml_appointment_date" value="<%=xml_appointment_date%>">
+                       name="xml_appointment_date" value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>">
             </div>
         </div>
         <div class="control-group">

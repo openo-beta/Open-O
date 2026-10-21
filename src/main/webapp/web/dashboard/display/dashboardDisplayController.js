@@ -119,6 +119,8 @@ function buildIndicatorPanel(html, target, id) {
         indicatorGraph.destroy();
     }
 
+    // Intentional use of .html(): response is trusted server-rendered indicator panel HTML
+    // from DisplayIndicator.do containing chart containers, graph data inputs, and heading markup.
     let panel = $("#" + target + "_" + id).html(html);
     let data = "[" + panel.find("#graphPlots_" + id).val() + "]";
     data = data.replace(/'/g, '"');
@@ -170,9 +172,10 @@ function sendData(path, param, target) {
                     console.log(panelList);
                 }
             } else {
-                document.open();
-                document.write(data);
-                document.close();
+                // Full-page replacement with trusted server-rendered content from dashboard/drilldown actions.
+                // Using DOM replacement instead of document.write to avoid XSS risk.
+                var newDoc = new DOMParser().parseFromString(data, 'text/html');
+                document.documentElement.replaceWith(newDoc.documentElement);
             }
         }
     });

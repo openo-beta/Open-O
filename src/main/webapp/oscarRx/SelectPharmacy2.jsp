@@ -201,8 +201,8 @@
                     var pharmacyNameKey = new RegExp($("#pharmacySearch").val(), "i");
                     var pharmacyCityKey = new RegExp($("#pharmacyCitySearch").val(), "i");
                     var pharmacyPostalCodeKey = new RegExp($("#pharmacyPostalCodeSearch").val(), "i");
-					var pharmacyFaxKey = new RegExp($("#pharmacyFaxSearch").val().replaceAll(" ", ""), "i");
-					var pharmacyPhoneKey = new RegExp($("#pharmacyPhoneSearch").val().replaceAll(" ", ""), "i");
+					var pharmacyFaxKey = new RegExp($("#pharmacyFaxSearch").val().replace(/\D/g, ""), "i");
+					var pharmacyPhoneKey = new RegExp($("#pharmacyPhoneSearch").val().replace(/\D/g, ""), "i");
                     var pharmacyAddressKey = new RegExp($("#pharmacyAddressSearch").val(), "i");
 
                     $("#pharmacySearch").keyup(function () {
@@ -212,7 +212,7 @@
                             if ($(value).html().toLowerCase().search(pharmacyNameKey) >= 0) {
                                 if ($(value).siblings(".city").html().search(pharmacyCityKey) >= 0) {
                                     if ($(value).siblings(".postalCode").html().search(pharmacyPostalCodeKey) >= 0) {
-                                        if ($(value).siblings(".fax").html().search(pharmacyFaxKey) >= 0) {
+                                        if ($(value).siblings(".fax").html().replace(/\D/g, "").search(pharmacyFaxKey) >= 0) {
                                             if ($(value).siblings(".fax").html().search(pharmacyAddressKey) >= 0) {
                                                 $(value).parent().show();
                                             }
@@ -230,7 +230,7 @@
                             if ($(value).html().toLowerCase().search(pharmacyCityKey) >= 0) {
                                 if ($(value).siblings(".pharmacyName").html().search(pharmacyNameKey) >= 0) {
                                     if ($(value).siblings(".postalCode").html().search(pharmacyPostalCodeKey) >= 0) {
-                                        if ($(value).siblings(".fax").html().search(pharmacyFaxKey) >= 0) {
+                                        if ($(value).siblings(".fax").html().replace(/\D/g, "").search(pharmacyFaxKey) >= 0) {
                                             if ($(value).siblings(".fax").html().search(pharmacyAddressKey) >= 0) {
                                                 $(value).parent().show();
                                             }
@@ -248,7 +248,7 @@
                             if ($(value).html().toLowerCase().search(pharmacyPostalCodeKey) >= 0) {
                                 if ($(value).siblings(".pharmacyName").html().search(pharmacyNameKey) >= 0) {
                                     if ($(value).siblings(".city").html().search(pharmacyCityKey) >= 0) {
-                                        if ($(value).siblings(".fax").html().search(pharmacyFaxKey) >= 0) {
+                                        if ($(value).siblings(".fax").html().replace(/\D/g, "").search(pharmacyFaxKey) >= 0) {
                                             $(value).parent().show();
                                         }
                                     }
@@ -261,7 +261,7 @@
                         updateSearchKeys();
                         $(".pharmacyItem").hide();
                         $.each($(".fax"), function (key, value) {
-							if ($(value).html().search(pharmacyFaxKey) >= 0 || $(value).html().replaceAll(" ", "").split(")").join("").split("-").join("").search(pharmacyFaxKey) >= 0) {
+							if ($(value).html().replace(/\D/g, "").search(pharmacyFaxKey) >= 0) {
                                 if ($(value).siblings(".pharmacyName").html().search(pharmacyNameKey) >= 0) {
                                     if ($(value).siblings(".city").html().search(pharmacyCityKey) >= 0) {
                                         if ($(value).siblings(".postalCode").html().search(pharmacyPostalCodeKey) >= 0) {
@@ -277,7 +277,7 @@
                         updateSearchKeys();
                         $(".pharmacyItem").hide();
                         $.each($(".phone"), function (key, value) {
-							if ($(value).html().search(pharmacyPhoneKey) >= 0 || $(value).html().replaceAll(" ", "").split(")").join("").split("-").join("").search(pharmacyPhoneKey) >= 0) {
+							if ($(value).html().replace(/\D/g, "").search(pharmacyPhoneKey) >= 0) {
                                 if ($(value).siblings(".pharmacyName").html().search(pharmacyNameKey) >= 0) {
                                     if ($(value).siblings(".city").html().search(pharmacyCityKey) >= 0) {
                                         if ($(value).siblings(".postalCode").html().search(pharmacyPostalCodeKey) >= 0) {
@@ -362,8 +362,8 @@
                         pharmacyNameKey = new RegExp($("#pharmacySearch").val(), "i");
                         pharmacyCityKey = new RegExp($("#pharmacyCitySearch").val(), "i");
                         pharmacyPostalCodeKey = new RegExp($("#pharmacyPostalCodeSearch").val(), "i");
-                        pharmacyFaxKey = new RegExp($("#pharmacyFaxSearch").val(), "i");
-                        pharmacyPhoneKey = new RegExp($("#pharmacyPhoneSearch").val(), "i");
+                        pharmacyFaxKey = new RegExp($("#pharmacyFaxSearch").val().replace(/\D/g, ""), "i");
+                        pharmacyPhoneKey = new RegExp($("#pharmacyPhoneSearch").val().replace(/\D/g, ""), "i");
                         pharmacyAddressKey = new RegExp($("#pharmacyAddressSearch").val(), "i");
                     }
                 })
@@ -505,14 +505,14 @@
     <div class="container-fluid" style="margin:auto 15px;">
 
         <form id="pharmacyForm">
-            <input type="hidden" id="demographicNo" name="demographicNo" value="<%=bean.getDemographicNo()%>"/>
+            <input type="hidden" id="demographicNo" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(bean.getDemographicNo()))%>"/>
             <table id="AutoNumber1">
                 <tr>
                     <th class="DivContentTitle">
                         <h2><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.title"/>
                             <span style="font-size: small;">
 						<fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/>
-                        <%=surname%>, <%=firstName%>
+                        <%=Encode.forHtml(String.valueOf(surname))%>, <%=Encode.forHtml(String.valueOf(firstName))%>
                     </span>
                             <input type=button class="btn btn-default pull-right" onclick="returnToRx();"
                                    value="Return to RX"/>
@@ -595,7 +595,7 @@
                                             PharmacyInfo ph = pharList.get(i);
                                             if (ph.getName() != null && !ph.getName().isEmpty()) {
                                         %>
-                                        <tr class="pharmacyItem" pharmId="<%=ph.getId()%>">
+                                        <tr class="pharmacyItem" pharmId="<%=Encode.forHtmlAttribute(String.valueOf(ph.getId()))%>">
                                             <td class="pharmacyName"><%=Encode.forHtmlContent(ph.getName())%>
                                             </td>
                                             <td class="address"><%=Encode.forHtmlContent(ph.getAddress())%>
@@ -616,7 +616,7 @@
                                                                rights="w" reverse="false">
 
                                                 <td onclick="event.stopPropagation()"><a href="javascript:void(0)"
-                                                                                         onclick="editPharmacy(<%=ph.getId()%>);"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.editLink"/></a></td>
+                                                                                         onclick="editPharmacy(<%=Encode.forJavaScript(String.valueOf(ph.getId()))%>);"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.editLink"/></a></td>
                                                 <td onclick="event.stopPropagation()"><a href="javascript:void(0)"
                                                                                          class="deletePharm"><fmt:setBundle basename="oscarResources"/><fmt:message key="SelectPharmacy.deleteLink"/></a></td>
 

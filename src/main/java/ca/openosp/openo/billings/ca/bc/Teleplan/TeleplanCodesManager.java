@@ -66,7 +66,7 @@ REM076 **                                                             **
      */
     public List parse(File f) throws Exception {
         // Use PathValidationUtils to validate file is in allowed directory or temp
-        File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+        File allowedDir = new File(OscarProperties.getInstance().getDocumentDirectory());
         try {
             PathValidationUtils.validateExistingPath(f, allowedDir);
         } catch (SecurityException e) {

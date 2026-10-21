@@ -27,9 +27,12 @@ import javax.persistence.Query;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class InboxResultsRepositoryImpl implements InboxResultsRepository {
@@ -42,6 +45,20 @@ public class InboxResultsRepositoryImpl implements InboxResultsRepository {
         put("discipline", "discipline");
         put("status", "status");
     }};
+
+    private static final Set<String> VALID_SORT_COLUMNS = new HashSet<>(sortBySqlList.values());
+    private static final Set<String> VALID_SORT_ORDERS = new HashSet<>(Arrays.asList("ASC", "DESC"));
+
+    /**
+     * Builds a safe ORDER BY clause from whitelisted sort column and order values.
+     * Returns " ORDER BY col DIR, segment_id DESC, lab_type ASC " with deterministic tiebreakers.
+     * Falls back to "order_by_date DESC" if inputs are not in the whitelist.
+     */
+    private static String buildSafeOrderBy(String sortBy, String sortOrder) {
+        String safeColumn = VALID_SORT_COLUMNS.contains(sortBy) ? sortBy : "order_by_date";
+        String safeOrder = VALID_SORT_ORDERS.contains(sortOrder) ? sortOrder : "DESC";
+        return " ORDER BY " + safeColumn + " " + safeOrder + ", segment_id DESC, lab_type ASC ";
+    }
 
     private static final Map<String, String> sortOrderSqlList = new HashMap<String, String>() {{
         put("descending", "DESC");
@@ -130,6 +147,9 @@ public class InboxResultsRepositoryImpl implements InboxResultsRepository {
         String hrmReportSql = showHrm ? getHRMReportsSql(loggedInProviderNo, providerNumber, firstName, lastName, hin, startDate, endDate, status, matchedStatus, getCounts, getDemographicCounts, whereValues) : "";
 
 
+        // Whitelist-validated ORDER BY — values checked against VALID_SORT_COLUMNS/VALID_SORT_ORDERS
+        String orderByClause = buildSafeOrderBy(sortBy, sortOrder);
+
         Query query;
         if (!getCounts && !getDemographicCounts) {
             String sql = "SELECT * FROM ("
@@ -139,8 +159,7 @@ public class InboxResultsRepositoryImpl implements InboxResultsRepository {
                     + ((showDocuments || showLabs) && showHrm ? " UNION " : "")
                     + hrmReportSql
                     + ") AS x "
-                    + " ORDER BY " + sortBy + " " + sortOrder
-                    + ", segment_id DESC, lab_type ASC "; // add ordering for type and segment id to make sure sort is deterministic (eg sorted rows with duplicate values swapping order on pagination)
+                    + orderByClause;
 
             query = entityManager.createNativeQuery(sql, InboxItem.class);
             query.setFirstResult(page * resultsPerPage);

@@ -160,20 +160,20 @@
    %>
 
      <tr>
-        <td ><%=paymentdate%>  </td>
+        <td ><%=Encode.forHtml(String.valueOf(paymentdate))%>  </td>
         <td align="right"><%=Encode.forHtmlContent(payable)%> </td>
-        <td align="right"><%=moneyFormat(amtbilled)%></td>
-        <td align="right"><%=moneyFormat(amtpaid)%></td>
-        <td align="right"><%=moneyFormat(balancefwd)%></td>
-        <td align="right"><%=moneyFormat(chequeamt)%></td>
-        <td align="right"><%=moneyFormat(newbalance)%></td>
+        <td align="right"><%=Encode.forHtml(String.valueOf(moneyFormat(amtbilled)))%></td>
+        <td align="right"><%=Encode.forHtml(String.valueOf(moneyFormat(amtpaid)))%></td>
+        <td align="right"><%=Encode.forHtml(String.valueOf(moneyFormat(balancefwd)))%></td>
+        <td align="right"><%=Encode.forHtml(String.valueOf(moneyFormat(chequeamt)))%></td>
+        <td align="right"><%=Encode.forHtml(String.valueOf(moneyFormat(newbalance)))%></td>
         <td >&nbsp;&nbsp;
-           Billed( <a href="createBillingReportAction.do?docFormat=pdf&repType=REP_MSPREM&rano=<%=raNo%>&selPayee=<%=payeeNo%>" target="_blank">PDF</a>|<a href="createBillingReportAction.do?docFormat=csv&repType=REP_MSPREM&rano=<%=raNo%>&selPayee=<%=payeeNo%>" target="_blank">CSV</a>) | 
-           <a href="genTAS00.jsp?rano=<%=raNo%>&proNo=" target="_blank">Detail</a> |
-           <a href="genTAS22.jsp?rano=<%=raNo%>&proNo=" target="_blank">Summary</a> 
-           ( <a href="createBillingReportAction.do?docFormat=pdf&repType=REP_MSPREMSUM&rano=<%=raNo%>&proNo=" target="_blank">PDF</a>|<a href="createBillingReportAction.do?docFormat=csv&repType=REP_MSPREMSUM&rano=<%=raNo%>&proNo=" target="_blank">CSV</a>)
+           Billed( <a href="createBillingReportAction.do?docFormat=pdf&repType=REP_MSPREM&rano=<%=Encode.forUriComponent(String.valueOf(raNo))%>&selPayee=<%=Encode.forUriComponent(String.valueOf(payeeNo))%>" target="_blank">PDF</a>|<a href="createBillingReportAction.do?docFormat=csv&repType=REP_MSPREM&rano=<%=Encode.forUriComponent(String.valueOf(raNo))%>&selPayee=<%=Encode.forUriComponent(String.valueOf(payeeNo))%>" target="_blank">CSV</a>) | 
+           <a href="genTAS00.jsp?rano=<%=Encode.forUriComponent(String.valueOf(raNo))%>&proNo=" target="_blank">Detail</a> |
+           <a href="genTAS22.jsp?rano=<%=Encode.forUriComponent(String.valueOf(raNo))%>&proNo=" target="_blank">Summary</a> 
+           ( <a href="createBillingReportAction.do?docFormat=pdf&repType=REP_MSPREMSUM&rano=<%=Encode.forUriComponent(String.valueOf(raNo))%>&proNo=" target="_blank">PDF</a>|<a href="createBillingReportAction.do?docFormat=csv&repType=REP_MSPREMSUM&rano=<%=Encode.forUriComponent(String.valueOf(raNo))%>&proNo=" target="_blank">CSV</a>)
         </td>
-        <td ><%=result.getStatus()%></td>
+        <td ><%=Encode.forHtml(String.valueOf(result.getStatus()))%></td>
      </tr>
      <tr>
         <td colspan="10" bgcolor="#EBF4F5">&nbsp;</td>

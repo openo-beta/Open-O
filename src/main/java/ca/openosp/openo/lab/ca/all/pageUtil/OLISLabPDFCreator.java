@@ -53,6 +53,9 @@ import ca.openosp.openo.lab.ca.all.Hl7textResultsData;
 import ca.openosp.openo.lab.ca.all.parsers.Factory;
 import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.all.util.Utilities;
+import ca.openosp.openo.utility.PathValidationUtils;
+
+import java.io.File;
 
 
 public class OLISLabPDFCreator extends PdfPageEventHelper {
@@ -118,7 +121,12 @@ public class OLISLabPDFCreator extends PdfPageEventHelper {
             LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
             String uuidToAdd = request.getParameter("uuid");
-            String fileName = System.getProperty("java.io.tmpdir") + "/olis_" + uuidToAdd + ".response";
+            if (uuidToAdd == null || uuidToAdd.trim().isEmpty()) {
+                throw new SecurityException("Invalid uuid parameter");
+            }
+            File tmpDir = new File(System.getProperty("java.io.tmpdir"));
+            File olisFile = PathValidationUtils.validatePath("olis_" + uuidToAdd + ".response", tmpDir);
+            String fileName = olisFile.getPath();
             String hl7Parsed = "";
             try {
                 if (Files.exists(Paths.get(fileName))) {

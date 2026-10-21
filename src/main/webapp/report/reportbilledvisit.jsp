@@ -25,6 +25,7 @@
         errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.db.DBPreparedHandler" %>
 <%@ page import="ca.openosp.openo.db.DBPreparedHandlerParam" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -440,7 +441,7 @@ out.flush();
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
     <tr>
-        <td>Period: (<%=sdate%> ~ <%=edate%>)</td>
+        <td>Period: (<%=Encode.forHtml(String.valueOf(sdate))%> ~ <%=Encode.forHtml(String.valueOf(edate))%>)</td>
     </tr>
 </table>
 
@@ -465,64 +466,64 @@ out.flush();
         <TH width="6%">71+</TH>
     </tr>
 
-    <tr bgcolor="<%=weakcolor%>">
+    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(weakcolor))%>">
         <td align="center">Patient</td>
-        <td align="center"><%=props.getProperty("patTotal")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("patTotal")))%>
         </td>
-        <td align="center"><%=props.getProperty("patRosterNR")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("patRosterNR")))%>
         </td>
-        <td align="center"><%=props.getProperty("patRosterRO")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("patRosterRO")))%>
         </td>
-        <td align="center"><%=props.getProperty("patSexF")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("patSexF")))%>
         </td>
-        <td align="center"><%=props.getProperty("patSexM")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("patSexM")))%>
         </td>
         <td align="center">0</td>
-        <td align="center"><%=props.getProperty("pat0_1")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("pat0_1")))%>
         </td>
-        <td align="center"><%=props.getProperty("pat2_11")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("pat2_11")))%>
         </td>
-        <td align="center"><%=props.getProperty("pat12_20")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("pat12_20")))%>
         </td>
-        <td align="center"><%=props.getProperty("pat21_34")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("pat21_34")))%>
         </td>
-        <td align="center"><%=props.getProperty("pat35_50")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("pat35_50")))%>
         </td>
-        <td align="center"><%=props.getProperty("pat51_64")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("pat51_64")))%>
         </td>
-        <td align="center"><%=props.getProperty("pat65_70")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("pat65_70")))%>
         </td>
-        <td align="center"><%=props.getProperty("pat71_")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("pat71_")))%>
         </td>
     </tr>
     <tr>
         <td align="center">Visit</td>
-        <td align="center"><%=props.getProperty("visTotal")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("visTotal")))%>
         </td>
-        <td align="center"><%=props.getProperty("visRosterNR")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("visRosterNR")))%>
         </td>
-        <td align="center"><%=props.getProperty("visRosterRO")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("visRosterRO")))%>
         </td>
-        <td align="center"><%=props.getProperty("visSexF")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("visSexF")))%>
         </td>
-        <td align="center"><%=props.getProperty("visSexM")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("visSexM")))%>
         </td>
         <td align="center">0</td>
-        <td align="center"><%=props.getProperty("vis0_1")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("vis0_1")))%>
         </td>
-        <td align="center"><%=props.getProperty("vis2_11")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("vis2_11")))%>
         </td>
-        <td align="center"><%=props.getProperty("vis12_20")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("vis12_20")))%>
         </td>
-        <td align="center"><%=props.getProperty("vis21_34")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("vis21_34")))%>
         </td>
-        <td align="center"><%=props.getProperty("vis35_50")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("vis35_50")))%>
         </td>
-        <td align="center"><%=props.getProperty("vis51_64")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("vis51_64")))%>
         </td>
-        <td align="center"><%=props.getProperty("vis65_70")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("vis65_70")))%>
         </td>
-        <td align="center"><%=props.getProperty("vis71_")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("vis71_")))%>
         </td>
     </tr>
 

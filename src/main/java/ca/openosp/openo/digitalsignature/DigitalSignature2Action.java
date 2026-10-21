@@ -79,6 +79,10 @@ public class DigitalSignature2Action extends ActionSupport {
 
         if (signatureKey != null) {
             String filename = DigitalSignatureUtils.getTempFilePath(signatureKey);
+            if (filename == null || filename.isEmpty()) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid signature request ID");
+                return null;
+            }
 
             if ("IPAD".equalsIgnoreCase(uploadSource) && imageString != null && !imageString.isEmpty()) {
                 try (FileOutputStream fos = new FileOutputStream(filename)) {

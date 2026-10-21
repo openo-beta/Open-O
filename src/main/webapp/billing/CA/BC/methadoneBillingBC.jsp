@@ -29,6 +29,7 @@
  --%>
 
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@page import="java.util.*,
                 ca.openosp.openo.util.*,
                 org.springframework.web.context.support.WebApplicationContextUtils,
@@ -137,8 +138,8 @@
       name="methadoneBillingForm"
       method="GET"
       class="bgLightLilac">
-    <input type="hidden" name="type" value="<%= request.getParameter("type") %>"/>
-    <input type="hidden" name="status" value="<%= request.getParameter("status") %>"/>
+    <input type="hidden" name="type" value="<%= Encode.forHtmlAttribute(request.getParameter("type")) %>"/>
+    <input type="hidden" name="status" value="<%= Encode.forHtmlAttribute(request.getParameter("status")) %>"/>
     <div id="header" class="bgLilac">
         <ul>
             <li>
@@ -201,7 +202,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -212,8 +213,8 @@
       name="saveMethadoneBillingForm"
       method="POST"
       class="bgLightLilac">
-    <input type="hidden" name="type" value="<%= request.getParameter("type") %>"/>
-    <input type="hidden" name="status" value="<%= request.getParameter("status") %>"/>
+    <input type="hidden" name="type" value="<%= Encode.forHtmlAttribute(request.getParameter("type")) %>"/>
+    <input type="hidden" name="status" value="<%= Encode.forHtmlAttribute(request.getParameter("status")) %>"/>
 
     <div id="saved" style="display:none;">
         <c:out value="${requestScope.saved}"/> Invoice(s) Saved
@@ -327,7 +328,7 @@
                     <td>
 
                         <a id="removeBill"
-                           href="<c:out value="${ oscar_context_path }" />/methadoneBillingBC.do?remove=<c:out value="${loop.index}" />&type=<%= request.getParameter("type") %>&status=<%= request.getParameter("status") %>">
+                           href="<c:out value="${ oscar_context_path }" />/methadoneBillingBC.do?remove=<c:out value="${loop.index}" />&type=<%=Encode.forUriComponent(request.getParameter("type"))%>&status=<%=Encode.forUriComponent(request.getParameter("status"))%>">
                             remove
                         </a>
 

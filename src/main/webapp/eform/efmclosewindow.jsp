@@ -31,10 +31,11 @@
 <body>
 <center>Closing Window, Please Wait....</center>
 <%@page import="ca.openosp.openo.eform.data.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <script type="text/javascript" language="javascript">
 
     if (!window.opener.closed) {
-        var parentAjaxId = "<%=request.getParameter("parentAjaxId")%>";
+        var parentAjaxId = "<%=Encode.forJavaScript(request.getParameter("parentAjaxId"))%>";
         if (window.opener.writeToEncounterNote) {
             window.opener.reloadNav(parentAjaxId);
             //window.opener.document.forms['encForm'].elements['reloadDiv'].value = parentAjaxId;

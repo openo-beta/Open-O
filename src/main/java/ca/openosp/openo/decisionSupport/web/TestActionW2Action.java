@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.decisionSupport.service.DSService;
 import ca.openosp.openo.utility.LoggedInInfo;
+import org.owasp.encoder.Encode;
 
 /**
  * @author apavel
@@ -58,7 +59,9 @@ public class TestActionW2Action extends ActionSupport {
 
         String demographic_no = request.getParameter("demographic_no");
         if (demographic_no == null) demographic_no = "1";
-        response.getWriter().println(dsService.evaluateAndGetConsequences(loggedInInfo, demographic_no, (String) request.getSession().getAttribute("user")));
+        response.setContentType("text/html; charset=UTF-8");
+        String result = String.valueOf(dsService.evaluateAndGetConsequences(loggedInInfo, demographic_no, (String) request.getSession().getAttribute("user")));
+        response.getWriter().println(Encode.forHtml(result));
         return null;
     }
 

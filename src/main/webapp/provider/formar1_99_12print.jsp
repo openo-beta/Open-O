@@ -30,6 +30,7 @@
     if (request.getParameter("oox") != null) oox += Integer.parseInt(request.getParameter("oox"));
     if (request.getParameter("ooy") != null) ooy += Integer.parseInt(request.getParameter("ooy"));
 %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.util.*, java.sql.*, ca.openosp.*"
          errorPage="/errorpage.jsp" %>
 
@@ -60,7 +61,7 @@
 <img src="<%= request.getContextPath() %>/images/formar1_99_12.gif">
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=50+oox%>px; top:<%=74+ooy%>px; width:400px; height:20px;">
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(50+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(74+ooy))%>px; width:400px; height:20px;">
     <%=Misc.JSEscape(request.getParameter("xml_name"))%>
 </div>
 
@@ -78,13 +79,13 @@
     ff(194, 123, 50, 20, '<span class="tdname">CL</span>');
     ff(224, 123, 50, 20, '<span class="tdname">S</span>');
 
-    ff(50, 98, 500, 20, "<%=Misc.JSEscape(request.getParameter("xml_address"))%>");
-    ff(25, 126, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_dob"))%>");
-    ff(120, 126, 50, 20, "<%=Misc.JSEscape(request.getParameter("xml_age"))%>");
-    ff(153, 123, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_msm")==null?"":"X")%>");
-    ff(181, 123, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_mscl")==null?"":"X")%>");
-    ff(212, 123, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_mss")==null?"":"X")%>");
-    ff(240, 126, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_el"))%>");
+    ff(50, 98, 500, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_address")))%>");
+    ff(25, 126, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_dob")))%>");
+    ff(120, 126, 50, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_age")))%>");
+    ff(153, 123, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_msm")==null?"":"X"))%>");
+    ff(181, 123, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_mscl")==null?"":"X"))%>");
+    ff(212, 123, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_mss")==null?"":"X"))%>");
+    ff(240, 126, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_el")))%>");
 
     ff(8, 137, 200, 20, '<span class="tdname">Occupation</span>');
     ff(113, 137, 200, 20, '<span class="tdname">Language</span>');
@@ -94,13 +95,13 @@
     ff(550, 137, 200, 20, '<span class="tdname">Age</span>');
     ff(580, 137, 200, 20, '<span class="tdname">Occupation</span>');
 
-    ff(8, 148, 140, 20, "<%=Misc.JSEscape(request.getParameter("xml_occp"))%>");
-    ff(113, 148, 140, 20, "<%=Misc.JSEscape(request.getParameter("xml_lang"))%>");
-    ff(213, 148, 140, 20, "<%=Misc.JSEscape(request.getParameter("xml_hp"))%>");
-    ff(310, 148, 140, 20, "<%=Misc.JSEscape(request.getParameter("xml_wp"))%>");
-    ff(400, 148, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_nop"))%>");
-    ff(555, 148, 50, 20, "<%=Misc.JSEscape(request.getParameter("xml_page"))%>");
-    ff(580, 148, 140, 20, "<%=Misc.JSEscape(request.getParameter("xml_poccp"))%>");
+    ff(8, 148, 140, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_occp")))%>");
+    ff(113, 148, 140, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_lang")))%>");
+    ff(213, 148, 140, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_hp")))%>");
+    ff(310, 148, 140, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_wp")))%>");
+    ff(400, 148, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_nop")))%>");
+    ff(555, 148, 50, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_page")))%>");
+    ff(580, 148, 140, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_poccp")))%>");
 
     ff(8, 160, 200, 20, '<span class="tdname">Birth attendants</span>');
     ff(150, 160, 200, 20, '<span class="tdname">Family physician</span>');
@@ -113,34 +114,34 @@
     ff(378, 175, 50, 20, '<span class="tdname">FP</span>');
     ff(415, 175, 100, 20, '<span class="tdname">Midwife</span>');
 
-    ff(13, 175, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_baobs")==null?"":"X")%>");
-    ff(55, 175, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_bafp")==null?"":"X")%>");
-    ff(90, 175, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_bam")==null?"":"X")%>");
-    ff(10, 195, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_ba"))%>");
-    ff(150, 175, 200, 100, "<%=(Misc.JSEscape(request.getParameter("xml_fphy"))+"").replace('\r', ' ')%>");
-    ff(324, 175, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_ncp")==null?"":"X")%>");
-    ff(365, 175, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_ncfp")==null?"":"X")%>");
-    ff(400, 175, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_ncm")==null?"":"X")%>");
-    ff(320, 195, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_nc"))%>");
+    ff(13, 175, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_baobs")==null?"":"X"))%>");
+    ff(55, 175, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_bafp")==null?"":"X"))%>");
+    ff(90, 175, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_bam")==null?"":"X"))%>");
+    ff(10, 195, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_ba")))%>");
+    ff(150, 175, 200, 100, "<%=Encode.forJavaScript((Misc.JSEscape(request.getParameter("xml_fphy"))+"").replace('\r', ' '))%>");
+    ff(324, 175, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_ncp")==null?"":"X"))%>");
+    ff(365, 175, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_ncfp")==null?"":"X"))%>");
+    ff(400, 175, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_ncm")==null?"":"X"))%>");
+    ff(320, 195, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_nc")))%>");
 
     ff(23, 216, 200, 20, '<span class="tdname">VBAC</span>');
     ff(23, 236, 200, 20, '<span class="tdname">Repeat CS</span>');
     ff(81, 214, 200, 20, '<span class="tdname">Allergies (list)</span>');
     ff(392, 214, 200, 20, '<span class="tdname">Medications (list)</span>');
 
-    ff(12, 216, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_vbac")==null?"":"X")%>");
-    ff(12, 236, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_rcs")==null?"":"X")%>");
+    ff(12, 216, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_vbac")==null?"":"X"))%>");
+    ff(12, 236, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_rcs")==null?"":"X"))%>");
 
     ff(6, 275, 200, 20, '<span class="tdname">Menstrual history(LMP):</span>');
     ff(230, 275, 200, 20, '<span class="tdname">Cycle</span>');
     ff(354, 278, 200, 20, '<span class="tdname">Regular</span>');
     ff(420, 278, 200, 20, '<span class="tdname">EDB</span>');
 
-    ff(121, 271, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_lmp"))%>");
-    ff(270, 273, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_c"))%>");
-    ff(342, 277, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_r")==null?"":"X")%>");
-    ff(453, 273, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_edb"))%>");
-    ff(550, 298, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_fedb"))%>");
+    ff(121, 271, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_lmp")))%>");
+    ff(270, 273, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_c")))%>");
+    ff(342, 277, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_r")==null?"":"X"))%>");
+    ff(453, 273, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_edb")))%>");
+    ff(550, 298, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fedb")))%>");
 
     ff(6, 292, 200, 20, '<span class="tdname">Contraception:</span>');
     ff(24, 306, 200, 20, '<span class="tdname">IUD</span>');
@@ -148,12 +149,12 @@
     ff(257, 306, 200, 20, '<span class="tdname">Other</span>');
     ff(390, 303, 200, 20, '<span class="tdname">Last used</span>');
 
-    ff(12, 306, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_iud")==null?"":"X")%>");
-    ff(53, 306, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_ht")==null?"":"X")%>");
-    ff(140, 306, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_htt"))%>");
-    ff(244, 306, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oc")==null?"":"X")%>");
-    ff(286, 303, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_ot"))%>");
-    ff(440, 298, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_lu"))%>");
+    ff(12, 306, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_iud")==null?"":"X"))%>");
+    ff(53, 306, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_ht")==null?"":"X"))%>");
+    ff(140, 306, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_htt")))%>");
+    ff(244, 306, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oc")==null?"":"X"))%>");
+    ff(286, 303, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_ot")))%>");
+    ff(440, 298, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_lu")))%>");
 
     ff(6, 334, 200, 20, '<span class="tdname">Gravida</span>');
     ff(66, 334, 200, 20, '<span class="tdname">Term</span>');
@@ -167,19 +168,19 @@
     ff(638, 334, 200, 20, '<span class="tdname">Multipregnancy</span>');
     ff(639, 349, 50, 20, '<span class="tdname">No.</span>');
 
-    ff(12, 348, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_gra"))%>");
-    ff(70, 348, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_term"))%>");
-    ff(93, 348, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_prem"))%>");
-    ff(131, 347, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_ecc")==null?"":"X")%>");
-    ff(189, 344, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_ect"))%>");
-    ff(244, 347, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_tec")==null?"":"X")%>");
-    ff(312, 344, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_tet"))%>");
-    ff(367, 347, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_spc")==null?"":"X")%>");
-    ff(442, 344, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_spt"))%>");
-    ff(504, 347, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_stc")==null?"":"X")%>");
-    ff(555, 344, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_stt"))%>");
-    ff(605, 348, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_liv"))%>");
-    ff(653, 350, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_mul"))%>");
+    ff(12, 348, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_gra")))%>");
+    ff(70, 348, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_term")))%>");
+    ff(93, 348, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_prem")))%>");
+    ff(131, 347, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_ecc")==null?"":"X"))%>");
+    ff(189, 344, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_ect")))%>");
+    ff(244, 347, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_tec")==null?"":"X"))%>");
+    ff(312, 344, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_tet")))%>");
+    ff(367, 347, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_spc")==null?"":"X"))%>");
+    ff(442, 344, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_spt")))%>");
+    ff(504, 347, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_stc")==null?"":"X"))%>");
+    ff(555, 344, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_stt")))%>");
+    ff(605, 348, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_liv")))%>");
+    ff(653, 350, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_mul")))%>");
 
     ff(12, 395, 50, 20, '<span class="tdname">No.</span>');
     ff(38, 395, 50, 20, '<span class="tdname">Year</span>');
@@ -198,76 +199,76 @@
     ff(455, 395, 250, 20, '<span class="tdname">Comments regarding pregnancy and birth</span>');
 
     ff(12, 421, 20, 20, "1");
-    ff(36, 421, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh1ye"))%>");
-    ff(78, 421, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh1se"))%>");
-    ff(100, 421, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh1ge"))%>");
-    ff(148, 421, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh1bi"))%>");
-    ff(200, 421, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh1le"))%>");
-    ff(245, 421, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh1pl"))%>");
-    ff(338, 421, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh1sv")==null?"":"X")%>");
-    ff(353, 421, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh1cs")==null?"":"X")%>");
-    ff(369, 421, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh1as")==null?"":"X")%>");
-    //ff(392,421,340,20,"<%=Misc.JSEscape(request.getParameter("xml_oh1co"))%>" );
+    ff(36, 421, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh1ye")))%>");
+    ff(78, 421, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh1se")))%>");
+    ff(100, 421, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh1ge")))%>");
+    ff(148, 421, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh1bi")))%>");
+    ff(200, 421, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh1le")))%>");
+    ff(245, 421, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh1pl")))%>");
+    ff(338, 421, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh1sv")==null?"":"X"))%>");
+    ff(353, 421, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh1cs")==null?"":"X"))%>");
+    ff(369, 421, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh1as")==null?"":"X"))%>");
+    //ff(392,421,340,20,"<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh1co")))%>" );
 
     ff(12, 439, 20, 20, "2");
-    ff(36, 439, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh2ye"))%>");
-    ff(78, 439, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh2se"))%>");
-    ff(100, 439, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh2ge"))%>");
-    ff(148, 439, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh2bi"))%>");
-    ff(200, 439, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh2le"))%>");
-    ff(245, 439, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh2pl"))%>");
-    ff(338, 439, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh2sv")==null?"":"X")%>");
-    ff(353, 439, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh2cs")==null?"":"X")%>");
-    ff(369, 439, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh2as")==null?"":"X")%>");
-    //ff(392,439,340,20,"<%=Misc.JSEscape(request.getParameter("xml_oh2co"))%>" );
+    ff(36, 439, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh2ye")))%>");
+    ff(78, 439, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh2se")))%>");
+    ff(100, 439, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh2ge")))%>");
+    ff(148, 439, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh2bi")))%>");
+    ff(200, 439, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh2le")))%>");
+    ff(245, 439, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh2pl")))%>");
+    ff(338, 439, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh2sv")==null?"":"X"))%>");
+    ff(353, 439, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh2cs")==null?"":"X"))%>");
+    ff(369, 439, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh2as")==null?"":"X"))%>");
+    //ff(392,439,340,20,"<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh2co")))%>" );
 
     ff(12, 457, 20, 20, "3");
-    ff(36, 457, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh3ye"))%>");
-    ff(78, 457, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh3se"))%>");
-    ff(100, 457, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh3ge"))%>");
-    ff(148, 457, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh3bi"))%>");
-    ff(200, 457, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh3le"))%>");
-    ff(245, 457, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh3pl"))%>");
-    ff(338, 457, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh3sv")==null?"":"X")%>");
-    ff(353, 457, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh3cs")==null?"":"X")%>");
-    ff(369, 457, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh3as")==null?"":"X")%>");
-    //ff(392,457,340,20,"<%=Misc.JSEscape(request.getParameter("xml_oh3co"))%>" );
+    ff(36, 457, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh3ye")))%>");
+    ff(78, 457, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh3se")))%>");
+    ff(100, 457, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh3ge")))%>");
+    ff(148, 457, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh3bi")))%>");
+    ff(200, 457, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh3le")))%>");
+    ff(245, 457, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh3pl")))%>");
+    ff(338, 457, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh3sv")==null?"":"X"))%>");
+    ff(353, 457, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh3cs")==null?"":"X"))%>");
+    ff(369, 457, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh3as")==null?"":"X"))%>");
+    //ff(392,457,340,20,"<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh3co")))%>" );
 
     ff(12, 476, 20, 20, "4");
-    ff(36, 476, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh4ye"))%>");
-    ff(78, 476, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh4se"))%>");
-    ff(100, 476, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh4ge"))%>");
-    ff(148, 476, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh4bi"))%>");
-    ff(200, 476, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh4le"))%>");
-    ff(245, 476, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh4pl"))%>");
-    ff(338, 476, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh4sv")==null?"":"X")%>");
-    ff(353, 476, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh4cs")==null?"":"X")%>");
-    ff(369, 476, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh4as")==null?"":"X")%>");
-    //ff(392,476,340,20,"<%=Misc.JSEscape(request.getParameter("xml_oh4co"))%>" );
+    ff(36, 476, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh4ye")))%>");
+    ff(78, 476, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh4se")))%>");
+    ff(100, 476, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh4ge")))%>");
+    ff(148, 476, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh4bi")))%>");
+    ff(200, 476, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh4le")))%>");
+    ff(245, 476, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh4pl")))%>");
+    ff(338, 476, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh4sv")==null?"":"X"))%>");
+    ff(353, 476, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh4cs")==null?"":"X"))%>");
+    ff(369, 476, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh4as")==null?"":"X"))%>");
+    //ff(392,476,340,20,"<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh4co")))%>" );
 
     ff(12, 494, 20, 20, "5");
-    ff(36, 494, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh5ye"))%>");
-    ff(78, 494, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh5se"))%>");
-    ff(100, 494, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh5ge"))%>");
-    ff(148, 494, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh5bi"))%>");
-    ff(200, 494, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh5le"))%>");
-    ff(245, 494, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh5pl"))%>");
-    ff(338, 494, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh5sv")==null?"":"X")%>");
-    ff(353, 494, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh5cs")==null?"":"X")%>");
-    ff(369, 494, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh5as")==null?"":"X")%>");
-    //ff(392,494,340,20,"<%=Misc.JSEscape(request.getParameter("xml_oh5co"))%>" );
+    ff(36, 494, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh5ye")))%>");
+    ff(78, 494, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh5se")))%>");
+    ff(100, 494, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh5ge")))%>");
+    ff(148, 494, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh5bi")))%>");
+    ff(200, 494, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh5le")))%>");
+    ff(245, 494, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh5pl")))%>");
+    ff(338, 494, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh5sv")==null?"":"X"))%>");
+    ff(353, 494, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh5cs")==null?"":"X"))%>");
+    ff(369, 494, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh5as")==null?"":"X"))%>");
+    //ff(392,494,340,20,"<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh5co")))%>" );
 
     ff(12, 512, 20, 20, "6");
-    ff(36, 512, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh6ye"))%>");
-    ff(78, 512, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh6se"))%>");
-    ff(100, 512, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh6ge"))%>");
-    ff(148, 512, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh6bi"))%>");
-    ff(200, 512, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh6le"))%>");
-    ff(245, 512, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh6pl"))%>");
-    ff(338, 512, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh6sv")==null?"":"X")%>");
-    ff(353, 512, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh6cs")==null?"":"X")%>");
-    ff(369, 512, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_oh6as")==null?"":"X")%>");
-    //ff(392,512,340,20,"<%=Misc.JSEscape(request.getParameter("xml_oh6co"))%>" );
+    ff(36, 512, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh6ye")))%>");
+    ff(78, 512, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh6se")))%>");
+    ff(100, 512, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh6ge")))%>");
+    ff(148, 512, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh6bi")))%>");
+    ff(200, 512, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh6le")))%>");
+    ff(245, 512, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh6pl")))%>");
+    ff(338, 512, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh6sv")==null?"":"X"))%>");
+    ff(353, 512, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh6cs")==null?"":"X"))%>");
+    ff(369, 512, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh6as")==null?"":"X"))%>");
+    //ff(392,512,340,20,"<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_oh6co")))%>" );
 
     ff(16, 549, 200, 20, '<span class="tdname">Current Pregnancy</span>');
     ff(145, 549, 200, 20, '<span class="tdname">Medical</span>');
@@ -300,16 +301,16 @@
     ff(25, 679, 200, 20, '<span class="smalltdname">Occup./Env.</span>');
     ff(25, 689, 200, 20, '<span class="smalltdname">hazards</span>');
 
-    ff(102, 572, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cp1b")==null?"":"X")%>");
-    ff(102, 584, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cp2v")==null?"":"X")%>");
-    ff(66, 605, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_cp3c"))%>");
-    ff(102, 608, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cp3s")==null?"":"X")%>");
-    ff(102, 620, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cp4d")==null?"":"X")%>");
-    ff(69, 641, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_cp5d"))%>");
-    ff(102, 644, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cp5a")==null?"":"X")%>");
-    ff(102, 656, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cp6i")==null?"":"X")%>");
-    ff(102, 668, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cp7r")==null?"":"X")%>");
-    ff(102, 680, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cp8o")==null?"":"X")%>");
+    ff(102, 572, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cp1b")==null?"":"X"))%>");
+    ff(102, 584, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cp2v")==null?"":"X"))%>");
+    ff(66, 605, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cp3c")))%>");
+    ff(102, 608, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cp3s")==null?"":"X"))%>");
+    ff(102, 620, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cp4d")==null?"":"X"))%>");
+    ff(69, 641, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cp5d")))%>");
+    ff(102, 644, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cp5a")==null?"":"X"))%>");
+    ff(102, 656, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cp6i")==null?"":"X"))%>");
+    ff(102, 668, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cp7r")==null?"":"X"))%>");
+    ff(102, 680, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cp8o")==null?"":"X"))%>");
 
     ff(10, 704, 200, 20, '<span class="smalltdname"><b>Nutrition Assessment</b></span>');
     ff(10, 714, 200, 20, '<span class="smalltdname"><i>(check if positive)</i></span>');
@@ -320,11 +321,11 @@
     ff(27, 770, 200, 20, '<span class="smalltdname">Restricted</span>');
     ff(8, 782, 200, 20, '<span class="smalltdname">Dietitian referral</span>');
 
-    ff(102, 727, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_nafa")==null?"":"X")%>");
-    ff(102, 739, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_namp")==null?"":"X")%>");
-    ff(102, 758, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_nadb")==null?"":"X")%>");
-    ff(102, 771, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_nadr")==null?"":"X")%>");
-    ff(102, 783, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_nadref")==null?"":"X")%>");
+    ff(102, 727, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_nafa")==null?"":"X"))%>");
+    ff(102, 739, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_namp")==null?"":"X"))%>");
+    ff(102, 758, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_nadb")==null?"":"X"))%>");
+    ff(102, 771, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_nadr")==null?"":"X"))%>");
+    ff(102, 783, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_nadref")==null?"":"X"))%>");
 
     ff(122, 572, 200, 20, '<span class="smalltdname">9.</span>');
     ff(137, 572, 200, 20, '<span class="smalltdname">Hypertension</span>');
@@ -361,41 +362,41 @@
     ff(122, 764, 200, 20, '<span class="smalltdname">25.</span>');
     ff(137, 764, 200, 20, '<span class="smalltdname">Other</span>');
 
-    ff(228, 573, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m9hy")==null?"":"X")%>");
-    ff(246, 573, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m9hn")==null?"":"X")%>");
-    ff(228, 585, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m10ey")==null?"":"X")%>");
-    ff(246, 585, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m10en")==null?"":"X")%>");
-    ff(228, 597, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m11hy")==null?"":"X")%>");
-    ff(246, 597, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m11hn")==null?"":"X")%>");
-    ff(228, 609, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m12ry")==null?"":"X")%>");
-    ff(246, 609, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m12rn")==null?"":"X")%>");
-    ff(228, 621, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m13ry")==null?"":"X")%>");
-    ff(246, 621, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m13rn")==null?"":"X")%>");
-    ff(228, 633, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m14ly")==null?"":"X")%>");
-    ff(246, 633, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m14ln")==null?"":"X")%>");
-    ff(228, 645, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m15ny")==null?"":"X")%>");
-    ff(246, 645, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m15nn")==null?"":"X")%>");
-    ff(228, 657, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m16ay")==null?"":"X")%>");
-    ff(246, 657, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m16an")==null?"":"X")%>");
-    ff(228, 669, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m17by")==null?"":"X")%>");
-    ff(246, 669, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m17bn")==null?"":"X")%>");
-    ff(228, 681, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m18gy")==null?"":"X")%>");
-    ff(246, 681, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m18gn")==null?"":"X")%>");
-    ff(228, 693, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m19hy")==null?"":"X")%>");
-    ff(246, 693, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m19hn")==null?"":"X")%>");
-    ff(228, 705, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m20sy")==null?"":"X")%>");
-    ff(246, 705, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m20sn")==null?"":"X")%>");
-    ff(228, 717, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m21ay")==null?"":"X")%>");
-    ff(246, 717, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m21an")==null?"":"X")%>");
-    ff(228, 729, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m22hy")==null?"":"X")%>");
-    ff(246, 729, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m22hn")==null?"":"X")%>");
-    ff(228, 741, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m23vy")==null?"":"X")%>");
-    ff(246, 741, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m23vn")==null?"":"X")%>");
-    ff(228, 753, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m24py")==null?"":"X")%>");
-    ff(246, 753, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m24pn")==null?"":"X")%>");
-    ff(228, 765, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m25oy")==null?"":"X")%>");
-    ff(246, 765, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_m25on")==null?"":"X")%>");
-    ff(136, 780, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_m25"))%>");
+    ff(228, 573, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m9hy")==null?"":"X"))%>");
+    ff(246, 573, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m9hn")==null?"":"X"))%>");
+    ff(228, 585, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m10ey")==null?"":"X"))%>");
+    ff(246, 585, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m10en")==null?"":"X"))%>");
+    ff(228, 597, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m11hy")==null?"":"X"))%>");
+    ff(246, 597, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m11hn")==null?"":"X"))%>");
+    ff(228, 609, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m12ry")==null?"":"X"))%>");
+    ff(246, 609, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m12rn")==null?"":"X"))%>");
+    ff(228, 621, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m13ry")==null?"":"X"))%>");
+    ff(246, 621, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m13rn")==null?"":"X"))%>");
+    ff(228, 633, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m14ly")==null?"":"X"))%>");
+    ff(246, 633, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m14ln")==null?"":"X"))%>");
+    ff(228, 645, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m15ny")==null?"":"X"))%>");
+    ff(246, 645, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m15nn")==null?"":"X"))%>");
+    ff(228, 657, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m16ay")==null?"":"X"))%>");
+    ff(246, 657, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m16an")==null?"":"X"))%>");
+    ff(228, 669, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m17by")==null?"":"X"))%>");
+    ff(246, 669, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m17bn")==null?"":"X"))%>");
+    ff(228, 681, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m18gy")==null?"":"X"))%>");
+    ff(246, 681, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m18gn")==null?"":"X"))%>");
+    ff(228, 693, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m19hy")==null?"":"X"))%>");
+    ff(246, 693, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m19hn")==null?"":"X"))%>");
+    ff(228, 705, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m20sy")==null?"":"X"))%>");
+    ff(246, 705, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m20sn")==null?"":"X"))%>");
+    ff(228, 717, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m21ay")==null?"":"X"))%>");
+    ff(246, 717, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m21an")==null?"":"X"))%>");
+    ff(228, 729, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m22hy")==null?"":"X"))%>");
+    ff(246, 729, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m22hn")==null?"":"X"))%>");
+    ff(228, 741, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m23vy")==null?"":"X"))%>");
+    ff(246, 741, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m23vn")==null?"":"X"))%>");
+    ff(228, 753, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m24py")==null?"":"X"))%>");
+    ff(246, 753, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m24pn")==null?"":"X"))%>");
+    ff(228, 765, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m25oy")==null?"":"X"))%>");
+    ff(246, 765, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m25on")==null?"":"X"))%>");
+    ff(136, 780, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_m25")))%>");
 
     ff(267, 571, 200, 20, '<span class="smalltdname">26.</span>');
     ff(283, 571, 200, 20, '<span class="smalltdname">Age&gt;=35 at EDB</span>');
@@ -410,14 +411,14 @@
     ff(267, 630, 200, 20, '<span class="smalltdname">29.</span>');
     ff(283, 630, 200, 20, '<span class="smalltdname">Previous birth defect</span>');
 
-    ff(402, 573, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_g26ay")==null?"":"X")%>");
-    ff(420, 573, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_g26an")==null?"":"X")%>");
-    ff(402, 585, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_g27ay")==null?"":"X")%>");
-    ff(420, 585, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_g27an")==null?"":"X")%>");
-    ff(402, 613, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_g28ky")==null?"":"X")%>");
-    ff(420, 613, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_g28kn")==null?"":"X")%>");
-    ff(402, 632, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_g29py")==null?"":"X")%>");
-    ff(420, 632, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_g29pn")==null?"":"X")%>");
+    ff(402, 573, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_g26ay")==null?"":"X"))%>");
+    ff(420, 573, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_g26an")==null?"":"X"))%>");
+    ff(402, 585, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_g27ay")==null?"":"X"))%>");
+    ff(420, 585, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_g27an")==null?"":"X"))%>");
+    ff(402, 613, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_g28ky")==null?"":"X"))%>");
+    ff(420, 613, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_g28kn")==null?"":"X"))%>");
+    ff(402, 632, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_g29py")==null?"":"X"))%>");
+    ff(420, 632, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_g29pn")==null?"":"X"))%>");
 
     ff(267, 640, 200, 20, '<span class="smalltdname"><b>Family history of:</b></span>');
     ff(267, 651, 200, 20, '<span class="smalltdname">30.</span>');
@@ -444,24 +445,24 @@
     ff(283, 777, 200, 20, '<span class="smalltdname">Offered</span>');
     ff(283, 786, 200, 20, '<span class="smalltdname">Accepted</span>');
 
-    ff(402, 652, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh30ny")==null?"":"X")%>");
-    ff(420, 652, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh30nn")==null?"":"X")%>");
-    ff(402, 664, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh31dy")==null?"":"X")%>");
-    ff(420, 664, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh31dn")==null?"":"X")%>");
-    ff(402, 676, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh32cy")==null?"":"X")%>");
-    ff(420, 676, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh32cn")==null?"":"X")%>");
-    ff(402, 699, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh33cy")==null?"":"X")%>");
-    ff(420, 699, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh33cn")==null?"":"X")%>");
-    ff(402, 712, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh34cy")==null?"":"X")%>");
-    ff(420, 712, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh34cn")==null?"":"X")%>");
-    ff(402, 731, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh35gy")==null?"":"X")%>");
-    ff(420, 731, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh35gn")==null?"":"X")%>");
-    ff(402, 759, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh36fy")==null?"":"X")%>");
-    ff(420, 759, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh36fn")==null?"":"X")%>");
-    ff(402, 776, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh37oy")==null?"":"X")%>");
-    ff(420, 776, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh37on")==null?"":"X")%>");
-    ff(402, 788, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh37ay")==null?"":"X")%>");
-    ff(420, 788, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_fh37an")==null?"":"X")%>");
+    ff(402, 652, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh30ny")==null?"":"X"))%>");
+    ff(420, 652, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh30nn")==null?"":"X"))%>");
+    ff(402, 664, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh31dy")==null?"":"X"))%>");
+    ff(420, 664, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh31dn")==null?"":"X"))%>");
+    ff(402, 676, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh32cy")==null?"":"X"))%>");
+    ff(420, 676, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh32cn")==null?"":"X"))%>");
+    ff(402, 699, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh33cy")==null?"":"X"))%>");
+    ff(420, 699, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh33cn")==null?"":"X"))%>");
+    ff(402, 712, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh34cy")==null?"":"X"))%>");
+    ff(420, 712, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh34cn")==null?"":"X"))%>");
+    ff(402, 731, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh35gy")==null?"":"X"))%>");
+    ff(420, 731, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh35gn")==null?"":"X"))%>");
+    ff(402, 759, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh36fy")==null?"":"X"))%>");
+    ff(420, 759, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh36fn")==null?"":"X"))%>");
+    ff(402, 776, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh37oy")==null?"":"X"))%>");
+    ff(420, 776, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh37on")==null?"":"X"))%>");
+    ff(402, 788, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh37ay")==null?"":"X"))%>");
+    ff(420, 788, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_fh37an")==null?"":"X"))%>");
 
     ff(442, 571, 200, 20, '<span class="smalltdname">38.</span>');
     ff(461, 571, 200, 20, '<span class="smalltdname">STDs/Herpes</span>');
@@ -474,12 +475,12 @@
     ff(442, 619, 200, 20, '<span class="smalltdname">42.</span>');
     ff(461, 619, 200, 20, '<span class="smalltdname">TB/Other</span>');
 
-    ff(572, 573, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_idt38s")==null?"":"X")%>");
-    ff(572, 585, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_idt39h")==null?"":"X")%>");
-    ff(572, 597, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_idt40v")==null?"":"X")%>");
-    ff(572, 609, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_idt41t")==null?"":"X")%>");
-    ff(500, 617, 200, 20, '<span class="smalltdname"><%=Misc.JSEscape(request.getParameter("xml_idt42o"))%></span>');
-    ff(572, 621, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_idt42t")==null?"":"X")%>");
+    ff(572, 573, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_idt38s")==null?"":"X"))%>");
+    ff(572, 585, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_idt39h")==null?"":"X"))%>");
+    ff(572, 597, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_idt40v")==null?"":"X"))%>");
+    ff(572, 609, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_idt41t")==null?"":"X"))%>");
+    ff(500, 617, 200, 20, '<span class="smalltdname"><%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_idt42o")))%></span>');
+    ff(572, 621, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_idt42t")==null?"":"X"))%>");
 
     ff(442, 640, 200, 20, '<span class="smalltdname"><b>Psychosocial discussion topics</b></span>');
     ff(442, 654, 200, 20, '<span class="smalltdname">43.</span>');
@@ -495,12 +496,12 @@
     ff(442, 714, 200, 20, '<span class="smalltdname">48.</span>');
     ff(461, 714, 200, 20, '<span class="smalltdname">Parenting concerns</span>');
 
-    ff(572, 656, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_pdt43s")==null?"":"X")%>");
-    ff(572, 668, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_pdt44c")==null?"":"X")%>");
-    ff(572, 680, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_pdt45e")==null?"":"X")%>");
-    ff(572, 692, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_pdt46s")==null?"":"X")%>");
-    ff(572, 704, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_pdt47f")==null?"":"X")%>");
-    ff(572, 716, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_pdt48p")==null?"":"X")%>");
+    ff(572, 656, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_pdt43s")==null?"":"X"))%>");
+    ff(572, 668, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_pdt44c")==null?"":"X"))%>");
+    ff(572, 680, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_pdt45e")==null?"":"X"))%>");
+    ff(572, 692, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_pdt46s")==null?"":"X"))%>");
+    ff(572, 704, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_pdt47f")==null?"":"X"))%>");
+    ff(572, 716, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_pdt48p")==null?"":"X"))%>");
 
     ff(442, 734, 200, 20, '<span class="smalltdname"><b>Risk factors identified</b></span>');
 
@@ -509,10 +510,10 @@
     ff(590, 587, 200, 20, '<span class="smalltdname">Pre-preg. wt.</span>');
     ff(590, 608, 100, 20, '<span class="smalltdname">BP</span>');
 
-    ff(602, 565, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_peh"))%>");
-    ff(672, 565, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_pew"))%>");
-    ff(642, 585, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_ppw"))%>");
-    ff(610, 608, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_pebp"))%>");
+    ff(602, 565, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_peh")))%>");
+    ff(672, 565, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_pew")))%>");
+    ff(642, 585, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_ppw")))%>");
+    ff(610, 608, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_pebp")))%>");
 
     ff(591, 630, 200, 20, '<span class="smalltdname"><b>Checkmark if normal:</b></span>');
     ff(591, 643, 200, 20, '<span class="smalltdname">Head, teeth, ENT</span>');
@@ -530,23 +531,23 @@
     ff(640, 771, 200, 20, '<span class="smalltdname">(no. of wks.)</span>');
     ff(591, 785, 200, 20, '<span class="smalltdname">Adnexa</span>');
 
-    ff(693, 643, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cinhe")==null?"":"X")%>");
-    ff(693, 655, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cinth")==null?"":"X")%>");
-    ff(693, 667, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cinch")==null?"":"X")%>");
-    ff(693, 679, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cinbr")==null?"":"X")%>");
-    ff(693, 691, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cinca")==null?"":"X")%>");
-    ff(693, 703, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cinab")==null?"":"X")%>");
-    ff(693, 715, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cinva")==null?"":"X")%>");
-    ff(693, 727, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cinne")==null?"":"X")%>");
-    ff(693, 739, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cinpe")==null?"":"X")%>");
-    ff(693, 751, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cinex")==null?"":"X")%>");
-    ff(693, 763, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cince")==null?"":"X")%>");
-    ff(622, 771, 20, 20, '<span class="smalltdname"><%=Misc.JSEscape(request.getParameter("xml_cinun"))%></span>');
-    ff(693, 775, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cinut")==null?"":"X")%>");
-    ff(693, 787, 20, 20, "<%=Misc.JSEscape(request.getParameter("xml_cinad")==null?"":"X")%>");
+    ff(693, 643, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cinhe")==null?"":"X"))%>");
+    ff(693, 655, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cinth")==null?"":"X"))%>");
+    ff(693, 667, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cinch")==null?"":"X"))%>");
+    ff(693, 679, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cinbr")==null?"":"X"))%>");
+    ff(693, 691, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cinca")==null?"":"X"))%>");
+    ff(693, 703, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cinab")==null?"":"X"))%>");
+    ff(693, 715, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cinva")==null?"":"X"))%>");
+    ff(693, 727, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cinne")==null?"":"X"))%>");
+    ff(693, 739, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cinpe")==null?"":"X"))%>");
+    ff(693, 751, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cinex")==null?"":"X"))%>");
+    ff(693, 763, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cince")==null?"":"X"))%>");
+    ff(622, 771, 20, 20, '<span class="smalltdname"><%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cinun")))%></span>');
+    ff(693, 775, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cinut")==null?"":"X"))%>");
+    ff(693, 787, 20, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_cinad")==null?"":"X"))%>");
 
-    ff(20, 935, 200, 20, "<%=Misc.JSEscape(request.getParameter("xml_soa"))%>");
-    ff(500, 935, 100, 20, "<%=Misc.JSEscape(request.getParameter("xml_date"))%>");
+    ff(20, 935, 200, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_soa")))%>");
+    ff(500, 935, 100, 20, "<%=Encode.forJavaScript(Misc.JSEscape(request.getParameter("xml_date")))%>");
 
     ff(6, 919, 300, 20, '<span class="tdname">Signature of attendant</span>');
     ff(430, 919, 300, 20, '<span class="tdname">Date (yyyy/mm/dd)</span>');
@@ -557,51 +558,51 @@
 
 </script>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=480+oox%>px; top:<%=ooy+175%>px; width:230px; height:30px;">
-    <pre><%=request.getParameter("xml_ebmf")%></pre>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(480+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+175))%>px; width:230px; height:30px;">
+    <pre><%=Encode.forHtml(request.getParameter("xml_ebmf"))%></pre>
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=80+oox%>px; top:<%=ooy+228%>px; width:280px; height:50px;">
-    <span class="smalltdname"><%=request.getParameter("xml_Alert_demographicaccessory")%></span>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(80+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+228))%>px; width:280px; height:50px;">
+    <span class="smalltdname"><%=Encode.forHtml(request.getParameter("xml_Alert_demographicaccessory"))%></span>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=395+oox%>px; top:<%=ooy+228%>px; width:280px; height:50px;">
-    <span class="smalltdname"><%=request.getParameter("xml_Medication_demographicaccessory")%></span>
-</div>
-
-<div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=440+oox%>px; top:<%=ooy+748%>px; width:150px; height:60px;">
-    <span class="smalltdname"><%=request.getParameter("xml_rfi")%></span></div>
-
-<div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=12+oox%>px; top:<%=ooy+830%>px; width:300px; height:60px;">
-    <pre><%=request.getParameter("xml_comments")%></pre>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(395+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+228))%>px; width:280px; height:50px;">
+    <span class="smalltdname"><%=Encode.forHtml(request.getParameter("xml_Medication_demographicaccessory"))%></span>
 </div>
 
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+421%>px; width:340px; height:20px;">
-    <%=request.getParameter("xml_oh1co")%>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(440+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+748))%>px; width:150px; height:60px;">
+    <span class="smalltdname"><%=Encode.forHtml(request.getParameter("xml_rfi"))%></span></div>
+
+<div ID="bdiv1"
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(12+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+830))%>px; width:300px; height:60px;">
+    <pre><%=Encode.forHtml(request.getParameter("xml_comments"))%></pre>
+</div>
+
+<div ID="bdiv1"
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+421))%>px; width:340px; height:20px;">
+    <%=Encode.forHtml(request.getParameter("xml_oh1co"))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+439%>px; width:340px; height:20px;">
-    <%=request.getParameter("xml_oh2co")%>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+439))%>px; width:340px; height:20px;">
+    <%=Encode.forHtml(request.getParameter("xml_oh2co"))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+457%>px; width:340px; height:20px;">
-    <%=request.getParameter("xml_oh3co")%>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+457))%>px; width:340px; height:20px;">
+    <%=Encode.forHtml(request.getParameter("xml_oh3co"))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+476%>px; width:340px; height:20px;">
-    <%=request.getParameter("xml_oh4co")%>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+476))%>px; width:340px; height:20px;">
+    <%=Encode.forHtml(request.getParameter("xml_oh4co"))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+494%>px; width:340px; height:20px;">
-    <%=request.getParameter("xml_oh5co")%>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+494))%>px; width:340px; height:20px;">
+    <%=Encode.forHtml(request.getParameter("xml_oh5co"))%>
 </div>
 <div ID="bdiv1"
-     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=392+oox%>px; top:<%=ooy+512%>px; width:340px; height:20px;">
-    <%=request.getParameter("xml_oh6co")%>
+     STYLE="position:absolute; visibility:visible; z-index:2; left:<%=Encode.forHtmlAttribute(String.valueOf(392+oox))%>px; top:<%=Encode.forHtmlAttribute(String.valueOf(ooy+512))%>px; width:340px; height:20px;">
+    <%=Encode.forHtml(request.getParameter("xml_oh6co"))%>
 </div>
 
 </body>

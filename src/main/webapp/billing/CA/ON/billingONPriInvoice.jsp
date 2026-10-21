@@ -20,6 +20,7 @@
 <%@ page
         import="ca.openosp.openo.util.*,ca.openosp.openo.billing.ca.on.pageUtil.*,ca.openosp.openo.billing.ca.on.data.*" %>
 <%@ page import="ca.openosp.openo.util.DateUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -29,9 +30,9 @@
 <body>
 <table>
     <tr>
-        <td>INVOICE - <%=DateUtils.sumDate("yyyy-MM-dd HH:mm", "0") %>
+        <td>INVOICE - <%=Encode.forHtml(String.valueOf(DateUtils.sumDate("yyyy-MM-dd HH:mm", "0")))%>
         </td>
-        <td align="right"><%=DateUtils.sumDate("yyyy-MM-dd HH:mm", "0") %>
+        <td align="right"><%=Encode.forHtml(String.valueOf(DateUtils.sumDate("yyyy-MM-dd HH:mm", "0")))%>
         </td>
     </tr>
 </table>

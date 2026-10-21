@@ -26,6 +26,7 @@
 
 <%@ page import="java.util.*, ca.openosp.openo.eform.*" %>
 <%@ page import="ca.openosp.openo.eform.EFormUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
@@ -61,12 +62,12 @@
         groups = EFormUtil.getEFormGroups();
     }
 %>
-<form action="<%=url%>" name="groupselect" method="get">
+<form action="<%=Encode.forHtmlAttribute(String.valueOf(url))%>" name="groupselect" method="get">
     <input type="hidden" id="group_view" name="group_view" value="">
-    <input type="hidden" name="demographic_no" value="<%=demographic_no%>">
-    <input type="hidden" name="apptProvider" value="<%=apptProvider%>">
-    <input type="hidden" name="appointment" value="<%=appointment%>">
-    <input type="hidden" name="parentAjaxId" value="<%=parentAjaxId%>">
+    <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demographic_no))%>">
+    <input type="hidden" name="apptProvider" value="<%=Encode.forHtmlAttribute(String.valueOf(apptProvider))%>">
+    <input type="hidden" name="appointment" value="<%=Encode.forHtmlAttribute(String.valueOf(appointment))%>">
+    <input type="hidden" name="parentAjaxId" value="<%=Encode.forHtmlAttribute(String.valueOf(parentAjaxId))%>">
     <div class="grouplist">
         <div class="grouplistHeader"><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgViewGroup"/>:</div>
         <ul class="grouplist">
@@ -79,9 +80,9 @@
                     String size = (String) curhash.get("count");
                     if (group.equals(groupView)) selected = "selected";
             %>
-            <li class="<%=selected%>"><a href="#"
-                                         onclick="document.getElementById('group_view').value='<%=group%>'; document.forms['groupselect'].submit();"><%=group%>
-                (<%=size%>)</a></li>
+            <li class="<%=Encode.forHtmlAttribute(String.valueOf(selected))%>"><a href="#"
+                                         onclick="document.getElementById('group_view').value='<%=Encode.forJavaScript(String.valueOf(group))%>'; document.forms['groupselect'].submit();"><%=Encode.forHtml(String.valueOf(group))%>
+                (<%=Encode.forHtml(String.valueOf(size))%>)</a></li>
             <% } %>
         </ul>
         <security:oscarSec roleName="<%=roleName$%>"

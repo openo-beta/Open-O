@@ -25,6 +25,7 @@
 --%>
 
 <%@page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <html>
@@ -84,8 +85,8 @@
                 <td>
                     <h1>About OpenO</h1>
 
-                    <p class="build_info">build date: <%= OscarProperties.getBuildDate() %><br/>
-                        build tag: <%=OscarProperties.getBuildTag()%>
+                    <p class="build_info">build date: <%=Encode.forHtml(String.valueOf(OscarProperties.getBuildDate()))%><br/>
+                        build tag: <%=Encode.forHtml(String.valueOf(OscarProperties.getBuildTag()))%>
                     </p>
 
                     <table width="85%" align="center">

@@ -32,6 +32,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.DiagnosticCode" %>
 <%@ page import="ca.openosp.openo.commn.dao.DiagnosticCodeDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DiagnosticCodeDao diagnosticCodeDao = SpringUtils.getBean(DiagnosticCodeDao.class);
 %>
@@ -191,16 +192,16 @@
                     }
 
         %>
-        <tr bgcolor="<%=color%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
             <td width="12%"><font face="Arial, Helvetica, sans-serif"
                                   size="2"> <a
-                    href="javascript:CodeAttach('<%=Dcode%>|<%=DcodeDesc%>')"><%=Dcode%>
+                    href="javascript:CodeAttach('<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>|<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>')"><%=Encode.forHtml(String.valueOf(Dcode))%>
                 <a></font></td>
             <td width="88%"><font face="Arial, Helvetica, sans-serif"
-                                  size="2"> <input type="text" name="<%=Dcode%>"
-                                                   value="<%=DcodeDesc%>" size="60"> <input type="submit"
+                                  size="2"> <input type="text" name="<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>" size="60"> <input type="submit"
                                                                                             name="update"
-                                                                                            value="Update <%=Dcode%>">
+                                                                                            value="Update <%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>">
             </font></td>
         </tr>
         <%
@@ -219,16 +220,16 @@
                     color = "#F9E6F0";
                 }
         %>
-        <tr bgcolor="<%=color%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
             <td width="12%"><font face="Arial, Helvetica, sans-serif"
                                   size="2"> <a
-                    href="javascript:CodeAttach('<%=Dcode%>|<%=DcodeDesc%>')"><%=Dcode%>
+                    href="javascript:CodeAttach('<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>|<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>')"><%=Encode.forHtml(String.valueOf(Dcode))%>
                 <a></font></td>
             <td width="88%"><font face="Arial, Helvetica, sans-serif"
-                                  size="2"> <input type="text" name="<%=Dcode%>"
-                                                   value="<%=DcodeDesc%>" size="60"> <input type="submit"
+                                  size="2"> <input type="text" name="<%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>"
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc))%>" size="60"> <input type="submit"
                                                                                             name="update"
-                                                                                            value="Update <%=Dcode%>">
+                                                                                            value="Update <%=Encode.forHtmlAttribute(String.valueOf(Dcode))%>">
             </font></td>
         </tr>
         <%
@@ -246,16 +247,16 @@
                     color = "#F9E6F0";
                 }
         %>
-        <tr bgcolor="<%=color%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
             <td width="12%"><font face="Arial, Helvetica, sans-serif"
                                   size="2"> <a
-                    href="javascript:CodeAttach('<%=Dcode2%>|<%=DcodeDesc2%>')"><%=Dcode2%>
+                    href="javascript:CodeAttach('<%=Encode.forHtmlAttribute(String.valueOf(Dcode2))%>|<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc2))%>')"><%=Encode.forHtml(String.valueOf(Dcode2))%>
                 <a></font></td>
             <td width="88%"><font face="Arial, Helvetica, sans-serif"
-                                  size="2"> <input type="text" name="<%=Dcode2%>"
-                                                   value="<%=DcodeDesc2%>" size="60"> <input type="submit"
+                                  size="2"> <input type="text" name="<%=Encode.forHtmlAttribute(String.valueOf(Dcode2))%>"
+                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(DcodeDesc2))%>" size="60"> <input type="submit"
                                                                                              name="update"
-                                                                                             value="Update <%=Dcode2%>">
+                                                                                             value="Update <%=Encode.forHtmlAttribute(String.valueOf(Dcode2))%>">
             </font></td>
         </tr>
         <%
@@ -263,7 +264,7 @@
             }
         %>
         <%if (intCount == 0) {%>
-        <tr bgcolor="<%=color%>">
+        <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
             <td colspan="2"><font face="Arial, Helvetica, sans-serif"
                                   size="2"> No match found. <%// =i      %></font></td>
         </tr>
@@ -271,7 +272,7 @@
         <%if (intCount == 1) {%>
         <script LANGUAGE="JavaScript">
             <!--
-            CodeAttach('<%=Dcode%>|<%=DcodeDesc%>');
+            CodeAttach('<%=Encode.forJavaScript(String.valueOf(Dcode))%>|<%=Encode.forJavaScript(String.valueOf(DcodeDesc))%>');
             -->
 
         </script>

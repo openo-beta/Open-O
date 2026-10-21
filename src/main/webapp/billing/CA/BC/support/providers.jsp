@@ -27,6 +27,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.model.Provider" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 %>
@@ -43,7 +44,7 @@
     function posttoText(index) {
         self.close();
         opener.document
-    .<%=form%>.<%=field%>.
+    .<%=Encode.forJavaScript(String.valueOf(form))%>.<%=Encode.forJavaScript(String.valueOf(field))%>.
         value = index;
         opener.focus();
     }
@@ -74,10 +75,10 @@
     <tr <%=((color) ? "bgcolor=\"#F6F6F6\"" : "")%> align="left"
                                                     valign="top">
         <td class="SmallerText"><a href=#
-                                   onClick="posttoText('<%=p.getOhipNo()%>');"><%=p.getOhipNo()%>
+                                   onClick="posttoText('<%=Encode.forJavaScript(String.valueOf(p.getOhipNo()))%>');"><%=Encode.forHtml(String.valueOf(p.getOhipNo()))%>
         </a>
         </td>
-        <td class="SmallerText">Dr. <%=p.getFirstName()%> <%=p.getLastName()%>
+        <td class="SmallerText">Dr. <%=Encode.forHtml(String.valueOf(p.getFirstName()))%> <%=Encode.forHtml(String.valueOf(p.getLastName()))%>
         </td>
     </tr>
     <%

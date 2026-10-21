@@ -221,19 +221,19 @@
 
     <body bgcolor="#EEEEFF" onload="document.forms[0].note.focus();">
     <form action="annotation.jsp" method="post">
-        <input type="hidden" name="atbname" value="<%=attrib_name%>"/>
-        <input type="hidden" name="demo" value="<%=demo%>"/>
-        <input type="hidden" name="display" value="<%=display%>"/>
-        <input type="hidden" name="table_id" value="<%=tid%>"/>
-        <input type="hidden" name="other_id" value="<%=oid%>"/>
+        <input type="hidden" name="atbname" value="<%=Encode.forHtmlAttribute(String.valueOf(attrib_name))%>"/>
+        <input type="hidden" name="demo" value="<%=Encode.forHtmlAttribute(String.valueOf(demo))%>"/>
+        <input type="hidden" name="display" value="<%=Encode.forHtmlAttribute(String.valueOf(display))%>"/>
+        <input type="hidden" name="table_id" value="<%=Encode.forHtmlAttribute(String.valueOf(tid))%>"/>
+        <input type="hidden" name="other_id" value="<%=Encode.forHtmlAttribute(String.valueOf(oid))%>"/>
         <input type="hidden" name="saved"/>
         <div class="header"></div>
         <div class="panel">
-            <%=display%> Annotation:
+            <%=Encode.forHtml(String.valueOf(display))%> Annotation:
             <%if (lastCmn != null) {%>
-            <div class="label">Documentation Date: <%=lastCmn.getCreate_date()%>
+            <div class="label">Documentation Date: <%=Encode.forHtml(String.valueOf(lastCmn.getCreate_date()))%>
             </div>
-            <div class="label">Saved by <%=lastCmn.getProviderName()%>
+            <div class="label">Saved by <%=Encode.forHtml(String.valueOf(lastCmn.getProviderName()))%>
             </div>
             <%}%>
             <textarea name="note" rows="10"><%=Encode.forHtml("Lab Reports".equals(display) ? cmm.getNoteContentForDisplay(note) : note)%></textarea>
@@ -243,11 +243,11 @@
             <p>&nbsp;</p>
             <p>
                 Extra data from Import:<br>
-                <textarea rows="10" name="dump" readonly="readonly"><%=dump%></textarea>
+                <textarea rows="10" name="dump" readonly="readonly"><%=Encode.forHtml(String.valueOf(dump))%></textarea>
             </p>
             <% if (rev > 0) { %>
             <div class="revision" style="float: right;">
-                rev<a href="#" onclick="showHistory('<%=uuid%>','<%=display%>');"><%=rev%>
+                rev<a href="#" onclick="showHistory('<%=Encode.forJavaScript(String.valueOf(uuid))%>','<%=Encode.forJavaScript(String.valueOf(display))%>');"><%=Encode.forHtml(String.valueOf(rev))%>
             </a>
             </div>
             <% } %>

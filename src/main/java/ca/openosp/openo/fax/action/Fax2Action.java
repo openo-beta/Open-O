@@ -255,6 +255,14 @@ public class Fax2Action extends ActionSupport {
         Path outfile = null;
         int page = 1;
         String jobId = request.getParameter("jobId");
+        if (jobId != null && !jobId.isEmpty() && !jobId.matches("^[0-9]+$")) {
+            try {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid jobId");
+            } catch (IOException e) {
+                logger.error("Unable to send error response for invalid jobId", e);
+            }
+            return;
+        }
         FaxJob faxJob = null;
 
         if (jobId != null && !jobId.isEmpty()) {

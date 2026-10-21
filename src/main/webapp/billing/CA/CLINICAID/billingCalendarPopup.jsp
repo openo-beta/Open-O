@@ -25,6 +25,7 @@
         import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*,java.net.*"
         errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.DateInMonthTable" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -78,24 +79,24 @@
     <table BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
         <tr BGCOLOR="#FFD7C4">
             <td width="5%" nowrap><a
-                    href="billingCalendarPopup.jsp?year=<%=year-1%>&month=<%=month%>&delta=0&type=<%=type%>">
-                <img src="<%= locationPrefix %>images/previous.gif" WIDTH="10" HEIGHT="9" BORDER="0"
-                     ALT="Last Year" vspace="2"> <img src="<%= locationPrefix %>images/previous.gif"
+                    href="billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(year-1))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&delta=0&type=<%=Encode.forUriComponent(String.valueOf(type))%>">
+                <img src="<%=Encode.forHtmlAttribute(String.valueOf(locationPrefix))%>images/previous.gif" WIDTH="10" HEIGHT="9" BORDER="0"
+                     ALT="Last Year" vspace="2"> <img src="<%=Encode.forHtmlAttribute(String.valueOf(locationPrefix))%>images/previous.gif"
                                                       WIDTH="10" HEIGHT="9" BORDER="0" ALT="Last Year" vspace="2"></a>
             </td>
             <td align="center"><a
-                    href="billingCalendarPopup.jsp?year=<%=year%>&month=<%=month%>&delta=-1&type=<%=type%>">
-                <img src="<%= locationPrefix %>images/previous.gif" WIDTH="10" HEIGHT="9" BORDER="0"
+                    href="billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&delta=-1&type=<%=Encode.forUriComponent(String.valueOf(type))%>">
+                <img src="<%=Encode.forHtmlAttribute(String.valueOf(locationPrefix))%>images/previous.gif" WIDTH="10" HEIGHT="9" BORDER="0"
                      ALT="View Last Month" vspace="2"> <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCalendarPopup.btnLast"/></a> <b><span
-                    CLASS=title><%=year%>-<%=month%></span></b> <a
-                    href="billingCalendarPopup.jsp?year=<%=year%>&month=<%=month%>&delta=1&type=<%=type%>">
+                    CLASS=title><%=Encode.forHtml(String.valueOf(year))%>-<%=Encode.forHtml(String.valueOf(month))%></span></b> <a
+                    href="billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&delta=1&type=<%=Encode.forUriComponent(String.valueOf(type))%>">
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCalendarPopup.btnNext"/> <img
-                    src="<%= locationPrefix %>images/next.gif" WIDTH="10" HEIGHT="9" BORDER="0"
+                    src="<%=Encode.forHtmlAttribute(String.valueOf(locationPrefix))%>images/next.gif" WIDTH="10" HEIGHT="9" BORDER="0"
                     ALT="View Next Month" vspace="2">&nbsp;&nbsp;</a></td>
             <td width="5%" align="right" nowrap><a
-                    href="billingCalendarPopup.jsp?year=<%=year+1%>&month=<%=month%>&delta=0&type=<%=type%>">
-                <img src="<%= locationPrefix %>images/next.gif" WIDTH="10" HEIGHT="9" BORDER="0"
-                     ALT="Next Year" vspace="2"> <img src="<%= locationPrefix %>images/next.gif"
+                    href="billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(year+1))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&delta=0&type=<%=Encode.forUriComponent(String.valueOf(type))%>">
+                <img src="<%=Encode.forHtmlAttribute(String.valueOf(locationPrefix))%>images/next.gif" WIDTH="10" HEIGHT="9" BORDER="0"
+                     ALT="Next Year" vspace="2"> <img src="<%=Encode.forHtmlAttribute(String.valueOf(locationPrefix))%>images/next.gif"
                                                       WIDTH="10" HEIGHT="9" BORDER="0" ALT="Next Year" vspace="2"></a>
             </td>
         </tr>
@@ -108,8 +109,8 @@
                     String[] arrayMonth = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
                     for (int i = 0; i < 12; i++) {
                 %> <a
-                    href="billingCalendarPopup.jsp?year=<%=year%>&month=<%=i+1%>&delta=0&type=<%=type%>">
-                <font SIZE="2" <%=(i+1)==month?"color='red'":"color='blue'"%>><%=arrayMonth[i]%>
+                    href="billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(i+1))%>&delta=0&type=<%=Encode.forUriComponent(String.valueOf(type))%>">
+                <font SIZE="2" <%=(i+1)==month?"color='red'":"color='blue'"%>><%=Encode.forHtml(String.valueOf(arrayMonth[i]))%>
             </a>
                 <%}%>
             </th>
@@ -146,15 +147,15 @@
                 if (type.compareTo("admission") == 0) {
             %>
             <td align="center" bgcolor='#FBECF3'><a href="#"
-                                                    onClick="typeInDate(<%=year%>,<%=month%>,<%= dateGrid[i][j] %>)">
-                <%= dateGrid[i][j] %>
+                                                    onClick="typeInDate(<%=Encode.forJavaScript(String.valueOf(year))%>,<%=Encode.forJavaScript(String.valueOf(month))%>,<%=Encode.forJavaScript(String.valueOf(dateGrid[i][j]))%>)">
+                <%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%>
             </a></td>
             <%
             } else {
             %>
             <td align="center" bgcolor='#FBECF3'><a href="#"
-                                                    onClick="typeSrvDate(<%=year%>,<%=month%>,<%= dateGrid[i][j] %>)">
-                <%= dateGrid[i][j] %>
+                                                    onClick="typeSrvDate(<%=Encode.forJavaScript(String.valueOf(year))%>,<%=Encode.forJavaScript(String.valueOf(month))%>,<%=Encode.forJavaScript(String.valueOf(dateGrid[i][j]))%>)">
+                <%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%>
             </a></td>
             <%
                         }

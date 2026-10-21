@@ -27,8 +27,11 @@
 package ca.openosp.openo.eform.actions;
 
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.managers.SecurityInfoManager;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
@@ -44,7 +47,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ManageEForm2Action extends ActionSupport {
+public class ManageEForm2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -81,8 +84,13 @@ public class ManageEForm2Action extends ActionSupport {
             throw new SecurityException("missing required sec object (_eform)");
         }
 
+        if (zippedFormOnDisk == null) {
+            addActionError("No file uploaded.");
+            return ERROR;
+        }
+
         List<String> errors = Collections.emptyList();
-        try (InputStream zippedFormStream = Files.newInputStream(zippedForm.toPath())) {
+        try (InputStream zippedFormStream = Files.newInputStream(zippedFormOnDisk.toPath())) {
             request.setAttribute("input", "import");
             EFormExportZip eFormExportZip = new EFormExportZip();
             errors = eFormExportZip.importForm(zippedFormStream);
@@ -96,13 +104,14 @@ public class ManageEForm2Action extends ActionSupport {
         }
     }
 
-    private File zippedForm; // 接收上传的文件
+    private UploadedFile zippedForm;
+    private File zippedFormOnDisk;
 
-    public File getZippedForm() {
-        return zippedForm;
-    }
-
-    public void setZippedForm(File zippedForm) {
-        this.zippedForm = zippedForm;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.zippedForm = uploadedFiles.get(0);
+            this.zippedFormOnDisk = PathValidationUtils.toFile(zippedForm);
+        }
     }
 }

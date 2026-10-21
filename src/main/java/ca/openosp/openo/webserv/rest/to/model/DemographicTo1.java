@@ -32,6 +32,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @XmlRootElement
 public class DemographicTo1 implements Serializable {
 
@@ -67,6 +69,7 @@ public class DemographicTo1 implements Serializable {
     private Date rosterDate;
     private Date rosterTerminationDate;
     private String rosterTerminationReason;
+    private String rosterEnrolledTo;
     private String links;
     private String alias;
     private AddressTo1 previousAddress = new AddressTo1();
@@ -81,7 +84,10 @@ public class DemographicTo1 implements Serializable {
     private String displayName;
     private ProviderTo1 provider;
     private String lastUpdateUser;
+
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date lastUpdateDate;
+
     private String title;
     private String officialLanguage;
     private String countryOfOrigin;
@@ -348,6 +354,14 @@ public class DemographicTo1 implements Serializable {
 
     public void setRosterTerminationReason(String rosterTerminationReason) {
         this.rosterTerminationReason = rosterTerminationReason;
+    }
+
+    public String getRosterEnrolledTo() {
+        return rosterEnrolledTo;
+    }
+
+    public void setRosterEnrolledTo(String rosterEnrolledTo) {
+        this.rosterEnrolledTo = rosterEnrolledTo;
     }
 
     public String getLinks() {

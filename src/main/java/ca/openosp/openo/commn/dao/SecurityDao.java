@@ -7,7 +7,7 @@ import java.util.List;
 import ca.openosp.openo.commn.model.Security;
 
 public interface SecurityDao extends AbstractDao<Security> {
-    List<Security> findAllOrderBy(String columnName);
+    List<Security> findAllOrderByUserName();
 
     List<Security> findByProviderNo(String providerNo);
 

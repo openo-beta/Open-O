@@ -48,6 +48,7 @@
 </security:oscarSec>
 
 <%@ page import="java.util.*,java.sql.*" errorPage="/errorpage.jsp" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <!DOCTYPE html>
 <html>
@@ -120,12 +121,12 @@
             <tr class="<%=toggleLine?"":"info"%>">
                 <td width="20px">
                     <input type="checkbox"
-                           name="<%=myGroup.getId().getMyGroupNo() + myGroup.getId().getProviderNo()%>"
-                           value="<%=myGroup.getId().getMyGroupNo()%>">
+                           name="<%=Encode.forHtmlAttribute(String.valueOf(myGroup.getId().getMyGroupNo() + myGroup.getId().getProviderNo()))%>"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(myGroup.getId().getMyGroupNo()))%>">
                 </td>
-                <td><%=myGroup.getId().getMyGroupNo()%>
+                <td><%=Encode.forHtml(String.valueOf(myGroup.getId().getMyGroupNo()))%>
                 </td>
-                <td><%=myGroup.getLastName() + "," + myGroup.getFirstName()%>
+                <td><%=Encode.forHtml(String.valueOf(myGroup.getLastName() + "," + myGroup.getFirstName()))%>
                 </td>
             </tr>
             <%

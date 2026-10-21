@@ -66,7 +66,6 @@
 <%@ page import="org.springframework.dao.DataIntegrityViolationException" %>
 <%@ page import="org.springframework.web.util.HtmlUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
-<%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
@@ -86,6 +85,7 @@
 
 <%
     String msg = "";
+    boolean msgIsError = false;
     String sql = null;
     ResultSet rs = null;
 
@@ -158,8 +158,6 @@
             String priority = request.getParameter(prefix);
             if (objectName.equals("Name1")) objectName = request.getParameter("object$Name1").trim();
 
-            String encodedRoleUserGroup = Encode.forHtmlContent(StringUtils.trimToEmpty(roleUserGroup));
-            String encodedObjectName = Encode.forHtmlContent(StringUtils.trimToEmpty(objectName));
             SecObjPrivilege sop = new SecObjPrivilege();
             sop.setId(new SecObjPrivilegePrimaryKey());
             sop.getId().setRoleUserGroup(roleUserGroup);
@@ -173,11 +171,12 @@
             } catch (DataIntegrityViolationException divEx) {
                 secExceptionMsg = divEx.getMostSpecificCause().getLocalizedMessage();
             }
-            if (secExceptionMsg.length() > 0)
+            if (secExceptionMsg.length() > 0) {
                 msg += secExceptionMsg;
-            else {
-                msg += "Role/Obj/Rights " + encodedRoleUserGroup + "/" + encodedObjectName + "/" + privilege + " is added. ";
-                LogAction.addLog(curUser_no, LogConst.ADD, LogConst.CON_PRIVILEGE, roleUserGroup + "|" + encodedObjectName + "|" + privilege, ip);
+                msgIsError = true;
+            } else {
+                msg += "Role/Obj/Rights " + roleUserGroup + "/" + objectName + "/" + privilege + " is added. ";
+                LogAction.addLog(curUser_no, LogConst.ADD, LogConst.CON_PRIVILEGE, roleUserGroup + "|" + objectName + "|" + privilege, ip);
             }
         }
     }
@@ -185,9 +184,7 @@
 // update the role list
     if (request.getParameter("buttonUpdate") != null && request.getParameter("buttonUpdate").length() > 0) {
         String roleUserGroup = request.getParameter("roleUserGroup");
-        String encodedRoleUserGroup = Encode.forHtmlContent(StringUtils.trimToEmpty(roleUserGroup));
         String objectName = request.getParameter("objectName");
-        String encodedObjectName = Encode.forHtmlContent(StringUtils.trimToEmpty(objectName));
 
         String privilege = request.getParameter("privilege");
         String priority = request.getParameter("priority");
@@ -234,7 +231,8 @@
             msg = "Role/Obj/Rights " + roleUserGroup + "/" + objectName + "/" + privilege + " is updated. ";
             LogAction.addLog(curUser_no, LogConst.UPDATE, LogConst.CON_PRIVILEGE, roleUserGroup + "|" + objectName + "|" + privilege, ip);
         } else {
-            msg = "Role/Obj/Rights " + encodedRoleUserGroup + "/" + encodedObjectName + "/" + privilege + " is <span style='color:red'>NOT</span> updated!!! ";
+            msg = "Role/Obj/Rights " + roleUserGroup + "/" + objectName + "/" + privilege + " is NOT updated!!! ";
+            msgIsError = true;
         }
 
     }
@@ -243,9 +241,7 @@
 // delete the role list
     if (request.getParameter("submit") != null && request.getParameter("submit").equals("Delete")) {
         String roleUserGroup = request.getParameter("roleUserGroup");
-        String encodedRoleUserGroup = Encode.forHtmlContent(StringUtils.trimToEmpty(roleUserGroup));
         String objectName = request.getParameter("objectName");
-        String encodedObjectName = Encode.forHtmlContent(StringUtils.trimToEmpty(objectName));
 
         String privilege = request.getParameter("privilege");
         String priority = request.getParameter("priority");
@@ -257,7 +253,7 @@
             priority = String.valueOf(sop.getPriority());
             provider_no = sop.getProviderNo();
             secObjPrivilegeDao.remove(sop.getId());
-            msg = "Role/Obj/Rights " + encodedRoleUserGroup + "/" + encodedObjectName + "/" + privilege + " is deleted. ";
+            msg = "Role/Obj/Rights " + roleUserGroup + "/" + objectName + "/" + privilege + " is deleted. ";
 
             RecycleBin recycleBin = new RecycleBin();
             recycleBin.setProviderNo(curUser_no);
@@ -271,7 +267,8 @@
             recycleBinDao.persist(recycleBin);
             LogAction.addLog(curUser_no, LogConst.DELETE, LogConst.CON_PRIVILEGE, roleUserGroup + "|" + objectName, ip);
         } else {
-            msg = "Role/Obj/Rights " + encodedRoleUserGroup + "/" + encodedObjectName + "/" + privilege + " is <span style='color:red'>NOT</span> deleted!!! ";
+            msg = "Role/Obj/Rights " + roleUserGroup + "/" + objectName + "/" + privilege + " is NOT deleted!!! ";
+            msgIsError = true;
         }
     }
 
@@ -393,8 +390,10 @@
 <form name="myform" action="providerPrivilege.jsp" method="POST">
     <table width="100%">
         <tr>
-            <th><% if (msg.length() > 1) {%>
-                <div class="alert" style="width:100%; text-align:center"><%=msg%>
+            <th><% if (msg.length() > 1) {
+                String alertClass = msgIsError ? "alert-danger" : "alert-info";
+            %>
+                <div class="alert <%=alertClass%>" style="width:100%; text-align:center"><%=Encode.forHtml(msg)%>
                 </div>
                 <% } %></th>
             <th style="width: 600px">Object Name/Role Name: <input type="text" name="keyword"
@@ -451,10 +450,10 @@
         %>
         <form name="myformrow<%=i%>" action="providerPrivilege.jsp"
               method="POST">
-            <tr style="background-color:<%=bgColor%>">
-                <td><%= roleUserName %>
+            <tr style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>">
+                <td><%=Encode.forHtml(String.valueOf(roleUserName))%>
                 </td>
-                <td><%= obj %>
+                <td><%=Encode.forHtml(String.valueOf(obj))%>
                 </td>
                 <td style="text-align:left">
                     <%
@@ -465,9 +464,9 @@
                                 out.print("</br>");
                                 bSet = false;
                             }
-                    %> <input type="checkbox" name="privilege<%=vecRightsName.get(j)%>"
+                    %> <input type="checkbox" name="privilege<%=Encode.forHtmlAttribute(String.valueOf(vecRightsName.get(j)))%>"
                     <%=priv.indexOf(((String)vecRightsName.get(j)))>=0?"checked":""%> >
-                    <%=((String) vecRightsDesc.get(j)).replaceAll("Only", "O")%>
+                    <%=Encode.forHtml(String.valueOf(((String) vecRightsDesc.get(j)).replaceAll("Only", "O")))%>
                     <% }%> <!--input type="text" name="privilege" value="<%--= priv--%>" /-->
                 </td>
                 <td><select name="priority" class="input-min" style="width:50px">
@@ -481,8 +480,8 @@
                 <td style="text-align:center">
                     <% if (!roleUser.equals("admin") && !obj.equals("_admin")) { %> <input
                         type="hidden" name="keyword" value="<%=Encode.forHtmlAttribute(keyword)%>"> <input
-                        type="hidden" name="objectName" value="<%=obj %>"> <input
-                        type="hidden" name="roleUserGroup" value="<%=roleUser %>"> <input
+                        type="hidden" name="objectName" value="<%=Encode.forHtmlAttribute(String.valueOf(obj))%>"> <input
+                        type="hidden" name="roleUserGroup" value="<%=Encode.forHtmlAttribute(String.valueOf(roleUser))%>"> <input
                         type="submit" name="buttonUpdate" value="Update" class="btn"> <input
                         type="submit" name="submit" value="Delete" class="btn"> <% } %>
                 </td>
@@ -508,7 +507,7 @@
         </select> or <select name="roleUserGroup1">
         <option value="">-</option>
         <% for (int j = 0; j < vecProviderNo.size(); j++) {%>
-        <option value="<%=vecProviderNo.get(j)%>"><%= Encode.forHtmlContent((String) vecProviderName.get(j)) %>
+        <option value="<%=Encode.forHtmlAttribute(String.valueOf(vecProviderNo.get(j)))%>"><%= Encode.forHtmlContent((String) vecProviderName.get(j)) %>
         </option>
         <% }%>
         <option value="_principal">_principal</option>
@@ -541,10 +540,10 @@
                         String objName = "";
                         if (i == vecObjectId.size()) {
                             objName = "Name1";
-                    %> <input type="text" name="object$<%=objName%>" value=""> <% } else {
+                    %> <input type="text" name="object$<%=Encode.forHtmlAttribute(String.valueOf(objName))%>" value=""> <% } else {
 
                     objName = (String) vecObjectId.get(i);
-                %> <input type="checkbox" name="object$<%=objName%>"> <%= vecObjectId.get(i) %>
+                %> <input type="checkbox" name="object$<%=Encode.forHtmlAttribute(String.valueOf(objName))%>"> <%=Encode.forHtml(String.valueOf(vecObjectId.get(i)))%>
                     <% if (objName.startsWith("_queue.")) {
                         String d = null;
                         SecObjectName son = secObjectNameDao.find(objName);
@@ -559,7 +558,7 @@
                         }
                     %>
 
-                    <%=d%>
+                    <%=Encode.forHtml(String.valueOf(d))%>
                     <%
                             }
                         }
@@ -574,10 +573,10 @@
                                 bSet = false;
                             }
                     %> <input type="checkbox"
-                              name="privilege$<%=objName%>$<%=vecRightsName.get(j)%>"/> <%=vecRightsDesc.get(j)%>
+                              name="privilege$<%=Encode.forHtmlAttribute(String.valueOf(objName))%>$<%=Encode.forHtmlAttribute(String.valueOf(vecRightsName.get(j)))%>"/> <%=Encode.forHtml(String.valueOf(vecRightsDesc.get(j)))%>
                     <% }%>
                 </td>
-                <td><select name="priority$<%=objName%>" style="width:50px;">
+                <td><select name="priority$<%=Encode.forHtmlAttribute(String.valueOf(objName))%>" style="width:50px;">
                     <option value="">-</option>
                     <% for (int j = 10; j >= 0; j--) { %>
                     <option value="<%=j%>" <%= ("" + j).equals("0") ? "selected" : "" %>>
@@ -613,7 +612,7 @@
                                 bSet = false;
                             }
                     %> <input type="checkbox"
-                              name="privilege$Name1$<%=vecRightsName.get(j)%>"> <%=vecRightsDesc.get(j)%>
+                              name="privilege$Name1$<%=Encode.forHtmlAttribute(String.valueOf(vecRightsName.get(j)))%>"> <%=Encode.forHtml(String.valueOf(vecRightsDesc.get(j)))%>
                     <% }%>
                 </td>
                 <td>Priority <select name="priority$Name1" style="width:50px;">

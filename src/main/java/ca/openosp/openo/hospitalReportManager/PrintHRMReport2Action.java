@@ -98,10 +98,10 @@ public class PrintHRMReport2Action extends ActionSupport {
 
                 String fileTempName = "";
                 if (demographic != null) {
-                    fileTempName = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "//" + demographic.getLastName() + "_" + demographic.getFirstName() + "_" + hrmId + "_HRMReport.pdf";
+                    fileTempName = OscarProperties.getInstance().getDocumentDirectory() + "//" + demographic.getLastName() + "_" + demographic.getFirstName() + "_" + hrmId + "_HRMReport.pdf";
                     fileName = demographic.getLastName() + "_" + demographic.getFirstName() + "_HRMReport" + "_" + (new Date().getTime()) + ".pdf";
                 } else {
-                    fileTempName = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "//HRMReport.pdf";
+                    fileTempName = OscarProperties.getInstance().getDocumentDirectory() + "//HRMReport.pdf";
                     fileName = "_HRMReport" + "_" + (new Date().getTime()) + ".pdf";
                 }
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");

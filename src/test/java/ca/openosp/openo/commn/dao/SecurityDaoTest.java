@@ -55,14 +55,12 @@ public class SecurityDaoTest extends DaoTestFixtures {
     }
 
     @Test
-    public void testFindAllOrderBy() throws Exception {
+    public void testFindAllOrderByUserName() throws Exception {
 
         String userName1 = "bravo";
         String userName2 = "alpha";
         String userName3 = "delta";
         String userName4 = "charlie";
-
-        String columnName = "userName";
 
         Security security1 = new Security();
         EntityDataGenerator.generateTestDataForModelClass(security1);
@@ -85,7 +83,7 @@ public class SecurityDaoTest extends DaoTestFixtures {
         dao.persist(security4);
 
         List<Security> expectedResult = new ArrayList<Security>(Arrays.asList(security2, security1, security4, security3));
-        List<Security> result = dao.findAllOrderBy(columnName);
+        List<Security> result = dao.findAllOrderByUserName();
 
         Logger logger = MiscUtils.getLogger();
 

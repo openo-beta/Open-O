@@ -47,6 +47,7 @@
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page
         import="ca.openosp.openo.casemgmt.model.*, ca.openosp.openo.commn.dao.DemographicDao, ca.openosp.openo.utility.SpringUtils, ca.openosp.openo.commn.model.Demographic" %>
 
@@ -84,8 +85,8 @@
                 Name : </b></font></font></td>
             <td colspan="2" width="65%">
                 <div align="left">
-                    <input type="hidden" name="demographicId" value="<%=demographicId %>"/>
-                    <%=demographic.getLastName() %>, <%=demographic.getFirstName() %>
+                    <input type="hidden" name="demographicId" value="<%=Encode.forHtmlAttribute(String.valueOf(demographicId))%>"/>
+                    <%=Encode.forHtml(String.valueOf(demographic.getLastName()))%>, <%=Encode.forHtml(String.valueOf(demographic.getFirstName()))%>
                 </div>
             </td>
         </tr>
@@ -94,15 +95,15 @@
                 Provider Name: </b></font></font></td>
             <td colspan="2" width="65%">
                 <div align="left">
-                    <input type="hidden" name="remoteProviderId" value="<%=remoteProviderId%>"/>
-                    <input type="hidden" name="remoteFacilityId" value="<%=remoteFacilityId%>"/>
+                    <input type="hidden" name="remoteProviderId" value="<%=Encode.forHtmlAttribute(String.valueOf(remoteProviderId))%>"/>
+                    <input type="hidden" name="remoteFacilityId" value="<%=Encode.forHtmlAttribute(String.valueOf(remoteFacilityId))%>"/>
                     <%
                         FacilityIdStringCompositePk providerPk = new FacilityIdStringCompositePk();
                         providerPk.setIntegratorFacilityId(Integer.parseInt(remoteFacilityId));
                         providerPk.setCaisiItemId(remoteProviderId);
                         CachedProvider cachedProvider = CaisiIntegratorManager.getProvider(loggedInInfo, loggedInInfo.getCurrentFacility(), providerPk);
                     %>
-                    <%=cachedProvider.getLastName() + ", " + cachedProvider.getFirstName()%>
+                    <%=Encode.forHtml(String.valueOf(cachedProvider.getLastName() + ", " + cachedProvider.getFirstName()))%>
                 </div>
             </td>
         </tr>

@@ -29,6 +29,7 @@
 %>
 <%@ include file="/taglibs.jsp" %>
 <%@page import="ca.openosp.openo.commons.KeyConstants" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <table width="100%" height="100%" cellpadding="0px" cellspacing="0px"
        style="border-width: 1px; border-style: solid; bordercolor: black">
@@ -61,7 +62,7 @@
                     <tr>
                         <td width="10%" style="vertical-align: middle">&nbsp;&nbsp;<img border="0" width="60px"
                                                                                         height="60px"
-                                                                                        src="<%=_appPath %>/images/Admin-60.gif"
+                                                                                        src="<%=Encode.forHtmlAttribute(String.valueOf(_appPath))%>/images/Admin-60.gif"
                                                                                         alt=""/>
                         </td>
                         <td width="70%" align="left" class="clsPageHeader" colspan="4"
@@ -134,11 +135,11 @@
                             <%
                                 String securityRole = "" + session.getAttribute("userrole") + "," + session.getAttribute("user");
                             %>
-                            <security:oscarSec roleName="<%=securityRole%>"
-                                               objectName="<%=KeyConstants.FUN_ADMIN_LOOKUP %>"
-                                               rights="<%=KeyConstants.ACCESS_READ%>">
+                            <security:oscarSec roleName="<%=Encode.forHtmlAttribute(String.valueOf(securityRole))%>"
+                                               objectName="<%=Encode.forHtmlAttribute(String.valueOf(KeyConstants.FUN_ADMIN_LOOKUP))%>"
+                                               rights="<%=Encode.forHtmlAttribute(String.valueOf(KeyConstants.ACCESS_READ))%>">
                                 <a id="orgAdd" href="<c:out value='${ctx}'/>/Lookup/LookupTableList.do"> <img
-                                        ID="lnkCare1" src="<%=_appPath%>/images/Lookup-60.gif" Height="60"
+                                        ID="lnkCare1" src="<%=Encode.forHtmlAttribute(String.valueOf(_appPath))%>/images/Lookup-60.gif" Height="60"
                                         Width="60" border="0" style="vertical-align: middle"/></a>
                             </security:oscarSec>
                         </th>
@@ -148,9 +149,9 @@
 
 
                                     <th align="left" style="vertical-align: middle" class="clsHomePageLabels">
-                                        <security:oscarSec roleName="<%=securityRole%>"
-                                                           objectName="<%=KeyConstants.FUN_ADMIN_LOOKUP %>"
-                                                           rights="<%=KeyConstants.ACCESS_READ%>">
+                                        <security:oscarSec roleName="<%=Encode.forHtmlAttribute(String.valueOf(securityRole))%>"
+                                                           objectName="<%=Encode.forHtmlAttribute(String.valueOf(KeyConstants.FUN_ADMIN_LOOKUP))%>"
+                                                           rights="<%=Encode.forHtmlAttribute(String.valueOf(KeyConstants.ACCESS_READ))%>">
                                             <a id="orgAdd" href="<c:out value='${ctx}'/>/Lookup/LookupTableList.do">
                                                 Lookup Tables</a>
                                         </security:oscarSec>
@@ -185,11 +186,11 @@
                         </th>
                         <th></th>
                         <th style="vertical-align: middle">
-                            <security:oscarSec roleName="<%=securityRole%>"
-                                               objectName="<%=KeyConstants.FUN_ADMIN_SYSTEMMESSAGE %>"
-                                               rights="<%=KeyConstants.ACCESS_READ%>">
+                            <security:oscarSec roleName="<%=Encode.forHtmlAttribute(String.valueOf(securityRole))%>"
+                                               objectName="<%=Encode.forHtmlAttribute(String.valueOf(KeyConstants.FUN_ADMIN_SYSTEMMESSAGE))%>"
+                                               rights="<%=Encode.forHtmlAttribute(String.valueOf(KeyConstants.ACCESS_READ))%>">
                                 <a id="lnkSysMessage1" href="<c:out value='${ctx}'/>/SystemMessage.do">
-                                    <img ID="imgAddMessage" src="<%=_appPath%>/images/SystemMessages60.gif" Height="60"
+                                    <img ID="imgAddMessage" src="<%=Encode.forHtmlAttribute(String.valueOf(_appPath))%>/images/SystemMessages60.gif" Height="60"
                                          Width="60" border="0" style="vertical-align: middle"/></a>
                             </security:oscarSec>
                         </th>
@@ -197,9 +198,9 @@
                             <table align="left">
                                 <tr>
                                     <th align="left" style="vertical-align: middle" class="clsHomePageLabels">
-                                        <security:oscarSec roleName="<%=securityRole%>"
-                                                           objectName="<%=KeyConstants.FUN_ADMIN_SYSTEMMESSAGE %>"
-                                                           rights="<%=KeyConstants.ACCESS_READ%>">
+                                        <security:oscarSec roleName="<%=Encode.forHtmlAttribute(String.valueOf(securityRole))%>"
+                                                           objectName="<%=Encode.forHtmlAttribute(String.valueOf(KeyConstants.FUN_ADMIN_SYSTEMMESSAGE))%>"
+                                                           rights="<%=Encode.forHtmlAttribute(String.valueOf(KeyConstants.ACCESS_READ))%>">
                                             <a id="lnkAddMessage2" href="<c:out value='${ctx}'/>/SystemMessage.do">
                                                 System Message</a>
                                         </security:oscarSec>

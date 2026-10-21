@@ -33,6 +33,7 @@
 <%@page import="ca.openosp.openo.commn.model.ScheduleTemplate" %>
 <%@page import="ca.openosp.openo.commn.dao.ScheduleTemplateCodeDao" %>
 <%@page import="ca.openosp.openo.commn.model.ScheduleTemplateCode" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     ScheduleTemplateDao scheduleTemplateDao = SpringUtils.getBean(ScheduleTemplateDao.class);
     ScheduleTemplateCodeDao scheduleTemplateCodeDao = SpringUtils.getBean(ScheduleTemplateCodeDao.class);
@@ -102,13 +103,13 @@
     <tr>
         <td style="color: white; font-size: xx-small" align="RIGHT"
             bgcolor="<%=bColorHour?"#3EA4E1":"#00A488"%>" width="5%" NOWRAP><b>
-            <%=(hourCursor < 10 ? "0" : "") + hourCursor + ":"%><%=(minuteCursor < 10 ? "0" : "") + minuteCursor%>&nbsp;</a></b>
+            <%=Encode.forHtml(String.valueOf((hourCursor < 10 ? "0" : "") + hourCursor + ":"))%><%=Encode.forHtml(String.valueOf((minuteCursor < 10 ? "0" : "") + minuteCursor))%>&nbsp;</a></b>
         </td>
         </td>
         <td style="font-size: xx-small" width='1%'
-            <%=dateTimeCodeBean.get("color"+hourmin.toString())!=null?("bgcolor="+dateTimeCodeBean.get("color"+hourmin.toString()) ):""%>
-            title='<%=dateTimeCodeBean.get("description"+hourmin.toString())%>'><font
-                color='<%=(dateTimeCodeBean.get("color"+hourmin.toString())!=null && !dateTimeCodeBean.get("color"+hourmin.toString()).equals(bgcolordef) )?"black":"white" %>'><%=hourmin.toString() %>
+            <%=Encode.forHtml(String.valueOf(dateTimeCodeBean.get("color"+hourmin.toString())!=null?("bgcolor="+dateTimeCodeBean.get("color"+hourmin.toString()) ):""))%>
+            title='<%=Encode.forHtmlAttribute(String.valueOf(dateTimeCodeBean.get("description"+hourmin.toString())))%>'><font
+                color='<%=(dateTimeCodeBean.get("color"+hourmin.toString())!=null && !dateTimeCodeBean.get("color"+hourmin.toString()).equals(bgcolordef) )?"black":"white" %>'><%=Encode.forHtml(String.valueOf(hourmin.toString()))%>
         </font>
     </tr>
         <%  }%>

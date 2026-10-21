@@ -29,8 +29,11 @@
 package ca.openosp.openo.report.reportByTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
+import ca.openosp.openo.util.PreparedSQL;
 import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.util.StringUtils;
@@ -187,6 +190,86 @@ public class ReportObjectGeneric implements ReportObject {
         }
         MiscUtils.getLogger().debug("<REPORT BY TEMPLATE> SQL: " + sql);
         return sql;
+    }
+
+    /**
+     * Builds parameterized SQL from the template, replacing {param} markers with ? placeholders.
+     * Handles single values, multi-value IN-clause lists, and quoted/unquoted contexts.
+     */
+    public PreparedSQL getParameterizedSQL(Map parameters) {
+        String sql = (new ReportManager()).getSQL(this.templateId);
+        return parameterizeTemplate(sql, parameters);
+    }
+
+    public PreparedSQL getParameterizedSQL(int sequenceNo, Map parameters) {
+        String sql = (new ReportManager()).getSQL(this.templateId);
+        String[] parts = sql.split(";");
+        if (parts.length <= sequenceNo) {
+            return null;
+        }
+        return parameterizeTemplate(parts[sequenceNo], parameters);
+    }
+
+    /**
+     * Core parameterization logic. Replaces {paramId} markers with ? placeholders and
+     * collects the corresponding values into a bind-parameter list.
+     */
+    private PreparedSQL parameterizeTemplate(String sql, Map parameters) {
+        List<String> bindParams = new ArrayList<>();
+        int cursor1 = 0;
+        while ((cursor1 = sql.indexOf("{")) != -1) {
+            int cursor2 = sql.indexOf("}", cursor1);
+            String paramId = sql.substring(cursor1 + 1, cursor2);
+
+            String[] substValues = (String[]) parameters.get(paramId);
+            if (substValues == null) {
+                substValues = (String[]) parameters.get(paramId + ":list");
+                if (substValues != null) {
+                    substValues[0] = substValues[0].replaceAll(" ", "");
+                    substValues = StringUtils.splitToStringArray(substValues[0], ",");
+                } else if (parameters.get(paramId + ":check") != null) {
+                    substValues = new String[0];
+                } else {
+                    return PreparedSQL.MISSING_PARAMS;
+                }
+            }
+
+            boolean hasQuote = cursor1 != 0
+                    && (sql.charAt(cursor1 - 1) == '\'' || sql.charAt(cursor1 - 1) == '\"');
+
+            if (substValues.length == 0) {
+                // Checkbox with no value — use a NULL placeholder to keep SQL valid.
+                // e.g. WHERE status = '{check}' becomes WHERE status = NULL
+                int start = hasQuote ? cursor1 - 1 : cursor1;
+                boolean hasTrailingQuote = hasQuote && cursor2 + 1 < sql.length()
+                        && sql.charAt(cursor2 + 1) == sql.charAt(cursor1 - 1);
+                int end = hasTrailingQuote ? cursor2 + 2 : cursor2 + 1;
+                sql = sql.substring(0, start) + "NULL" + sql.substring(end);
+            } else if (substValues.length == 1) {
+                // Single value — replace {param} (and surrounding quotes) with a single ?
+                int start = hasQuote ? cursor1 - 1 : cursor1;
+                boolean hasTrailingQuote = hasQuote && cursor2 + 1 < sql.length()
+                        && sql.charAt(cursor2 + 1) == sql.charAt(cursor1 - 1);
+                int end = hasTrailingQuote ? cursor2 + 2 : cursor2 + 1;
+                sql = sql.substring(0, start) + "?" + sql.substring(end);
+                bindParams.add(substValues[0]);
+            } else {
+                // Multiple values — produce ?,?,? placeholders for IN-clause usage
+                StringBuilder placeholders = new StringBuilder();
+                for (int i = 0; i < substValues.length; i++) {
+                    if (i > 0) placeholders.append(",");
+                    placeholders.append("?");
+                    bindParams.add(substValues[i]);
+                }
+                int start = hasQuote ? cursor1 - 1 : cursor1;
+                boolean hasTrailingQuote = hasQuote && cursor2 + 1 < sql.length()
+                        && sql.charAt(cursor2 + 1) == sql.charAt(cursor1 - 1);
+                int end = hasTrailingQuote ? cursor2 + 2 : cursor2 + 1;
+                sql = sql.substring(0, start) + placeholders + sql.substring(end);
+            }
+        }
+        MiscUtils.getLogger().debug("<REPORT BY TEMPLATE> Parameterized SQL: " + sql);
+        return new PreparedSQL(sql, bindParams);
     }
 
     public int getActive() {

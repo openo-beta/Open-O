@@ -19,6 +19,20 @@ public class DxDaoImpl extends AbstractDaoImpl<DxAssociation> implements DxDao {
         super(DxAssociation.class);
     }
 
+    /**
+     * Validates codingSystem against the known enum whitelist.
+     * @return true if valid, false otherwise
+     */
+    private static boolean isValidCodingSystem(String codingSystem) {
+        if (codingSystem == null || codingSystem.isEmpty()) return false;
+        try {
+            AbstractCodeSystemDao.codingSystem.valueOf(codingSystem);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
     @Override
     public List<DxAssociation> findAllAssociations() {
         Query query = entityManager.createQuery("select x from DxAssociation x order by x.dxCodeType,x.dxCode");
@@ -53,8 +67,8 @@ public class DxDaoImpl extends AbstractDaoImpl<DxAssociation> implements DxDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<Object[]> findCodingSystemDescription(String codingSystem, String code) {
-        // Validate codingSystem to prevent SQL injection - only allow alphanumeric and underscore
-        if (codingSystem == null || !codingSystem.matches("^[a-zA-Z0-9_]+$")) {
+        // Validate codingSystem against known enum whitelist to prevent SQL injection
+        if (!isValidCodingSystem(codingSystem)) {
             MiscUtils.getLogger().warn("Invalid coding system name: " + codingSystem);
             return new ArrayList<Object[]>();
         }
@@ -77,8 +91,8 @@ public class DxDaoImpl extends AbstractDaoImpl<DxAssociation> implements DxDao {
     @SuppressWarnings("unchecked")
     public List<Object[]> findCodingSystemDescription(String codingSystem, String[] keywords) {
         try {
-            // Validate codingSystem to prevent SQL injection - only allow alphanumeric and underscore
-            if (codingSystem == null || !codingSystem.matches("^[a-zA-Z0-9_]+$")) {
+            // Validate codingSystem against known enum whitelist to prevent SQL injection
+            if (!isValidCodingSystem(codingSystem)) {
                 MiscUtils.getLogger().warn("Invalid coding system name: " + codingSystem);
                 return new ArrayList<Object[]>();
             }
@@ -130,8 +144,8 @@ public class DxDaoImpl extends AbstractDaoImpl<DxAssociation> implements DxDao {
     public String getCodeDescription(String codingSystem, String code) {
         String desc = "";
         
-        // Validate codingSystem to prevent SQL injection - only allow alphanumeric and underscore
-        if (codingSystem == null || !codingSystem.matches("^[a-zA-Z0-9_]+$")) {
+        // Validate codingSystem against known enum whitelist to prevent SQL injection
+        if (!isValidCodingSystem(codingSystem)) {
             MiscUtils.getLogger().warn("Invalid coding system name: " + codingSystem);
             return desc;
         }

@@ -28,6 +28,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ page import="java.util.*,ca.openosp.openo.billing.ca.bc.pageUtil.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -84,7 +85,7 @@
             <%
                 if (request.getAttribute("returnMessage") != null) {
             %>
-            <%=request.getAttribute("returnMessage")%>
+            <%=Encode.forHtml(String.valueOf(request.getAttribute("returnMessage")))%>
             <%}%>
             <input type="hidden" name="whereTo" id="whereTo" value="private"/>
 

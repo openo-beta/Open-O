@@ -47,6 +47,7 @@
 <%@ include file="/taglibs.jsp" %>
 <%@ page import="java.util.Properties" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
 
     String msg = "Enter contact details.";
@@ -126,7 +127,7 @@
     <center>
         <table BORDER="1" CELLPADDING="0" CELLSPACING="0" WIDTH="80%">
             <tr BGCOLOR="#CCFFFF">
-                <th><%=msg%>
+                <th><%=Encode.forHtml(String.valueOf(msg))%>
                 </th>
             </tr>
         </table>

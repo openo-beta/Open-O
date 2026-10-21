@@ -33,6 +33,7 @@ import ca.openosp.openo.commn.model.CtlDocumentPK;
 import ca.openosp.openo.commn.model.Document;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.MyDateFormat;
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.tags.TagObject;
@@ -217,8 +218,9 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
     public String getFilePath() {
 
         if (this.filePath == null) {
-            this.filePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
-            this.filePath = String.format("%1$s%2$s%3$s", this.filePath, File.separator, this.getFileName());
+            File docDir = new File(OscarProperties.getInstance().getDocumentDirectory());
+            File validatedFile = PathValidationUtils.validatePath(this.getFileName(), docDir);
+            this.filePath = validatedFile.getPath();
         }
         return this.filePath;
 
@@ -312,6 +314,52 @@ public class EDoc extends TagObject implements Comparable<EDoc> {
 
     public void setModuleId(String moduleId) {
         this.moduleId = moduleId;
+    }
+
+    /**
+     * Whether this doc is scoped to a provider's library (as opposed to a
+     * patient's demographic). Recognizes the legacy {@code "provider"} spelling
+     * and the current {@code "providers"} spelling, case-insensitive.
+     *
+     * <p>The rule is intentionally duplicated from {@link EDocUtil#isProviderModule(String)}:
+     * asking EDoc would force EDocUtil's class load, which triggers a chain of
+     * {@code SpringUtils.getBean(...)} static initializers — fine in production
+     * but breaks unit tests that don't stand up a Spring context.
+     *
+     * @return {@code true} when {@link #getModule()} is {@code "provider"} or {@code "providers"}
+     */
+    public boolean isProviderScoped() {
+        return "provider".equalsIgnoreCase(module) || "providers".equalsIgnoreCase(module);
+    }
+
+    /**
+     * Whether this doc's library ownership (its {@code moduleId}) matches the
+     * given provider. Only meaningful for provider-scoped docs; callers should
+     * gate on {@link #isProviderScoped()} if they need that precondition.
+     *
+     * @param providerNo the provider id to compare against; {@code null} short-circuits to {@code false}
+     * @return {@code true} when {@code providerNo} is non-null and equals {@link #getModuleId()}
+     */
+    public boolean isOwnedBy(String providerNo) {
+        return providerNo != null && providerNo.equals(moduleId);
+    }
+
+    /**
+     * Whether this doc is flagged public ({@code docPublic} is {@code "1"}).
+     *
+     * @return {@code true} when the doc is public
+     */
+    public boolean isPublicDoc() {
+        return "1".equals(docPublic);
+    }
+
+    /**
+     * Whether this doc sits in a provider's private library: provider-scoped and not public.
+     *
+     * @return {@code true} for a private provider doc
+     */
+    public boolean isPrivateProviderDoc() {
+        return isProviderScoped() && !isPublicDoc();
     }
 
     public String getType() {

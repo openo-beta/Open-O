@@ -46,6 +46,7 @@
 <%@page import="java.util.List" %>
 <%@page import="java.util.Calendar,ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@include file="/layouts/caisi_html_top.jspf" %>
 
@@ -68,7 +69,7 @@
 %>
 
 <h3>Community of integrated facilities considered old if facility hasn't sync
-    since <%=DateFormatUtils.ISO_DATETIME_FORMAT.format(timeConsideredStale) %>
+    since <%=Encode.forHtml(String.valueOf(DateFormatUtils.ISO_DATETIME_FORMAT.format(timeConsideredStale)))%>
 </h3>
 
 <table style="border-collapse: collapse">
@@ -89,18 +90,18 @@
             }
 
     %>
-    <tr style="border: solid black 2px; background: <%=background %>; color: gray">
-        <td style="border: solid black 1px"><%=x.getName()%>
+    <tr style="border: solid black 2px; background: <%=Encode.forHtmlAttribute(String.valueOf(background))%>; color: gray">
+        <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(x.getName()))%>
         </td>
-        <td style="border: solid black 1px"><%=x.getDescription()%>
+        <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(x.getDescription()))%>
         </td>
-        <td style="border: solid black 1px"><%=x.getContactName()%>
+        <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(x.getContactName()))%>
         </td>
-        <td style="border: solid black 1px"><%=x.getContactEmail()%>
+        <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(x.getContactEmail()))%>
         </td>
-        <td style="border: solid black 1px"><%=x.getContactPhone()%>
+        <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf(x.getContactPhone()))%>
         </td>
-        <td style="border: solid black 1px"><%=(x.getLastDataUpdate() != null ? DateFormatUtils.ISO_DATETIME_FORMAT.format(x.getLastDataUpdate()) : "")%>
+        <td style="border: solid black 1px"><%=Encode.forHtml(String.valueOf((x.getLastDataUpdate() != null ? DateFormatUtils.ISO_DATETIME_FORMAT.format(x.getLastDataUpdate()) : "")))%>
         </td>
     </tr>
     <%

@@ -45,6 +45,7 @@
 
 <%@page import="ca.openosp.OscarProperties" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@page
         import="java.util.*,ca.openosp.openo.demographic.data.*,ca.openosp.openo.prevention.*,ca.openosp.openo.providers.data.*,ca.openosp.openo.util.*,ca.openosp.openo.report.data.*,ca.openosp.openo.prevention.pageUtil.*,ca.openosp.openo.demographic.pageUtil.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -132,7 +133,7 @@
 
                 String outputDirectory = OscarProperties.getInstance().getProperty("log.purge.outputdir");
                 if (outputDirectory == null) {
-                    outputDirectory = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+                    outputDirectory = OscarProperties.getInstance().getDocumentDirectory();
                 }
 
             %>
@@ -146,11 +147,11 @@
                 <p>
                     When run, this tool will backup all the log entries set to be purged using mysqldump onto the OSCAR
                     server.
-                    The file can be found in <%=outputDirectory %>.
+                    The file can be found in <%=Encode.forHtml(String.valueOf(outputDirectory))%>.
                 </p>
-                <p>The admin of this system has set log.purge.minDays to <%=minDays%> meaning that you must choose a
+                <p>The admin of this system has set log.purge.minDays to <%=Encode.forHtml(String.valueOf(minDays))%> meaning that you must choose a
                     date below
-                    that is before <%=minDate%>.</p>
+                    that is before <%=Encode.forHtml(String.valueOf(minDate))%>.</p>
                 <p>
                     Please note that after this tool is run, you will have DELETED all audit log recorded prior to your
                     chosen date.
@@ -167,7 +168,7 @@
 
             <% } else { %>
             <br/>
-            <p style="color:red"><%=msg %>
+            <p style="color:red"><%=Encode.forHtml(String.valueOf(msg))%>
             </p>
 
             <% } %>

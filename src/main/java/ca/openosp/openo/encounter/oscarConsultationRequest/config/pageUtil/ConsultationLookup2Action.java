@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.openosp.openo.commn.dao.ConsultationServiceDao;
 import ca.openosp.openo.commn.dao.ServiceSpecialistsDao;
-import ca.openosp.openo.commn.model.ConsultationServices;
 import ca.openosp.openo.commn.model.ProfessionalSpecialist;
 import ca.openosp.openo.commn.model.ServiceSpecialists;
 import ca.openosp.openo.encounter.oscarConsultationRequest.config.data.ConsultationServiceDto;
@@ -92,16 +91,7 @@ public class ConsultationLookup2Action extends ActionSupport {
      */
     private String getServices() {
         try {
-            List<ConsultationServices> services = consultationServiceDao.findActive();
-            List<ConsultationServiceDto> serviceList = new ArrayList<>();
-
-            for (ConsultationServices service : services) {
-                serviceList.add(new ConsultationServiceDto(
-                    service.getServiceId(),
-                    service.getServiceDesc()
-                ));
-            }
-
+            List<ConsultationServiceDto> serviceList = consultationServiceDao.findActiveServiceSummaries();
             writeJsonResponse(serviceList);
             return null; // Response already written
 

@@ -29,6 +29,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.CtlDiagCodeDao" %>
 <%@ page import="ca.openosp.openo.commn.model.CtlBillingType" %>
 <%@ page import="ca.openosp.openo.commn.dao.CtlBillingTypeDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     CtlBillingServiceDao ctlBillingServiceDao = SpringUtils.getBean(CtlBillingServiceDao.class);
     CtlDiagCodeDao ctlDiagCodeDao = SpringUtils.getBean(CtlDiagCodeDao.class);
@@ -53,12 +54,12 @@
 %>
 
 <jsp:forward page='manageBillingform.jsp'>
-    <jsp:param name="errorMessage" value='<%=errMessage%>'/>
-    <jsp:param name="type" value='<%=type%>'/>
-    <jsp:param name="typeid" value='<%=typeid%>'/>
-    <jsp:param name="group1" value='<%=group1%>'/>
-    <jsp:param name="group2" value='<%=group2%>'/>
-    <jsp:param name="group3" value='<%=group3%>'/>
+    <jsp:param name="errorMessage" value='<%=Encode.forHtmlAttribute(String.valueOf(errMessage))%>'/>
+    <jsp:param name="type" value='<%=Encode.forHtmlAttribute(String.valueOf(type))%>'/>
+    <jsp:param name="typeid" value='<%=Encode.forHtmlAttribute(String.valueOf(typeid))%>'/>
+    <jsp:param name="group1" value='<%=Encode.forHtmlAttribute(String.valueOf(group1))%>'/>
+    <jsp:param name="group2" value='<%=Encode.forHtmlAttribute(String.valueOf(group2))%>'/>
+    <jsp:param name="group3" value='<%=Encode.forHtmlAttribute(String.valueOf(group3))%>'/>
     <jsp:param name="billingform" value='000'/>
 </jsp:forward>
 
@@ -70,12 +71,12 @@
 %>
 
 <jsp:forward page='manageBillingform.jsp'>
-    <jsp:param name="errorMessage" value='<%=errMessage%>'/>
-    <jsp:param name="type" value='<%=type%>'/>
-    <jsp:param name="typeid" value='<%=typeid%>'/>
-    <jsp:param name="group1" value='<%=group1%>'/>
-    <jsp:param name="group2" value='<%=group2%>'/>
-    <jsp:param name="group3" value='<%=group3%>'/>
+    <jsp:param name="errorMessage" value='<%=Encode.forHtmlAttribute(String.valueOf(errMessage))%>'/>
+    <jsp:param name="type" value='<%=Encode.forHtmlAttribute(String.valueOf(type))%>'/>
+    <jsp:param name="typeid" value='<%=Encode.forHtmlAttribute(String.valueOf(typeid))%>'/>
+    <jsp:param name="group1" value='<%=Encode.forHtmlAttribute(String.valueOf(group1))%>'/>
+    <jsp:param name="group2" value='<%=Encode.forHtmlAttribute(String.valueOf(group2))%>'/>
+    <jsp:param name="group3" value='<%=Encode.forHtmlAttribute(String.valueOf(group3))%>'/>
     <jsp:param name="billingform" value='000'/>
 </jsp:forward>
 

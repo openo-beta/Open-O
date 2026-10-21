@@ -304,7 +304,7 @@ public class ConsultationPDFCreator extends PdfPageEventHelper {
             if (site != null) {
                 if (site.getSiteLogoId() != null) {
                     ca.openosp.openo.commn.model.Document d = documentDao.getDocument(String.valueOf(site.getSiteLogoId()));
-                    String dir = props.getProperty("DOCUMENT_DIR");
+                    String dir = props.getDocumentDirectory();
                     filename = dir.concat(d.getDocfilename());
                 } else {
                     //If no logo file uploaded for this site, use the default one defined in oscar properties file.

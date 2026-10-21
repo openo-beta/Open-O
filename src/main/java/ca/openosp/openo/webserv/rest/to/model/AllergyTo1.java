@@ -68,6 +68,7 @@ public class AllergyTo1 {
 
     private int position = 0;
 
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date lastUpdateDate;
 
     private String providerNo;

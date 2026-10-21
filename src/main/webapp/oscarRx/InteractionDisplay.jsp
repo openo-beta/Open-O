@@ -43,6 +43,7 @@
         import="java.util.*,ca.openosp.openo.rx.data.*,ca.openosp.openo.rx.pageUtil.*" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxDrugData" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     RxSessionBean bean = (RxSessionBean) session.getAttribute("RxSessionBean");
     if (bean == null) {
@@ -53,11 +54,11 @@
     if (interactions != null && interactions.length > 0) {
         for (int i = 0; i < interactions.length; i++) { %>
 <div
-        style="background-color:<%=sigColor(interactions[i].significance)%>;margin-right:100px;margin-left:20px;margin-top:10px;padding-left:10px;padding-top:10px;padding-bottom:5px;border-bottom: 2px solid gray;border-right: 2px solid #999;border-top: 1px solid #CCC;border-left: 1px solid #CCC;width:300px;">
-    <%=interactions[i].affectingdrug%> <%=effect(interactions[i].effect)%> <%=interactions[i].affecteddrug%>
-    &nbsp;&nbsp;&nbsp;&nbsp;SIGNIFICANCE = <%=significance(interactions[i].significance)%>
-    &nbsp;&nbsp;&nbsp;EVIDENCE = <%=evidence(interactions[i].evidence)%><br/>
-    <%=interactions[i].comment%>
+        style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(sigColor(interactions[i].significance)))%>;margin-right:100px;margin-left:20px;margin-top:10px;padding-left:10px;padding-top:10px;padding-bottom:5px;border-bottom: 2px solid gray;border-right: 2px solid #999;border-top: 1px solid #CCC;border-left: 1px solid #CCC;width:300px;">
+    <%=Encode.forHtml(String.valueOf(interactions[i].affectingdrug))%> <%=Encode.forHtml(String.valueOf(effect(interactions[i].effect)))%> <%=Encode.forHtml(String.valueOf(interactions[i].affecteddrug))%>
+    &nbsp;&nbsp;&nbsp;&nbsp;SIGNIFICANCE = <%=Encode.forHtml(String.valueOf(significance(interactions[i].significance)))%>
+    &nbsp;&nbsp;&nbsp;EVIDENCE = <%=Encode.forHtml(String.valueOf(evidence(interactions[i].evidence)))%><br/>
+    <%=Encode.forHtml(String.valueOf(interactions[i].comment))%>
 </div>
 <% }
 } else if (interactions == null && bean.getStashSize() > 1) { %>

@@ -43,6 +43,7 @@
 <%@page import="ca.openosp.openo.commn.model.Provider" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.MSP.ExtractBean" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -105,7 +106,7 @@
 %>
 
 <jsp:forward page='billingSim.jsp'>
-    <jsp:param name="xml_appointment_date" value='<%=dateEnd%>'/>
-    <jsp:param name="xml_v_date" value='<%=dateBegin%>'/>
-    <jsp:param name="provider" value='<%=provider%>'/>
+    <jsp:param name="xml_appointment_date" value='<%=Encode.forHtmlAttribute(String.valueOf(dateEnd))%>'/>
+    <jsp:param name="xml_v_date" value='<%=Encode.forHtmlAttribute(String.valueOf(dateBegin))%>'/>
+    <jsp:param name="provider" value='<%=Encode.forHtmlAttribute(String.valueOf(provider))%>'/>
 </jsp:forward>

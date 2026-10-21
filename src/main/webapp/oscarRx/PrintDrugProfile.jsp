@@ -124,9 +124,9 @@
                     </tr>
                     <tr>
                         <td><!-- <b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b>-->
-                            <%=surname%>, <%=firstName%><br/>
-                            <%=address%><br/>
-                            <%=city%>, <%=province%> <%=postal%><br/><br/>
+                            <%=Encode.forHtml(String.valueOf(surname))%>, <%=Encode.forHtml(String.valueOf(firstName))%><br/>
+                            <%=Encode.forHtml(String.valueOf(address))%><br/>
+                            <%=Encode.forHtml(String.valueOf(city))%>, <%=Encode.forHtml(String.valueOf(province))%> <%=Encode.forHtml(String.valueOf(postal))%><br/><br/>
                     </tr>
                     <tr>
                         <td>
@@ -134,7 +134,7 @@
                             ${patient.age}
                             <b>Gender:</b> ${patient.sex}
                             <b>HC:</b> ${patient.hin}<br/>
-                            <b>User:</b> <%=userlastname%>, <%=userfirstname %><br/>
+                            <b>User:</b> <%=Encode.forHtml(String.valueOf(userlastname))%>, <%=Encode.forHtml(String.valueOf(userfirstname))%><br/>
                         </td>
                     </tr>
                     <tr>
@@ -189,13 +189,13 @@
                                                     }
                                             %>
                                             <tr>
-                                                <td width=20% valign="top"><a <%= styleColor%>
+                                                <td width=20% valign="top"><a <%=Encode.forHtml(String.valueOf(styleColor))%>
                                                         href="<%= request.getContextPath() %>/oscarRx/StaticScript.jsp?regionalIdentifier=<%= Encode.forUriComponent(drug.getRegionalIdentifier())%>&cn=<%= Encode.forUriComponent(drug.getCustomName())%>&bn=<%=Encode.forUriComponent(drug.getBrandName())%>">
-                                                    <%= drug.getRxDate() %>
+                                                    <%=Encode.forHtml(String.valueOf(drug.getRxDate()))%>
                                                 </a></td>
-                                                <td width=100%><a <%= styleColor%>
+                                                <td width=100%><a <%=Encode.forHtml(String.valueOf(styleColor))%>
                                                         href="<%= request.getContextPath() %>/oscarRx/StaticScript.jsp?regionalIdentifier=<%= Encode.forUriComponent(drug.getRegionalIdentifier())%>&cn=<%= Encode.forUriComponent(drug.getCustomName())%>&bn=<%=Encode.forUriComponent(drug.getBrandName())%>">
-                                                    <%= drug.getFullOutLine().replaceAll(";", " ") %>
+                                                    <%=Encode.forHtml(String.valueOf(drug.getFullOutLine().replaceAll(";", " ")))%>
                                                 </a></td>
                                             </tr>
                                             <%

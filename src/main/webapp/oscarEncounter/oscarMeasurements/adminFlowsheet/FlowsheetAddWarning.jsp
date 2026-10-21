@@ -50,6 +50,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -77,7 +78,7 @@
                 jQuery.post('<%=request.getContextPath()%>/admin/Flowsheet.do?method=saveFlowsheetItemWarning',
                     jQuery('#theForm').serialize(),
                     function (data) {
-                        location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetItemEditor.jsp?flowsheetId=<%=flowsheetId %>&measurementType=<%=measurementType%>';
+                        location.href = '<%=request.getContextPath()%>/oscarEncounter/oscarMeasurements/adminFlowsheet/FlowsheetItemEditor.jsp?flowsheetId=<%=Encode.forUriComponent(String.valueOf(flowsheetId))%>&measurementType=<%=Encode.forUriComponent(String.valueOf(measurementType))%>';
                     });
             }
         </script>
@@ -93,8 +94,8 @@
     <h2>Flowsheet Item Editor</h2>
     <br/>
     <form name="theForm" id="theForm">
-        <input type="hidden" name="flowsheetId" value="<%=flowsheetId %>"/>
-        <input type="hidden" name="measurementType" value="<%=measurementType %>"/>
+        <input type="hidden" name="flowsheetId" value="<%=Encode.forHtmlAttribute(String.valueOf(flowsheetId))%>"/>
+        <input type="hidden" name="measurementType" value="<%=Encode.forHtmlAttribute(String.valueOf(measurementType))%>"/>
 
         <table style="width:20%">
             <tr>

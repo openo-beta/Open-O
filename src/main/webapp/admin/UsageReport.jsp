@@ -60,6 +60,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DocumentDao" %>
 <%@page import="ca.openosp.openo.commn.dao.BillingONCHeader1Dao" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ include file="/taglibs.jsp" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
@@ -105,7 +106,7 @@
                                 selected = " selected=\"selected\" ";
                             }
                     %>
-                    <option value="<%=provider.getProviderNo()%>" <%=selected%>><%=provider.getFormattedName()%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getProviderNo()))%>" <%=selected%>><%=Encode.forHtml(String.valueOf(provider.getFormattedName()))%>
                     </option>
                     <%
                         }
@@ -117,16 +118,16 @@
             <label class="control-label">Start Date</label>
             <div class="controls">
                 <input type="text" id="startDate" name="startDate"
-                       value="<%=request.getParameter("startDate") != null ? request
-					.getParameter("startDate") : ""%>"/>
+                       value="<%=Encode.forHtmlAttribute(request.getParameter("startDate") != null ? request
+					.getParameter("startDate") : "")%>"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">End Date</label>
             <div class="controls">
                 <input type="text" id="endDate" name="endDate"
-                       value="<%=request.getParameter("endDate") != null ? request
-					.getParameter("endDate") : ""%>"/>
+                       value="<%=Encode.forHtmlAttribute(request.getParameter("endDate") != null ? request
+					.getParameter("endDate") : "")%>"/>
             </div>
         </div>
         <div class="control-group">
@@ -243,33 +244,33 @@
         <tbody>
         <tr>
             <td>0 -19</td>
-            <td><%=divide(total, a0to19)%>%</td>
-            <td><%=divide(a0to19, a0to19m)%>%</td>
-            <td><%=divide(a0to19, a0to19f)%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(total, a0to19)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a0to19, a0to19m)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a0to19, a0to19f)))%>%</td>
         </tr>
         <tr>
             <td>20-44</td>
-            <td><%=divide(total, a20to44)%>%</td>
-            <td><%=divide(a20to44, a20to44m)%>%</td>
-            <td><%=divide(a20to44, a20to44f)%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(total, a20to44)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a20to44, a20to44m)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a20to44, a20to44f)))%>%</td>
         </tr>
         <tr>
             <td>45-64</td>
-            <td><%=divide(total, a45to64)%>%</td>
-            <td><%=divide(a45to64, a45to64m)%>%</td>
-            <td><%=divide(a45to64, a45to64f)%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(total, a45to64)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a45to64, a45to64m)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a45to64, a45to64f)))%>%</td>
         </tr>
         <tr>
             <td>65-84</td>
-            <td><%=divide(total, a65to84)%>%</td>
-            <td><%=divide(a65to84, a65to84m)%>%</td>
-            <td><%=divide(a65to84, a65to84f)%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(total, a65to84)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a65to84, a65to84m)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a65to84, a65to84f)))%>%</td>
         </tr>
         <tr>
             <td>85+</td>
-            <td><%=divide(total, a85plus)%>%</td>
-            <td><%=divide(a85plus, a85plusm)%>%</td>
-            <td><%=divide(a85plus, a85plusf)%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(total, a85plus)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a85plus, a85plusm)))%>%</td>
+            <td><%=Encode.forHtml(String.valueOf(divide(a85plus, a85plusf)))%>%</td>
         </tr>
         </tbody>
     </table>
@@ -307,21 +308,21 @@
         </thead>
         <tbody>
         <tr>
-            <td><%=scheduledAppts%>
+            <td><%=Encode.forHtml(String.valueOf(scheduledAppts))%>
             </td>
-            <td><%=billing%>
+            <td><%=Encode.forHtml(String.valueOf(billing))%>
             </td>
-            <td><%=encounterNote%>
+            <td><%=Encode.forHtml(String.valueOf(encounterNote))%>
             </td>
-            <td><%=problemList%>
+            <td><%=Encode.forHtml(String.valueOf(problemList))%>
             </td>
-            <td><%=storedDocuments%>
+            <td><%=Encode.forHtml(String.valueOf(storedDocuments))%>
             </td>
-            <td><%=rxNewRenewals%>
+            <td><%=Encode.forHtml(String.valueOf(rxNewRenewals))%>
             </td>
-            <td><%=useOfRemindersAlerts%>
+            <td><%=Encode.forHtml(String.valueOf(useOfRemindersAlerts))%>
             </td>
-            <td><%=labs%>
+            <td><%=Encode.forHtml(String.valueOf(labs))%>
             </td>
         </tr>
         </tbody>

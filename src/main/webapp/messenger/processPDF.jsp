@@ -86,6 +86,7 @@
 %>
 
 <%@ page import="ca.openosp.openo.util.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -132,19 +133,19 @@
 
 <form action="${pageContext.request.contextPath}/messenger/ProcessDoc2PDF.do" method="post">
 
-    Attaching <%=demographic_no%>
-    <%=pdfTitle%>
+    Attaching <%=Encode.forHtml(String.valueOf(demographic_no))%>
+    <%=Encode.forHtml(String.valueOf(pdfTitle))%>
 
     <textarea name="srcText" rows="5" cols="80"></textarea>
     <input type="hidden" name="isPreview" id="isPreview" value="false"/>
     <input type="submit" name="ok" value="Apply" />
-    <input type="hidden" name="pdfTitle" id="pdfTitle" value="<%=pdfTitle%>"/>
+    <input type="hidden" name="pdfTitle" id="pdfTitle" value="<%=Encode.forHtmlAttribute(String.valueOf(pdfTitle))%>"/>
 
 </form>
 
 <script>
     // Load content from specified URI and process after delay
-    SetBottomURL('<%=uri%>' + "&demographic_no=" + '<%=demographic_no%> ');
+    SetBottomURL('<%=Encode.forJavaScript(String.valueOf(uri))%>' + "&demographic_no=" + '<%=Encode.forJavaScript(String.valueOf(demographic_no))%> ');
     
     // Wait 5 seconds for content to load, then extract and submit
     setTimeout("GetBottomSRC()", 5000);

@@ -34,6 +34,7 @@
 %>
 
 <%@ page import="ca.openosp.openo.demographic.data.*,java.util.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -193,21 +194,21 @@
                         %>
                         <tr>
                             <td><input type="checkbox" name="change"
-                                       value="<%=h.get("feeCode")%>|<%=h.get("newprice")%>|<%=h.get("effectiveDate")%>|<%=h.get("terminactionDate")%>|<%=h.get("description")%>"/>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(h.get("feeCode")))%>|<%=Encode.forHtmlAttribute(String.valueOf(h.get("newprice")))%>|<%=Encode.forHtmlAttribute(String.valueOf(h.get("effectiveDate")))%>|<%=Encode.forHtmlAttribute(String.valueOf(h.get("terminactionDate")))%>|<%=Encode.forHtmlAttribute(String.valueOf(h.get("description")))%>"/>
                             </td>
-                            <td><%=h.get("feeCode")%>
+                            <td><%=Encode.forHtml(String.valueOf(h.get("feeCode")))%>
                             </td>
-                            <td><%=h.get("oldprice")%>
+                            <td><%=Encode.forHtml(String.valueOf(h.get("oldprice")))%>
                             </td>
-                            <td><%=h.get("newprice")%>
+                            <td><%=Encode.forHtml(String.valueOf(h.get("newprice")))%>
                             </td>
-                            <td><%=h.get("diff")%>
+                            <td><%=Encode.forHtml(String.valueOf(h.get("diff")))%>
                             </td>
-                            <td title="<%=h.get("prices")%>"><%=h.get("description")%>
+                            <td title="<%=Encode.forHtmlAttribute(String.valueOf(h.get("prices")))%>"><%=Encode.forHtml(String.valueOf(h.get("description")))%>
                             </td>
-                            <td><%=h.get("effectiveDate")%>
+                            <td><%=Encode.forHtml(String.valueOf(h.get("effectiveDate")))%>
                             </td>
-                            <td><%=h.get("terminactionDate")%>
+                            <td><%=Encode.forHtml(String.valueOf(h.get("terminactionDate")))%>
                             </td>
                         </tr>
                         <%}%>
@@ -225,7 +226,7 @@
             <ul>
                 <% for (int i = 0; i < l.size(); i++) {
                     Hashtable h = (Hashtable) l.get(i); %>
-                <li><%=h.get("code")%> value updated to : <%=h.get("value")%>
+                <li><%=Encode.forHtml(String.valueOf(h.get("code")))%> value updated to : <%=Encode.forHtml(String.valueOf(h.get("value")))%>
                 </li>
                 <%}%>
             </ul>

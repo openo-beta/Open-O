@@ -24,4 +24,5 @@
 
 --%>
 
-<%=request.getAttribute("templateValue")%>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%=Encode.forHtml(String.valueOf(request.getAttribute("templateValue")))%>

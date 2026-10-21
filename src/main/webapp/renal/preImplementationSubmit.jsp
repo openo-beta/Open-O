@@ -34,6 +34,7 @@
 <%@page import="ca.openosp.openo.commn.dao.ORNPreImplementationReportLogDao" %>
 <%@page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@page import="ca.openosp.openo.commn.model.Provider" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ include file="/taglibs.jsp" %>
 
@@ -105,12 +106,12 @@
                 Provider p = providerDao.getProvider(report.getProviderNo());
         %>
         <tr>
-            <td><%=report.getLastUpdateDate() %>
+            <td><%=Encode.forHtml(String.valueOf(report.getLastUpdateDate()))%>
             </td>
-            <td><%=(p != null) ? p.getFormattedName() : "N/A" %>
+            <td><%=Encode.forHtml(String.valueOf((p != null) ? p.getFormattedName() : "N/A"))%>
             </td>
             <td><input class="btn" type="button"
-                       onClick="window.open('<%=request.getContextPath()%>/renal/preImplementationView.jsp?id=<%=report.getId()%>')"
+                       onClick="window.open('<%=request.getContextPath()%>/renal/preImplementationView.jsp?id=<%=Encode.forUriComponent(String.valueOf(report.getId()))%>')"
                        value="View"/></td>
 
         </tr>

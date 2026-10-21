@@ -48,6 +48,7 @@
 
 
 <%@ page import="ca.openosp.openo.util.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
 <head>
@@ -64,7 +65,7 @@ String demographic_no = request.getParameter("demographic_no");
     <frameset rows="300,0">
         <%-- Main frame: Shows the PDF preview for the selected demographic --%>
         <frame name="main"
-               src="generatePreviewPDF.jsp?demographic_no=<%=demographic_no%>"
+               src="generatePreviewPDF.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>"
                noresize scrolling=auto marginheight=5 marginwidth=5>
         <%-- Hidden source frame: Used for background processing --%>
         <frame name="srcFrame" src="">

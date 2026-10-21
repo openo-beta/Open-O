@@ -30,6 +30,7 @@
 <%@page import="ca.openosp.openo.commn.model.Provider" %>
 <%@include file="/layouts/caisi_html_top.jspf" %>
 <%@ page import="ca.openosp.openo.login.Login2Action" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <h2>Please select which facility you would like to currently work in</h2>
 <%
     FacilityDao facilityDao = (FacilityDao) SpringUtils.getBean(FacilityDao.class);
@@ -44,7 +45,7 @@
             Facility facility = facilityDao.find(facilityId);
     %>
     <li>
-        <a href='?nextPage=<%=request.getParameter("nextPage")%>&<%=Login2Action.SELECTED_FACILITY_ID%>=<%=facility.getId()%>'><%=facility.getName()%>
+        <a href='?nextPage=<%=Encode.forUriComponent(request.getParameter("nextPage"))%>&<%=Encode.forUriComponent(String.valueOf(Login2Action.SELECTED_FACILITY_ID))%>=<%=Encode.forUriComponent(String.valueOf(facility.getId()))%>'><%=Encode.forHtml(String.valueOf(facility.getName()))%>
         </a></li>
     <%
         }

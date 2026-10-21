@@ -109,6 +109,8 @@ public class PaymentType2Action extends ActionSupport {
 
             try {
                 json = objectMapper.valueToTree(retMap);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("utf-8");
                 response.getWriter().write(json.toString());
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -149,6 +151,8 @@ public class PaymentType2Action extends ActionSupport {
 
             try {
                 json = objectMapper.valueToTree(retMap);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("utf-8");
                 response.getWriter().write(json.toString());
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -181,7 +185,7 @@ public class PaymentType2Action extends ActionSupport {
         }
 
         response.setCharacterEncoding("utf-8");
-        response.setContentType("html/text");
+        response.setContentType("application/json");
         try {
             response.getWriter().print(ret);
             response.getWriter().flush();

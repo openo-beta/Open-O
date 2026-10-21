@@ -47,9 +47,9 @@ public class EctPalliativeCareRecord {
 
         if (existingID <= 0) {
             sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName "
-                    + "FROM demographic WHERE demographic_no = " + demographicNo;
+                    + "FROM demographic WHERE demographic_no = ?";
 
-            rs = DBHandler.GetSQL(sql);
+            rs = DBHandler.GetPreSQL(sql, demographicNo);
 
             if (rs.next()) {
                 props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
@@ -61,9 +61,9 @@ public class EctPalliativeCareRecord {
 
             rs.close();
         } else {
-            sql = "SELECT * FROM formPalliativeCare WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
+            sql = "SELECT * FROM formPalliativeCare WHERE demographic_no = ? AND ID = ?";
 
-            rs = DBHandler.GetSQL(sql);
+            rs = DBHandler.GetPreSQL(sql, demographicNo, existingID);
 
             if (rs.next()) {
                 ResultSetMetaData md = rs.getMetaData();
@@ -101,8 +101,8 @@ public class EctPalliativeCareRecord {
         String demographic_no = props.getProperty("demographic_no");
 
 
-        String sql = "SELECT * FROM formPalliativeCare WHERE demographic_no=" + demographic_no + " AND ID=0";
-        ResultSet rs = DBHandler.GetSQL(sql, true);
+        String sql = "SELECT * FROM formPalliativeCare WHERE demographic_no = ? AND ID = 0";
+        ResultSet rs = DBHandler.GetPreSQLUpdatable(sql, demographic_no);
 
         rs.moveToInsertRow();
 
@@ -158,7 +158,7 @@ public class EctPalliativeCareRecord {
         int ret = 0;
 
         sql = "SELECT LAST_INSERT_ID()";
-        rs = DBHandler.GetSQL(sql);
+        rs = DBHandler.GetPreSQL(sql);
         if (rs.next()) {
             ret = rs.getInt(1);
         }

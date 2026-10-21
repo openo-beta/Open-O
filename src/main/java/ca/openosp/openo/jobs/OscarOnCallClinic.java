@@ -71,7 +71,7 @@ public class OscarOnCallClinic implements OscarRunnable {
     private Provider provider = null;
     private static String SCHEDULE_TEMPLATE = "P:OnCallClinic";
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE MMMM d, yyyy");
-    private static String DOCUMENTDIR = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+    private static String DOCUMENTDIR = OscarProperties.getInstance().getDocumentDirectory();
 
     @Override
     public void run() {

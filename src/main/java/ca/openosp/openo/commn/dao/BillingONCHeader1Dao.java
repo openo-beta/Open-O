@@ -109,8 +109,6 @@ public interface BillingONCHeader1Dao extends AbstractDao<BillingONCHeader1> {
     public List<BillingONCHeader1> findBillingsByDemoNoCh1HeaderServiceCodeAndDate(Integer demoNo,
                                                                                    List<String> serviceCodes, Date from, Date to);
 
-    public List<String[]> findBillingData(String conditions);
-
     public List<BillingONCHeader1> findAllByPayProgram(String payProgram, int startIndex, int limit);
 
 }

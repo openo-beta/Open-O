@@ -89,6 +89,7 @@
 <%@ page import="ca.openosp.openo.caisi_integrator.ws.*" %>
 <%@ page import="ca.openosp.openo.PMmodule.caisi_integrator.CaisiIntegratorManager" %>
 <%@ page import="ca.openosp.openo.PMmodule.caisi_integrator.ConformanceTestHelper" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -120,11 +121,11 @@
                         <td>Remote:
                             <% if (demographicTransfer != null) { %>
 
-                            <%=CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), demographicTransfer.getIntegratorFacilityId()).getName()     %>
+                            <%=Encode.forHtml(String.valueOf(CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), demographicTransfer.getIntegratorFacilityId()).getName()))%>
                             -
-                            <%=CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), demographicTransfer.getIntegratorFacilityId()).getDescription()    %>
+                            <%=Encode.forHtml(String.valueOf(CaisiIntegratorManager.getRemoteFacility(loggedInInfo, loggedInInfo.getCurrentFacility(), demographicTransfer.getIntegratorFacilityId()).getDescription()))%>
                             <br>
-                            By: <%=remoteProvider %> -- Role : <%=remoteRoles.toString() %>
+                            By: <%=Encode.forHtml(String.valueOf(remoteProvider))%> -- Role : <%=Encode.forHtml(String.valueOf(remoteRoles.toString()))%>
                             <%} %>
                         </td>
                     </tr>
@@ -143,10 +144,10 @@
                     <tr>
                         <td>&nbsp;</td>
                         <th>Local (Last
-                            Update: <%=DateUtils.formatDate(demographic.getLastUpdateDate(), request.getLocale())%>)
+                            Update: <%=Encode.forHtml(String.valueOf(DateUtils.formatDate(demographic.getLastUpdateDate(), request.getLocale())))%>)
                         </th>
                         <th>Remote (Last
-                            Update: <%=DateUtils.formatDate(demographicTransfer.getLastUpdateDate(), request.getLocale())%>
+                            Update: <%=Encode.forHtml(String.valueOf(DateUtils.formatDate(demographicTransfer.getLastUpdateDate(), request.getLocale())))%>
                             )
                         </th>
                     </tr>
@@ -155,62 +156,62 @@
                         highlight = (demographicTransfer.getBirthDate() != null && !(DateUtils.getNumberOfDaysBetweenTwoDates(demographicTransfer.getBirthDate(), demographic.getBirthDay()) == 0)); %>
                     <tr>
                         <td>BirthDate:</td>
-                        <td><%=DateUtils.formatDate(demographic.getBirthDay(), request.getLocale())%>
+                        <td><%=Encode.forHtml(String.valueOf(DateUtils.formatDate(demographic.getBirthDay(), request.getLocale())))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=DateUtils.formatDate(demographicTransfer.getBirthDate(), request.getLocale())%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(DateUtils.formatDate(demographicTransfer.getBirthDate(), request.getLocale())))%>
                         </td>
                     </tr>
                     <%
                         highlight = (demographicTransfer.getCity() != null && !demographicTransfer.getCity().equalsIgnoreCase(demographic.getCity())); %>
                     <tr>
                         <td>City:</td>
-                        <td><%=StringUtils.noNull(demographic.getCity())%>
+                        <td><%=Encode.forHtml(String.valueOf(StringUtils.noNull(demographic.getCity())))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=StringUtils.noNull(demographicTransfer.getCity())%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(StringUtils.noNull(demographicTransfer.getCity())))%>
                         </td>
                     </tr>
                     <%
                         highlight = (demographicTransfer.getFirstName() != null && !demographicTransfer.getFirstName().equals(demographic.getFirstName())); %>
                     <tr>
                         <td>FirstName:</td>
-                        <td><%=demographic.getFirstName()%>
+                        <td><%=Encode.forHtml(String.valueOf(demographic.getFirstName()))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=demographicTransfer.getFirstName()%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(demographicTransfer.getFirstName()))%>
                         </td>
                     </tr>
                     <%
                         highlight = (demographicTransfer.getGender() != null && !demographicTransfer.getGender().toString().equals(demographic.getSex()));%>
                     <tr>
                         <td>Gender:</td>
-                        <td><%=demographic.getSex()%>
+                        <td><%=Encode.forHtml(String.valueOf(demographic.getSex()))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=demographicTransfer.getGender()%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(demographicTransfer.getGender()))%>
                         </td>
                     </tr>
                     <%
                         highlight = (demographicTransfer.getHin() != null && !demographicTransfer.getHin().equals(demographic.getHin()));%>
                     <tr>
                         <td>Hin:</td>
-                        <td><%=StringUtils.noNull(demographic.getHin())%>
+                        <td><%=Encode.forHtml(String.valueOf(StringUtils.noNull(demographic.getHin())))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=StringUtils.noNull(demographicTransfer.getHin())%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(StringUtils.noNull(demographicTransfer.getHin())))%>
                         </td>
                     </tr>
                     <%
                         highlight = (demographicTransfer.getHinType() != null && !demographicTransfer.getHinType().equals(demographic.getHcType())); %>
                     <tr>
                         <td>HinType:</td>
-                        <td><%=StringUtils.noNull(demographic.getHcType())%>
+                        <td><%=Encode.forHtml(String.valueOf(StringUtils.noNull(demographic.getHcType())))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=StringUtils.noNull(demographicTransfer.getHinType())%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(StringUtils.noNull(demographicTransfer.getHinType())))%>
                         </td>
                     </tr>
                     <%
                         highlight = (demographicTransfer.getHinVersion() != null && !demographicTransfer.getHinVersion().equals(demographic.getVer())); %>
                     <tr>
                         <td>HinVersion:</td>
-                        <td><%=StringUtils.noNull(demographic.getVer())%> </tdZ>
-                        <td <%=isHighlighted(highlight)%>><%=StringUtils.noNull(demographicTransfer.getHinVersion())%>
+                        <td><%=Encode.forHtml(String.valueOf(StringUtils.noNull(demographic.getVer())))%> </tdZ>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(StringUtils.noNull(demographicTransfer.getHinVersion())))%>
                         </td>
                     </tr>
 
@@ -218,72 +219,72 @@
                         highlight = (ConformanceTestHelper.isRemoteDateDifferent(DateUtils.toGregorianCalendar(demographic.getEffDate()), demographicTransfer.getHinValidStart())); %>
                     <tr>
                         <td>HinValidStart:</td>
-                        <td><%=DateUtils.formatDate(demographic.getEffDate(), request.getLocale())%>
+                        <td><%=Encode.forHtml(String.valueOf(DateUtils.formatDate(demographic.getEffDate(), request.getLocale())))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=DateUtils.formatDate(demographicTransfer.getHinValidStart(), request.getLocale())%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(DateUtils.formatDate(demographicTransfer.getHinValidStart(), request.getLocale())))%>
                         </td>
                     </tr>
                     <%
                         highlight = (ConformanceTestHelper.isRemoteDateDifferent(DateUtils.toGregorianCalendar(demographic.getHcRenewDate()), demographicTransfer.getHinValidEnd())); %>
                     <tr>
                         <td>HinValidEnd:</td>
-                        <td><%=DateUtils.formatDate(demographic.getHcRenewDate(), request.getLocale())%>
+                        <td><%=Encode.forHtml(String.valueOf(DateUtils.formatDate(demographic.getHcRenewDate(), request.getLocale())))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=DateUtils.formatDate(demographicTransfer.getHinValidEnd(), request.getLocale())%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(DateUtils.formatDate(demographicTransfer.getHinValidEnd(), request.getLocale())))%>
                         </td>
                     </tr>
                     <%
                         highlight = (demographicTransfer.getLastName() != null && !demographicTransfer.getLastName().equals(demographic.getLastName())); %>
                     <tr>
                         <td>LastName:</td>
-                        <td><%=demographic.getLastName()%>
+                        <td><%=Encode.forHtml(String.valueOf(demographic.getLastName()))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=demographicTransfer.getLastName()%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(demographicTransfer.getLastName()))%>
                         </td>
                     </tr>
                     <%
                         highlight = (demographicTransfer.getProvince() != null && !demographicTransfer.getProvince().equalsIgnoreCase(demographic.getProvince())); %>
                     <tr>
                         <td>Province:</td>
-                        <td><%=demographic.getProvince()%>
+                        <td><%=Encode.forHtml(String.valueOf(demographic.getProvince()))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=demographicTransfer.getProvince()%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(demographicTransfer.getProvince()))%>
                         </td>
                     </tr>
                     <%
                         highlight = (demographicTransfer.getSin() != null && !demographicTransfer.getSin().equals(demographic.getSin()));%>
                     <tr>
                         <td>Sin:</td>
-                        <td><%=StringUtils.noNull(demographic.getSin())%>
+                        <td><%=Encode.forHtml(String.valueOf(StringUtils.noNull(demographic.getSin())))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=StringUtils.noNull(demographicTransfer.getSin())%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(StringUtils.noNull(demographicTransfer.getSin())))%>
                         </td>
                     </tr>
                     <%
                         highlight = (demographicTransfer.getStreetAddress() != null && !demographicTransfer.getStreetAddress().equals(demographic.getAddress()));%>
                     <tr>
                         <td>StreetAddress:</td>
-                        <td><%=demographic.getAddress()%>
+                        <td><%=Encode.forHtml(String.valueOf(demographic.getAddress()))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=demographicTransfer.getStreetAddress()%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(demographicTransfer.getStreetAddress()))%>
                         </td>
                     </tr>
                     <%
                         highlight = (demographicTransfer.getPhone1() != null && !demographicTransfer.getPhone1().equals(demographic.getPhone())); %>
                     <tr>
                         <td>Phone1:</td>
-                        <td><%=demographic.getPhone()%>
+                        <td><%=Encode.forHtml(String.valueOf(demographic.getPhone()))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=demographicTransfer.getPhone1()%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(demographicTransfer.getPhone1()))%>
                         </td>
                     </tr>
                     <%
                         highlight = (demographicTransfer.getPhone2() != null && !demographicTransfer.getPhone2().equals(demographic.getPhone2()));%>
                     <tr>
                         <td>Phone2:</td>
-                        <td><%=demographic.getPhone2()%>
+                        <td><%=Encode.forHtml(String.valueOf(demographic.getPhone2()))%>
                         </td>
-                        <td <%=isHighlighted(highlight)%>><%=demographicTransfer.getPhone2()%>
+                        <td <%=isHighlighted(highlight)%>><%=Encode.forHtml(String.valueOf(demographicTransfer.getPhone2()))%>
                         </td>
                     </tr>
                 </table>

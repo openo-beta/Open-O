@@ -45,6 +45,8 @@ public class MeasurementTo1 {
     private Date dateObserved;
     
     private Integer appointmentNo;
+
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date createDate = new Date();
 
     public Integer getId() {

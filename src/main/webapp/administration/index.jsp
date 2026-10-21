@@ -30,6 +30,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 
@@ -315,7 +316,7 @@
     <div class="row-fluid hidden-print" style="text-align:right">
         <i class=" icon-question-sign"></i>
         <%if (resourcehelpHtml == "") { %>
-        <a href="#" ONCLICK="popupPage(600,750,'<%=resourcebaseurl%>');return false;" title=""
+        <a href="#" ONCLICK="popupPage(600,750,'<%=Encode.forJavaScript(String.valueOf(resourcebaseurl))%>');return false;" title=""
            onmouseover="window.status='';return true">Help</a>
         <%} else {%>
         <div id="help-link">
@@ -601,8 +602,20 @@
 
     function popupPage(vheight, vwidth, varpage) {
         var page = "" + varpage;
+        var windowname = "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.apptProvider"/>";
+        // Pages on another site, such as the Resource link, get their own window name
+        // so they never share a window with an OpenO page.
+        var site = null;
+        try {
+            site = new URL(page, document.baseURI);
+        } catch (e) {
+            // An address the browser cannot read keeps the window name it was given.
+        }
+        if (site && (site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
+            windowname = "oscarExternal_" + windowname;
+        }
         windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=50,screenY=50,top=0,left=0";
-        var popup = window.open(page, "<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.appointmentProviderAdminDay.apptProvider"/>", windowprops);
+        var popup = window.open(page, windowname, windowprops);
         if (popup != null) {
             if (popup.opener == null) {
                 popup.opener = self;

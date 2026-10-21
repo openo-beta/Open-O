@@ -122,7 +122,7 @@ public class Utilities {
 
         try {
             OscarProperties props = OscarProperties.getInstance();
-            String place = props.getProperty("DOCUMENT_DIR");
+            String place = props.getDocumentDirectory();
 
             // Validate filename and construct path using PathValidationUtils
             File safeDir = new File(place);
@@ -189,7 +189,7 @@ public class Utilities {
             }
 
             OscarProperties props = OscarProperties.getInstance();
-            String place = props.getProperty("DOCUMENT_DIR");
+            String place = props.getDocumentDirectory();
 
             if (!place.endsWith("/")) {
                 place = place + "/";

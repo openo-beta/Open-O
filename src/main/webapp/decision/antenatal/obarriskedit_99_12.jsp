@@ -31,6 +31,7 @@
 <%@ page import="java.util.*, java.sql.*, java.io.*, ca.openosp.*" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 
 <html>
@@ -57,7 +58,7 @@
         String str = null;
         if (request.getParameter("submit") != null && request.getParameter("submit").compareTo(" Save ") == 0) {
             //FileWriter inf = new FileWriter(".."+sep+"webapps"+sep+oscarVariables.getProperty("project_home")+sep+"decision"+sep+"antenatal"+sep+"desantenatalplannerrisks_99_12.xml");
-            FileWriter inf = new FileWriter(OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "desantenatalplannerrisks_99_12.xml");
+            FileWriter inf = new FileWriter(OscarProperties.getInstance().getDocumentDirectory() + "desantenatalplannerrisks_99_12.xml");
             str = request.getParameter("checklist");
             str = SxmlMisc.replaceString(str, " & ", " &amp; ");
             str = SxmlMisc.replaceString(str, " > ", " &gt; ");
@@ -77,7 +78,7 @@
                                                                            name='submit' value=' Save '> <input
                         type="button"
                         name="Button"
-                        value="&nbsp;<%=request.getParameter("submit")!=null?" Exit ":"Cancel"%>&nbsp;"
+                        value="&nbsp;<%=Encode.forHtmlAttribute(request.getParameter("submit")!=null?" Exit ":"Cancel")%>&nbsp;"
                         onClick="onExit();">&nbsp;
                 </div>
             </th>
@@ -88,7 +89,7 @@
                     name="checklist" cols="100" rows="38" style="width: 100%">
 <%
     boolean fileFound = true;
-    File file = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "desantenatalplannerrisks_99_12.xml");
+    File file = new File(OscarProperties.getInstance().getDocumentDirectory() + "desantenatalplannerrisks_99_12.xml");
     if (!file.isFile() || !file.canRead()) {
         file = new File(".." + sep + "webapps" + sep + oscarVariables.getProperty("project_home") + sep + "decision" + sep + "antenatal" + sep + "desantenatalplannerrisks_99_12.xml");
         if (!file.isFile() || !file.canRead()) {

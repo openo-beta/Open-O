@@ -41,8 +41,8 @@ public class EctARRecord {
         Properties properties = new Properties();
 
         if (existingID <= 0) {
-            String s = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, sex, CONCAT(address, ', ', city, ', ', province, ' ', postal) AS address, phone, phone2, year_of_birth, month_of_birth, date_of_birth FROM demographic WHERE demographic_no = " + demographicNo;
-            ResultSet resultset = DBHandler.GetSQL(s);
+            String s = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, sex, CONCAT(address, ', ', city, ', ', province, ' ', postal) AS address, phone, phone2, year_of_birth, month_of_birth, date_of_birth FROM demographic WHERE demographic_no = ?";
+            ResultSet resultset = DBHandler.GetPreSQL(s, demographicNo);
             if (resultset.next()) {
                 java.util.Date date = UtilDateUtilities.calcDate(resultset.getString("year_of_birth"), resultset.getString("month_of_birth"), resultset.getString("date_of_birth"));
                 properties.setProperty("demographic_no", resultset.getString("demographic_no"));
@@ -58,8 +58,8 @@ public class EctARRecord {
             }
             resultset.close();
         } else {
-            String s1 = "SELECT * FROM formAR WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
-            ResultSet resultset1 = DBHandler.GetSQL(s1);
+            String s1 = "SELECT * FROM formAR WHERE demographic_no = ? AND ID = ?";
+            ResultSet resultset1 = DBHandler.GetPreSQL(s1, demographicNo, existingID);
             if (resultset1.next()) {
                 ResultSetMetaData resultsetmetadata = resultset1.getMetaData();
                 for (int k = 1; k <= resultsetmetadata.getColumnCount(); k++) {
@@ -92,11 +92,11 @@ public class EctARRecord {
         String page = temp.substring(0, 3).toLowerCase() + "_";
 
 
-        String sqlDB = "SELECT * FROM formAR WHERE demographic_no=" + demographic_no + " AND ID=" + formId;
-        ResultSet resultset = DBHandler.GetSQL(sqlDB);
+        String sqlDB = "SELECT * FROM formAR WHERE demographic_no = ? AND ID = ?";
+        ResultSet resultset = DBHandler.GetPreSQL(sqlDB, demographic_no, formId);
         resultset.next();
-        String sqlNew = "SELECT * FROM formAR WHERE demographic_no=" + demographic_no + " AND ID=0";
-        ResultSet resultset1 = DBHandler.GetSQL(sqlNew, true);
+        String sqlNew = "SELECT * FROM formAR WHERE demographic_no = ? AND ID = 0";
+        ResultSet resultset1 = DBHandler.GetPreSQLUpdatable(sqlNew, demographic_no);
         resultset1.moveToInsertRow();
         ResultSetMetaData resultsetmetadata = resultset1.getMetaData();
 
@@ -151,7 +151,7 @@ public class EctARRecord {
         resultset1.close();
         int j = 0;
         sqlNew = "SELECT LAST_INSERT_ID()";
-        resultset1 = DBHandler.GetSQL(sqlNew);
+        resultset1 = DBHandler.GetPreSQL(sqlNew);
         if (resultset1.next())
             j = resultset1.getInt(1);
         resultset1.close();
@@ -161,8 +161,8 @@ public class EctARRecord {
     public Properties getARPrintRecord(int demographicNo, int existingID) throws SQLException {
         Properties properties = new Properties();
 
-        String s = "SELECT * FROM formAR WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
-        ResultSet resultset = DBHandler.GetSQL(s);
+        String s = "SELECT * FROM formAR WHERE demographic_no = ? AND ID = ?";
+        ResultSet resultset = DBHandler.GetPreSQL(s, demographicNo, existingID);
         if (resultset.next()) {
             ResultSetMetaData resultsetmetadata = resultset.getMetaData();
             for (int k = 1; k <= resultsetmetadata.getColumnCount(); k++) {

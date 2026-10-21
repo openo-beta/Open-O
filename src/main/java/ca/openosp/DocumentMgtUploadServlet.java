@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -99,10 +98,10 @@ public class DocumentMgtUploadServlet extends HttpServlet {
 
 
         // Get properties from oscar_mcmaster.properties
-        Properties ap = OscarProperties.getInstance();
+        OscarProperties ap = OscarProperties.getInstance();
 
         forwardTo = ap.getProperty("DOC_FORWARD");
-        foldername = ap.getProperty("DOCUMENT_DIR");
+        foldername = ap.getDocumentDirectory();
 
         if (forwardTo == null || forwardTo.length() < 1) return;
 

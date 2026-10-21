@@ -66,6 +66,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Appointment" %>
 <%@ page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -173,20 +174,20 @@
         FLU</font></td>-->
             <label style="display: inline-flex; align-items: center; margin-left: 10px;">
                     <input type="checkbox" name="filter_noshow" value="true"
-                        <%= request.getParameter("filter_noshow") != null ? "checked" : "" %> > No-Show
+                        <%=Encode.forHtml(request.getParameter("filter_noshow") != null ? "checked" : "")%> > No-Show
                 </label>
 
                 <label style="padding-left: 10px; display: inline-flex; align-items: center;">
                     <input type="checkbox" name="filter_cancelled" value="true"
-                        <%= request.getParameter("filter_cancelled") != null ? "checked" : "" %> > Cancelled
+                        <%=Encode.forHtml(request.getParameter("filter_cancelled") != null ? "checked" : "")%> > Cancelled
                 </label>
             </td>
 
             <td width="25%">
                 <div ><input type="text" name="xml_vdate"
-                value="<%=xml_vdate%>"> <font size="1"
+                value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>"> <font size="1"
                         face="Arial, Helvetica, sans-serif"><a href="#"
-                    onClick="openBrWindow('billingCalendarPopup.jsp?type=&returnItem=xml_vdate&returnForm=serviceform&year=<%=curYear%>&month=<%=curMonth%>','','width=300,height=300')">Begin:</a></font>
+                    onClick="openBrWindow('billingCalendarPopup.jsp?type=&returnItem=xml_vdate&returnForm=serviceform&year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>','','width=300,height=300')">Begin:</a></font>
                 </div>
             </td>
             <td width="25%">
@@ -206,9 +207,9 @@
                             proOHIP = p.getProviderNo();
 
                     %>
-                    <option value="<%=proOHIP%>"
-                            <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=proLast%>,
-                        <%=proFirst%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>"
+                            <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(proLast))%>,
+                        <%=Encode.forHtml(String.valueOf(proFirst))%>
                     </option>
                     <%
                         }
@@ -224,9 +225,9 @@
 
             </td>
             <td width="25%"><input type="text" name="xml_appointment_date"
-                                           value="<%=xml_appointment_date%>"> <font size="1"
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>"> <font size="1"
                                                                          face="Arial, Helvetica, sans-serif"><a href="#"
-                                                                                                                onClick="openBrWindow('billingCalendarPopup.jsp?type=&returnItem=xml_appointment_date&returnForm=serviceform&year=<%=curYear%>&month=<%=curMonth%>','','width=300,height=300')">End:</a></font>
+                                                                                                                onClick="openBrWindow('billingCalendarPopup.jsp?type=&returnItem=xml_appointment_date&returnForm=serviceform&year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>','','width=300,height=300')">End:</a></font>
                 </td>
             <td width="25%">
                                     <font color="#333333" size="2"

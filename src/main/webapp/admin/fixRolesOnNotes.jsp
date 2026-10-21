@@ -36,6 +36,7 @@
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@page import="ca.openosp.openo.log.LogAction" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -83,7 +84,7 @@
     <%
         for (SecRole role : roles) {
     %>
-    <option value="<%=role.getId() %>"><%=role.getName() %>
+    <option value="<%=Encode.forHtmlAttribute(String.valueOf(role.getId()))%>"><%=Encode.forHtml(String.valueOf(role.getName()))%>
     </option>
     <%} %>
 </select>

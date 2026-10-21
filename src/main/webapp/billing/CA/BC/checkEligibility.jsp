@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String result = Misc.safeString((String) request.getAttribute("Result"));
     String msgs = Misc.safeString((String) request.getAttribute("Msgs"));
@@ -31,4 +32,4 @@
     if (error.length() != 0) {
         error = "Error in teleplan connection : " + error;
     }
-%><%=result%>-<%=msgs%><%=error%>
+%><%=Encode.forHtml(String.valueOf(result))%>-<%=Encode.forHtml(String.valueOf(msgs))%><%=Encode.forHtml(String.valueOf(error))%>

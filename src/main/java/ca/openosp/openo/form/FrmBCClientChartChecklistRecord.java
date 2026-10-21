@@ -13,7 +13,6 @@ import ca.openosp.openo.commn.model.Clinic;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
 
-import ca.openosp.openo.login.DBHelp;
 import ca.openosp.openo.db.DBHandler;
 import ca.openosp.openo.util.UtilDateUtilities;
 
@@ -34,9 +33,8 @@ public class FrmBCClientChartChecklistRecord extends FrmRecord {
         Properties props = new Properties();
         if (existingID <= 0) {
 
-            String sql = "SELECT demographic_no, last_name, first_name, sex, address, city, province, postal, phone, phone2, year_of_birth, month_of_birth, date_of_birth, hin FROM demographic WHERE demographic_no = "
-                    + demographicNo;
-            ResultSet rs = DBHandler.GetSQL(sql);
+            String sql = "SELECT demographic_no, last_name, first_name, sex, address, city, province, postal, phone, phone2, year_of_birth, month_of_birth, date_of_birth, hin FROM demographic WHERE demographic_no = ?";
+            ResultSet rs = DBHandler.GetPreSQL(sql, demographicNo);
             if (rs.next()) {
                 java.util.Date date = UtilDateUtilities.calcDate(rs
                         .getString("year_of_birth"), rs
@@ -69,14 +67,12 @@ public class FrmBCClientChartChecklistRecord extends FrmRecord {
                 props.setProperty("c_clinicName", clinic.getClinicName());
             }
         } else {
-            String sql = "SELECT * FROM formBCClientChartChecklist WHERE demographic_no = "
-                    + demographicNo + " AND ID = " + existingID;
+            String sql = "SELECT * FROM formBCClientChartChecklist WHERE demographic_no = ? AND ID = ?";
             FrmRecordHelp frh = new FrmRecordHelp();
             frh.setDateFormat(_dateFormat);
-            props = frh.getFormRecord(sql);
-            sql = "SELECT last_name, first_name, address, city, province, postal, phone,phone2, hin FROM demographic WHERE demographic_no = "
-                    + demographicNo;
-            ResultSet rs = DBHelp.searchDBRecord(sql);
+            props = frh.getFormRecord(sql, demographicNo, existingID);
+            sql = "SELECT last_name, first_name, address, city, province, postal, phone,phone2, hin FROM demographic WHERE demographic_no = ?";
+            ResultSet rs = DBHandler.GetPreSQL(sql, demographicNo);
             if (rs.next()) {
                 props.setProperty("c_surname_cur", Misc.getString(rs, "last_name"));
                 props
@@ -96,20 +92,18 @@ public class FrmBCClientChartChecklistRecord extends FrmRecord {
 
     public int saveFormRecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");
-        String sql = "SELECT * FROM formBCClientChartChecklist WHERE demographic_no="
-                + demographic_no + " AND ID=0";
+        String sql = "SELECT * FROM formBCClientChartChecklist WHERE demographic_no = ? AND ID = 0";
         FrmRecordHelp frh = new FrmRecordHelp();
         frh.setDateFormat(_dateFormat);
-        return frh.saveFormRecord(props, sql);
+        return frh.saveFormRecord(props, sql, demographic_no);
     }
 
     public Properties getPrintRecord(int demographicNo, int existingID)
             throws SQLException {
-        String sql = "SELECT * FROM formBCClientChartChecklist WHERE demographic_no = "
-                + demographicNo + " AND ID = " + existingID;
+        String sql = "SELECT * FROM formBCClientChartChecklist WHERE demographic_no = ? AND ID = ?";
         FrmRecordHelp frh = new FrmRecordHelp();
         frh.setDateFormat(_dateFormat);
-        return frh.getPrintRecord(sql);
+        return frh.getPrintRecord(sql, demographicNo, existingID);
     }
 
     public String findActionValue(String submit) throws SQLException {

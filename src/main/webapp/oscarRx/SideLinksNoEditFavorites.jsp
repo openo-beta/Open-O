@@ -28,6 +28,7 @@
 <%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 <%@page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.commn.model.Allergy" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -50,13 +51,13 @@
 
     <security:oscarSec roleName="<%=roleName$%>" objectName="_allergy" rights="r" reverse="<%=false%>">
 
-        <p class="PropSheetLevel1CurrentItem<%=alle%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/></p>
+        <p class="PropSheetLevel1CurrentItem<%=Encode.forHtmlAttribute(String.valueOf(alle))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/></p>
         <p class="PropSheetMenuItemLevel1">
                     <%for (int j=0; j<allergies.length; j++){%>
 
         <p class="PropSheetMenuItemLevel1"><a
-                title="<%= allergies[j].getDescription() %> - <%= allergies[j].getReaction() %>">
-            <%=allergies[j].getShortDesc(13, 8, "...")%>
+                title="<%=Encode.forHtmlAttribute(String.valueOf(allergies[j].getDescription()))%> - <%=Encode.forHtmlAttribute(String.valueOf(allergies[j].getReaction()))%>">
+            <%=Encode.forHtml(String.valueOf(allergies[j].getShortDesc(13, 8, "...")))%>
         </a></p>
         <%}%>
 
@@ -70,10 +71,10 @@
         for (int j=0; j<favorites.length; j++){ %>
 
     <p class="PropSheetMenuItemLevel1"><a href="javascript:void(0);"
-                                          onclick="goSD3('<%= favorites[j].getFavoriteId() %>');"
-                                          title="<%= favorites[j].getFavoriteName() %>"><%if (favorites[j].getFavoriteName().length() > 13) { %>
-        <%= favorites[j].getFavoriteName().substring(0, 10) + "..." %> <%} else {%>
-        <%= favorites[j].getFavoriteName() %> <%}%></a></p>
+                                          onclick="goSD3('<%=Encode.forJavaScript(String.valueOf(favorites[j].getFavoriteId()))%>');"
+                                          title="<%=Encode.forHtmlAttribute(String.valueOf(favorites[j].getFavoriteName()))%>"><%if (favorites[j].getFavoriteName().length() > 13) { %>
+        <%=Encode.forHtml(String.valueOf(favorites[j].getFavoriteName().substring(0, 10) + "..."))%> <%} else {%>
+        <%=Encode.forHtml(String.valueOf(favorites[j].getFavoriteName()))%> <%}%></a></p>
     <%}%>
 
 </div>

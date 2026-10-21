@@ -92,7 +92,7 @@ public class GenTa2Action extends ActionSupport {
 
         String forwardPage = "S21";
 
-        String filepath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String filepath = OscarProperties.getInstance().getDocumentDirectory();
 
         FileInputStream file = new FileInputStream(filepath + filename);
         BufferedReader input = new BufferedReader(new InputStreamReader(file));

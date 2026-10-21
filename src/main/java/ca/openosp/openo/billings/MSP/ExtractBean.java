@@ -32,6 +32,7 @@ import ca.openosp.openo.billing.CA.BC.model.LogTeleplanTx;
 import ca.openosp.openo.commn.dao.BillingDao;
 import ca.openosp.openo.commn.model.Billing;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.entities.Billingmaster;
@@ -39,10 +40,14 @@ import ca.openosp.openo.billings.ca.bc.data.BillingmasterDAO;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
+
+import ca.openosp.openo.db.DBHandler;
+import ca.openosp.openo.utility.DbConnectionFilter;
 
 
 public class ExtractBean extends Object implements Serializable {
@@ -150,9 +155,9 @@ public class ExtractBean extends Object implements Serializable {
             MiscUtils.getLogger().debug("1st billing query d");
 
             dbExt.openConnection();
-            query = "select * from billing where provider_ohip_no='" + providerNo + "' and (status='O' or status='W') " + dateRange;
-            MiscUtils.getLogger().debug("1st billing query " + query);
-            ResultSet rs = dbExt.executeQuery(query);
+            query = "select * from billing where provider_ohip_no=? and (status='O' or status='W')";
+            MiscUtils.getLogger().debug("1st billing query providerNo=" + providerNo);
+            ResultSet rs = DBHandler.GetPreSQL(query, providerNo);
             if (rs != null) {
                 while (rs.next()) {
                     patientCount = patientCount + 1;
@@ -250,9 +255,11 @@ public class ExtractBean extends Object implements Serializable {
 
 
                     invCount = 0;
-                    query2 = "select * from billingmaster where billing_no='" + invNo + "' and billingstatus='O'";
+                    query2 = "select * from billingmaster where billing_no=? and billingstatus='O'";
 
-                    ResultSet rs2 = dbExt.executeQuery2(query2);
+                    try (PreparedStatement ps2 = DbConnectionFilter.getThreadLocalDbConnection().prepareStatement(query2)) {
+                    ps2.setString(1, invNo);
+                    ResultSet rs2 = ps2.executeQuery();
                     while (rs2.next()) {
                         recordCount = recordCount + 1;
 
@@ -286,6 +293,7 @@ public class ExtractBean extends Object implements Serializable {
                             setAsBilledMaster(rs2.getString("billingmaster_no"));
                         }
                     }
+                    } // close try-with-resources for ps2
                     if (eFlag.compareTo("1") == 0) {
                         setAsBilled(invNo);
                     }
@@ -379,7 +387,9 @@ public class ExtractBean extends Object implements Serializable {
 
             FileOutputStream out;
 
-            out = new FileOutputStream(home_dir + ohipFilename);
+            File homeDir = new File(home_dir);
+            File validatedFile = PathValidationUtils.validatePath(ohipFilename, homeDir);
+            out = new FileOutputStream(validatedFile);
             PrintStream p;
             p = new PrintStream(out);
             p.println(value1);
@@ -405,7 +415,9 @@ public class ExtractBean extends Object implements Serializable {
 
 
             FileOutputStream out1;
-            out1 = new FileOutputStream(home_dir1 + htmlFilename);
+            File homeDir1 = new File(home_dir1);
+            File validatedFile1 = PathValidationUtils.validatePath(htmlFilename, homeDir1);
+            out1 = new FileOutputStream(validatedFile1);
             PrintStream p1;
             p1 = new PrintStream(out1);
 

@@ -196,7 +196,7 @@ var _saveBtnClick = function (e) {
                     jQuery(noteObj).find("#bgColour" + noteId).attr("id", "bgColour" + data.newNoteId);
                     jQuery(noteObj).find("#editWarn" + noteId).attr("id", "editWarn" + data.newNoteId);
                     jQuery(noteObj).find("#quitImg" + noteId).attr("id", "quitImg" + data.newNoteId);
-                    jQuery(noteObj).find("#print" + noteId).attr("id", "print" + data.newNoteId).attr("onclick", "togglePrint(" + data.newNoteId + ", event)");
+                    jQuery(noteObj).find("#print" + noteId).attr("id", "print" + data.newNoteId).prop("onclick", null).on("click", function(event) { togglePrint(data.newNoteId, event); });
                     jQuery(noteObj).find("#edit" + noteId).attr("id", "edit" + data.newNoteId);
                     jQuery(noteObj).find("#txt" + noteId).attr("id", "txt" + data.newNoteId).html(data.noteContent.replace(/\n/g, "<br />"));
                     jQuery(noteObj).find("#sig" + noteId).attr("id", "sig" + data.newNoteId);

@@ -45,6 +45,7 @@
 <%@page import="ca.openosp.openo.report.data.DemographicSets" %>
 <%@page import="java.util.List" %>
 <%@page import="ca.openosp.openo.commn.model.DataExport" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@include file="/casemgmt/taglibs.jsp" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
 <%
@@ -123,7 +124,7 @@
                 </td>
                 <td>
                     <select name="extractType" id="extractType">
-                        <option value="<%=DataExportDao.ROURKE%>"><%=DataExportDao.ROURKE%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(DataExportDao.ROURKE))%>"><%=Encode.forHtml(String.valueOf(DataExportDao.ROURKE))%>
                         </option>
                     </select>
                 </td>
@@ -141,7 +142,7 @@
                             for (int idx = 0; idx < setsList.size(); ++idx) {
                                 setName = setsList.get(idx);
                         %>
-                        <option value="<%=setName%>"><%=setName%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(setName))%>"><%=Encode.forHtml(String.valueOf(setName))%>
                         </option>
                         <%
                             }
@@ -173,13 +174,13 @@
                     String file = dataExport.getFile();
             %>
             <tr>
-                <td><%=DateFormatUtils.format(dataExport.getDaterun().getTime(), DateFormatUtils.ISO_DATETIME_FORMAT.getPattern()) %>
+                <td><%=Encode.forHtml(String.valueOf(DateFormatUtils.format(dataExport.getDaterun().getTime(), DateFormatUtils.ISO_DATETIME_FORMAT.getPattern())))%>
                 </td>
                 <td>
-                    <a href='<c:out value="${ctx}/demographic/eRourkeExport.do"></c:out>?method=getFile&zipFile=<%=file%>'><%=file %>
+                    <a href='<c:out value="${ctx}/demographic/eRourkeExport.do"></c:out>?method=getFile&zipFile=<%=Encode.forUriComponent(String.valueOf(file))%>'><%=Encode.forHtml(String.valueOf(file))%>
                     </a></td>
-                <td><%=dataExport.getUser()%>
-                <td><%=dataExport.getType()%>
+                <td><%=Encode.forHtml(String.valueOf(dataExport.getUser()))%>
+                <td><%=Encode.forHtml(String.valueOf(dataExport.getType()))%>
                 </td>
             </tr>
             <%

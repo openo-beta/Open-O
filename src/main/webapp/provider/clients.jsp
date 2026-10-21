@@ -40,6 +40,7 @@
 <%@ page import="ca.openosp.openo.commn.model.ServiceClient" %>
 <%@ page import="ca.openosp.openo.commn.model.ServiceRequestToken" %>
 <%@ page import="ca.openosp.openo.commn.model.ServiceAccessToken" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -151,13 +152,13 @@
                             ServiceClient client = clientMap.get(srt.getClientId());
                             if (client != null) {
                         %>
-                        <td><%= client.getName() %>
+                        <td><%=Encode.forHtml(String.valueOf(client.getName()))%>
                         </td>
-                        <td><%=dateFormatter.format(srt.getDateCreated()) %>
+                        <td><%=Encode.forHtml(String.valueOf(dateFormatter.format(srt.getDateCreated())))%>
                         </td>
-                        <td><%=srt.getVerifier()%>
+                        <td><%=Encode.forHtml(String.valueOf(srt.getVerifier()))%>
                         </td>
-                        <td><a href="javascript:void(0);" onclick="deleteRequestToken('<%=srt.getId()%>');"><img
+                        <td><a href="javascript:void(0);" onclick="deleteRequestToken('<%=Encode.forJavaScript(String.valueOf(srt.getId()))%>');"><img
                                 border="0" title="delete" src="<%=request.getContextPath() %>/images/Delete16.gif"/></a>
                         </td>
 
@@ -192,9 +193,9 @@
                     <%if (accessTokens.size() > 0) { %>
                     <%for (ServiceAccessToken sat : accessTokens) { %>
                     <tr>
-                        <td><%=clientMap.get(sat.getClientId()).getName() %>
+                        <td><%=Encode.forHtml(String.valueOf(clientMap.get(sat.getClientId()).getName()))%>
                         </td>
-                        <td><%=sat.getDateCreated() %>
+                        <td><%=Encode.forHtml(String.valueOf(sat.getDateCreated()))%>
                         </td>
                         <td>
                             <%
@@ -204,9 +205,9 @@
                                 c.setTime(d);
                                 c.add(Calendar.SECOND, (int) sat.getLifetime());
                             %>
-                            <%=dateFormatter.format(c.getTime()) %>
+                            <%=Encode.forHtml(String.valueOf(dateFormatter.format(c.getTime())))%>
                         </td>
-                        <td><a href="javascript:void(0);" onclick="deleteAccessToken('<%=sat.getId()%>');"><img
+                        <td><a href="javascript:void(0);" onclick="deleteAccessToken('<%=Encode.forJavaScript(String.valueOf(sat.getId()))%>');"><img
                                 border="0" title="delete" src="<%=request.getContextPath() %>/images/Delete16.gif"/></a>
                         </td>
                     </tr>

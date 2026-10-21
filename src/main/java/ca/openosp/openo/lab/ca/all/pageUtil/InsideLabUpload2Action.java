@@ -42,6 +42,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,8 +62,12 @@ import ca.openosp.openo.lab.ca.all.util.Utilities;
 
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 
-public class InsideLabUpload2Action extends ActionSupport {
+import ca.openosp.openo.utility.PathValidationUtils;
+
+public class InsideLabUpload2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -73,9 +78,7 @@ public class InsideLabUpload2Action extends ActionSupport {
         EXISTS
     }
 
-    private List<File> importFiles;
-    private List<String> importFilesFileName;
-    private List<String> importFilesContentType;
+    private List<UploadedFile> importFiles;
     
     @Override
     public String execute() {
@@ -90,12 +93,12 @@ public class InsideLabUpload2Action extends ActionSupport {
         Map<String, FileStatus> filesStatusMap = new HashMap<>();
         
         for (int i = 0; i < importFiles.size(); i++) {
-            File file = importFiles.get(i);
-            String fileName = importFilesFileName.get(i);
-            String contentType = importFilesContentType.get(i);
-            
+            UploadedFile uf = importFiles.get(i);
+            File file = PathValidationUtils.toFile(uf);
+            String fileName = uf.getOriginalName();
+
             // Process each file
-            FileStatus status = processUploadedFile(loggedInInfo, file, fileName, contentType);
+            FileStatus status = processUploadedFile(loggedInInfo, file, fileName, uf.getContentType());
             filesStatusMap.put(fileName, status);
         }
         
@@ -158,30 +161,8 @@ public class InsideLabUpload2Action extends ActionSupport {
         return FileStatus.INVALID;
     }
 
-    public List<File> getImportFiles() 
-    { 
-        return importFiles; 
-    }
-    public void setImportFiles(List<File> importFiles) 
-    { 
-        this.importFiles = importFiles; 
-    }
-    
-    public List<String> getImportFilesFileName() 
-    { 
-        return importFilesFileName; 
-    }
-    public void setImportFilesFileName(List<String> importFilesFileName) 
-    { 
-        this.importFilesFileName = importFilesFileName; 
-    }
-    
-    public List<String> getImportFilesContentType() 
-    { 
-        return importFilesContentType; 
-    }
-    public void setImportFilesContentType(List<String> importFilesContentType) 
-    { 
-        this.importFilesContentType = importFilesContentType; 
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        this.importFiles = new ArrayList<>(uploadedFiles);
     }
 }

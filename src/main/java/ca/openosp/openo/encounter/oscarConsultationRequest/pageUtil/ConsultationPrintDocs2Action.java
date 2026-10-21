@@ -65,7 +65,7 @@ public class ConsultationPrintDocs2Action extends ActionSupport {
         //ArrayList docs = EDocUtil.listDocs( demoNo, reqId, EDocUtil.ATTACHED);        
         String[] docs = request.getParameterValues("docNo");
         ArrayList alist = new ArrayList();
-        String path = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+        String path = OscarProperties.getInstance().getDocumentDirectory();
 
         for (int i = 0; i < docs.length; i++)
             alist.add(path + docs[i]);

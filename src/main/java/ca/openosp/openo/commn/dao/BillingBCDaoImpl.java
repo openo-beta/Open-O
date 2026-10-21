@@ -75,7 +75,7 @@ public class BillingBCDaoImpl extends BillingDaoImpl implements BillingBCDao {
     @SuppressWarnings("unchecked")
     @NativeSql("billinglocation")
     public List<Object[]> findBillingLocations(String billRegion) {
-        Query query = entityManager.createNativeQuery("SELECT billinglocation,billinglocation_desc FROM billinglocation WHERE region = ?");
+        Query query = entityManager.createNativeQuery("SELECT billinglocation,billinglocation_desc FROM billinglocation WHERE region = ?1");
         query.setParameter(1, billRegion);
         return query.getResultList();
     }
@@ -83,7 +83,7 @@ public class BillingBCDaoImpl extends BillingDaoImpl implements BillingBCDao {
     @SuppressWarnings("unchecked")
     @NativeSql("billingvisit")
     public List<Object[]> findBillingVisits(String billRegion) {
-        Query query = entityManager.createNativeQuery("SELECT visittype, visit_desc FROM billingvisit WHERE region = ? ORDER BY visittype ASC");
+        Query query = entityManager.createNativeQuery("SELECT visittype, visit_desc FROM billingvisit WHERE region = ?1 ORDER BY visittype ASC");
         query.setParameter(1, billRegion);
         return query.getResultList();
     }

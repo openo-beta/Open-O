@@ -92,13 +92,11 @@ public class CDMReminderHlp {
      * @return ArrayList
      */
     private List<String[]> getCDMPatients(String[] codes) {
-
-        String qry = "SELECT de.demographic_no,de.provider_no,dxresearch_code FROM dxresearch d, demographic de WHERE de.demographic_no=d.demographic_no " +
-                " and d.dxresearch_code ";
-        qry += SqlUtils.constructInClauseString(codes, true);
-        qry +=
-                " and status = 'A' and patient_status = 'AC' order by de.demographic_no";
-        List<String[]> lst = SqlUtils.getQueryResultsList(qry);
+        String qry = "SELECT de.demographic_no,de.provider_no,dxresearch_code FROM dxresearch d, demographic de"
+                .concat(" WHERE de.demographic_no=d.demographic_no")
+                .concat(" AND d.dxresearch_code IN (").concat(SqlUtils.inClausePlaceholders(codes.length)).concat(")")
+                .concat(" AND status = 'A' AND patient_status = 'AC' ORDER BY de.demographic_no");
+        List<String[]> lst = SqlUtils.getQueryResultsList(qry, (Object[]) codes);
         return lst == null ? new ArrayList<String[]>() : lst;
     }
 }

@@ -41,6 +41,7 @@
 
 
 <%@ page import="java.sql.*, java.util.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
     <head>
@@ -75,7 +76,7 @@
         <tr>
             <td>
                 <script>
-                    write2Parent("<%=request.getAttribute("diagnosisVT")%>");
+                    write2Parent("<%=Encode.forJavaScript(String.valueOf(request.getAttribute("diagnosisVT")))%>");
                 </script>
             </td>
         </tr>

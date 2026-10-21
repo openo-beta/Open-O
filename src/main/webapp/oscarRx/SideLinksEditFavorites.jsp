@@ -34,6 +34,7 @@
 <%@page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.commn.model.Allergy" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     RxSessionBean bean2 = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
@@ -55,14 +56,14 @@
 
 
         <dl class="PropSheetMenuItemLevel1">
-          <dt class="PropSheetLevel1CurrentItem<%=alle%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/></dt>
+          <dt class="PropSheetLevel1CurrentItem<%=Encode.forHtmlAttribute(String.valueOf(alle))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarRx.sideLinks.msgAllergies"/></dt>
                     <%
 
         for (int j=0; j<allergies.length; j++){%>
 
         <dd class="PropSheetMenuItemLevel1"><a
-                title="<%= allergies[j].getDescription() %> - <%= allergies[j].getReaction() %>">
-            <%=allergies[j].getShortDesc(13, 8, "...")%>
+                title="<%=Encode.forHtmlAttribute(String.valueOf(allergies[j].getDescription()))%> - <%=Encode.forHtmlAttribute(String.valueOf(allergies[j].getReaction()))%>">
+            <%=Encode.forHtml(String.valueOf(allergies[j].getShortDesc(13, 8, "...")))%>
         </a></dd>
         <%}%>
         </dl>
@@ -79,10 +80,10 @@
         for (int j=0; j<favorites.length; j++){%>
 
     <p class="PropSheetMenuItemLevel1"><a
-            href="<%= request.getContextPath() %>/oscarRx/useFavorite.do?favoriteId=<%= favorites[j].getFavoriteId() %>"
-            title="<%= favorites[j].getFavoriteName() %>"><%if (favorites[j].getFavoriteName().length() > 13) {%>
-        <%= favorites[j].getFavoriteName().substring(0, 10) + "..." %> <%} else {%>
-        <%= favorites[j].getFavoriteName() %> <%}%></a></p>
+            href="<%= request.getContextPath() %>/oscarRx/useFavorite.do?favoriteId=<%=Encode.forUriComponent(String.valueOf(favorites[j].getFavoriteId()))%>"
+            title="<%=Encode.forHtmlAttribute(String.valueOf(favorites[j].getFavoriteName()))%>"><%if (favorites[j].getFavoriteName().length() > 13) {%>
+        <%=Encode.forHtml(String.valueOf(favorites[j].getFavoriteName().substring(0, 10) + "..."))%> <%} else {%>
+        <%=Encode.forHtml(String.valueOf(favorites[j].getFavoriteName()))%> <%}%></a></p>
     <%}%>
     </p>
 </div>

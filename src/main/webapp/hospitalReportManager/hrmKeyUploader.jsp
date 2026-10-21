@@ -11,6 +11,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -38,7 +39,7 @@
         if (outcome.equals("success")) {
 %>
 <script type="text/javascript">alert("Key uploaded successfully");
-opener.updateLink(<%=filePath%>, <%=type%>);</script>
+opener.updateLink(<%=Encode.forJavaScript(String.valueOf(filePath))%>, <%=Encode.forJavaScript(String.valueOf(type))%>);</script>
 <%
 } else if (outcome.equals("exception")) {
 %>

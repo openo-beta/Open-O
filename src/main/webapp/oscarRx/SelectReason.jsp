@@ -34,7 +34,7 @@
         import="ca.openosp.openo.commn.dao.DxresearchDAO,ca.openosp.openo.commn.model.Dxresearch,ca.openosp.openo.commn.dao.Icd9Dao,ca.openosp.openo.commn.model.Icd9" %>
 <%@ page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@page import="ca.openosp.openo.managers.CodingSystemManager" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     CodingSystemManager codingSystemManager = SpringUtils.getBean(CodingSystemManager.class);
 %>
@@ -172,10 +172,10 @@
                         <tr>
                             <td>
                                 <a href="javascript:void(0);"
-                                   onclick="assignPatientDxLink('<%=dx.getDxresearchCode()%>', '<%=idc9Desc%>')"
-                                   title="<%=dx.getDxresearchCode()%> - <%=idc9Desc%>">
-                                    <%=dx.getDxresearchCode()%>
-                                    - <%=StringUtils.maxLenString(idc9Desc, 10, 6, StringUtils.ELLIPSIS)%>
+                                   onclick="assignPatientDxLink('<%=Encode.forJavaScript(String.valueOf(dx.getDxresearchCode()))%>', '<%=Encode.forJavaScript(String.valueOf(idc9Desc))%>')"
+                                   title="<%=Encode.forHtmlAttribute(String.valueOf(dx.getDxresearchCode()))%> - <%=Encode.forHtmlAttribute(String.valueOf(idc9Desc))%>">
+                                    <%=Encode.forHtml(String.valueOf(dx.getDxresearchCode()))%>
+                                    - <%=Encode.forHtml(String.valueOf(StringUtils.maxLenString(idc9Desc, 10, 6, StringUtils.ELLIPSIS)))%>
                                 </a>
                             </td>
                         </tr>
@@ -207,15 +207,15 @@
             <td style="border-left: 2px solid #A9A9A9;">
 
                 <%if (request.getAttribute("message") != null) { %>
-                <span style="color:red;"><%=request.getAttribute("message") %></span>
+                <span style="color:red;"><%=Encode.forHtml(String.valueOf(request.getAttribute("message")))%></span>
                 <%} %>
 
                 <form action="${pageContext.request.contextPath}/oscarRx/RxReason.do" method="post" id="rxReasonForm">
 
                     <fieldset>
                         <input type="hidden" name="method" value="addDrugReason"/>
-                        <input type="hidden" name="demographicNo" value="<%=demoStr%>"/>
-                        <input type="hidden" name="drugId" value="<%=drugIdStr%>"/>
+                        <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demoStr))%>"/>
+                        <input type="hidden" name="drugId" value="<%=Encode.forHtmlAttribute(String.valueOf(drugIdStr))%>"/>
 
                         <legend>Assign Indication</legend>
 
@@ -274,46 +274,46 @@
 
                                     <%for (DrugReason drugReason : drugReasons) { %>
                                     <tr>
-                                        <td><%=drugReason.getCodingSystem() %>
+                                        <td><%=Encode.forHtml(String.valueOf(drugReason.getCodingSystem()))%>
                                         </td>
-                                        <td><%=drugReason.getCode() %>
+                                        <td><%=Encode.forHtml(String.valueOf(drugReason.getCode()))%>
                                         </td>
                                         <td>
                                             <%
                                                 String descr = codingSystemManager.getCodeDescription(drugReason.getCodingSystem(), drugReason.getCode());
                                                 descr = org.apache.commons.lang3.StringUtils.trimToEmpty(descr);
                                             %>
-                                            <%=StringEscapeUtils.escapeHtml4(descr) %>
+                                            <%=Encode.forHtml(descr) %>
                                         </td>
-                                        <td><%=drugReason.getComments() %>
+                                        <td><%=Encode.forHtml(String.valueOf(drugReason.getComments()))%>
                                         </td>
                                         <td>
                                             <%if (drugReason.getPrimaryReasonFlag()) { %>
                                             True
                                             <%}%>
                                         </td>
-                                        <td><%=drugReason.getProviderNo() %>
+                                        <td><%=Encode.forHtml(String.valueOf(drugReason.getProviderNo()))%>
                                         </td>
-                                        <td><%=drugReason.getDateCoded() %>
+                                        <td><%=Encode.forHtml(String.valueOf(drugReason.getDateCoded()))%>
                                         </td>
                                         <td>
-                                            <a onclick="toggleArchiveMenu('archive<%=drugReason.getId()%>')"
+                                            <a onclick="toggleArchiveMenu('archive<%=Encode.forJavaScript(String.valueOf(drugReason.getId()))%>')"
                                                href="javascript:void(0);">archive</a>
                                         </td>
                                     </tr>
-                                    <tr id="archive<%=drugReason.getId()%>" style="display:none;">
+                                    <tr id="archive<%=Encode.forHtmlAttribute(String.valueOf(drugReason.getId()))%>" style="display:none;">
                                         <td colspan="7">
                                             <div>
 
                                                 <form action="${pageContext.request.contextPath}/oscarRx/RxReason.do" method="post">
                                                     <fieldset>
                                                         <legend>Archive Coding
-                                                            System: <%=drugReason.getCodingSystem() %>
-                                                            Code: <%=drugReason.getCode() %>
+                                                            System: <%=Encode.forHtml(String.valueOf(drugReason.getCodingSystem()))%>
+                                                            Code: <%=Encode.forHtml(String.valueOf(drugReason.getCode()))%>
                                                         </legend>
                                                         <input type="hidden" name="method" value="archiveReason"/>
                                                         <input type="hidden" name="reasonId"
-                                                               value="<%=drugReason.getId()%>"/>
+                                                               value="<%=Encode.forHtmlAttribute(String.valueOf(drugReason.getId()))%>"/>
                                                         Reason: <input type="text" name="archiveReason"/>
                                                         <input type="submit" value="Archive"/>
                                                     </fieldset>

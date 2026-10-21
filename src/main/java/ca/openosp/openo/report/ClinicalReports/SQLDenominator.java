@@ -31,11 +31,11 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
-
 import ca.openosp.Misc;
 import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
+import ca.openosp.openo.util.SqlUtils;
 
 /**
  * This is for straight SQLDenominators  not sure if it should return a more specialised list
@@ -69,19 +69,20 @@ public class SQLDenominator implements Denominator {
     public List getDenominatorList() {
         ArrayList list = new ArrayList();
         try {
+            List<Object> bindParams = new ArrayList<>();
 
             if (replaceableValues != null) {
-                MiscUtils.getLogger().debug("has replaceablevalues" + replaceableValues.size());
-                MiscUtils.getLogger().debug("before replace \n" + sql);
-                exeSql = replaceAll(sql, replaceableValues);
+                MiscUtils.getLogger().debug("has replaceablevalues {}", replaceableValues.size());
+                MiscUtils.getLogger().debug("before replace \n{}", sql);
+                exeSql = parameterizeAll(sql, replaceableValues, bindParams);
             } else {
                 MiscUtils.getLogger().debug("doesn't have replaceablevalues");
                 exeSql = sql;
-                MiscUtils.getLogger().debug("sql " + sql);
+                MiscUtils.getLogger().debug("sql {}", sql);
             }
 
-            ResultSet rs = DBHandler.GetSQL(exeSql);
-            MiscUtils.getLogger().debug("SQL Statement: " + exeSql);
+            ResultSet rs = DBHandler.GetPreSQL(exeSql, bindParams.toArray());
+            MiscUtils.getLogger().debug("SQL Statement: {}", exeSql);
             while (rs.next()) {
                 String toAdd = Misc.getString(rs, resultString);
                 list.add(toAdd);
@@ -117,6 +118,21 @@ public class SQLDenominator implements Denominator {
             str = str.replaceAll("\\$\\{" + processString + "\\}", replaceValue);
             MiscUtils.getLogger().debug(str);
 
+        }
+        return str;
+    }
+
+    /**
+     * Replaces ${key} placeholders with ? and collects the corresponding values as bind parameters.
+     * Strips surrounding quotes (e.g., '${key}' becomes ?) since PreparedStatement handles
+     * string quoting automatically.
+     */
+    private String parameterizeAll(String str, Hashtable replacers, List<Object> bindParams) {
+        Enumeration e = replacers.keys();
+        while (e.hasMoreElements()) {
+            String key = (String) e.nextElement();
+            String value = (String) replacers.get(key);
+            str = SqlUtils.parameterizeToken(str, key, value, bindParams);
         }
         return str;
     }

@@ -23,13 +23,11 @@
 
 package ca.openosp.openo.commn.model;
 
-import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import ca.openosp.openo.commn.interfaces.Immunization;
+import ca.openosp.openo.utility.MiscUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,16 +42,20 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import ca.openosp.openo.utility.MiscUtils;
-import ca.openosp.openo.integration.fhir.interfaces.ImmunizationInterface;
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 @Entity
 @Table(name = "preventions")
-public class Prevention extends AbstractModel<Integer> implements Serializable, ImmunizationInterface, DemographicData {
+public class Prevention extends AbstractModel<Integer> implements Serializable, Immunization,
+        ca.openosp.openo.integration.fhir.dstu3.interfaces.ImmunizationInterface,
+        ca.openosp.openo.integration.fhir.r4.interfaces.ImmunizationInterface,
+        DemographicData {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -75,8 +77,14 @@ public class Prevention extends AbstractModel<Integer> implements Serializable, 
     @Column(name = "provider_no")
     private String providerNo = null;
 
+	@Column(name = "provider_name")
+	private String providerName = null;
+
     @Column(name = "prevention_type")
     private String preventionType = null;
+
+//	@Column(name = "location")
+//	private String location = null;
 
     private char deleted = '0';
     private char refused = '0';
@@ -101,6 +109,14 @@ public class Prevention extends AbstractModel<Integer> implements Serializable, 
     public Prevention() {
         this.preventionExts = new ArrayList<PreventionExt>();
     }
+
+    //TODO: uncomment and update Prevention schema for use with CVC and DHIR.
+//  @Column(name = "isAvailable")
+//  private boolean isAvailable;
+//  @Column(name = "autoSyncDate")
+//  private Date autoSyncDate;
+//  @Column(name = "lastSyncedDate")
+//  private Date lastSyncedDate;
 
     private String snomedId = null;
 
@@ -217,15 +233,53 @@ public class Prevention extends AbstractModel<Integer> implements Serializable, 
         return id;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
+//  public boolean isAvailable() {
+//    return isAvailable;
+//  }
+//
+//  public void setAvailable(boolean isAvailable) {
+//    this.isAvailable = isAvailable;
+//  }
+//
+//  public Date getAutoSyncDate() {
+//    return autoSyncDate;
+//  }
+//
+//  public void setAutoSyncDate(Date autoSyncDate) {
+//    this.autoSyncDate = autoSyncDate;
+//  }
+//
+//  public Date getLastSyncedDate() {
+//    return lastSyncedDate;
+//  }
+//
+//  public void setLastSyncedDate(Date lastSyncedDate) {
+//    this.lastSyncedDate = lastSyncedDate;
+//    }
 
     @PreUpdate
     @PrePersist
     protected void autoSetUpdateTime() {
         lastUpdateDate = new Date();
     }
+
+// Do not uncomment this block as-is: it would be a second method with the same
+// name. To use it, move the autoSyncDate line into the method above.
+//    @PrePersist
+//    protected void autoSetUpdateTime() {
+//        lastUpdateDate = new Date();
+//    autoSyncDate = super.getAutoSyncDate(this.creationDate, ResourceTypeEnum.PREVENTIONS, this.getDemographicNo());
+//
+//  }
+
+
+//  @PostPersist
+//  protected void logAutoSyncDate() {
+//    if (autoSyncDate != null) {
+//      super.logAutoSyncDate(ResourceTypeEnum.PREVENTIONS, this.id, this.getDemographicNo(),
+//            this.getAutoSyncDate());
+//    }
+//    }
 
     public String getDeletedRawValue() {
         return String.valueOf(deleted);
@@ -486,11 +540,6 @@ public class Prevention extends AbstractModel<Integer> implements Serializable, 
     }
 
     @Override
-    public boolean isComplete() {
-        return (!isNever() && !isRefused());
-    }
-
-    @Override
     public String getProviderName() {
         return getImmunizationProperty(ImmunizationProperty.providerName);
     }
@@ -512,5 +561,29 @@ public class Prevention extends AbstractModel<Integer> implements Serializable, 
     @Override
     public int getImmunizationId() {
         return getId();
+    }
+
+	public String getRouteForDisplay() {
+		String route = getRoute();
+        return switch (route) {
+            case "ID" -> "Intradermal";
+            case "IM" -> "Intramuscular";
+            case "IN" -> "Intranasal";
+            case "PO" -> "Oral";
+            case "SC" -> "Subcutaneous";
+            default -> null;
+        };
+	}
+
+	public String getDIN() {
+		return getImmunizationProperty( ImmunizationProperty.din );
+	}
+
+	public boolean isComplete() {
+		return ( ! isNever() && ! isRefused() );
+	}
+
+    public Date getCreationDate() {
+        return creationDate;
     }
 }

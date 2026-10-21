@@ -49,9 +49,9 @@ public class EctMentalHealthRecord {
             sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, "
                     + "sex, CONCAT(address, ', ', city, ', ', province, ' ', postal) AS address, "
                     + "phone, year_of_birth, month_of_birth, date_of_birth "
-                    + "FROM demographic WHERE demographic_no = " + demographicNo;
+                    + "FROM demographic WHERE demographic_no = ?";
 
-            rs = DBHandler.GetSQL(sql);
+            rs = DBHandler.GetPreSQL(sql, demographicNo);
 
             if (rs.next()) {
                 java.util.Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"), Misc.getString(rs, "date_of_birth"));
@@ -70,18 +70,18 @@ public class EctMentalHealthRecord {
 
             // from provider table
             sql = "SELECT CONCAT(last_name, ', ', first_name) AS provName "
-                    + "FROM provider WHERE provider_no = " + provNo;
+                    + "FROM provider WHERE provider_no = ?";
 
-            rs = DBHandler.GetSQL(sql);
+            rs = DBHandler.GetPreSQL(sql, provNo);
 
             if (rs.next()) {
                 props.setProperty("c_referredBy", Misc.getString(rs, "provName"));
             }
             rs.close();
         } else {
-            sql = "SELECT * FROM formMentalHealth WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
+            sql = "SELECT * FROM formMentalHealth WHERE demographic_no = ? AND ID = ?";
 
-            rs = DBHandler.GetSQL(sql);
+            rs = DBHandler.GetPreSQL(sql, demographicNo, existingID);
 
             if (rs.next()) {
                 ResultSetMetaData md = rs.getMetaData();
@@ -124,12 +124,12 @@ public class EctMentalHealthRecord {
         String page = temp.substring(0, 1).toLowerCase() + "_";
 
 
-        String sqlDB = "SELECT * FROM formMentalHealth WHERE demographic_no=" + demographic_no + " AND ID=" + formId;
-        ResultSet rsDB = DBHandler.GetSQL(sqlDB);
+        String sqlDB = "SELECT * FROM formMentalHealth WHERE demographic_no = ? AND ID = ?";
+        ResultSet rsDB = DBHandler.GetPreSQL(sqlDB, demographic_no, formId);
         rsDB.next();
 
-        String sqlNew = "SELECT * FROM formMentalHealth WHERE demographic_no=" + demographic_no + " AND ID=0";
-        ResultSet rsNew = DBHandler.GetSQL(sqlNew, true);
+        String sqlNew = "SELECT * FROM formMentalHealth WHERE demographic_no = ? AND ID = 0";
+        ResultSet rsNew = DBHandler.GetPreSQLUpdatable(sqlNew, demographic_no);
         rsNew.moveToInsertRow();
 
         ResultSetMetaData md = rsNew.getMetaData();
@@ -200,7 +200,7 @@ public class EctMentalHealthRecord {
         int ret = 0;
 
         sqlNew = "SELECT LAST_INSERT_ID()";
-        rsNew = DBHandler.GetSQL(sqlNew);
+        rsNew = DBHandler.GetPreSQL(sqlNew);
         if (rsNew.next()) {
             ret = rsNew.getInt(1);
         }

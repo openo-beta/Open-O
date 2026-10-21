@@ -50,6 +50,7 @@
 <%@page import="ca.openosp.openo.commn.dao.DemographicDao" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
     String folderPath = pageContext.getServletContext().getRealPath("/decision/annualreview/");
@@ -114,7 +115,7 @@
 %>
 <script type="text/xml" id="xml_list">
     <planner>
-        <%=checklist_content%>
+        <%=Encode.forJavaScript(String.valueOf(checklist_content))%>
     </planner>
 </script>
 
@@ -151,7 +152,7 @@
 %>
 <table bgcolor='silver' width='100%' cellspacing=0 cellpadding=0>
     <tr>
-        <td><font color='blue'><%=patientName + " " + sex + " " + age%>
+        <td><font color='blue'><%=Encode.forHtml(String.valueOf(patientName + " " + sex + " " + age))%>
         </font></td>
         <td align="right"><input type="button" name="submit"
                                  value="Print" onclick="window.print();"/> <input type="button"

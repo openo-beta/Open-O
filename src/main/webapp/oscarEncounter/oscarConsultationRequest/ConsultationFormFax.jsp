@@ -46,6 +46,7 @@
 <%@ page import="ca.openosp.openo.clinic.ClinicData" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
 <%@ page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFaxForm" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -200,7 +201,7 @@
                         <% for (int i = 0; i < vecPhones.size(); i++) {
                             String te = (String) vecPhones.elementAt(i);
                         %>
-                        <option value="<%=te%>"><%=te%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(te))%>"><%=Encode.forHtml(String.valueOf(te))%>
                         </option>
                         <% }%>
                     </select></td>
@@ -211,7 +212,7 @@
                         <% for (int i = 0; i < vecFaxes.size(); i++) {
                             String te = (String) vecFaxes.elementAt(i);
                         %>
-                        <option value="<%=te%>"><%=te%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(te))%>"><%=Encode.forHtml(String.valueOf(te))%>
                         </option>
                         <% }%>
                     </select></td>
@@ -228,9 +229,9 @@
                 </tr>
             </table>
             <input type="hidden" name="requestId"
-                   value="<%= (String) request.getAttribute("reqId")%>" \>
+                   value="<%=Encode.forHtmlAttribute(String.valueOf((String) request.getAttribute("reqId")))%>" \>
             <input type="hidden" name="printType"
-                   value="<%= (String) request.getAttribute("printType")%>" \>
+                   value="<%=Encode.forHtmlAttribute(String.valueOf((String) request.getAttribute("printType")))%>" \>
         </form></td>
     </tr>
     <tr>

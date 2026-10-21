@@ -11,8 +11,10 @@
 package ca.openosp.openo.hospitalReportManager.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Query;
 
@@ -23,6 +25,39 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
+
+    /**
+     * Maps allowed order column names to their safe HQL ORDER BY fragments (ascending).
+     * Only values from this map are used in query construction, preventing HQL injection.
+     */
+    private static final Map<String, String> ORDER_ASC_FRAGMENTS = new HashMap<>();
+    private static final Map<String, String> ORDER_DESC_FRAGMENTS = new HashMap<>();
+    static {
+        ORDER_ASC_FRAGMENTS.put("formattedName", " ORDER BY x.formattedName ASC");
+        ORDER_ASC_FRAGMENTS.put("dob",           " ORDER BY x.dob ASC");
+        ORDER_ASC_FRAGMENTS.put("reportDate",    " ORDER BY x.reportDate ASC");
+        ORDER_ASC_FRAGMENTS.put("timeReceived",  " ORDER BY x.timeReceived ASC");
+        ORDER_ASC_FRAGMENTS.put("sourceFacility"," ORDER BY x.sourceFacility ASC");
+
+        ORDER_DESC_FRAGMENTS.put("formattedName", " ORDER BY x.formattedName DESC");
+        ORDER_DESC_FRAGMENTS.put("dob",           " ORDER BY x.dob DESC");
+        ORDER_DESC_FRAGMENTS.put("reportDate",    " ORDER BY x.reportDate DESC");
+        ORDER_DESC_FRAGMENTS.put("timeReceived",  " ORDER BY x.timeReceived DESC");
+        ORDER_DESC_FRAGMENTS.put("sourceFacility"," ORDER BY x.sourceFacility DESC");
+    }
+
+    /**
+     * Returns a safe, pre-built ORDER BY HQL fragment for the given column and direction,
+     * or an empty string if the column or direction is not in the allowlist.
+     */
+    private static String getSafeOrderByFragment(String orderColumn, String orderDirection) {
+        if (StringUtils.isEmpty(orderColumn) || StringUtils.isEmpty(orderDirection)) {
+            return "";
+        }
+        Map<String, String> fragments = "DESC".equalsIgnoreCase(orderDirection) ? ORDER_DESC_FRAGMENTS : ORDER_ASC_FRAGMENTS;
+        String fragment = fragments.get(orderColumn);
+        return fragment != null ? fragment : "";
+    }
 
     public HRMDocumentDao() {
         super(HRMDocument.class);
@@ -151,48 +186,48 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
     }
 
 
+    /**
+     * Builds the base HQL string for querying HRM documents.
+     * All parts are string literals; no user input is concatenated into the HQL.
+     *
+     * @param demographicUnmatched filter for unmatched demographics
+     * @param providerUnmatched filter for unmatched providers
+     * @param providerNo provider number filter (null if not filtering)
+     * @param noSignOff filter for unsigned documents
+     * @param isCount true to build a COUNT query, false for entity selection
+     * @return the base HQL string with named parameters
+     */
+    private String buildQueryHql(boolean demographicUnmatched, boolean providerUnmatched,
+                                  String providerNo, boolean noSignOff, boolean isCount) {
+        String selectPart = isCount
+                ? "select count(x) from HRMDocument x"
+                : "select x from HRMDocument x";
+
+        String joinPart = " inner JOIN x.matchedProviders p";
+        String wherePart = " WHERE x.parentReport IS NULL";
+
+        String demoFilter = demographicUnmatched ? " AND SIZE(x.matchedDemographics) = 0" : "";
+
+        String providerFilter;
+        if (providerUnmatched) {
+            providerFilter = " AND p.providerNo = :pNo";
+        } else {
+            String pNoFilter = (providerNo != null) ? " AND p.providerNo = :pNo" : "";
+            String signOffFilter = noSignOff ? " AND p.signedOff = 0" : "";
+            providerFilter = pNoFilter + signOffFilter;
+        }
+
+        return selectPart + joinPart + wherePart + demoFilter + providerFilter;
+    }
+
     public List<HRMDocument> query(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, int start, int length, String orderColumn, String orderDirection) {
 
-        if (orderColumn != null && !orderColumn.equals("formattedName") && !orderColumn.equals("dob") && !orderColumn.equals("reportDate")
-                && !orderColumn.equals("timeReceived") && !orderColumn.equals("sourceFacility")) {
-            return new ArrayList<HRMDocument>();
-        }
-        if (orderDirection != null && !orderDirection.equalsIgnoreCase("ASC") && !orderDirection.equalsIgnoreCase("DESC")) {
-            return new ArrayList<HRMDocument>();
-        }
-        String sql = "select x from " + this.modelClass.getName() + " x   ";
+        // Build HQL using pre-built safe fragments to prevent HQL injection.
+        // orderColumn and orderDirection are validated via the allowlisted ORDER_*_FRAGMENTS maps.
+        String hql = buildQueryHql(demographicUnmatched, providerUnmatched, providerNo, noSignOff, false);
+        hql = hql + getSafeOrderByFragment(orderColumn, orderDirection);
 
-        //	if(providerNo != null || providerUnmatched) {
-        sql += " inner JOIN x.matchedProviders p ";
-        //	}
-
-        sql += " WHERE x.parentReport IS NULL  ";
-
-        if (demographicUnmatched) {
-            sql = sql + " AND SIZE(x.matchedDemographics) = 0 ";
-        }
-
-        if (providerUnmatched) {
-            sql += "  AND p.providerNo = :pNo ";
-        } else {
-            if (providerNo != null) {
-                sql += "  AND p.providerNo = :pNo ";
-            }
-            if (noSignOff) {
-                sql += " AND p.signedOff = 0";
-            }
-        }
-
-
-        if (!StringUtils.isEmpty(orderColumn) && !StringUtils.isEmpty(orderDirection)) {
-            sql = sql + " ORDER BY x." + orderColumn + " " + orderDirection;
-        }
-
-
-        Query query = entityManager.createQuery(sql);
-        if (providerNo != null || providerUnmatched) {
-
-        }
+        Query query = entityManager.createQuery(hql);
 
         if (providerUnmatched) {
             query.setParameter("pNo", "-1");
@@ -201,7 +236,6 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
                 query.setParameter("pNo", providerNo);
             }
         }
-
 
         query.setFirstResult(start);
         query.setMaxResults(length);
@@ -213,46 +247,12 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
 
     public long queryForCount(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, int start, int length, String orderColumn, String orderDirection) {
 
-        if (orderColumn != null && !orderColumn.equals("formattedName") && !orderColumn.equals("dob") && !orderColumn.equals("reportDate")
-                && !orderColumn.equals("timeReceived") && !orderColumn.equals("sourceFacility")) {
-            return 0;
-        }
-        if (orderDirection != null && !orderDirection.equalsIgnoreCase("ASC") && !orderDirection.equalsIgnoreCase("DESC")) {
-            return 0;
-        }
-        String sql = "select count(x) from " + this.modelClass.getName() + " x   ";
+        // Build HQL using pre-built safe fragments to prevent HQL injection.
+        // orderColumn and orderDirection are validated via the allowlisted ORDER_*_FRAGMENTS maps.
+        String hql = buildQueryHql(demographicUnmatched, providerUnmatched, providerNo, noSignOff, true);
+        hql = hql + getSafeOrderByFragment(orderColumn, orderDirection);
 
-        //	if(providerNo != null || providerUnmatched) {
-        sql += " inner JOIN x.matchedProviders p ";
-        //	}
-
-        sql += " WHERE x.parentReport IS NULL  ";
-
-        if (demographicUnmatched) {
-            sql = sql + " AND SIZE(x.matchedDemographics) = 0 ";
-        }
-
-        if (providerUnmatched) {
-            sql += "  AND p.providerNo = :pNo ";
-        } else {
-            if (providerNo != null) {
-                sql += "  AND p.providerNo = :pNo ";
-            }
-            if (noSignOff) {
-                sql += " AND p.signedOff = 0";
-            }
-        }
-
-
-        if (!StringUtils.isEmpty(orderColumn) && !StringUtils.isEmpty(orderDirection)) {
-            sql = sql + " ORDER BY x." + orderColumn + " " + orderDirection;
-        }
-
-
-        Query query = entityManager.createQuery(sql);
-        if (providerNo != null || providerUnmatched) {
-
-        }
+        Query query = entityManager.createQuery(hql);
 
         if (providerUnmatched) {
             query.setParameter("pNo", "-1");
@@ -262,9 +262,7 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
             }
         }
 
-
         Long count = (Long) query.getSingleResult();
-
 
         return count;
     }

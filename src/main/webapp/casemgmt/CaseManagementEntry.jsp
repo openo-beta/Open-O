@@ -30,9 +30,11 @@
 <%-- Updated by Eugene Petruhin on 09 jan 2009 while fixing #2482832 & #2494061 --%>
 
 <%@ page import="ca.openosp.openo.casemgmt.web.formbeans.CaseManagementEntryFormBean"%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProp" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 
@@ -51,7 +53,7 @@
     <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
     <link rel="stylesheet" href="<c:out value="${ctx}"/>/css/casemgmt.css" type="text/css">
     <script type="text/javascript">
-        var flag =<%=request.getAttribute("change_flag")%>;
+        var flag = <%="true".equalsIgnoreCase((String) request.getAttribute("change_flag"))%>;
 
         <%
 
@@ -86,7 +88,7 @@
 
         function validateChange() {
             var str = "You haven't saved the change yet. Please save first.";
-            if (flag == true) {
+            if (flag === true) {
                 alert(str);
                 return false;
             }
@@ -95,7 +97,7 @@
 
         function validateBack() {
             var str = "You haven't saved the change yet. Please save first.";
-            if (flag == true) {
+            if (flag === true) {
                 alert(str);
                 return false;
             } else {
@@ -116,7 +118,7 @@
         }
 
         function validateEnounter() {
-            if (document.caseManagementEntryForm.elements["caseNote.encounter_type"].value == "" || document.caseManagementEntryForm.elements["caseNote.encounter_type"].value == " ") {
+            if (document.caseManagementEntryForm.elements["caseNote.encounter_type"].value === "" || document.caseManagementEntryForm.elements["caseNote.encounter_type"].value === " ") {
                 return false;
             } else {
                 return true;
@@ -128,11 +130,10 @@
 
             if (document.caseManagementEntryForm.sign.checked) signed = true;
 
-            if (newNote == true && signed == true) {
-
-                if (issueChanged == true) return true;
-                else return false;
+            if (newNote === true && signed === true) {
+                return issueChanged === true;
             }
+
             return true;
         }
 
@@ -164,7 +165,7 @@
 
             <oscarProp:oscarPropertiesCheck property="oncall" value="yes">
             var s = document.caseManagementEntryForm.elements['caseNote.encounter_type'];
-            if (s.options[s.selectedIndex].value == 'telephone encounter weekdays 8am-6pm' || s.options[s.selectedIndex].value == 'telephone encounter weekends or 6pm-8am') {
+            if (s.options[s.selectedIndex].value === 'telephone encounter weekdays 8am-6pm' || s.options[s.selectedIndex].value === 'telephone encounter weekends or 6pm-8am') {
                 document.caseManagementEntryForm.elements['chain'].value = '/OnCallQuestionnaire.do?method=form&providerNo=' + document.caseManagementEntryForm.providerNo.value + '&type=' + s.options[s.selectedIndex].value;
             }
             </oscarProp:oscarPropertiesCheck>
@@ -192,10 +193,10 @@
                 XMLHttpRequestObject.open("POST", '<%=request.getContextPath() %>/CaseManagementEntry.do', true);
                 XMLHttpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-                var demographicNo = '<c:out value="${param.demographicNo}"/>';
-                var noteId = '<%=request.getParameter("noteId") != null ? request.getParameter("noteId") : request.getAttribute("noteId") != null ? request.getAttribute("noteId") : ""%>';
+                var demographicNo = '<c:out value="${e:forJavaScript(param.demographicNo)}"/>';
+                var noteId = '<%=Encode.forJavaScript(String.valueOf(request.getParameter("noteId") != null ? request.getParameter("noteId") : request.getAttribute("noteId") != null ? request.getAttribute("noteId") : ""))%>';
                 var programId = '<c:out value="${case_program_id}"/>';
-                XMLHttpRequestObject.send("method=autosave&demographicNo=" + demographicNo + "&programId=" + programId + "&note_id=" + noteId + "&note=" + escape(obj.value));
+                XMLHttpRequestObject.send("method=autosave&demographicNo=" + demographicNo + "&programId=" + programId + "&note_id=" + noteId + "&note=" + encodeURIComponent(obj.value));
             }
 
             setTimer();
@@ -230,12 +231,12 @@
         <input type="hidden" name="chain" id="chain"/>
         <input type="hidden" name="demographicNo" id="demographicNo"/>
         <c:if test="${param.providerNo==null}">
-            <input type="hidden" name="providerNo" value="<%=session.getAttribute("user")%>">
+            <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(session.getAttribute("user")))%>">
         </c:if>
         <c:if test="${param.providerNo!=null}">
             <input type="hidden" name="providerNo" id="providerNo"/>
         </c:if>
-        <input type="hidden" name="caseNote.program_no" value="<%=pId%>"/>
+        <input type="hidden" name="caseNote.program_no" value="<%=Encode.forHtmlAttribute(String.valueOf(pId))%>"/>
         <input type="hidden" name="method" value="save"/>
         <c:if test="${param.from=='casemgmt'||requestScope.from=='casemgmt'}">
             <input type="hidden" name="from" value="casemgmt"/>
@@ -247,30 +248,30 @@
         <b><fmt:setBundle basename="oscarResources"/><fmt:message key="casemanagementEntry.clientname"/>
             <I>
                 <c:if test="${not empty requestScope.demoName}">
-                    <c:out value="${requestScope.demoName}"/>
+                    <%=request.getAttribute("demoName") == null ? "" : Encode.forHtml(String.valueOf(request.getAttribute("demoName")))%>
                 </c:if>
                 <c:if test="${empty requestScope.demoName}">
-                    <c:out value="${param.demoName}"/>
+                    <%=request.getParameter("demoName") == null ? "" : Encode.forHtml(request.getParameter("demoName"))%>
                 </c:if>
             </I>
             <br>
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Age:
             <I>
                 <c:if test="${not empty requestScope.demoName}">
-                    <c:out value="${requestScope.demoAge}"/>
+                    <%=request.getAttribute("demoAge") == null ? "" : Encode.forHtml(String.valueOf(request.getAttribute("demoAge")))%>
                 </c:if>
                 <c:if test="${empty requestScope.demoName}">
-                    <c:out value="${param.demoAge}"/>
+                    <%=request.getParameter("demoAge") == null ? "" : Encode.forHtml(request.getParameter("demoAge"))%>
                 </c:if>
             </I>
             <br>
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; DOB:
             <I>
                 <c:if test="${not empty requestScope.demoName}">
-                    <c:out value="${requestScope.demoDOB}"/>
+                    <%=request.getAttribute("demoDOB") == null ? "" : Encode.forHtml(String.valueOf(request.getAttribute("demoDOB")))%>
                 </c:if>
                 <c:if test="${empty requestScope.demoName}">
-                    <c:out value="${param.demoDOB}"/>
+                    <%=request.getParameter("demoDOB") == null ? "" : Encode.forHtml(request.getParameter("demoDOB"))%>
                 </c:if>
             </I></b>
         <br><br>
@@ -373,7 +374,7 @@
         } else {
         %>
         <input id="showResolved" type="button" value="Show Resolved Issues"
-               onclick="document.location='CaseManagementEntry.do?method=edit&note_edit=new&from=casemgmt&demographicNo=<%=request.getParameter("demographicNo")%>&providerNo=<%=request.getParameter("providerNo")%>&showResolved=true'"/>
+               onclick="document.location='CaseManagementEntry.do?method=edit&note_edit=new&from=casemgmt&demographicNo=<%=Encode.forUriComponent(request.getParameter("demographicNo"))%>&providerNo=<%=Encode.forUriComponent(request.getParameter("providerNo"))%>&showResolved=true'"/>
         <%
             }
         %>
@@ -438,15 +439,15 @@
                 <c:if test="${param.from=='casemgmt' || requestScope.from=='casemgmt'}">
                     <c:url value="${sessionScope.billing_url}" var="url"/>
                     <caisirole:SecurityAccess accessName="billing" accessType="access"
-                                              providerNo='<%=request.getParameter("providerNo")%>'
-                                              demoNo='<%=request.getParameter("demographicNo")%>' programId="<%=pId%>">
+                                              providerNo='<%=Encode.forHtmlAttribute(request.getParameter("providerNo"))%>'
+                                              demoNo='<%=Encode.forHtmlAttribute(request.getParameter("demographicNo"))%>' programId="<%=Encode.forHtmlAttribute(String.valueOf(pId))%>">
                         <tr>
                             <td class="fieldTitle"><fmt:setBundle basename="oscarResources"/><fmt:message key="casemanagementEntry.billing"/></td>
 
                             <td class="fieldValue">
                                 ${caseNote.billing_code}
                                 <input type="button" value="add billing"
-                                       onclick="self.open('<%=(String)session.getAttribute("billing_url")%>','','scrollbars=yes,menubars=no,toolbars=no,resizable=yes');return false;">
+                                       onclick="self.open('<%=Encode.forJavaScript(String.valueOf((String)session.getAttribute("billing_url")))%>','','scrollbars=yes,menubars=no,toolbars=no,resizable=yes');return false;">
                             </td>
                         </tr>
                     </caisirole:SecurityAccess>
@@ -462,10 +463,10 @@
             <tr>
                 <td class="fieldValue" colspan="2">
                     <input type="submit" value="Save"
-                           onclick="this.form.method.value='save';return validateSave(<%=count_issues_display%>);">
+                           onclick="this.form.method.value='save';return validateSave(<%=Encode.forJavaScript(String.valueOf(count_issues_display))%>);">
                     <input type="submit"
                            value="Save and Exit"
-                           onclick="this.form.method.value='saveAndExit';if (validateSave(<%=count_issues_display%>)) {return true;}else return false;">
+                           onclick="this.form.method.value='saveAndExit';if (validateSave(<%=Encode.forJavaScript(String.valueOf(count_issues_display))%>)) {return true;}else return false;">
                     <input type="submit"
                            value="cancel" onclick="this.form.method.value='cancel';return true;">
                 </td>

@@ -178,9 +178,23 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
         String description = request.getParameter("description");
 
         // Validate and sanitize the file path to prevent path traversal attacks
-        Path validatedPath = validateDocumentPath(fileName);
+        String documentDir = OscarProperties.getInstance().getDocumentDirectory();
+        if (documentDir == null || documentDir.trim().isEmpty()) {
+            logger.error("Document directory not configured");
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
+        }
+        File validatedFile = null;
+        try {
+            validatedFile = (fileName != null) ? PathValidationUtils.validatePath(fileName, new File(documentDir)) : null;
+        } catch (SecurityException e) {
+            logger.warn("Rejected invalid document path request", e);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Path validatedPath = (validatedFile != null && validatedFile.isFile()) ? validatedFile.toPath() : null;
         if (validatedPath == null) {
-            logger.error("Invalid file path requested: " + fileName);
+            logger.error("Invalid file path requested");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -208,6 +222,10 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
         //      to eforms and ticklers
 
         String segmentID = request.getParameter("segmentID");
+        if (segmentID == null || !segmentID.matches("^[0-9]+$")) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
         request.setAttribute("segmentID", segmentID);
         try {
             File tempLabPDF = File.createTempFile("lab" + segmentID, "pdf");
@@ -234,16 +252,26 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
         String formId = request.getParameter("formId");
         String formName = request.getParameter("formName");
         String demographicNo = request.getParameter("demographicNo");
+        if (formId == null || !formId.matches("^[0-9]+$")
+                || demographicNo == null || !demographicNo.matches("^[0-9]+$")
+                || formName == null || formName.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        // Encode params to prevent path injection in dispatcher URL
+        String encodedFormName = java.net.URLEncoder.encode(formName, java.nio.charset.StandardCharsets.UTF_8);
+        String encodedDemoNo = java.net.URLEncoder.encode(demographicNo, java.nio.charset.StandardCharsets.UTF_8);
+        String encodedFormId = java.net.URLEncoder.encode(formId, java.nio.charset.StandardCharsets.UTF_8);
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         try {
             FormTransportContainer formTransportContainer = new FormTransportContainer(
                     response, request, "/form/forwardshortcutname.jsp"
                     + "?method=fetch&formname="
-                    + formName
+                    + encodedFormName
                     + "&demographic_no="
-                    + demographicNo
+                    + encodedDemoNo
                     + "&formId="
-                    + formId);
+                    + encodedFormId);
             formTransportContainer.setDemographicNo(demographicNo);
             formTransportContainer.setProviderNo(loggedInInfo.getLoggedInProviderNo());
             formTransportContainer.setSubject(formName + " Form ID " + formId);
@@ -302,62 +330,6 @@ public class ConsultationAttachDocs2Action extends ActionSupport {
             return getBase64(Files.readAllBytes(pdfPath));
         } catch (IOException e) {
             logger.error("An error occurred while processing the PDF file: " + e.getMessage(), e);
-            return null;
-        }
-    }
-
-    /**
-     * Validates and sanitizes a document file path to prevent path traversal attacks.
-     * Ensures the file is within the configured DOCUMENT_DIR directory.
-     * 
-     * @param fileName The file name to validate
-     * @return The validated absolute path, or null if invalid
-     */
-    private Path validateDocumentPath(String fileName) {
-        if (fileName == null || fileName.trim().isEmpty()) {
-            logger.error("Invalid file name: null or empty");
-            return null;
-        }
-
-        // Reject any file name containing path traversal sequences
-        if (fileName.contains("..") || fileName.contains(File.separator) || fileName.contains("/") || fileName.contains("\\")) {
-            logger.error("Path traversal attempt detected in file name: " + fileName);
-            return null;
-        }
-
-        try {
-            // Get the configured document directory
-            String documentDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
-            if (documentDir == null || documentDir.trim().isEmpty()) {
-                logger.error("DOCUMENT_DIR not configured in properties");
-                return null;
-            }
-
-            // Validate file path using PathValidationUtils
-            File baseDirFile = new File(documentDir);
-            File validatedFile;
-            try {
-                validatedFile = PathValidationUtils.validatePath(fileName, baseDirFile);
-            } catch (SecurityException e) {
-                logger.error("Path traversal attempt: resolved path escapes base directory");
-                return null;
-            }
-            Path filePath = validatedFile.toPath();
-            
-            // Verify the file exists and is a regular file
-            if (!Files.exists(filePath)) {
-                logger.warn("Document file does not exist: " + fileName);
-                return null;
-            }
-            
-            if (!Files.isRegularFile(filePath)) {
-                logger.error("Path is not a regular file: " + fileName);
-                return null;
-            }
-            
-            return filePath;
-        } catch (Exception e) {
-            logger.error("Error validating document path for file: " + fileName, e);
             return null;
         }
     }

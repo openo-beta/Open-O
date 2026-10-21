@@ -29,6 +29,7 @@
 
 <%@ page import="ca.openosp.openo.providers.data.*" %>
 <%@ page import="ca.openosp.openo.providers.data.ProSignatureData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     if (session.getValue("user") == null)
@@ -75,7 +76,7 @@
             <td class="MainTableRightColumn">
                 <% boolean hasSig = sig.hasSignature(curUser_no);
                     if (hasSig) {
-                %> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.msgCurrentSignature"/> <u><%=sig.getSignature(curUser_no)%>
+                %> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.msgCurrentSignature"/> <u><%=Encode.forHtml(String.valueOf(sig.getSignature(curUser_no)))%>
             </u>
                 <br>
                 <a href="<%= request.getContextPath() %>/provider/editSignature.jsp"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.btnClickHere"/></a> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.msgChangeIt"/> <% } else {%> <fmt:setBundle basename="oscarResources"/><fmt:message key="provider.providerSignature.msgSigNotSet"/><br>

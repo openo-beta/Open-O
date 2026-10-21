@@ -28,6 +28,7 @@
 
 
 <%@ page import="java.lang.*,ca.openosp.openo.encounter.oscarMeasurements.pageUtil.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -57,7 +58,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -84,4 +85,4 @@
 </html>
 
 
-<%-- <%=request.getAttribute("templateValue")%> --%>
+<%-- <%=Encode.forHtml(String.valueOf(request.getAttribute("templateValue")))%> --%>

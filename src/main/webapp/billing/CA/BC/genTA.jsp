@@ -61,6 +61,7 @@
 <%@ page import="ca.openosp.openo.billing.CA.BC.dao.TeleplanC12Dao" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.MSP.MSPReconcile" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     TeleplanS21Dao teleplanS21Dao = SpringUtils.getBean(TeleplanS21Dao.class);
     TeleplanS00Dao teleplanS00Dao = SpringUtils.getBean(TeleplanS00Dao.class);
@@ -100,7 +101,7 @@
 
     String forwardPage = "viewReconcileReports.jsp";
 
-    filepath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+    filepath = OscarProperties.getInstance().getDocumentDirectory();
 
     FileInputStream file = new FileInputStream(filepath + filename);
     InputStreamReader reader = new InputStreamReader(file);
@@ -659,7 +660,7 @@
 
 %>
 
-<jsp:forward page="<%=forwardPage%>"/>
+<jsp:forward page="<%=Encode.forHtmlAttribute(String.valueOf(forwardPage))%>"/>
 
 <html>
 <head>
@@ -752,24 +753,24 @@
    %>
 
         <tr>
-            <td><%=paymentdate%>
+            <td><%=Encode.forHtml(String.valueOf(paymentdate))%>
             </td>
-            <td><%=payable%>
+            <td><%=Encode.forHtml(String.valueOf(payable))%>
             </td>
-            <td><%=amtbilled%>
+            <td><%=Encode.forHtml(String.valueOf(amtbilled))%>
             </td>
-            <td><%=amtpaid%>
+            <td><%=Encode.forHtml(String.valueOf(amtpaid))%>
             </td>
-            <td><%=balancefwd%>
+            <td><%=Encode.forHtml(String.valueOf(balancefwd))%>
             </td>
-            <td><%=chequeamt%>
+            <td><%=Encode.forHtml(String.valueOf(chequeamt))%>
             </td>
-            <td><%=newbalance%>
+            <td><%=Encode.forHtml(String.valueOf(newbalance))%>
             </td>
-            <td><a href="genTAS01.jsp?rano=<%=raNo%>&proNo=" target="_blank">Billed</a>
-                | <a href="genTAS00.jsp?rano=<%=raNo%>&proNo=" target="_blank">Detail</a>|
-                <a href="genTAS22.jsp?rano=<%=raNo%>&proNo=" target="_blank">Summary</a></td>
-            <td><%=result.getStatus()%>
+            <td><a href="genTAS01.jsp?rano=<%=Encode.forUriComponent(String.valueOf(raNo))%>&proNo=" target="_blank">Billed</a>
+                | <a href="genTAS00.jsp?rano=<%=Encode.forUriComponent(String.valueOf(raNo))%>&proNo=" target="_blank">Detail</a>|
+                <a href="genTAS22.jsp?rano=<%=Encode.forUriComponent(String.valueOf(raNo))%>&proNo=" target="_blank">Summary</a></td>
+            <td><%=Encode.forHtml(String.valueOf(result.getStatus()))%>
             </td>
         </tr>
 

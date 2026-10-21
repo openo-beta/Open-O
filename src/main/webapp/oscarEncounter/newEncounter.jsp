@@ -35,6 +35,7 @@
 "http://www.w3.org/TR/html4/strict.dtd">
 
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -77,12 +78,12 @@
 
             String provNo = p.getProviderNo();
             if (newDocArr.contains(provNo)) {
-    %> <input type="checkbox" name="encTesters" value="<%=provNo%>" checked><%=p.getLastName()%>,
-    <%=p.getFirstName()%><br>
+    %> <input type="checkbox" name="encTesters" value="<%=Encode.forHtmlAttribute(String.valueOf(provNo))%>" checked><%=Encode.forHtml(String.valueOf(p.getLastName()))%>,
+    <%=Encode.forHtml(String.valueOf(p.getFirstName()))%><br>
     <%
     } else {
-    %> <input type="checkbox" name="encTesters" value="<%=provNo%>"><%=p.getLastName()%>,
-    <%=p.getFirstName()%><br>
+    %> <input type="checkbox" name="encTesters" value="<%=Encode.forHtmlAttribute(String.valueOf(provNo))%>"><%=Encode.forHtml(String.valueOf(p.getLastName()))%>,
+    <%=Encode.forHtml(String.valueOf(p.getFirstName()))%><br>
     <%
             }
         }

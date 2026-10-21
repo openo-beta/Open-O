@@ -32,7 +32,6 @@
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="/WEB-INF/caisi-tag.tld" prefix="caisi" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementFlowSheet" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.MeasurementTemplateFlowSheetConfig" %>
 <%@ page import="ca.openosp.openo.encounter.oscarMeasurements.util.MeasurementHelper" %>
@@ -44,6 +43,7 @@
 <%@ page import="ca.openosp.openo.lab.ca.on.CommonLabResultData" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <%
@@ -104,7 +104,7 @@
     function popUpMsg(vheight, vwidth, msgPosition) {
 
 
-        var page = "<%=session.getAttribute("casemgmt_oscar_baseurl")%>" + "/messenger/ViewMessageByPosition.do?from=encounter&orderBy=!date&demographic_no=<%=bean.demographicNo%>&messagePosition=" + msgPosition;
+        var page = "<%=Encode.forJavaScript(String.valueOf(session.getAttribute("casemgmt_oscar_baseurl")))%>" + "/messenger/ViewMessageByPosition.do?from=encounter&orderBy=!date&demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&messagePosition=" + msgPosition;
         windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=0,screenY=0,top=0,left=0";
         var popup = window.open(page, "", windowprops);
         if (popup != null) {
@@ -118,7 +118,7 @@
     function popUpMeasurements(vheight, vwidth, name, varpage) { //open a new popup window
         if (varpage != 'null') {
             name.options[0].selected = true;
-            var page = "<%=session.getAttribute("casemgmt_oscar_baseurl")%>" + "/oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=" + varpage;
+            var page = "<%=Encode.forJavaScript(String.valueOf(session.getAttribute("casemgmt_oscar_baseurl")))%>" + "/oscarEncounter/oscarMeasurements/SetupMeasurements.do?groupName=" + varpage;
             windowprops = "height=" + vheight + ",width=" + vwidth + ",location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes,screenX=600,screenY=200,top=0,left=0";
             var popup = window.open(page, "", windowprops);
             if (popup != null) {
@@ -188,8 +188,8 @@
                 String Min = Integer.toString(today.getMinutes());
                 String eURL = "/oscarEncounter/IncomingEncounter.do?casetoEncounter=true&providerNo=" + bean.providerNo + "&appointmentNo=" + bean.appointmentNo + "&demographicNo=" + bean.demographicNo + "&curProviderNo=" + bean.providerNo + "&reason=" + java.net.URLEncoder.encode(" ", StandardCharsets.UTF_8) + "&userName=" + java.net.URLEncoder.encode(bean.patientFirstName + " " + bean.patientLastName, StandardCharsets.UTF_8) + "&curDate=" + curYear + "-" + curMonth + "-" + curDay + "&appointmentDate=" + curYear + "-" + curMonth + "-" + curDay + "&startTime=" + Hour + ":" + Min + "&status=t";%>
             <caisirole:SecurityAccess accessName="medical encounter" accessType="access"
-                                      providerNo="<%=bean.providerNo%>" demoNo="<%=bean.demographicNo%>"
-                                      programId="<%=pgId%>">
+                                      providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>" demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>"
+                                      programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
             </caisirole:SecurityAccess>
             <!-- tr><td><a href="</td></tr -->
 
@@ -199,31 +199,31 @@
 
             <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
                 <!-- master -->
-                <caisirole:SecurityAccess accessName="master file" accessType="access" providerNo="<%=bean.providerNo%>"
-                                          demoNo="<%=bean.demographicNo%>" programId="<%=pgId%>">
+                <caisirole:SecurityAccess accessName="master file" accessType="access" providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>"
+                                          demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>" programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
 
                     <tr>
                         <td><a href="javascript:void(0)"
-                               onClick="popupPage('<%=bsurl%>/demographic/demographiccontrol.jsp?demographic_no=<%=bean.demographicNo%>&displaymode=edit&dboperation=search_detail');return false;">Master</a>
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&displaymode=edit&dboperation=search_detail');return false;">Master</a>
                         </td>
                     </tr>
 
                 </caisirole:SecurityAccess>
 
-                <caisirole:SecurityAccess accessName="billing" accessType="access" providerNo="<%=bean.providerNo%>"
-                                          demoNo="<%=bean.demographicNo%>" programId="<%=pgId%>">
+                <caisirole:SecurityAccess accessName="billing" accessType="access" providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>"
+                                          demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>" programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
                     <!-- billing -->
 
                     <% if (bean.status.indexOf('B') == -1) { %>
                     <tr>
                         <td><a href="javascript:void(0)"
-                               onClick="popupPage('<%=bsurl%>/billing.do?billRegion=<%=java.net.URLEncoder.encode(province, StandardCharsets.UTF_8)%>&billForm=<%=java.net.URLEncoder.encode(oscarVariables.getProperty("default_view"), StandardCharsets.UTF_8)%>&hotclick=<%=java.net.URLEncoder.encode("", StandardCharsets.UTF_8)%>&appointment_no=<%=bean.appointmentNo%>&appointment_date=<%=bean.appointmentDate%>&start_time=<%=Hour+":"+Min%>&demographic_name=<%=java.net.URLEncoder.encode(bean.patientLastName+","+bean.patientFirstName)%>&demographic_no=<%=bean.demographicNo%>&providerview=<%=bean.curProviderNo%>&user_no=<%=bean.providerNo%>&apptProvider_no=<%=bean.curProviderNo%>&bNewForm=1&status=t');return false;">Billing</a>
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/billing.do?billRegion=<%=Encode.forUriComponent(String.valueOf(province))%>&billForm=<%=Encode.forUriComponent(String.valueOf(oscarVariables.getProperty("default_view")))%>&hotclick=<%=Encode.forUriComponent(String.valueOf(""))%>&appointment_no=<%=Encode.forUriComponent(String.valueOf(bean.appointmentNo))%>&appointment_date=<%=Encode.forUriComponent(String.valueOf(bean.appointmentDate))%>&start_time=<%=Encode.forUriComponent(String.valueOf(Hour+":"+Min))%>&demographic_name=<%=Encode.forUriComponent(String.valueOf(bean.patientLastName+","+bean.patientFirstName))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&providerview=<%=Encode.forUriComponent(String.valueOf(bean.curProviderNo))%>&user_no=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&apptProvider_no=<%=Encode.forUriComponent(String.valueOf(bean.curProviderNo))%>&bNewForm=1&status=t');return false;">Billing</a>
                         </td>
                     </tr>
                     <%} else { %>
                     <tr>
                         <td><a href="javascript:void(0)"
-                               onClick="onUnbilled('<%=bsurl%>/billing/CA/<%=province%>/billingDeleteWithoutNo.jsp?appointment_no=<%=bean.appointmentNo%>');return false;">Billing</a>
+                               onClick="onUnbilled('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/billing/CA/<%=Encode.forUriComponent(String.valueOf(province))%>/billingDeleteWithoutNo.jsp?appointment_no=<%=Encode.forUriComponent(String.valueOf(bean.appointmentNo))%>');return false;">Billing</a>
                         </td>
                     </tr>
                     <%} %>
@@ -231,45 +231,45 @@
                 </caisirole:SecurityAccess>
 
                 <caisirole:SecurityAccess accessName="prescription Write" accessType="access"
-                                          providerNo="<%=bean.providerNo%>" demoNo="<%=bean.demographicNo%>"
-                                          programId="<%=pgId%>">
+                                          providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>" demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>"
+                                          programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
 
                     <!-- prescription -->
 
                     <tr>
                         <td><a href="javascript:void(0)"
-                               onClick="popupPage('<%=bsurl%>/oscarRx/choosePatient.do?providerNo=<%=bean.providerNo%>&demographicNo=<%=bean.demographicNo%>');return false;">Prescriptions</a>
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarRx/choosePatient.do?providerNo=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">Prescriptions</a>
                         </td>
                     </tr>
 
                 </caisirole:SecurityAccess>
 
                 <!-- allergies -->
-                <!-- tr><td><a href="javascript:void(0)" onClick="popupPage('<%=bsurl%>/oscarRx/ShowAllergies.jsp?providerNo=<%=bean.providerNo%>&demographicNo=<%=bean.demographicNo%>');return false;">Allergies</a></td></tr -->
+                <!-- tr><td><a href="javascript:void(0)" onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarRx/ShowAllergies.jsp?providerNo=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">Allergies</a></td></tr -->
 
 
                 <!-- Consultations -->
                 <tr>
                     <td><a href="javascript:void(0)"
-                           onClick="popupPage('<%=bsurl%>/oscarEncounter/oscarConsultationRequest/DisplayDemographicConsultationRequests.jsp?de=<%=bean.demographicNo%>');return false;">Consultations</a>
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/oscarConsultationRequest/DisplayDemographicConsultationRequests.jsp?de=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">Consultations</a>
                     </td>
                 </tr>
 
                 <caisirole:SecurityAccess accessName="immunization" accessType="access"
-                                          providerNo="<%=bean.providerNo%>" demoNo="<%=bean.demographicNo%>"
-                                          programId="<%=pgId%>">
+                                          providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>" demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>"
+                                          programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
                     <!-- IMMUNIZATION -->
                     <oscar:oscarPropertiesCheck property="IMMUNIZATION" value="yes" defaultVal="true">
                         <% if (EctImmImmunizationData.hasImmunizations(bean.demographicNo)) { %>
                         <tr>
                             <td><a style="color:red" href="javascript:void(0)"
-                                   onClick="popupPage('<%=bsurl%>/oscarEncounter/immunization/initSchedule.do');return false;">Immunizations</a>
+                                   onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/immunization/initSchedule.do');return false;">Immunizations</a>
                             </td>
                         </tr>
                         <% } else {%>
                         <tr>
                             <td><a href="javascript:void(0)"
-                                   onClick="popupPage('<%=bsurl%>/oscarEncounter/immunization/initSchedule.do');return false;">Immunizations</a>
+                                   onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/immunization/initSchedule.do');return false;">Immunizations</a>
                             </td>
                         </tr>
                         <% } %>
@@ -277,27 +277,27 @@
                 </caisirole:SecurityAccess>
 
                 <!-- Prevention -->
-                <caisirole:SecurityAccess accessName="prevention" accessType="access" providerNo="<%=bean.providerNo%>"
-                                          demoNo="<%=bean.demographicNo%>" programId="<%=pgId%>">
+                <caisirole:SecurityAccess accessName="prevention" accessType="access" providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>"
+                                          demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>" programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
                     <oscar:oscarPropertiesCheck property="PREVENTION" value="yes">
                         <tr>
                             <td><a href="javascript:void(0)"
-                                   onClick="popupPage('<%=bsurl%>/oscarPrevention/index.jsp?demographic_no=<%=bean.demographicNo%>');return false;">
+                                   onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarPrevention/index.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">
                                 <oscar:preventionWarnings
-                                        demographicNo="<%=bean.demographicNo%>">prevention</oscar:preventionWarnings></a>
+                                        demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>">prevention</oscar:preventionWarnings></a>
                             </td>
                         </tr>
                     </oscar:oscarPropertiesCheck>
                 </caisirole:SecurityAccess>
 
                 <!-- oscarcomm -->
-                <caisirole:SecurityAccess accessName="oscarcomm" accessType="access" providerNo="<%=bean.providerNo%>"
-                                          demoNo="<%=bean.demographicNo%>" programId="<%=pgId%>">
+                <caisirole:SecurityAccess accessName="oscarcomm" accessType="access" providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>"
+                                          demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>" programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
 
                     <% if (OscarProperties.getInstance().getProperty("oscarcomm", "").equals("on")) { %>
                     <tr>
                         <td><a href="javascript:void(0)"
-                               onClick="popupPage('<%=bsurl%>/oscarEncounter/RemoteAttachments.jsp');return false;">OscarComm</a>
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/RemoteAttachments.jsp');return false;">OscarComm</a>
                         </td>
                     </tr>
                     <% } %>
@@ -305,12 +305,12 @@
 
                 <!-- Disease Registry -->
                 <caisirole:SecurityAccess accessName="disease registry" accessType="access"
-                                          providerNo="<%=bean.providerNo%>" demoNo="<%=bean.demographicNo%>"
-                                          programId="<%=pgId%>">
+                                          providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>" demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>"
+                                          programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
 
                     <tr>
                         <td><a href="javascript:void(0)"
-                               onClick="popupPage('<%=bsurl%>/oscarResearch/dxresearch/setupDxResearch.do?demographicNo=<%=bean.demographicNo%>&providerNo=<%=bean.providerNo%>&quickList=');return false;">Disease
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarResearch/dxresearch/setupDxResearch.do?demographicNo=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&quickList=');return false;">Disease
                             Registry</a></td>
                     </tr>
                 </caisirole:SecurityAccess>
@@ -318,17 +318,17 @@
             </caisi:isModuleLoad>
 
             <!-- add tickler -->
-            <caisirole:SecurityAccess accessName="Write Ticklers" accessType="Action" providerNo="<%=bean.providerNo%>"
-                                      demoNo="<%=bean.demographicNo%>" programId="<%=pgId%>">
+            <caisirole:SecurityAccess accessName="Write Ticklers" accessType="Action" providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>"
+                                      demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>" programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
                 <tr>
                     <td><a href="javascript:void(0)"
-                           onClick="popupPage('<%=bsurl%>/tickler/ticklerAdd.jsp?demographic_no=<%=bean.demographicNo%>&name=<%=StringEscapeUtils.escapeEcmaScript(bean.getPatientLastName() +"," + bean.getPatientFirstName())%>');return false;">Add
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/tickler/ticklerAdd.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&name=<%=Encode.forUriComponent(bean.getPatientLastName() +"," + bean.getPatientFirstName())%>');return false;">Add
                         Tickler</a></td>
                 </tr>
             </caisirole:SecurityAccess>
 
-            <caisirole:SecurityAccess accessName="medical form" accessType="access" providerNo="<%=bean.providerNo%>"
-                                      demoNo="<%=bean.demographicNo%>" programId="<%=pgId%>">
+            <caisirole:SecurityAccess accessName="medical form" accessType="access" providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>"
+                                      demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>" programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
                 <tr style="background-color:#BBBBBB;">
                     <td>Forms</td>
                 </tr>
@@ -337,7 +337,7 @@
                     <td>
 
                         <select name="selectCurrentForms" class="ControlSelect" onChange="javascript:selectBox(this)"
-                                onMouseOver="javascript:window.status='View any of <%=bean.patientLastName+","+bean.patientFirstName%>\'s current forms.';return true;">
+                                onMouseOver="javascript:window.status='View any of <%=Encode.forJavaScript(String.valueOf(bean.patientLastName+","+bean.patientFirstName))%>\'s current forms.';return true;">
                             <option value="null" selected>-current forms-</option>
                             <c:forEach var="cf" items="${casemgmt_newFormBeans}">
                                 <c:if test="${cf.formTable ne ''}">
@@ -360,7 +360,7 @@
                 <tr>
                     <td>
                         <select name="selectNewForms" class="ControlSelect" onChange="javascript:selectBox(this)"
-                                onMouseOver="javascript:window.status='View <%=bean.patientLastName+","+bean.patientFirstName%>\'s new forms list.';return true;">
+                                onMouseOver="javascript:window.status='View <%=Encode.forJavaScript(String.valueOf(bean.patientLastName+","+bean.patientFirstName))%>\'s new forms list.';return true;">
                             <option value="null" selected>-add new form-</option>
                             <c:forEach var="cf" items="${casemgmt_newFormBeans}">
                                 <c:if test="${cf.hidden}">
@@ -377,7 +377,7 @@
                 <tr>
                     <td>
                         <a href="javascript:void(0)"
-                           onClick="popupPage('<%=bsurl%>/oscarEncounter/formlist.jsp?demographic_no=<%=bean.demographicNo%>'); return false;">-old
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/formlist.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>'); return false;">-old
                             forms-</a>
                     </td>
                 </tr>
@@ -404,7 +404,7 @@
                 <tr>
                     <td>
                         <a href="javascript:void(0)"
-                           onClick="popupPage('<%=bsurl%>/messenger/SendDemoMessage.do?orderby=date&boxType=3&demographic_no=<%=bean.demographicNo%>&providerNo=<%=bean.providerNo%>&userName=<%=bean.userName%>'); return false;">New
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/messenger/SendDemoMessage.do?orderby=date&boxType=3&demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&userName=<%=Encode.forUriComponent(String.valueOf(bean.userName))%>'); return false;">New
                             Messages</a>
                     </td>
                 </tr>
@@ -413,7 +413,7 @@
                 <tr>
                     <td>
                         <a href="javascript:void(0)"
-                           onClick="popupPage('<%=bsurl%>/messenger/DisplayDemographicMessages.do?orderby=date&boxType=3&demographic_no=<%=bean.demographicNo%>&providerNo=<%=bean.providerNo%>&userName=<%=bean.userName%>'); return false;">-All
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/messenger/DisplayDemographicMessages.do?orderby=date&boxType=3&demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(bean.providerNo))%>&userName=<%=Encode.forUriComponent(String.valueOf(bean.userName))%>'); return false;">-All
                             Messages-</a>
                     </td>
                 </tr>
@@ -425,8 +425,8 @@
             %>
             <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
                 <caisirole:SecurityAccess accessName="measurements" accessType="access"
-                                          providerNo="<%=bean.providerNo%>" demoNo="<%=bean.demographicNo%>"
-                                          programId="<%=pgId%>">
+                                          providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>" demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>"
+                                          programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
                     <tr style="background-color:#BBBBBB;">
                         <td>Case Management Flowsheets</td>
                     </tr>
@@ -444,7 +444,7 @@
                             %>* <% }
                         %>
                             <a href="javascript:void(0)"
-                               onClick="popupPage('<%=bsurl%>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=bean.demographicNo%>&template=<%=flowsheet%>','flowsheet')"><%=MeasurementTemplateFlowSheetConfig.getInstance().getDisplayName(flowsheet)%>
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&template=<%=Encode.forUriComponent(String.valueOf(flowsheet))%>','flowsheet')"><%=Encode.forHtml(String.valueOf(MeasurementTemplateFlowSheetConfig.getInstance().getDisplayName(flowsheet)))%>
                             </a><br/>
                             <%}%>
                         </td>
@@ -452,8 +452,8 @@
                 </caisirole:SecurityAccess>
 
                 <caisirole:SecurityAccess accessName="measurements" accessType="access"
-                                          providerNo="<%=bean.providerNo%>" demoNo="<%=bean.demographicNo%>"
-                                          programId="<%=pgId%>">
+                                          providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>" demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>"
+                                          programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
                     <tr style="background-color:#BBBBBB;">
                         <td>Measurements</td>
                     </tr>
@@ -467,7 +467,7 @@
                                 for (String flowsheet : flowsheets) {
                             %>
                             <a href="javascript:void(0)"
-                               onClick="popupPage('<%=bsurl%>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=bean.demographicNo%>&template=<%=flowsheet%>','flowsheet')"><%=MeasurementTemplateFlowSheetConfig.getInstance().getDisplayName(flowsheet)%>
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/oscarMeasurements/TemplateFlowSheet.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&template=<%=Encode.forUriComponent(String.valueOf(flowsheet))%>','flowsheet')"><%=Encode.forHtml(String.valueOf(MeasurementTemplateFlowSheetConfig.getInstance().getDisplayName(flowsheet)))%>
                             </a>
                             <%}%>
 
@@ -478,7 +478,7 @@
                                     for (int j = 0; j < bean.measurementGroupNames.size(); j++) {
                                         String tmp = (String) bean.measurementGroupNames.get(j);
                                 %>
-                                <option value="<%=tmp%>"><%=tmp %>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(tmp))%>"><%=Encode.forHtml(String.valueOf(tmp))%>
                                 </option>
                                 <%}%>
                             </select>
@@ -489,7 +489,7 @@
                     <tr>
                         <td>
                             <a href="javascript:void(0)"
-                               onClick="popupPage('<%=bsurl%>/oscarEncounter/oscarMeasurements/SetupHistoryIndex.do'); return false;">-Old
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/oscarMeasurements/SetupHistoryIndex.do'); return false;">-Old
                                 Measurements--</a>
                         </td>
                     </tr>
@@ -518,29 +518,29 @@
             <tr>
                 <td>
                     <a href="javascript:void(0)"
-                       onClick="popupPage('<%=bsurl%>/documentManager/documentReport.jsp?function=demographic&doctype=lab&functionid=<%=bean.demographicNo%>&curUser=<%=bean.curProviderNo%>');return false;">documents</a><br>
+                       onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/documentManager/documentReport.jsp?function=demographic&doctype=lab&functionid=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>&curUser=<%=Encode.forUriComponent(String.valueOf(bean.curProviderNo))%>');return false;">documents</a><br>
                 </td>
             </tr>
 
             <caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
-                <caisirole:SecurityAccess accessName="eform" accessType="access" providerNo="<%=bean.providerNo%>"
-                                          demoNo="<%=bean.demographicNo%>" programId="<%=pgId%>">
+                <caisirole:SecurityAccess accessName="eform" accessType="access" providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>"
+                                          demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>" programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
                     <!-- eform -->
                     <tr>
                         <td>
                             <a href="javascript:void(0)"
-                               onClick="popupPage('<%=bsurl%>/eform/efmpatientformlist.jsp?demographic_no=<%=bean.demographicNo%>');return false;">E-Forms</a><br>
+                               onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/eform/efmpatientformlist.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">E-Forms</a><br>
                         </td>
                     </tr>
                 </caisirole:SecurityAccess>
             </caisi:isModuleLoad>
 
-            <caisirole:SecurityAccess accessName="read ticklers" accessType="access" providerNo="<%=bean.providerNo%>"
-                                      demoNo="<%=bean.demographicNo%>" programId="<%=pgId%>">
+            <caisirole:SecurityAccess accessName="read ticklers" accessType="access" providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>"
+                                      demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>" programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
                 <tr>
                     <td>
                         <a href="javascript:void(0)"
-                           onClick="popupPage('<%=bsurl%>/tickler/ticklerMain.jsp?demoview=<%=bean.demographicNo%>');return false;">View
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/tickler/ticklerMain.jsp?demoview=<%=Encode.forUriComponent(String.valueOf(bean.demographicNo))%>');return false;">View
                             Tickler</a><br>
                     </td>
                 </tr>
@@ -550,19 +550,19 @@
                 <tr>
                     <td>
                         <a href="javascript:void(0)"
-                           onClick="popupPage('<%=bsurl%>/oscarEncounter/calculators.jsp?sex=<%=bean.patientSex%>&age=<%=pAge%>'); return false;">calculators</a><br>
+                           onClick="popupPage('<%=Encode.forJavaScript(String.valueOf(bsurl))%>/oscarEncounter/calculators.jsp?sex=<%=Encode.forUriComponent(String.valueOf(bean.patientSex))%>&age=<%=Encode.forUriComponent(String.valueOf(pAge))%>'); return false;">calculators</a><br>
                     </td>
                 </tr>
 
-                <caisirole:SecurityAccess accessName="lab" accessType="access" providerNo="<%=bean.providerNo%>"
-                                          demoNo="<%=bean.demographicNo%>" programId="<%=pgId%>">
+                <caisirole:SecurityAccess accessName="lab" accessType="access" providerNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.providerNo))%>"
+                                          demoNo="<%=Encode.forHtmlAttribute(String.valueOf(bean.demographicNo))%>" programId="<%=Encode.forHtmlAttribute(String.valueOf(pgId))%>">
 
                     <!-- lab result -->
                     <tr>
                         <td>
                             <select name="selectCurrentForms" class="ControlSelect"
                                     onChange="javascript:selectBox(this)"
-                                    onMouseOver="javascript:window.status='View <%=bean.patientFirstName+" "+bean.patientLastName%>\'s lab results'; return true;">
+                                    onMouseOver="javascript:window.status='View <%=Encode.forJavaScript(String.valueOf(bean.patientFirstName+" "+bean.patientLastName))%>\'s lab results'; return true;">
                                 <option value="null" selected>-lab results-</option>
                                 <c:forEach var="labrst" items="${casemgmtLabsbeans}">
                                     <c:set var="lablable" value="${labrst.dateTime}${labrst.discipline}" />

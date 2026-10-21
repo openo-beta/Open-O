@@ -15,13 +15,16 @@ import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import ca.openosp.openo.documentManager.EDoc;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.documentManager.data.AttachmentLabResultData;
+import ca.openosp.openo.documentManager.data.AttachmentSections;
 import ca.openosp.openo.hospitalReportManager.HRMUtil;
 import ca.openosp.openo.managers.FormsManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.PDFGenerationException;
 import ca.openosp.openo.utility.SpringUtils;
+import ca.openosp.openo.utility.WebUtils;
 
 import ca.openosp.openo.util.StringUtils;
 
@@ -66,6 +69,7 @@ public class DocumentPreview2Action extends ActionSupport {
     private static final Logger logger = MiscUtils.getLogger();
     private final DocumentAttachmentManager documentAttachmentManager = SpringUtils.getBean(DocumentAttachmentManager.class);
     private final FormsManager formsManager = SpringUtils.getBean(FormsManager.class);
+    private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
@@ -353,24 +357,36 @@ public class DocumentPreview2Action extends ActionSupport {
      *
      * Expected request parameters:
      * - demographicNo: String the patient's demographic number (defaults to "0" if not provided)
+     * - requestId: String the consultation request ID (optional; enables attached-state rendering)
      *
      * Request attributes set:
      * - allDocuments: List&lt;EDoc&gt; all electronic documents for the patient
+     * - providerPrivateDocs: List&lt;EDoc&gt; the current provider's private eDocs (plus any foreign
+     *   cross-provider private docs attached to this consult)
+     * - providerPublicDocs: List&lt;EDoc&gt; all public provider eDocs
      * - allHRMDocuments: ArrayList&lt;HashMap&lt;String,? extends Object&gt;&gt; all HRM documents
      * - allLabsSortedByVersions: List&lt;AttachmentLabResultData&gt; lab results sorted by versions
      * - allForms: List&lt;EctFormData.PatientForm&gt; all encounter forms
-     * - allEForms: List&lt;EFormData&gt; all current electronic forms
+     * - allEForms: List&lt;EFormData&gt; any deleted eForms attached to this consult, followed by all current electronic forms
+     * - attachedDocumentIds: Set&lt;String&gt; doc IDs already attached to this consult
+     * - foreignPrivateDocIds: Set&lt;String&gt; attached private docs not owned by the current provider
+     * - attachedEFormIds: Set&lt;Integer&gt; eForm fdids already attached to this consult
      *
      * @return String "fetchDocuments" result name for Struts2 result mapping
      */
     public String fetchConsultDocuments() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", "r", null)) {
+            throw new SecurityException("missing required security object (_edoc)");
+        }
 
-        String demographicNo = StringUtils.isNullOrEmpty(request.getParameter("demographicNo")) ? "0" : request.getParameter("demographicNo");
+        String demographicNo = WebUtils.positiveIntParamOrDefault(request.getParameter("demographicNo"), "0");
+        String requestId = WebUtils.positiveIntParamOrNull(request.getParameter("requestId"));
 
-        populateCommonDocs(loggedInInfo, demographicNo);
 		List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
-        request.setAttribute("allEForms", allEForms);
+        populateCommonDocs(loggedInInfo, demographicNo, allEForms,
+                documentAttachmentManager.getAttachedDocsForConsult(loggedInInfo, demographicNo, requestId),
+                documentAttachmentManager.getAttachedEFormsForConsult(demographicNo, requestId));
 
         return "fetchDocuments";
     }
@@ -389,22 +405,34 @@ public class DocumentPreview2Action extends ActionSupport {
      *
      * Request attributes set:
      * - allDocuments: List&lt;EDoc&gt; all electronic documents for the patient
+     * - providerPrivateDocs: List&lt;EDoc&gt; the current provider's private eDocs (plus any foreign
+     *   cross-provider private docs attached to this eForm)
+     * - providerPublicDocs: List&lt;EDoc&gt; all public provider eDocs
      * - allHRMDocuments: ArrayList&lt;HashMap&lt;String,? extends Object&gt;&gt; all HRM documents
      * - allLabsSortedByVersions: List&lt;AttachmentLabResultData&gt; lab results sorted by versions
      * - allForms: List&lt;EctFormData.PatientForm&gt; all encounter forms
-     * - allEForms: List&lt;EFormData&gt; all electronic forms excluding the specified fdid
+     * - allEForms: List&lt;EFormData&gt; any deleted eForms attached to this eForm, followed by all current electronic forms excluding the specified fdid
+     * - attachedDocumentIds: Set&lt;String&gt; doc IDs already attached to this eForm
+     * - foreignPrivateDocIds: Set&lt;String&gt; attached private docs not owned by the current provider
+     * - attachedEFormIds: Set&lt;Integer&gt; eForm fdids already attached to this eForm
      *
      * @return String "fetchDocuments" result name for Struts2 result mapping
      */
     public String fetchEFormDocuments() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", "r", null)) {
+            throw new SecurityException("missing required security object (_edoc)");
+        }
 
-        String demographicNo = StringUtils.isNullOrEmpty(request.getParameter("demographicNo")) ? "0" : request.getParameter("demographicNo");
-        String fdid = StringUtils.isNullOrEmpty(request.getParameter("fdid")) ? "0" : request.getParameter("fdid");
+        String demographicNo = WebUtils.positiveIntParamOrDefault(request.getParameter("demographicNo"), "0");
+        String rawFdid = request.getParameter("fdid");
+        String fdidForEformList = WebUtils.positiveIntParamOrDefault(rawFdid, "0");
+        String fdidForAttached = WebUtils.positiveIntParamOrNull(rawFdid);
 
-        populateCommonDocs(loggedInInfo, demographicNo);
-		List<EFormData> allEForms = documentAttachmentManager.getAllEFormsExpectFdid(loggedInInfo, Integer.parseInt(demographicNo), Integer.parseInt(fdid));
-		request.setAttribute("allEForms", allEForms);
+		List<EFormData> allEForms = documentAttachmentManager.getAllEFormsExpectFdid(loggedInInfo, Integer.parseInt(demographicNo), Integer.parseInt(fdidForEformList));
+        populateCommonDocs(loggedInInfo, demographicNo, allEForms,
+                documentAttachmentManager.getAttachedDocsForEForm(loggedInInfo, demographicNo, fdidForAttached),
+                documentAttachmentManager.getAttachedEFormsForEForm(demographicNo, fdidForAttached));
 
         return "fetchDocuments";
     }
@@ -454,19 +482,38 @@ public class DocumentPreview2Action extends ActionSupport {
     }
 
     /**
-     * Populate common documents like EDocs, Labs, Forms, HRM documents
-     * @param loggedInInfo Information about the logged-in user
-     * @param demographicNo Demographic number of the patient
+     * Fetches the shared view state the attachment-dialog JSP expects — patient
+     * docs, provider private/public eDocs, eForms, HRM docs, labs, encounter forms —
+     * runs {@link DocumentAttachmentManager#mergeAttachedIntoSections} to merge
+     * deleted / cross-provider attached items into the matching sections,
+     * and writes the collections as request attributes for the JSP to render.
+     *
+     * @param loggedInInfo   LoggedInInfo the current user's session
+     * @param demographicNo  String the patient's demographic number
+     * @param allEForms      List&lt;EFormData&gt; the current eForms to offer in the eForms section
+     * @param attachedDocs   List&lt;EDoc&gt; docs already attached to this consult/eForm (empty when not applicable)
+     * @param attachedEForms List&lt;EFormData&gt; eForms already attached to this consult/eForm (empty when not applicable)
      */
-    private void populateCommonDocs(LoggedInInfo loggedInInfo, String demographicNo) {
-        List<EDoc> allDocuments = EDocUtil.listDocs(loggedInInfo, "demographic", demographicNo, null, EDocUtil.PRIVATE, EDocUtil.EDocSort.OBSERVATIONDATE);
+    private void populateCommonDocs(LoggedInInfo loggedInInfo, String demographicNo, List<EFormData> allEForms, List<EDoc> attachedDocs, List<EFormData> attachedEForms) {
+        List<EDoc> patientDocuments = EDocUtil.listDocs(loggedInInfo, "demographic", demographicNo, null, EDocUtil.PRIVATE, EDocUtil.EDocSort.OBSERVATIONDATE);
+        List<EDoc> providerPrivateDocuments = EDocUtil.getProviderPrivateDocs(loggedInInfo);
+        List<EDoc> providerPublicDocuments = EDocUtil.getProviderPublicDocs(loggedInInfo);
+        AttachmentSections sections = new AttachmentSections(patientDocuments, providerPrivateDocuments, providerPublicDocuments, allEForms);
         ArrayList<HashMap<String,? extends Object>> allHRMDocuments = HRMUtil.listHRMDocuments(loggedInInfo, "report_date", false, demographicNo,false);
         List<AttachmentLabResultData> allLabsSortedByVersions = documentAttachmentManager.getAllLabsSortedByVersions(loggedInInfo, demographicNo);
         List<EctFormData.PatientForm> allForms = formsManager.getEncounterFormsbyDemographicNumber(loggedInInfo, Integer.parseInt(demographicNo), false, true);
 
-        request.setAttribute("allDocuments", allDocuments);
+        documentAttachmentManager.mergeAttachedIntoSections(loggedInInfo, attachedDocs, attachedEForms, sections);
+
+        request.setAttribute("allDocuments", sections.getPatientDocuments().getItems());
+        request.setAttribute("providerPrivateDocs", sections.getProviderPrivateDocuments().getItems());
+        request.setAttribute("providerPublicDocs", sections.getProviderPublicDocuments().getItems());
+        request.setAttribute("allEForms", sections.getEForms().getItems());
         request.setAttribute("allHRMDocuments", allHRMDocuments);
 		request.setAttribute("allLabsSortedByVersions", allLabsSortedByVersions);
 		request.setAttribute("allForms", allForms);
+        request.setAttribute("attachedDocumentIds", sections.getAttachedDocumentIds());
+        request.setAttribute("foreignPrivateDocIds", sections.getForeignPrivateDocIds());
+        request.setAttribute("attachedEFormIds", sections.getAttachedEFormIds());
     }
 }

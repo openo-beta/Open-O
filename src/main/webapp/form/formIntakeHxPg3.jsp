@@ -23,6 +23,7 @@
     Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName3$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -60,38 +61,38 @@
         <table>
             <tr>
                 <td colspan="3" class="title"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.takeRxDrugsYN"/>:</td>
-                <td><input type="text" name="TakeOtherDrugs" value="<%=props.getProperty("TakeOtherDrugs","")%>"/></td>
+                <td><input type="text" name="TakeOtherDrugs" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("TakeOtherDrugs","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title" colspan="3"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.medsTaken"/>:</td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.drug1"/>:</td>
-                <td><input type="text" name="CurrentDrug1" value="<%=props.getProperty("CurrentDrug1","")%>"/></td>
+                <td><input type="text" name="CurrentDrug1" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("CurrentDrug1","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.drug2"/>:</td>
-                <td><input type="text" name="CurrentDrug2" value="<%=props.getProperty("CurrentDrug2","")%>"/></td>
+                <td><input type="text" name="CurrentDrug2" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("CurrentDrug2","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.drug3"/>:</td>
-                <td><input type="text" name="CurrentDrug3" value="<%=props.getProperty("CurrentDrug3","")%>"/></td>
+                <td><input type="text" name="CurrentDrug3" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("CurrentDrug3","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.drug4"/>:</td>
-                <td><input type="text" name="CurrentDrug4" value="<%=props.getProperty("CurrentDrug4","")%>"/></td>
+                <td><input type="text" name="CurrentDrug4" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("CurrentDrug4","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.drug5"/>:</td>
-                <td><input type="text" name="CurrentDrug5" value="<%=props.getProperty("CurrentDrug5","")%>"/></td>
+                <td><input type="text" name="CurrentDrug5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("CurrentDrug5","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.drug6"/>:</td>
-                <td><input type="text" name="CurrentDrug6" value="<%=props.getProperty("CurrentDrug6","")%>"/></td>
+                <td><input type="text" name="CurrentDrug6" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("CurrentDrug6","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.drug7"/>:</td>
-                <td><input type="text" name="CurrentDrug7" value="<%=props.getProperty("CurrentDrug7","")%>"/></td>
+                <td><input type="text" name="CurrentDrug7" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("CurrentDrug7","")))%>"/></td>
             </tr>
         </table>
 

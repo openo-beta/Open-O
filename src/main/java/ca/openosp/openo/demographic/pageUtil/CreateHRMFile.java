@@ -108,7 +108,7 @@ public class CreateHRMFile {
         options.setSaveOuter();
 
         if (!filepath.contains(File.separator)) {
-            filepath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + File.separator + filepath;
+            filepath = OscarProperties.getInstance().getDocumentDirectory() + File.separator + filepath;
         }
         File file = new File(filepath);
         try {

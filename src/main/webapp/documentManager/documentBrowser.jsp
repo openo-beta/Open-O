@@ -45,6 +45,7 @@
 <%@page import="org.springframework.web.context.WebApplicationContext" %>
 <%@page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -375,11 +376,11 @@ Remote documents not supported
         }
 
         function AddTickler() {
-            popup(450, 600, '<%=request.getContextPath()%>/tickler/ForwardDemographicTickler.do?docType=DOC&docId=' + docid + '&demographic_no=<%=demographicID%>', 'tickler');
+            popup(450, 600, '<%=request.getContextPath()%>/tickler/ForwardDemographicTickler.do?docType=DOC&docId=' + docid + '&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', 'tickler');
         }
 
         function DocAnnotation() {
-            popup(350, 500, '<%= request.getContextPath() %>/annotation/annotation.jsp?display=Documents&table_id=' + docid + '&demo=<%=demographicID%>', 'anwin');
+            popup(350, 500, '<%= request.getContextPath() %>/annotation/annotation.jsp?display=Documents&table_id=' + docid + '&demo=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', 'anwin');
         }
 
         function DocEdit() {
@@ -391,36 +392,36 @@ Remote documents not supported
             var doctype = selected[0].value.substring(docidindexend + 1, selected[0].value.length);
 
             if (doctype == 'text/html') {
-                popup(450, 600, 'addedithtmldocument.jsp?editDocumentNo=' + docid + '&function=<%=module%>&functionid=<%=demographicID%>', 'EditDoc');
+                popup(450, 600, 'addedithtmldocument.jsp?editDocumentNo=' + docid + '&function=<%=Encode.forUriComponent(String.valueOf(module))%>&functionid=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', 'EditDoc');
             } else {
 
-                popup(350, 500, 'editDocument.jsp?editDocumentNo=' + docid + '&function=<%=module%>&functionid=<%=demographicID%>', 'EditDoc');
+                popup(350, 500, 'editDocument.jsp?editDocumentNo=' + docid + '&function=<%=Encode.forUriComponent(String.valueOf(module))%>&functionid=<%=Encode.forUriComponent(String.valueOf(demographicID))%>', 'EditDoc');
             }
         }
 
     </script>
 </head>
-<body onload="window.innerWidth=<%=winwidth.length()>0?winwidth:"screen.availWidth*0.9"%>;window.innerHeight=<%=winheight.length()>0?winheight:"screen.availHeight*0.9"%>;">
+<body onload="window.innerWidth=<%=Encode.forJavaScript(String.valueOf(winwidth.length()>0?winwidth:"screen.availWidth*0.9"))%>;window.innerHeight=<%=Encode.forJavaScript(String.valueOf(winheight.length()>0?winheight:"screen.availHeight*0.9"))%>;">
 <form name="DisplayDoc" method="post" action="documentBrowser.jsp">
 
     <table>
         <%if (errorMessage.length() > 0) {%>
         <tr>
-            <td><b><font color="red"><%=errorMessage%>
+            <td><b><font color="red"><%=Encode.forHtml(String.valueOf(errorMessage))%>
             </font></b></td>
         </tr>
         <%}%>
         <tr>
             <td align="left" valign="top" style="width: 400px">
-                <oscar:nameage demographicNo="<%=moduleid%>"/><br>
-                <%=categoryKey%>
+                <oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(moduleid))%>"/><br>
+                <%=Encode.forHtml(String.valueOf(categoryKey))%>
                 <br>
 
-                <input type="hidden" name="viewstatus" value="<%=viewstatus%>">
-                <input type="hidden" name="sortorder" value="<%=sortorder%>">
-                <input type="hidden" name="function" value="<%=module%>">
-                <input type="hidden" name="functionid" value="<%=moduleid%>">
-                <input type="hidden" name="categorykey" value="<%=categoryKey%>">
+                <input type="hidden" name="viewstatus" value="<%=Encode.forHtmlAttribute(String.valueOf(viewstatus))%>">
+                <input type="hidden" name="sortorder" value="<%=Encode.forHtmlAttribute(String.valueOf(sortorder))%>">
+                <input type="hidden" name="function" value="<%=Encode.forHtmlAttribute(String.valueOf(module))%>">
+                <input type="hidden" name="functionid" value="<%=Encode.forHtmlAttribute(String.valueOf(moduleid))%>">
+                <input type="hidden" name="categorykey" value="<%=Encode.forHtmlAttribute(String.valueOf(categoryKey))%>">
 
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgViewStatus"/> <select id="selviewstatus" name="selviewstatus"
                                                                                 onchange="ReLoadDoc()">
@@ -444,12 +445,12 @@ Remote documents not supported
                 </select>
                 <fieldset>
                     <legend><fmt:setBundle basename="oscarResources"/><fmt:message key="dms.documentBrowser.msgView"/>:</legend>
-                    <input type="hidden" name="view" value="<%=view%>">
-                    <input type="hidden" name="demographic_no" value="<%=demographicID%>">
+                    <input type="hidden" name="view" value="<%=Encode.forHtmlAttribute(String.valueOf(view))%>">
+                    <input type="hidden" name="demographic_no" value="<%=Encode.forHtmlAttribute(String.valueOf(demographicID))%>">
                     <input type="hidden" name="undelDocumentNo" value="">
                     <input type="hidden" name="delDocumentNo" value="">
                     <input type="hidden" name="refileDocumentNo" value="">
-                    <input type="hidden" name="queueId" value="<%=queueId%>">
+                    <input type="hidden" name="queueId" value="<%=Encode.forHtmlAttribute(String.valueOf(queueId))%>">
 
                     <a
                             href="#" onclick="LoadView('all')"><%=view.equals("all") ? "<b>" : ""%>
@@ -457,7 +458,7 @@ Remote documents not supported
                     </a> <% for (int i3 = 0; i3 < doctypes.size(); i3++) {%>
                     | <a
                         href="#"
-                        onclick="LoadView('<%=URLEncoder.encode((String) doctypes.get(i3),"UTF-8")%>')"><%=view.equals((String) doctypes.get(i3)) ? "<b>" : ""%><%=(String) doctypes.get(i3)%><%=view.equals((String) doctypes.get(i3)) ? "</b>" : ""%>
+                        onclick="LoadView('<%=Encode.forJavaScript(String.valueOf(URLEncoder.encode((String) doctypes.get(i3),"UTF-8")))%>')"><%=view.equals((String) doctypes.get(i3)) ? "<b>" : ""%><%=Encode.forHtml(String.valueOf((String) doctypes.get(i3)))%><%=view.equals((String) doctypes.get(i3)) ? "</b>" : ""%>
                 </a>
                     <%}%>
                 </fieldset>
@@ -473,8 +474,8 @@ Remote documents not supported
                             for (int i2 = 0; i2 < docs.size(); i2++) {
                                 EDoc cmicurdoc = docs.get(i2);
                         %>
-                        <option VALUE="<%=cmicurdoc.getDocId()%>-<%=cmicurdoc.getContentType()%>"><%=sortorder.equals("Content") ? UtilDateUtilities.DateToString(cmicurdoc.getContentDateTime(), "yyyy-MM-dd") : cmicurdoc.getDateTimeStamp()%>&nbsp;&nbsp; <%=cmicurdoc.getObservationDate()%>
-                            [<%=cmicurdoc.getType()%>] <%=cmicurdoc.getDescription()%>
+                        <option VALUE="<%=Encode.forHtmlAttribute(String.valueOf(cmicurdoc.getDocId()))%>-<%=Encode.forHtmlAttribute(String.valueOf(cmicurdoc.getContentType()))%>"><%=Encode.forHtml(String.valueOf(sortorder.equals("Content") ? UtilDateUtilities.DateToString(cmicurdoc.getContentDateTime(), "yyyy-MM-dd") : cmicurdoc.getDateTimeStamp()))%>&nbsp;&nbsp; <%=Encode.forHtml(String.valueOf(cmicurdoc.getObservationDate()))%>
+                            [<%=Encode.forHtml(String.valueOf(cmicurdoc.getType()))%>] <%=Encode.forHtml(String.valueOf(cmicurdoc.getDescription()))%>
                         </option>
                         <%}%>
                     </SELECT>
@@ -498,7 +499,7 @@ Remote documents not supported
                                     int id = (Integer) ht.get("id");
                                     String qName = (String) ht.get("queue");
                             %>
-                            <option value="<%=id%>" <%=((id == queueId) ? " selected" : "")%>><%= qName%>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>" <%=Encode.forHtml(String.valueOf(((id == queueId) ? " selected" : "")))%>><%=Encode.forHtml(String.valueOf(qName))%>
                             </option>
                             <%}%>
                         </select>

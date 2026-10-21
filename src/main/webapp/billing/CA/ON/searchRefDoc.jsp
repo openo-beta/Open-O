@@ -120,14 +120,14 @@
 
             function typeInData1(data) {
                 self.close();
-                opener.<%=param%> = data;
+                opener.<%=Encode.forJavaScript(String.valueOf(param))%> = data;
             }
 
             <%if(param2.length()>0) {%>
 
             function typeInData2(data1, data2) {
-                opener.<%=param%> = data1;
-                opener.<%=param2%> = data2;
+                opener.<%=Encode.forJavaScript(String.valueOf(param))%> = data1;
+                opener.<%=Encode.forJavaScript(String.valueOf(param2))%> = data2;
                 self.close();
             }
 
@@ -136,19 +136,19 @@
             function typeInData3(billno, toname, toaddress, tophone, tofax) {
                 self.close();
                 <%if( param.length() > 0 ) {%>
-                opener.<%=param%> = billno;
+                opener.<%=Encode.forJavaScript(String.valueOf(param))%> = billno;
                 <%}
                   if( toname.length() > 0 ) {%>
-                opener.<%=toname%> = toname;
+                opener.<%=Encode.forJavaScript(String.valueOf(toname))%> = toname;
                 <%}
                   if( toaddress1.length() > 0 ) {%>
-                opener.<%=toaddress1%> = toaddress;
+                opener.<%=Encode.forJavaScript(String.valueOf(toaddress1))%> = toaddress;
                 <%}
                   if( tophone.length() > 0 ) {%>
-                opener.<%=tophone%> = tophone;
+                opener.<%=Encode.forJavaScript(String.valueOf(tophone))%> = tophone;
                 <%}
                   if( tofax.length() > 0 ) {%>
-                opener.<%=tofax%> = tofax;
+                opener.<%=Encode.forJavaScript(String.valueOf(tofax))%> = tofax;
                 <%}%>
             }
         </script>
@@ -165,7 +165,7 @@
         </script>
     </head>
     <body>
-    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.optChooseSpec"/></h3>&nbsp;<%=keyword == null ? "" : keyword %>&nbsp;<input
+    <h3><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.optChooseSpec"/></h3>&nbsp;<%=Encode.forHtml(String.valueOf(keyword == null ? "" : keyword))%>&nbsp;<input
             type="button" class="btn-link" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportindex.formAllProviders"/>"
             onclick="location = location.href.replace(/(\?|\&)(keyword)([^&]*)/, '').replace(/(\?|\&)(submit)([^&]*)/, '');">
     <div class="container-fluid">
@@ -190,13 +190,13 @@
                         strOnClick = "typeInData3('" + Encode.forJavaScript(prop.getProperty("referral_no", "")) + "', '" + Encode.forJavaScript(prop.getProperty("to_name", "")) + "', '" + Encode.forJavaScript(prop.getProperty("to_address", "")) + "', '" + Encode.forJavaScript(prop.getProperty("phone", "")) + "', '" + Encode.forJavaScript(prop.getProperty("to_fax", "")) + "')";
                     } else {
                         strOnClick = param2.length() > 0 ? "typeInData2('" + Encode.forJavaScript(prop.getProperty("referral_no", "")) + "','" + Encode.forJavaScript(prop.getProperty("last_name", "") + "," + prop.getProperty("first_name", "")) + "')"
-                                : "typeInData1('" + prop.getProperty("referral_no", "") + "')";
+                                : "typeInData1('" + Encode.forJavaScript(prop.getProperty("referral_no", "")) + "')";
                     }
             %>
-            <tr style="background-color:<%=bgColor%>"
+            <tr style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(bgColor))%>"
                 onmouseover="this.style.cursor='pointer';this.style.backgroundColor='LightBlue';"
-                onmouseout="this.style.backgroundColor='<%=bgColor%>'"
-                onClick="<%=strOnClick%>">
+                onmouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(bgColor))%>'"
+                onClick="<%=Encode.forHtmlAttribute(strOnClick)%>">
                 <td><%=Encode.forHtml(prop.getProperty("referral_no", ""))%>
                 </td>
                 <td><%=Encode.forHtml(prop.getProperty("last_name", ""))%>

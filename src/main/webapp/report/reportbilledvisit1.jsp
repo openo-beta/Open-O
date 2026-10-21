@@ -17,7 +17,6 @@
     //reportbilledvisit1.jsp?sdate=2002-04-15&edate=2003-03-31
 
     String curUser_no = (String) session.getAttribute("user");
-    String orderby = request.getParameter("orderby") != null ? request.getParameter("orderby") : ("b.billing_date");
     String deepcolor = "#CCCCFF", weakcolor = "#EEEEFF";
 %>
 <%@ page
@@ -25,6 +24,7 @@
         errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.openo.db.DBPreparedHandler" %>
 <%@ page import="ca.openosp.openo.db.DBPreparedHandlerParam" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
@@ -69,8 +69,8 @@
     }
 
 // get total patPhys
-    sql = "select count(distinct(b.demographic_no)) from billing b, provider p where b.creator=p.provider_no  and b.billing_date>='" + sdate + "' and b.billing_date<='" + edate + "' and b.status!='D' and p.provider_type='doctor'";
-    rs = db.queryResults(sql);
+    sql = "select count(distinct(b.demographic_no)) from billing b, provider p where b.creator=p.provider_no  and b.billing_date>=? and b.billing_date<=? and b.status!='D' and p.provider_type='doctor'";
+    rs = db.queryResults(sql, params);
     while (rs.next()) {
         props.setProperty("patPhys", ca.openosp.Misc.getString(rs, 1));
     }
@@ -96,8 +96,12 @@ out.flush();
 
 // get pat num for Nurses
     for (int i = 0; i < vNurseNo.size(); i++) {
-        sql = "select count(distinct(b.demographic_no)) from billing b  where b.creator='" + vNurseNo.get(i) + "' and b.billing_date>=? and b.billing_date<=? and b.status!='D'";
-        rs = db.queryResults(sql, params);
+        sql = "select count(distinct(b.demographic_no)) from billing b  where b.creator=? and b.billing_date>=? and b.billing_date<=? and b.status!='D'";
+        DBPreparedHandlerParam[] nursePatParams = new DBPreparedHandlerParam[3];
+        nursePatParams[0] = new DBPreparedHandlerParam((String) vNurseNo.get(i));
+        nursePatParams[1] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(sdate));
+        nursePatParams[2] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(edate));
+        rs = db.queryResults(sql, nursePatParams);
         while (rs.next()) {
             props.setProperty("patNurse" + i, ca.openosp.Misc.getString(rs, 1));
         }
@@ -141,8 +145,12 @@ out.flush();
 
 // get vis num for Nurses
     for (int i = 0; i < vNurseNo.size(); i++) {
-        sql = "select count(distinct(b.billing_no)) from billing b  where b.creator='" + vNurseNo.get(i) + "' and b.billing_date>=? and b.billing_date<=? and b.status!='D'";
-        rs = db.queryResults(sql, params);
+        sql = "select count(distinct(b.billing_no)) from billing b  where b.creator=? and b.billing_date>=? and b.billing_date<=? and b.status!='D'";
+        DBPreparedHandlerParam[] nurseVisParams = new DBPreparedHandlerParam[3];
+        nurseVisParams[0] = new DBPreparedHandlerParam((String) vNurseNo.get(i));
+        nurseVisParams[1] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(sdate));
+        nurseVisParams[2] = new DBPreparedHandlerParam(MyDateFormat.getSysDate(edate));
+        rs = db.queryResults(sql, nurseVisParams);
         while (rs.next()) {
             props.setProperty("visNurse" + i, ca.openosp.Misc.getString(rs, 1));
         }
@@ -171,7 +179,7 @@ out.flush();
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
     <tr>
-        <td>Period: (<%=sdate%> ~ <%=edate%>)</td>
+        <td>Period: (<%=Encode.forHtml(String.valueOf(sdate))%> ~ <%=Encode.forHtml(String.valueOf(edate))%>)</td>
     </tr>
 </table>
 
@@ -183,31 +191,31 @@ out.flush();
         <TH width="6%">RES</TH>
 
         <% for (int i = 0; i < vNurseNo.size(); i++) { %>
-        <TH width="6%"><%=vNurse.get(i)%>
+        <TH width="6%"><%=Encode.forHtml(String.valueOf(vNurse.get(i)))%>
         </TH>
         <% } %>
     </tr>
 
-    <tr bgcolor="<%=weakcolor%>">
+    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(weakcolor))%>">
         <td align="center">Patient</td>
-        <td align="center"><%=props.getProperty("patPhys")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("patPhys")))%>
         </td>
-        <td align="center"><%=props.getProperty("patRes")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("patRes")))%>
         </td>
         <% for (int i = 0; i < vNurseNo.size(); i++) { %>
-        <td align="center"><%=props.getProperty("patNurse" + i)%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("patNurse" + i)))%>
         </td>
         <% } %>
 
     </tr>
     <tr>
         <td align="center">Visit</td>
-        <td align="center"><%=props.getProperty("visPhys")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("visPhys")))%>
         </td>
-        <td align="center"><%=props.getProperty("visRes")%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("visRes")))%>
         </td>
         <% for (int i = 0; i < vNurseNo.size(); i++) { %>
-        <td align="center"><%=props.getProperty("visNurse" + i)%>
+        <td align="center"><%=Encode.forHtml(String.valueOf(props.getProperty("visNurse" + i)))%>
         </td>
         <% } %>
     </tr>

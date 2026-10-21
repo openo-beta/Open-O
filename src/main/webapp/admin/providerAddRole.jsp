@@ -230,7 +230,7 @@
                     List<SecRole> secRoles = secRoleDao.findAll();
                     for(SecRole secRole:secRoles) {
                         %>
-                    "<%=Encode.forHtmlAttribute(secRole.getName())%>",
+                    "<%=Encode.forJavaScript(secRole.getName())%>",
                     <%}%>
                     ""
                 ];
@@ -264,7 +264,7 @@
             <div class="control-group">
                 <div class="controls">
                     <input
-                            type="hidden" name="action" value='<%=action%>'/> <% if (!"search".equals(action)) {%>
+                            type="hidden" name="action" value='<%=Encode.forHtmlAttribute(String.valueOf(action))%>'/> <% if (!"search".equals(action)) {%>
                     <input type="submit" name="submit" class="btn btn-primary"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="admin.resourcebaseurl.btnSave"/>"
                            onclick="javascript:return onSave();"> <% }%>

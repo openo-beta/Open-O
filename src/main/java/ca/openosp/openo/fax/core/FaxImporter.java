@@ -55,6 +55,7 @@ import ca.openosp.openo.commn.model.FaxConfig;
 import ca.openosp.openo.commn.model.FaxJob;
 import ca.openosp.openo.commn.model.ProviderLabRoutingModel;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
 import com.itextpdf.text.pdf.codec.Base64;
@@ -68,7 +69,7 @@ import ca.openosp.openo.documentManager.EDocUtil;
 public class FaxImporter {
 
     private static String PATH = "/fax";
-    private static String DOCUMENT_DIR = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+    private static String DOCUMENT_DIR = OscarProperties.getInstance().getDocumentDirectory();
     private static String DEFAULT_USER = "-1";
     private FaxConfigDao faxConfigDao = SpringUtils.getBean(FaxConfigDao.class);
     private FaxJobDao faxJobDao = SpringUtils.getBean(FaxJobDao.class);
@@ -279,8 +280,12 @@ public class FaxImporter {
         newDoc.setDocPublic("0");
 
         filename = newDoc.getFileName();
+        File docDir = new File(DOCUMENT_DIR);
+        File validatedDest = PathValidationUtils.validatePath(filename, docDir);
+        filename = validatedDest.getName();
+        newDoc.setFileName(filename);
 
-        if (Base64.decodeToFile(faxFile.getDocument(), DOCUMENT_DIR + "/" + filename)) {
+        if (Base64.decodeToFile(faxFile.getDocument(), validatedDest.getPath())) {
 
             newDoc.setContentType("application/pdf");
             newDoc.setNumberOfPages(receivedFax.getNumPages());

@@ -47,6 +47,7 @@
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.report.data.DemographicSets" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
@@ -149,7 +150,7 @@
                         <option value="-1"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportDemoSetEdit.msgOptionSet"/></option>
                         <% for (int i = 0; i < sets.size(); i++) {
                             String s = sets.get(i);%>
-                        <option value="<%=s%>"><%=s%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(s))%>"><%=Encode.forHtml(String.valueOf(s))%>
                         </option>
                         <%}%>
                     </select> <input type="submit" class="btn"
@@ -167,7 +168,7 @@
                         <input type="submit" class="btn" name="delete"
                                title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportDemoSetEdit.msgDelete"/>"
                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarReport.oscarReportDemoSetEdit.btnDelete"/>"/>
-                        <input type="hidden" name="setName" value="<%=setName%>">
+                        <input type="hidden" name="setName" value="<%=Encode.forHtmlAttribute(String.valueOf(setName))%>">
                         <input type="hidden" name="deleteSet" id="deleteSet">
 
                         <table id="demoTable" class="ele table table-striped table-condensed">
@@ -192,20 +193,20 @@
                             %>
                             <tr>
                                 <td><input type="checkbox" name="demoNo"
-                                           value="<%=h.get("demographic_no")%>" class="checkbox"></td>
-                                <td><%=h.get("demographic_no")%>
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(h.get("demographic_no")))%>" class="checkbox"></td>
+                                <td><%=Encode.forHtml(String.valueOf(h.get("demographic_no")))%>
                                 </td>
-                                <td><%=demo.getLastName()%>, <%=demo.getFirstName()%>
+                                <td><%=Encode.forHtml(String.valueOf(demo.getLastName()))%>, <%=Encode.forHtml(String.valueOf(demo.getFirstName()))%>
                                 </td>
-                                <td><%=DemographicData.getDob(demo, "-")%>
+                                <td><%=Encode.forHtml(String.valueOf(DemographicData.getDob(demo, "-")))%>
                                 </td>
-                                <td><%=demo.getAge()%>
+                                <td><%=Encode.forHtml(String.valueOf(demo.getAge()))%>
                                 </td>
-                                <td><%=demo.getRosterStatus()%>
+                                <td><%=Encode.forHtml(String.valueOf(demo.getRosterStatus()))%>
                                 </td>
-                                <td><%=providerBean.getProperty(demo.getProviderNo(), "")%>
+                                <td><%=Encode.forHtml(String.valueOf(providerBean.getProperty(demo.getProviderNo(), "")))%>
                                 </td>
-                                <td><%=elle(h.get("eligibility"))%>
+                                <td><%=Encode.forHtml(String.valueOf(elle(h.get("eligibility"))))%>
                                 </td>
                             </tr>
                             <%}%>

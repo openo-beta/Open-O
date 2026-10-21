@@ -23,10 +23,9 @@
 
 package ca.openosp.openo.utility;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Date;
 
 import org.apache.logging.log4j.Logger;
@@ -44,9 +43,13 @@ public class DigitalSignatureUtils {
     }
 
     public static String getTempFilePath(String signatureRequestId) {
-        String temppath = System.getProperty("java.io.tmpdir");
-        Path path = Paths.get(temppath, "signature_" + signatureRequestId + ".jpg");
-        return path.toString();
+        if (signatureRequestId == null || signatureRequestId.trim().isEmpty()) {
+            return null;
+        }
+        File tmpDir = new File(System.getProperty("java.io.tmpdir"));
+        File validatedFile = PathValidationUtils.validatePath(
+                "signature_" + signatureRequestId + ".jpg", tmpDir);
+        return validatedFile.getPath();
     }
 
     /**

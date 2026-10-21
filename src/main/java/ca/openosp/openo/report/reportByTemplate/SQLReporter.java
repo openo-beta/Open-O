@@ -32,6 +32,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import ca.openosp.openo.util.PreparedSQL;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.utility.MiscUtils;
 
 import ca.openosp.openo.db.DBHandler;
@@ -54,6 +56,10 @@ public class SQLReporter implements Reporter {
 
     public boolean generateReport(HttpServletRequest request) {
         String templateId = request.getParameter("templateId");
+        if (!SqlUtils.isNumericId(templateId)) {
+            request.setAttribute("errormsg", "Error: Invalid template ID.");
+            return false;
+        }
         ReportObject curReport = (new ReportManager()).getReportTemplateNoParam(templateId);
         Map parameterMap = request.getParameterMap();
 
@@ -61,7 +67,13 @@ public class SQLReporter implements Reporter {
             return generateSequencedReport(request);
         }
 
-        String sql = curReport.getPreparedSQL(parameterMap);
+        PreparedSQL prepared = curReport.getParameterizedSQL(parameterMap);
+        if (prepared == null || prepared.isMissingParams()) {
+            request.setAttribute("errormsg", "Error: Cannot find all parameters for the query.  Check the template.");
+            request.setAttribute("templateid", templateId);
+            return false;
+        }
+        String sql = prepared.getSql();
         if (sql == null || sql.trim().isEmpty()) {
             request.setAttribute("errormsg", "Error: Cannot find all parameters for the query.  Check the template.");
             request.setAttribute("templateid", templateId);
@@ -71,7 +83,7 @@ public class SQLReporter implements Reporter {
         String rsHtml = "An SQL query error has occured ";
         String csv = "";
         try( StringWriter swr = new StringWriter();
-             ResultSet rs = DBHandler.GetSQL(sql) ) {
+             ResultSet rs = DBHandler.GetPreSQL(sql, prepared.getParamsArray()) ) {
             if (!rs.isBeforeFirst()) {
                 rsHtml = "The query returned no results.";
             } else {
@@ -99,24 +111,29 @@ public class SQLReporter implements Reporter {
 
     public boolean generateSequencedReport(HttpServletRequest request) {
         String templateId = request.getParameter("templateId");
+        if (!SqlUtils.isNumericId(templateId)) {
+            request.setAttribute("errormsg", "Error: Invalid template ID.");
+            return false;
+        }
         ReportObject curReport = (new ReportManager()).getReportTemplateNoParam(templateId);
         Map parameterMap = request.getParameterMap();
 
         int x = 0;
-        String sql = null;
-        while ((sql = curReport.getPreparedSQL(x, parameterMap)) != null) {
-            if (sql == "") {
+        PreparedSQL prepared = null;
+        while ((prepared = curReport.getParameterizedSQL(x, parameterMap)) != null) {
+            if (prepared.isMissingParams()) {
                 request.setAttribute("errormsg", "Error: Cannot find all parameters for the query.  Check the template.");
                 request.setAttribute("templateid", templateId);
                 return false;
             }
 
+            String reportSql = prepared.getSql();
             String rsHtml = "An SQL query error has occured ";
             String csv = "";
             try( StringWriter swr = new StringWriter();
-                ResultSet rs = DBHandler.GetSQL(sql) ) {
+                ResultSet rs = DBHandler.GetPreSQL(reportSql, prepared.getParamsArray()) ) {
                 if (!rs.isBeforeFirst()) {
-                    rsHtml = sql + "<br/>The query returned no results.";
+                    rsHtml = "The query returned no results.";
                 } else {
                     rsHtml = RptResultStruct.getStructure2(rs);  //makes html from the result set
                     CSVPrinter csvp = new CSVPrinter(swr);
@@ -131,9 +148,9 @@ public class SQLReporter implements Reporter {
                 MiscUtils.getLogger().error("Error", e);
             }
 
-            request.setAttribute("csv-" + x, csv);
-            request.setAttribute("sql-" + x, sql);
-            request.setAttribute("resultsethtml-" + x, rsHtml);
+            setSequencedAttribute(request, "csv", x, csv);
+            setSequencedAttribute(request, "sql", x, reportSql);
+            setSequencedAttribute(request, "resultsethtml", x, rsHtml);
             x++;
         }
 
@@ -141,6 +158,11 @@ public class SQLReporter implements Reporter {
         request.setAttribute("reportobject", curReport);
 
         return true;
+    }
+
+    private void setSequencedAttribute(HttpServletRequest request, String prefix, int index, String value) {
+        // Attribute key naming: prefix-0, prefix-1, etc.
+        request.setAttribute(prefix.concat("-").concat(Integer.toString(index)), value);
     }
 
 }

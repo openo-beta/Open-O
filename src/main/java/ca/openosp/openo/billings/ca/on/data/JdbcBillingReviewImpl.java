@@ -98,90 +98,10 @@ public class JdbcBillingReviewImpl {
         return retval;
     }
 
-    // invoice report
-    public List getBill(String billType, String statusType, String providerNo,
-                        String startDate, String endDate, String demoNo) {
-
-        return getBill(billType, statusType, providerNo, startDate, endDate, demoNo, "", "", "");
-
-    }
-
-    // invoice report
-    public List getBill(String billType, String statusType, String providerNo,
-                        String startDate, String endDate, String demoNo,
-                        String serviceCodes, String dx, String visitType) {
-
-        List<BillingClaimHeader1Data> retval = new ArrayList<BillingClaimHeader1Data>();
-        BillingClaimHeader1Data ch1Obj = null;
-
-        // For filtering invoice report based on dx code
-        String temp = demoNo + " " + providerNo + " " + statusType + " "
-                + startDate + " " + endDate + " " + billType + " " + dx + " "
-                + visitType + " " + serviceCodes;
-        temp = temp.trim().startsWith("and") ? temp.trim().substring(3) : temp;
-		
-		/*String sql = "SELECT ch1.id,ch1.pay_program,ch1.demographic_no,ch1.demographic_name,ch1.billing_date,ch1.billing_time,"
-		+ "ch1.status,ch1.provider_no,ch1.provider_ohip_no,ch1.apptProvider_no,ch1.timestamp1,ch1.total,ch1.paid,ch1.clinic,"
-		+ "bi.fee, bi.service_code, bi.ser_num, bi.dx, bi.id as billing_on_item_id "
-		+ "FROM billing_on_item bi LEFT JOIN billing_on_cheader1 ch1 ON ch1.id=bi.ch1_id "
-		+ "WHERE "
-		+ temp				
-		+ " ORDER BY ch1.billing_date, ch1.billing_time";
-		 */
-        List<String[]> bills = dao.findBillingData(temp);
-        if (bills != null) {
-            for (String[] b : bills) {
-                String prevId = null;
-                String prevPaid = null;
-
-                boolean bSameBillCh1 = false;
-                ch1Obj = new BillingClaimHeader1Data();
-                ch1Obj.setId(b[0]);
-                ch1Obj.setPay_program(b[1]);
-                ch1Obj.setDemographic_no(b[2]);
-                ch1Obj.setDemographic_name(b[3]);
-                ch1Obj.setBilling_date(b[4]);
-                ch1Obj.setBilling_time(b[5]);
-                ch1Obj.setStatus(b[6]);
-                ch1Obj.setProvider_no(b[7]);
-                ch1Obj.setProvider_ohip_no(b[8]);
-                ch1Obj.setUpdate_datetime(b[9]);
-                ch1Obj.setTotal(b[10]);
-                //ch1Obj.setPaid(b[11]);
-                ch1Obj.setClinic(b[12]);
-                //ch1Obj.setTotal(b[13]);//fee is not total?
-                ch1Obj.setSer_num(b[15]); //14 is service code
-                ch1Obj.setBilling_on_item_id(b[17]); //16 is dx
-
-                List<BillingONExt> exts = extDao.findByBillingNoAndKey(Integer.parseInt(b[0]), "payDate");
-                for (BillingONExt e : exts) {
-                    if (e.getStatus() == '1') {
-                        ch1Obj.setSettle_date(e.getValue());
-                    }
-                }
-
-                if ("PAT".equals(ch1Obj.getPay_program())) {
-                    BigDecimal amountPaid = billOnItemPaymentDao.getAmountPaidByItemId(Integer.parseInt(b[17]));
-                    ch1Obj.setPaid(amountPaid.toString());
-                } else {
-                    if (prevId == null && prevPaid == null) {
-                        ch1Obj.setPaid(b[11]);
-                    } else if (prevId != null && prevPaid != null && !ch1Obj.getId().equals(prevId)) {
-                        ch1Obj.setPaid(b[11]);
-                    } else {
-                        ch1Obj.setPaid("0.00");
-                    }
-                }
-                retval.add(ch1Obj);
-
-                prevId = ch1Obj.getId();
-                prevPaid = b[11];
-            }
-
-        }
-
-        return retval;
-    }
+    // Legacy getBill(String, ...) overloads removed - they used vulnerable
+    // findBillingData(conditions) with raw SQL concatenation and had zero callers.
+    // All billing queries now use the parameterized findByMagic/findByMagic2 JPA path
+    // via the getBill(String[], ...) and getBillWithSorting overloads.
 
 
     public List<BillingClaimHeader1Data> getBill(String[] billType, String statusType, String providerNo, String startDate, String endDate, String demoNo, String visitLocation, String paymentStartDate, String paymentEndDate) {

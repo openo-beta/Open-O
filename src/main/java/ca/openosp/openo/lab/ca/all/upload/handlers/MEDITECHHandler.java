@@ -206,7 +206,7 @@ public class MEDITECHHandler implements MessageHandler {
         
         // Get the base directory for documents
         OscarProperties props = OscarProperties.getInstance();
-        String documentDir = props.getProperty("DOCUMENT_DIR");
+        String documentDir = props.getDocumentDirectory();
         
         if (documentDir == null || documentDir.isEmpty()) {
             // If DOCUMENT_DIR is not configured, use system temp directory as fallback

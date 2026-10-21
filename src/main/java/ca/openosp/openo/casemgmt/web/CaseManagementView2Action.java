@@ -32,6 +32,8 @@ import ca.openosp.openo.commn.model.*;
 import ca.openosp.openo.services.security.SecurityManager;
 import ca.openosp.openo.util.UtilDateUtilities;
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import ca.openosp.openo.model.security.Secrole;
 import ca.openosp.openo.services.security.RolesManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -80,7 +82,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.*;
 
-public class CaseManagementView2Action extends ActionSupport {
+public class CaseManagementView2Action extends ActionSupport implements UploadedFilesAware {
 
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
@@ -248,8 +250,20 @@ public class CaseManagementView2Action extends ActionSupport {
         String programId = (String) request.getSession().getAttribute("case_program_id");
 
         viewCurrentIssuesTab_newCmeNotes(demoNo, programId);
+        setStaleNoteDate(providerNo);
 
         return "ajaxDisplayNotes";
+    }
+
+    /**
+     * Puts the provider's stale note date preference on the request for ChartNotesAjax.jsp,
+     * which opens notes older than that date collapsed. Without it the JSP falls back to one year.
+     *
+     * @param providerNo String the logged in provider
+     */
+    private void setStaleNoteDate(String providerNo) {
+        UserProperty staleNoteDate = caseManagementMgr.getUserProperty(providerNo, UserProperty.STALE_NOTEDATE);
+        request.setAttribute(UserProperty.STALE_NOTEDATE, staleNoteDate);
     }
 
     /* show case management view */
@@ -456,10 +470,15 @@ public class CaseManagementView2Action extends ActionSupport {
             request.setAttribute("Prescriptions", prescriptions);
 
             // Setup RX bean start
-            RxSessionBean bean = new RxSessionBean();
-            bean.setProviderNo(loggedInInfo.getLoggedInProviderNo());
-            bean.setDemographicNo(Integer.parseInt(demoNo));
-            request.getSession().setAttribute("RxSessionBean", bean);
+            // Reuse existing per-patient bean so this tab render doesn't wipe a concurrent Rx stash.
+            int demoInt = Integer.parseInt(demoNo);
+            RxSessionBean bean = RxSessionBean.getFromSession(request, demoInt);
+            if (bean == null) {
+                bean = new RxSessionBean();
+                bean.setProviderNo(loggedInInfo.getLoggedInProviderNo());
+                bean.setDemographicNo(demoInt);
+            }
+            RxSessionBean.saveToSession(request, bean);
             // Setup RX end
         }
 
@@ -546,8 +565,7 @@ public class CaseManagementView2Action extends ActionSupport {
         logger.debug("Get stale note date");
         startTime = System.currentTimeMillis();
         // filter the notes by the checked issues and date if set
-        UserProperty userProp = caseManagementMgr.getUserProperty(providerNo, UserProperty.STALE_NOTEDATE);
-        request.setAttribute(UserProperty.STALE_NOTEDATE, userProp);
+        setStaleNoteDate(providerNo);
         UserProperty userProp2 = caseManagementMgr.getUserProperty(providerNo, UserProperty.STALE_FORMAT);
         request.setAttribute(UserProperty.STALE_FORMAT, userProp2);
         logger.debug("Get stale note date " + (System.currentTimeMillis() - startTime));
@@ -790,8 +808,7 @@ public class CaseManagementView2Action extends ActionSupport {
 
         logger.debug("Get stale note date");
         // filter the notes by the checked issues and date if set
-        UserProperty userProp = caseManagementMgr.getUserProperty(providerNo, UserProperty.STALE_NOTEDATE);
-        request.setAttribute(UserProperty.STALE_NOTEDATE, userProp);
+        setStaleNoteDate(providerNo);
         UserProperty userProp2 = caseManagementMgr.getUserProperty(providerNo, UserProperty.STALE_FORMAT);
         request.setAttribute(UserProperty.STALE_FORMAT, userProp2);
         logger.debug("Get stale note date " + (System.currentTimeMillis() - startTime));
@@ -1303,7 +1320,9 @@ public class CaseManagementView2Action extends ActionSupport {
             hashMap.put("Issues", issues);
 
             ObjectNode json = objectMapper.valueToTree(hashMap);
-            response.getOutputStream().write(json.toString().getBytes());
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getOutputStream().write(json.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
             return null;
         }
 
@@ -1812,6 +1831,7 @@ public class CaseManagementView2Action extends ActionSupport {
             request.setAttribute("moreNotes", true);
         }
         request.setAttribute("notesToDisplay", result.getNotes());
+        setStaleNoteDate(loggedInInfo.getLoggedInProviderNo());
         return "ajaxDisplayNotes";
     }
 
@@ -1854,7 +1874,7 @@ public class CaseManagementView2Action extends ActionSupport {
     private CaseManagementCPP cpp = new CaseManagementCPP();
     private EncounterWindow ectWin = new EncounterWindow();
     public static final String[] tabs = {"Current Issues", "Client History", "Allergies", "Prescriptions", "Reminders", "Ticklers", "Search"};
-    private File imageFile;
+    private UploadedFile imageFile;
 
     private String searchStartDate;
     private String searchEndDate;
@@ -1895,12 +1915,11 @@ public class CaseManagementView2Action extends ActionSupport {
         this.note_sort = note_sort;
     }
 
-    public File getImageFile() {
-        return imageFile;
-    }
-
-    public void setImageFile(File imageFile) {
-        this.imageFile = imageFile;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.imageFile = uploadedFiles.get(0);
+        }
     }
 
     public CaseManagementCPP getCpp() {

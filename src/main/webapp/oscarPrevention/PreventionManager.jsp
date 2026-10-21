@@ -38,6 +38,7 @@
 <%@page import="java.util.regex.*" %>
 <%@page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.prevention.PreventionDisplayConfig" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -253,8 +254,8 @@
                         <td>
                             <table cellspacing="1" cellpadding="6" border="0" width="530">
 
-                                <tr bgcolor="<%=rowBgcolor%>">
-                                    <td valign="middle" align="center" width="40"><img src="<%=stopSign%>"
+                                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(rowBgcolor))%>">
+                                    <td valign="middle" align="center" width="40"><img src="<%=Encode.forHtmlAttribute(String.valueOf(stopSign))%>"
                                                                                        border="0"></img></td>
                                     <td width="260">
                                         <div title="This is a global setting that will affect all users."> Display on
@@ -264,10 +265,10 @@
                                     <td align="center">
                                         <table width="240">
                                             <td width="50%"><input type="radio" name="master_radio"
-                                                                   value="false" <%=masterOn%> > Enabled
+                                                                   value="false" <%=Encode.forHtml(String.valueOf(masterOn))%> > Enabled
                                             </td>
                                             <td width="50%"><input type="radio" name="master_radio"
-                                                                   value="master" <%=masterOff%>
+                                                                   value="master" <%=Encode.forHtml(String.valueOf(masterOff))%>
                                                                    onClick="return confirm('Are you sure you want to disable this option?\n\nThis will disable all prevention notifications from displaying on the appointment screen.');">
                                                 Disabled
                                             </td>
@@ -319,21 +320,21 @@
                                             }
                                         }
                                 %>
-                                <tr bgcolor="<%=rowBgcolor%>">
-                                    <td valign="middle" align="center" width="40"><img src="<%=stopSign%>"
+                                <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(rowBgcolor))%>">
+                                    <td valign="middle" align="center" width="40"><img src="<%=Encode.forHtmlAttribute(String.valueOf(stopSign))%>"
                                                                                        border="0"></img></td>
                                     <td width="260">
-                                        <div title="<%=prevDesc%>"><%=prevName%>
+                                        <div title="<%=Encode.forHtmlAttribute(String.valueOf(prevDesc))%>"><%=Encode.forHtml(String.valueOf(prevName))%>
                                         </div>
                                     </td>
                                     <td align="center">
                                         <table width="240">
                                             <tr>
-                                                <td width="50%"><input type="radio" name="onOff<%=e%>"
-                                                                       value="0" <%=isDisabled%> <%=masterOn%>> Enabled
+                                                <td width="50%"><input type="radio" name="onOff<%=Encode.forHtmlAttribute(String.valueOf(e))%>"
+                                                                       value="0" <%=Encode.forHtml(String.valueOf(isDisabled))%> <%=Encode.forHtml(String.valueOf(masterOn))%>> Enabled
                                                 </td>
-                                                <td width="50%"><input type="radio" name="onOff<%=e%>"
-                                                                       value="<%=prevName%>" <%=isDisabled%> <%=masterOff%>>
+                                                <td width="50%"><input type="radio" name="onOff<%=Encode.forHtmlAttribute(String.valueOf(e))%>"
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(prevName))%>" <%=Encode.forHtml(String.valueOf(isDisabled))%> <%=Encode.forHtml(String.valueOf(masterOff))%>>
                                                     Disabled
                                                 </td>
                                             </tr>

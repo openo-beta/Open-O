@@ -22,6 +22,7 @@
 %>
 <%@ page import="java.sql.*, java.util.*, ca.openosp.openo.waitinglist.util.*" %>
 <%@ page import="ca.openosp.openo.waitinglist.util.WLWaitingListUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -48,7 +49,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>

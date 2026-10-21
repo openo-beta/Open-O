@@ -46,8 +46,8 @@ public class FrmchfRecord extends FrmRecord {
 
             String sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, "
                     + "sex, year_of_birth, month_of_birth, date_of_birth "
-                    + "FROM demographic WHERE demographic_no = " + demographicNo;
-            ResultSet rs = DBHandler.GetSQL(sql);
+                    + "FROM demographic WHERE demographic_no = ?";
+            ResultSet rs = DBHandler.GetPreSQL(sql, demographicNo);
 
             if (rs.next()) {
                 java.util.Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), rs
@@ -65,9 +65,8 @@ public class FrmchfRecord extends FrmRecord {
             }
             rs.close();
         } else {
-            String sql = "SELECT * FROM formchf WHERE demographic_no = " + demographicNo + " AND ID = "
-                    + existingID;
-            props = (new FrmRecordHelp()).getFormRecord(sql);
+            String sql = "SELECT * FROM formchf WHERE demographic_no = ? AND ID = ?";
+            props = (new FrmRecordHelp()).getFormRecord(sql, demographicNo, existingID);
         }
 
         return props;
@@ -76,9 +75,9 @@ public class FrmchfRecord extends FrmRecord {
     public int saveFormRecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");
         // 
-        String sql = "SELECT * FROM formchf WHERE demographic_no=" + demographic_no + " AND ID=0";
+        String sql = "SELECT * FROM formchf WHERE demographic_no = ? AND ID = 0";
 
-        return ((new FrmRecordHelp()).saveFormRecord(props, sql));
+        return ((new FrmRecordHelp()).saveFormRecord(props, sql, demographic_no));
     }
 
     public String findActionValue(String submit) throws SQLException {

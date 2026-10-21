@@ -37,6 +37,7 @@
 <%@ page import="ca.openosp.openo.commn.model.BillingONCHeader1" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
 <%@ page import="ca.openosp.openo.commn.model.BillingONExt" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     WebApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
     UserPropertyDAO userPropertyDAO = (UserPropertyDAO) ctx.getBean(UserPropertyDAO.class);
@@ -115,7 +116,7 @@
 <% if (request.getParameter("submit") != null && "Save & Add Another Bill".equals(request.getParameter("submit"))) { %>
 <script LANGUAGE="JavaScript">
     self.opener.refresh();
-    self.location.href = "<%=request.getParameter("url_back")%>";
+    self.location.href = "<%=Encode.forJavaScript(request.getParameter("url_back"))%>";
 </script>
 <% }
 
@@ -126,7 +127,7 @@
 <% }
 
     if (!"Settle & Print Invoice".equals(request.getParameter("submit")) && !"Save & Print Invoice".equals(request.getParameter("submit"))) { %>
-<a href="billingON3rdInv.jsp?billingNo=<%=billingNo%>"> Print invoice</a>
+<a href="billingON3rdInv.jsp?billingNo=<%=Encode.forUriComponent(String.valueOf(billingNo))%>"> Print invoice</a>
 <% } %>
 
 
@@ -147,7 +148,7 @@
 
     %>
     self.opener.refresh();
-    self.location.href = "<%=urlBack%>";
+    self.location.href = "<%=Encode.forJavaScript(String.valueOf(urlBack))%>";
 
     <%}else{%>
     self.close();
@@ -172,7 +173,7 @@
         }
     }
 
-    popupPage(700, 720, 'billingON3rdInv.jsp?billingNo=<%=billingNo%>');
+    popupPage(700, 720, 'billingON3rdInv.jsp?billingNo=<%=Encode.forUriComponent(String.valueOf(billingNo))%>');
     self.close();
     self.opener.refresh();
 </script>

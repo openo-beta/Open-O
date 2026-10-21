@@ -38,7 +38,8 @@ import ca.openosp.openo.commn.dao.ReportConfigDao;
 import ca.openosp.openo.commn.model.ReportConfig;
 import ca.openosp.openo.utility.SpringUtils;
 
-import ca.openosp.openo.login.DBHelp;
+import ca.openosp.Misc;
+import ca.openosp.openo.db.DBHandler;
 
 /**
  * @author yilee18
@@ -53,12 +54,11 @@ public class RptReportConfigData {
     int order;
     String table_name;
     String save;
-    DBHelp dbObj = new DBHelp();
 
     public boolean insertRecordWithOrder() throws SQLException {
         boolean ret = false;
-        String sql = "select max(order_no) from reportConfig where report_id=" + report_id;
-        ResultSet rs = DBHelp.searchDBRecord(sql);
+        String sql = "select max(order_no) from reportConfig where report_id=?";
+        ResultSet rs = DBHandler.GetPreSQL(sql, report_id);
         while (rs.next()) {
             order = rs.getInt(1) + 1;
         }
@@ -107,20 +107,19 @@ public class RptReportConfigData {
         Vector[] ret = new Vector[2];
         ret[0] = new Vector();
         ret[1] = new Vector();
-        String sql = "select * from reportConfig where report_id=" + reportId + " and save = '" + saveAs
-                + "' order by order_no, id";
-        ResultSet rs = DBHelp.searchDBRecord(sql);
+        String sql = "select * from reportConfig where report_id=? and save = ? order by order_no, id";
+        ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(reportId), saveAs);
         while (rs.next()) {
 
-            if (DBHelp.getString(rs, "name").matches(RptTableShadowFieldConst.fieldName)) {
+            if (Misc.getString(rs, "name").matches(RptTableShadowFieldConst.fieldName)) {
 
                 continue;
             }
-            ret[0].add(DBHelp.getString(rs, "table_name") + "." + DBHelp.getString(rs, "name"));
-            if ("".equals(DBHelp.getString(rs, "caption"))) {
-                ret[1].add(DBHelp.getString(rs, "name"));
+            ret[0].add(Misc.getString(rs, "table_name") + "." + Misc.getString(rs, "name"));
+            if ("".equals(Misc.getString(rs, "caption"))) {
+                ret[1].add(Misc.getString(rs, "name"));
             } else {
-                ret[1].add(DBHelp.getString(rs, "caption"));
+                ret[1].add(Misc.getString(rs, "caption"));
             }
         }
         rs.close();
@@ -129,16 +128,15 @@ public class RptReportConfigData {
 
     public Vector getConfigNameList(String saveAs, String reportId) throws SQLException {
         Vector ret = new Vector();
-        String sql = "select * from reportConfig where report_id=" + reportId + " and save = '" + saveAs
-                + "' order by order_no, id";
-        ResultSet rs = DBHelp.searchDBRecord(sql);
+        String sql = "select * from reportConfig where report_id=? and save = ? order by order_no, id";
+        ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(reportId), saveAs);
         while (rs.next()) {
 
-            if (DBHelp.getString(rs, "name").matches(RptTableShadowFieldConst.fieldName)) {
+            if (Misc.getString(rs, "name").matches(RptTableShadowFieldConst.fieldName)) {
 
                 continue;
             }
-            ret.add(DBHelp.getString(rs, "caption") + " |" + DBHelp.getString(rs, "name"));
+            ret.add(Misc.getString(rs, "caption") + " |" + Misc.getString(rs, "name"));
         }
         rs.close();
         return ret;
@@ -147,13 +145,12 @@ public class RptReportConfigData {
     public Vector getConfigObj(String saveAs, String reportId) throws SQLException {
         Vector ret = new Vector();
         Properties prop = null;
-        String sql = "select * from reportConfig where report_id=" + reportId + " and save = '" + saveAs
-                + "' order by order_no, id";
-        ResultSet rs = DBHelp.searchDBRecord(sql);
+        String sql = "select * from reportConfig where report_id=? and save = ? order by order_no, id";
+        ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(reportId), saveAs);
         while (rs.next()) {
             prop = new Properties();
-            prop.setProperty("name", DBHelp.getString(rs, "name"));
-            prop.setProperty("caption", DBHelp.getString(rs, "caption"));
+            prop.setProperty("name", Misc.getString(rs, "name"));
+            prop.setProperty("caption", Misc.getString(rs, "caption"));
             prop.setProperty("id", "" + rs.getInt("id"));
             prop.setProperty("order_no", "" + rs.getInt("order_no"));
             ret.add(prop);
@@ -165,11 +162,10 @@ public class RptReportConfigData {
     // get form..., demographic;
     public Vector getReportTableNameList(String reportId) throws SQLException {
         Vector ret = new Vector();
-        String sql = "select distinct(table_name) from reportConfig where report_id=" + reportId
-                + " and table_name like 'form%'" + " order by table_name";
-        ResultSet rs = DBHelp.searchDBRecord(sql);
+        String sql = "select distinct(table_name) from reportConfig where report_id=? and table_name like 'form%' order by table_name";
+        ResultSet rs = DBHandler.GetPreSQL(sql, Integer.parseInt(reportId));
         while (rs.next()) {
-            ret.add(DBHelp.getString(rs, "table_name"));
+            ret.add(Misc.getString(rs, "table_name"));
         }
         rs.close();
         return ret;

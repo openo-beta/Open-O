@@ -27,6 +27,8 @@
 package ca.openosp.openo.billings.ca.on.pageUtil;
 
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.commn.dao.BatchEligibilityDao;
@@ -55,7 +57,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public class BillingDocumentErrorReportUpload2Action extends ActionSupport {
+public class BillingDocumentErrorReportUpload2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -70,7 +72,7 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport {
         String filename = request.getParameter("filename");
 
         if (StringUtils.isBlank(filename)) {
-            if (!saveFile(file1, file1FileName)) {
+            if (file1OnDisk == null || file1FileName == null || file1FileName.trim().isEmpty() || !saveFile(file1OnDisk, file1FileName)) {
                 addActionError(getText("errors.fileNotAdded"));
                 return ERROR;
             } else {
@@ -111,7 +113,7 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport {
             OscarProperties props = OscarProperties.getInstance();
 
             // Get target directory
-            String place = props.getProperty("DOCUMENT_DIR");
+            String place = props.getDocumentDirectory();
             if (place == null || place.trim().isEmpty()) {
                 MiscUtils.getLogger().error("DOCUMENT_DIR property is not configured");
                 return false;
@@ -385,34 +387,21 @@ public class BillingDocumentErrorReportUpload2Action extends ActionSupport {
 
         return hd;
     }
-    private File file1; // Uploaded file
+    private UploadedFile file1; // Uploaded file
+    private File file1OnDisk;
     private String file1FileName; // Name of the uploaded file
-    private String file1ContentType; // Content type of the uploaded file
+    private String file1ContentType;
 
     private String filename; // Filename parameter from request
 
-    public File getFile1() {
-        return file1;
-    }
-
-    public void setFile1(File file1) {
-        this.file1 = file1;
-    }
-
-    public String getFile1FileName() {
-        return file1FileName;
-    }
-
-    public void setFile1FileName(String file1FileName) {
-        this.file1FileName = file1FileName;
-    }
-
-    public String getFile1ContentType() {
-        return file1ContentType;
-    }
-
-    public void setFile1ContentType(String file1ContentType) {
-        this.file1ContentType = file1ContentType;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.file1 = uploadedFiles.get(0);
+            this.file1OnDisk = PathValidationUtils.toFile(file1);
+            this.file1FileName = file1.getOriginalName();
+            this.file1ContentType = file1.getContentType();
+        }
     }
 
     public String getFilename() {

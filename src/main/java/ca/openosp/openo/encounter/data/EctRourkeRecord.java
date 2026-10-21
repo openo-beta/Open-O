@@ -53,9 +53,9 @@ public class EctRourkeRecord {
         if (existingID <= 0) {
             sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, "
                     + "year_of_birth, month_of_birth, date_of_birth, sex "
-                    + "FROM demographic WHERE demographic_no = " + demographicNo;
+                    + "FROM demographic WHERE demographic_no = ?";
 
-            rs = DBHandler.GetSQL(sql);
+            rs = DBHandler.GetPreSQL(sql, demographicNo);
 
             if (rs.next()) {
                 java.util.Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"), Misc.getString(rs, "date_of_birth"));
@@ -73,8 +73,8 @@ public class EctRourkeRecord {
             }
             rs.close();
         } else {
-            sql = "SELECT * FROM formRourke WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
-            rs = DBHandler.GetSQL(sql);
+            sql = "SELECT * FROM formRourke WHERE demographic_no = ? AND ID = ?";
+            rs = DBHandler.GetPreSQL(sql, demographicNo, existingID);
 
             if (rs.next()) {
                 ResultSetMetaData md = rs.getMetaData();
@@ -113,12 +113,12 @@ public class EctRourkeRecord {
         String page = "p" + props.getProperty("c_lastVisited") + "_";
 
 
-        String sqlDB = "SELECT * FROM formRourke WHERE demographic_no=" + demographic_no + " AND ID=" + formId;
-        ResultSet rsDB = DBHandler.GetSQL(sqlDB);
+        String sqlDB = "SELECT * FROM formRourke WHERE demographic_no = ? AND ID = ?";
+        ResultSet rsDB = DBHandler.GetPreSQL(sqlDB, demographic_no, formId);
         rsDB.next();
 
-        String sqlPage = "SELECT * FROM formRourke WHERE demographic_no=" + demographic_no + " AND ID=0";
-        ResultSet rsPage = DBHandler.GetSQL(sqlPage, true);
+        String sqlPage = "SELECT * FROM formRourke WHERE demographic_no = ? AND ID = 0";
+        ResultSet rsPage = DBHandler.GetPreSQLUpdatable(sqlPage, demographic_no);
         rsPage.moveToInsertRow();
 
         ResultSetMetaData md = rsPage.getMetaData();
@@ -190,7 +190,7 @@ public class EctRourkeRecord {
         int ret = 0;
 
         sqlPage = "SELECT LAST_INSERT_ID()";
-        rsPage = DBHandler.GetSQL(sqlPage);
+        rsPage = DBHandler.GetPreSQL(sqlPage);
         if (rsPage.next()) {
             ret = rsPage.getInt(1);
         }
@@ -218,9 +218,9 @@ public class EctRourkeRecord {
                     + "p1_ht1w, p1_ht2w, p1_ht1m, p1_ht2m, "
                     + "p2_ht4m, p2_ht6m, p2_ht9m, p2_ht12m, p3_ht18m, p3_ht2y "
                     + "FROM formRourke "
-                    + "WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
+                    + "WHERE demographic_no = ? AND ID = ?";
 
-            rs = DBHandler.GetSQL(sql);
+            rs = DBHandler.GetPreSQL(sql, demographicNo, existingID);
 
             if (rs.next()) {
                 ResultSetMetaData md = rs.getMetaData();
@@ -278,7 +278,7 @@ public class EctRourkeRecord {
         String str = "M";
         try {
 
-            rs = DBHandler.GetSQL("select sex from demographic where demographic_no = " + demo);
+            rs = DBHandler.GetPreSQL("select sex from demographic where demographic_no = ?", demo);
             if (rs.next()) {
                 str = Misc.getString(rs, "sex");
                 if (str.equalsIgnoreCase("F")) {

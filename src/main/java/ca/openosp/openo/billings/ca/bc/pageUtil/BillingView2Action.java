@@ -45,6 +45,8 @@ import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
 
+import org.owasp.encoder.Encode;
+
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.billings.ca.bc.data.BillRecipient;
 import ca.openosp.openo.billings.ca.bc.data.BillingPreference;
@@ -68,19 +70,29 @@ public final class BillingView2Action
         Properties oscarVars = OscarProperties.getInstance();
 
         if (oscarVars.getProperty("billregion").equals("ON")) {
-            String newURL = "/billing/CA/ON/billingOB2.jsp";
-            newURL = newURL + "?" + request.getQueryString();
+            String billingNo = request.getParameter("billing_no");
+            if (billingNo == null || !billingNo.matches("\\d+")) {
+                throw new SecurityException("invalid billing_no parameter");
+            }
+            String newURL = "/billing/CA/ON/billingOB2.jsp?billing_no=" + Encode.forUriComponent(billingNo);
             response.sendRedirect(newURL);
             return NONE;
         } else {
+            String billingNoParam = request.getParameter("billing_no");
+            if (billingNoParam == null || !billingNoParam.matches("\\d+")) {
+                throw new SecurityException("invalid billing_no parameter");
+            }
             BillingViewBean bean = new BillingViewBean();
-            bean.loadBilling(request.getParameter("billing_no"));
+            bean.loadBilling(billingNoParam);
             BillingBillingManager bmanager = new BillingBillingManager();
             ArrayList<BillingItem> billItem = new ArrayList<BillingItem>();
             String[] billingN = request.getParameterValues("billing_no");
 
             for (int i = 0; i < billingN.length; i++) {
-                log.debug("billn " + i + " " + billingN[i]);
+                if (billingN[i] == null || !billingN[i].matches("\\d+")) {
+                    throw new SecurityException("invalid billing_no parameter");
+                }
+                log.debug("billn {} {}", i, billingN[i]);
                 ArrayList<BillingItem> tempBillItem = bmanager.getBillView(billingN[i]);
                 billItem.addAll(tempBillItem);
             }

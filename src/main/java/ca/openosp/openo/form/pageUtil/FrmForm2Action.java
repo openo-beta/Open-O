@@ -51,6 +51,7 @@ import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.form.FrmRecordHelp;
 import ca.openosp.openo.form.data.FrmData;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.demographic.data.DemographicData;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctMeasurementTypesBean;
 import ca.openosp.openo.encounter.oscarMeasurements.bean.EctValidationsBean;
@@ -265,10 +266,13 @@ public class FrmForm2Action extends ActionSupport {
             // Store the the form table for keeping the current record
             logger.debug("current mem 8 " + currentMem());
             try {
-                String sql = "SELECT * FROM form" + formName + " WHERE demographic_no='" + demographicNo + "' AND ID=0";
+                // formName validated by isValidFormName() above; table names cannot be parameterized in PreparedStatement
+                SqlUtils.validateTableName("form".concat(formName));
                 FrmRecordHelp frh = new FrmRecordHelp();
                 frh.setDateFormat(_dateFormat);
-                (frh).saveFormRecord(props, sql);
+                (frh).saveFormRecord(props,
+                        "SELECT * FROM form".concat(formName).concat(" WHERE demographic_no = ? AND ID = 0"),
+                        demographicNo);
             } catch (SQLException e) {
                 logger.error("Error", e);
             }

@@ -42,6 +42,7 @@
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     String formClass = "InternetAccess";
@@ -76,7 +77,7 @@
         var choiceFormat = new Array(6, 7, 8, 9, 12, 13);
         var allNumericField = new Array(14, 15);
         var allMatch = null;
-        var action = "/<%=project_home%>/form/formname.do";
+        var action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
 
     </script>
     <script type="text/javascript" src="formScripts.js">
@@ -96,12 +97,12 @@
     -->
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table border="0" cellspacing="0" cellpadding="0" width="740px"
@@ -132,14 +133,14 @@
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="95%"><input type="checkbox" class="checkbox"
-                                                               name="computerY" <%= props.getProperty("computerY", "") %> />
+                                                               name="computerY" <%=Encode.forHtml(String.valueOf(props.getProperty("computerY", "")))%> />
                                             Yes
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="95%"><input type="checkbox" class="checkbox"
-                                                               name="computerN" <%= props.getProperty("computerN", "") %> />
+                                                               name="computerN" <%=Encode.forHtml(String.valueOf(props.getProperty("computerN", "")))%> />
                                             No
                                         </td>
                                     </tr>
@@ -154,14 +155,14 @@
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="95%"><input type="checkbox" class="checkbox"
-                                                               name="internetY" <%= props.getProperty("internetY", "") %> />
+                                                               name="internetY" <%=Encode.forHtml(String.valueOf(props.getProperty("internetY", "")))%> />
                                             Yes
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="95%"><input type="checkbox" class="checkbox"
-                                                               name="internetN" <%= props.getProperty("internetN", "") %> />
+                                                               name="internetN" <%=Encode.forHtml(String.valueOf(props.getProperty("internetN", "")))%> />
                                             No
                                         </td>
                                     </tr>
@@ -174,14 +175,14 @@
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="95%"><input type="checkbox" class="checkbox"
-                                                               name="internetHome" <%= props.getProperty("internetHome", "") %> />
+                                                               name="internetHome" <%=Encode.forHtml(String.valueOf(props.getProperty("internetHome", "")))%> />
                                             Home
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="95%"><input type="checkbox" class="checkbox"
-                                                               name="internetWork" <%= props.getProperty("internetWork", "") %> />
+                                                               name="internetWork" <%=Encode.forHtml(String.valueOf(props.getProperty("internetWork", "")))%> />
                                             Work
                                         </td>
                                     </tr>
@@ -189,9 +190,9 @@
                                         <td width="5%" align="right"></td>
                                         <td width="95%"><input type="checkbox" class="checkbox"
                                                                name="internetOther"
-                                                <%= props.getProperty("internetOther", "") %> /> Other; Specify
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("internetOther", "")))%> /> Other; Specify
                                             where: <input type="text" size="20" name="internetOtherTx"
-                                                          value='<%= props.getProperty("internetOtherTx", "") %>'/></td>
+                                                          value='<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("internetOtherTx", "")))%>'/></td>
                                     </tr>
 
                                     <tr>
@@ -204,7 +205,7 @@
                                         <td width="5%" align="right"></td>
                                         <td width="95%">a. Daily: <input type="text" size="10"
                                                                          name="timeDaily"
-                                                                         value='<%= props.getProperty("timeDaily", "") %>'/>
+                                                                         value='<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("timeDaily", "")))%>'/>
                                             Hours
                                         </td>
                                     </tr>
@@ -212,7 +213,7 @@
                                         <td width="5%" align="right"></td>
                                         <td width="95%">b. Weekly: <input type="text" size="10"
                                                                           name="timeWeekly"
-                                                                          value='<%= props.getProperty("timeWeekly", "") %>'/>
+                                                                          value='<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("timeWeekly", "")))%>'/>
                                             Hours
                                         </td>
                                     </tr>
@@ -226,13 +227,13 @@
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="95%"><input type="checkbox" class="checkbox"
-                                                               name="infoY" <%= props.getProperty("infoY", "") %> /> Yes
+                                                               name="infoY" <%=Encode.forHtml(String.valueOf(props.getProperty("infoY", "")))%> /> Yes
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td width="5%" align="right"></td>
                                         <td width="95%"><input type="checkbox" class="checkbox"
-                                                               name="infoN" <%= props.getProperty("infoN", "") %> /> No
+                                                               name="infoN" <%=Encode.forHtml(String.valueOf(props.getProperty("infoN", "")))%> /> No
                                         </td>
                                     </tr>
                                 </table>
@@ -260,9 +261,9 @@
                                                                                          value="Print"
                                                                                          onclick="javascript:window.print();"/>
                             </td>
-                            <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
+                            <td align="right">Study ID: <%=Encode.forHtml(String.valueOf(props.getProperty("studyID", "N/A")))%>
                                 <input type="hidden" name="studyID"
-                                       value="<%= props.getProperty("studyID", "N/A") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("studyID", "N/A")))%>"/></td>
                         </tr>
                     </table>
                 </td>

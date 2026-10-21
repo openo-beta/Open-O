@@ -76,6 +76,7 @@ and other liscences (MIT, LGPL etc) as indicated
 
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
 <%@ page import="ca.openosp.openo.eform.EFormLoader" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     boolean eformGeneratorIndivicaPrintEnabled = OscarProperties.getInstance().isPropertyActive("eform_generator_indivica_print_enabled");
@@ -1938,7 +1939,7 @@ and other liscences (MIT, LGPL etc) as indicated
                         // Populate the dropdown options
                         for (int i = 0; i < fileINames.length; i++) {
                     %>
-                    <option value="<%= fileINames[i] %>"><%= fileINames[i] %>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(fileINames[i]))%>"><%=Encode.forHtml(String.valueOf(fileINames[i]))%>
                     </option>
                     <%
                         }
@@ -2207,7 +2208,7 @@ and other liscences (MIT, LGPL etc) as indicated
                             //return the array with a list of names from database
                             List<String> kout = names.getNames();
                             for (String str : kout) { %>
-                        <option value="<%= str %>"><%= str %>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(str))%>"><%=Encode.forHtml(String.valueOf(str))%>
                         </option>
                         <%
                             }
@@ -2503,7 +2504,7 @@ and other liscences (MIT, LGPL etc) as indicated
                 <input name="DefaultCheckmark" id="DefaultCheckmark" type="checkbox" style="display:none"><span
                         style="display:none"><fmt:setBundle basename="oscarResources"/><fmt:message key="eFormGenerator.miscCheckmarksDraw"/></span>
             </p>
-            <p <%=eformGeneratorIndivicaFaxEnabled ? "" : "style=\"display: none;\"" %>>
+            <p <%=eformGeneratorIndivicaFaxEnabled ? "" : "style=\"display: none;\""%>>
                 <span class='h2'><fmt:setBundle basename="oscarResources"/><fmt:message key="eFormGenerator.fax"/></span><br>
                 <input name="includeFaxControl" id="includeFaxControl" type="checkBox"><fmt:setBundle basename="oscarResources"/><fmt:message key="eFormGenerator.faxDescription"/><br>
                 <fmt:setBundle basename="oscarResources"/><fmt:message key="eFormGenerator.faxnumber"/>: <input type="text" name="faxno" id="faxno"

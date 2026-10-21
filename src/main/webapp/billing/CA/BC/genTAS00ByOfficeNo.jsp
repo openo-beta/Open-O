@@ -47,6 +47,7 @@
 <%@ page import="ca.openosp.openo.billing.CA.BC.model.TeleplanS00" %>
 <%@ page import="ca.openosp.openo.billing.CA.BC.dao.TeleplanS00Dao" %>
 <%@ page import="ca.openosp.Misc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     TeleplanS00Dao teleplanS00Dao = SpringUtils.getBean(TeleplanS00Dao.class);
@@ -148,52 +149,52 @@
           %>
         <tr>
             <td width="5%" height="16"><a
-                    href="javascript: popupPage(700,750,'adjustBill.jsp?billing_no=<%=result.getOfficeNo()%>')"><%=result.getOfficeNo()%>
+                    href="javascript: popupPage(700,750,'adjustBill.jsp?billing_no=<%=Encode.forUriComponent(String.valueOf(result.getOfficeNo()))%>')"><%=Encode.forHtml(String.valueOf(result.getOfficeNo()))%>
             </a>&nbsp;
             </td>
-            <td width="5%" height="16"><%=result.getPractitionerNo()%>&nbsp;
+            <td width="5%" height="16"><%=Encode.forHtml(String.valueOf(result.getPractitionerNo()))%>&nbsp;
             </td>
-            <td width="5%" height="16"><%=result.getBillFeeSchedule()%>&nbsp;
+            <td width="5%" height="16"><%=Encode.forHtml(String.valueOf(result.getBillFeeSchedule()))%>&nbsp;
             </td>
-            <td height="16"><%=result.getPayment()%>&nbsp;</td>
-            <td width="5%" height="16" align="right"><%=moneyFormat(result.getBillAmount())%>&nbsp;
+            <td height="16"><%=Encode.forHtml(String.valueOf(result.getPayment()))%>&nbsp;</td>
+            <td width="5%" height="16" align="right"><%=Encode.forHtml(String.valueOf(moneyFormat(result.getBillAmount())))%>&nbsp;
             </td>
-            <td width="5%" height="16" align=right><%=moneyFormat(result.getPaidAmount())%>
+            <td width="5%" height="16" align=right><%=Encode.forHtml(String.valueOf(moneyFormat(result.getPaidAmount())))%>
             </td>
-            <td width="2%" height="16"><%=result.getExp1()%>&nbsp;
+            <td width="2%" height="16"><%=Encode.forHtml(String.valueOf(result.getExp1()))%>&nbsp;
             </td>
-            <td width="2%" height="16"><%=result.getExp2()%>&nbsp;
+            <td width="2%" height="16"><%=Encode.forHtml(String.valueOf(result.getExp2()))%>&nbsp;
             </td>
-            <td width="2%" height="16"><%=result.getExp3()%>&nbsp;
+            <td width="2%" height="16"><%=Encode.forHtml(String.valueOf(result.getExp3()))%>&nbsp;
             </td>
-            <td width="2%" height="16"><%=result.getAjc1()%>&nbsp;
+            <td width="2%" height="16"><%=Encode.forHtml(String.valueOf(result.getAjc1()))%>&nbsp;
             </td>
-            <td width="5%" height="16"><%=moneyFormat(result.getAja1())%>&nbsp;
+            <td width="5%" height="16"><%=Encode.forHtml(String.valueOf(moneyFormat(result.getAja1())))%>&nbsp;
             </td>
-            <td width="2%" height="16"><%=result.getAjc2()%>&nbsp;
+            <td width="2%" height="16"><%=Encode.forHtml(String.valueOf(result.getAjc2()))%>&nbsp;
             </td>
-            <td width="5%" height="16"><%=moneyFormat(result.getAja2())%>&nbsp;
+            <td width="5%" height="16"><%=Encode.forHtml(String.valueOf(moneyFormat(result.getAja2())))%>&nbsp;
             </td>
-            <td width="2%" height="16"><%=result.getAjc3()%>&nbsp;
+            <td width="2%" height="16"><%=Encode.forHtml(String.valueOf(result.getAjc3()))%>&nbsp;
             </td>
-            <td width="5%" height="16"><%=moneyFormat(result.getAja3())%>&nbsp;
+            <td width="5%" height="16"><%=Encode.forHtml(String.valueOf(moneyFormat(result.getAja3())))%>&nbsp;
             </td>
-            <td width="2%" height="16"><%=result.getAjc4()%>&nbsp;
+            <td width="2%" height="16"><%=Encode.forHtml(String.valueOf(result.getAjc4()))%>&nbsp;
             </td>
-            <td width="5%" height="16"><%=moneyFormat(result.getAja4())%>&nbsp;
+            <td width="5%" height="16"><%=Encode.forHtml(String.valueOf(moneyFormat(result.getAja4())))%>&nbsp;
             </td>
-            <td width="2%" height="16"><%=result.getAjc5()%>&nbsp;
+            <td width="2%" height="16"><%=Encode.forHtml(String.valueOf(result.getAjc5()))%>&nbsp;
             </td>
-            <td width="5%" height="16"><%=moneyFormat(result.getAja5())%>&nbsp;
+            <td width="5%" height="16"><%=Encode.forHtml(String.valueOf(moneyFormat(result.getAja5())))%>&nbsp;
             </td>
-            <td width="2%" height="16"><%=result.getAjc6()%>&nbsp;
+            <td width="2%" height="16"><%=Encode.forHtml(String.valueOf(result.getAjc6()))%>&nbsp;
             </td>
-            <td width="5%" height="16"><%=moneyFormat(result.getAja6())%>&nbsp;
+            <td width="5%" height="16"><%=Encode.forHtml(String.valueOf(moneyFormat(result.getAja6())))%>&nbsp;
             </td>
-            <td width="2%" height="16"><%=result.getAjc7()%>&nbsp;
+            <td width="2%" height="16"><%=Encode.forHtml(String.valueOf(result.getAjc7()))%>&nbsp;
             </td>
-            <!--<td width="5%" height="16"><%=moneyFormat(result.getAja7())%>&nbsp; </td>-->
-            <td width="5%" height="16"><%=result.getS00Type()%>&nbsp;
+            <!--<td width="5%" height="16"><%=Encode.forHtml(String.valueOf(moneyFormat(result.getAja7())))%>&nbsp; </td>-->
+            <td width="5%" height="16"><%=Encode.forHtml(String.valueOf(result.getS00Type()))%>&nbsp;
             </td>
             <td width="5%" height="16"
                 align=right><%=String.valueOf(result.getLineCode()).compareTo("P") == 0 ? "Paid as billed" : String.valueOf(result.getLineCode()).compareTo("R") == 0 ? "Refusal" : String.valueOf(result.getLineCode()).compareTo("H") == 0 ? "Recycle" : ""%>
@@ -209,7 +210,7 @@
                 String s = ""; 
                 if (counter > 1) { s = "s";}%>
         <tr>
-            <td colspan="23" align="center"><%=counter%> Record<%=s%> found.
+            <td colspan="23" align="center"><%=Encode.forHtml(String.valueOf(counter))%> Record<%=Encode.forHtml(String.valueOf(s))%> found.
             </td>
         </tr>
             <%}

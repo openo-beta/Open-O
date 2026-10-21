@@ -53,9 +53,33 @@ public record EmailAttachmentSettings(
     String senderEmail,
     String subjectEmail,
     String bodyEmail,
+    String footerEmail,
     String encryptedMessageEmail,
     String emailPatientChartOption
 ) {
+    /**
+     * Validates email format against a basic pattern and enforces a 254-character limit per RFC 5321.
+     */
+    private static String validateEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            return email;
+        }
+        if (email.length() > 254 || !email.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            throw new IllegalArgumentException("Invalid email format or length");
+        }
+        return email;
+    }
+
+    /**
+     * Removes Unicode line break sequences (CR, LF, CRLF, NEL, LS, PS) to prevent SMTP header injection.
+     */
+    private static String sanitizeSubject(String subject) {
+        if (subject == null || subject.isEmpty()) {
+            return subject;
+        }
+        return subject.replaceAll("\\R", "");
+    }
+
     /**
      * Creates an EmailAttachmentSettings instance from an HTTP request.
      *
@@ -95,9 +119,10 @@ public record EmailAttachmentSettings(
             "true".equals(req.getParameter("deleteEFormAfterSendingEmail")),
             req.getParameter("passwordEmail"),
             req.getParameter("passwordClueEmail"),
-            req.getParameter("senderEmail"),
-            req.getParameter("subjectEmail"),
+            validateEmail(req.getParameter("senderEmail")),
+            sanitizeSubject(req.getParameter("subjectEmail")),
             req.getParameter("bodyEmail"),
+            req.getParameter("footerEmail"),
             req.getParameter("encryptedMessageEmail"),
             req.getParameter("emailPatientChartOption")
         );

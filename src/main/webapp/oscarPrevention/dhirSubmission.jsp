@@ -40,7 +40,7 @@
 <%@page import="org.hl7.fhir.dstu3.model.Patient" %>
 <%@page import="org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent" %>
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
-<%@page import="ca.openosp.openo.integration.fhir.builder.AbstractFhirMessageBuilder" %>
+<%@page import="ca.openosp.openo.integration.fhir.dstu3.builder.AbstractFhirMessageBuilder" %>
 <%@page import="org.hl7.fhir.dstu3.model.Bundle" %>
 <%@page import="java.util.Map" %>
 <%@page import="java.io.InputStream" %>
@@ -73,6 +73,7 @@
 <%@page import="org.apache.http.client.HttpClient" %>
 <%@page import="org.apache.http.HttpResponse" %>
 <%@page import="org.codehaus.jettison.json.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -425,7 +426,7 @@
 
                 %>
                 <h2>There was an error sending the message. You can try resubmitting.</h2>
-                <h3>HTTP Code <%=code%>
+                <h3>HTTP Code <%=Encode.forHtml(String.valueOf(code))%>
                 </h3>
                 <h3>Check logs for more information</h3>
                 <input type="button" value="Retry" onClick="window.location.reload()"/>
@@ -462,7 +463,7 @@
 
                 %>
                 <h2>There was an error sending the message. DHIR will not accept this message.</h2>
-                <h3>HTTP Code <%=code%>
+                <h3>HTTP Code <%=Encode.forHtml(String.valueOf(code))%>
                 </h3>
                 <h3>Check logs for more information</h3>
 

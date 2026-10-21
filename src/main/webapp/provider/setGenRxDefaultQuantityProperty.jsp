@@ -26,6 +26,7 @@
 
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@ page import="java.util.ResourceBundle"%>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     if (session.getValue("user") == null)
@@ -48,7 +49,7 @@
 <html>
     <head>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-        <title><%=bundle.getString(providertitle)%></title>
+        <title><%=Encode.forHtml(String.valueOf(bundle.getString(providertitle)))%></title>
 
         <script src="<c:out value="${ctx}"/>/js/global.js"></script>
         <script src="<c:out value="${ctx}"/>/share/javascript/provider_form_validations.js"></script>
@@ -60,13 +61,13 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><h4><%=bundle.getString(providermsgPrefs)%></h4></td>
-            <td class="MainTableTopRowRightColumn"><h4>&nbsp;&nbsp;<%=bundle.getString(providermsgProvider)%></h4></td>
+            <td class="MainTableTopRowLeftColumn"><h4><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgPrefs)))%></h4></td>
+            <td class="MainTableTopRowRightColumn"><h4>&nbsp;&nbsp;<%=Encode.forHtml(String.valueOf(bundle.getString(providermsgProvider)))%></h4></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
             <td class="MainTableRightColumn">
-                <%if (request.getAttribute("status") == null) {%> <%=bundle.getString(providermsgEdit)%> <!--c:out value="${rxDefaultQuantityProperty.value}" /-->
+                <%if (request.getAttribute("status") == null) {%> <%=Encode.forHtml(String.valueOf(bundle.getString(providermsgEdit)))%> <!--c:out value="${rxDefaultQuantityProperty.value}" /-->
                 <form id="providerForm" action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
                     <input type="text" id="numericFormField" name="rxDefaultQuantityProperty.value" value="<c:out value='${quantity.value}'/>" />
@@ -74,9 +75,9 @@
                         Invalid input.
                     </p>
                     <br>
-                    <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
+                    <input type="submit" value="<%=Encode.forHtmlAttribute(String.valueOf(bundle.getString(providerbtnSubmit)))%>"/>
                 </form> <%} else {%>
-                <div class="alert alert-success"><%=bundle.getString(providermsgSuccess)%></div>
+                <div class="alert alert-success"><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgSuccess)))%></div>
                 <br>
                 <%}%>
             </td>

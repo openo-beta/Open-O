@@ -65,6 +65,7 @@
 <%@page import="ca.openosp.openo.commn.dao.BillingPaymentTypeDao" %>
 <%@page import="ca.openosp.openo.commn.model.BillingPaymentType" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     List<String> errors = new ArrayList<String>();
@@ -271,7 +272,7 @@
 <c:if test="${not empty paymentTypeList}">
     <form name="editPayment" id="editPayment" method="GET" action="">
         <input type="hidden" name="method" value="savePayment"/>
-        <input type="hidden" name="billingNo" value="<%= billingNo %>"/>
+        <input type="hidden" name="billingNo" value="<%=Encode.forHtmlAttribute(String.valueOf(billingNo))%>"/>
         <input type="hidden" name="id" id="paymentId" value=""/>
         <table border=0 cellspacing=0 cellpadding=0 width="100%">
             <tr bgcolor="#CCCCFF">
@@ -302,7 +303,7 @@
                         sign = "-";
                     }
             %>
-            <tr id="itemPayment<%=billItemData.getId() %>" BGCOLOR="#EEEEFF">
+            <tr id="itemPayment<%=Encode.forHtmlAttribute(String.valueOf(billItemData.getId()))%>" BGCOLOR="#EEEEFF">
                 <td width="30%">
                     <div align="right">
                         <select id="sel<%=i%>" name="sel<%=i%>" onchange="setStatus(this.selectedIndex,<%=i %>);">
@@ -324,11 +325,11 @@
                     <div></div>
                 </td>
                 <td align="left">
-                    Service Code:&nbsp;<b><%=billItemData.getService_code()%>&nbsp;$<%=billItemData.getFee() %>&nbsp;
-                    Paid:&nbsp;<%=realPaidSign %><%=currency.format(realPaid) %>&nbsp;
-                    Balance:&nbsp;<%=sign %><%=currency.format(itemBalance) %>
+                    Service Code:&nbsp;<b><%=Encode.forHtml(String.valueOf(billItemData.getService_code()))%>&nbsp;$<%=Encode.forHtml(String.valueOf(billItemData.getFee()))%>&nbsp;
+                    Paid:&nbsp;<%=Encode.forHtml(String.valueOf(realPaidSign))%><%=Encode.forHtml(String.valueOf(currency.format(realPaid)))%>&nbsp;
+                    Balance:&nbsp;<%=Encode.forHtml(String.valueOf(sign))%><%=Encode.forHtml(String.valueOf(currency.format(itemBalance)))%>
                 </b>
-                    <input type="hidden" name="itemId<%=i %>" value="<%=billItemData.getId()%>"/>
+                    <input type="hidden" name="itemId<%=i %>" value="<%=Encode.forHtmlAttribute(String.valueOf(billItemData.getId()))%>"/>
                 </td>
             </tr>
             <%if (i == (items.size() - 1)) {%>
@@ -363,7 +364,7 @@
             <tr bgcolor="#CCCCFF">
                 <td nowrap align="center">
                     <input type="text" name="paymentDate" id="paymentDate" onDblClick="calToday(this)" size="10"
-                           value="<%=datetime%>">
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(datetime))%>">
                     <a id="btn_date"><img title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                     <input type="button" id="saveBtn" name="submitBtn" value="    Save  "
                            onClick="checkInput(); return false;"/>
@@ -465,21 +466,21 @@
             <td/>
             <td/>
             <td><b>Total:</b></td>
-            <td><b><%= currency.format(sum) %>
+            <td><b><%=Encode.forHtml(String.valueOf(currency.format(sum)))%>
             </b>
                     <%if (balance.compareTo(BigDecimal.ZERO) == -1) { %>
         <tr>
             <td/>
             <td/>
             <td><b>Balance:</b></td>
-            <td><b><%= "-" + currency.format(balance) %>
+            <td><b><%=Encode.forHtml(String.valueOf("-" + currency.format(balance)))%>
             </b>
                     <%} else { %>
         <tr>
             <td/>
             <td/>
             <td><b>Balance:</b></td>
-            <td><b><%= currency.format(balance) %>
+            <td><b><%=Encode.forHtml(String.valueOf(currency.format(balance)))%>
             </b>
                     <%} %>
         </tbody>
@@ -487,7 +488,7 @@
 </table>
 
 <% for (String error : errors) { %>
-Error: <%= error %><br>
+Error: <%=Encode.forHtml(String.valueOf(error))%><br>
 <% } %>
 
 </body>

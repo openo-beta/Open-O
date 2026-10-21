@@ -33,6 +33,7 @@
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicAccessoryDao" %>
 <%@page import="ca.openosp.openo.commn.model.DemographicAccessory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DemographicAccessoryDao demographicAccessoryDao = (DemographicAccessoryDao) SpringUtils.getBean(DemographicAccessoryDao.class);
 %>
@@ -86,10 +87,10 @@
         }
 
         self.close();
-        self.opener.document.encounter.xml_Problem_List.value = dunescape("<%=URLEncoder.encode(request.getParameter("xml_Problem_List"), StandardCharsets.UTF_8)%>");
-        self.opener.document.encounter.xml_Medication.value = dunescape("<%=URLEncoder.encode(request.getParameter("xml_Medication"), StandardCharsets.UTF_8)%>");
-        self.opener.document.encounter.xml_Alert.value = dunescape("<%=URLEncoder.encode(request.getParameter("xml_Alert"), StandardCharsets.UTF_8)%>");
-        self.opener.document.encounter.xml_Family_Social_History.value = dunescape("<%=URLEncoder.encode(request.getParameter("xml_Family_Social_History"), StandardCharsets.UTF_8)%>");
+        self.opener.document.encounter.xml_Problem_List.value = dunescape("<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("xml_Problem_List"), StandardCharsets.UTF_8))%>");
+        self.opener.document.encounter.xml_Medication.value = dunescape("<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("xml_Medication"), StandardCharsets.UTF_8))%>");
+        self.opener.document.encounter.xml_Alert.value = dunescape("<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("xml_Alert"), StandardCharsets.UTF_8))%>");
+        self.opener.document.encounter.xml_Family_Social_History.value = dunescape("<%=Encode.forJavaScript(URLEncoder.encode(request.getParameter("xml_Family_Social_History"), StandardCharsets.UTF_8))%>");
     </script>
 
     <p></p>

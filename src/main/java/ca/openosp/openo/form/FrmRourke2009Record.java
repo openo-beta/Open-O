@@ -85,13 +85,10 @@ public class FrmRourke2009Record extends FrmRecord {
 
         } else {
 
-            String sql = "SELECT * FROM formRourke2009 WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
+            String sql = "SELECT * FROM formRourke2009 WHERE demographic_no = ? AND ID = ?";
             FrmRecordHelp frmRec = new FrmRecordHelp();
             frmRec.setDateFormat("dd/MM/yyyy");
-            props = frmRec.getFormRecord(sql);
-            sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, "
-                    + "year_of_birth, month_of_birth, date_of_birth, sex, postal "
-                    + "FROM demographic WHERE demographic_no = " + demographicNo;
+            props = frmRec.getFormRecord(sql, demographicNo, existingID);
             demo = demographicManager.getDemographic(loggedInInfo, demographicNo);
 
             if (demo != null) {
@@ -143,11 +140,11 @@ public class FrmRourke2009Record extends FrmRecord {
 
     public int saveFormRecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");
-        String sql = "SELECT * FROM formRourke2009 WHERE demographic_no=" + demographic_no + " AND ID=0";
+        String sql = "SELECT * FROM formRourke2009 WHERE demographic_no=? AND ID=0";
         FrmRecordHelp frmRec = new FrmRecordHelp();
         frmRec.setDateFormat("dd/MM/yyyy");
 
-        return frmRec.saveFormRecord(props, sql);
+        return frmRec.saveFormRecord(props, sql, demographic_no);
     }
 
     //////////////new/ Done By Jay////

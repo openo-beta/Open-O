@@ -32,6 +32,7 @@
 <%@ page
         import="java.util.*,ca.openosp.openo.report.reportByTemplate.*,java.sql.*, org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportObjectGeneric" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -149,10 +150,10 @@
 
             <form style="display:inline;" action="${pageContext.request.contextPath}/oscarReport/reportByTemplate/generateOutFilesAction.do" method="post">
                 <%if (x > 1) { %>
-                <label><%=(x + 1)%>
+                <label><%=Encode.forHtml(String.valueOf((x + 1)))%>
                 </label>
                 <%}%>
-                <input type="hidden" class="btn" name="csv" value="<%=StringEscapeUtils.escapeHtml4(csvList.get(x))%>">
+                <input type="hidden" class="btn" name="csv" value="<%=Encode.forHtml(csvList.get(x))%>">
                 <input type="submit" class="btn" name="getCSV" value="Export to CSV">
                 <input type="submit" class="btn" name="getXLS" value="Export to XLS">
             </form>
@@ -172,7 +173,7 @@
                 <samp style="font-size: 11px;">
                     <%
                         for (int x = 0; x < sqlList.size(); x++) {
-                            out.println((x + 1) + ")" + org.apache.commons.text.StringEscapeUtils.escapeHtml4(sqlList.get(x).trim()));
+                            out.println((x + 1) + ")" + Encode.forHtml(sqlList.get(x).trim()));
                         }
                     %>
                 </samp>

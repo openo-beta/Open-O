@@ -24,6 +24,7 @@
 
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -93,7 +94,7 @@
 
         <table width="600" cellspacing="1">
             <tr>
-                <td colspan="2"><h3><%=session.getAttribute("codeType").toString().toUpperCase()%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearchCodeSearch.msgCodeSearch"/></h3></td>
+                <td colspan="2"><h3><%=Encode.forHtml(String.valueOf(session.getAttribute("codeType").toString().toUpperCase()))%> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearchCodeSearch.msgCodeSearch"/></h3></td>
             </tr>
             <tr class="heading">
                 <td width="20%"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearchCodeSearch.msgCode"/></td>
@@ -117,7 +118,7 @@
                 </tr>
             </c:forEach>
             <% if (intCount == 0) { %>
-            <tr bgcolor="<%=color%>">
+            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
                 <td colspan="2"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarResearch.oscarDxResearch.dxResearchCodeSearch.msgNoMatch"/>.
                     <%// =i%>
                 </td>

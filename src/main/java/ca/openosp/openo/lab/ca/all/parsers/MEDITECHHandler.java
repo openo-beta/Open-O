@@ -343,7 +343,7 @@ public class MEDITECHHandler implements MessageHandler {
         String specimen = "";
         try {
             specimen = getString(msg.getRESPONSE().getORDER_OBSERVATION(i).getOBR().getObr15_SpecimenSource().getCm_sps2_Additives().getValue());
-        } catch (HL7Exception e) {
+        } catch (Exception e) {
             return ("");
         }
 
@@ -358,7 +358,7 @@ public class MEDITECHHandler implements MessageHandler {
         String specimenDescription = "";
         try {
             specimenDescription = getString(msg.getRESPONSE().getORDER_OBSERVATION(i).getOBR().getObr15_SpecimenSource().getCm_sps3_Freetext().getValue());
-        } catch (HL7Exception e) {
+        } catch (Exception e) {
             return ("");
         }
 
@@ -495,7 +495,7 @@ public class MEDITECHHandler implements MessageHandler {
         int count = 0;
         try {
             count = msg.getRESPONSE().getORDER_OBSERVATION(i).getNTEReps();
-        } catch (HL7Exception e) {
+        } catch (Exception e) {
             //do nothing
         }
         return count;
@@ -515,7 +515,7 @@ public class MEDITECHHandler implements MessageHandler {
         int count = 0;
         try {
             count = msg.getRESPONSE().getORDER_OBSERVATION(i).getOBSERVATION(j).getNTEReps();
-        } catch (HL7Exception e1) {
+        } catch (Exception e1) {
             // do nothing
         }
         return count;
@@ -540,16 +540,16 @@ public class MEDITECHHandler implements MessageHandler {
 
     @Override
     public String getFirstName() {
-        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName().getGivenName().getValue()));
+        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName(0).getGivenName().getValue()));
     }
 
     public String getMiddleName() {
-        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName().getXpn3_MiddleInitialOrName().getValue()));
+        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName(0).getXpn3_MiddleInitialOrName().getValue()));
     }
 
     @Override
     public String getLastName() {
-        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName().getFamilyName().getValue()));
+        return (getString(msg.getRESPONSE().getPATIENT().getPID().getPatientName(0).getFamilyName().getValue()));
     }
 
     @Override
@@ -931,13 +931,13 @@ public class MEDITECHHandler implements MessageHandler {
 
         try {
             createProviderMap(msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getOrderingProvider(), providerMap);
-        } catch (HL7Exception e) {
+        } catch (Exception e) {
             logger.error("Exception while adding ordering providers to map ", e);
         }
 
         try {
             createProviderMap(msg.getRESPONSE().getORDER_OBSERVATION(0).getOBR().getResultCopiesTo(), providerMap);
-        } catch (HL7Exception e) {
+        } catch (Exception e) {
             logger.error("Exception while adding copied to providers to map ", e);
         }
 

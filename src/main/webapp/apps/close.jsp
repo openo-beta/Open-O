@@ -24,6 +24,7 @@
 
 --%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
@@ -42,7 +43,7 @@
                     <h3 class="panel-title"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.resources"/></h3>
                 </div>
                 <div class="panel-body">
-                    <%=session.getAttribute("oauthMessage") %>
+                    <%=Encode.forHtml(String.valueOf(session.getAttribute("oauthMessage")))%>
                     <%session.removeAttribute("oauthMessage"); %>
                     <a class="pull-right" onclick="window.close()"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose"/></a>
                 </div>

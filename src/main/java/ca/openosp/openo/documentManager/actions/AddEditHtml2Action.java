@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,9 +53,11 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.ServletActionContext;
 
-public class AddEditHtml2Action extends ActionSupport {
+public class AddEditHtml2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -196,9 +199,9 @@ public class AddEditHtml2Action extends ActionSupport {
     private String responsibleId = "";
     private String source = "";
     private String sourceFacility = "";
-    private File docFile;
+    private UploadedFile docFile;
 
-    private File filedata;
+    private UploadedFile filedata;
 
     private String docPublic = "";
     private String mode = "";
@@ -298,14 +301,6 @@ public class AddEditHtml2Action extends ActionSupport {
         this.sourceFacility = sourceFacility;
     }
 
-    public File getDocFile() {
-        return docFile;
-    }
-
-    public void setDocFile(File docFile) {
-        this.docFile = docFile;
-    }
-
     public String getMode() {
         return mode;
     }
@@ -370,12 +365,17 @@ public class AddEditHtml2Action extends ActionSupport {
         this.html = html;
     }
 
-    public File getFiledata() {
-        return filedata;
-    }
-
-    public void setFiledata(File Filedata) {
-        this.filedata = Filedata;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            for (UploadedFile uploadedFile : uploadedFiles) {
+                if ("docFile".equals(uploadedFile.getInputName())) {
+                    this.docFile = uploadedFile;
+                } else if ("filedata".equals(uploadedFile.getInputName())) {
+                    this.filedata = uploadedFile;
+                }
+            }
+        }
     }
 
     public String getAppointmentNo() {

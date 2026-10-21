@@ -22,10 +22,12 @@
 package ca.openosp.openo.www.lookup;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Set;
 
 import ca.openosp.openo.model.LookupTableDefValue;
 import ca.openosp.openo.model.security.NoAccessException;
@@ -42,6 +44,25 @@ public class LookupList2Action extends ActionSupport {
 
     private LookupManager lookupManager = SpringUtils.getBean(LookupManager.class);
 
+    /** Validates tableId: must be 1-10 alphanumeric characters only (e.g. "PRP", "SIT", "USR", "ORG"). */
+    private static final Pattern VALID_TABLE_ID_PATTERN = Pattern.compile("^[A-Za-z0-9]{1,10}$");
+
+    /**
+     * Validates the tableId parameter to prevent injection.
+     * tableId is a short lookup code (e.g. "PRP", "SIT", "USR") used to find table definitions
+     * in the Lookup system. While GetLookupTableDef uses parameterized HQL, the resolved table
+     * definition data is used to construct queries in LookupDaoImpl. Validating the code format
+     * here provides defense-in-depth.
+     *
+     * @param tableId the table identifier to validate
+     * @throws SecurityException if the tableId is null or contains invalid characters
+     */
+    private static void validateTableId(String tableId) {
+        if (tableId == null || !VALID_TABLE_ID_PATTERN.matcher(tableId).matches()) {
+            throw new SecurityException("Invalid lookup table identifier");
+        }
+    }
+
     public String execute() throws NoAccessException {
         if ("search".equals(request.getParameter("method"))) {
             return search();
@@ -51,11 +72,13 @@ public class LookupList2Action extends ActionSupport {
 
     private String list() throws NoAccessException {
         String tableId = request.getParameter("tableId");
-        if ("PRP,SIT,LKT,QGV,RPG".indexOf(tableId) > 0) throw new NoAccessException();
+        validateTableId(tableId);
+        if (Set.of("PRP", "SIT", "LKT", "QGV", "RPG").contains(tableId)) throw new NoAccessException();
 
         String parentCode = request.getParameter("parentCode");
         request.setAttribute("parentCode", parentCode);
 
+        // tableId is validated above via validateTableId(); GetLookupTableDef uses parameterized HQL
         LookupTableDefValue tableDef = lookupManager.GetLookupTableDef(tableId);
         List lst = lookupManager.LoadCodeList(tableId, true, parentCode, null, null);
         this.setLookups(lst);
@@ -67,8 +90,10 @@ public class LookupList2Action extends ActionSupport {
 
     public String search() {
         String tableId = request.getParameter("tableId");
+        validateTableId(tableId);
         String parentCode = request.getParameter("parentCode");
         if (Utility.IsEmpty(parentCode)) parentCode = this.getParentCode();
+        // tableId is validated above via validateTableId(); GetLookupTableDef uses parameterized HQL
         List lst = lookupManager.LoadCodeList(tableId, true, parentCode, null, this.getKeywordName());
         LookupTableDefValue tableDef = lookupManager.GetLookupTableDef(tableId);
         this.setLookups(lst);

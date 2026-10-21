@@ -146,9 +146,9 @@
                     </tr>
                     <tr>
                         <td><!-- <b><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.nameText"/></b>-->
-                            <%=surname%>, <%=firstName%><br/>
-                            <%=address%><br/>
-                            <%=city%>, <%=province%> <%=postal%><br/><br/>
+                            <%=Encode.forHtml(String.valueOf(surname))%>, <%=Encode.forHtml(String.valueOf(firstName))%><br/>
+                            <%=Encode.forHtml(String.valueOf(address))%><br/>
+                            <%=Encode.forHtml(String.valueOf(city))%>, <%=Encode.forHtml(String.valueOf(province))%> <%=Encode.forHtml(String.valueOf(postal))%><br/><br/>
                         </td>
                     </tr>
                     <tr>
@@ -208,7 +208,7 @@
                                             <tr>
                                                 <td width=20% valign="top">
                                                     <a <%= styleColor%>
-                                                            href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(drug.getRegionalIdentifier())%>&cn=<%=Encode.forUriComponent(drug.getCustomName())%>&bn=<%=Encode.forUriComponent(drug.getBrandName())%>"><%=drug.getRxDate()%>
+                                                            href="<%= request.getContextPath() %>/oscarRx/StaticScript2.jsp?regionalIdentifier=<%=Encode.forUriComponent(drug.getRegionalIdentifier())%>&cn=<%=Encode.forUriComponent(drug.getCustomName())%>&bn=<%=Encode.forUriComponent(drug.getBrandName())%>"><%=Encode.forHtml(String.valueOf(drug.getRxDate()))%>
                                                     </a>
                                                 </td>
                                                 <td width=100%>

@@ -71,7 +71,7 @@ public class OBECRunner {
         result.setDescription("Overnight Batch Eligibility CheckiupdoadDatang");
         result.setResourceType("TXT");
         try {
-            String oscar_home = properties.getProperty("DOCUMENT_DIR");
+            String oscar_home = properties.getDocumentDirectory();
             RandomAccessFile f = new RandomAccessFile(oscar_home + fileName, "r");
             byte[] b = new byte[(int) f.length()];
             f.read(b);

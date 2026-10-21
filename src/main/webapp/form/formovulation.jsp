@@ -21,6 +21,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String formClass = "Ovulation";
@@ -642,17 +643,17 @@
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
     <input type="hidden" name="demographic_no"
-           value="<%= props.getProperty("demographic_no", "0") %>"/>
+           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
     <input type="hidden" name="ID"
-           value="<%= props.getProperty("ID", "0") %>"/>
+           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
     <input type="hidden" name="provider_no"
-           value=<%=request.getParameter("provNo")%>/>
+           value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
     <input type="hidden" name="formCreated"
-           value="<%= props.getProperty("formCreated", "") %>"/>
+           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
     <input type="hidden" name="form_class" value="<%=formClass%>"/>
     <input type="hidden" name="form_link" value="<%=formLink%>"/>
     <input type="hidden" name="provNo"
-           value="<%= request.getParameter("provNo") %>"/>
+           value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
     <input type="hidden" name="submit" value="exit"/>
 
 
@@ -728,36 +729,36 @@
                                                     Ovulation Form
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    HIN:&nbsp; <%=props.getProperty("healthNum", "")%> <input
+                                                    HIN:&nbsp; <%=Encode.forHtml(String.valueOf(props.getProperty("healthNum", "")))%> <input
                                                         type="hidden" name="healthNum"
-                                                        value="<%=props.getProperty("healthNum", "")%>"> <br>
+                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("healthNum", "")))%>"> <br>
                                                     <br>
                                                     First Name:<input type="text" size="12" name="clientFirstName"
-                                                                      value="<%=props.getProperty("clientFirstName", "")%>"
+                                                                      value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("clientFirstName", "")))%>"
                                                                       class="style71" readonly> Last:<input type="text"
                                                                                                             size="12"
                                                                                                             name="clientLastName"
-                                                                                                            value="<%=props.getProperty("clientLastName", "")%>"
+                                                                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("clientLastName", "")))%>"
                                                                                                             class="style71"
                                                                                                             readonly>
                                                     &nbsp;&nbsp;&nbsp; Age: <input
                                                         type="text" size="4" name="dob"
-                                                        value="<%=props.getProperty("dob", "")%>" class="style71"
+                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("dob", "")))%>" class="style71"
                                                         readonly></td>
                                             </tr>
                                             <tr>
 
                                                 <td height="29" colspan="2" class="style76">Work: <input
                                                         type="text" name="workPhone" size="12"
-                                                        value="<%=props.getProperty("workPhone", "")%>"
+                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("workPhone", "")))%>"
                                                         class="style71">&nbsp;&nbsp; Home: <input type="text"
                                                                                                   name="homePhone"
                                                                                                   size="12"
-                                                                                                  value="<%=props.getProperty("homePhone", "")%>"
+                                                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("homePhone", "")))%>"
                                                                                                   class="style71">&nbsp;&nbsp;
                                                     Other: <input type="text"
                                                                   name="otherPhone" size="12"
-                                                                  value="<%=props.getProperty("otherPhone", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("otherPhone", "")))%>"
                                                                   class="style71">&nbsp;&nbsp;
                                                 </td>
                                             </tr>
@@ -772,7 +773,7 @@
 
                                                 <td height="72" valign="top"><textarea name="diagnosis"
                                                                                        cols="17" rows="4"
-                                                                                       class="style71"><%=props.getProperty("diagnosis", "")%></textarea>
+                                                                                       class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("diagnosis", "")))%></textarea>
                                                 </td>
                                             </tr>
 
@@ -796,7 +797,7 @@
                                                         <tr>
                                                             <td colspan="5" class="style76">WH: BMI:
                                                                 LMP:&nbsp;&nbsp; <input type="text" name="lmp" size="12"
-                                                                                        value="<%=props.getProperty("lmp", "")%>"
+                                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("lmp", "")))%>"
                                                                                         class="style71"
                                                                                         onDblClick="calToday(this)">&nbsp;
                                                                 (dd/mm/yyyy)
@@ -816,7 +817,7 @@
                                                                         <td width="84%" height="22" class="style76">
                                                                             <input
                                                                                     type="text" size="5" name="diag"
-                                                                                    value="<%=props.getProperty("diag", "")%>"
+                                                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("diag", "")))%>"
                                                                                     class="style71">
                                                                         </td>
                                                                     </tr>
@@ -827,7 +828,7 @@
                                                                         <td height="22" class="style76"><input
                                                                                 type="text"
                                                                                 size="5" name="femara"
-                                                                                value="<%=props.getProperty("femara", "")%>"
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("femara", "")))%>"
                                                                                 class="style71"></td>
                                                                     </tr>
                                                                     <tr>
@@ -837,7 +838,7 @@
                                                                         <td height="22" class="style76"><input
                                                                                 type="text"
                                                                                 size="5" name="tamoxi"
-                                                                                value="<%=props.getProperty("tamoxi", "")%>"
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tamoxi", "")))%>"
                                                                                 class="style71"></td>
                                                                     </tr>
 
@@ -848,7 +849,7 @@
                                                                         <td height="22" class="style76"><input
                                                                                 type="text"
                                                                                 size="5" name="ccNol"
-                                                                                value="<%=props.getProperty("ccNol", "")%>"
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ccNol", "")))%>"
                                                                                 class="style71"></td>
                                                                     </tr>
                                                                     <tr>
@@ -858,7 +859,7 @@
                                                                         <td height="22" class="style76"><input
                                                                                 type="text"
                                                                                 size="5" name="gonad"
-                                                                                value="<%=props.getProperty("gonad", "")%>"
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("gonad", "")))%>"
                                                                                 class="style71"></td>
                                                                     </tr>
                                                                 </table>
@@ -878,7 +879,7 @@
                                                                             <input
                                                                                     type="text" size="5"
                                                                                     name="metForMin"
-                                                                                    value="<%=props.getProperty("metForMin", "")%>"
+                                                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("metForMin", "")))%>"
                                                                                     class="style71"></td>
                                                                     </tr>
                                                                     <tr>
@@ -891,7 +892,7 @@
                                                                         <td height="34" class="style76"><input
                                                                                 type="text"
                                                                                 size="5" name="parlodEl"
-                                                                                value="<%=props.getProperty("parlodEl", "")%>"
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("parlodEl", "")))%>"
                                                                                 class="style71"></td>
                                                                     </tr>
                                                                     <tr>
@@ -904,7 +905,7 @@
                                                                         <td height="38" class="style76"><input
                                                                                 type="text"
                                                                                 size="5" name="folicAcid"
-                                                                                value="<%=props.getProperty("folicAcid", "")%>"
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("folicAcid", "")))%>"
                                                                                 class="style71"></td>
                                                                     </tr>
                                                                 </table>
@@ -917,7 +918,7 @@
 
                                                                         <td height="41" class="style76">Ovul/Hcg <br>
                                                                             <input type="text" size="12" name="ovul"
-                                                                                   value="<%=props.getProperty("ovul", "")%>"
+                                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ovul", "")))%>"
                                                                                    class="style71"></td>
                                                                     </tr>
                                                                     <tr>
@@ -925,7 +926,7 @@
                                                                         <td height="48" class="style76">Post Ov/Progest
                                                                             <br>
                                                                             <input type="text" size="12" name="postOv"
-                                                                                   value="<%=props.getProperty("postOv", "")%>"
+                                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("postOv", "")))%>"
                                                                                    class="style71"></td>
                                                                     </tr>
                                                                 </table>
@@ -945,7 +946,7 @@
                                                                         <td height="78" valign="top"
                                                                             class="style76"><textarea
                                                                                 name="sideEffects" cols="17" rows="4"
-                                                                                class="style71"><%=props.getProperty("sideEffects", "")%></textarea>
+                                                                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("sideEffects", "")))%></textarea>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -959,7 +960,7 @@
                                                                         <td height="40" class="style76">IUI <input
                                                                                 type="text"
                                                                                 size="12" name="iui"
-                                                                                value="<%=props.getProperty("iui", "")%>"
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("iui", "")))%>"
                                                                                 class="style71"></td>
                                                                     </tr>
                                                                     <tr>
@@ -967,7 +968,7 @@
                                                                         <td height="60" class="style76">TDI <input
                                                                                 type="text"
                                                                                 size="12" name="tdi"
-                                                                                value="<%=props.getProperty("tdi", "")%>"
+                                                                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tdi", "")))%>"
                                                                                 class="style71">
                                                                         </td>
                                                                     </tr>
@@ -993,10 +994,10 @@
                                 <tr>
                                     <td valign="top" class="style76"><textarea
                                             name="abnormalResult" cols="27" rows="6"
-                                            class="style71"><%=props.getProperty("abnormalResult", "")%></textarea>
+                                            class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("abnormalResult", "")))%></textarea>
                                         Previous Cycles: <textarea name="previousCycles" cols="27"
                                                                    rows="4"
-                                                                   class="style71"><%=props.getProperty("previousCycles", "")%></textarea>
+                                                                   class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("previousCycles", "")))%></textarea>
                                     </td>
                                 </tr>
                             </table>
@@ -1011,49 +1012,49 @@
                                 <tr>
                                     <td class="style76">Volume: <input type="text"
                                                                        name="semenVolume" size="12"
-                                                                       value="<%=props.getProperty("semenVolume", "")%>"
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("semenVolume", "")))%>"
                                                                        class="style71"></td>
                                 </tr>
 
                                 <tr>
                                     <td class="style76">P. Motility: <input type="text"
                                                                             name="semenPMotility" size="12"
-                                                                            value="<%=props.getProperty("semenPMotility", "")%>"
+                                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("semenPMotility", "")))%>"
                                                                             class="style71"></td>
                                 </tr>
 
                                 <tr>
                                     <td class="style76">T. Motility: <input type="text"
                                                                             name="semenTMotility" size="12"
-                                                                            value="<%=props.getProperty("semenTMotility", "")%>"
+                                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("semenTMotility", "")))%>"
                                                                             class="style71"></td>
                                 </tr>
 
                                 <tr>
                                     <td class="style76">Morphology: <input type="text"
                                                                            name="semenMorphology" size="12"
-                                                                           value="<%=props.getProperty("semenMorphology", "")%>"
+                                                                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("semenMorphology", "")))%>"
                                                                            class="style71"></td>
                                 </tr>
 
                                 <tr>
                                     <td class="style76">Concentration: <input type="text"
                                                                               name="semenConcentration" size="12"
-                                                                              value="<%=props.getProperty("semenConcentration", "")%>"
+                                                                              value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("semenConcentration", "")))%>"
                                                                               class="style71"></td>
                                 </tr>
 
                                 <tr>
                                     <td class="style76">Viable Sperm: <input type="text"
                                                                              name="semenSperm" size="12"
-                                                                             value="<%=props.getProperty("semenSperm", "")%>"
+                                                                             value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("semenSperm", "")))%>"
                                                                              class="style71">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="style76">Sperm PH: <input type="text"
                                                                          name="semenSpermPh" size="12"
-                                                                         value="<%=props.getProperty("semenSpermPh", "")%>"
+                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("semenSpermPh", "")))%>"
                                                                          class="style71"></td>
                                 </tr>
 
@@ -1068,7 +1069,7 @@
                     <tr>
                         <td colspan="5" rowspan="2" valign="middle" class="style76"><b>*****DAY
                             3 FSH:</b> <input type="text" size="12" name="fsh"
-                                              value="<%=props.getProperty("fsh", "")%>" class="style71">
+                                              value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("fsh", "")))%>" class="style71">
                         </td>
                         <td colspan="2" rowspan="2" align="center" class="style76"><b><i>RIGHT
                             OVARY</i></b></td>
@@ -1115,7 +1116,7 @@
                     <tr>
                         <td rowspan="2" align="center" class="style76"><input
                                 type="text" name="date1" size="7"
-                                value="<%=props.getProperty("date1", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date1", "")))%>" class="style71"
                                 onDblClick="calToday(this)"></td>
                         <td rowspan="2" align="center" class="style76"><select
                                 name="day1" class="style71">
@@ -1276,112 +1277,112 @@
                         </select></td>
                         <td height="36" align="center" class="style76"><input
                                 type="text" name="e2Lh1a" size="3"
-                                value="<%=props.getProperty("e2Lh1a", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh1a", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh1a"
-                                value="<%=props.getProperty("flag_e2Lh1a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh1a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh1a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl1a" size="3"
-                                                                  value="<%=props.getProperty("tshPrl1a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl1a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl1a"
-                                value="<%=props.getProperty("flag_tshPrl1a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl1a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl1a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog1a" size="3"
-                                                                  value="<%=props.getProperty("progBhog1a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog1a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog1a"
-                                value="<%=props.getProperty("flag_progBhog1a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog1a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog1a);</script>
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="rightLo1" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("rightLo1", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("rightLo1", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst1a" size="5"
-                                                                  value="<%=props.getProperty("rightCyst1a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst1a", "")))%>"
                                                                   class="style71"></td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="leftLo1" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("leftLo1", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("leftLo1", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst1a" size="5"
-                                                                  value="<%=props.getProperty("leftCyst1a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst1a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><input
                                 type="text" name="ff1" size="5" class="style71" maxlength="8"
-                                value="<%=props.getProperty("ff1", "")%>"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ff1", "")))%>"
                                 onDblClick="showPGBox('ffDiv',1, this, event, 'ff1', 500, 423, 26);">
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX1a" size="5"
-                                                                  value="<%=props.getProperty("etTEX1a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX1a", "")))%>"
                                                                   class="style71">
                         </td>
                         <td align="center" rowspan="2" class="style76"><textarea
                                 name="meds1" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("meds1", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("meds1", "")))%></textarea>
                         </td>
                         <td rowspan="2" class="style76"><textarea name="comment1"
                                                                   cols="17" rows="3"
-                                                                  class="style71"><%=props.getProperty("comment1", "")%></textarea>
+                                                                  class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("comment1", "")))%></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td height="28" align="center" class="style76"><input
                                 type="text" name="e2Lh1b" size="3"
-                                value="<%=props.getProperty("e2Lh1b", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh1b", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh1b"
-                                value="<%=props.getProperty("flag_e2Lh1b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh1b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh1b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl1b" size="3"
-                                                                  value="<%=props.getProperty("tshPrl1b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl1b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl1b"
-                                value="<%=props.getProperty("flag_tshPrl1b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl1b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl1b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog1b" size="3"
-                                                                  value="<%=props.getProperty("progBhog1b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog1b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog1b"
-                                value="<%=props.getProperty("flag_progBhog1b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog1b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog1b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst1b" size="5"
-                                                                  value="<%=props.getProperty("rightCyst1b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst1b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst1b" size="5"
-                                                                  value="<%=props.getProperty("leftCyst1b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst1b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX1b" size="5"
-                                                                  value="<%=props.getProperty("etTEX1b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX1b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"></td>
                     </tr>
                     <tr>
                         <td rowspan="2" align="center" class="style76"><input
                                 type="text" name="date2" size="7"
-                                value="<%=props.getProperty("date2", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date2", "")))%>" class="style71"
                                 onDblClick="calToday(this)"></td>
                         <td rowspan="2" align="center" class="style76"><select
                                 name="day2" class="style71">
@@ -1542,108 +1543,108 @@
                         </select></td>
                         <td height="37" align="center" class="style76"><input
                                 type="text" name="e2Lh2a" size="3"
-                                value="<%=props.getProperty("e2Lh2a", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh2a", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh2a"
-                                value="<%=props.getProperty("flag_e2Lh2a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh2a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh2a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl2a" size="3"
-                                                                  value="<%=props.getProperty("tshPrl2a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl2a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl2a"
-                                value="<%=props.getProperty("flag_tshPrl2a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl2a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl2a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog2a" size="3"
-                                                                  value="<%=props.getProperty("progBhog2a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog2a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog2a"
-                                value="<%=props.getProperty("flag_progBhog2a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog2a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog2a);</script>
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="rightLo2" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("rightLo2", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("rightLo2", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst2a" size="5"
-                                                                  value="<%=props.getProperty("rightCyst2a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst2a", "")))%>"
                                                                   class="style71"></td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="leftLo2" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("leftLo2", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("leftLo2", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst2a" size="5"
-                                                                  value="<%=props.getProperty("leftCyst2a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst2a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><input
                                 type="text" name="ff2" size="5" class="style71" maxlength="8"
-                                value="<%=props.getProperty("ff2", "")%>"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ff2", "")))%>"
                                 onDblClick="showPGBox('ffDiv',2, this, event, 'ff2', 500, 423, 26);">
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX2a" size="5"
-                                                                  value="<%=props.getProperty("etTEX2a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX2a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><textarea
                                 name="meds2" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("meds2", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("meds2", "")))%></textarea>
                         </td>
                         <td rowspan="2" class="style76"><textarea name="comment2"
                                                                   cols="17" rows="3"
-                                                                  class="style71"><%=props.getProperty("comment2", "")%></textarea>
+                                                                  class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("comment2", "")))%></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td height="26" align="center" class="style76"><input
                                 type="text" name="e2Lh2b" size="3"
-                                value="<%=props.getProperty("e2Lh2b", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh2b", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh2b"
-                                value="<%=props.getProperty("flag_e2Lh2b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh2b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh2b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl2b" size="3"
-                                                                  value="<%=props.getProperty("tshPrl2b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl2b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl2b"
-                                value="<%=props.getProperty("flag_tshPrl2b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl2b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl2b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog2b" size="3"
-                                                                  value="<%=props.getProperty("progBhog2b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog2b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog2b"
-                                value="<%=props.getProperty("flag_progBhog2b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog2b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog2b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst2b" size="5"
-                                                                  value="<%=props.getProperty("rightCyst2b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst2b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst2b" size="5"
-                                                                  value="<%=props.getProperty("leftCyst2b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst2b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX2b" size="5"
-                                                                  value="<%=props.getProperty("etTEX2b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX2b", "")))%>"
                                                                   class="style71"></td>
                     </tr>
                     <tr>
                         <td rowspan="2" align="center" class="style76"><input
                                 type="text" name="date3" size="7"
-                                value="<%=props.getProperty("date3", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date3", "")))%>" class="style71"
                                 onDblClick="calToday(this)"></td>
                         <td rowspan="2" align="center" class="style76"><select
                                 name="day3" class="style71">
@@ -1804,107 +1805,107 @@
                         </select></td>
                         <td height="35" align="center" class="style76"><input
                                 type="text" name="e2Lh3a" size="3"
-                                value="<%=props.getProperty("e2Lh3a", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh3a", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh3a"
-                                value="<%=props.getProperty("flag_e2Lh3a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh3a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh3a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl3a" size="3"
-                                                                  value="<%=props.getProperty("tshPrl3a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl3a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl3a"
-                                value="<%=props.getProperty("flag_tshPrl3a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl3a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl3a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog3a" size="3"
-                                                                  value="<%=props.getProperty("progBhog3a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog3a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog3a"
-                                value="<%=props.getProperty("flag_progBhog3a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog3a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog3a);</script>
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="rightLo3" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("rightLo3", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("rightLo3", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst3a" size="5"
-                                                                  value="<%=props.getProperty("rightCyst3a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst3a", "")))%>"
                                                                   class="style71"></td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="leftLo3" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("leftLo3", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("leftLo3", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst3a" size="5"
-                                                                  value="<%=props.getProperty("leftCyst3a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst3a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><input
                                 type="text" name="ff3" size="5" class="style71" maxlength="8"
-                                value="<%=props.getProperty("ff3", "")%>"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ff3", "")))%>"
                                 onDblClick="showPGBox('ffDiv',3, this, event, 'ff3', 500, 423, 26);">
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX3a" size="5"
-                                                                  value="<%=props.getProperty("etTEX3a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX3a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><textarea
                                 name="meds3" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("meds3", "")%></textarea></td>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("meds3", "")))%></textarea></td>
                         <td rowspan="2" class="style76"><textarea name="comment3"
                                                                   cols="17" rows="3"
-                                                                  class="style71"><%=props.getProperty("comment3", "")%></textarea>
+                                                                  class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("comment3", "")))%></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td height="26" align="center" class="style76"><input
                                 type="text" name="e2Lh3b" size="3"
-                                value="<%=props.getProperty("e2Lh3b", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh3b", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh3b"
-                                value="<%=props.getProperty("flag_e2Lh3b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh3b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh3b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl3b" size="3"
-                                                                  value="<%=props.getProperty("tshPrl3b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl3b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl3b"
-                                value="<%=props.getProperty("flag_tshPrl3b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl3b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl3b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog3b" size="3"
-                                                                  value="<%=props.getProperty("progBhog3b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog3b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog3b"
-                                value="<%=props.getProperty("flag_progBhog3b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog3b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog3b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst3b" size="5"
-                                                                  value="<%=props.getProperty("rightCyst3b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst3b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst3b" size="5"
-                                                                  value="<%=props.getProperty("leftCyst3b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst3b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX3b" size="5"
-                                                                  value="<%=props.getProperty("etTEX3b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX3b", "")))%>"
                                                                   class="style71"></td>
                     </tr>
                     <tr>
                         <td rowspan="2" align="center" class="style76"><input
                                 type="text" name="date4" size="7"
-                                value="<%=props.getProperty("date4", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date4", "")))%>" class="style71"
                                 onDblClick="calToday(this)"></td>
                         <td rowspan="2" align="center" class="style76"><select
                                 name="day4" class="style71">
@@ -2065,108 +2066,108 @@
                         </select>
                         <td height="34" align="center" class="style76"><input
                                 type="text" name="e2Lh4a" size="3"
-                                value="<%=props.getProperty("e2Lh4a", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh4a", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh4a"
-                                value="<%=props.getProperty("flag_e2Lh4a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh4a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh4a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl4a" size="3"
-                                                                  value="<%=props.getProperty("tshPrl4a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl4a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl4a"
-                                value="<%=props.getProperty("flag_tshPrl4a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl4a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl4a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog4a" size="3"
-                                                                  value="<%=props.getProperty("progBhog4a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog4a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog4a"
-                                value="<%=props.getProperty("flag_progBhog4a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog4a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog4a);</script>
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="rightLo4" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("rightLo4", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("rightLo4", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst4a" size="5"
-                                                                  value="<%=props.getProperty("rightCyst4a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst4a", "")))%>"
                                                                   class="style71"></td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="leftLo4" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("leftLo4", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("leftLo4", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst4a" size="5"
-                                                                  value="<%=props.getProperty("leftCyst4a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst4a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><input
                                 type="text" name="ff4" size="5" class="style71" maxlength="8"
-                                value="<%=props.getProperty("ff4", "")%>"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ff4", "")))%>"
                                 onDblClick="showPGBox('ffDiv',4, this, event, 'ff4', 500, 623, 26);">
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX4a" size="5"
-                                                                  value="<%=props.getProperty("etTEX4a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX4a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><textarea
                                 name="meds4" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("meds4", "")%></textarea></td>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("meds4", "")))%></textarea></td>
                         <td rowspan="2" class="style76"><textarea name="comment4"
                                                                   cols="17" rows="3"
-                                                                  class="style71"><%=props.getProperty("comment4", "")%></textarea>
+                                                                  class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("comment4", "")))%></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td align="center" class="style76"><input type="text"
                                                                   name="e2Lh4b" size="3"
-                                                                  value="<%=props.getProperty("e2Lh4b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh4b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh4b"
-                                value="<%=props.getProperty("flag_e2Lh4b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh4b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh4b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl4b" size="3"
-                                                                  value="<%=props.getProperty("tshPrl4b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl4b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl4b"
-                                value="<%=props.getProperty("flag_tshPrl4b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl4b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl4b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog4b" size="3"
-                                                                  value="<%=props.getProperty("progBhog4b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog4b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog4b"
-                                value="<%=props.getProperty("flag_progBhog4b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog4b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog4b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst4b" size="5"
-                                                                  value="<%=props.getProperty("rightCyst4b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst4b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst4b" size="5"
-                                                                  value="<%=props.getProperty("leftCyst4b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst4b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX4b" size="5"
-                                                                  value="<%=props.getProperty("etTEX4b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX4b", "")))%>"
                                                                   class="style71"></td>
                     </tr>
                     <tr>
                         <td rowspan="2" align="center" class="style76"><input
                                 type="text" name="date5" size="7"
-                                value="<%=props.getProperty("date5", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date5", "")))%>" class="style71"
                                 onDblClick="calToday(this)"></td>
                         <td rowspan="2" align="center" class="style76"><select
                                 name="day5" class="style71">
@@ -2327,108 +2328,108 @@
                         </select>
                         <td height="38" align="center" class="style76"><input
                                 type="text" name="e2Lh5a" size="3"
-                                value="<%=props.getProperty("e2Lh5a", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh5a", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh5a"
-                                value="<%=props.getProperty("flag_e2Lh5a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh5a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh5a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl5a" size="3"
-                                                                  value="<%=props.getProperty("tshPrl5a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl5a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl5a"
-                                value="<%=props.getProperty("flag_tshPrl5a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl5a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl5a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog5a" size="3"
-                                                                  value="<%=props.getProperty("progBhog5a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog5a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog5a"
-                                value="<%=props.getProperty("flag_progBhog5a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog5a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog5a);</script>
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="rightLo5" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("rightLo5", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("rightLo5", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst5a" size="5"
-                                                                  value="<%=props.getProperty("rightCyst5a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst5a", "")))%>"
                                                                   class="style71"></td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="leftLo5" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("leftLo5", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("leftLo5", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst5a" size="5"
-                                                                  value="<%=props.getProperty("leftCyst5a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst5a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><input
                                 type="text" name="ff5" size="5" class="style71" maxlength="8"
-                                value="<%=props.getProperty("ff5", "")%>"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ff5", "")))%>"
                                 onDblClick="showPGBox('ffDiv',5, this, event, 'ff5', 500, 623, 26);">
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX5a" size="5"
-                                                                  value="<%=props.getProperty("etTEX5a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX5a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><textarea
                                 name="meds5" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("meds5", "")%></textarea></td>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("meds5", "")))%></textarea></td>
                         <td rowspan="2" class="style76"><textarea name="comment5"
                                                                   cols="17" rows="3"
-                                                                  class="style71"><%=props.getProperty("comment5", "")%></textarea>
+                                                                  class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("comment5", "")))%></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td align="center" class="style76"><input type="text"
                                                                   name="e2Lh5b" size="3"
-                                                                  value="<%=props.getProperty("e2Lh5b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh5b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh5b"
-                                value="<%=props.getProperty("flag_e2Lh5b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh5b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh5b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl5b" size="3"
-                                                                  value="<%=props.getProperty("tshPrl5b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl5b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl5b"
-                                value="<%=props.getProperty("flag_tshPrl5b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl5b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl5b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog5b" size="3"
-                                                                  value="<%=props.getProperty("progBhog5b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog5b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog5b"
-                                value="<%=props.getProperty("flag_progBhog5b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog5b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog5b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst5b" size="5"
-                                                                  value="<%=props.getProperty("rightCyst5b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst5b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst5b" size="5"
-                                                                  value="<%=props.getProperty("leftCyst5b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst5b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX5b" size="5"
-                                                                  value="<%=props.getProperty("etTEX5b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX5b", "")))%>"
                                                                   class="style71"></td>
                     </tr>
                     <tr>
                         <td rowspan="2" align="center" class="style76"><input
                                 type="text" name="date6" size="7"
-                                value="<%=props.getProperty("date6", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date6", "")))%>" class="style71"
                                 onDblClick="calToday(this)"></td>
                         <td rowspan="2" align="center" class="style76"><select
                                 name="day6" class="style71">
@@ -2589,108 +2590,108 @@
                         </select>
                         <td height="34" align="center" class="style76"><input
                                 type="text" name="e2Lh6a" size="3"
-                                value="<%=props.getProperty("e2Lh6a", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh6a", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh6a"
-                                value="<%=props.getProperty("flag_e2Lh6a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh6a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh6a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl6a" size="3"
-                                                                  value="<%=props.getProperty("tshPrl6a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl6a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl6a"
-                                value="<%=props.getProperty("flag_tshPrl6a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl6a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl6a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog6a" size="3"
-                                                                  value="<%=props.getProperty("progBhog6a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog6a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog6a"
-                                value="<%=props.getProperty("flag_progBhog6a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog6a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog6a);</script>
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="rightLo6" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("rightLo6", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("rightLo6", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst6a" size="5"
-                                                                  value="<%=props.getProperty("rightCyst6a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst6a", "")))%>"
                                                                   class="style71"></td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="leftLo6" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("leftLo6", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("leftLo6", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst6a" size="5"
-                                                                  value="<%=props.getProperty("leftCyst6a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst6a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><input
                                 type="text" name="ff6" size="5" class="style71" maxlength="8"
-                                value="<%=props.getProperty("ff6", "")%>"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ff6", "")))%>"
                                 onDblClick="showPGBox('ffDiv',6, this, event, 'ff6', 500, 623, 26);">
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX6a" size="5"
-                                                                  value="<%=props.getProperty("etTEX6a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX6a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><textarea
                                 name="meds6" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("meds6", "")%></textarea></td>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("meds6", "")))%></textarea></td>
                         <td rowspan="2" class="style76"><textarea name="comment6"
                                                                   cols="17" rows="3"
-                                                                  class="style71"><%=props.getProperty("comment6", "")%></textarea>
+                                                                  class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("comment6", "")))%></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td align="center" class="style76"><input type="text"
                                                                   name="e2Lh6b" size="3"
-                                                                  value="<%=props.getProperty("e2Lh6b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh6b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh6b"
-                                value="<%=props.getProperty("flag_e2Lh6b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh6b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh6b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl6b" size="3"
-                                                                  value="<%=props.getProperty("tshPrl6b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl6b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl6b"
-                                value="<%=props.getProperty("flag_tshPrl6b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl6b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl6b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog6b" size="3"
-                                                                  value="<%=props.getProperty("progBhog6b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog6b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog6b"
-                                value="<%=props.getProperty("flag_progBhog6b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog6b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog6b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst6b" size="5"
-                                                                  value="<%=props.getProperty("rightCyst6b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst6b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst6b" size="5"
-                                                                  value="<%=props.getProperty("leftCyst6b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst6b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX6b" size="5"
-                                                                  value="<%=props.getProperty("etTEX6b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX6b", "")))%>"
                                                                   class="style71"></td>
                     </tr>
                     <tr>
                         <td rowspan="2" align="center" class="style76"><input
                                 type="text" name="date7" size="7"
-                                value="<%=props.getProperty("date7", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date7", "")))%>" class="style71"
                                 onDblClick="calToday(this)"></td>
                         <td rowspan="2" align="center" class="style76"><select
                                 name="day7" class="style71">
@@ -2851,107 +2852,107 @@
                         </select>
                         <td height="36" align="center" class="style76"><input
                                 type="text" name="e2Lh7a" size="3"
-                                value="<%=props.getProperty("e2Lh7a", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh7a", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh7a"
-                                value="<%=props.getProperty("flag_e2Lh7a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh7a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh7a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl7a" size="3"
-                                                                  value="<%=props.getProperty("tshPrl7a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl7a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl7a"
-                                value="<%=props.getProperty("flag_tshPrl7a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl7a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl7a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog7a" size="3"
-                                                                  value="<%=props.getProperty("progBhog7a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog7a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog7a"
-                                value="<%=props.getProperty("flag_progBhog7a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog7a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog7a);</script>
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="rightLo7" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("rightLo7", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("rightLo7", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst7a" size="5"
-                                                                  value="<%=props.getProperty("rightCyst7a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst7a", "")))%>"
                                                                   class="style71"></td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="leftLo7" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("leftLo7", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("leftLo7", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst7a" size="5"
-                                                                  value="<%=props.getProperty("leftCyst7a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst7a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><input
                                 type="text" name="ff7" size="5" class="style71" maxlength="8"
-                                value="<%=props.getProperty("ff7", "")%>"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ff7", "")))%>"
                                 onDblClick="showPGBox('ffDiv',7, this, event, 'ff7', 500, 823, 26);">
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX7a" size="5"
-                                                                  value="<%=props.getProperty("etTEX7a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX7a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><textarea
                                 name="meds7" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("meds7", "")%></textarea></td>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("meds7", "")))%></textarea></td>
                         <td rowspan="2" class="style76"><textarea name="comment7"
                                                                   cols="17" rows="3"
-                                                                  class="style71"><%=props.getProperty("comment7", "")%></textarea>
+                                                                  class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("comment7", "")))%></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td height="27" align="center" class="style76"><input
                                 type="text" name="e2Lh7b" size="3"
-                                value="<%=props.getProperty("e2Lh7b", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh7b", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh7b"
-                                value="<%=props.getProperty("flag_e2Lh7b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh7b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh7b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl7b" size="3"
-                                                                  value="<%=props.getProperty("tshPrl7b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl7b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl7b"
-                                value="<%=props.getProperty("flag_tshPrl7b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl7b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl7b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog7b" size="3"
-                                                                  value="<%=props.getProperty("progBhog7b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog7b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog7b"
-                                value="<%=props.getProperty("flag_progBhog7b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog7b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog7b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst7b" size="5"
-                                                                  value="<%=props.getProperty("rightCyst7b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst7b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst7b" size="5"
-                                                                  value="<%=props.getProperty("leftCyst7b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst7b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX7b" size="5"
-                                                                  value="<%=props.getProperty("etTEX7b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX7b", "")))%>"
                                                                   class="style71"></td>
                     </tr>
                     <tr>
                         <td rowspan="2" align="center" class="style76"><input
                                 type="text" name="date8" size="7"
-                                value="<%=props.getProperty("date8", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date8", "")))%>" class="style71"
                                 onDblClick="calToday(this)"></td>
                         <td rowspan="2" align="center" class="style76"><select
                                 name="day8" class="style71">
@@ -3112,108 +3113,108 @@
                         </select>
                         <td height="34" align="center" class="style76"><input
                                 type="text" name="e2Lh8a" size="3"
-                                value="<%=props.getProperty("e2Lh8a", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh8a", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh8a"
-                                value="<%=props.getProperty("flag_e2Lh8a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh8a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh8a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl8a" size="3"
-                                                                  value="<%=props.getProperty("tshPrl8a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl8a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl8a"
-                                value="<%=props.getProperty("flag_tshPrl8a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl8a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl8a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog8a" size="3"
-                                                                  value="<%=props.getProperty("progBhog8a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog8a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog8a"
-                                value="<%=props.getProperty("flag_progBhog8a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog8a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog8a);</script>
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="rightLo8" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("rightLo8", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("rightLo8", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst8a" size="5"
-                                                                  value="<%=props.getProperty("rightCyst8a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst8a", "")))%>"
                                                                   class="style71"></td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="leftLo8" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("leftLo8", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("leftLo8", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst8a" size="5"
-                                                                  value="<%=props.getProperty("leftCyst8a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst8a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><input
                                 type="text" name="ff8" size="5" class="style71" maxlength="8"
-                                value="<%=props.getProperty("ff8", "")%>"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ff8", "")))%>"
                                 onDblClick="showPGBox('ffDiv',8, this, event, 'ff8', 500, 823, 26);">
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX8a" size="5"
-                                                                  value="<%=props.getProperty("etTEX8a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX8a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><textarea
                                 name="meds8" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("meds8", "")%></textarea></td>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("meds8", "")))%></textarea></td>
                         <td rowspan="2" class="style76"><textarea name="comment8"
                                                                   cols="17" rows="3"
-                                                                  class="style71"><%=props.getProperty("comment8", "")%></textarea>
+                                                                  class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("comment8", "")))%></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td align="center" class="style76"><input type="text"
                                                                   name="e2Lh8b" size="3"
-                                                                  value="<%=props.getProperty("e2Lh8b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh8b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh8b"
-                                value="<%=props.getProperty("flag_e2Lh8b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh8b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh8b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl8b" size="3"
-                                                                  value="<%=props.getProperty("tshPrl8b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl8b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl8b"
-                                value="<%=props.getProperty("flag_tshPrl8b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl8b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl8b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog8b" size="3"
-                                                                  value="<%=props.getProperty("progBhog8b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog8b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog8b"
-                                value="<%=props.getProperty("flag_progBhog8b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog8b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog8b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst8b" size="5"
-                                                                  value="<%=props.getProperty("rightCyst8b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst8b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst8b" size="5"
-                                                                  value="<%=props.getProperty("leftCyst8b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst8b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX8b" size="5"
-                                                                  value="<%=props.getProperty("etTEX8b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX8b", "")))%>"
                                                                   class="style71"></td>
                     </tr>
                     <tr>
                         <td rowspan="2" align="center" class="style76"><input
                                 type="text" name="date9" size="7"
-                                value="<%=props.getProperty("date9", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date9", "")))%>" class="style71"
                                 onDblClick="calToday(this)"></td>
                         <td rowspan="2" align="center" class="style76"><select
                                 name="day9" class="style71">
@@ -3374,108 +3375,108 @@
                         </select>
                         <td height="32" align="center" class="style76"><input
                                 type="text" name="e2Lh9a" size="3"
-                                value="<%=props.getProperty("e2Lh9a", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh9a", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh9a"
-                                value="<%=props.getProperty("flag_e2Lh9a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh9a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh9a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl9a" size="3"
-                                                                  value="<%=props.getProperty("tshPrl9a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl9a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl9a"
-                                value="<%=props.getProperty("flag_tshPrl9a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl9a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl9a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog9a" size="3"
-                                                                  value="<%=props.getProperty("progBhog9a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog9a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog9a"
-                                value="<%=props.getProperty("flag_progBhog9a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog9a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog9a);</script>
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="rightLo9" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("rightLo9", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("rightLo9", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst9a" size="5"
-                                                                  value="<%=props.getProperty("rightCyst9a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst9a", "")))%>"
                                                                   class="style71"></td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="leftLo9" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("leftLo9", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("leftLo9", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst9a" size="5"
-                                                                  value="<%=props.getProperty("leftCyst9a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst9a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><input
                                 type="text" name="ff9" size="5" class="style71" maxlength="8"
-                                value="<%=props.getProperty("ff9", "")%>"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ff9", "")))%>"
                                 onDblClick="showPGBox('ffDiv',9, this, event, 'ff9', 500, 823, 26);">
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX9a" size="5"
-                                                                  value="<%=props.getProperty("etTEX9a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX9a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><textarea
                                 name="meds9" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("meds9", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("meds9", "")))%></textarea>
                         </td>
                         <td rowspan="2" class="style76"><textarea name="comment9"
                                                                   cols="17" rows="3"
-                                                                  class="style71"><%=props.getProperty("comment9", "")%></textarea>
+                                                                  class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("comment9", "")))%></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td height="28" align="center" class="style76"><input
                                 type="text" name="e2Lh9b" size="3"
-                                value="<%=props.getProperty("e2Lh9b", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh9b", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh9b"
-                                value="<%=props.getProperty("flag_e2Lh9b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh9b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh9b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl9b" size="3"
-                                                                  value="<%=props.getProperty("tshPrl9b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl9b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl9b"
-                                value="<%=props.getProperty("flag_tshPrl9b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl9b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl9b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog9b" size="3"
-                                                                  value="<%=props.getProperty("progBhog9b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog9b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog9b"
-                                value="<%=props.getProperty("flag_progBhog9b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog9b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog9b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst9b" size="5"
-                                                                  value="<%=props.getProperty("rightCyst9b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst9b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst9b" size="5"
-                                                                  value="<%=props.getProperty("leftCyst9b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst9b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX9b" size="5"
-                                                                  value="<%=props.getProperty("etTEX9b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX9b", "")))%>"
                                                                   class="style71"></td>
                     </tr>
                     <tr>
                         <td rowspan="2" align="center" class="style76"><input
                                 type="text" name="date10" size="7"
-                                value="<%=props.getProperty("date10", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date10", "")))%>" class="style71"
                                 onDblClick="calToday(this)"></td>
                         <td rowspan="2" align="center" class="style76"><select
                                 name="day10" class="style71">
@@ -3636,110 +3637,110 @@
                         </select>
                         <td height="38" align="center" class="style76"><input
                                 type="text" name="e2Lh10a" size="3"
-                                value="<%=props.getProperty("e2Lh10a", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh10a", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh10a"
-                                value="<%=props.getProperty("flag_e2Lh10a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh10a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh10a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl10a" size="3"
-                                                                  value="<%=props.getProperty("tshPrl10a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl10a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl10a"
-                                value="<%=props.getProperty("flag_tshPrl10a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl10a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl10a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog10a" size="3"
-                                                                  value="<%=props.getProperty("progBhog10a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog10a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog10a"
-                                value="<%=props.getProperty("flag_progBhog10a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog10a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog10a);</script>
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="rightLo10" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("rightLo10", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("rightLo10", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst10a" size="5"
-                                                                  value="<%=props.getProperty("rightCyst10a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst10a", "")))%>"
                                                                   class="style71">
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="leftLo10" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("leftLo10", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("leftLo10", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst10a" size="5"
-                                                                  value="<%=props.getProperty("leftCyst10a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst10a", "")))%>"
                                                                   class="style71">
                         </td>
                         <td align="center" rowspan="2" class="style76"><input
                                 type="text" name="ff10" size="5" class="style71" maxlength="8"
-                                value="<%=props.getProperty("ff10", "")%>"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ff10", "")))%>"
                                 onDblClick="showPGBox('ffDiv',10, this, event, 'ff10', 500, 1023, 26);">
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX10a" size="5"
-                                                                  value="<%=props.getProperty("etTEX10a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX10a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><textarea
                                 name="meds10" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("meds10", "")%></textarea></td>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("meds10", "")))%></textarea></td>
                         <td rowspan="2" class="style76"><textarea name="comment10"
                                                                   cols="17" rows="3"
-                                                                  class="style71"><%=props.getProperty("comment10", "")%></textarea>
+                                                                  class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("comment10", "")))%></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td align="center" class="style76"><input type="text"
                                                                   name="e2Lh10b" size="3"
-                                                                  value="<%=props.getProperty("e2Lh10b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh10b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh10b"
-                                value="<%=props.getProperty("flag_e2Lh10b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh10b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh10b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl10b" size="3"
-                                                                  value="<%=props.getProperty("tshPrl10b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl10b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl10b"
-                                value="<%=props.getProperty("flag_tshPrl10b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl10b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl10b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog10b" size="3"
-                                                                  value="<%=props.getProperty("progBhog10b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog10b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog10b"
-                                value="<%=props.getProperty("flag_progBhog10b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog10b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog10b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst10b" size="5"
-                                                                  value="<%=props.getProperty("rightCyst10b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst10b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst10b" size="5"
-                                                                  value="<%=props.getProperty("leftCyst10b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst10b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX10b" size="5"
-                                                                  value="<%=props.getProperty("etTEX10b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX10b", "")))%>"
                                                                   class="style71"></td>
                     </tr>
                     <tr>
                         <td rowspan="2" align="center" class="style76"><input
                                 type="text" name="date11" size="7"
-                                value="<%=props.getProperty("date11", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date11", "")))%>" class="style71"
                                 onDblClick="calToday(this)"></td>
                         <td rowspan="2" align="center" class="style76"><select
                                 name="day11" class="style71">
@@ -3900,111 +3901,111 @@
                         </select>
                         <td height="36" align="center" class="style76"><input
                                 type="text" name="e2Lh11a" size="3"
-                                value="<%=props.getProperty("e2Lh11a", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh11a", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh11a"
-                                value="<%=props.getProperty("flag_e2Lh11a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh11a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh11a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl11a" size="3"
-                                                                  value="<%=props.getProperty("tshPrl11a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl11a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl11a"
-                                value="<%=props.getProperty("flag_tshPrl11a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl11a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl11a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog11a" size="3"
-                                                                  value="<%=props.getProperty("progBhog11a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog11a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog11a"
-                                value="<%=props.getProperty("flag_progBhog11a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog11a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog11a);</script>
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="rightLo11" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("rightLo11", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("rightLo11", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst11a" size="5"
-                                                                  value="<%=props.getProperty("rightCyst11a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst11a", "")))%>"
                                                                   class="style71">
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="leftLo11" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("leftLo11", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("leftLo11", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst11a" size="5"
-                                                                  value="<%=props.getProperty("leftCyst11a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst11a", "")))%>"
                                                                   class="style71">
                         </td>
                         <td align="center" rowspan="2" class="style76"><input
                                 type="text" name="ff11" size="5" class="style71" maxlength="8"
-                                value="<%=props.getProperty("ff11", "")%>"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ff11", "")))%>"
                                 onDblClick="showPGBox('ffDiv',11, this, event, 'ff11', 500, 1023, 26);">
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX11a" size="5"
-                                                                  value="<%=props.getProperty("etTEX11a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX11a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" rowspan="2" class="style76"><textarea
                                 name="meds11" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("meds11", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("meds11", "")))%></textarea>
                         </td>
                         <td rowspan="2" class="style76"><textarea name="comment11"
                                                                   cols="17" rows="3"
-                                                                  class="style71"><%=props.getProperty("comment11", "")%></textarea>
+                                                                  class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("comment11", "")))%></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td align="center" class="style76"><input type="text"
                                                                   name="e2Lh11b" size="3"
-                                                                  value="<%=props.getProperty("e2Lh11b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh11b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh11b"
-                                value="<%=props.getProperty("flag_e2Lh11b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh11b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh11b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl11b" size="3"
-                                                                  value="<%=props.getProperty("tshPrl11b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl11b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl11b"
-                                value="<%=props.getProperty("flag_tshPrl11b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl11b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl11b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog11b" size="3"
-                                                                  value="<%=props.getProperty("progBhog11b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog11b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog11b"
-                                value="<%=props.getProperty("flag_progBhog11b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog11b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog11b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst11b" size="5"
-                                                                  value="<%=props.getProperty("rightCyst11b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst11b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst11b" size="5"
-                                                                  value="<%=props.getProperty("leftCyst11b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst11b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX11b" size="5"
-                                                                  value="<%=props.getProperty("etTEX11b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX11b", "")))%>"
                                                                   class="style71"></td>
                     </tr>
                     <tr>
                         <td rowspan="2" align="center" class="style76"><input
                                 type="text" name="date12" size="7"
-                                value="<%=props.getProperty("date12", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("date12", "")))%>" class="style71"
                                 onDblClick="calToday(this)"></td>
                         <td rowspan="2" align="center" class="style76"><select
                                 name="day12" class="style71">
@@ -4165,100 +4166,100 @@
                         </select>
                         <td height="33" align="center" class="style76"><input
                                 type="text" name="e2Lh12a" size="3"
-                                value="<%=props.getProperty("e2Lh12a", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh12a", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh12a"
-                                value="<%=props.getProperty("flag_e2Lh12a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh12a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh12a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl12a" size="3"
-                                                                  value="<%=props.getProperty("tshPrl12a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl12a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl12a"
-                                value="<%=props.getProperty("flag_tshPrl12a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl12a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl12a);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog12a" size="3"
-                                                                  value="<%=props.getProperty("progBhog12a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog12a", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog12a"
-                                value="<%=props.getProperty("flag_progBhog12a", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog12a", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog12a);</script>
                         </td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="rightLo12" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("rightLo12", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("rightLo12", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst12a" size="5"
-                                                                  value="<%=props.getProperty("rightCyst12a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst12a", "")))%>"
                                                                   class="style71"></td>
                         <td rowspan="2" align="center" class="style76"><textarea
                                 name="leftLo12" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("leftLo12", "")%></textarea>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("leftLo12", "")))%></textarea>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst12a" size="5"
-                                                                  value="<%=props.getProperty("leftCyst12a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst12a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76" rowspan="2"><input
                                 type="text" name="ff12" size="5" class="style71" maxlength="8"
-                                value="<%=props.getProperty("ff12", "")%>"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ff12", "")))%>"
                                 onDblClick="showPGBox('ffDiv',12, this, event, 'ff12', 500, 1023, 26);">
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX12a" size="5"
-                                                                  value="<%=props.getProperty("etTEX12a", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX12a", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76" rowspan="2"><textarea
                                 name="meds12" cols="12" rows="2"
-                                class="style71"><%=props.getProperty("meds12", "")%></textarea></td>
+                                class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("meds12", "")))%></textarea></td>
                         <td rowspan="2"><textarea name="comment12" cols="17" rows="3"
-                                                  class="style71"><%=props.getProperty("comment12", "")%></textarea>
+                                                  class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("comment12", "")))%></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td height="32" align="center" class="style76"><input
                                 type="text" name="e2Lh12b" size="3"
-                                value="<%=props.getProperty("e2Lh12b", "")%>" class="style71"
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("e2Lh12b", "")))%>" class="style71"
                                 onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_e2Lh12b"
-                                value="<%=props.getProperty("flag_e2Lh12b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_e2Lh12b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].e2Lh12b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="tshPrl12b" size="3"
-                                                                  value="<%=props.getProperty("tshPrl12b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("tshPrl12b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_tshPrl12b"
-                                value="<%=props.getProperty("flag_tshPrl12b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_tshPrl12b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].tshPrl12b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="progBhog12b" size="3"
-                                                                  value="<%=props.getProperty("progBhog12b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("progBhog12b", "")))%>"
                                                                   class="style71"
                                                                   onDblClick="javascript:changeColor(this);"> <input
                                 type="hidden" name="flag_progBhog12b"
-                                value="<%=props.getProperty("flag_progBhog12b", "")%>">
+                                value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("flag_progBhog12b", "")))%>">
                             <script>assignBackgroundColor(document.forms[0].progBhog12b);</script>
                         </td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="rightCyst12b" size="5"
-                                                                  value="<%=props.getProperty("rightCyst12b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("rightCyst12b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="leftCyst12b" size="5"
-                                                                  value="<%=props.getProperty("leftCyst12b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("leftCyst12b", "")))%>"
                                                                   class="style71"></td>
                         <td align="center" class="style76"><input type="text"
                                                                   name="etTEX12b" size="5"
-                                                                  value="<%=props.getProperty("etTEX12b", "")%>"
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("etTEX12b", "")))%>"
                                                                   class="style71"></td>
                     </tr>
                 </table>
@@ -4284,7 +4285,7 @@
 
                                     <td width="68%" colspan="2" class="style76"><input
                                             type="text" name="collectionDate"
-                                            value="<%=props.getProperty("collectionDate", "")%>"
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("collectionDate", "")))%>"
                                             class="style71" onDblClick="calToday(this)"></td>
                                 </tr>
 
@@ -4293,7 +4294,7 @@
 
                                     <td width="68%" colspan="2" class="style76"><input
                                             type="text" name="abstinenceDays" size="5"
-                                            value="<%=props.getProperty("abstinenceDays", "")%>"
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("abstinenceDays", "")))%>"
                                             class="style71"> &nbsp;&nbsp;(days)
                                     </td>
                                 </tr>
@@ -4303,7 +4304,7 @@
 
                                     <td width="68%" colspan="2" class="style76"><input
                                             type="text" name="collectionTime" size="5"
-                                            value="<%=props.getProperty("collectionTime", "")%>"
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("collectionTime", "")))%>"
                                             class="style71">&nbsp;&nbsp; <select
                                             name="collectionAmPm" class="style71">
                                         <option value="am"
@@ -4340,17 +4341,17 @@
                                 <tr>
                                     <td width="12%" class="style76">AGE<br>
                                         <input type="text" name="bmiAge" style="width: 100%;" size="2"
-                                               maxlength="3" value="<%=props.getProperty("bmiAge", "")%>"
+                                               maxlength="3" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bmiAge", "")))%>"
                                                class="style71"/></td>
                                     <td width="12%" nowrap class="style76">PREPREGNANT WEIGHT<br>
                                         <input type="text" name="bmiPpWt" style="width: 100%;"
                                                onDblClick="wtEnglish2Metric(this);" size="4" maxlength="5"
-                                               value="<%=props.getProperty("bmiPpWt", "")%>" class="style71"/>
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bmiPpWt", "")))%>" class="style71"/>
                                     </td>
                                     <td width="10%" class="style76">HEIGHT<br>
                                         <input type="text" name="bmiPpHt" style="width: 100%;"
                                                onDblClick="htEnglish2Metric(this);" size="4" maxlength="5"
-                                               value="<%=props.getProperty("bmiPpHt", "")%>" class="style71"/>
+                                               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bmiPpHt", "")))%>" class="style71"/>
                                     </td>
                                     <td width="12%" class="style76"><a href=#
                                                                        onClick="showBMIBox('BMIdiv',1, this, event);return false;"
@@ -4358,7 +4359,7 @@
                                         <font color='red'><b>BMI</b></font></a><br>
                                         <input type="text" name="bmi" style="width: 100%;"
                                                onDblClick="calcBMIMetric(document.forms[0].bmiPpWt, document.forms[0].bmiPpHt, this);"
-                                               size="4" maxlength="5" value="<%=props.getProperty("bmi", "")%>"
+                                               size="4" maxlength="5" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("bmi", "")))%>"
                                                class="style71"/></td>
                                 </tr>
                             </table>
@@ -4439,7 +4440,7 @@
 
                                             <td colspan="2" class="style76"><input type="text"
                                                                                    name="prePh" size="7"
-                                                                                   value="<%=props.getProperty("prePh", "")%>"
+                                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("prePh", "")))%>"
                                                                                    class="style71">
                                             </td>
                                         </tr>
@@ -4451,7 +4452,7 @@
 
                                             <td colspan="2" class="style76"><input type="text"
                                                                                    name="preRoundCells" size="7"
-                                                                                   value="<%=props.getProperty("preRoundCells", "")%>"
+                                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("preRoundCells", "")))%>"
                                                                                    class="style71"></td>
                                         </tr>
                                         <tr>
@@ -4461,33 +4462,33 @@
 
                                             <td colspan="2" class="style76"><input type="text"
                                                                                    name="preProgression" size="7"
-                                                                                   value="<%=props.getProperty("preProgression", "")%>"
+                                                                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("preProgression", "")))%>"
                                                                                    class="style71"></td>
                                         </tr>
 
                                         <tr>
                                             <td width="25%" class="style76">Volume (ml)<br>
                                                 <input type="text" name="preVolume" size="7"
-                                                       value="<%=props.getProperty("preVolume", "")%>"
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("preVolume", "")))%>"
                                                        class="style71"> &nbsp;&nbsp;&nbsp; &nbsp;x
                                             </td>
 
                                             <td width="28%" class="style76">Density (M/ml)<br>
                                                 <input type="text" name="preDensity" size="7"
-                                                       value="<%=props.getProperty("preDensity", "")%>"
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("preDensity", "")))%>"
                                                        class="style71"> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; x
                                             </td>
 
                                             <td width="28%" class="style76">Motility (%)<br>
                                                 <input type="text" name="preMotility" size="7"
-                                                       value="<%=props.getProperty("preMotility", "")%>"
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("preMotility", "")))%>"
                                                        class="style71"> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
                                                 &nbsp; =
                                             </td>
 
                                             <td width="19%" class="style76">TMC<br>
                                                 <input type="text" name="preTmc" size="7"
-                                                       value="<%=props.getProperty("preTmc", "")%>" class="style71"
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("preTmc", "")))%>" class="style71"
                                                        onDblClick="calcTMC(forms[0].preVolume, forms[0].preDensity, forms[0].preMotility, this);">
                                             </td>
 
@@ -4595,28 +4596,28 @@
                                         <tr>
                                             <td width="27%" class="style76">Volume (ml)<br>
                                                 <input type="text" name="postVolume" size="7"
-                                                       value="<%=props.getProperty("postVolume", "")%>"
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("postVolume", "")))%>"
                                                        class="style71"> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
                                                 &nbsp;&nbsp;&nbsp; x
                                             </td>
 
                                             <td width="27%" class="style76">Density (M/ml)<br>
                                                 <input type="text" name="postDensity" size="7"
-                                                       value="<%=props.getProperty("postDensity", "")%>"
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("postDensity", "")))%>"
                                                        class="style71"> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
                                                 &nbsp;&nbsp;&nbsp; x
                                             </td>
 
                                             <td width="26%" class="style76">Motility (%)<br>
                                                 <input type="text" name="postMotility" size="7"
-                                                       value="<%=props.getProperty("postMotility", "")%>"
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("postMotility", "")))%>"
                                                        class="style71"> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
                                                 &nbsp;&nbsp;&nbsp; =
                                             </td>
 
                                             <td width="20%" class="style76">TMC<br>
                                                 <input type="text" name="postTmc" size="7"
-                                                       value="<%=props.getProperty("postTmc", "")%>" class="style71"
+                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("postTmc", "")))%>" class="style71"
                                                        onDblClick="calcTMC(forms[0].postVolume, forms[0].postDensity, forms[0].postMotility, this);">
 
                                             </td>
@@ -4626,7 +4627,7 @@
                                             <td colspan="4" valign="top" class="style76">Comment<br>
                                                 <br>
                                                 <textarea name="postComment" cols="75" rows="8"
-                                                          class="style71"><%=props.getProperty("postComment", "")%></textarea>
+                                                          class="style71"><%=Encode.forHtml(String.valueOf(props.getProperty("postComment", "")))%></textarea>
 
                                             </td>
                                         </tr>

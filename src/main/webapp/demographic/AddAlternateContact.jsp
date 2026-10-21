@@ -107,7 +107,7 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar">
                     <tr>
-                        <td><oscar:nameage demographicNo="<%=creatorDemo%>"/></td>
+                        <td><oscar:nameage demographicNo="<%=Encode.forHtmlAttribute(String.valueOf(creatorDemo))%>"/></td>
                         <td>&nbsp;</td>
                         <td style="text-align: right"><a
                                 href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> | <a
@@ -120,7 +120,7 @@
             <td class="MainTableLeftColumn" valign="top">&nbsp;
                 <%if (IsPropertiesOn.isCaisiEnable()) { %>
 
-                <a href="<%=request.getContextPath()%>/PMmodule/ClientManager.do?id=<%=creatorDemo%>">Back to PMM </a>
+                <a href="<%=request.getContextPath()%>/PMmodule/ClientManager.do?id=<%=Encode.forUriComponent(String.valueOf(creatorDemo))%>">Back to PMM </a>
 
                 <%} %>
 
@@ -142,7 +142,7 @@
 	searchMode = Encode.forHtmlAttribute(searchMode);
                         %>
                         <input
-                                type="hidden" name="search_mode" value="<%=searchMode%>"/> <input
+                                type="hidden" name="search_mode" value="<%=Encode.forHtmlAttribute(String.valueOf(searchMode))%>"/> <input
                                 type="hidden" name="originalpage"
                                 value="<%= request.getContextPath() %>/demographic/AddAlternateContact.jsp"/> <input
                                 type="hidden" name="limit1" value="0"/> <input type="hidden"
@@ -171,7 +171,7 @@
                                                                                       name="creator"
                                                                                       value="oscardoc, doctor"/> <input
                                 type="hidden"
-                                name="remarks" value="<%=creatorDemo%>"/></div>
+                                name="remarks" value="<%=Encode.forHtmlAttribute(String.valueOf(creatorDemo))%>"/></div>
                 </form>
 
                 <%
@@ -181,8 +181,8 @@
                     origDemo = Encode.forHtmlAttribute(origDemo);
                     if (demoNo != null) {
                 %> <form action="${pageContext.request.contextPath}/demographic/AddRelation.do" method="post">
-                <input type="hidden" name="origDemo" value="<%=origDemo%>"/>
-                <input type="hidden" name="linkingDemo" value="<%=demoNo%>"/>
+                <input type="hidden" name="origDemo" value="<%=Encode.forHtmlAttribute(String.valueOf(origDemo))%>"/>
+                <input type="hidden" name="linkingDemo" value="<%=Encode.forHtmlAttribute(String.valueOf(demoNo))%>"/>
 
 
                 <div class="prevention">
@@ -198,7 +198,7 @@
                                     List<CtlRelationships> results = ctlRelationshipsDao.findAllActive();
                                     for (CtlRelationships t : results) {
                                 %>
-						<option value="<%=t.getValue() %>"><%=Encode.forHtmlContent(t.getLabel()) %></option>
+						<option value="<%=Encode.forHtmlAttribute(String.valueOf(t.getValue()))%>"><%=Encode.forHtmlContent(t.getLabel()) %></option>
                                 <%
                                     }
                                 %>
@@ -240,7 +240,7 @@
 				<td><%=Encode.forHtmlContent(h.get("relation"))%></td>
 				<td><%=Encode.forHtmlContent(returnYesIf1(h.get("sub_decision_maker")))%></td>
 				<td><%=Encode.forHtmlContent(h.get("notes"))%></td>
-				<td><a href="DeleteRelation.do?id=<%=h.get("id")%>&amp;origDemo=<%=creatorDemo%>">del</a></td>
+				<td><a href="DeleteRelation.do?id=<%=Encode.forUriComponent(String.valueOf(h.get("id")))%>&amp;origDemo=<%=Encode.forUriComponent(String.valueOf(creatorDemo))%>">del</a></td>
                         </tr>
                         <%}%>
                     </table>
@@ -250,7 +250,7 @@
                 <oscar:oscarPropertiesCheck property="TORONTO_RFQ" value="yes">
                     <br/>
                     <form action="<%=request.getContextPath() %>/demographic/AddRelation.do">
-                        <input type="hidden" name="origDemo" value="<%=creatorDemo%>"/>
+                        <input type="hidden" name="origDemo" value="<%=Encode.forHtmlAttribute(String.valueOf(creatorDemo))%>"/>
                         <input type="submit" name="pmmClient" value="Finished"/>
                     </form>
                 </oscar:oscarPropertiesCheck></td>

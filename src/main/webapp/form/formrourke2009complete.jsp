@@ -44,6 +44,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
 
@@ -60,7 +61,7 @@
 <head>
     <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
 
-    <title><%= "Rourke2009 Record for " + props.getProperty("c_pName", "") + " DOB: " + props.getProperty("c_birthDate", "")%>
+    <title><%=Encode.forHtml(String.valueOf("Rourke2009 Record for " + props.getProperty("c_pName", "") + " DOB: " + props.getProperty("c_birthDate", "")))%>
     </title>
     <link rel="stylesheet" type="text/css" href="rourkeStyle.css">
     <!-- calendar stylesheet -->
@@ -243,7 +244,7 @@
 
         function reset() {
             document.forms[0].target = "";
-            document.forms[0].action = "/<%=project_home%>/form/formname.do";
+            document.forms[0].action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
         }
 
         function onGraph(url, name) {
@@ -727,7 +728,7 @@
             //adjust height of divs/tables so they align properly
             adjustSizes();
 
-            var updated = "<%=props.getProperty("updated","")%>";
+            var updated = "<%=Encode.forJavaScript(String.valueOf(props.getProperty("updated","")))%>";
             if (updated == "true") {
                 alert("Synchronizing demographic information\nRemember to save changes");
             }

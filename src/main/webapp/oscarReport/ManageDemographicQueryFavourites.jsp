@@ -43,6 +43,7 @@
 
 
 <%@ page import="ca.openosp.openo.report.data.RptSearchData,java.util.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     RptSearchData searchData = new RptSearchData();
@@ -113,7 +114,7 @@
                             String qName = sc.queryName;
                     %>
                     <li><input type="checkbox" name="queryFavourite"
-                               value="<%=qId%>"><%=qName%>
+                               value="<%=Encode.forHtmlAttribute(String.valueOf(qId))%>"><%=Encode.forHtml(String.valueOf(qName))%>
                     </input> <%}%>
 
                 </ul>

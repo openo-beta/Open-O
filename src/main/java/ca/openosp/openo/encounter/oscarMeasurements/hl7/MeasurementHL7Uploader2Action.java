@@ -61,9 +61,12 @@ import ca.uhn.hl7v2.parser.Parser;
 import ca.uhn.hl7v2.validation.impl.NoValidation;
 
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.ServletActionContext;
+import ca.openosp.openo.utility.PathValidationUtils;
 
-public class MeasurementHL7Uploader2Action extends ActionSupport {
+public class MeasurementHL7Uploader2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
@@ -103,7 +106,13 @@ public class MeasurementHL7Uploader2Action extends ActionSupport {
             boolean checkPassword = StringUtils.isNotBlank(hl7UploadPassword);
 
             // file is encrypted using RSA public keys if no password enforced
-            hl7msg = checkPassword ? IOUtils.toString(Files.newInputStream(importFile.toPath())) : extractEncryptedMessage(importFile, request);
+            if (checkPassword) {
+                try (InputStream is = Files.newInputStream(importFileOnDisk.toPath())) {
+                    hl7msg = IOUtils.toString(is);
+                }
+            } else {
+                hl7msg = extractEncryptedMessage(importFileOnDisk, request);
+            }
 
             if (checkPassword && hl7UploadPassword.length() < 16)
                 throw new RuntimeException("Upload password length is too weak, please check oscar property file and make sure it's more than 16 letters.");
@@ -241,13 +250,14 @@ public class MeasurementHL7Uploader2Action extends ActionSupport {
         }
     }
 
-    private File importFile;
+    private UploadedFile importFile;
+    private File importFileOnDisk;
 
-    public File getImportFile() {
-        return importFile;
-    }
-
-    public void setImportFile(File importFile) {
-        this.importFile = importFile;
+    @Override
+    public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+        if (!uploadedFiles.isEmpty()) {
+            this.importFile = uploadedFiles.get(0);
+            this.importFileOnDisk = PathValidationUtils.toFile(importFile);
+        }
     }
 }

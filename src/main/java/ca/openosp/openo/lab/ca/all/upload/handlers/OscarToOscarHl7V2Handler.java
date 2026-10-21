@@ -93,7 +93,7 @@ public class OscarToOscarHl7V2Handler implements MessageHandler {
         
         try {
             // Get the base document directory from configuration
-            String baseDocDir = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+            String baseDocDir = OscarProperties.getInstance().getDocumentDirectory();
             if (baseDocDir == null || baseDocDir.isEmpty()) {
                 logger.error("DOCUMENT_DIR not configured");
                 return null;

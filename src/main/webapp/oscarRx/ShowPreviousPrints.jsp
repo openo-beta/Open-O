@@ -34,6 +34,7 @@
 <%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 <%@ page import="ca.openosp.openo.util.DateUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
@@ -126,10 +127,10 @@
                                             %>
                                             <tr>
                                                 <td width="50%" valign="top"
-                                                    nowrap="nowrap"><%=DateUtils.formatDate(originalPrintDate, request.getLocale()) %>
+                                                    nowrap="nowrap"><%=Encode.forHtml(String.valueOf(DateUtils.formatDate(originalPrintDate, request.getLocale())))%>
                                                 </td>
                                                 <td width="50%" valign="top"
-                                                    nowrap="nowrap"><%=providerDao.getProvider(originalProviderNo).getFormattedName() %>
+                                                    nowrap="nowrap"><%=Encode.forHtml(String.valueOf(providerDao.getProvider(originalProviderNo).getFormattedName()))%>
                                                 </td>
                                             </tr>
 
@@ -151,9 +152,9 @@
                                                     }
                                             %>
                                             <tr>
-                                                <td width="50%" valign="top" nowrap="nowrap"><%=drp%>
+                                                <td width="50%" valign="top" nowrap="nowrap"><%=Encode.forHtml(String.valueOf(drp))%>
                                                 </td>
-                                                <td width="50%" valign="top" nowrap="nowrap"><%=providerName %>
+                                                <td width="50%" valign="top" nowrap="nowrap"><%=Encode.forHtml(String.valueOf(providerName))%>
                                                 </td>
                                             </tr>
                                             <%

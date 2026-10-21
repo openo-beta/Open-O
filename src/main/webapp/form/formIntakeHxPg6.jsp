@@ -23,6 +23,7 @@
     Ontario, Canada
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName3$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -64,83 +65,83 @@
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.hepatitisBSerum"/>:</td>
                 <td><input type="text" name="ImmunizationHepatitisB"
-                           value="<%=props.getProperty("ImmunizationHepatitisB","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationHepatitisB","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="ImmunizationYearHepatitisB"
-                           value="<%=props.getProperty("ImmunizationYearHepatitisB","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationYearHepatitisB","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.tetanusLockjaw"/>:</td>
                 <td><input type="text" name="ImmunizationHadTetanus"
-                           value="<%=props.getProperty("ImmunizationHadTetanus","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationHadTetanus","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="ImmunizationYearTetanus"
-                           value="<%=props.getProperty("ImmunizationYearTetanus","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationYearTetanus","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.polio"/>:</td>
                 <td><input type="text" name="ImmunizationHadPolio"
-                           value="<%=props.getProperty("ImmunizationHadPolio","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationHadPolio","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="ImmunizationYearPolio"
-                           value="<%=props.getProperty("ImmunizationYearPolio","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationYearPolio","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.mmr"/>:</td>
                 <td><input type="text" name="ImmunizationHadMMR"
-                           value="<%=props.getProperty("ImmunizationHadMMR","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationHadMMR","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="ImmunizationYearMMR"
-                           value="<%=props.getProperty("ImmunizationYearMMR","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationYearMMR","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.lastTBTest"/>:</td>
-                <td><input type="text" name="ImmunizationHadTB" value="<%=props.getProperty("ImmunizationHadTB","")%>"/>
+                <td><input type="text" name="ImmunizationHadTB" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationHadTB","")))%>"/>
                 </td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="ImmunizationYearTB"
-                           value="<%=props.getProperty("ImmunizationYearTB","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationYearTB","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.rubella"/>:</td>
                 <td><input type="text" name="ImmunizationHadRubella"
-                           value="<%=props.getProperty("ImmunizationHadRubella","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationHadRubella","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="ImmunizationYearRubella"
-                           value="<%=props.getProperty("ImmunizationYearRubella","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationYearRubella","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.varicella"/>:</td>
                 <td><input type="text" name="ImmunizationHadVaricella"
-                           value="<%=props.getProperty("ImmunizationHadVaricella","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationHadVaricella","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="ImmunizationYearVaricella"
-                           value="<%=props.getProperty("ImmunizationYearVaricella","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationYearVaricella","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.meningitis"/>:</td>
                 <td><input type="text" name="ImmunizationHadMeningitis"
-                           value="<%=props.getProperty("ImmunizationHadMeningitis","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationHadMeningitis","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="ImmunizationYearMeningitis"
-                           value="<%=props.getProperty("ImmunizationYearMeningitis","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationYearMeningitis","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.pneumococcus"/>:</td>
                 <td><input type="text" name="ImmunizationHadPneumococcus"
-                           value="<%=props.getProperty("ImmunizationHadPneumococcus","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationHadPneumococcus","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="ImmunizationYearPneumococcus"
-                           value="<%=props.getProperty("ImmunizationYearPneumococcus","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ImmunizationYearPneumococcus","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title" colspan="4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.hadDisease"/>:</td>
@@ -148,88 +149,88 @@
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.hepatitisBSerum"/>:</td>
                 <td><input type="text" name="immunizationDiseaseHepatitisB"
-                           value="<%=props.getProperty("immunizationDiseaseHepatitisB","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseHepatitisB","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="immunizationDiseaseYearHepatitisB"
-                           value="<%=props.getProperty("immunizationDiseaseYearHepatitisB","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseYearHepatitisB","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.tetanusLockjaw"/>:</td>
                 <td><input type="text" name="immunizationDiseaseTetanus"
-                           value="<%=props.getProperty("immunizationDiseaseTetanus","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseTetanus","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="immunizationDiseaseYearTetanus"
-                           value="<%=props.getProperty("immunizationDiseaseYearTetanus","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseYearTetanus","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.polio"/>:</td>
                 <td><input type="text" name="immunizationDiseasePolio"
-                           value="<%=props.getProperty("immunizationDiseasePolio","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseasePolio","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="immunizationDiseaseYearPolio"
-                           value="<%=props.getProperty("immunizationDiseaseYearPolio","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseYearPolio","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.mmr"/>:</td>
                 <td><input type="text" name="immunizationDiseaseMMR"
-                           value="<%=props.getProperty("immunizationDiseaseMMR","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseMMR","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="immunizationDiseaseYearMMR"
-                           value="<%=props.getProperty("immunizationDiseaseYearMMR","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseYearMMR","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.lastTBTest"/>:</td>
                 <td><input type="text" name="immunizationDiseaseTb"
-                           value="<%=props.getProperty("immunizationDiseaseTb","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseTb","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="immunizationDiseaseYearTb"
-                           value="<%=props.getProperty("immunizationDiseaseYearTb","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseYearTb","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.rubella"/>:</td>
                 <td><input type="text" name="immunizationDiseaseRubella"
-                           value="<%=props.getProperty("immunizationDiseaseRubella","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseRubella","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="immunizationDiseaseYearRubella"
-                           value="<%=props.getProperty("immunizationDiseaseYearRubella","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseYearRubella","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.varicella"/>:</td>
                 <td><input type="text" name="immunizationDiseaseVaricella"
-                           value="<%=props.getProperty("immunizationDiseaseVaricella","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseVaricella","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="immunizationDiseaseYearVaricella"
-                           value="<%=props.getProperty("immunizationDiseaseYearVaricella","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseYearVaricella","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.meningitis"/>:</td>
                 <td><input type="text" name="immunizationDiseaseMeningitis"
-                           value="<%=props.getProperty("immunizationDiseaseMeningitis","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseMeningitis","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="immunizationDiseaseYearMeningitis"
-                           value="<%=props.getProperty("immunizationDiseaseYearMeningitis","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseYearMeningitis","")))%>"/></td>
             </tr>
             <tr>
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.pneumococcus"/>:</td>
                 <td><input type="text" name="immunizationDiseasePneumococcus"
-                           value="<%=props.getProperty("immunizationDiseasePneumococcus","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseasePneumococcus","")))%>"/></td>
 
                 <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.year"/>:</td>
                 <td><input type="text" name="immunizationDiseaseYearPneumococcus"
-                           value="<%=props.getProperty("immunizationDiseaseYearPneumococcus","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("immunizationDiseaseYearPneumococcus","")))%>"/></td>
             </tr>
             <tr>
                 <td class="title" colspan="3"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.formIntakeHx.immunizationCardOnPerson"/>:</td>
                 <td><input type="text" name="HaveImmunizationCard"
-                           value="<%=props.getProperty("HaveImmunizationCard","")%>"/></td>
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("HaveImmunizationCard","")))%>"/></td>
             </tr>
         </table>
 

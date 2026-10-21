@@ -9,7 +9,6 @@
     
 --%>
 <%@page import="java.nio.charset.Charset" %>
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -17,6 +16,7 @@
 <%@ page import="java.util.*,ca.openosp.*,java.io.*,java.net.*,ca.openosp.openo.util.*,org.apache.commons.io.FileUtils"
          errorPage="/errorpage.jsp" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <jsp:useBean id="oscarVariables" class="java.util.Properties" scope="session"/>
 
 <html>
@@ -65,13 +65,13 @@
 
             function displayReport() {
                 var cpath = "<%=request.getContextPath()%>";
-                var fname = "<%=filename%>";
+                var fname = "<%=Encode.forJavaScript(String.valueOf(filename))%>";
                 sname = cpath + "/billing/CA/ON/ES.xsl";
                 if (fname.substring(2, 4) == "OU") {
                     sname = cpath + "/billing/CA/ON/OU.xsl";
                 }
 
-                xml = '<%=StringEscapeUtils.escapeEcmaScript(fileContents)%>';
+                xml = '<%=Encode.forJavaScript(fileContents)%>';
                 try {
                     xsl = loadXMLDoc(sname);
 

@@ -42,6 +42,8 @@ import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.StringUtils;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class EctConsultationFormRequestUtil {
 
@@ -118,7 +120,13 @@ public class EctConsultationFormRequestUtil {
 
     public boolean estPatient(LoggedInInfo loggedInInfo, String demographicNo) {
 
-        int demographic_number = Integer.parseInt(demographicNo);
+        int demographic_number;
+        try {
+            demographic_number = Integer.parseInt(demographicNo);
+        } catch (NumberFormatException e) {
+            MiscUtils.getLogger().error("Invalid demographic number: non-numeric value provided", e);
+            return false;
+        }
         Demographic demographic = demographicManager.getDemographic(loggedInInfo, demographic_number);
         boolean estPatient = false;
         DemographicExt demographicExt = demographicManager.getDemographicExt(loggedInInfo, demographic_number, DemographicProperty.demo_cell);
@@ -214,10 +222,16 @@ public class EctConsultationFormRequestUtil {
     public boolean estRequestFromId(LoggedInInfo loggedInInfo, String id) {
 
         boolean verdict = true;
-        getSpecailistsName(id);
 
+        int requestId;
+        try {
+            requestId = Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            MiscUtils.getLogger().error("Invalid consultation request ID: non-numeric value provided", e);
+            return false;
+        }
 
-		ConsultationRequest cr = consultationRequestDao.find(Integer.parseInt(id));
+		ConsultationRequest cr = consultationRequestDao.find(requestId);
 		
 		if (cr != null) {
 			fdid = cr.getFdid();
@@ -280,6 +294,21 @@ public class EctConsultationFormRequestUtil {
             // be available. This model is used in the Fax and PDF printing methods.
             professionalSpecialist = cr.getProfessionalSpecialist();
 
+            if (professionalSpecialist != null) {
+                specPhone = StringUtils.noNull(professionalSpecialist.getPhoneNumber());
+                specFax = StringUtils.noNull(professionalSpecialist.getFaxNumber());
+                specAddr = StringUtils.noNull(professionalSpecialist.getStreetAddress());
+                specEmail = StringUtils.noNull(professionalSpecialist.getEmailAddress());
+                if (specPhone.equals("null")) { specPhone = ""; }
+                if (specFax.equals("null")) { specFax = ""; }
+                if (specAddr.equals("null")) { specAddr = ""; }
+                if (specEmail.equalsIgnoreCase("null")) { specEmail = ""; }
+            } else {
+                specPhone = "";
+                specFax = "";
+                specAddr = "";
+                specEmail = "";
+            }
 
 			Date appointmentTime = cr.getAppointmentTime();
 			reasonForConsultation = cr.getReasonForReferral();
@@ -292,7 +321,14 @@ public class EctConsultationFormRequestUtil {
 			setAppointmentInstructions( cr.getAppointmentInstructions() );
 			setAppointmentInstructionsLabel( cr.getAppointmentInstructionsLabel() );
 			letterheadName = cr.getLetterheadName();
-			letterheadTitle = consultationRequestExtDao.getConsultationRequestExtsByKey(Integer.parseInt(id),"letterheadTitle");
+
+			List<ConsultationRequestExt> allExts = consultationRequestExtDao.getConsultationRequestExts(requestId);
+			Map<String, String> extMap = new HashMap<>();
+			for (ConsultationRequestExt ext : allExts) {
+				extMap.put(ext.getKey(), ext.getValue());
+			}
+
+			letterheadTitle = extMap.get("letterheadTitle");
 			letterheadAddress = cr.getLetterheadAddress();
 			letterheadPhone = cr.getLetterheadPhone();
 			letterheadFax = cr.getLetterheadFax();
@@ -346,7 +382,7 @@ public class EctConsultationFormRequestUtil {
                 }
             }
 
-			isEReferral = consultationRequestExtDao.getConsultationRequestExtsByKey(Integer.parseInt(id),ConsultationRequestExtKey.EREFERRAL_REF.getKey()) != null;
+			isEReferral = extMap.get(ConsultationRequestExtKey.EREFERRAL_REF.getKey()) != null;
         }
 
         getFaxLogs(id);
@@ -357,23 +393,30 @@ public class EctConsultationFormRequestUtil {
     private void getFaxLogs(String requestId) {
 
         List<FaxClientLog> faxClientLogs = faxClientLogDao.findClientLogbyRequestId(Integer.parseInt(requestId));
+        if (faxClientLogs.isEmpty()) {
+            return;
+        }
+
+        List<Integer> faxIds = faxClientLogs.stream()
+                .map(FaxClientLog::getFaxId)
+                .collect(Collectors.toList());
+        Map<Integer, FaxJob> faxJobMap = faxJobDao.findByIds(faxIds).stream()
+                .collect(Collectors.toMap(FaxJob::getId, Function.identity()));
+
+        String specialistFax = "";
+        if (this.professionalSpecialist != null) {
+            specialistFax = this.professionalSpecialist.getFaxNumber();
+        }
+        if (specialistFax == null) {
+            specialistFax = "";
+        }
+        if (!specialistFax.isEmpty()) {
+            specialistFax = specialistFax.trim().replaceAll("\\D", "");
+        }
+
         for (FaxClientLog faxClientLog : faxClientLogs) {
-            FaxJob faxJob = faxJobDao.find(faxClientLog.getFaxId());
+            FaxJob faxJob = faxJobMap.get(faxClientLog.getFaxId());
             FaxRecipient faxRecipient = null;
-            String specialistFax = "";
-
-            if (this.professionalSpecialist != null) {
-                specialistFax = this.professionalSpecialist.getFaxNumber();
-            }
-
-            // overcome those silly default nulls in the database.
-            if (specialistFax == null) {
-                specialistFax = "";
-            }
-
-            if (!specialistFax.isEmpty()) {
-                specialistFax = specialistFax.trim().replaceAll("\\D", "");
-            }
 
             if (faxJob != null) {
                 faxRecipient = new FaxRecipient();
@@ -384,7 +427,6 @@ public class EctConsultationFormRequestUtil {
 
                 MiscUtils.getLogger().debug("Does this fax number " + specialistFax + " equal this fax number " + faxRecipient.getFax());
             }
-
 
             // isolate the main specialist fax log
             if (faxRecipient != null && specialistFax.equals(faxRecipient.getFax())) {
@@ -481,13 +523,16 @@ public class EctConsultationFormRequestUtil {
     }
 
     public String getServiceName(String id) {
-        String retval = new String();
-        ConsultationServices cs = consultationServiceDao.find(Integer.parseInt(id));
-        if (cs != null) {
-            retval = cs.getServiceDesc();
+        if (id == null || id.isEmpty()) {
+            return "";
         }
-
-        return retval;
+        try {
+            String desc = consultationServiceDao.getServiceDescription(Integer.parseInt(id));
+            return desc != null ? desc : "";
+        } catch (NumberFormatException e) {
+            MiscUtils.getLogger().warn("Invalid service ID: non-numeric value provided");
+            return "";
+        }
     }
 
     public String getClinicName() {

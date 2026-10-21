@@ -17,6 +17,7 @@
 <%@ page import="ca.openosp.openo.login.*" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.report.data.RptReportItem" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     boolean bDeletedList = false;
     String msg = "Report List";
@@ -113,7 +114,7 @@
     <center>
         <table BORDER="1" CELLPADDING="0" CELLSPACING="0" WIDTH="80%">
             <tr BGCOLOR="#CCFFFF">
-                <th><%=msg%>
+                <th><%=Encode.forHtml(String.valueOf(msg))%>
                 </th>
             </tr>
         </table>
@@ -130,18 +131,18 @@
             prop = (Properties) vec.get(i);
             String itemId = prop.getProperty("id");
         %>
-        <form method="post" name="baseurl<%=i+1%>"
+        <form method="post" name="baseurl<%=Encode.forHtmlAttribute(String.valueOf(i+1))%>"
               action="reportFormRecord.jsp">
-            <tr bgcolor="<%=color%>">
-                <td align="right"><b><%=i + 1%>
+            <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(color))%>">
+                <td align="right"><b><%=Encode.forHtml(String.valueOf(i + 1))%>
                 </b></td>
                 <td
                         onMouseOver="this.style.cursor='hand';this.style.backgroundColor='pink';"
-                        onMouseout="this.style.backgroundColor='<%=color%>';"
-                        onClick="goPage(<%=itemId%>)"><%=prop.getProperty(itemId)%>
+                        onMouseout="this.style.backgroundColor='<%=Encode.forJavaScript(String.valueOf(color))%>';"
+                        onClick="goPage(<%=Encode.forJavaScript(String.valueOf(itemId))%>)"><%=Encode.forHtml(String.valueOf(prop.getProperty(itemId)))%>
                 </td>
                 <td width="5%" align="right"><input type="hidden" name="id"
-                                                    value="<%=itemId%>"> <% if (!bDeletedList) { %> <input
+                                                    value="<%=Encode.forHtmlAttribute(String.valueOf(itemId))%>"> <% if (!bDeletedList) { %> <input
                         type="submit" name="submit" value="Delete"
                         onclick="javascript:return onDelete();"> <% } else { %> <input
                         type="submit" name="submit" value="Restore"

@@ -88,7 +88,7 @@ public class TeleplanResponse {
                 realFilename = "teleplan" + this.getFilename() + randNum;
 
                 // Use PathValidationUtils to validate destination path
-                File allowedDir = new File(OscarProperties.getInstance().getProperty("DOCUMENT_DIR"));
+                File allowedDir = new File(OscarProperties.getInstance().getDocumentDirectory());
                 File file2;
                 try {
                     file2 = PathValidationUtils.validatePath(realFilename, allowedDir);

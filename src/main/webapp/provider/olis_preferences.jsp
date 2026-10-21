@@ -8,6 +8,7 @@
     and "gnu.org/licenses/gpl-2.0.html".
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 
 <%
@@ -100,7 +101,7 @@
                                     val1 = (String) request.getAttribute("pollingFrequency");
                                     if (val1 == null) val1 = "";
                                 %>
-                                <input type="text" id="pollingFrequency" name="pollingFrequency" value="<%=val1%>">
+                                <input type="text" id="pollingFrequency" name="pollingFrequency" value="<%=Encode.forHtmlAttribute(String.valueOf(val1))%>">
 
                             </td>
                         </tr>
@@ -112,7 +113,7 @@
                                     val1 = (String) request.getAttribute("olis_provider_start_time");
                                     if (val1 == null) val1 = "";
                                 %>
-                                <input type="text" id="providerStartTime" name="providerStartTime" value="<%=val1%>">
+                                <input type="text" id="providerStartTime" name="providerStartTime" value="<%=Encode.forHtmlAttribute(String.valueOf(val1))%>">
                                 (YYYY-MM-DD hh:mm:ss [-/+]ZZZZ)
                                 <br>
                                 <h6 style="color:red">note: this field will be auto-updated by the system</h6>

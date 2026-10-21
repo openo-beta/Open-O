@@ -73,7 +73,8 @@ public class DownloadEmbeddedDocumentFromLab2Action extends ActionSupport {
         byte[] decodedData = Base64.decodeBase64(result);
 
         response.setContentType("application/pdf"); // Check http://www.iana.org/assignments/media-types for all types. Use if necessary ServletContext#getMimeType() for auto-detection based on filename.
-        response.setHeader("Content-disposition", "attachment; filename=\"Lab-" + labNo + ".pdf\""); // The Save As popup magic is done here. You can give it any filename you want, this only won't work in MSIE, it will use current request URL as filename instead.
+        String sanitizedLabNo = labNo.replaceAll("[^a-zA-Z0-9_-]", "");
+        response.setHeader("Content-disposition", "attachment; filename=\"Lab-" + sanitizedLabNo + ".pdf\""); // The Save As popup magic is done here. You can give it any filename you want, this only won't work in MSIE, it will use current request URL as filename instead.
 
         // Write file to response.
         OutputStream output = response.getOutputStream();

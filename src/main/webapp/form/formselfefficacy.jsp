@@ -42,6 +42,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     String formClass = "SelfEfficacy";
@@ -76,7 +77,7 @@
         var allNumericField = null;
         var a = new Array(1, 10, 6, 7, 8, 10, 12, 13, 14, 15, 17, 18, 19, 21, 22, 23, 24, 25, 27, 28, 29, 31, 32, 34, 36, 37, 38, 39, 40, 42, 43, 44, 45, 46, 47);
         var allMatch = new Array(a);
-        var action = "/<%=project_home%>/form/formname.do";
+        var action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
 
         function backToPage1() {
             document.getElementById('page1').style.display = 'block';
@@ -344,12 +345,12 @@
     -->
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
-        <input type="hidden" name="formId" value="<%=formId%>"/>
+        <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table border="0" cellspacing="0" cellpadding="0" width="740px"
@@ -426,7 +427,7 @@
                                         <td align="center"><input type="text" name="ex1" size="5"
                                                                   onchange="javascript:calExerScore()" maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("ex1", "") %>"/></td>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ex1", "")))%>"/></td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td colspan="11">
@@ -443,7 +444,7 @@
                                         <td align="center"><input type="text" name="ex2" size="5"
                                                                   onchange="javascript:calExerScore()" maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("ex2", "") %>"/></td>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ex2", "")))%>"/></td>
                                     </tr>
                                     <tr bgcolor="white">
                                         <td colspan="11">
@@ -459,7 +460,7 @@
                                         <td align="center"><input type="text" name="ex3" size="5"
                                                                   onchange="javascript:calExerScore()" maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("ex3", "") %>"/></td>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ex3", "")))%>"/></td>
                                     </tr>
                                     <tr>
                                         <td colspan="12" class="score">Scoring: Score is the mean
@@ -471,7 +472,7 @@
                                     <tr>
                                         <td colspan="12">Score: <input type="text" name="exerScore"
                                                                        readonly="true"
-                                                                       value="<%= props.getProperty("exerScore", "") %>"/>
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("exerScore", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -526,7 +527,7 @@
                                                                   size="5" onchange="javascript:calDiseaseScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("disease1", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("disease1", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -538,7 +539,7 @@
                                     <tr>
                                         <td colspan="12">Score: <input type="text"
                                                                        name="diseaseScore" readonly="true"
-                                                                       value="<%= props.getProperty("diseaseScore", "") %>"/>
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("diseaseScore", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -622,7 +623,7 @@
                                         <td align="center"><input type="text" name="help1" size="5"
                                                                   onchange="javascript:calHelpScore()" maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("help1", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("help1", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -640,7 +641,7 @@
                                         <td align="center"><input type="text" name="help2" size="5"
                                                                   onchange="javascript:calHelpScore()" maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("help2", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("help2", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -657,7 +658,7 @@
                                         <td align="center"><input type="text" name="help3" size="5"
                                                                   onchange="javascript:calHelpScore()" maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("help3", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("help3", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -676,7 +677,7 @@
                                         <td align="center"><input type="text" name="help4" size="5"
                                                                   onchange="javascript:calHelpScore()" maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("help4", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("help4", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -692,7 +693,7 @@
                                     <tr>
                                         <td colspan="12">Score: <input type="text" name="helpScore"
                                                                        readonly="true"
-                                                                       value="<%= props.getProperty("helpScore", "") %>"/>
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("helpScore", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -778,7 +779,7 @@
                                                                   name="communicateWithPhy1" size="5"
                                                                   onchange="javascript: calCommScore()" maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("communicateWithPhy1", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("communicateWithPhy1", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -797,7 +798,7 @@
                                                                   name="communicateWithPhy2" size="5"
                                                                   onchange="javascript: calCommScore()" maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("communicateWithPhy2", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("communicateWithPhy2", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -815,7 +816,7 @@
                                                                   name="communicateWithPhy3" size="5"
                                                                   onchange="javascript: calCommScore()" maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("communicateWithPhy3", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("communicateWithPhy3", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -831,7 +832,7 @@
                                     <tr>
                                         <td colspan="12">Score: <input type="text" name="commScore"
                                                                        readonly="true"
-                                                                       value="<%= props.getProperty("commScore", "") %>"/>
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("commScore", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -913,7 +914,7 @@
                                         <td align="center"><input type="text" name="manageDisease1"
                                                                   size="5" onchange="javascript: calManDiseaseScore()"
                                                                   maxLength="2" class="textbox"
-                                                                  value="<%= props.getProperty("manageDisease1", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manageDisease1", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -930,7 +931,7 @@
                                         <td align="center"><input type="text" name="manageDisease2"
                                                                   size="5" onchange="javascript: calManDiseaseScore()"
                                                                   maxLength="2" class="textbox"
-                                                                  value="<%= props.getProperty("manageDisease2", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manageDisease2", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -948,7 +949,7 @@
                                         <td align="center"><input type="text" name="manageDisease3"
                                                                   size="5" onchange="javascript: calManDiseaseScore()"
                                                                   maxLength="2" class="textbox"
-                                                                  value="<%= props.getProperty("manageDisease3", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manageDisease3", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -966,7 +967,7 @@
                                         <td align="center"><input type="text" name="manageDisease4"
                                                                   size="5" onchange="javascript: calManDiseaseScore()"
                                                                   maxLength="2" class="textbox"
-                                                                  value="<%= props.getProperty("manageDisease4", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manageDisease4", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -984,7 +985,7 @@
                                         <td align="center"><input type="text" name="manageDisease5"
                                                                   size="5" onchange="javascript: calManDiseaseScore()"
                                                                   maxLength="2" class="textbox"
-                                                                  value="<%= props.getProperty("manageDisease5", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manageDisease5", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1000,7 +1001,7 @@
                                     <tr>
                                         <td colspan="12">Score: <input type="text"
                                                                        name="manDiseaseScore" readonly="true"
-                                                                       value="<%= props.getProperty("manDiseaseScore", "") %>"/>
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manDiseaseScore", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1085,7 +1086,7 @@
                                                                   size="5" onchange="javascript:calChoresScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("doChore1", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("doChore1", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -1103,7 +1104,7 @@
                                                                   size="5" onchange="javascript:calChoresScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("doChore2", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("doChore2", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -1121,7 +1122,7 @@
                                                                   size="5" onchange="javascript:calChoresScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("doChore3", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("doChore3", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1137,7 +1138,7 @@
                                     <tr>
                                         <td colspan="12">Score: <input type="text"
                                                                        name="choresScore" readonly="true"
-                                                                       value="<%= props.getProperty("choresScore", "") %>"/>
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("choresScore", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1218,7 +1219,7 @@
                                                                   size="5" onchange="javascript:calSocialScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("social1", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("social1", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -1237,7 +1238,7 @@
                                                                   size="5" onchange="javascript:calSocialScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("social2", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("social2", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1253,7 +1254,7 @@
                                     <tr>
                                         <td colspan="12">Score: <input type="text"
                                                                        name="socialScore" readonly="true"
-                                                                       value="<%= props.getProperty("socialScore", "") %>"/>
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("socialScore", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1308,7 +1309,7 @@
                                                                   size="5" onchange="javascript:calBreathScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("shortBreath1", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("shortBreath1", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1323,7 +1324,7 @@
                                     <tr>
                                         <td colspan="12">Score: <input type="text"
                                                                        name="breathScore" readonly="true"
-                                                                       value="<%= props.getProperty("breathScore", "") %>"/>
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("breathScore", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1404,7 +1405,7 @@
                                                                   size="5" onchange="javascript: calManSymScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("manageSymptoms1", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manageSymptoms1", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -1422,7 +1423,7 @@
                                                                   size="5" onchange="javascript: calManSymScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("manageSymptoms2", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manageSymptoms2", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -1441,7 +1442,7 @@
                                                                   size="5" onchange="javascript: calManSymScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("manageSymptoms3", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manageSymptoms3", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -1460,7 +1461,7 @@
                                                                   size="5" onchange="javascript: calManSymScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("manageSymptoms4", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manageSymptoms4", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -1479,7 +1480,7 @@
                                                                   size="5" onchange="javascript: calManSymScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("manageSymptoms5", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manageSymptoms5", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1495,7 +1496,7 @@
                                     <tr>
                                         <td colspan="12">Score: <input type="text"
                                                                        name="manSymScore" readonly="true"
-                                                                       value="<%= props.getProperty("manSymScore", "") %>"/>
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manSymScore", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1579,7 +1580,7 @@
                                                                   size="5" onchange="javascript:calManDprScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("controlDepress1", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("controlDepress1", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -1597,7 +1598,7 @@
                                                                   size="5" onchange="javascript:calManDprScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("controlDepress2", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("controlDepress2", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -1615,7 +1616,7 @@
                                                                   size="5" onchange="javascript:calManDprScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("controlDepress3", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("controlDepress3", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -1633,7 +1634,7 @@
                                                                   size="5" onchange="javascript:calManDprScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("controlDepress4", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("controlDepress4", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -1651,7 +1652,7 @@
                                                                   size="5" onchange="javascript:calManDprScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("controlDepress5", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("controlDepress5", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr bgcolor="white">
@@ -1669,7 +1670,7 @@
                                                                   size="5" onchange="javascript:calManDprScore()"
                                                                   maxLength="2"
                                                                   class="textbox"
-                                                                  value="<%= props.getProperty("controlDepress6", "") %>"/>
+                                                                  value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("controlDepress6", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1685,7 +1686,7 @@
                                     <tr>
                                         <td colspan="12">Score: <input type="text"
                                                                        name="manDprScore" readonly="true"
-                                                                       value="<%= props.getProperty("manDprScore", "") %>"/>
+                                                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("manDprScore", "")))%>"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1729,9 +1730,9 @@
                                                                                          value="Print"
                                                                                          onclick="javascript:window.print();"/>
                             </td>
-                            <td align="right">Study ID: <%= props.getProperty("studyID", "N/A") %>
+                            <td align="right">Study ID: <%=Encode.forHtml(String.valueOf(props.getProperty("studyID", "N/A")))%>
                                 <input type="hidden" name="studyID"
-                                       value="<%= props.getProperty("studyID", "N/A") %>"/></td>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("studyID", "N/A")))%>"/></td>
                         </tr>
                     </table>
                 </td>

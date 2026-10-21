@@ -35,6 +35,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.SecurityDao" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.login.LoginCheckLogin" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     SecurityDao securityDao = SpringUtils.getBean(SecurityDao.class);
@@ -126,14 +127,14 @@
     <form method="post" name="baseurl" action="unLock.jsp">
         <% if (!msg.equals("")) { %>
         <div class="alert alert-success">
-            <%=msg%>
+            <%=Encode.forHtml(String.valueOf(msg))%>
         </div>
         <% } %>
         <div class="well">
             <b><fmt:setBundle basename="oscarResources"/><fmt:message key="admin.providersearchresults.ID"/></b>
             <select name="userName">
                 <% for (int i = 0; i < vec.size(); i++) { %>
-                <option value="<%=(String) vec.get(i) %>"><%=(String) vec.get(i) %>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf((String) vec.get(i)))%>"><%=Encode.forHtml(String.valueOf((String) vec.get(i)))%>
                 </option>
                 <% } %>
             </select> <input type="submit" name="submit" class="btn btn-primary"

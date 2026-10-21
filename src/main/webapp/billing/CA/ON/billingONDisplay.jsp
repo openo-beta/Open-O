@@ -73,6 +73,7 @@
 <%@ page import="ca.openosp.openo.billings.ca.on.pageUtil.BillingCorrectionPrep" %>
 <%@ page import="ca.openosp.openo.billings.ca.on.data.*" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     GregorianCalendar now = new GregorianCalendar();
@@ -140,9 +141,11 @@
             }
 
             function scScriptAttach(nameF) {
+                // Send the element name and the parent form index as separate parameters so
+                // billingCodeSearch.jsp / billingCodeUpdate.jsp can rebuild the access path
+                // from a fixed server-side template rather than eval-ing a caller-supplied string.
                 f0 = document.forms[1].elements[nameF].value;
-                f1 = escape("document.forms[1].elements[\'" + nameF + "\'].value");
-                awnd = rs('att', 'billingCodeSearch.jsp?name=' + f0 + '&search=&name1=&name2=&nameF=' + f1, 600, 600, 1);
+                awnd = rs('att', 'billingCodeSearch.jsp?name=' + encodeURIComponent(f0) + '&search=&name1=&name2=&formIndex=1&elementName=' + encodeURIComponent(nameF), 600, 600, 1);
                 awnd.focus();
             }
 
@@ -278,8 +281,8 @@
             <tr>
                 <th width="30%" align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.formInvoiceNo"/></th>
                 <th width="10%"><input type="text" name="billing_no"
-                                       value="<%=nullToEmpty(ch1Obj.getId()) %>" maxsize="10"></th>
-                <th width="50%" align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgLastUpdate"/>: <%=nullToEmpty(ch1Obj.getUpdate_datetime())%>
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(nullToEmpty(ch1Obj.getId())))%>" maxsize="10"></th>
+                <th width="50%" align="left"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgLastUpdate"/>: <%=Encode.forHtml(String.valueOf(nullToEmpty(ch1Obj.getUpdate_datetime())))%>
                 </th>
                 <th><input type="button" name="submit" value="Exit"
                            onClick="window.close();"/></th>
@@ -304,9 +307,9 @@
             codeDesc = codeDesc == null ? "Unknown" : codeDesc;
         %>
         <tr>
-            <th width="10%"><b><%=codeNo %>
+            <th width="10%"><b><%=Encode.forHtml(String.valueOf(codeNo))%>
             </b></th>
-            <td align="left"><%=codeDesc %>
+            <td align="left"><%=Encode.forHtml(String.valueOf(codeDesc))%>
             </td>
         </tr>
         <% } %>
@@ -316,9 +319,9 @@
     <form name="serviceform" method="post"
           action=""
           onsubmit="return validateAllItems()"><input type="hidden"
-                                                      name="xml_billing_no" value="<%=billNo%>"/> <input type="hidden"
+                                                      name="xml_billing_no" value="<%=Encode.forHtmlAttribute(String.valueOf(billNo))%>"/> <input type="hidden"
                                                                                                          name="update_date"
-                                                                                                         value="<%=UpdateDate%>"/>
+                                                                                                         value="<%=Encode.forHtmlAttribute(String.valueOf(UpdateDate))%>"/>
 
         <table width="600" border="0">
             <tr class="myGreen">
@@ -326,27 +329,27 @@
             </tr>
             <tr>
                 <td width="54%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgPatientName"/>: <a href=#
-                                                                             onclick="popupPage(720,860,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=DemoNo %>&displaymode=edit&dboperation=search_detail');return false;">
-                    <%=DemoName%>
+                                                                             onclick="popupPage(720,860,'<%= request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(DemoNo))%>&displaymode=edit&dboperation=search_detail');return false;">
+                    <%=Encode.forHtml(String.valueOf(DemoName))%>
                 </a> <input type="hidden" name="demo_name"
-                            value="<%=DemoName%>"> </b></td>
-                <td width="46%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.formHealth"/>: <%=hin%> <input
-                        type="hidden" name="xml_hin" value="<%=hin%>"> </b></td>
+                            value="<%=Encode.forHtmlAttribute(String.valueOf(DemoName))%>"> </b></td>
+                <td width="46%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.formHealth"/>: <%=Encode.forHtml(String.valueOf(hin))%> <input
+                        type="hidden" name="xml_hin" value="<%=Encode.forHtmlAttribute(String.valueOf(hin))%>"> </b></td>
             </tr>
             <tr>
                 <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgSex"/>:
-                    <%=DemoSex%> <input type="hidden" name="demo_sex" value="<%=DemoSex%>">
-                    <input type="hidden" name="hc_sex" value="<%=HCSex%>"> </b></td>
+                    <%=Encode.forHtml(String.valueOf(DemoSex))%> <input type="hidden" name="demo_sex" value="<%=Encode.forHtmlAttribute(String.valueOf(DemoSex))%>">
+                    <input type="hidden" name="hc_sex" value="<%=Encode.forHtmlAttribute(String.valueOf(HCSex))%>"> </b></td>
                 <td><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.formDOB"/>:
-                    <input type="hidden" name="xml_dob" value="<%=DemoDOB%>"> <%=DemoDOB%>
+                    <input type="hidden" name="xml_dob" value="<%=Encode.forHtmlAttribute(String.valueOf(DemoDOB))%>"> <%=Encode.forHtml(String.valueOf(DemoDOB))%>
                 </b></td>
             </tr>
             <tr>
                 <td><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgDoctor"/>: <input type="text"
-                                                                            name="rd" value="<%=r_doctor%>" size=20
+                                                                            name="rd" value="<%=Encode.forHtmlAttribute(String.valueOf(r_doctor))%>" size=20
                                                                             readonly></strong></td>
                 <td><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgDoctorNo"/>: <input type="text"
-                                                                              name="rdohip" value="<%=r_doctor_ohip%>"
+                                                                              name="rdohip" value="<%=Encode.forHtmlAttribute(String.valueOf(r_doctor_ohip))%>"
                                                                               size=8 readonly/></strong> <a
                         href="javascript:referralScriptAttach2('rdohip','rd')">Search</a></td>
             </tr>
@@ -389,7 +392,7 @@
 		<td><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgDoctor"/>:
 		<input type="checkbox" name="referral" value="checkbox" <%=r_status.equals("checked")?"checked":""%>> </strong></td>
 		<td><strong><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgRoster"/>:
-		<input type="hidden" name="roster" value="<%=roster_status%>"><%=roster_status%> </strong></td>
+		<input type="hidden" name="roster" value="<%=Encode.forHtmlAttribute(String.valueOf(roster_status))%>"><%=Encode.forHtml(String.valueOf(roster_status))%> </strong></td>
 	</tr>-->
         </table>
 
@@ -399,11 +402,11 @@
                 <td width="46%"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.btnBillingDate"/><img
                         src="<%= request.getContextPath() %>/images/cal.gif" id="xml_appointment_date_cal"/>: <input
                         type="text" id="xml_appointment_date" name="xml_appointment_date"
-                        value="<%=BillDate%>" size=10/></td>
+                        value="<%=Encode.forHtmlAttribute(String.valueOf(BillDate))%>" size=10/></td>
             </tr>
             <tr>
                 <td width="54%"><b><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.formBillingType"/>: </b> <input
-                        type="hidden" name="xml_status" value="<%=BillType%>"> <select
+                        type="hidden" name="xml_status" value="<%=Encode.forHtmlAttribute(String.valueOf(BillType))%>"> <select
                         style="font-size: 80%;" name="status">
                     <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.formSelectBillType"/></option>
                     <option value="H" <%=BillType.equals("H") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.formBillTypeH"/></option>
@@ -417,14 +420,14 @@
                     <option value="D" <%=BillType.equals("D") ? "selected" : ""%>><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.formBillTypeD"/></option>
                 </select></td>
                 <td width="46%"><b> Pay Program:</b> <input type="hidden"
-                                                            name="xml_payProgram" value="<%=BillDate%>"/><select
+                                                            name="xml_payProgram" value="<%=Encode.forHtmlAttribute(String.valueOf(BillDate))%>"/><select
                         style="font-size: 80%;" name="payProgram">
                     <%
                         for (int i = 0; i < BillingDataHlp.vecPaymentType.size(); i = i + 2) {
 
                     %>
-                    <option value="<%=BillingDataHlp.vecPaymentType.get(i) %>"
-                            <%=payProgram.equals((String) BillingDataHlp.vecPaymentType.get(i)) ? "selected" : "" %>><%=BillingDataHlp.vecPaymentType.get(i + 1)%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(BillingDataHlp.vecPaymentType.get(i)))%>"
+                            <%=payProgram.equals((String) BillingDataHlp.vecPaymentType.get(i)) ? "selected" : "" %>><%=Encode.forHtml(String.valueOf(BillingDataHlp.vecPaymentType.get(i + 1)))%>
                     </option>
                     <%
                         }
@@ -436,7 +439,7 @@
                 <td width="54%"><b><%if (OscarProperties.getInstance().getBooleanProperty("rma_enabled", "true")) { %>
                     Clinic Nbr <% } else { %> <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.formVisitType"/> <% } %>:</b>
                     <input type="hidden"
-                           name="xml_clinic_ref_code" value="<%=location%>"> <select
+                           name="xml_clinic_ref_code" value="<%=Encode.forHtmlAttribute(String.valueOf(location))%>"> <select
                             name="clinic_ref_code">
                         <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgSelectLocation"/></option>
                         <%
@@ -446,9 +449,9 @@
                                 BillLocationNo = (String) lLocation.get(i);
                                 BillLocation = (String) lLocation.get(i + 1);
                         %>
-                        <option value="<%=BillLocationNo%>"
-                                <%=location.equals(BillLocationNo) ? "selected" : ""%>><%=BillLocationNo%>
-                            | <%=BillLocation%>
+                        <option value="<%=Encode.forHtmlAttribute(String.valueOf(BillLocationNo))%>"
+                                <%=location.equals(BillLocationNo) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(BillLocationNo))%>
+                            | <%=Encode.forHtml(String.valueOf(BillLocation))%>
                         </option>
 
                         <%
@@ -465,19 +468,19 @@
                             String temp[] = (pList.get(i)).split("\\|");
 
                     %>
-                    <option value="<%=temp[0]%>"
-                            <%=Provider.equals(temp[0]) ? "selected" : ""%>><%=temp[0]%> |
-                        <%=temp[1]%>, <%=temp[2]%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(temp[0]))%>"
+                            <%=Provider.equals(temp[0]) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(temp[0]))%> |
+                        <%=Encode.forHtml(String.valueOf(temp[1]))%>, <%=Encode.forHtml(String.valueOf(temp[2]))%>
                     </option>
                     <%
                         }
 
                     %>
-                </select> <input type="hidden" name="xml_provider_no" value="<%=Provider%>"></td>
+                </select> <input type="hidden" name="xml_provider_no" value="<%=Encode.forHtmlAttribute(String.valueOf(Provider))%>"></td>
             </tr>
             <tr>
                 <td width="54%"><b> <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.formVisitType"/>: </b> <input
-                        type="hidden" name="xml_visittype" value="<%=visittype%>"> <select
+                        type="hidden" name="xml_visittype" value="<%=Encode.forHtmlAttribute(String.valueOf(visittype))%>"> <select
                         style="font-size: 80%;" name="visittype">
                     <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.msgSelectVisitType"/></option>
                     <% if (OscarProperties.getInstance().getBooleanProperty("rma_enabled", "true")) { %>
@@ -487,7 +490,7 @@
                         for (ClinicNbr clinic : nbrs) {
                             String valueString = String.format("%s | %s", clinic.getNbrValue(), clinic.getNbrString());
                     %>
-                    <option value="<%=valueString%>" <%=visittype.startsWith(clinic.getNbrValue()) ? "selected" : ""%>><%=valueString%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(valueString))%>" <%=visittype.startsWith(clinic.getNbrValue()) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(valueString))%>
                     </option>
                     <% } %>
                     <% } else { %>
@@ -500,9 +503,9 @@
                     <% } %>
                 </select></td>
                 <td width="46%"><b> <input type="hidden" name="xml_visitdate"
-                                           value="<%=visitdate%>"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.btnAdmissionDate"/><img
+                                           value="<%=Encode.forHtmlAttribute(String.valueOf(visitdate))%>"/> <fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.btnAdmissionDate"/><img
                         src="<%= request.getContextPath() %>/images/cal.gif" id="xml_vdate_cal"/>: <input
-                        type="text" id="xml_vdate" name="xml_vdate" value="<%=visitdate%>"
+                        type="text" id="xml_vdate" name="xml_vdate" value="<%=Encode.forHtmlAttribute(String.valueOf(visitdate))%>"
                         size=10/></b></td>
             </tr>
         </table>
@@ -541,24 +544,24 @@
 
             <tr>
                 <th width="25%"><input type="hidden"
-                                       name="xml_service_code<%=rowCount%>" value="<%=serviceCode%>">
+                                       name="xml_service_code<%=Encode.forHtmlAttribute(String.valueOf(rowCount))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>">
                     <input type="text" style="width: 100%"
-                           name="servicecode<%=rowCount-1%>" value="<%=serviceCode%>"></th>
-                <td><a href=# onClick="scScriptAttach('servicecode<%=i-1%>')">Search</a></td>
-                <th><font size="-1"><%=serviceDesc%>
+                           name="servicecode<%=Encode.forHtmlAttribute(String.valueOf(rowCount-1))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(serviceCode))%>"></th>
+                <td><a href=# onClick="scScriptAttach('servicecode<%=Encode.forJavaScript(String.valueOf(i-1))%>')">Search</a></td>
+                <th><font size="-1"><%=Encode.forHtml(String.valueOf(serviceDesc))%>
                 </th>
-                <th><input type="hidden" name="xml_billing_unit<%=rowCount%>"
-                           value="<%=billingunit%>"> <input type="text"
-                                                            style="width: 100%" name="billingunit<%=rowCount-1%>"
-                                                            value="<%=billingunit%>" size="5" maxlength="5"></th>
+                <th><input type="hidden" name="xml_billing_unit<%=Encode.forHtmlAttribute(String.valueOf(rowCount))%>"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(billingunit))%>"> <input type="text"
+                                                            style="width: 100%" name="billingunit<%=Encode.forHtmlAttribute(String.valueOf(rowCount-1))%>"
+                                                            value="<%=Encode.forHtmlAttribute(String.valueOf(billingunit))%>" size="5" maxlength="5"></th>
                 <th align="right"><input type="hidden"
-                                         name="xml_billing_amount<%=rowCount%>" value="<%=billAmount%>">
+                                         name="xml_billing_amount<%=Encode.forHtmlAttribute(String.valueOf(rowCount))%>" value="<%=Encode.forHtmlAttribute(String.valueOf(billAmount))%>">
                     <input type="text" style="width: 100%" size="5" maxlength="6"
-                           id="billingamount<%=rowCount-1%>" name="billingamount<%=rowCount-1%>"
-                           value="<%=billAmount%>" onchange="javascript:validateNum(this)"></th>
+                           id="billingamount<%=Encode.forHtmlAttribute(String.valueOf(rowCount-1))%>" name="billingamount<%=Encode.forHtmlAttribute(String.valueOf(rowCount-1))%>"
+                           value="<%=Encode.forHtmlAttribute(String.valueOf(billAmount))%>" onchange="javascript:validateNum(this)"></th>
                 <td align="center"><input type="checkbox"
-                                          name="itemStatus<%=rowCount-1%>" id="itemStatus<%=rowCount-1%>"
-                                          value="S" <%=itemStatus %>></td>
+                                          name="itemStatus<%=Encode.forHtmlAttribute(String.valueOf(rowCount-1))%>" id="itemStatus<%=Encode.forHtmlAttribute(String.valueOf(rowCount-1))%>"
+                                          value="S" <%=Encode.forHtml(String.valueOf(itemStatus))%>></td>
             </tr>
             <%
                         //
@@ -570,14 +573,14 @@
             %>
             <tr>
                 <td><input type="text" style="width: 100%"
-                           name="servicecode<%=rowCount-1%>" value=""></td>
+                           name="servicecode<%=Encode.forHtmlAttribute(String.valueOf(rowCount-1))%>" value=""></td>
                 <td><a href=#
-                       onClick="scScriptAttach('servicecode<%=rowCount-1%>')">Search</a></td>
+                       onClick="scScriptAttach('servicecode<%=Encode.forJavaScript(String.valueOf(rowCount-1))%>')">Search</a></td>
                 <td>&nbsp;</td>
                 <td><input type="text" style="width: 100%"
-                           name="billingunit<%=rowCount-1%>" value="" size="5" maxlength="5"></td>
+                           name="billingunit<%=Encode.forHtmlAttribute(String.valueOf(rowCount-1))%>" value="" size="5" maxlength="5"></td>
                 <td align="right"><input type="text" style="width: 100%"
-                                         name="billingamount<%=rowCount-1%>" id="billingamount<%=rowCount-1%>"
+                                         name="billingamount<%=Encode.forHtmlAttribute(String.valueOf(rowCount-1))%>" id="billingamount<%=Encode.forHtmlAttribute(String.valueOf(rowCount-1))%>"
                                          value="" size="5" maxlength="5"></td>
             </tr>
 
@@ -592,10 +595,10 @@
             </tr>
             <tr>
                 <td colspan="4"><input type="hidden" name="xml_diagnostic_code"
-                                       value="<%=diagCode%>"> <input type="text"
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(diagCode))%>"> <input type="text"
                                                                      style="font-size: 80%;"
                                                                      name="xml_diagnostic_detail"
-                                                                     value="<%=diagCode%>" size="50"> <input
+                                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(diagCode))%>" size="50"> <input
                         type="hidden"
                         name="xml_dig_search1"> <a href="javascript:ScriptAttach()"><fmt:setBundle basename="oscarResources"/><fmt:message key="billing.billingCorrection.btnDXSearch"/></a></td>
             </tr>
@@ -605,7 +608,7 @@
             </tr>
             <tr>
                 <td colspan="4">Billing Notes:<br>
-                    <textarea name="comment" value="" cols=60 rows=4><%=comment %></textarea>
+                    <textarea name="comment" value="" cols=60 rows=4><%=Encode.forHtml(String.valueOf(comment))%></textarea>
                 </td>
             </tr>
         </table>

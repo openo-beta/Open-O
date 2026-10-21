@@ -2,6 +2,7 @@
 <%@page
         import="java.math.*, java.util.*, java.sql.*, ca.openosp.*, java.net.*,ca.openosp.openo.billing.ca.bc.MSP.*,ca.openosp.openo.billing.ca.bc.data.*" %>
 <%@ page import="ca.openosp.openo.billings.ca.bc.data.BillingFormData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
@@ -34,7 +35,7 @@ TODO: Localize Strings
         <td nowrap="nowrap"><label for="billtype">Billing Type: </label>
         </td>
         <td>
-            <div id="billtype"><%=statusTypeProps.getProperty(BillType)%>
+            <div id="billtype"><%=Encode.forHtml(String.valueOf(statusTypeProps.getProperty(BillType)))%>
             </div>
         </td>
     </tr>
@@ -50,5 +51,5 @@ TODO: Localize Strings
         </select></td>
     </tr>
 </table>
-<input type="hidden" name="xml_status" value="<%=BillType%>">
+<input type="hidden" name="xml_status" value="<%=Encode.forHtmlAttribute(String.valueOf(BillType))%>">
 <br/>

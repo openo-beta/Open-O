@@ -32,6 +32,7 @@
 <%@page import="ca.openosp.openo.commn.dao.BillingDao" %>
 <%@page import="ca.openosp.openo.billing.CA.model.BillingDetail" %>
 <%@page import="ca.openosp.openo.billing.CA.dao.BillingDetailDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <table width="100%" border="2" cellpadding="0" cellspacing="0">
 
@@ -112,20 +113,20 @@ int rCount = 0;
 	<tr bgcolor="<%=bodd?"#EEEEFF":"white"%>">
 		<TD align="left" width="5%"><b><font size="2"
 			face="Arial, Helvetica, sans-serif"><a href=#
-			onClick='popupPage(700,720, "<%= request.getContextPath() %>/billing/CA/BC/billingView.do?billing_no=<%=bId%>&dboperation=search_bill&hotclick=0")'
-			title="<%=reason%>"> <%=bId%></a></font></b></TD>
+			onClick='popupPage(700,720, "<%= request.getContextPath() %>/billing/CA/BC/billingView.do?billing_no=<%=Encode.forUriComponent(String.valueOf(bId))%>&dboperation=search_bill&hotclick=0")'
+			title="<%=Encode.forHtmlAttribute(String.valueOf(reason))%>"> <%=Encode.forHtml(String.valueOf(bId))%></a></font></b></TD>
 		<TD align="left" width="20%"><b><font size="2"
-			face="Arial, Helvetica, sans-serif"><%=demoName%></font></b></TD>
+			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(demoName))%></font></b></TD>
 		<TD align="left" width="12%"><b><font size="2"
-			face="Arial, Helvetica, sans-serif"><%=apptDate%></font></b></TD>
+			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(apptDate))%></font></b></TD>
 
 		<TD align="left" width="20%"><b><font size="2"
 			face="Arial, Helvetica, sans-serif"> <% for(int x=0; x<10; x++){ %>
-		<%=param2[x]%> &nbsp; <%}%> </font></b></TD>
+		<%=Encode.forHtml(String.valueOf(param2[x]))%> &nbsp; <%}%> </font></b></TD>
 		<TD align="right" width="10%"><b> <font size="2"
 			face="Arial, Helvetica, sans-serif"><%=total%></font></b></TD>
 		<TD align="center" width="5%"><b><font size="2"
-			face="Arial, Helvetica, sans-serif"><%=reason%></font></b></TD>
+			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(reason))%></font></b></TD>
 
 	</tr>
 	<%  rowCount = rowCount + 1;
@@ -142,7 +143,7 @@ int rCount = 0;
 		<TD colspan="4" align="right"><b><font size="2"
 			face="Arial, Helvetica, sans-serif">Total</font></b></TD>
 		<TD align="right"><b><font size="2"
-			face="Arial, Helvetica, sans-serif"><%=BigOBTotal%></font></b></TD>
+			face="Arial, Helvetica, sans-serif"><%=Encode.forHtml(String.valueOf(BigOBTotal))%></font></b></TD>
 		<TD align="center"><b><font size="2"
 			face="Arial, Helvetica, sans-serif">Paid </font></b></TD>
 	</tr>

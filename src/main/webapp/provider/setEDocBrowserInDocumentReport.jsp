@@ -28,6 +28,7 @@
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@page import="java.util.*" %>
 <%@ page import="java.util.ResourceBundle"%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     if (session.getValue("user") == null) response.sendRedirect(request.getContextPath() + "/logout.htm");
     if (session.getAttribute("userrole") == null) response.sendRedirect(request.getContextPath() + "/logout.jsp");
@@ -49,7 +50,7 @@
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><%=bundle.getString(providertitle)%></title>
+        <title><%=Encode.forHtml(String.valueOf(bundle.getString(providertitle)))%></title>
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
     </head>
@@ -57,19 +58,19 @@
     <body class="BodyStyle" vlink="#0000FF">
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><%=bundle.getString(providermsgPrefs)%></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><%=bundle.getString(providermsgProvider)%></td>
+            <td class="MainTableTopRowLeftColumn"><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgPrefs)))%></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgProvider)))%></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
             <td class="MainTableRightColumn">
-                <%if (request.getAttribute("status") == null) {%> <%=bundle.getString(providermsgEdit)%>
+                <%if (request.getAttribute("status") == null) {%> <%=Encode.forHtml(String.valueOf(bundle.getString(providermsgEdit)))%>
                 <form action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
                     <input type="checkbox" name="eDocBrowserInDocumentReportProperty.checked" <c:if test="${eDocBrowserInDocumentReportProperty.checked}">checked</c:if> /><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.setEDocBrowserInDocumentReport.msgEnableLink"/>
                     <br/>
                     <input type="submit" name="btnApply" value="Apply" />
-                </form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>
+                </form> <%} else {%> <%=Encode.forHtml(String.valueOf(bundle.getString(providermsgSuccess)))%> <br>
                 <%}%>
             </td>
         </tr>

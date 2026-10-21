@@ -268,8 +268,10 @@ public final class FrmSetupForm2Action extends ActionSupport {
                         return null;
                     }
                     
-                    // Using parameterized values for formId and demographicNo
-                    // Note: Table name cannot be parameterized, but formName is validated above
+                    // SQL Injection: Safe. formName is validated by isValidFormName() above which
+                    // enforces ^[a-zA-Z0-9_]+$ regex (alphanumeric and underscores only).
+                    // Table names cannot be parameterized in PreparedStatement, so regex validation
+                    // is the standard mitigation. formId and demographicNo use parameter binding.
                     String sql = "SELECT * FROM form" + formName + " WHERE ID=? AND demographic_no=?";
                     Connection connection = DbConnectionFilter.getThreadLocalDbConnection();
                     PreparedStatement ps = connection.prepareStatement(sql);

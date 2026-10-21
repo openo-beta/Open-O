@@ -35,6 +35,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ page import="java.lang.*, java.util.*, java.text.*,java.sql.*, ca.openosp.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String mcedtUsername = (String) session.getAttribute("mcedtUsername");
 %>
@@ -50,8 +51,8 @@
 
         window.onload = function () {
 
-            var isSucess = <%=(String)session.getAttribute("isPassChange")%>;
-            if (isSucess != null && isSucess == true) {
+            var isSucess = <%="true".equals(session.getAttribute("isPassChange"))%>;
+            if (isSucess === true) {
                 alert('EDT Password has been changed successfully.');
                 return gobacktoedthome();
                 //return true;
@@ -121,7 +122,7 @@
                 <table class="password">
                     <tr>
                         <td>User Name:</td>
-                        <td><input name="username" type="text" id="username" class="readonly" value="<%=mcedtUsername%>"
+                        <td><input name="username" type="text" id="username" class="readonly" value="<%=Encode.forHtmlAttribute(String.valueOf(mcedtUsername))%>"
                                    readonly></td>
                     </tr>
                     <tr>

@@ -56,6 +56,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.EChartDao" %>
 <%@ page import="ca.openosp.openo.commn.model.EChart" %>
 <%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     EChartDao eChartDao = SpringUtils.getBean(EChartDao.class);
@@ -131,14 +132,14 @@
                 bgcolor = "gold";
             }
     %>
-    <tr bgcolor="<%=bgcolor%>">
+    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>">
         <td align="center"><a
-                href="<%= request.getContextPath() %>/oscarEncounter/echarthistoryprint.jsp?echartid=<%=eChart.getId()%>&demographic_no=<%=demographic_no%>"><%=datetime%>
+                href="<%= request.getContextPath() %>/oscarEncounter/echarthistoryprint.jsp?echartid=<%=Encode.forUriComponent(String.valueOf(eChart.getId()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>"><%=Encode.forHtml(String.valueOf(datetime))%>
         </a></td>
-        <td><%=eChart.getSubject() != null ? eChart.getSubject() : ""%>
+        <td><%=Encode.forHtml(String.valueOf(eChart.getSubject() != null ? eChart.getSubject() : ""))%>
         </td>
         <!--td align="center"><%--=ectsize + "KB" --%></td-->
-        <td><%=ProviderData.getProviderName(eChart.getProviderNo())%>
+        <td><%=Encode.forHtml(String.valueOf(ProviderData.getProviderName(eChart.getProviderNo())))%>
         </td>
     </tr>
     <%
@@ -154,12 +155,12 @@
         nLastPage = Integer.parseInt(strLimit1) - Integer.parseInt(strLimit2);
         if (nLastPage >= 0) {
     %> <a
-        href="reportecharthistory.jsp?demographic_no=<%=demographic_no%>&limit1=<%=nLastPage%>&limit2=<%=strLimit2%>">Last
+        href="reportecharthistory.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nLastPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>">Last
     Page</a> | <%
     }
     if (nItems == Integer.parseInt(strLimit2)) {
 %> <a
-        href="reportecharthistory.jsp?demographic_no=<%=demographic_no%>&limit1=<%=nNextPage%>&limit2=<%=strLimit2%>&splitectsize=<%=splitectsize%>">
+        href="reportecharthistory.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&limit1=<%=Encode.forUriComponent(String.valueOf(nNextPage))%>&limit2=<%=Encode.forUriComponent(String.valueOf(strLimit2))%>&splitectsize=<%=Encode.forUriComponent(String.valueOf(splitectsize))%>">
     Next Page</a> <%
     }
 %>

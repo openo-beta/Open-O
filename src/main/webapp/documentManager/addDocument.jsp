@@ -152,7 +152,7 @@
 
     function checkSel(sel) {
         theForm = sel.form;
-        if ((theForm.docDesc.value === "") || (theForm.docDesc.value === "<%= defaultDesc%>")) {
+        if ((theForm.docDesc.value === "") || (theForm.docDesc.value === "<%=Encode.forJavaScript(String.valueOf(defaultDesc))%>")) {
             theForm.docDesc.value = theForm.docType.value;
             theForm.docDesc.focus();
             theForm.docDesc.select();
@@ -160,7 +160,7 @@
     }
 
     function checkDefaultValue(object) {
-        if ((object.value === "<%= defaultDesc%>") || (object.value === "<%= defaultType%>") || (object.value === "<%= defaultHtml %>")) {
+        if ((object.value === "<%=Encode.forJavaScript(String.valueOf(defaultDesc))%>") || (object.value === "<%=Encode.forJavaScript(String.valueOf(defaultType))%>") || (object.value === "<%=Encode.forJavaScript(String.valueOf(defaultHtml))%>")) {
             object.value = "";
         }
     }
@@ -251,7 +251,7 @@
             <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.AddLink"/>
         </a>
         <a class="btn" href="javascript:void(0);"
-           onclick="popup1(450, 600, 'addedithtmldocument.jsp?function=<%=module%>&functionid=<%=moduleid%>&mode=addHtml', 'addhtml')">
+           onclick="popup1(450, 600, 'addedithtmldocument.jsp?function=<%=Encode.forUriComponent(String.valueOf(module))%>&functionid=<%=Encode.forUriComponent(String.valueOf(moduleid))%>&mode=addHtml', 'addhtml')">
             <fmt:setBundle basename="oscarResources"/><fmt:message key="dms.addDocument.AddHTML"/>
         </a>
     </div>
@@ -300,13 +300,13 @@
                        class="form-control <c:if test='${ docerrors["descmissing"] != null}' >alert-danger</c:if>"
                        id="docDesc" name="docDesc" value="<%=Encode.forHtmlAttribute(formdata.getDocDesc())%>"
                        onfocus="checkDefaultValue(this)"/>
-                <input type="hidden" name="docCreator" value="<%=formdata.getDocCreator()%>"/>
+                <input type="hidden" name="docCreator" value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getDocCreator()))%>"/>
             </div>
             <div class="form-group">
                 <label for="observationDate" title="Observation Date">Observation Date</label>
                 <input class="span2 form-control" type="date" name="observationDate" id="observationDate"
-                       value="<%=formdata.getObservationDate()%>"
-                       onclick="checkDefaultDate(this, '<%=UtilDateUtilities.DateToString(new Date(), "yyyy-MM-dd")%>')">
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getObservationDate()))%>"
+                       onclick="checkDefaultDate(this, '<%=Encode.forJavaScript(String.valueOf(UtilDateUtilities.DateToString(new Date(), "yyyy-MM-dd")))%>')">
             </div>
 
             <div class="form-group">
@@ -321,7 +321,7 @@
                                 consult1Shown = true;
                             }
                     %>
-                    <option value="<%=reportClass%>"><%=reportClass%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(reportClass))%>"><%=Encode.forHtml(String.valueOf(reportClass))%>
                     </option>
                     <% } %>
                 </select>
@@ -355,7 +355,7 @@
                         <input type="submit" name="Submit" value="Add" class="btn btn-primary">
                         <input type="button" name="Button" class="btn btn-error"
                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>"
-                               onclick="window.location='documentReport.jsp?function=<%=module%>&functionid=<%=moduleid%>'">
+                               onclick="window.location='documentReport.jsp?function=<%=Encode.forUriComponent(String.valueOf(module))%>&functionid=<%=Encode.forUriComponent(String.valueOf(moduleid))%>'">
 
                     </div>
                 </div>
@@ -376,11 +376,11 @@
             </div>
         </c:forEach>
 
-        <input type="hidden" name="function" value="<%=formdata.getFunction()%>">
-        <input type="hidden" name="functionId" value="<%=formdata.getFunctionId()%>">
-        <input type="hidden" name="functionid" value="<%=moduleid%>">
-        <input type="hidden" name="observationDate" value="<%=formdata.getObservationDate()%>">
-        <input type="hidden" name="appointmentNo" value="<%=formdata.getAppointmentNo()%>"/>
+        <input type="hidden" name="function" value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getFunction()))%>">
+        <input type="hidden" name="functionId" value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getFunctionId()))%>">
+        <input type="hidden" name="functionid" value="<%=Encode.forHtmlAttribute(String.valueOf(moduleid))%>">
+        <input type="hidden" name="observationDate" value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getObservationDate()))%>">
+        <input type="hidden" name="appointmentNo" value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getAppointmentNo()))%>"/>
 
         <div class="form-group">
             <label for="docType1">Link Type</label>
@@ -390,8 +390,8 @@
                     <%
                         for (int i1 = 0; i1 < doctypes.size(); i1++) {
                             String doctype = (String) doctypes.get(i1); %>
-                    <option value="<%= doctype%>"
-                            <%=(formdata.getDocType().equals(doctype)) ? " selected" : ""%>><%= doctype%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(doctype))%>"
+                            <%=(formdata.getDocType().equals(doctype)) ? " selected" : ""%>><%=Encode.forHtml(String.valueOf(doctype))%>
                     </option>
                     <%}%>
                 </select>
@@ -408,7 +408,7 @@
             <label for="docDesc2">Description</label>
             <input type="text" name="docDesc" id="docDesc2"
                    class="form-control <c:if test="${ linkhtmlerrors['descmissing'] != null }">alert-danger</c:if>"
-                   value="<%=formdata.getDocDesc()%>" onfocus="checkDefaultValue(this)">
+                   value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getDocDesc()))%>" onfocus="checkDefaultValue(this)">
         </div>
 
         <div class="form-group">
@@ -423,7 +423,7 @@
                             consult2Shown = true;
                         }
                 %>
-                <option value="<%=reportClass%>"><%=reportClass%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(reportClass))%>"><%=Encode.forHtml(String.valueOf(reportClass))%>
                 </option>
                 <% } %>
             </select>
@@ -445,16 +445,16 @@
             <label for="html">Link</label>
             <div class="input-group">
                 <input type="text" id="html" name="html" class="form-control"
-                       value="<%=formdata.getHtml()%>" onfocus="checkDefaultValue(this)">
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getHtml()))%>" onfocus="checkDefaultValue(this)">
                 <input type="hidden" name="docCreator"
-                       value="<%=formdata.getDocCreator()%>">
-                <input type="hidden" name="appointmentNo" value="<%=formdata.getAppointmentNo()%>"/>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getDocCreator()))%>">
+                <input type="hidden" name="appointmentNo" value="<%=Encode.forHtmlAttribute(String.valueOf(formdata.getAppointmentNo()))%>"/>
                 <div class="input-group-btn">
                     <input type="hidden" name="mode" value="addLink">
                     <input class="btn btn-primary" type="SUBMIT" name="Submit" value="Add">
                     <input class="btn" type="button" name="Button"
                            value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnCancel"/>"
-                           onclick="window.location='documentReport.jsp?function=<%=module%>&functionid=<%=moduleid%>'">
+                           onclick="window.location='documentReport.jsp?function=<%=Encode.forUriComponent(String.valueOf(module))%>&functionid=<%=Encode.forUriComponent(String.valueOf(moduleid))%>'">
                 </div>
             </div>
             </form>

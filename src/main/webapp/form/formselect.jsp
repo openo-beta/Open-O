@@ -26,9 +26,11 @@
 
 
 <%@ page import="java.util.*,ca.openosp.openo.report.pageUtil.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
 
 
@@ -43,8 +45,8 @@
     <div class="well">
 
         <form action="${pageContext.request.contextPath}/form/select.do" method="post" id="selectForm" name="selectForm">
-            <input type="hidden" id="savedAddSelection" name="savedAddSelection" value="${param.savedAddSelection}" />
-            <input type="hidden" id="savedDeleteSelection" name="savedDeleteSelection" value="${param.savedDeleteSelection}" />
+            <input type="hidden" id="savedAddSelection" name="savedAddSelection" value="${e:forHtmlAttribute(param.savedAddSelection)}" />
+            <input type="hidden" id="savedDeleteSelection" name="savedDeleteSelection" value="${e:forHtmlAttribute(param.savedDeleteSelection)}" />
             
             <table id="scrollNumber1" name="encounterTable">
                 <tr>
@@ -62,7 +64,7 @@
                                         <td><select multiple="true" name="selectedAddTypes"
                                                          size="10" style="width:150">
                                             <c:forEach var="f" items="${formHiddenVector}">
-                                                <c:set var="searchIn" value=",${param.savedAddSelection}," />
+                                                <c:set var="searchIn" value=",${e:forHtmlAttribute(param.savedAddSelection)}," />
                                                 <c:set var="searchFor" value=",${f.formName}," />
                                                 <option value="${f.formName}"
                                                         <c:if test="${not empty param.savedAddSelection and (param.savedAddSelection eq f.formName or fn:contains(searchIn, searchFor))}">selected</c:if>>
@@ -90,7 +92,7 @@
                                         <td><select multiple="true"
                                                          name="selectedDeleteTypes" size="10" style="width:150">
                                             <c:forEach var="f" items="${formShownVector}">
-                                                <c:set var="searchIn" value=",${param.savedDeleteSelection}," />
+                                                <c:set var="searchIn" value=",${e:forHtmlAttribute(param.savedDeleteSelection)}," />
                                                 <c:set var="searchFor" value=",${f.formName}," />
                                                 <option value="${f.formName}" 
                                                         <c:if test="${not empty param.savedDeleteSelection and (param.savedDeleteSelection eq f.formName or fn:contains(searchIn, searchFor))}">selected</c:if>>

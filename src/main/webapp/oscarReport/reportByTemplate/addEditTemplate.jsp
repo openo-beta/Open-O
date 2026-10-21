@@ -32,6 +32,7 @@
 <%@ page import="ca.openosp.openo.report.reportByTemplate.*, java.sql.*, org.apache.commons.lang3.StringUtils" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportManager" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportObject" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
@@ -102,7 +103,7 @@
     %>
 
     <h3>
-        <%=StringUtils.capitalize(action)%>
+        <%=Encode.forHtml(String.valueOf(StringUtils.capitalize(action)))%>
 
         <c:if test="${ action eq 'add' }">
             Template
@@ -146,7 +147,7 @@
         <input type="hidden" name="uuid" value="${ curreport.uuid }">
         <div class="control-group">
         <div class="controls">
-        <input type="submit" class="btn btn-primary pull-right" value="Upload & <%=StringUtils.capitalize(action)%>">
+        <input type="submit" class="btn btn-primary pull-right" value="Upload & <%=Encode.forHtmlAttribute(String.valueOf(StringUtils.capitalize(action)))%>">
         </div>
         </div>
         </div>
@@ -170,7 +171,7 @@
                     <div class="control-group">
                         <div class="controls">
                             <input type="submit" class="btn btn-primary pull-right"
-                                   value="Upload & <%=StringUtils.capitalize(action)%>">
+                                   value="Upload & <%=Encode.forHtmlAttribute(String.valueOf(StringUtils.capitalize(action)))%>">
                         </div>
                     </div>
                 </div>

@@ -44,6 +44,7 @@
 <%@page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
     <head>
@@ -97,17 +98,17 @@
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
 
         <input type="hidden" name="demographic_no"
-               value="<%= props.getProperty("demographic_no", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
         <input type="hidden" name="ID"
-               value="<%= props.getProperty("ID", "0") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>"/>
         <input type="hidden" name="provider_no"
-               value=<%=request.getParameter("provNo")%>/>
+               value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
         <input type="hidden" name="formCreated"
-               value="<%= props.getProperty("formCreated", "") %>"/>
+               value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
         <input type="hidden" name="form_class" value="<%=formClass%>"/>
         <input type="hidden" name="form_link" value="<%=formLink%>"/>
         <input type="hidden" name="provNo"
-               value="<%= request.getParameter("provNo") %>"/>
+               value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
         <input type="hidden" name="submit" value="exit"/>
 
         <table class="Head" class="hidePrint">
@@ -135,16 +136,16 @@
                     <table width="80%">
                         <tr>
                             <td>Name: <input type="hidden" name="pName"
-                                             value="<%=props.getProperty("pName", "")%>"/> <%=props.getProperty("pName", "")%>
+                                             value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pName", "")))%>"/> <%=Encode.forHtml(String.valueOf(props.getProperty("pName", "")))%>
                             </td>
                             <td>Age: <input type="hidden" name="age"
-                                            value="<%=props.getProperty("age", "")%>"/> <%=props.getProperty("age", "")%>
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("age", "")))%>"/> <%=Encode.forHtml(String.valueOf(props.getProperty("age", "")))%>
                             </td>
                             <td>Sex: <input type="hidden" name="sex"
-                                            value="<%=props.getProperty("sex", "")%>"/> <%=props.getProperty("sex", "")%>
+                                            value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("sex", "")))%>"/> <%=Encode.forHtml(String.valueOf(props.getProperty("sex", "")))%>
                             </td>
                             <td>Date: <input type="hidden" size="10" name="formDate"
-                                             value="<%=props.getProperty("formDate", "")%>"/> <%=props.getProperty("formDate", "")%>
+                                             value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formDate", "")))%>"/> <%=Encode.forHtml(String.valueOf(props.getProperty("formDate", "")))%>
                             </td>
                         </tr>
                     </table>
@@ -156,10 +157,10 @@
             </tr>
             <tr>
                 <td align="center"><textarea name="diagnosis"
-                                             style="height: 75px; width: 95%"><%=props.getProperty("diagnosis", "")%></textarea>
+                                             style="height: 75px; width: 95%"><%=Encode.forHtml(String.valueOf(props.getProperty("diagnosis", "")))%></textarea>
                 </td>
                 <td align="center"><textarea name="meds"
-                                             style="height: 75px; width: 95%"><%=props.getProperty("meds", "")%></textarea>
+                                             style="height: 75px; width: 95%"><%=Encode.forHtml(String.valueOf(props.getProperty("meds", "")))%></textarea>
                 </td>
             </tr>
             <tr>
@@ -175,14 +176,14 @@
                                     </tr>
                                     <tr>
                                         <td class="score"><input type="text" size="1" name="o_date"
-                                                                 value="<%=props.getProperty("o_date", "")%>"/></td>
+                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("o_date", "")))%>"/></td>
                                         <td class="score">5</td>
                                         <td>Name: year, season, month, date, day<br>
                                             <i>("What is the year...?")</i></td>
                                     </tr>
                                     <tr>
                                         <td class="score"><input type="text" size="1" name="o_place"
-                                                                 value="<%=props.getProperty("o_place", "")%>"/></td>
+                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("o_place", "")))%>"/></td>
                                         <td class="score">5</td>
                                         <td>Name: country, province, city, hospital, floor<br>
                                             <i>("Where are we? What country...?")</i></td>
@@ -195,7 +196,7 @@
                                     <tr>
                                         <td class="score"><input type="text" size="1"
                                                                  name="r_objects"
-                                                                 value="<%=props.getProperty("r_objects", "")%>"/></td>
+                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("r_objects", "")))%>"/></td>
                                         <td class="score">3</td>
                                         <td>Name 3 objects (1 sec. for each).<br>
                                             Ask patient to repeat all 3.<br>
@@ -211,7 +212,7 @@
                                     <tr>
                                         <td class="score"><input type="text" size="1"
                                                                  name="a_serial"
-                                                                 value="<%=props.getProperty("a_serial", "")%>"/></td>
+                                                                 value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("a_serial", "")))%>"/></td>
                             </td>
                             <td class="score">5</td>
                             <td>Serial 7's: 100 - 93 - 86 - 79 - 72 - 65<br>
@@ -228,7 +229,7 @@
                         </tr>
                         <tr>
                             <td class="score"><input type="text" size="1" name="re_name"
-                                                     value="<%=props.getProperty("re_name", "")%>"/></td>
+                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("re_name", "")))%>"/></td>
                             <td class="score">3</td>
                             <td>Name the 3 objects learned above.<br>
                                 Score 1 pt. for each right answer.
@@ -241,20 +242,20 @@
                         </tr>
                         <tr>
                             <td class="score"><input type="text" size="1" name="l_name"
-                                                     value="<%=props.getProperty("l_name", "")%>"/></td>
+                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("l_name", "")))%>"/></td>
                             <td class="score">2</td>
                             <td>Name: PENCIL, WATCH</td>
                         </tr>
                         <tr>
                             <td class="score"><input type="text" size="1"
-                                                     name="l_repeat" value="<%=props.getProperty("l_repeat", "")%>"/>
+                                                     name="l_repeat" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("l_repeat", "")))%>"/>
                             </td>
                             <td class="score">1</td>
                             <td>Repeat: <i>"NO IFS AND OR BUTS"</i></td>
                         </tr>
                         <tr>
                             <td class="score"><input type="text" size="1"
-                                                     name="l_follow" value="<%=props.getProperty("l_follow", "")%>"/>
+                                                     name="l_follow" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("l_follow", "")))%>"/>
                             </td>
                             <td class="score">3</td>
                             <td>Follow a 3 stage command:<br>
@@ -263,25 +264,25 @@
                         </tr>
                         <tr>
                             <td class="score"><input type="text" size="1" name="l_read"
-                                                     value="<%=props.getProperty("l_read", "")%>"/></td>
+                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("l_read", "")))%>"/></td>
                             <td class="score">1</td>
                             <td>Read & obey: <i>"CLOSE YOUR EYES"</i></td>
                         </tr>
                         <tr>
                             <td class="score"><input type="text" size="1" name="l_write"
-                                                     value="<%=props.getProperty("l_write", "")%>"/></td>
+                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("l_write", "")))%>"/></td>
                             <td class="score">1</td>
                             <td>Write a sentence.</td>
                         </tr>
                         <tr>
                             <td class="score"><input type="text" size="1" name="l_copy"
-                                                     value="<%=props.getProperty("l_copy", "")%>"/></td>
+                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("l_copy", "")))%>"/></td>
                             <td class="score">1</td>
                             <td>Copy the design.</td>
                         </tr>
                         <tr>
                             <td class="score"><input type="text" size="1" name="total"
-                                                     value="<%=props.getProperty("total", "")%>"/></td>
+                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("total", "")))%>"/></td>
                             <td class="score"><b>30</b></td>
                             <td><b>TOTAL</b></td>
                         </tr>
@@ -298,13 +299,13 @@
                                     </tr>
                                     <tr>
                                         <td><input type="checkbox" name="lc_alert"
-                                                <%=props.getProperty("lc_alert", "")%> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("lc_alert", "")))%> /></td>
                                         <td><input type="checkbox" name="lc_drowsy"
-                                                <%=props.getProperty("lc_drowsy", "")%> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("lc_drowsy", "")))%> /></td>
                                         <td><input type="checkbox" name="lc_stupor"
-                                                <%=props.getProperty("lc_stupor", "")%> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("lc_stupor", "")))%> /></td>
                                         <td><input type="checkbox" name="lc_coma"
-                                                <%=props.getProperty("lc_coma", "")%> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("lc_coma", "")))%> /></td>
                                     </tr>
                                 </table>
                             </td>
@@ -316,18 +317,18 @@
                                 <table>
                                     <tr>
                                         <td><input type="checkbox" name="i_dementia"
-                                                <%=props.getProperty("i_dementia", "")%> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("i_dementia", "")))%> /></td>
                                         <td width="25%">0 - 14</td>
                                         <td>Dementia</td>
                                     </tr>
                                     <tr>
                                         <td><input type="checkbox" name="i_depression"
-                                                <%=props.getProperty("i_depression", "")%> /></td>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("i_depression", "")))%> /></td>
                                         <td>15 - 23</td>
                                         <td>Depression/cognitive loss</td>
                                     </tr>
                                     <td><input type="checkbox" name="i_normal"
-                                            <%=props.getProperty("i_normal", "")%> /></td>
+                                            <%=Encode.forHtml(String.valueOf(props.getProperty("i_normal", "")))%> /></td>
                                     <td>24 - 30</td>
                                     <td>Normal</td>
                         </tr>

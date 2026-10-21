@@ -42,7 +42,9 @@
 <%@page import="java.util.*" %>
 <%@page import="ca.openosp.openo.commn.dao.DemographicExtDao" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
 <%
     String demographic_no = request.getParameter("demo");
@@ -75,7 +77,7 @@
     <li>
         <span class="label">First Nation Community: </span>
         <span class="info">
-		<c:out value='${param.fncommunity}'/>
+		<c:out value='${e:forHtmlAttribute(param.fncommunity)}'/>
 	</span>
     </li>
 

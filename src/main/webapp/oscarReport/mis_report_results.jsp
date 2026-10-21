@@ -46,6 +46,7 @@
 <%@page import="ca.openosp.openo.utility.WebUtils" %>
 <%@page import="ca.openosp.openo.web.MisReportUIBean.DataRow" %>
 <%@page import="java.util.GregorianCalendar" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
@@ -88,9 +89,9 @@
     </tr>
 </table>
 
-<span style="font-weight:bold">ReportBy : </span><%=misReportUIBean.getReportByDescription()%>
+<span style="font-weight:bold">ReportBy : </span><%=Encode.forHtml(String.valueOf(misReportUIBean.getReportByDescription()))%>
 <br/><br/>
-<span style="font-weight:bold">Dates : </span><%=MisReportUIBean.getDateRangeForDisplay(startDate, endDate)%>
+<span style="font-weight:bold">Dates : </span><%=Encode.forHtml(String.valueOf(MisReportUIBean.getDateRangeForDisplay(startDate, endDate)))%>
 
 <br/><br/>
 
@@ -99,7 +100,7 @@
         <%
             for (String header : misReportUIBean.getHeaderRow()) {
         %>
-        <td><%=header%>
+        <td><%=Encode.forHtml(String.valueOf(header))%>
         </td>
         <%
             }
@@ -116,15 +117,15 @@
             else backgroundColour = "#dddddd";
 
     %>
-    <tr class="genericTableRow" style="background-color:<%=backgroundColour%>">
-        <td style="font-weight:bold"><%=dataRow.dataReportId%>
+    <tr class="genericTableRow" style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(backgroundColour))%>">
+        <td style="font-weight:bold"><%=Encode.forHtml(String.valueOf(dataRow.dataReportId))%>
         </td>
-        <td style="font-weight:bold"><%=dataRow.dataReportDescription%>
+        <td style="font-weight:bold"><%=Encode.forHtml(String.valueOf(dataRow.dataReportDescription))%>
         </td>
         <%
             for (Integer tempResult : dataRow.dataReportResult) {
         %>
-        <td><%=tempResult == null ? "-" : tempResult%>
+        <td><%=Encode.forHtml(String.valueOf(tempResult == null ? "-" : tempResult))%>
         </td>
         <%
             }

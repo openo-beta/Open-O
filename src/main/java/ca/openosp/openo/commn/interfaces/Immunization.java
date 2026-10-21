@@ -30,7 +30,7 @@ import java.util.Date;
 
 
 public interface Immunization {
-    public enum ImmunizationProperty {lot, location, route, dose, comments, neverReason, manufacture, name, expiryDate, providerName, brandSnomedId}
+    public enum ImmunizationProperty {lot, location, route, dose, comments, neverReason, manufacture, name, expiryDate, providerName, brandSnomedId, din}
 
     public int getImmunizationId();
 

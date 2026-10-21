@@ -34,6 +34,7 @@
 <%@ page import="ca.openosp.openo.olis1.parameters.PID3" %>
 <%@ page import="ca.openosp.openo.olis1.queries.Query" %>
 <%@ page import="ca.openosp.openo.olis1.queries.Z01Query" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     if (session.getAttribute("userrole") == null) {
@@ -67,7 +68,7 @@
 <h3>Checking Properties</h3>
 <ul>
     <%for (String errorString : errors) { %>
-    <li><%=errorString%>
+    <li><%=Encode.forHtml(String.valueOf(errorString))%>
     </li>
     <%}%>
 </ul>
@@ -106,25 +107,25 @@
 
     %>
     <tr>
-        <td><%=providerNo%>
+        <td><%=Encode.forHtml(String.valueOf(providerNo))%>
         </td>
-        <td><%=lastName%>
+        <td><%=Encode.forHtml(String.valueOf(lastName))%>
         </td>
-        <td><%=firstName%>
+        <td><%=Encode.forHtml(String.valueOf(firstName))%>
         </td>
-        <td><%=cpso%>
+        <td><%=Encode.forHtml(String.valueOf(cpso))%>
         </td>
-        <td><%=officialLastName%>
+        <td><%=Encode.forHtml(String.valueOf(officialLastName))%>
         </td>
-        <td><%=officialFirstName%>
+        <td><%=Encode.forHtml(String.valueOf(officialFirstName))%>
         </td>
-        <td><%=officialSecondName%>
+        <td><%=Encode.forHtml(String.valueOf(officialSecondName))%>
         </td>
         <%if (cpso != null) { %>
         <td><textarea cols=100
-                      rows=10><%=tryZ01Query(testPatientLookup, cpso, officialLastName, officialFirstName, officialSecondName, request)%></textarea>
+                      rows=10><%=Encode.forHtml(String.valueOf(tryZ01Query(testPatientLookup, cpso, officialLastName, officialFirstName, officialSecondName, request)))%></textarea>
         </td>
-        <td><textarea cols=100 rows=10><%=request.getAttribute("msgInXML")%></textarea></td>
+        <td><textarea cols=100 rows=10><%=Encode.forHtml(String.valueOf(request.getAttribute("msgInXML")))%></textarea></td>
         <%
                 request.setAttribute("msgInXML", "");
             }%>
@@ -139,7 +140,7 @@
     %>
 </table>
 <%if (error != null) {%>
-<pre><%=error%></pre>
+<pre><%=Encode.forHtml(String.valueOf(error))%></pre>
 <% }%>
 </body>
 </html>

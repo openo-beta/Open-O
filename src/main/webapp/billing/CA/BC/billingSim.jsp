@@ -46,6 +46,7 @@
 <%@ page import="ca.openosp.openo.PMmodule.dao.ProviderDao" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <%
@@ -163,8 +164,8 @@
                             billinggroup_no = p.getBillingNo();
                             specialty_code = SxmlMisc.getXmlContent(p.getComments(), "<xml_p_specialty_code>", "</xml_p_specialty_code>");
                 %>
-                <option value="<%=proOHIP%>"
-                        <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=proLast%>,<%=proFirst%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>"
+                        <%=providerview.equals(proOHIP) ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(proLast))%>,<%=Encode.forHtml(String.valueOf(proFirst))%>
                 </option>
 
                 <%
@@ -175,24 +176,24 @@
 
             </select></td>
             <td width="277"><font color="#003366"> <input
-                    type="hidden" name="monthCode" value="<%=monthCode%>"> <input
+                    type="hidden" name="monthCode" value="<%=Encode.forHtmlAttribute(String.valueOf(monthCode))%>"> <input
                     type="hidden" name="verCode" value="V03"> <input
-                    type="hidden" name="curUser" value="<%=user_no%>"> <input
-                    type="hidden" name="curDate" value="<%=nowDate%>"> </font></td>
+                    type="hidden" name="curUser" value="<%=Encode.forHtmlAttribute(String.valueOf(user_no))%>"> <input
+                    type="hidden" name="curDate" value="<%=Encode.forHtmlAttribute(String.valueOf(nowDate))%>"> </font></td>
         </tr>
         <tr>
             <td><font face="Arial, Helvetica, sans-serif" size="2"><b>
                 Service Date: </b></font></td>
             <td><font size="1" face="Arial, Helvetica, sans-serif"> <a
                     href="#"
-                    onClick="openBrWindow('<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/billing/CA/BC/billingSim.jsp&year=<%=curYear%>&month=<%=curMonth%>&param=<%=URLEncoder.encode("&formdatebox=document.forms[0].xml_vdate.value", StandardCharsets.UTF_8)%>','','top=0,left=0,width=430,height=310'); return false;">
+                    onClick="openBrWindow('<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/billing/CA/BC/billingSim.jsp&year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&param=<%=Encode.forUriComponent(String.valueOf("&formdatebox=document.forms[0].xml_vdate.value"))%>','','top=0,left=0,width=430,height=310'); return false;">
                 From:</a></font> <input type="text" name="xml_vdate" maxlength="10"
-                                        value="<%=xml_vdate%>" readonly></td>
+                                        value="<%=Encode.forHtmlAttribute(String.valueOf(xml_vdate))%>" readonly></td>
             <td><font size="1" face="Arial, Helvetica, sans-serif"> <a
                     href="#"
-                    onClick="openBrWindow('<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/billing/CA/BC/billingSim.jsp&year=<%=curYear%>&month=<%=curMonth%>&param=<%=URLEncoder.encode("&formdatebox=document.forms[0].xml_appointment_date.value", StandardCharsets.UTF_8)%>','','top=0,left=0,width=430,height=310'); return false;">
+                    onClick="openBrWindow('<%= request.getContextPath() %>/share/CalendarPopup.jsp?urlfrom=<%= request.getContextPath() %>/billing/CA/BC/billingSim.jsp&year=<%=Encode.forUriComponent(String.valueOf(curYear))%>&month=<%=Encode.forUriComponent(String.valueOf(curMonth))%>&param=<%=Encode.forUriComponent(String.valueOf("&formdatebox=document.forms[0].xml_appointment_date.value"))%>','','top=0,left=0,width=430,height=310'); return false;">
                 To:</a></font> <input type="text" name="xml_appointment_date" maxlength="10"
-                                      value="<%=xml_appointment_date%>" readonly></td>
+                                      value="<%=Encode.forHtmlAttribute(String.valueOf(xml_appointment_date))%>" readonly></td>
             <td><input type="submit" name="Submit" value="Create Report">
             </td>
         </tr>

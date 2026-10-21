@@ -197,7 +197,7 @@
             <td valign="top" class="MainTableRightColumn"><form method="post"
                     action="${pageContext.request.contextPath}/report/ManageLetters.do" enctype="multipart/form-data">
                 <input type="hidden" name="goto"
-                       value="<%=request.getParameter("goto")%>"/>
+                       value="<%=Encode.forHtmlAttribute(request.getParameter("goto"))%>"/>
                 <div>Select Letter: <input type="file" name="reportFile"
                                            value="upload"/>
                     <span title="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.uploadWarningBody"/>"

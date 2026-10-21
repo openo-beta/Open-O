@@ -49,6 +49,7 @@
                 org.springframework.web.context.support.*" %>
 <%@ page import="ca.openosp.openo.commn.model.Provider" %>
 <%@ page import="ca.openosp.openo.commn.model.Tickler" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="1"
        bgcolor="#C0C0C0">
@@ -76,7 +77,7 @@
 					view_image="details2.gif";
 				}
 			%>
-    <tr bgcolor="<%=bgcolor %>" align="center">
+    <tr bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(bgcolor))%>" align="center">
         <%
             String provider_name = "";
             String assignee_name = "";
@@ -115,16 +116,16 @@
                 style = "color:red;";
             }
         %>
-        <td style="<%=style%>"><%=provider_name %>
+        <td style="<%=Encode.forHtmlAttribute(String.valueOf(style))%>"><%=Encode.forHtml(String.valueOf(provider_name))%>
         </td>
-        <td style="<%=style%>"><fmt:formatDate
+        <td style="<%=Encode.forHtmlAttribute(String.valueOf(style))%>"><fmt:formatDate
                 pattern="MM/dd/yy : hh:mm a" value="${tickler.serviceDate}"/></td>
-        <td style="<%=style%>"><c:out value="${tickler.priority}"/></td>
-        <td style="<%=style%>"><%=assignee_name %>
+        <td style="<%=Encode.forHtmlAttribute(String.valueOf(style))%>"><c:out value="${tickler.priority}"/></td>
+        <td style="<%=Encode.forHtmlAttribute(String.valueOf(style))%>"><%=Encode.forHtml(String.valueOf(assignee_name))%>
         </td>
-        <td style="<%=style%>"><%=status %>
+        <td style="<%=Encode.forHtmlAttribute(String.valueOf(style))%>"><%=Encode.forHtml(String.valueOf(status))%>
         </td>
-        <td style="<%=style%>" align="left"><c:out escapeXml="false"
+        <td style="<%=Encode.forHtmlAttribute(String.valueOf(style))%>" align="left"><c:out escapeXml="false"
                                                    value="${tickler.message}"/></td>
     </tr>
     </c:forEach>

@@ -58,7 +58,11 @@ import ca.openosp.openo.eform.APExecute;
 import ca.openosp.openo.prevention.reports.FollowupManagement;
 import ca.openosp.openo.report.data.ManageLetters;
 import ca.openosp.openo.util.ConcatPDF;
+import ca.openosp.openo.util.SqlUtils;
 import ca.openosp.openo.util.UtilDateUtilities;
+import ca.openosp.openo.utility.PathValidationUtils;
+
+import java.io.File;
 
 /**
  * @author jay
@@ -86,6 +90,19 @@ public class GeneratePatientLetters2Action extends ActionSupport {
         String[] demos = request.getParameterValues("demos");
         String id = request.getParameter("reportLetter");
         String providerNo = (String) request.getSession().getAttribute("user");
+
+        // Validate demographic numbers are numeric to prevent SQL injection via AP template substitution
+        if (demos != null) {
+            for (String demo : demos) {
+                if (demo != null) {
+                    SqlUtils.validateNumericId(demo, "demographic_no");
+                }
+            }
+        }
+        // Validate reportLetter id is numeric
+        if (id != null) {
+            SqlUtils.validateNumericId(id, "reportLetter");
+        }
 
         if (log.isTraceEnabled()) {
             if (demos == null) {
@@ -127,6 +144,9 @@ public class GeneratePatientLetters2Action extends ActionSupport {
             HashMap parameters = new HashMap();
             if (reportParams != null) {
                 for (int p = 0; p < reportParams.length; p++) {
+                    // SQL Injection Note: demos[i] is validated as numeric-only (^[0-9]+$) above.
+                    // apExe.execute() substitutes this validated value into admin-configured DatabaseAP
+                    // SQL templates. The AP templates come from EFormLoader config, not user input.
                     MiscUtils.getLogger().debug("demo = " + demos[i]);
                     parameters.put(reportParams[p], apExe.execute(reportParams[p], demos[i]));
                 }
@@ -141,12 +161,16 @@ public class GeneratePatientLetters2Action extends ActionSupport {
 
                 String description = letterData.get("ID") + "-" + letterData.get("report_name");
                 String type = "others";
-                String fileName = letterData.get("ID") + "-" + StringUtils.replace((String) letterData.get("report_name"), " ", "-") + "-" + demos[i] + ".pdf";
+                String rawFileName = letterData.get("ID") + "-" + StringUtils.replace((String) letterData.get("report_name"), " ", "-") + "-" + demos[i] + ".pdf";
                 String html = "";
                 char status = 'A';
                 String observationDate = UtilDateUtilities.DateToString(new Date());
                 String module = "demographic";
                 String moduleId = demos[i];
+
+                // Validate filename before it enters EDoc
+                File docDir = new File(OscarProperties.getInstance().getDocumentDirectory());
+                String fileName = PathValidationUtils.validatePath(rawFileName, docDir).getName();
 
                 EDoc newDoc = new EDoc(description, type, fileName, "", providerNo, providerNo, "", status, observationDate, "", "", module, moduleId);
                 newDoc.setDocPublic("0");
@@ -160,8 +184,10 @@ public class GeneratePatientLetters2Action extends ActionSupport {
                     newDoc.setProgramId(pp.getProgramId().intValue());
                 }
 
+                // Re-validate the timestamped filename from EDoc
                 fileName = newDoc.getFileName();
-                String savePath = OscarProperties.getInstance().getProperty("DOCUMENT_DIR") + "/" + fileName;
+                File saveFile = PathValidationUtils.validatePath(fileName, docDir);
+                String savePath = saveFile.getPath();
                 if (log.isTraceEnabled()) {
                     log.trace("writing report to disk location " + savePath);
                 }

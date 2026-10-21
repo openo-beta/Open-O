@@ -66,6 +66,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,6 +75,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -276,7 +278,14 @@ public final class RxWriteScript2Action extends ActionSupport {
         String action = request.getParameter("action");
         String drugId = request.getParameter("reRxDrugId");
         if (action.equals("addToReRxDrugIdList") && !reRxDrugIdList.contains(drugId)) {
-            reRxDrugIdList.add(drugId);
+            // Only store valid numeric drug ids so the archival loop in saveDrug()
+            // can never choke on a malformed entry from a crafted request (#2453).
+            try {
+                Integer.parseInt(drugId);
+                reRxDrugIdList.add(drugId);
+            } catch (NumberFormatException e) {
+                logger.warn("Ignored non-numeric reRxDrugId");
+            }
         } else if (action.equals("removeFromReRxDrugIdList") && reRxDrugIdList.contains(drugId)) {
             reRxDrugIdList.remove(drugId);
             try {
@@ -792,7 +801,7 @@ public final class RxWriteScript2Action extends ActionSupport {
                 hm.put("policyViolations", rx.getPolicyViolations());
                 ObjectNode jsonObject = objectMapper.valueToTree(hm);
                 logger.debug("jsonObject:" + jsonObject.toString());
-                response.getOutputStream().write(jsonObject.toString().getBytes());
+                response.getOutputStream().write(jsonObject.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
             } catch (Exception e) {
                 logger.error("Error", e);
             }
@@ -802,8 +811,30 @@ public final class RxWriteScript2Action extends ActionSupport {
             try {
                 String quantity = request.getParameter("quantity");
                 String randomId = request.getParameter("randomId");
-                RxPrescriptionData.Prescription rx = bean.getStashItem2(Integer.parseInt(randomId));
-                // get prescript from randomId
+                int randomIdInt;
+                try {
+                    randomIdInt = Integer.parseInt(randomId);
+                } catch (NumberFormatException e) {
+                    logger.error("Invalid randomId parameter: {}", Encode.forJava(randomId));
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.setContentType("application/json;charset=UTF-8");
+                    ObjectNode errorResponse = objectMapper.createObjectNode();
+                    errorResponse.put("error", "Invalid prescription identifier.");
+                    response.getOutputStream().write(errorResponse.toString().getBytes(StandardCharsets.UTF_8));
+                    return null;
+                }
+                RxPrescriptionData.Prescription rx = bean.getStashItem2(randomIdInt);
+                if (rx == null) {
+                    logger.error("Prescription not found in stash for randomId: {}. " +
+                                 "Session may have been reset or prescription was not properly staged.",
+                                 Encode.forJava(randomId));
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.setContentType("application/json;charset=UTF-8");
+                    ObjectNode errorResponse = objectMapper.createObjectNode();
+                    errorResponse.put("error", "Prescription not found. Please refresh and try again.");
+                    response.getOutputStream().write(errorResponse.toString().getBytes(StandardCharsets.UTF_8));
+                    return null;
+                }
                 if (quantity == null || quantity.equalsIgnoreCase("null")) {
                     quantity = "";
                 }
@@ -876,7 +907,7 @@ public final class RxWriteScript2Action extends ActionSupport {
                 hm.put("unitName", rx.getUnitName());
                 ObjectNode jsonObject = objectMapper.valueToTree(hm);
 
-                response.getOutputStream().write(jsonObject.toString().getBytes());
+                response.getOutputStream().write(jsonObject.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
             } catch (Exception e) {
                 logger.error("Error", e);
             }
@@ -1249,11 +1280,19 @@ public final class RxWriteScript2Action extends ActionSupport {
             }
         }
         response.setContentType("application/json");
-		String savedScriptId = saveDrug(request);
+
+        // Nothing staged: do not persist an empty prescription. The UI already
+        // blocks this (see SearchDrug3.jsp), but guard server-side too so a
+        // crafted request can't create an empty script or archive a ReRx'd med
+        // without a replacement (#2453).
+        String savedScriptId = null;
+        if (bean.getStashSize() > 0) {
+            savedScriptId = saveDrug(request);
+        }
         Map<String, String> hm = new HashMap<>();
         hm.put("savedScriptId", savedScriptId);
         ObjectNode jo = objectMapper.valueToTree(hm);
-        response.getOutputStream().write(jo.toString().getBytes());
+        response.getOutputStream().write(jo.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
 		return null;
     }
 
@@ -1274,7 +1313,7 @@ public final class RxWriteScript2Action extends ActionSupport {
             hm.put("patientHIN", "Unknown");
         }
         ObjectNode jo = objectMapper.valueToTree(hm);
-        response.getOutputStream().write(jo.toString().getBytes());
+        response.getOutputStream().write(jo.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
 
@@ -1311,7 +1350,7 @@ public final class RxWriteScript2Action extends ActionSupport {
         }
         response.setContentType("application/json");
         ObjectNode jsonObject = objectMapper.valueToTree(hm);
-        response.getOutputStream().write(jsonObject.toString().getBytes());
+        response.getOutputStream().write(jsonObject.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
   
@@ -1327,11 +1366,21 @@ public final class RxWriteScript2Action extends ActionSupport {
         StringBuilder auditStr = new StringBuilder();
         ArrayList<String> attrib_names = bean.getAttributeNames();
 
+        // Original drug ids that were actually re-prescribed in this save: each
+        // staged re-prescription carries the source drug's id in drugReferenceId
+        // (set by RxPrescriptionData.newPrescription(.., rePrescribe)). Only these
+        // originals should be archived below - a ReRx box ticked but never staged
+        // leaves no matching stash item and must not archive the active med (#2453).
+        Set<Integer> represcribedOriginalIds = new HashSet<>();
+
         for (int i = 0; i < bean.getStashSize(); i++) {
             try {
                 rx = bean.getStashItem(i);
                 rx.Save(scriptId);// new drug id available after this line
                 rx.setScript_no(scriptId);
+                if (rx.getDrugReferenceId() > 0) {
+                    represcribedOriginalIds.add(rx.getDrugReferenceId());
+                }
                 bean.addRandomIdDrugIdPair(rx.getRandomId(), rx.getDrugId());
                 auditStr.append(rx.getAuditString());
                 auditStr.append("\n");
@@ -1389,9 +1438,27 @@ public final class RxWriteScript2Action extends ActionSupport {
         while (i.hasNext()) {
 
             String item = i.next();
+            int originalDrugId;
+            try {
+                originalDrugId = Integer.parseInt(item);
+            } catch (NumberFormatException e) {
+                // Defensive: skip any malformed entry from a polluted session
+                // rather than failing the whole save (#2453).
+                logger.warn("Skipping non-numeric reRxDrugId");
+                continue;
+            }
+
+            // Skip ReRx entries that were checked but never staged/saved: with no
+            // matching staged drug, archiving would silently delete the active med (#2453).
+            if (!represcribedOriginalIds.contains(originalDrugId)) {
+                continue;
+            }
 
             //archive drug(s)
-            Drug drug = drugDao.find(Integer.parseInt(item));
+            Drug drug = drugDao.find(originalDrugId);
+            if (drug == null) {
+                continue;
+            }
             drug.setArchived(true);
             drug.setArchivedDate(new Date());
             drug.setArchivedReason(Drug.REPRESCRIBED);
@@ -1434,7 +1501,7 @@ public final class RxWriteScript2Action extends ActionSupport {
 
         response.setContentType("application/json");
 
-        response.getOutputStream().write(jsonObject.toString().getBytes());
+        response.getOutputStream().write(jsonObject.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
         return null;
     }
 
@@ -1550,8 +1617,21 @@ public final class RxWriteScript2Action extends ActionSupport {
         return this.demographicNo;
     }
 
-    public void setDemographicNo(int RHS) {
-        this.demographicNo = RHS;
+    /**
+     * Sets the demographic number from a String value, as provided by Struts2
+     * parameter binding from the {@code demographicNo} request parameter.
+     *
+     * @param RHS String the demographic number to parse; ignored if null, empty, or non-numeric
+     * @since 2026-01-30
+     */
+    public void setDemographicNo(String RHS) {
+        if (RHS != null && !RHS.isEmpty()) {
+            try {
+                this.demographicNo = Integer.parseInt(RHS);
+            } catch (NumberFormatException e) {
+                // Keep default value (0) if parse fails
+            }
+        }
     }
 
     public String getRxDate() {

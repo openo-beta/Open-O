@@ -31,6 +31,7 @@
 <%@page import="ca.openosp.openo.billing.CA.dao.BillActivityDao" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ include file="/admin/dbconnection.jsp" %>
 
 <%
@@ -103,7 +104,7 @@
         <tr>
             <td align='CENTER'><font size="2"
                                      face="Tahoma, Geneva, Arial, Helvetica, san-serif"><a
-                    href="billingOHIPreport.jsp?year=<%=yearArray[i]%>">YEAR <%=yearArray[i]%>
+                    href="billingOHIPreport.jsp?year=<%=Encode.forUriComponent(String.valueOf(yearArray[i]))%>">YEAR <%=Encode.forHtml(String.valueOf(yearArray[i]))%>
             </a></font></td>
         </tr>
         <% } %>
@@ -115,7 +116,7 @@
         <th align='LEFT'><input type='button' name='print' value='Print'
                                 onClick='window.print()'></th>
         <th align='CENTER'><font face="Arial, Helvetica, sans-serif"
-                                 color="#FFFFFF"> OHIP Group Report - <%=thisyear%>
+                                 color="#FFFFFF"> OHIP Group Report - <%=Encode.forHtml(String.valueOf(thisyear))%>
         </font></th>
         <th align='RIGHT'><input type='button' name='close' value='Close'
                                  onClick='window.close()'></th>
@@ -153,8 +154,8 @@
                         specialty_code = SxmlMisc.getXmlContent(p.getComments(), "<xml_p_specialty_code>", "</xml_p_specialty_code>");
 
                 %>
-                <option value="<%=proOHIP%>,<%=specialty_code%>|<%=billinggroup_no%>"><%=proLast%>,
-                    <%=proFirst%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(proOHIP))%>,<%=Encode.forHtmlAttribute(String.valueOf(specialty_code))%>|<%=Encode.forHtmlAttribute(String.valueOf(billinggroup_no))%>"><%=Encode.forHtml(String.valueOf(proLast))%>,
+                    <%=Encode.forHtml(String.valueOf(proFirst))%>
                 </option>
                 <%
 
@@ -176,17 +177,17 @@
                         centerDesc = bc.getBillCenterDesc();
 
                 %>
-                <option value="<%=centerCode%>"
-                        <%=oscarVariables.getProperty("billcenter").compareTo(centerCode) == 0 ? "selected" : ""%>><%=centerDesc%>
+                <option value="<%=Encode.forHtmlAttribute(String.valueOf(centerCode))%>"
+                        <%=oscarVariables.getProperty("billcenter").compareTo(centerCode) == 0 ? "selected" : ""%>><%=Encode.forHtml(String.valueOf(centerDesc))%>
                 </option>
                 <% } %>
             </select></td>
             <td width="277"><font color="#003366"> <input
                     type="submit" name="Submit" value="Create Report"> <input
-                    type="hidden" name="monthCode" value="<%=monthCode%>"> <input
+                    type="hidden" name="monthCode" value="<%=Encode.forHtmlAttribute(String.valueOf(monthCode))%>"> <input
                     type="hidden" name="verCode" value="V03"> <input
-                    type="hidden" name="curUser" value="<%=user_no%>"> <input
-                    type="hidden" name="curDate" value="<%=nowDate%>"> </font></td>
+                    type="hidden" name="curUser" value="<%=Encode.forHtmlAttribute(String.valueOf(user_no))%>"> <input
+                    type="hidden" name="curDate" value="<%=Encode.forHtmlAttribute(String.valueOf(nowDate))%>"> </font></td>
         </tr>
         <tr>
             <td colspan="4"><font color="#003366"><b><font
@@ -199,7 +200,7 @@
     </form>
 </table>
 <table width="100%" border="1" cellspacing="0" cellpadding="0"
-       bgcolor="<%=yearColor%>">
+       bgcolor="<%=Encode.forHtmlAttribute(String.valueOf(yearColor))%>">
     <tr>
         <td colspan="6"><font face="Arial, Helvetica, sans-serif"
                               size="2" color="#003366"> <b>Activity List </b></font></td>
@@ -237,27 +238,27 @@
 
     <tr>
         <td width="14%"><font face="Arial, Helvetica, sans-serif"
-                              size="2" color="#003366"><%=pro_ohip%>
+                              size="2" color="#003366"><%=Encode.forHtml(String.valueOf(pro_ohip))%>
         </font></td>
         <td width="12%"><font face="Arial, Helvetica, sans-serif"
-                              size="2" color="#003366"><%=pro_group%>
+                              size="2" color="#003366"><%=Encode.forHtml(String.valueOf(pro_group))%>
         </font></td>
         <td width="16%"><font face="Arial, Helvetica, sans-serif"
-                              size="2" color="#003366"><%=updatedate%>
+                              size="2" color="#003366"><%=Encode.forHtml(String.valueOf(updatedate))%>
         </font></td>
         <td width="15%"><font face="Arial, Helvetica, sans-serif"
-                              size="2" color="#003366"><%=cr%>
+                              size="2" color="#003366"><%=Encode.forHtml(String.valueOf(cr))%>
         </font><font
                 face="Arial, Helvetica, sans-serif" size="2" color="#003366"></font></td>
         <td width="19%"><font face="Arial, Helvetica, sans-serif"
                               size="2" color="#003366"><a
-                href="<%= request.getContextPath() %>/servlet/OscarDownload?homepath=ohipdownload&filename=<%=oFile%>"
-                target="_blank"><%=oFile%>
+                href="<%= request.getContextPath() %>/servlet/OscarDownload?homepath=ohipdownload&filename=<%=Encode.forUriComponent(String.valueOf(oFile))%>"
+                target="_blank"><%=Encode.forHtml(String.valueOf(oFile))%>
         </a></font></td>
         <td width="24%"><font face="Arial, Helvetica, sans-serif"
                               size="2" color="#003366"><a
-                href="<%= request.getContextPath() %>/servlet/OscarDownload?homepath=ohipdownload&filename=<%=hFile%>"
-                target="_blank"><%=hFile%>
+                href="<%= request.getContextPath() %>/servlet/OscarDownload?homepath=ohipdownload&filename=<%=Encode.forUriComponent(String.valueOf(hFile))%>"
+                target="_blank"><%=Encode.forHtml(String.valueOf(hFile))%>
         </a></font></td>
     </tr>
     <% }

@@ -32,13 +32,13 @@
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 
 <%@ page errorPage="/errorpage.jsp"
          import="java.util.*,java.math.*,java.net.*,java.sql.*,ca.openosp.openo.util.*,ca.openosp.*,ca.openosp.openo.appt.*" %>
 <%@ page import="ca.openosp.openo.billing.ca.on.administration.*" %>
 <%@ page import="ca.openosp.openo.billing.ca.on.data.*" %>
 <%@ page import="ca.openosp.openo.billing.ca.on.pageUtil.*, java.util.Properties" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <% java.util.Properties oscarVariables = OscarProperties.getInstance(); %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
@@ -137,9 +137,9 @@
     }
     ///////--------
 
-    String warningMsg = "";
+    List<String> warningMsgs = new ArrayList<String>();
     String errorFlag = "";
-    String errorMsg = "";
+    List<String> errorMsgs = new ArrayList<String>();
 
     Vector vecCodeItem = prepObj.getServiceCodeReviewVec(vecServiceParam[0], vecServiceParam[1], vecServiceParam[2], billReferalDate);
     Vector vecPercCodeItem = prepObj.getPercCodeReviewVec(vecServiceParam[0], vecServiceParam[1], vecCodeItem, billReferalDate);  //LINE CAUSING ERROR
@@ -244,28 +244,22 @@
 
         if (demo.getHin() == null) {
             errorFlag = "1";
-            errorMsg = errorMsg
-                    + "<br><div class='alert alert-error'>Error: The patient does not have a HIN </div><br>";
+            errorMsgs.add("The patient does not have a HIN.");
         } else if (demo.getHin().equals("")) {
-            warningMsg += "<br><div class='alert alert-error'>Warning: The patient does not have a HIN </div><br>";
+            warningMsgs.add("The patient does not have a HIN.");
         }
         if (r_doctor_ohip != null && r_doctor_ohip.length() > 0 && r_doctor_ohip.length() != 6) {
-            warningMsg += "<br><div class='alert alert-error'>Warning: the referral doctor's no is wrong. </div><br>";
+            warningMsgs.add("The referral doctor's no is wrong.");
         }
         if (demoDOB.length() != 8) {
             errorFlag = "1";
-            errorMsg = errorMsg
-                    + "<br><div class='alert alert-error'>Error: The patient does not have a valid DOB. </div><br>";
+            errorMsgs.add("The patient does not have a valid DOB.");
         }
     }
 
-
-    // create msg
-    String wrongMsg = errorMsg + warningMsg;
-
 %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request"/>
-<c:set var="demographicNo" value="${param.demographic_no}" scope="request"/>
+<c:set var="demographicNo" value="${e:forHtmlAttribute(param.demographic_no)}" scope="request"/>
 
 
 <%@page import="ca.openosp.openo.commn.dao.SiteDao" %>
@@ -283,6 +277,7 @@
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <head>
     <title>OscarBilling</title>
 
@@ -568,10 +563,10 @@
 <body onload="showtotal(),calculatePayment()">
 
 <form method="post" name="titlesearch" action="billingONSave.jsp" onsubmit="return onSave();">
-    <input type="hidden" name="url_back" value="<%=request.getParameter("url_back")%>">
-    <input type="hidden" name="billNo_old" id="billNo_old" value="<%=request.getParameter("billNo_old")%>"/>
-    <input type="hidden" name="billStatus_old" id="billStatus_old" value="<%=request.getParameter("billStatus_old")%>"/>
-    <input type="hidden" name="billForm" id="billForm" value="<%=request.getParameter("billForm")%>"/>
+    <input type="hidden" name="url_back" value="<%=Encode.forHtmlAttribute(request.getParameter("url_back"))%>">
+    <input type="hidden" name="billNo_old" id="billNo_old" value="<%=Encode.forHtmlAttribute(request.getParameter("billNo_old"))%>"/>
+    <input type="hidden" name="billStatus_old" id="billStatus_old" value="<%=Encode.forHtmlAttribute(request.getParameter("billStatus_old"))%>"/>
+    <input type="hidden" name="billForm" id="billForm" value="<%=Encode.forHtmlAttribute(request.getParameter("billForm"))%>"/>
     <input type="hidden" name="payeename" id="payeename" value=""/>
     <table style="width:100%" class="myIvory">
         <tr>
@@ -588,11 +583,17 @@
             <td>
                 <table style="width:100%" class="myYellow">
                     <tr>
-                        <td style="white-space:nowrap; width:10%; text-align:center"><%=demoname%>
+                        <td style="white-space:nowrap; width:10%; text-align:center"><%=Encode.forHtml(String.valueOf(demoname))%>
                             &nbsp;&nbsp; <%=demoSex.equals("1") ? "Male" : "Female"%> &nbsp;&nbsp;
-                            <%=" DOB: " + demoDOBYY + "/" + demoDOBMM + "/" + demoDOBDD + " &nbsp;&nbsp; HIN: " + demoHIN + "" + demoVer%>
+                            <%=Encode.forHtml(String.valueOf(" DOB: " + demoDOBYY + "/" + demoDOBMM + "/" + demoDOBDD + " &nbsp;&nbsp; HIN: " + demoHIN + "" + demoVer))%>
                         </td>
-                        <td style="text-align:center"><%=wrongMsg%>
+                        <td style="text-align:center">
+                            <% for (String errorText : errorMsgs) { %>
+                                <div class="alert alert-error">Error: <%=Encode.forHtmlContent(errorText)%></div>
+                            <% } %>
+                            <% for (String warningText : warningMsgs) { %>
+                                <div class="alert alert-warning">Warning: <%=Encode.forHtmlContent(warningText)%></div>
+                            <% } %>
                         </td>
                     </tr>
                 </table>
@@ -603,18 +604,18 @@
 
                             <table style="width:100%">
                                 <tr>
-                                    <!--<input type="text" name="checkFlag" id="checkFlag" value="<%=request.getParameter("checkFlag") %>" />  -->
+                                    <!--<input type="text" name="checkFlag" id="checkFlag" value="<%=Encode.forHtmlAttribute(request.getParameter("checkFlag")) %>" />  -->
                                     <td style="white-space:nowrap; width:30%; text-align:center"><b>Service Date</b><br>
-                                        <%=request.getParameter("service_date").replaceAll("\\n", "<br>")%>
+                                        <%=Encode.forHtml(request.getParameter("service_date")).replaceAll("\\n", "<br>")%>
                                     </td>
                                     <td style="text-align:center; width:33%"><b>Diagnostic Code</b><br>
-                                        <%=dxCode%><br>
-                                        <%=dxDesc%>
+                                        <%=Encode.forHtml(String.valueOf(dxCode))%><br>
+                                        <%=Encode.forHtml(String.valueOf(dxDesc))%>
                                     </td>
                                     <td style="vertical-align:top"><b>Refer. Doctor</b><br>
-                                        <%=request.getParameter("referralDocName")%><br>
+                                        <%=Encode.forHtml(request.getParameter("referralDocName"))%><br>
                                         <b>Refer. Doctor #</b><br>
-                                        <%=request.getParameter("referralCode")%>
+                                        <%=Encode.forHtml(request.getParameter("referralCode"))%>
                                     </td>
                                 </tr>
                             </table>
@@ -626,28 +627,28 @@
                                    class="myGreen">
                                 <tr>
                                     <td style="white-space:nowrap;width:30%"><b>Billing Physician</b></td>
-                                    <td style="width:20%"><%=providerBean.getProperty(request.getParameter("xml_provider") != null ? request.getParameter("xml_provider").substring(0, request.getParameter("xml_provider").indexOf("|")) : "", "")%>
+                                    <td style="width:20%"><%=Encode.forHtml(providerBean.getProperty(request.getParameter("xml_provider") != null ? request.getParameter("xml_provider").substring(0, request.getParameter("xml_provider").indexOf("|")) : "", ""))%>
                                     </td>
                                     <td style="white-space:nowrap; width:30%"><b>MRP</b></td>
-                                    <td style="width:20%"><%=assgProvider_no == null ? "N/A" : providerBean.getProperty(assgProvider_no, "")%>
+                                    <td style="width:20%"><%=Encode.forHtml(String.valueOf(assgProvider_no == null ? "N/A" : providerBean.getProperty(assgProvider_no, "")))%>
                                     </td>
                                 </tr>
                                 <tr>
 
                                     <td style="width:30%"><b>Visit Type</b></td>
-                                    <td style="width:20%"><%=request.getParameter("xml_visittype").substring(
-                                            request.getParameter("xml_visittype").indexOf("|") + 1)%>
+                                    <td style="width:20%"><%=Encode.forHtml(request.getParameter("xml_visittype").substring(
+                                            request.getParameter("xml_visittype").indexOf("|") + 1))%>
                                     </td>
 
                                     <td style="width:30%"><b>Billing Type</b></td>
-                                    <td style="width:20%"><%=request.getParameter("xml_billtype").substring(
-                                            request.getParameter("xml_billtype").indexOf("|") + 1)%>
+                                    <td style="width:20%"><%=Encode.forHtml(request.getParameter("xml_billtype").substring(
+                                            request.getParameter("xml_billtype").indexOf("|") + 1))%>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><b>Visit Location</b></td>
-                                    <td><%=request.getParameter("xml_location").substring(
-                                            request.getParameter("xml_location").indexOf("|") + 1)%> &nbsp;
+                                    <td><%=Encode.forHtml(request.getParameter("xml_location").substring(
+                                            request.getParameter("xml_location").indexOf("|") + 1))%> &nbsp;
                                         <% if (request.getParameter("m_review") != null) {
                                             out.println("<b>Manual: Y</b>");
                                         } %>
@@ -655,13 +656,13 @@
 
                                     <% if (bMultisites) { %>
                                     <td style="width:30%"><b>Billing Clinic</b></td>
-                                    <td style="width:20%; white-space:nowrap;"><%=request.getParameter("site")%>
+                                    <td style="width:20%; white-space:nowrap;"><%=Encode.forHtml(request.getParameter("site"))%>
                                     </td>
                                     <% } %>
                                 </tr>
                                 <tr>
                                     <td><b>SLI Code</b></td>
-                                    <td><%=request.getParameter("xml_slicode").substring(request.getParameter("xml_slicode").indexOf("|") + 1)%>
+                                    <td><%=Encode.forHtml(request.getParameter("xml_slicode").substring(request.getParameter("xml_slicode").indexOf("|") + 1))%>
                                         &nbsp;
                                     </td>
                                     <% if (bMultisites) { %>
@@ -671,7 +672,7 @@
                                 </tr>
                                 <tr>
                                     <td><b>Admission Date</b></td>
-                                    <td><%=request.getParameter("xml_vdate")%>
+                                    <td><%=Encode.forHtml(request.getParameter("xml_vdate"))%>
                                     </td>
                                     <td colspan="2"></td>
                                     <% if (bMultisites) { %>
@@ -722,7 +723,7 @@
                     <tr style="color:white">
                         <td align=center>
                             <div class='myError'>
-                                (<fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.ca.on.billingON.review.invoiceNo"/><%=String.valueOf(bCh1.getId())%>
+                                (<fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.ca.on.billingON.review.invoiceNo"/><%=Encode.forHtml(String.valueOf(String.valueOf(bCh1.getId())))%>
                                 ) A003A - <fmt:setBundle basename="oscarResources"/><fmt:message key="oscar.billing.ca.on.billingON.review.msgServiceCodeAlreadyBilled"/>
                             </div>
                         </td>
@@ -751,7 +752,7 @@
                     <tr class="alert alert-error">
                         <td align=center>
                             &nbsp;<br>
-                            Service code "<%=serviceCodeValue%>" is invalid. Please go back to correct it.
+                            Service code "<%=Encode.forHtml(String.valueOf(serviceCodeValue))%>" is invalid. Please go back to correct it.
                         </td>
                     </tr>
                         <%
@@ -772,7 +773,7 @@
                     <tr class="alert alert-error">
                         <td align=center>
                             &nbsp;<br>
-                            Diagnostic code "<%=dxCodeValue%>" is invalid. Please go back to correct it.
+                            Diagnostic code "<%=Encode.forHtml(String.valueOf(dxCodeValue))%>" is invalid. Please go back to correct it.
                         </td>
                     </tr>
                         <%
@@ -835,22 +836,22 @@
                         if (codeValid) {
 			%>
                     <tr class="myGreen">
-                        <td style="text-align:center; width:3%"><%="" + n %>
+                        <td style="text-align:center; width:3%"><%=Encode.forHtml(String.valueOf("" + n))%>
                         </td>
-                        <td style="text-align:right; width:12%"><%=codeName %> (<%=codeUnit %>)</td>
+                        <td style="text-align:right; width:12%"><%=Encode.forHtml(String.valueOf(codeName))%> (<%=Encode.forHtml(String.valueOf(codeUnit))%>)</td>
                         <td>
                             <% if (strWarning.length() > 0) { %>
-                            <span style="float:left;" class="alert alert-warning"><%=strWarning%></span>
+                            <span style="float:left;" class="alert alert-warning"><%=Encode.forHtml(String.valueOf(strWarning))%></span>
                             <%}%>
-                            <span style="float:right;"> <%=codeFee %> x <%=codeUnit %><% if (gstFlag.equals("1")) {%> + <%=percent%>% GST<%}%> =
-				<input type="text" name="percCodeSubtotal_<%=i %>" value="<%=codeTotal %>" id="percCodeSubtotal_<%=i %>"
+                            <span style="float:right;"> <%=Encode.forHtml(String.valueOf(codeFee))%> x <%=Encode.forHtml(String.valueOf(codeUnit))%><% if (gstFlag.equals("1")) {%> + <%=Encode.forHtml(String.valueOf(percent))%>% GST<%}%> =
+				<input type="text" name="percCodeSubtotal_<%=i %>" value="<%=Encode.forHtmlAttribute(String.valueOf(codeTotal))%>" id="percCodeSubtotal_<%=i %>"
                        onBlur="calculateTotal();" onchange="validateFeeNumberic(<%=i%>)">
-				<input type="hidden" name="xserviceCode_<%=i %>" value="<%=codeName %>">
-				<input type="hidden" id="xserviceUnit_<%=i %>" name="xserviceUnit_<%=i %>" value="<%=codeUnit %>">
+				<input type="hidden" name="xserviceCode_<%=i %>" value="<%=Encode.forHtmlAttribute(String.valueOf(codeName))%>">
+				<input type="hidden" id="xserviceUnit_<%=i %>" name="xserviceUnit_<%=i %>" value="<%=Encode.forHtmlAttribute(String.valueOf(codeUnit))%>">
                     </span>
                         </td>
                         <%if (!"PAT".equals(billType)) {%>
-                        <td style="width:25%"><%=propCodeDesc.getProperty(codeName, "") %>
+                        <td style="width:25%"><%=Encode.forHtml(String.valueOf(propCodeDesc.getProperty(codeName, "")))%>
                         </td>
                         <%
                         } else {
@@ -860,10 +861,10 @@
                             <%paid_value = codeTotal; %>
                         </oscar:oscarPropertiesCheck>
                         <td style="white-space:nowrap; width:14%">
-                            <pre><%=codeDescription%></pre>
+                            <pre><%=Encode.forHtml(String.valueOf(codeDescription))%></pre>
                         </td>
                         <td style="white-space:nowrap; width:3%"><input type="text" id="paid_<%=i%>" name="paid_<%=i %>"
-                                                                        value="<%=paid_value%>"
+                                                                        value="<%=Encode.forHtmlAttribute(String.valueOf(paid_value))%>"
                                                                         onBlur="calculatePayment();"
                                                                         onchange="validatePaymentNumberic(<%=i %>)"/>
                         </td>
@@ -884,7 +885,7 @@
                     <tr class="myPink">
                         <td style="text-align:center;"><%="&nbsp;" %>
                         </td>
-                        <td style="text-align:right;"><%=codeName %> (1)</td>
+                        <td style="text-align:right;"><%=Encode.forHtml(String.valueOf(codeName))%> (1)</td>
                         <td style="text-align:right;">
                             <% }
 
@@ -898,18 +899,18 @@
                                     String percTotal = (Float.parseFloat((String) vecPercTotal.get(j))) * Integer.parseInt(codeUnit) + "";
                                     if (codeValid) {
                             %>
-                            <input type="checkbox" id="percentCode" name="percCode_<%=i %>" value="<%=percTotal %>"
-                                   onclick="onCheckMaster();"/> <%=percTotal %>(<%=vecPercFee.get(j) %>x<%=percFee %>
-                            x<%=codeUnit %>) |
+                            <input type="checkbox" id="percentCode" name="percCode_<%=i %>" value="<%=Encode.forHtmlAttribute(String.valueOf(percTotal))%>"
+                                   onclick="onCheckMaster();"/> <%=Encode.forHtml(String.valueOf(percTotal))%>(<%=Encode.forHtml(String.valueOf(vecPercFee.get(j)))%>x<%=Encode.forHtml(String.valueOf(percFee))%>
+                            x<%=Encode.forHtml(String.valueOf(codeUnit))%>) |
                             <%
                                     }
                                 }
                                 if (codeValid) {
                             %> = <input type="text" name="percCodeSubtotal_<%=i %>" value="0.00"/>
-                            <input type="hidden" name="xserviceCode_<%=i %>" value="<%=codeName %>"/>
-                            <input type="hidden" name="xserviceUnit_<%=i %>" value="<%=codeUnit %>"/>
+                            <input type="hidden" name="xserviceCode_<%=i %>" value="<%=Encode.forHtmlAttribute(String.valueOf(codeName))%>"/>
+                            <input type="hidden" name="xserviceUnit_<%=i %>" value="<%=Encode.forHtmlAttribute(String.valueOf(codeUnit))%>"/>
                         </td>
-                        <td style="width:25%"><%=propCodeDesc.getProperty(codeName, "") %>
+                        <td style="width:25%"><%=Encode.forHtml(String.valueOf(propCodeDesc.getProperty(codeName, "")))%>
                         </td>
                     </tr>
                         <%
@@ -946,16 +947,16 @@
                                 var nSubtotal = 0.00;
                                 var nMin = <%=vecPercMin.get(i)%>;
                                 var nMax = <%=vecPercMax.get(i)%>;
-                                //alert(":" + document.forms[0].percCode_<%=iCheckNo%>.type);
-                                if (document.forms[0].percCode_<%=iCheckNo%>.length == undefined) {
-                                    if (document.forms[0].percCode_<%=iCheckNo%>.checked) {
-                                        nSubtotal = nSubtotal + eval(document.forms[0].percCode_<%=iCheckNo%>.value * 100);
+                                //alert(":" + document.forms[0].percCode_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.type);
+                                if (document.forms[0].percCode_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.length == undefined) {
+                                    if (document.forms[0].percCode_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.checked) {
+                                        nSubtotal = nSubtotal + eval(document.forms[0].percCode_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.value * 100);
                                     }
                                 }
-                                for (n = 0; n < document.forms[0].percCode_<%=iCheckNo%>.length; n++) {
+                                for (n = 0; n < document.forms[0].percCode_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.length; n++) {
                                     // If a checkbox has been selected it will return true
-                                    if (document.forms[0].percCode_<%=iCheckNo%>[n].checked) {
-                                        nSubtotal = nSubtotal + eval(document.forms[0].percCode_<%=iCheckNo%>[n].value * 100);
+                                    if (document.forms[0].percCode_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>[n].checked) {
+                                        nSubtotal = nSubtotal + eval(document.forms[0].percCode_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>[n].value * 100);
                                     }
                                     //alert(nSubtotal+"here:" +document.forms[0].percCode_2.length);
                                 }
@@ -967,11 +968,11 @@
                                     //alert(ssubtotal.length + " : " + ssubtotal.indexOf("."));
                                     ssubtotal = ssubtotal + "00".substring(0, (ssubtotal.length - ssubtotal.indexOf('.') - 1));
                                 }
-                                document.forms[0].percCodeSubtotal_<%=iCheckNo%>.value = ssubtotal;
-                                if (nMin > document.forms[0].percCodeSubtotal_<%=iCheckNo%>.value) {
-                                    document.forms[0].percCodeSubtotal_<%=iCheckNo%>.value = nMin;
-                                } else if (nMax < document.forms[0].percCodeSubtotal_<%=iCheckNo%>.value) {
-                                    document.forms[0].percCodeSubtotal_<%=iCheckNo%>.value = nMax;
+                                document.forms[0].percCodeSubtotal_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.value = ssubtotal;
+                                if (nMin > document.forms[0].percCodeSubtotal_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.value) {
+                                    document.forms[0].percCodeSubtotal_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.value = nMin;
+                                } else if (nMax < document.forms[0].percCodeSubtotal_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.value) {
+                                    document.forms[0].percCodeSubtotal_<%=Encode.forJavaScript(String.valueOf(iCheckNo))%>.value = nMax;
                                 }
                                 <%	}
                                 %>
@@ -1062,7 +1063,7 @@
                     tempLoc = request.getParameter("site");
                 }
             %>
-            <textarea name="comment" style="width:600px;"><%=tempLoc %></textarea>
+            <textarea name="comment" style="width:600px;"><%=Encode.forHtml(String.valueOf(tempLoc))%></textarea>
         </td>
     </tr>
     <tr>
@@ -1152,11 +1153,11 @@
                         <table id="privateBillInfo" style="width:100%">
                             <tr>
                                 <td>Bill To [<a href=# onclick="scriptAttach('billTo'); return false;">Search</a>]<br>
-                                    <textarea name="billto" id="billTo" cols=30 rows=6><%=strPatientAddr %></textarea>
+                                    <textarea name="billto" id="billTo" cols=30 rows=6><%=Encode.forHtml(String.valueOf(strPatientAddr))%></textarea>
                                 </td>
                                 <td>Remit To [<a href=# onclick="scriptAttach('remitTo'); return false;">Search</a>]<br>
                                     <textarea name="remitto" id="remitTo" value="" cols=30
-                                              rows=6><%=clinicAddress%></textarea></td>
+                                              rows=6><%=Encode.forHtml(String.valueOf(clinicAddress))%></textarea></td>
                                 <td>Payee<br>
                                     <%
                                         String providerNo = request.getParameter("xml_provider");
@@ -1178,11 +1179,11 @@
                                         payee = payee.trim();
                                         if (payee.length() > 0) {
                                     %>
-                                    <textarea id="payee" name="payee" value="" cols=20 rows=6><%=payee%></textarea></td>
+                                    <textarea id="payee" name="payee" value="" cols=20 rows=6><%=Encode.forHtml(String.valueOf(payee))%></textarea></td>
                                     <% } else { %>
-                                <textarea id="payee" name="payee" value="" cols=20 rows=6><%=payeename%></textarea>
+                                <textarea id="payee" name="payee" value="" cols=20 rows=6><%=Encode.forHtml(String.valueOf(payeename))%></textarea>
                     </td>
-                    <input type="hidden" name="payeename1" id="payeename1" value="<%=payeename%>"/>
+                    <input type="hidden" name="payeename1" id="payeename1" value="<%=Encode.forHtmlAttribute(String.valueOf(payeename))%>"/>
                     <% } %>
                 </tr>
             </table>
@@ -1190,13 +1191,13 @@
                 <tr>
                     <td>
                         Billing Notes:<br>
-                        <textarea name="comment" cols=100 rows=6><%=tempLoc %></textarea>
+                        <textarea name="comment" cols=100 rows=6><%=Encode.forHtml(String.valueOf(tempLoc))%></textarea>
                     </td>
                     <td style="text-align:right">
                         <input type="hidden" name="provider_no"
-                               value="<%=request.getParameter("xml_provider").substring(0,request.getParameter("xml_provider").indexOf("|"))%>"/>
-                        GST Billed:<input type="text" id="gst" name="gst" value="<%=gstTotal%>"><br>
-                        <input type="hidden" id="gstBilledTotal" name="gstBilledTotal" value="<%=gstbilledtotal%>">
+                               value="<%=Encode.forHtmlAttribute(request.getParameter("xml_provider").substring(0,request.getParameter("xml_provider").indexOf("|")))%>"/>
+                        GST Billed:<input type="text" id="gst" name="gst" value="<%=Encode.forHtmlAttribute(String.valueOf(gstTotal))%>"><br>
+                        <input type="hidden" id="gstBilledTotal" name="gstBilledTotal" value="<%=Encode.forHtmlAttribute(String.valueOf(gstbilledtotal))%>">
                         Total:<input type="text" id="stotal" disabled name="stotal" value="0.00"><br>
                         Payments:<input type="text" disabled name="payment1" id="payment" value="0.00"
                                         onDblClick="settlePayment();"/><br/>
@@ -1208,7 +1209,7 @@
         <td class="myGreen">
             Payment Method:<br/>
             <% for (int i = 0; i < al.size(); i = i + 2) { %>
-            <input type="radio" name="payMethod" value="<%=al.get(i) %>" id="payMethod_<%=i %>"/><%=al.get(i + 1) %>
+            <input type="radio" name="payMethod" value="<%=Encode.forHtmlAttribute(String.valueOf(al.get(i)))%>" id="payMethod_<%=i %>"/><%=Encode.forHtml(String.valueOf(al.get(i + 1)))%>
             <br/>
             <% } %>
         </td>
@@ -1240,8 +1241,8 @@
                 for (Enumeration e = request.getParameterNames(); e.hasMoreElements(); ) {
                     String temp = e.nextElement().toString();
             %>
-            <input type="hidden" name="<%= temp %>"
-                   value="<%=StringEscapeUtils.escapeHtml4(request.getParameter(temp))%>"/>
+            <input type="hidden" name="<%=Encode.forHtmlAttribute(String.valueOf(temp))%>"
+                   value="<%=Encode.forHtml(request.getParameter(temp))%>"/>
             <%
                 }
 
@@ -1343,7 +1344,7 @@
         //alert("calling get NEW current Dx Code List");
         var url = "<%= request.getContextPath() %>/oscarResearch/oscarDxResearch/currentCodeList.jsp";
         var ran_number = Math.round(Math.random() * 1000000);
-        var params = "demographicNo=<%=demo_no%>&rand=" + ran_number;  //hack to get around ie caching the page
+        var params = "demographicNo=<%=Encode.forJavaScript(String.valueOf(demo_no))%>&rand=" + ran_number;  //hack to get around ie caching the page
         //alert(params);
         //new Ajax.Updater('dxFullListing',url, {method:'get',parameters:params,asynchronous:true});
 
@@ -1370,7 +1371,7 @@
                                                    style="font-size:small;">show/hide</a></h3>
         <div class="wrapper" id="dxFullListing">
             <jsp:include page="/oscarResearch/oscarDxResearch/currentCodeList.jsp">
-                <jsp:param name="demographicNo" value="<%=demo_no%>"/>
+                <jsp:param name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demo_no))%>"/>
             </jsp:include>
         </div>
     </div>
@@ -1380,13 +1381,13 @@
         <h3>&nbsp;Dx Quick Pick Add Lists &nbsp;<a href="#" onclick="toggle('dxForm'); return false;"
                                                    style="font-size:small;">show/hide</a></h3>
         <form id="dxForm">
-            <input type="hidden" name="demographicNo" value="<%=demo_no%>"/>
-            <input type="hidden" name="providerNo" value="<%=session.getAttribute("user")%>"/>
+            <input type="hidden" name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demo_no))%>"/>
+            <input type="hidden" name="providerNo" value="<%=Encode.forHtmlAttribute(String.valueOf(session.getAttribute("user")))%>"/>
             <input type="hidden" name="forward" value=""/>
             <input type="hidden" name="forwardTo" value="codeList"/>
             <div class="wrapper" id="dxListing">
                 <jsp:include page="/oscarResearch/oscarDxResearch/quickCodeList.jsp">
-                    <jsp:param name="demographicNo" value="<%=demo_no%>"/>
+                    <jsp:param name="demographicNo" value="<%=Encode.forHtmlAttribute(String.valueOf(demo_no))%>"/>
                 </jsp:include>
             </div>
             <input type="button" value="Add To Disease Registry" class="btn" onclick="addToDiseaseRegistry()"/>

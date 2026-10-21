@@ -24,7 +24,6 @@
 
 --%>
 
-<%@page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%
     String roleName2$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
@@ -51,6 +50,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Clinic" %>
 <%@ page import="ca.openosp.openo.commn.dao.UserPropertyDAO" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -112,7 +112,7 @@
                 <table style="font-size: 14pt;"  align="left" valign="top">
 
                     <tr style="font-family: arial, sans-serif; font-size: 12pt;" >
-                        <th colspan="3"><%=appt.getName()%></th>
+                        <th colspan="3"><%=Encode.forHtml(String.valueOf(appt.getName()))%></th>
                     </tr>
                      <tr style="font-family: arial, sans-serif; font-size: 12pt;" >
                 <th style="padding-right: 10px"><fmt:setBundle basename="oscarResources"/><fmt:message key="Appointment.formDate"/></th>
@@ -130,8 +130,8 @@
 
                 %>
                     <tr bgcolor="#eeeeff">
-                <td style="padding-right: 10px"><%=dateFormatter.format(appt.getAppointmentDate())%></td>
-                <td style="padding-right: 10px"><%=timeFormatter.format(appt.getStartTime())%></td>
+                <td style="padding-right: 10px"><%=Encode.forHtml(String.valueOf(dateFormatter.format(appt.getAppointmentDate())))%></td>
+                <td style="padding-right: 10px"><%=Encode.forHtml(String.valueOf(timeFormatter.format(appt.getStartTime())))%></td>
                 <td style="padding-right: 10px">&nbsp;</td>
                     </tr>
             <%
@@ -142,9 +142,9 @@
 
             %>
                     <tr bgcolor="#eeeeff">
-                <td style="padding-right: 10px"><%=dateFormatter.format(a.getAppointmentDate())%></td>
-                <td style="padding-right: 10px"><%=timeFormatter.format(a.getStartTime())%></td>
-                <td style="padding-right: 10px"><%=providers.getLastName() + "," + providers.getFirstName().substring(0,1)%></td>
+                <td style="padding-right: 10px"><%=Encode.forHtml(String.valueOf(dateFormatter.format(a.getAppointmentDate())))%></td>
+                <td style="padding-right: 10px"><%=Encode.forHtml(String.valueOf(timeFormatter.format(a.getStartTime())))%></td>
+                <td style="padding-right: 10px"><%=Encode.forHtml(String.valueOf(providers.getLastName() + "," + providers.getFirstName().substring(0,1)))%></td>
                     </tr>
             <%
                     }
@@ -208,30 +208,30 @@
                                     }
 
                                 %>
-                                <b style="font-size:14pt"><%=firstLine %>
+                                <b style="font-size:14pt"><%=Encode.forHtml(String.valueOf(firstLine))%>
                                 </b><br/>
-                                <%=StringEscapeUtils.escapeHtml4(provider.getSpecialty()) %><br/>
+                                <%=Encode.forHtml(provider.getSpecialty()) %><br/>
                                 <br/>
-                                <%=StringEscapeUtils.escapeHtml4(clinic.getClinicAddress()) %><br/>
-                                <%=StringEscapeUtils.escapeHtml4(clinic.getClinicCity()) %>
-                                , <%=StringEscapeUtils.escapeHtml4(clinic.getClinicProvince()) %>  <%=StringEscapeUtils.escapeHtml4(clinic.getClinicPostal()) %>
+                                <%=Encode.forHtml(clinic.getClinicAddress()) %><br/>
+                                <%=Encode.forHtml(clinic.getClinicCity()) %>
+                                , <%=Encode.forHtml(clinic.getClinicProvince()) %>  <%=Encode.forHtml(clinic.getClinicPostal()) %>
                                 <br/>
-                                <%=StringEscapeUtils.escapeHtml4(phone) %><br/>
-                                Fax <%=StringEscapeUtils.escapeHtml4(fax) %> <br/>
+                                <%=Encode.forHtml(phone) %><br/>
+                                Fax <%=Encode.forHtml(fax) %> <br/>
                             </td>
                         </tr>
 
                         <tr> <!-- patient name -->
                             <td colspan="2">
                                 <b>Name</b>: <span
-                                    style="text-decoration: underline;"><%=StringEscapeUtils.escapeHtml4(appt.getName()) %></span>
+                                    style="text-decoration: underline;"><%=Encode.forHtml(appt.getName()) %></span>
                             </td>
                         </tr>
 
                         <tr> <!-- appt date and time-->
                             <td colspan="2">
                                 <b>Appointment Date</b>: <span
-                                    style="text-decoration: underline;"><%=dateFormatter2.format(appt.getAppointmentDate()) %> at <%=timeFormatter2.format(appt.getStartTime()) %><span>
+                                    style="text-decoration: underline;"><%=Encode.forHtml(String.valueOf(dateFormatter2.format(appt.getAppointmentDate())))%> at <%=Encode.forHtml(String.valueOf(timeFormatter2.format(appt.getStartTime())))%><span>
                             </td>
                         </tr>
 

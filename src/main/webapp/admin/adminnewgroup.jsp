@@ -35,6 +35,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.MyGroupDao" %>
 <%@ page import="ca.openosp.openo.commn.model.ProviderData" %>
 <%@ page import="ca.openosp.openo.commn.dao.ProviderDataDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     MyGroupDao myGroupDao = SpringUtils.getBean(MyGroupDao.class);
@@ -158,12 +159,12 @@
             <tr class="<%=i%2==0?"":"info"%>">
                 <td width="20px" ALIGN="center">
                     <input type="checkbox" name="data" value="<%=i%>">
-                    <input type="hidden" name="provider_no<%=i%>" value="<%= provider.getId() %>">
-                    <input type="hidden" name="last_name<%=i%>" value='<%= provider.getLastName() %>'>
-                    <input type="hidden" name="first_name<%=i%>" value='<%= provider.getFirstName() %>'>
+                    <input type="hidden" name="provider_no<%=i%>" value="<%=Encode.forHtmlAttribute(String.valueOf(provider.getId()))%>">
+                    <input type="hidden" name="last_name<%=i%>" value='<%=Encode.forHtmlAttribute(String.valueOf(provider.getLastName()))%>'>
+                    <input type="hidden" name="first_name<%=i%>" value='<%=Encode.forHtmlAttribute(String.valueOf(provider.getFirstName()))%>'>
                 </td>
 
-                <td><%= provider.getLastName() %>, <%= provider.getFirstName() %>
+                <td><%=Encode.forHtml(String.valueOf(provider.getLastName()))%>, <%=Encode.forHtml(String.valueOf(provider.getFirstName()))%>
                 </td>
 
             </tr>

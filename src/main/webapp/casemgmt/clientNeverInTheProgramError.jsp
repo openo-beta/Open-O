@@ -29,6 +29,7 @@
 <%@page import="ca.openosp.openo.PMmodule.dao.*" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.PMmodule.dao.ProgramDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String programId_str = (String) request.getSession().getAttribute("case_program_id");
     Integer programId;
@@ -46,7 +47,7 @@
 %>
 
 <h3 style="color: red">Access Denied</h3>
-<p>You cannot access this client's Encounters because he/she has never admitted in the <%=programName %>.
+<p>You cannot access this client's Encounters because he/she has never admitted in the <%=Encode.forHtml(String.valueOf(programName))%>.
 </p>
 
 <input type="button" value="Close Window" onclick="self.close()"/>

@@ -36,6 +36,7 @@ Use returnForm and returnItem request params and this page will fill in that inp
 <%@ page
         import="java.util.*, java.sql.*, ca.openosp.*, java.text.*, java.lang.*,java.net.*" %>
 <%@ page import="ca.openosp.DateInMonthTable" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     //to prepare calendar display
     String type = request.getParameter("type");
@@ -84,7 +85,7 @@ Use returnForm and returnItem request params and this page will fill in that inp
         function typeMultiDate(year1, month1, day1) {
             self.close();
             opener.document
-        .<%=returnForm%>.<%=returnItem%>.
+        .<%=Encode.forJavaScript(String.valueOf(returnForm))%>.<%=Encode.forJavaScript(String.valueOf(returnItem))%>.
             value = year1 + "-" + month1 + "-" + day1;
         }
 
@@ -99,12 +100,12 @@ Use returnForm and returnItem request params and this page will fill in that inp
 <table BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
     <tr>
         <td BGCOLOR="#FFD7C4" width="50%" align="center"><a
-                href="billingCalendarPopup.jsp?year=<%=year%>&month=<%=month%>&delta=-1&type=<%=type%>&returnForm=<%=returnForm%>&returnItem=<%=returnItem%>">
+                href="billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&delta=-1&type=<%=Encode.forUriComponent(String.valueOf(type))%>&returnForm=<%=Encode.forUriComponent(String.valueOf(returnForm))%>&returnItem=<%=Encode.forUriComponent(String.valueOf(returnItem))%>">
             &nbsp;&nbsp;<img src="<%= request.getContextPath() %>/images/previous.gif" WIDTH="10"
                              HEIGHT="9" BORDER="0" ALT="View Last Month" vspace="2"> last
-            month&nbsp;&nbsp; </a> <b><span CLASS=title><%=year%>-<%=month%></span></b>
+            month&nbsp;&nbsp; </a> <b><span CLASS=title><%=Encode.forHtml(String.valueOf(year))%>-<%=Encode.forHtml(String.valueOf(month))%></span></b>
             <a
-                    href="billingCalendarPopup.jsp?year=<%=year%>&month=<%=month%>&delta=1&type=<%=type%>&returnForm=<%=returnForm%>&returnItem=<%=returnItem%>">
+                    href="billingCalendarPopup.jsp?year=<%=Encode.forUriComponent(String.valueOf(year))%>&month=<%=Encode.forUriComponent(String.valueOf(month))%>&delta=1&type=<%=Encode.forUriComponent(String.valueOf(type))%>&returnForm=<%=Encode.forUriComponent(String.valueOf(returnForm))%>&returnItem=<%=Encode.forUriComponent(String.valueOf(returnItem))%>">
                 &nbsp;&nbsp;next month <img src="<%= request.getContextPath() %>/images/next.gif" WIDTH="10"
                                             HEIGHT="9" BORDER="0" ALT="View Next Month" vspace="2">&nbsp;&nbsp;</a></td>
     </TR>
@@ -135,18 +136,18 @@ Use returnForm and returnItem request params and this page will fill in that inp
                     if (type.compareTo("admission") == 0) {
     %>
     <td align="center" bgcolor='#FBECF3'><a href="#"
-                                            onClick="typeInDate(<%=year%>,<%=month%>,<%= dateGrid[i][j] %>)">
-        <%= dateGrid[i][j] %>
+                                            onClick="typeInDate(<%=Encode.forJavaScript(String.valueOf(year))%>,<%=Encode.forJavaScript(String.valueOf(month))%>,<%=Encode.forJavaScript(String.valueOf(dateGrid[i][j]))%>)">
+        <%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%>
     </a></td>
     <% } else if (type.equals("service")) {%>
     <td align="center" bgcolor='#FBECF3'><a href="#"
-                                            onClick="typeSrvDate(<%=year%>,<%=month%>,<%= dateGrid[i][j] %>)">
-        <%= dateGrid[i][j] %>
+                                            onClick="typeSrvDate(<%=Encode.forJavaScript(String.valueOf(year))%>,<%=Encode.forJavaScript(String.valueOf(month))%>,<%=Encode.forJavaScript(String.valueOf(dateGrid[i][j]))%>)">
+        <%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%>
     </a></td>
     <% } else { %>
     <td align="center" bgcolor='#FBECF3'><a href="#"
-                                            onClick="typeMultiDate(<%=year%>,<%=month%>,<%= dateGrid[i][j] %>)">
-        <%= dateGrid[i][j] %>
+                                            onClick="typeMultiDate(<%=Encode.forJavaScript(String.valueOf(year))%>,<%=Encode.forJavaScript(String.valueOf(month))%>,<%=Encode.forJavaScript(String.valueOf(dateGrid[i][j]))%>)">
+        <%=Encode.forHtml(String.valueOf(dateGrid[i][j]))%>
     </a></td>
     <% }
     }

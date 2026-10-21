@@ -42,7 +42,6 @@
 <%@ page import="ca.openosp.openo.util.*, ca.openosp.openo.form.*, ca.openosp.openo.form.data.*" %>
 <%@ page import="ca.openosp.openo.commn.web.Pregnancy2Action" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.util.LabelValueBean" %>
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
@@ -50,6 +49,7 @@
 <%@ page import="ca.openosp.openo.form.data.FrmData" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
 <%@ page import="ca.openosp.OscarProperties" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     String formClass = "ONAREnhanced";
     String formLink = "formonarenhancedpg1.jsp";
@@ -90,22 +90,22 @@
 
 <html>
     <head>
-        <script type="text/javascript" src="<%= context %>/js/global.js"></script>
+        <script type="text/javascript" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/js/global.js"></script>
         <title>Antenatal Record 1</title>
         <link rel="stylesheet" type="text/css" href="<%=bView ? context + "/form/arStyleView.css" : context + "/form/arStyle.css"%>">
-        <link rel="stylesheet" type="text/css" media="all" href="<%= context %>/share/calendar/calendar.css" title="win2k-cold-1"/>
-        <script type="text/javascript" src="<%= context %>/share/calendar/calendar.js"></script>
+        <link rel="stylesheet" type="text/css" media="all" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/share/calendar/calendar.css" title="win2k-cold-1"/>
+        <script type="text/javascript" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/share/calendar/calendar.js"></script>
         <script type="text/javascript"
-                src="<%= context %>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
-        <script type="text/javascript" src="<%= context %>/share/calendar/calendar-setup.js"></script>
+                src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/share/calendar/lang/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.javascript.calendar"/>"></script>
+        <script type="text/javascript" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/share/calendar/calendar-setup.js"></script>
 
-        <script src="<%= context %>/js/jquery-1.7.1.min.js" type="text/javascript"></script>
-        <script src="<%= context %>/js/jquery-ui-1.8.18.custom.min.js"></script>
-        <script src="<%= context %>/js/fg.menu.js"></script>
+        <script src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/js/jquery-1.7.1.min.js" type="text/javascript"></script>
+        <script src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/js/jquery-ui-1.8.18.custom.min.js"></script>
+        <script src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/js/fg.menu.js"></script>
 
 
-        <link rel="stylesheet" href="<%= context %>/css/cupertino/jquery-ui-1.8.18.custom.css">
-        <link rel="stylesheet" href="<%= context %>/css/fg.menu.css">
+        <link rel="stylesheet" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/css/cupertino/jquery-ui-1.8.18.custom.css">
+        <link rel="stylesheet" href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/css/fg.menu.css">
 
 
         <script>
@@ -137,7 +137,7 @@
                 <%
 		} else if(cytologyForms.size() == 1) {
 			%>
-                popPage('<%= context %>/eform/efmformadd_data.jsp?fid=<%=cytologyForms.get(0).getValue()%>&demographic_no=<%=demoNo%>&appointment=0', 'cytology');
+                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(cytologyForms.get(0).getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0', 'cytology');
                 <%
 		} else {
 			%>$("#cytology-eform-form").dialog("open");
@@ -156,7 +156,7 @@
                 <%
 			} else if(ultrasoundForms.size() == 1) {
 				%>
-                popPage('<%= context %>/eform/efmformadd_data.jsp?fid=<%=ultrasoundForms.get(0).getValue()%>&demographic_no=<%=demoNo%>&appointment=0', 'ultrasound');
+                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(ultrasoundForms.get(0).getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0', 'ultrasound');
                 <%
 			} else {
 				%>$("#ultrasound-eform-form").dialog("open");
@@ -172,11 +172,11 @@
 		if(customForms != null) {
 			if(customForms.size()==0) {
 				%>
-                alert('No <%=customEformGroup%> Forms configured');
+                alert('No <%=Encode.forJavaScript(String.valueOf(customEformGroup))%> Forms configured');
                 <%
 			} else if(customForms.size() == 1) {
 				%>
-                popPage('<%= context %>/eform/efmformadd_data.jsp?fid=<%=customForms.get(0).getValue()%>&demographic_no=<%=demoNo%>&appointment=0', '<%=customEformGroup%>form');
+                popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(customForms.get(0).getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0', '<%=Encode.forJavaScript(String.valueOf(customEformGroup))%>form');
                 <%
 			} else {
 				%>$("#custom-eform-form").dialog("open");
@@ -927,16 +927,16 @@
                 jQuery.ajax({
                     url: 'onarenhanced_obxhx.jsp?n=' +<%=x%>, async: false, success: function (data) {
                         jQuery("#obxhx_container tbody").append(data);
-                        setInput(<%=x%>, "pg1_year", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg1_year"+x, "")) %>');
-                        setInput(<%=x%>, "pg1_sex", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg1_sex"+x, "")) %>');
-                        setInput(<%=x%>, "pg1_oh_gest", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg1_oh_gest"+x, "")) %>');
-                        setInput(<%=x%>, "pg1_weight", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg1_weight"+x, "")) %>');
-                        setInput(<%=x%>, "pg1_length", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg1_length"+x, "")) %>');
-                        setInput(<%=x%>, "pg1_place", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg1_place"+x, "")) %>');
+                        setInput(<%=x%>, "pg1_year", '<%= Encode.forJavaScript(props.getProperty("pg1_year"+x, "")) %>');
+                        setInput(<%=x%>, "pg1_sex", '<%= Encode.forJavaScript(props.getProperty("pg1_sex"+x, "")) %>');
+                        setInput(<%=x%>, "pg1_oh_gest", '<%= Encode.forJavaScript(props.getProperty("pg1_oh_gest"+x, "")) %>');
+                        setInput(<%=x%>, "pg1_weight", '<%= Encode.forJavaScript(props.getProperty("pg1_weight"+x, "")) %>');
+                        setInput(<%=x%>, "pg1_length", '<%= Encode.forJavaScript(props.getProperty("pg1_length"+x, "")) %>');
+                        setInput(<%=x%>, "pg1_place", '<%= Encode.forJavaScript(props.getProperty("pg1_place"+x, "")) %>');
                         setCheckbox(<%=x%>, "pg1_svb", '<%= (props.getProperty("pg1_svb"+x, "").length()>0)?"true":"false" %>');
                         setCheckbox(<%=x%>, "pg1_cs", '<%= (props.getProperty("pg1_cs"+x, "").length()>0)?"true":"false" %>');
                         setCheckbox(<%=x%>, "pg1_ass", '<%= (props.getProperty("pg1_ass"+x, "").length()>0)?"true":"false" %>');
-                        setInput(<%=x%>, "pg1_oh_comments", '<%= StringEscapeUtils.escapeEcmaScript(props.getProperty("pg1_oh_comments"+x, "")) %>');
+                        setInput(<%=x%>, "pg1_oh_comments", '<%= Encode.forJavaScript(props.getProperty("pg1_oh_comments"+x, "")) %>');
                     }
                 });
                 <%
@@ -968,14 +968,14 @@
             function watchFormVersion() {
                 $.ajax({
                     type: "POST",
-                    url: "<%= context %>/Pregnancy.do",
+                    url: "<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do",
                     data: {
                         method: "getLatestFormIdByPregnancy",
-                        episodeId: '<%=StringEscapeUtils.escapeEcmaScript(props.getProperty("episodeId","0"))%>'
+                        episodeId: '<%=Encode.forJavaScript(props.getProperty("episodeId","0"))%>'
                     },
                     dataType: 'json',
                     success: function (data, textStatus) {
-                        if (data.value != '<%=formId%>') {
+                        if (data.value != '<%=Encode.forJavaScript(String.valueOf(formId))%>') {
                             $("#outdated_warn").show();
                         } else {
                             $("#outdated_warn").hide();
@@ -1002,8 +1002,8 @@
                 haveLock = false;
                 $.ajax({
                         type: "POST",
-                        url: "<%= context %>/PageMonitoringService.do",
-                        data: {method: "update", page: "formonarenhanced", pageId: "<%=demoNo%>", lock: lock},
+                        url: "<%=Encode.forJavaScript(String.valueOf(context))%>/PageMonitoringService.do",
+                        data: {method: "update", page: "formonarenhanced", pageId: "<%=Encode.forJavaScript(String.valueOf(demoNo))%>", lock: lock},
                         dataType: 'json',
                         success: function (data, textStatus) {
                             lockData = data;
@@ -1076,7 +1076,7 @@
                 $("#print_log_menu").bind('click', function () {
                     jQuery.ajax({
                         type: "POST",
-                        url: '<%= context %>/Pregnancy.do?method=getPrintData',
+                        url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getPrintData',
                         data: {resourceName: 'ONAREnhanced', resourceId: $('#episodeId').val()},
                         dataType: 'json',
                         async: true,
@@ -1100,7 +1100,7 @@
         <script type="text/javascript" language="Javascript">
             function reset() {
                 document.forms[0].target = "";
-                document.forms[0].action = "/<%=project_home%>/form/formname.do";
+                document.forms[0].action = "/<%=Encode.forJavaScript(String.valueOf(project_home))%>/form/formname.do";
             }
 
             function onPrint() {
@@ -1109,14 +1109,14 @@
                 if (ret == true) {
                     <%if(Integer.parseInt(props.getProperty("obxhx_num", "0")) > 6) {
 				%>
-                    document.forms[0].action = "<%= context %>/form/createpdf?__title=Antenatal+Record+Part+1&__cfgfile=onar1enhancedPrintCfgPg1&__template=onar1&__numPages=1&postProcessor=ONAR1EnhancedPostProcessor&multiple=2&__title1=Antenatal+Record+Part+1&__cfgfile1=onar1enhancedPrintCfgPg2&__template1=onar1enhancedpg2&__numPages1=1&postProcessor1=ONAR1EnhancedPostProcessor";
+                    document.forms[0].action = "<%=Encode.forJavaScript(String.valueOf(context))%>/form/createpdf?__title=Antenatal+Record+Part+1&__cfgfile=onar1enhancedPrintCfgPg1&__template=onar1&__numPages=1&postProcessor=ONAR1EnhancedPostProcessor&multiple=2&__title1=Antenatal+Record+Part+1&__cfgfile1=onar1enhancedPrintCfgPg2&__template1=onar1enhancedpg2&__numPages1=1&postProcessor1=ONAR1EnhancedPostProcessor";
                     <%
 			} else {
 				%>
                     if ($("textarea[name='pg1_comments2AR1']").val().length > 0)
-                        document.forms[0].action = "<%= context %>/form/createpdf?__title=Antenatal+Record+Part+1&__cfgfile=onar1enhancedPrintCfgPg1&__template=onar1&__numPages=1&postProcessor=ONAR1EnhancedPostProcessor&multiple=2&__title1=Antenatal+Record+Part+1&__cfgfile1=onar1enhancedPrintCfgPg2&__template1=onar1enhancedpg2&__numPages1=1&postProcessor1=ONAR1EnhancedPostProcessor";
+                        document.forms[0].action = "<%=Encode.forJavaScript(String.valueOf(context))%>/form/createpdf?__title=Antenatal+Record+Part+1&__cfgfile=onar1enhancedPrintCfgPg1&__template=onar1&__numPages=1&postProcessor=ONAR1EnhancedPostProcessor&multiple=2&__title1=Antenatal+Record+Part+1&__cfgfile1=onar1enhancedPrintCfgPg2&__template1=onar1enhancedpg2&__numPages1=1&postProcessor1=ONAR1EnhancedPostProcessor";
                     else
-                        document.forms[0].action = "<%= context %>/form/createpdf?__title=Antenatal+Record+Part+1&__cfgfile=onar1enhancedPrintCfgPg1&__template=onar1&__numPages=1&postProcessor=ONAR1EnhancedPostProcessor";
+                        document.forms[0].action = "<%=Encode.forJavaScript(String.valueOf(context))%>/form/createpdf?__title=Antenatal+Record+Part+1&__cfgfile=onar1enhancedPrintCfgPg1&__template=onar1&__numPages=1&postProcessor=ONAR1EnhancedPostProcessor";
                     <%
 			} %>
                     document.forms[0].target = "_blank";
@@ -1159,7 +1159,7 @@
                         window.onunload = null;
                         adjustDynamicListTotals();
                         jQuery.ajax({
-                            url: '<%= context %>/Pregnancy.do?method=saveFormAjax',
+                            url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=saveFormAjax',
                             data: $("form").serialize(),
                             async: false,
                             dataType: 'json',
@@ -1174,7 +1174,7 @@
                             }
                         });
                     } else {
-                        url = url.replace('#id', '<%=formId%>');
+                        url = url.replace('#id', '<%=Encode.forJavaScript(String.valueOf(formId))%>');
                         location.href = url;
                     }
                 }
@@ -1562,7 +1562,7 @@
 
             function updateAllergies() {
                 jQuery.ajax({
-                    url: '<%= context %>/Pregnancy.do?method=getAllergies&demographicNo=<%=demoNo%>',
+                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getAllergies&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>',
                     async: true,
                     dataType: 'json',
                     success: function (data) {
@@ -1573,7 +1573,7 @@
 
             function updateMeds() {
                 jQuery.ajax({
-                    url: '<%= context %>/Pregnancy.do?method=getMeds&demographicNo=<%=demoNo%>',
+                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getMeds&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>',
                     async: true,
                     dataType: 'json',
                     success: function (data) {
@@ -1590,7 +1590,7 @@
             function pullVitals() {
                 //get values from chart
                 jQuery.ajax({
-                    url: '<%= context %>/Pregnancy.do?method=getMeasurementsAjax&demographicNo=<%=demoNo%>&type=BP',
+                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getMeasurementsAjax&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=BP',
                     async: false,
                     dataType: 'json',
                     success: function (data) {
@@ -1609,7 +1609,7 @@
                 $('#bp_form').val($('input[name="pg1_BP"]').val());
 
                 jQuery.ajax({
-                    url: '<%= context %>/Pregnancy.do?method=getMeasurementsAjax&demographicNo=<%=demoNo%>&type=HT',
+                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getMeasurementsAjax&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=HT',
                     async: false,
                     dataType: 'json',
                     success: function (data) {
@@ -1628,7 +1628,7 @@
                 $('#height_form').val($('input[name="pg1_ht"]').val());
 
                 jQuery.ajax({
-                    url: '<%= context %>/Pregnancy.do?method=getMeasurementsAjax&demographicNo=<%=demoNo%>&type=WT',
+                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=getMeasurementsAjax&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=WT',
                     async: false,
                     dataType: 'json',
                     success: function (data) {
@@ -1667,7 +1667,7 @@
                 if ($('#' + type + '_form').val().length > 0) {
                     $('#' + type + '_chart').val($('#' + type + '_form').val());
                     jQuery.ajax({
-                        url: '<%= context %>/Pregnancy.do?method=saveMeasurementAjax&demographicNo=<%=demoNo%>&type=' + mtype + '&value=' + $('#' + type + '_form').val(),
+                        url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=saveMeasurementAjax&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=' + mtype + '&value=' + $('#' + type + '_form').val(),
                         async: false,
                         dataType: 'json',
                         success: function (data) {
@@ -1808,11 +1808,11 @@
                             $(this).dialog("close");
                             var ferritin = $("#ferritin").attr('checked');
                             var hbElectrophoresis = $("#hbElectrophoresis").attr('checked');
-                            var demographic = '<%=StringEscapeUtils.escapeEcmaScript(props.getProperty("demographic_no", "0"))%>';
-                            var user = '<%=session.getAttribute("user")%>';
-                            url = '<%= context %>/form/formlabreq<%=labReqVer%>.jsp?demographic_no=' + demographic + '&formId=0&provNo=' + user + '&fromSession=true';
+                            var demographic = '<%=Encode.forJavaScript(props.getProperty("demographic_no", "0"))%>';
+                            var user = '<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>';
+                            url = '<%=Encode.forJavaScript(String.valueOf(context))%>/form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=' + demographic + '&formId=0&provNo=' + user + '&fromSession=true';
                             jQuery.ajax({
-                                url: '<%= context %>/Pregnancy.do?method=createMCVLabReq&demographicNo=' + demographic + '&ferritin=' + ferritin + '&hb_electrophoresis=' + hbElectrophoresis,
+                                url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=createMCVLabReq&demographicNo=' + demographic + '&ferritin=' + ferritin + '&hb_electrophoresis=' + hbElectrophoresis,
                                 async: false,
                                 success: function (data) {
                                     popPage(url, 'LabReq');
@@ -1855,17 +1855,17 @@
                             $(this).dialog("close");
                             var printAr1 = $("#print_ar1").attr('checked');
                             var printAr2 = $("#print_ar2").attr('checked');
-                            var demographic = '<%=props.getProperty("demographic_no", "0")%>';
-                            var user = '<%=session.getAttribute("user")%>';
+                            var demographic = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("demographic_no", "0")))%>';
+                            var user = '<%=Encode.forJavaScript(String.valueOf(session.getAttribute("user")))%>';
                             var printLocation = $("#print_location").val();
                             var printMethod = $("#print_method").val();
 
                             var obxNum = $("#obxhx_num").val();
                             var extraComments = $("#pg1_comments2AR1").val();
                             var hasExtraComments = (extraComments.length > 0);
-                            var rfNum = '<%=props.getProperty("rf_num", "0")%>';
-                            var svNum = '<%=props.getProperty("sv_num", "0")%>';
-                            var usNum = '<%=props.getProperty("us_num", "0")%>';
+                            var rfNum = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("rf_num", "0")))%>';
+                            var svNum = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("sv_num", "0")))%>';
+                            var usNum = '<%=Encode.forJavaScript(String.valueOf(props.getProperty("us_num", "0")))%>';
 
                             if ((typeof printAr1 == "undefined") && (typeof printAr2 == "undefined")) {
                                 return;
@@ -1874,7 +1874,7 @@
                             if (printLocation.length > 0) {
                                 jQuery.ajax({
                                     type: "POST",
-                                    url: '<%= context %>/Pregnancy.do?method=recordPrint',
+                                    url: '<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=recordPrint',
                                     data: {
                                         printLocation: printLocation,
                                         printMethod: printMethod,
@@ -1892,7 +1892,7 @@
                             if (ret == true) {
                                 document.forms[0].submit.value = "print";
                                 document.forms[0].target = "_blank";
-                                var url = "<%= context %>/form/createpdf?";
+                                var url = "<%=Encode.forJavaScript(String.valueOf(context))%>/form/createpdf?";
                                 var multiple = 0;
                                 if (!(typeof printAr1 == "undefined")) {
                                     url += "__title=Antenatal+Record+Part+1&__cfgfile=onar1enhancedPrintCfgPg1&__template=onar1&__numPages=1&postProcessor=ONAR1EnhancedPostProcessor";
@@ -2001,12 +2001,12 @@
 
                 $("#credit_valley_genetic_btn").bind('click', function (e) {
                     e.preventDefault();
-                    popPage('<%= context %>/Pregnancy.do?method=loadEformByName&name=Prenatal Screening (IPS) Credit Valley&demographicNo=<%=demoNo%>', 'credit_valley_lab_req');
+                    popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=loadEformByName&name=Prenatal Screening (IPS) Credit Valley&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>', 'credit_valley_lab_req');
                 });
 
                 $("#north_york_genetic_btn").bind('click', function (e) {
                     e.preventDefault();
-                    popPage('<%= context %>/Pregnancy.do?method=loadEformByName&name=1Prenatal Screening - North York&demographicNo=<%=demoNo%>', 'north_york_lab_req');
+                    popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/Pregnancy.do?method=loadEformByName&name=1Prenatal Screening - North York&demographicNo=<%=Encode.forUriComponent(String.valueOf(demoNo))%>', 'north_york_lab_req');
                 });
 
                 $("#1st_visit_menu").bind('click', function () {
@@ -2076,12 +2076,12 @@
                     </tr>
                     <tr id="first_visit">
                         <td>First Visit<span style="float:right"><img id="1st_visit_menu"
-                                                                      src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                                      src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                       border="0"></span></td>
                     </tr>
                     <tr id="16wk_visit">
                         <td>16 week Visit<span style="float:right"><img id="16wk_visit_menu"
-                                                                        src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                                        src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                         border="0"></span></td>
                     </tr>
                 </table>
@@ -2110,7 +2110,7 @@
                         <td>
                             Printing Log
                             <span style="float:right"><img id="print_log_menu"
-                                                           src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                           src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                            border="0"></span>
                         </td>
                     </tr>
@@ -2161,13 +2161,13 @@
                     </tr>
                     <tr id="genetic_prompt" style="display:none">
                         <td>Genetics Referral<span style="float:right"><img id="genetics_menu"
-                                                                            src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                                            src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                             border="0"></span></td>
                     </tr>
 
                     <tr id="mcv_abn_prompt" style="display:none">
                         <td>Low MCV<span style="float:right"><img id="mcv_menu"
-                                                                  src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                                  src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                   border="0"></span></td>
                     </tr>
                 </table>
@@ -2180,24 +2180,24 @@
                     </tr>
 
                     <tr id="lab_prompt">
-                        <td>Labs<span style="float:right"><img id="lab_menu" src="<%= context %>/images/right-circle-arrow-Icon.png"
+                        <td>Labs<span style="float:right"><img id="lab_menu" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                border="0"></span></td>
                     </tr>
                     <tr id="forms_prompt">
                         <td>Forms<span style="float:right"><img id="forms_menu"
-                                                                src="<%= context %>/images/right-circle-arrow-Icon.png" border="0"></span>
+                                                                src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png" border="0"></span>
                         </td>
                     </tr>
 
                     <tr id="pull_vitals_prompt">
                         <td>Vitals Integration<span style="float:right"><img id="vitals_pull_menu"
-                                                                             src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                                             src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                              border="0"></span></td>
                     </tr>
 
                     <tr id="pull_labs_prompt">
                         <td>Labs Integration<span style="float:right"><img id="lab_pull_menu"
-                                                                           src="<%= context %>/images/right-circle-arrow-Icon.png"
+                                                                           src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/right-circle-arrow-Icon.png"
                                                                            border="0"></span></td>
                     </tr>
 
@@ -2212,22 +2212,22 @@
         <div id="content_bar" class="innertube">
             <form action="${pageContext.request.contextPath}/form/formname.do" method="post">
                 <input type="hidden" name="c_lastVisited"
-                       value=<%=props.getProperty("c_lastVisited", "pg1")%>/>
+                       value="<%=Encode.forHtml(String.valueOf(props.getProperty("c_lastVisited", "pg1")))%>"/>
                 <input type="hidden" name="demographic_no"
-                       value="<%= props.getProperty("demographic_no", "0") %>"/>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("demographic_no", "0")))%>"/>
                 <input type="hidden" name="formCreated"
-                       value="<%= props.getProperty("formCreated", "") %>"/>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("formCreated", "")))%>"/>
                 <input type="hidden" id="episodeId" name="episodeId"
-                       value="<%= props.getProperty("episodeId", "") %>"/>
+                       value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("episodeId", "")))%>"/>
                 <input type="hidden" name="form_class" value="<%=formClass%>"/>
                 <input type="hidden" name="form_link" value="<%=formLink%>"/>
-                <input type="hidden" name="formId" value="<%=formId%>"/>
+                <input type="hidden" name="formId" value="<%=Encode.forHtmlAttribute(String.valueOf(formId))%>"/>
                 <input type="hidden" name="sent_to_born" value="0"/>
-                <!--input type="hidden" name="ID" value="<%= props.getProperty("ID", "0") %>" /-->
+                <!--input type="hidden" name="ID" value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("ID", "0")))%>" /-->
                 <input type="hidden" name="provider_no"
-                       value=<%=request.getParameter("provNo")%>/>
+                       value="<%=Encode.forHtml(request.getParameter("provNo"))%>"/>
                 <input type="hidden" name="provNo"
-                       value="<%= request.getParameter("provNo") %>"/>
+                       value="<%= Encode.forHtmlAttribute(request.getParameter("provNo")) %>"/>
                 <input type="hidden" name="submit" value="exit"/>
 
                 <table class="Head hidePrint">
@@ -2250,13 +2250,13 @@
                             %>
                             &nbsp;&nbsp;&nbsp;
                             <b>View:</b> <a href="javascript:void(0)"
-                                            onclick="popupPage(960,700,'form/formonarenhancedpg2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>&view=1');">AR2</a>
+                                            onclick="popupPage(960,700,'form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&view=1');">AR2</a>
                             &nbsp;&nbsp;&nbsp;
                             <b>Edit:</b> <a href="javascript:void(0)"
-                                            onclick="onPageChange('form/formonarenhancedpg2.jsp?demographic_no=<%=demoNo%>&formId=#id&provNo=<%=provNo%>');">AR2</a>
+                                            onclick="onPageChange('form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=#id&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');">AR2</a>
                             &nbsp;&nbsp;&nbsp;
                             <b>Download:</b> <a
-                                href="form/formonarenhancedxml.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>&episodeId=<%=props.getProperty("episodeId","0")%>">XML</a>
+                                href="form/formonarenhancedxml.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&episodeId=<%=Encode.forUriComponent(String.valueOf(props.getProperty("episodeId","0")))%>">XML</a>
                         </td>
 
 
@@ -2274,7 +2274,7 @@
                         </th>
                         <%
                             if (request.getParameter("historyet") != null) {
-                                out.println("<input type=\"hidden\" name=\"historyet\" value=\"" + request.getParameter("historyet") + "\">");
+                                out.println("<input type=\"hidden\" name=\"historyet\" value=\"" + Encode.forHtmlAttribute(request.getParameter("historyet")) + "\">");
                             }
                         %>
                     </tr>
@@ -2701,21 +2701,21 @@
                         </td>
                         <td width="17%"><font size="-1">Birth attendants<br>
                             <input type="checkbox" name="pg1_baObs"
-                                    <%= props.getProperty("pg1_baObs", "") %> />OBS <input
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_baObs", "")))%> />OBS <input
                                     type="checkbox" name="pg1_baFP"
-                                    <%= props.getProperty("pg1_baFP", "") %> />FP <input
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_baFP", "")))%> />FP <input
                                     type="checkbox" name="pg1_baMidwife"
-                                    <%= props.getProperty("pg1_baMidwife", "") %> />Midwife<br>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_baMidwife", "")))%> />Midwife<br>
                         </font> <input type="text" name="c_ba" size="10" style="width: 100%"
                                        maxlength="25"
                                        value="<%= UtilMisc.htmlEscape(props.getProperty("c_ba", "")) %>"/>
                         </td>
                         <td width="17%"><font size="-1">Newborn care<br>
                             <input type="checkbox" name="pg1_ncPed"
-                                    <%= props.getProperty("pg1_ncPed", "") %> />Ped. <input
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_ncPed", "")))%> />Ped. <input
                                     type="checkbox" name="pg1_ncFP"
-                                    <%= props.getProperty("pg1_ncFP", "") %> />FP <input type="checkbox"
-                                                                                         name="pg1_ncMidwife" <%= props.getProperty("pg1_ncMidwife", "") %> />Midwife<br>
+                                    <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_ncFP", "")))%> />FP <input type="checkbox"
+                                                                                         name="pg1_ncMidwife" <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_ncMidwife", "")))%> />Midwife<br>
                         </font> <input type="text" name="c_nc" size="10" style="width: 100%"
                                        maxlength="25"
                                        value="<%= UtilMisc.htmlEscape(props.getProperty("c_nc", "")) %>"/></td>
@@ -2772,12 +2772,12 @@
                                                                        name="pg1_menLMP" id="pg1_menLMP" size="10"
                                                                        maxlength="10"
                                                                        value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_menLMP", "")) %>"/>
-                                        <img src="<%= context %>/images/cal.gif" id="pg1_menLMP_cal"></td>
+                                        <img src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/cal.gif" id="pg1_menLMP_cal"></td>
                                     <td>Certain</td>
                                     <td>Yes <input type="checkbox" name="pg1_psCertY"
-                                            <%= props.getProperty("pg1_psCertY", "") %> /> No <input
+                                            <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_psCertY", "")))%> /> No <input
                                             type="checkbox" name="pg1_psCertN"
-                                            <%= props.getProperty("pg1_psCertN", "") %> /></td>
+                                            <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_psCertN", "")))%> /></td>
                                 </tr>
                                 <tr>
                                     <td>Cycle q__ <input type="text" name="pg1_menCycle" size="7"
@@ -2786,9 +2786,9 @@
                                     </td>
                                     <td>Regular</td>
                                     <td>Yes <input type="checkbox" name="pg1_menReg"
-                                            <%= props.getProperty("pg1_menReg", "") %> /> No <input
+                                            <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_menReg", "")))%> /> No <input
                                             type="checkbox" name="pg1_menRegN"
-                                            <%= props.getProperty("pg1_menRegN", "") %> /></td>
+                                            <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_menRegN", "")))%> /></td>
                                 </tr>
                                 <tr>
                                     <td>Contraceptive type <input type="text" name="pg1_contracep"
@@ -2799,7 +2799,7 @@
                                     <td nowrap="nowrap"><input type="text" name="pg1_lastUsed" id="pg1_lastUsed"
                                                                size="10" maxlength="10"
                                                                value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_lastUsed", "")) %>"/>
-                                        <img src="<%= context %>/images/cal.gif" id="pg1_lastUsed_cal"></td>
+                                        <img src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/cal.gif" id="pg1_lastUsed_cal"></td>
                                 </tr>
                             </table>
 
@@ -2808,7 +2808,7 @@
                             <input type="text" name="pg1_menEDB" id="pg1_menEDB" class="spe"
                                    onDblClick="calByLMP(this);" size="10" maxlength="10"
                                    value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_menEDB", "")) %>"/> <img
-                                    src="<%= context %>/images/cal.gif" id="pg1_menEDB_cal"></td>
+                                    src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/cal.gif" id="pg1_menEDB_cal"></td>
 
 
                         <td valign="top" width="35%" rowspan="2">
@@ -2820,16 +2820,16 @@
                                         <input type="text" name="c_finalEDB" id="c_finalEDB" size="10"
                                                maxlength="10"
                                                value="<%= UtilMisc.htmlEscape(props.getProperty("c_finalEDB", "")) %>"/>
-                                        <img src="<%= context %>/images/cal.gif" id="c_finalEDB_cal"></td>
+                                        <img src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/cal.gif" id="c_finalEDB_cal"></td>
                                     <td width="40%"><u>Dating Method</u></br>
                                         <input type="checkbox" name="pg1_edbByDate"
-                                                <%= props.getProperty("pg1_edbByDate", "") %> />Dates<br>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_edbByDate", "")))%> />Dates<br>
                                         <input type="checkbox" name="pg1_edbByT1"
-                                                <%= props.getProperty("pg1_edbByT1", "") %> />T1US<br>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_edbByT1", "")))%> />T1US<br>
                                         <input type="checkbox" name="pg1_edbByT2"
-                                                <%= props.getProperty("pg1_edbByT2", "") %> />T2US<br>
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_edbByT2", "")))%> />T2US<br>
                                         <input type="checkbox" name="pg1_edbByART"
-                                                <%= props.getProperty("pg1_edbByART", "") %> />ART (e.g. IVF)
+                                                <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_edbByART", "")))%> />ART (e.g. IVF)
                                     </td>
                                 </tr>
                             </table>
@@ -2908,7 +2908,7 @@
                             </table>
 
                             <input type="hidden" id="obxhx_num" name="obxhx_num"
-                                   value="<%= props.getProperty("obxhx_num", "0") %>"/>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("obxhx_num", "0")))%>"/>
                             <table width="100%" border="1" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td colspan="9"><input id="obxhx_add_btn" type="button" value="Add New"
@@ -2946,17 +2946,17 @@
                                                 <td width="6%">1.</td>
                                                 <td>Bleeding</td>
                                                 <td><input type="checkbox" name="pg1_cp1"
-                                                        <%= props.getProperty("pg1_cp1", "") %> /></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cp1", "")))%> /></td>
                                                 <td><input type="checkbox" name="pg1_cp1N"
-                                                        <%= props.getProperty("pg1_cp1N", "") %> /></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cp1N", "")))%> /></td>
                                             </tr>
                                             <tr>
                                                 <td>2.</td>
                                                 <td>Nausea, vomiting</td>
                                                 <td><input type="checkbox" name="pg1_cp2"
-                                                        <%= props.getProperty("pg1_cp2", "") %> /></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cp2", "")))%> /></td>
                                                 <td><input type="checkbox" name="pg1_cp2N"
-                                                        <%= props.getProperty("pg1_cp2N", "") %> /></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cp2N", "")))%> /></td>
                                             </tr>
                                             <tr>
                                                 <td>3.</td>
@@ -2971,50 +2971,50 @@
                                                     </font>
                                                 </td>
                                                 <td><input type="checkbox" name="pg1_cp3"
-                                                        <%= props.getProperty("pg1_cp3", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cp3", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_cp3N"
-                                                        <%= props.getProperty("pg1_cp3N", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cp3N", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>4.</td>
                                                 <td>Alcohol, street drugs</td>
                                                 <td><input type="checkbox" name="pg1_cp4"
-                                                        <%= props.getProperty("pg1_cp4", "") %> /></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cp4", "")))%> /></td>
                                                 <td><input type="checkbox" name="pg1_cp4N"
-                                                        <%= props.getProperty("pg1_cp4N", "") %> /></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cp4N", "")))%> /></td>
                                             </tr>
 
                                             <tr>
                                                 <td valign="top">5.</td>
                                                 <td>Occup/Environ. risks</td>
                                                 <td><input type="checkbox" name="pg1_cp8"
-                                                        <%= props.getProperty("pg1_cp8", "") %> /></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cp8", "")))%> /></td>
                                                 <td><input type="checkbox" name="pg1_cp8N"
-                                                        <%= props.getProperty("pg1_cp8N", "") %> /></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cp8N", "")))%> /></td>
                                             </tr>
                                             <tr>
                                                 <td valign="top">6.</td>
                                                 <td>Dietary restrictions</td>
                                                 <td><input type="checkbox" name="pg1_naDiet"
-                                                        <%= props.getProperty("pg1_naDiet", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_naDiet", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_naDietN"
-                                                        <%= props.getProperty("pg1_naDietN", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_naDietN", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td valign="top">7.</td>
                                                 <td>Calcium adequate</td>
                                                 <td><input type="checkbox" name="pg1_naMilk"
-                                                        <%= props.getProperty("pg1_naMilk", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_naMilk", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_naMilkN"
-                                                        <%= props.getProperty("pg1_naMilkN", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_naMilkN", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td valign="top">8.</td>
                                                 <td>Preconceptual folate</td>
                                                 <td><input type="checkbox" name="pg1_naFolic"
-                                                        <%= props.getProperty("pg1_naFolic", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_naFolic", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_naFolicN"
-                                                        <%= props.getProperty("pg1_naFolicN", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_naFolicN", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="4">&nbsp;</td>
@@ -3032,98 +3032,98 @@
                                                 <td>9.</td>
                                                 <td>Hypertension</td>
                                                 <td><input type="checkbox" name="pg1_yes9"
-                                                        <%= props.getProperty("pg1_yes9", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes9", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_no9"
-                                                        <%= props.getProperty("pg1_no9", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no9", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>10.</td>
                                                 <td>Endocrine</td>
                                                 <td><input type="checkbox" name="pg1_yes10"
-                                                        <%= props.getProperty("pg1_yes10", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes10", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_no10"
-                                                        <%= props.getProperty("pg1_no10", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no10", "")))%>></td>
                                             </tr>
 
                                             <tr>
                                                 <td>11.</td>
                                                 <td>Urinary tract</td>
                                                 <td><input type="checkbox" name="pg1_yes12"
-                                                        <%= props.getProperty("pg1_yes12", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes12", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_no12"
-                                                        <%= props.getProperty("pg1_no12", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no12", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>12.</td>
                                                 <td>Cardiac/Pulmonary</td>
                                                 <td><input type="checkbox" name="pg1_yes13"
-                                                        <%= props.getProperty("pg1_yes13", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes13", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_no13"
-                                                        <%= props.getProperty("pg1_no13", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no13", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>13.</td>
                                                 <td>Liver, hepatitis, GI</td>
                                                 <td><input type="checkbox" name="pg1_yes14"
-                                                        <%= props.getProperty("pg1_yes14", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes14", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_no14"
-                                                        <%= props.getProperty("pg1_no14", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no14", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>14.</td>
                                                 <td>Gynaecology/Breast</td>
                                                 <td><input type="checkbox" name="pg1_yes17"
-                                                        <%= props.getProperty("pg1_yes17", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes17", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_no17"
-                                                        <%= props.getProperty("pg1_no17", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no17", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>15.</td>
                                                 <td>Hem./Immunology</td>
                                                 <td><input type="checkbox" name="pg1_yes22"
-                                                        <%= props.getProperty("pg1_yes22", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes22", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_no22"
-                                                        <%= props.getProperty("pg1_no22", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no22", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>16.</td>
                                                 <td>Surgeries</td>
                                                 <td><input type="checkbox" name="pg1_yes20"
-                                                        <%= props.getProperty("pg1_yes20", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes20", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_no20"
-                                                        <%= props.getProperty("pg1_no20", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no20", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>17.</td>
                                                 <td>Blood transfusion</td>
                                                 <td><input type="checkbox" name="pg1_bloodTranY"
-                                                        <%= props.getProperty("pg1_bloodTranY", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_bloodTranY", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_bloodTranN"
-                                                        <%= props.getProperty("pg1_bloodTranN", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_bloodTranN", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>18.</td>
                                                 <td>Anesthetics compl.</td>
                                                 <td><input type="checkbox" name="pg1_yes21"
-                                                        <%= props.getProperty("pg1_yes21", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes21", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_no21"
-                                                        <%= props.getProperty("pg1_no21", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no21", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>19.</td>
                                                 <td>Psychiatric</td>
                                                 <td><input type="checkbox" name="pg1_yes24"
-                                                        <%= props.getProperty("pg1_yes24", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes24", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_no24"
-                                                        <%= props.getProperty("pg1_no24", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no24", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>20.</td>
                                                 <td>Epilepsy/Neurological</td>
                                                 <td><input type="checkbox" name="pg1_yes15"
-                                                        <%= props.getProperty("pg1_yes15", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes15", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_no15"
-                                                        <%= props.getProperty("pg1_no15", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no15", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>21.</td>
@@ -3132,9 +3132,9 @@
                                                                  value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_box25", "")) %>">
                                                 </td>
                                                 <td><input type="checkbox" name="pg1_yes25"
-                                                        <%= props.getProperty("pg1_yes25", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes25", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_no25"
-                                                        <%= props.getProperty("pg1_no25", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no25", "")))%>></td>
                                             </tr>
                                         </table>
 
@@ -3155,10 +3155,10 @@
                                                 <td>22.</td>
                                                 <td>At risk population</td>
                                                 <td align="center" valign="top"><input type="checkbox"
-                                                                                       name="pg1_yes27" <%= props.getProperty("pg1_yes27", "") %>>
+                                                                                       name="pg1_yes27" <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes27", "")))%>>
                                                 </td>
                                                 <td align="center" valign="top"><input type="checkbox"
-                                                                                       name="pg1_no27" <%= props.getProperty("pg1_no27", "") %>>
+                                                                                       name="pg1_no27" <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no27", "")))%>>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -3172,35 +3172,35 @@
                                                 <td>23.</td>
                                                 <td>Developmental delay</td>
                                                 <td align="center"><input type="checkbox" name="pg1_yes31"
-                                                        <%= props.getProperty("pg1_yes31", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes31", "")))%>></td>
                                                 <td align="center"><input type="checkbox" name="pg1_no31"
-                                                        <%= props.getProperty("pg1_no31", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no31", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>24.</td>
                                                 <td>Congenital anomalies</td>
                                                 <td align="center"><input type="checkbox" name="pg1_yes32"
-                                                        <%= props.getProperty("pg1_yes32", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes32", "")))%>></td>
                                                 <td align="center"><input type="checkbox" name="pg1_no32"
-                                                        <%= props.getProperty("pg1_no32", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no32", "")))%>></td>
                                             </tr>
 
                                             <tr>
                                                 <td>25.</td>
                                                 <td>Chromosomal disorders</td>
                                                 <td align="center"><input type="checkbox" name="pg1_yes34"
-                                                        <%= props.getProperty("pg1_yes34", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes34", "")))%>></td>
                                                 <td align="center"><input type="checkbox" name="pg1_no34"
-                                                        <%= props.getProperty("pg1_no34", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no34", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>26.</td>
                                                 <td>Genetic disorders</td>
                                                 <td align="center" valign="top"><input type="checkbox"
-                                                                                       name="pg1_yes35" <%= props.getProperty("pg1_yes35", "") %>>
+                                                                                       name="pg1_yes35" <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_yes35", "")))%>>
                                                 </td>
                                                 <td align="center" valign="top"><input type="checkbox"
-                                                                                       name="pg1_no35" <%= props.getProperty("pg1_no35", "") %>>
+                                                                                       name="pg1_no35" <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_no35", "")))%>>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -3213,26 +3213,26 @@
                                                 <td>27.</td>
                                                 <td>Varicella susceptible</td>
                                                 <td><input type="checkbox" name="pg1_idt40"
-                                                        <%= props.getProperty("pg1_idt40", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_idt40", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_idt40N"
-                                                        <%= props.getProperty("pg1_idt40N", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_idt40N", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>28.</td>
                                                 <td>STDs/HSV/BV</td>
                                                 <td><input type="checkbox" name="pg1_idt38"
-                                                        <%= props.getProperty("pg1_idt38", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_idt38", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_idt38N"
-                                                        <%= props.getProperty("pg1_idt38N", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_idt38N", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>29.</td>
                                                 <td>Tuberculosis risk</td>
                                                 <!--  input type="text" name="pg1_box42" size="10" maxlength="20" value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_box42", "")) %>"></td>-->
                                                 <td><input type="checkbox" name="pg1_idt42"
-                                                        <%= props.getProperty("pg1_idt42", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_idt42", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_idt42N"
-                                                        <%= props.getProperty("pg1_idt42N", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_idt42N", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>30.</td>
@@ -3241,9 +3241,9 @@
                                                                  value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_infectDisOther", "")) %>">
                                                 </td>
                                                 <td><input type="checkbox" name="pg1_infectDisOtherY"
-                                                        <%= props.getProperty("pg1_infectDisOtherY", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_infectDisOtherY", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_infectDisOtherN"
-                                                        <%= props.getProperty("pg1_infectDisOtherN", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_infectDisOtherN", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="4">&nbsp;</td>
@@ -3255,57 +3255,57 @@
                                                 <td>31.</td>
                                                 <td>Poor social support</td>
                                                 <td><input type="checkbox" name="pg1_pdt43"
-                                                        <%= props.getProperty("pg1_pdt43", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pdt43", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_pdt43N"
-                                                        <%= props.getProperty("pg1_pdt43N", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pdt43N", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>32.</td>
                                                 <td>Relationship problems</td>
                                                 <td><input type="checkbox" name="pg1_pdt44"
-                                                        <%= props.getProperty("pg1_pdt44", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pdt44", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_pdt44N"
-                                                        <%= props.getProperty("pg1_pdt44N", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pdt44N", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>33.</td>
                                                 <td>Emotional/Depression</td>
                                                 <td><input type="checkbox" name="pg1_pdt45"
-                                                        <%= props.getProperty("pg1_pdt45", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pdt45", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_pdt45N"
-                                                        <%= props.getProperty("pg1_pdt45N", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pdt45N", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>34.</td>
                                                 <td>Substance abuse</td>
                                                 <td><input type="checkbox" name="pg1_pdt46"
-                                                        <%= props.getProperty("pg1_pdt46", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pdt46", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_pdt46N"
-                                                        <%= props.getProperty("pg1_pdt46N", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pdt46N", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>35.</td>
                                                 <td>Family violence</td>
                                                 <td><input type="checkbox" name="pg1_pdt47"
-                                                        <%= props.getProperty("pg1_pdt47", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pdt47", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_pdt47N"
-                                                        <%= props.getProperty("pg1_pdt47N", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pdt47N", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>36.</td>
                                                 <td>Parenting concerns</td>
                                                 <td><input type="checkbox" name="pg1_pdt48"
-                                                        <%= props.getProperty("pg1_pdt48", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pdt48", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_pdt48N"
-                                                        <%= props.getProperty("pg1_pdt48N", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pdt48N", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>37.</td>
                                                 <td>Relig./Cultural issues</td>
                                                 <td><input type="checkbox" name="pg1_reliCultY"
-                                                        <%= props.getProperty("pg1_reliCultY", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_reliCultY", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_reliCultN"
-                                                        <%= props.getProperty("pg1_reliCultN", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_reliCultN", "")))%>></td>
                                             </tr>
                                         </table>
 
@@ -3326,9 +3326,9 @@
                                                 <td>38.</td>
                                                 <td>At risk population</td>
                                                 <td><input type="checkbox" name="pg1_fhRiskY"
-                                                        <%= props.getProperty("pg1_fhRiskY", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_fhRiskY", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_fhRiskN"
-                                                        <%= props.getProperty("pg1_fhRiskN", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_fhRiskN", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="4">(e.g.: DM, DVT/PE, PIH/HT,</br>
@@ -3379,74 +3379,74 @@
                                                 <td>39.</td>
                                                 <td>Thyroid</td>
                                                 <td><input type="checkbox" name="pg1_thyroid"
-                                                        <%= props.getProperty("pg1_thyroid", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_thyroid", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_thyroidA"
-                                                        <%= props.getProperty("pg1_thyroidA", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_thyroidA", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>40.</td>
                                                 <td>Chest</td>
                                                 <td><input type="checkbox" name="pg1_chest"
-                                                        <%= props.getProperty("pg1_chest", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_chest", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_chestA"
-                                                        <%= props.getProperty("pg1_chestA", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_chestA", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>41.</td>
                                                 <td>Breasts</td>
                                                 <td><input type="checkbox" name="pg1_breasts"
-                                                        <%= props.getProperty("pg1_breasts", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_breasts", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_breastsA"
-                                                        <%= props.getProperty("pg1_breastsA", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_breastsA", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>42.</td>
                                                 <td>Cardiovascular</td>
                                                 <td><input type="checkbox" name="pg1_cardio"
-                                                        <%= props.getProperty("pg1_cardio", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cardio", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_cardioA"
-                                                        <%= props.getProperty("pg1_cardioA", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cardioA", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>43.</td>
                                                 <td>Abdomen</td>
                                                 <td><input type="checkbox" name="pg1_abdomen"
-                                                        <%= props.getProperty("pg1_abdomen", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_abdomen", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_abdomenA"
-                                                        <%= props.getProperty("pg1_abdomenA", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_abdomenA", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>44.</td>
                                                 <td>Varicosities / Extrm.</td>
                                                 <td><input type="checkbox" name="pg1_vari"
-                                                        <%= props.getProperty("pg1_vari", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_vari", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_variA"
-                                                        <%= props.getProperty("pg1_variA", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_variA", "")))%>></td>
                                             </tr>
 
                                             <tr>
                                                 <td>45.</td>
                                                 <td>External genitalia</td>
                                                 <td><input type="checkbox" name="pg1_extGen"
-                                                        <%= props.getProperty("pg1_extGen", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_extGen", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_extGenA"
-                                                        <%= props.getProperty("pg1_extGenA", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_extGenA", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>46.</td>
                                                 <td>Cervix, vagina</td>
                                                 <td><input type="checkbox" name="pg1_cervix"
-                                                        <%= props.getProperty("pg1_cervix", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cervix", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_cervixA"
-                                                        <%= props.getProperty("pg1_cervixA", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_cervixA", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>47.</td>
                                                 <td>Uterus</td>
                                                 <td><input type="checkbox" name="pg1_uterus"
-                                                        <%= props.getProperty("pg1_uterus", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_uterus", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_uterusA"
-                                                        <%= props.getProperty("pg1_uterusA", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_uterusA", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>48.</td>
@@ -3462,9 +3462,9 @@
                                                 <td>49.</td>
                                                 <td>Adnexa</td>
                                                 <td><input type="checkbox" name="pg1_adnexa"
-                                                        <%= props.getProperty("pg1_adnexa", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_adnexa", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_adnexaA"
-                                                        <%= props.getProperty("pg1_adnexaA", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_adnexaA", "")))%>></td>
                                             </tr>
                                             <tr>
                                                 <td>50.</td>
@@ -3473,9 +3473,9 @@
                                                                  value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_pExOtherDesc", "")) %>">
                                                 </td>
                                                 <td><input type="checkbox" name="pg1_pExOther"
-                                                        <%= props.getProperty("pg1_pExOther", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pExOther", "")))%>></td>
                                                 <td><input type="checkbox" name="pg1_pExOtherA"
-                                                        <%= props.getProperty("pg1_pExOtherA", "") %>></td>
+                                                        <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_pExOtherA", "")))%>></td>
                                             </tr>
                                         </table>
 
@@ -3523,7 +3523,7 @@
                                     </td>
                                     <td colspan="2"><input type="checkbox"
                                                            name="pg1_labHIVCounsel"
-                                            <%= props.getProperty("pg1_labHIVCounsel", "") %>>
+                                            <%=Encode.forHtml(String.valueOf(props.getProperty("pg1_labHIVCounsel", "")))%>>
                                         Counseled and test declined
                                     </td>
                                 </tr>
@@ -3544,7 +3544,7 @@
                                                id="pg1_labLastPapDate" size="10" maxlength="10"
                                                value="<%= UtilMisc.htmlEscape(props.getProperty("pg1_labLastPapDate", "")) %>">
                                         <img
-                                                src="<%= context %>/images/cal.gif" id="pg1_labLastPapDate_cal">
+                                                src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/cal.gif" id="pg1_labLastPapDate_cal">
                                     </td>
                                     <td valign="top" rowspan="2"><input type="text"
                                                                         name="pg1_labLastPap" size="10" maxlength="20"
@@ -3817,7 +3817,7 @@
                             <input type="text" name="pg1_formDate" class="spe"
                                    onDblClick="calToday(this)" size="10" maxlength="10"
                                    style="width: 80%"
-                                   value="<%= props.getProperty("pg1_formDate", "") %>"></td>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg1_formDate", "")))%>"></td>
                         <td width="30%">Signature<br>
                             <input type="text" name="pg1_signature2" size="30" maxlength="50"
                                    style="width: 80%"
@@ -3827,7 +3827,7 @@
                             <input type="text" name="pg1_formDate2" class="spe"
                                    onDblClick="calToday(this)" size="10" maxlength="10"
                                    style="width: 80%"
-                                   value="<%= props.getProperty("pg1_formDate2", "") %>"></td>
+                                   value="<%=Encode.forHtmlAttribute(String.valueOf(props.getProperty("pg1_formDate2", "")))%>"></td>
                     </tr>
 
                 </table>
@@ -3851,13 +3851,13 @@
                             %>
                             &nbsp;&nbsp;&nbsp;
                             <b>View:</b> <a href="javascript:void(0)"
-                                            onclick="popupPage(960,700,'form/formonarenhancedpg2.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>&view=1');">AR2</a>
+                                            onclick="popupPage(960,700,'form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&view=1');">AR2</a>
                             &nbsp;&nbsp;&nbsp;
                             <b>Edit:</b> <a href="javascript:void(0)"
-                                            onclick="onPageChange('form/formonarenhancedpg2.jsp?demographic_no=<%=demoNo%>&formId=#id&provNo=<%=provNo%>');">AR2</a>
+                                            onclick="onPageChange('form/formonarenhancedpg2.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=#id&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>');">AR2</a>
                             &nbsp;&nbsp;&nbsp;
                             <b>Download:</b> <a
-                                href="form/formonarenhancedxml.jsp?demographic_no=<%=demoNo%>&formId=<%=formId%>&provNo=<%=provNo%>&episodeId=<%=props.getProperty("episodeId","0")%>">XML</a>
+                                href="form/formonarenhancedxml.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=<%=Encode.forUriComponent(String.valueOf(formId))%>&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&episodeId=<%=Encode.forUriComponent(String.valueOf(props.getProperty("episodeId","0")))%>">XML</a>
                         </td>
                         <%
                             }
@@ -3979,7 +3979,7 @@
                 <input type="checkbox" name="ferritin" id="ferritin" class="text ui-widget-content ui-corner-all"/>
                 <label for="ferritin">Ferritin</label>
                 <a href="javascript:void(0);" onclick="return false;" title="Consider to rule out iron deficiency"><img
-                        border="0" src="<%= context %>/images/icon_help_sml.gif"/></a>
+                        border="0" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icon_help_sml.gif"/></a>
 
                 <br/>
                 <input type="checkbox" name="hbElectrophoresis" id="hbElectrophoresis" value=""
@@ -3987,7 +3987,7 @@
                 <label for="hbElectrophoresis">Hb electrophoresis</label>
                 <a href="javascript:void(0);" onclick="return false;"
                    title="Consider to rule out Thalassemia in at-risk populations"><img border="0"
-                                                                                        src="<%= context %>/images/icon_help_sml.gif"/></a>
+                                                                                        src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icon_help_sml.gif"/></a>
             </fieldset>
         </form>
     </div>
@@ -4018,10 +4018,10 @@
     <div id="lab_menu_div" class="hidden">
         <ul>
             <li><a href="javascript:void(0)"
-                   onclick="popPage('form/formlabreq<%=labReqVer%>.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=eFTS','LabReq')">MOH&amp;LTC
+                   onclick="popPage('form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=0&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&labType=eFTS','LabReq')">MOH&amp;LTC
                 eFTS</a></li>
             <li><a href="javascript:void(0)"
-                   onclick="popPage('form/formlabreq<%=labReqVer %>.jsp?demographic_no=<%=demoNo%>&formId=0&provNo=<%=provNo%>&labType=AnteNatal','LabReq')">Routine
+                   onclick="popPage('form/formlabreq<%=Encode.forJavaScript(String.valueOf(labReqVer))%>.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&formId=0&provNo=<%=Encode.forUriComponent(String.valueOf(provNo))%>&labType=AnteNatal','LabReq')">Routine
                 Prenatal</a></li>
             <li><a href="javascript:void(0)" onclick="loadCytologyForms();">Cytology</a></li>
         </ul>
@@ -4030,7 +4030,7 @@
     <div id="forms_menu_div" class="hidden">
         <ul>
             <li><a href="javascript:void(0)" onclick="loadUltrasoundForms();">Ultrasound</a></li>
-            <li><a href="javascript:void(0)" onclick="loadCustomForms();"><%=customEformGroup%>
+            <li><a href="javascript:void(0)" onclick="loadCustomForms();"><%=Encode.forHtml(String.valueOf(customEformGroup))%>
             </a></li>
         </ul>
     </div>
@@ -4057,9 +4057,9 @@
         <ul>
             <li><a href="http://www.sogc.org/guidelines/documents/gui217CPG0810.pdf" target="sogc">SOGC Guidelines</a>
             </li>
-            <li><a href="<%= context %>/pregnancy/genetics-provider-guide-e.pdf" target="sogc">Guide</a>
+            <li><a href="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/pregnancy/genetics-provider-guide-e.pdf" target="sogc">Guide</a>
             </li>
-            <li><a href="javascript:void(0)" onclick="loadCustomForms();"><%=customEformGroup%> Forms</a></li>
+            <li><a href="javascript:void(0)" onclick="loadCustomForms();"><%=Encode.forHtml(String.valueOf(customEformGroup))%> Forms</a></li>
         </ul>
     </div>
 
@@ -4086,17 +4086,17 @@
                                    class="text ui-widget-content ui-corner-all"/></td>
                         <td>
                             <a id="moveToForm_height" href="javascript:void(0)" title="Copy from Chart to Form"><img
-                                    src="<%= context %>/images/icons/132.png"/></a>
+                                    src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icons/132.png"/></a>
                             &nbsp;
                             <a id="moveToChart_height" href="javascript:void(0)" onClick="moveToChart('height','HT');"
-                               title="Copy from Form to Chart"><img src="<%= context %>/images/icons/131.png"/></a>
+                               title="Copy from Form to Chart"><img src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icons/131.png"/></a>
                         </td>
                         <td><input readonly="readonly" type="text" size="5" id="height_chart" name="height_chart"
                                    class="text ui-widget-content ui-corner-all"/></td>
                         <td><a href="javascript:void(0);"
-                               onClick="popupPage(300,800,'<%= context %>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=demoNo%>&type=HT');return false;"><img
+                               onClick="popupPage(300,800,'<%=Encode.forJavaScript(String.valueOf(context))%>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=HT');return false;"><img
                                 border="0"
-                                src="<%= context %>/oscarEncounter/oscarMeasurements/img/chart.gif"/></a>
+                                src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/oscarEncounter/oscarMeasurements/img/chart.gif"/></a>
                         </td>
                     </tr>
                     <tr>
@@ -4105,17 +4105,17 @@
                                    class="text ui-widget-content ui-corner-all"/></td>
                         <td>
                             <a id="moveToForm_weight" href="javascript:void(0)" title="Copy from Chart to Form"><img
-                                    src="<%= context %>/images/icons/132.png"/></a>
+                                    src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icons/132.png"/></a>
                             &nbsp;
                             <a id="moveToChart_weight" href="javascript:void(0)" onClick="moveToChart('weight','WT');"
-                               title="Copy from Form to Chart"><img src="<%= context %>/images/icons/131.png"/></a>
+                               title="Copy from Form to Chart"><img src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icons/131.png"/></a>
                         </td>
                         <td><input readonly="readonly" type="text" size="5" id="weight_chart" name="weight_chart"
                                    class="text ui-widget-content ui-corner-all"/></td>
                         <td><a href="javascript:void(0);"
-                               onClick="popupPage(300,800,'<%= context %>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=demoNo%>&type=WT');return false;"><img
+                               onClick="popupPage(300,800,'<%=Encode.forJavaScript(String.valueOf(context))%>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=WT');return false;"><img
                                 border="0"
-                                src="<%= context %>/oscarEncounter/oscarMeasurements/img/chart.gif"/></a>
+                                src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/oscarEncounter/oscarMeasurements/img/chart.gif"/></a>
                         </td>
                     </tr>
                     <tr>
@@ -4124,17 +4124,17 @@
                                    class="text ui-widget-content ui-corner-all"/></td>
                         <td>
                             <a id="moveToForm_bp" href="javascript:void(0)" title="Copy from Chart to Form"><img
-                                    src="<%= context %>/images/icons/132.png"/></a>
+                                    src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icons/132.png"/></a>
                             &nbsp;
                             <a id="moveToChart_bp" href="javascript:void(0)" onClick="moveToChart('bp','BP');"
-                               title="Copy from Form to Chart"><img src="<%= context %>/images/icons/131.png"/></a>
+                               title="Copy from Form to Chart"><img src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icons/131.png"/></a>
                         </td>
                         <td><input readonly="readonly" type="text" size="5" id="bp_chart" name="bp_chart"
                                    class="text ui-widget-content ui-corner-all"/></td>
                         <td><a href="javascript:void(0);"
-                               onClick="popupPage(300,800,'<%= context %>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=demoNo%>&type=BP');return false;"><img
+                               onClick="popupPage(300,800,'<%=Encode.forJavaScript(String.valueOf(context))%>/oscarEncounter/GraphMeasurements.do?demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&type=BP');return false;"><img
                                 border="0"
-                                src="<%= context %>/oscarEncounter/oscarMeasurements/img/chart.gif"/></a>
+                                src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/oscarEncounter/oscarMeasurements/img/chart.gif"/></a>
                         </td>
                     </tr>
                     </tbody>
@@ -4176,7 +4176,7 @@
                             Enter Height, Weight, and BMI
                             <a href="javascript:void(0);" onclick="return false;"
                                title="Enter values in form under Physical Examination"><img border="0"
-                                                                                            src="<%= context %>/images/icon_help_sml.gif"/></a>
+                                                                                            src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icon_help_sml.gif"/></a>
                         </td>
                     </tr>
                     <tr>
@@ -4184,15 +4184,15 @@
                             Order routine Prenatal Labs
                             <a href="javascript:void(0);" onclick="return false;"
                                title="Click on 'Labs' menu item under Prompts, and choose Routine Prenatal"><img
-                                    border="0" src="<%= context %>/images/icon_help_sml.gif"/></a>
+                                    border="0" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icon_help_sml.gif"/></a>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Order <%=prenatalScreenName%> (<%=prenatalScreen%>)
+                            Order <%=Encode.forHtml(String.valueOf(prenatalScreenName))%> (<%=Encode.forHtml(String.valueOf(prenatalScreen))%>)
                             <a href="javascript:void(0);" onclick="return false;"
-                               title="Click on 'Forms' menu item under Prompts, and choose <%=customEformGroup%>"><img
-                                    border="0" src="<%= context %>/images/icon_help_sml.gif"/></a>
+                               title="Click on 'Forms' menu item under Prompts, and choose <%=Encode.forHtmlAttribute(String.valueOf(customEformGroup))%>"><img
+                                    border="0" src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icon_help_sml.gif"/></a>
                         </td>
                     </tr>
                     <tr>
@@ -4200,7 +4200,7 @@
                             Order Ultrasound (Dating,IPS, or 18wk)
                             <a href="javascript:void(0);" onclick="return false;"
                                title="Click on 'Forms' menu item under Prompts, and choose Ultrasound"><img border="0"
-                                                                                                            src="<%= context %>/images/icon_help_sml.gif"/></a>
+                                                                                                            src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icon_help_sml.gif"/></a>
                         </td>
                     </tr>
                     <tr>
@@ -4208,7 +4208,7 @@
                             Order Pap Smear
                             <a href="javascript:void(0);" onclick="return false;"
                                title="Click on 'Labs' menu item under Prompts, and choose Cytology"><img border="0"
-                                                                                                         src="<%= context %>/images/icon_help_sml.gif"/></a>
+                                                                                                         src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icon_help_sml.gif"/></a>
                         </td>
                     </tr>
                     </tbody>
@@ -4228,7 +4228,7 @@
                             Order 18 week morphology ultrasound
                             <a href="javascript:void(0);" onclick="return false;"
                                title="Click on 'Forms' menu item under Prompts, and choose Ultrasound"><img border="0"
-                                                                                                            src="<%= context %>/images/icon_help_sml.gif"/></a>
+                                                                                                            src="<%=Encode.forHtmlAttribute(String.valueOf(context))%>/images/icon_help_sml.gif"/></a>
                         </td>
                     </tr>
                     </tbody>
@@ -4249,11 +4249,11 @@
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%= context %>/eform/efmformadd_data.jsp?fid=<%=bean.getValue()%>&demographic_no=<%=demoNo%>&appointment=0','cytology');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0','cytology');return false;">
                                 Open
                             </button>
                         </td>
-                        <td><%=bean.getLabel() %>
+                        <td><%=Encode.forHtml(String.valueOf(bean.getLabel()))%>
                         </td>
                     </tr>
                     <%
@@ -4278,11 +4278,11 @@
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%= context %>/eform/efmformadd_data.jsp?fid=<%=bean.getValue()%>&demographic_no=<%=demoNo%>&appointment=0','ultrasound');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0','ultrasound');return false;">
                                 Open
                             </button>
                         </td>
-                        <td><%=bean.getLabel() %>
+                        <td><%=Encode.forHtml(String.valueOf(bean.getLabel()))%>
                         </td>
                     </tr>
                     <%
@@ -4296,7 +4296,7 @@
     </div>
 
 
-    <div id="custom-eform-form" title="<%=customEformGroup%> Forms">
+    <div id="custom-eform-form" title="<%=Encode.forHtmlAttribute(String.valueOf(customEformGroup))%> Forms">
         <form>
             <fieldset>
                 <table>
@@ -4307,11 +4307,11 @@
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%= context %>/eform/efmformadd_data.jsp?fid=<%=bean.getValue()%>&demographic_no=<%=demoNo%>&appointment=0','<%=customEformGroup%>form');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0','<%=Encode.forJavaScript(String.valueOf(customEformGroup))%>form');return false;">
                                 Open
                             </button>
                         </td>
-                        <td><%=bean.getLabel() %>
+                        <td><%=Encode.forHtml(String.valueOf(bean.getLabel()))%>
                         </td>
                     </tr>
                     <%
@@ -4337,11 +4337,11 @@
                     %>
                     <tr>
                         <td>
-                            <button onClick="popPage('<%= context %>/eform/efmformadd_data.jsp?fid=<%=bean.getValue()%>&demographic_no=<%=demoNo%>&appointment=0','ultrasound');return false;">
+                            <button onClick="popPage('<%=Encode.forJavaScript(String.valueOf(context))%>/eform/efmformadd_data.jsp?fid=<%=Encode.forUriComponent(String.valueOf(bean.getValue()))%>&demographic_no=<%=Encode.forUriComponent(String.valueOf(demoNo))%>&appointment=0','ultrasound');return false;">
                                 Open
                             </button>
                         </td>
-                        <td><%=bean.getLabel() %>
+                        <td><%=Encode.forHtml(String.valueOf(bean.getLabel()))%>
                         </td>
                     </tr>
                     <%

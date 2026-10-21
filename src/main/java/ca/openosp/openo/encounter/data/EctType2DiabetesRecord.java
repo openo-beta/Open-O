@@ -43,8 +43,8 @@ public class EctType2DiabetesRecord {
         Properties props = new Properties();
 
         if (existingID <= 0) {
-            String sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, year_of_birth, month_of_birth, date_of_birth FROM demographic WHERE demographic_no = " + demographicNo;
-            ResultSet rs = DBHandler.GetSQL(sql);
+            String sql = "SELECT demographic_no, CONCAT(last_name, ', ', first_name) AS pName, year_of_birth, month_of_birth, date_of_birth FROM demographic WHERE demographic_no = ?";
+            ResultSet rs = DBHandler.GetPreSQL(sql, demographicNo);
             if (rs.next()) {
                 Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"), Misc.getString(rs, "date_of_birth"));
                 props.setProperty("demographic_no", Misc.getString(rs, "demographic_no"));
@@ -55,8 +55,8 @@ public class EctType2DiabetesRecord {
             }
             rs.close();
         } else {
-            String sql = "SELECT * FROM formType2Diabetes WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
-            ResultSet rs = DBHandler.GetSQL(sql);
+            String sql = "SELECT * FROM formType2Diabetes WHERE demographic_no = ? AND ID = ?";
+            ResultSet rs = DBHandler.GetPreSQL(sql, demographicNo, existingID);
             if (rs.next()) {
                 ResultSetMetaData md = rs.getMetaData();
                 for (int i = 1; i <= md.getColumnCount(); i++) {
@@ -96,8 +96,8 @@ public class EctType2DiabetesRecord {
         }
         String demographic_no = props.getProperty("demographic_no");
 
-        String sql = "SELECT * FROM formType2Diabetes WHERE demographic_no=" + demographic_no + " AND ID=0";
-        ResultSet rs = DBHandler.GetSQL(sql, true);
+        String sql = "SELECT * FROM formType2Diabetes WHERE demographic_no = ? AND ID = 0";
+        ResultSet rs = DBHandler.GetPreSQLUpdatable(sql, demographic_no);
         rs.moveToInsertRow();
         ResultSetMetaData md = rs.getMetaData();
 
@@ -144,7 +144,7 @@ public class EctType2DiabetesRecord {
         int ret = 0;
         /* another fix */
         if (db_type.equalsIgnoreCase("postgresql")) {
-            ResultSet rs1 = DBHandler.GetSQL("select nextval('formtype2diabetes_numeric_se')");
+            ResultSet rs1 = DBHandler.GetPreSQL("select nextval('formtype2diabetes_numeric_se')");
             rs1.next();
             ret = rs1.getInt(1);
             rs.updateInt("id", ret);
@@ -155,7 +155,7 @@ public class EctType2DiabetesRecord {
 
         if (db_type.equalsIgnoreCase("mysql")) {
             sql = "SELECT LAST_INSERT_ID()";
-            rs = DBHandler.GetSQL(sql);
+            rs = DBHandler.GetPreSQL(sql);
             if (rs.next())
                 ret = rs.getInt(1);
             rs.close();

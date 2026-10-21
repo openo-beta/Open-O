@@ -26,6 +26,7 @@
 
 <%@ page
         import="java.util.*, org.w3c.dom.*, ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -83,10 +84,10 @@
         <td class="MainTableLeftColumn">&nbsp;</td>
         <td class="MainTableRightColumn">
             <%if (jobId == null) {%> Your fax has not been accepted. <br>
-            Fax Error Message : <%=oscarFaxError%> <%} else {%> Your fax has been
+            Fax Error Message : <%=Encode.forHtml(String.valueOf(oscarFaxError))%> <%} else {%> Your fax has been
             accepted. <br>
-            request Id = <%=requestId%> <br>
-            job Id = <%= jobId %> <%}%>
+            request Id = <%=Encode.forHtml(String.valueOf(requestId))%> <br>
+            job Id = <%=Encode.forHtml(String.valueOf(jobId))%> <%}%>
         </td>
     </tr>
     <tr>

@@ -62,6 +62,7 @@
 
 
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <html>
 
 
@@ -95,7 +96,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -139,13 +140,13 @@
                     </tr>
                     <tr>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.immunization.config.createImmunizationSetConfig.msgSetName"/>:
-                            <%=setName%>
+                            <%=Encode.forHtml(String.valueOf(setName))%>
                         </td>
                     </tr>
                     <tr>
                         <td><form action="${pageContext.request.contextPath}/oscarEncounter/immunization/config/CreateImmunizationSetConfig.do" method="post">
 
-                            <input type="hidden" name="setName" id="setName" value="<%=setName%>"/>
+                            <input type="hidden" name="setName" id="setName" value="<%=Encode.forHtmlAttribute(String.valueOf(setName))%>"/>
                             <table border=1>
                                 <%for (int i = 0; i < rows; i++) { %>
                                 <tr>
@@ -154,7 +155,7 @@
                                             if (j == 0) {%>
                                     <th class=head>&nbsp;</th>
                                     <%} else {%>
-                                    <th class=head><textarea name="heading<%=i+"D"+j%>" rows="2"></textarea>
+                                    <th class=head><textarea name="heading<%=Encode.forHtmlAttribute(String.valueOf(i+"D"+j))%>" rows="2"></textarea>
                                     </th>
                                     <%}%>
                                     <% }
@@ -163,12 +164,12 @@
 
                                         for (int j = 0; j < cols; j++) {
                                             if (j == 0) {%>
-                                    <td class=head><textarea name="immunization<%=i+"D"+j%>"
+                                    <td class=head><textarea name="immunization<%=Encode.forHtmlAttribute(String.valueOf(i+"D"+j))%>"
                                                              rows="2"></textarea></td>
 
                                     <%} else {%>
                                     <td class=grey valign=middle align=center><input
-                                            type="checkbox" name="yearAge<%=i+"D"+j%>"
+                                            type="checkbox" name="yearAge<%=Encode.forHtmlAttribute(String.valueOf(i+"D"+j))%>"
                                             onclick="switchColor(this)"></td>
                                     <%}%>
                                     <%

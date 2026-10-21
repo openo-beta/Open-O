@@ -63,7 +63,7 @@ public class PhsStarHandler implements MessageHandler {
 
             // Use PathValidationUtils to validate file is within document directory
             OscarProperties props = OscarProperties.getInstance();
-            String documentDir = props.getProperty("DOCUMENT_DIR");
+            String documentDir = props.getDocumentDirectory();
             if (documentDir != null && !documentDir.isEmpty()) {
                 File docDir = new File(documentDir).getCanonicalFile();
                 try {

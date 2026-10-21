@@ -42,6 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PathValidationUtils;
 
 import ca.openosp.DocumentBean;
 
@@ -121,7 +122,9 @@ public class DocumentTeleplanReportUploadServlet extends HttpServlet {
                         filename = filename.substring(filename.lastIndexOf('\\') + 1, filename.lastIndexOf('\"'));
 
                         fileheader = filename;
-                        fos = new FileOutputStream(foldername + filename);
+                        File folderDir = new File(foldername);
+                        File validatedFile = PathValidationUtils.validatePath(filename, folderDir);
+                        fos = new FileOutputStream(validatedFile);
                         dest = new BufferedOutputStream(fos, BUFFER);
                     }
                     c = sis.readLine(data2, 0, BUFFER);

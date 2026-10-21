@@ -52,6 +52,7 @@
 
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ page import="ca.openosp.openo.commn.dao.DemographicDao" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -184,7 +185,7 @@
     %>
     <table width="480" border="0" cellspacing="1" cellpadding="0">
         <tr>
-            <td><%=providerBean.getProperty(strTemp) %>
+            <td><%=Encode.forHtml(String.valueOf(providerBean.getProperty(strTemp)))%>
             </td>
             <td align="right"></td>
         </tr>
@@ -193,21 +194,21 @@
            cellpadding="0">
         <tr bgcolor="#CCCCFF" align="center">
             <TH width="40%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=last_name"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlist.msgLastName"/></a></b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&orderby=last_name"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlist.msgLastName"/></a></b></TH>
             <TH width="40%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=first_name"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlist.msgFirstName"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&orderby=first_name"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlist.msgFirstName"/></a> </b></TH>
             <TH width="20%"><b><a
-                    href="reportpatientchartlist.jsp?provider_no=<%=provider_no%>&orderby=chart_no"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlist.msgChart"/></a> </b></TH>
+                    href="reportpatientchartlist.jsp?provider_no=<%=Encode.forUriComponent(String.valueOf(provider_no))%>&orderby=chart_no"><fmt:setBundle basename="oscarResources"/><fmt:message key="report.reportpatientchartlist.msgChart"/></a> </b></TH>
         </tr>
         <%
             }
         %>
         <tr bgcolor="<%=bodd?"#EEEEFF":"white"%>">
-            <td>&nbsp;<%=rsdemo.getString("last_name")%>
+            <td>&nbsp;<%=Encode.forHtml(String.valueOf(rsdemo.getString("last_name")))%>
             </td>
-            <td>&nbsp;<%=rsdemo.getString("first_name")%>
+            <td>&nbsp;<%=Encode.forHtml(String.valueOf(rsdemo.getString("first_name")))%>
             </td>
-            <td align="center"><%=rsdemo.getString("chart_no")%>
+            <td align="center"><%=Encode.forHtml(String.valueOf(rsdemo.getString("chart_no")))%>
             </td>
         </tr>
         <%

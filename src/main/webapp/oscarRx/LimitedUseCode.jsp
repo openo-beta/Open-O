@@ -36,6 +36,7 @@
 <%@page import="ca.openosp.openo.lab.ca.on.*,ca.openosp.openo.util.*,ca.openosp.openo.lab.*" %>
 <%@ page import="ca.openosp.openo.prescript.util.LimitedUseCode" %>
 <%@ page import="ca.openosp.openo.prescript.util.LimitedUseLookup" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String din = request.getParameter("din");
@@ -53,11 +54,11 @@
         <%for (LimitedUseCode limitedUseCode : luList) {%>
         <tr>
             <td valign="top">
-                <a onclick="javascript:addLuCode('instructions_<%=randomId%>','<%=limitedUseCode.getUseId()%>')"
-                   href="javascript: return void();"><%=limitedUseCode.getUseId()%>
+                <a onclick="javascript:addLuCode('instructions_<%=Encode.forJavaScript(String.valueOf(randomId))%>','<%=Encode.forJavaScript(String.valueOf(limitedUseCode.getUseId()))%>')"
+                   href="javascript: return void();"><%=Encode.forHtml(String.valueOf(limitedUseCode.getUseId()))%>
                 </a>&nbsp;
             </td>
-            <td><%=limitedUseCode.getTxt()%>
+            <td><%=Encode.forHtml(String.valueOf(limitedUseCode.getTxt()))%>
             </td>
         </tr>
         <%}%>

@@ -747,9 +747,6 @@
                     <td colspan="2"><input type="button" name="Button" class="btn btn-primary"
                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.btnSubmit"/>"
                                onclick="validate(this.form);">
-                        <input type="button" name="Button" class="btn btn-secondary"
-                               value="Save / Write to eChart"
-                               onclick="validate(this.form, true)">
                         <input type="button" name="Button" class="btn btn-danger"
                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.btnCancel"/>"
                                onclick="window.close()">

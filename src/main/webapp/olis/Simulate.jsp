@@ -8,6 +8,7 @@
     and "gnu.org/licenses/gpl-2.0.html".
 
 --%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
@@ -27,10 +28,10 @@
 
 <%
     if (request.getAttribute("result") != null) {
-%><span style="color:red"><%=request.getAttribute("result")%></span><%
+%><span style="color:red"><%=Encode.forHtml(String.valueOf(request.getAttribute("result")))%></span><%
     }
     if (request.getAttribute("errors") != null) {
-%><span style="color:red"><%=request.getAttribute("errors")%></span><%
+%><span style="color:red"><%=Encode.forHtml(String.valueOf(request.getAttribute("errors")))%></span><%
     }
 %>
 <form action="<%=request.getContextPath() %>/olis/UploadSimulationData.do" method="POST" enctype="multipart/form-data"

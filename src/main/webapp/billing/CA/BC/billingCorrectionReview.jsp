@@ -50,6 +50,7 @@
 <%@ page import="ca.openosp.*,java.text.*, java.util.*" %>
 <%@ page import="ca.openosp.BillingItemBean" %>
 <%@ page import="ca.openosp.SxmlMisc" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <jsp:useBean id="billing" scope="session" class="ca.openosp.BillingBean"/>
 <jsp:useBean id="billingItem" scope="page" class="ca.openosp.BillingItemBean"/>
 <jsp:useBean id="billingDataBean" class="ca.openosp.BillingDataBean"
@@ -100,7 +101,7 @@
         <td width="293"><b><font face="Arial, Helvetica, sans-serif"><u>Correction
             Review</u></font></b></td>
         <td width="297"><font size="2"
-                              face="Arial, Helvetica, sans-serif"><b>Last update: <%=_p0_0%>
+                              face="Arial, Helvetica, sans-serif"><b>Last update: <%=Encode.forHtml(String.valueOf(_p0_0))%>
         </b></font></td>
     </tr>
 </table>
@@ -113,42 +114,42 @@
     </tr>
     <tr>
         <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Patient Name: <%=_p0_10%>
+                                 size="2">Patient Name: <%=Encode.forHtml(String.valueOf(_p0_10))%>
         </font></b></td>
         <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Health# : <%=_p0_2%>
+                                 size="2">Health# : <%=Encode.forHtml(String.valueOf(_p0_2))%>
         </font></b></td>
     </tr>
     <tr bgcolor="#EEEEFF">
         <td><font size="2" face="Arial, Helvetica, sans-serif"><b>Sex:
-            <%=_p0_15%>
+            <%=Encode.forHtml(String.valueOf(_p0_15))%>
         </b></font></td>
         <td><font size="2"><b><font
-                face="Arial, Helvetica, sans-serif">D.O.B. : <%=_p0_6%>
+                face="Arial, Helvetica, sans-serif">D.O.B. : <%=Encode.forHtml(String.valueOf(_p0_6))%>
         </font></b></font></td>
     </tr>
     <tr>
         <td><b><font size="2" face="Arial, Helvetica, sans-serif">Address:
-            <%=_p0_11%>
+            <%=Encode.forHtml(String.valueOf(_p0_11))%>
         </font></b></td>
         <td><b><font size="2" face="Arial, Helvetica, sans-serif">City:
-            <%=_p0_13%>
+            <%=Encode.forHtml(String.valueOf(_p0_13))%>
         </font></b></td>
     </tr>
     <tr bgcolor="#EEEEFF">
         <td><b><font size="2" face="Arial, Helvetica, sans-serif">Province:
-            <%=_p0_12%>
+            <%=Encode.forHtml(String.valueOf(_p0_12))%>
         </font></b></td>
         <td><b><font size="2" face="Arial, Helvetica, sans-serif">Postal
-            Code: <%=_p0_14%>
+            Code: <%=Encode.forHtml(String.valueOf(_p0_14))%>
         </font></b></td>
     </tr>
     <tr>
         <td><b><font size="2" face="Arial, Helvetica, sans-serif">Referral:
-            <%=SxmlMisc.getXmlContent(billingDataBean.getContent(), "<rd>", "</rd>")%>
+            <%=Encode.forHtml(String.valueOf(SxmlMisc.getXmlContent(billingDataBean.getContent(), "<rd>", "</rd>")))%>
         </font></b></td>
         <td><b><font size="2" face="Arial, Helvetica, sans-serif">Referral
-            #: <%=SxmlMisc.getXmlContent(billingDataBean.getContent(), "<rdohip>", "</rdohip>")%>
+            #: <%=Encode.forHtml(String.valueOf(SxmlMisc.getXmlContent(billingDataBean.getContent(), "<rdohip>", "</rdohip>")))%>
         </font></b></td>
     </tr>
 </table>
@@ -159,7 +160,7 @@
     </tr>
     <tr>
         <td width="320"><strong><font size="2"
-                                      face="Arial, Helvetica, sans-serif">HC-Type: <%=SxmlMisc.getXmlContent(billingDataBean.getContent(), "<hctype>", "</hctype>")%>
+                                      face="Arial, Helvetica, sans-serif">HC-Type: <%=Encode.forHtml(String.valueOf(SxmlMisc.getXmlContent(billingDataBean.getContent(), "<hctype>", "</hctype>")))%>
         </font></strong></td>
         <td width="270"><strong><font size="2"
                                       face="Arial, Helvetica, sans-serif">Manual
@@ -173,7 +174,7 @@
         </font></strong></td>
         <td><strong><font size="2"
                           face="Arial, Helvetica, sans-serif">Roster
-            Status: <%=SxmlMisc.getXmlContent(billingDataBean.getContent(), "<xml_roster>", "</xml_roster>")%>
+            Status: <%=Encode.forHtml(String.valueOf(SxmlMisc.getXmlContent(billingDataBean.getContent(), "<xml_roster>", "</xml_roster>")))%>
         </font></strong></td>
     </tr>
 </table>
@@ -185,26 +186,26 @@
     </tr>
     <tr>
         <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Billing Type: <%=_p0_5%>
+                                 size="2">Billing Type: <%=Encode.forHtml(String.valueOf(_p0_5))%>
         </font></b></td>
         <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Billing Date: <%=_p0_9%>
+                                 size="2">Billing Date: <%=Encode.forHtml(String.valueOf(_p0_9))%>
         </font></b></td>
     </tr>
     <tr bgcolor="#EEEEFF">
         <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Visit Location: <%=_p0_8%>
+                                 size="2">Visit Location: <%=Encode.forHtml(String.valueOf(_p0_8))%>
         </font></b></td>
         <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Billing Physician#: <%=_p0_7%>
+                                 size="2">Billing Physician#: <%=Encode.forHtml(String.valueOf(_p0_7))%>
         </font></b></td>
     </tr>
     <tr>
         <td width="54%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Visit Type: <%=_p0_3%>
+                                 size="2">Visit Type: <%=Encode.forHtml(String.valueOf(_p0_3))%>
         </font></b></td>
         <td width="46%"><b><font face="Arial, Helvetica, sans-serif"
-                                 size="2">Visit Date: <%=_p0_4%>
+                                 size="2">Visit Date: <%=Encode.forHtml(String.valueOf(_p0_4))%>
         </font></b></td>
     </tr>
 </table>
@@ -231,18 +232,18 @@
     %>
     <tr>
         <td width="25%"><font face="Arial, Helvetica, sans-serif"
-                              size="2"><%=billingItem.getService_code()%>
+                              size="2"><%=Encode.forHtml(String.valueOf(billingItem.getService_code()))%>
         </font></td>
 
         <td width="50%"><font face="Arial, Helvetica, sans-serif"
-                              size="2"><%=billingItem.getDesc()%>
+                              size="2"><%=Encode.forHtml(String.valueOf(billingItem.getDesc()))%>
         </font></td>
         <td width="12%"><font face="Arial, Helvetica, sans-serif"
-                              size="2"><%=billingItem.getQuantity()%>
+                              size="2"><%=Encode.forHtml(String.valueOf(billingItem.getQuantity()))%>
         </font></td>
         <td width="13%">
             <div align="right"><font face="Arial, Helvetica, sans-serif"
-                                     size="2"><%=_p0_19.substring(0, _p0_19.length() - 2) + "." + _p0_19.substring(_p0_19.length() - 2)%>
+                                     size="2"><%=Encode.forHtml(String.valueOf(_p0_19.substring(0, _p0_19.length() - 2) + "." + _p0_19.substring(_p0_19.length() - 2)))%>
             </font></div>
         </td>
     </tr>
@@ -258,7 +259,7 @@
     </tr>
     <tr>
         <td colspan="4"><font face="Arial, Helvetica, sans-serif"
-                              size="2"><%=_p0_17%>
+                              size="2"><%=Encode.forHtml(String.valueOf(_p0_17))%>
         </font></td>
 
     </tr>
@@ -271,7 +272,7 @@
         </td>
         <td width="13%">
             <div align="right"><font face="Arial, Helvetica, sans-serif"
-                                     size="2"><%=_p0_18.substring(0, _p0_18.length() - 2) + "." + _p0_18.substring(_p0_18.length() - 2)%>
+                                     size="2"><%=Encode.forHtml(String.valueOf(_p0_18.substring(0, _p0_18.length() - 2) + "." + _p0_18.substring(_p0_18.length() - 2)))%>
             </font></div>
         </td>
     </tr>

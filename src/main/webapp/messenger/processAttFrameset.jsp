@@ -59,6 +59,7 @@
 
 
 <%@ page import="ca.openosp.openo.util.*" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <html>
 <head>
@@ -70,11 +71,11 @@
             String pdfTitle = request.getParameter("pdfTitle");
         %>
 
-    <title>OSCAR attachment <%=uri%>
+    <title>OSCAR attachment <%=Encode.forHtml(String.valueOf(uri))%>
     </title>
     <frameset rows="400,0">
         <frame name="attMain"
-               src="processPDF.jsp?demographic_no=<%=demographic_no%>&pdfTitle=<%=pdfTitle%>&uri=<%=uri%>"
+               src="processPDF.jsp?demographic_no=<%=Encode.forUriComponent(String.valueOf(demographic_no))%>&pdfTitle=<%=Encode.forUriComponent(String.valueOf(pdfTitle))%>&uri=<%=Encode.forUriComponent(String.valueOf(uri))%>"
                noresize scrolling=auto marginheight=5 marginwidth=5>
         <frame name="attFrame" src="">
     </frameset>

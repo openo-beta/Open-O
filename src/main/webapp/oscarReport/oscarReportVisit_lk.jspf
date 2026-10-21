@@ -42,6 +42,7 @@ if(!authed) {
 <%@page import="ca.openosp.MyDateFormat" %>
 <%@page import="java.math.BigDecimal" %>
 <%@page import="ca.openosp.openo.util.ConversionUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
 	String cTotal = "0", hTotal = "0", oTotal = "0", mNum = "", fNum = "";
@@ -101,23 +102,23 @@ if(!authed) {
 <div class="well">
 	<dl class="dl-horizontal">
 		<dt>Clinic</dt>
-		<dd><%=clinic%></dd>
+		<dd><%=Encode.forHtml(String.valueOf(clinic))%></dd>
 		<dt>Visits Between</dt>
-		<dd><%=dateBegin%>
+		<dd><%=Encode.forHtml(String.valueOf(dateBegin))%>
 			and
-			<%=dateEnd%></dd>
+			<%=Encode.forHtml(String.valueOf(dateEnd))%></dd>
 		<dt>Run on</dt>
-		<dd><%=MyDateFormat.getMysqlStandardDate(curYear, curMonth,
-					curDay)%></dd>
+		<dd><%=Encode.forHtml(String.valueOf(MyDateFormat.getMysqlStandardDate(curYear, curMonth,
+					curDay)))%></dd>
 	</dl>
 	<dl class="dl-horizontal">
 		<dt>Clinic Visits</dt>
-		<dd><span class="badge"><%=cTotal%></span></dd>
+		<dd><span class="badge"><%=Encode.forHtml(String.valueOf(cTotal))%></span></dd>
 		<dt>HHS Visits</dt>
-		<dd><span class="badge"><%=hTotal%></span></dd>
+		<dd><span class="badge"><%=Encode.forHtml(String.valueOf(hTotal))%></span></dd>
 		<dt>All Other Visists</dt>
-		<dd><span class="badge"><%=oTotal%></span></dd>
+		<dd><span class="badge"><%=Encode.forHtml(String.valueOf(oTotal))%></span></dd>
 		<dt>Total</dt>
-		<dd><span class="badge badge-success"><%=BigTotal%></span></dd>
+		<dd><span class="badge badge-success"><%=Encode.forHtml(String.valueOf(BigTotal))%></span></dd>
 	</dl>
 </div>

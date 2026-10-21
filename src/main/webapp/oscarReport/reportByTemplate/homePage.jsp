@@ -35,6 +35,7 @@
 <%@ page import="ca.openosp.openo.commn.model.RBTGroup" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportManager" %>
 <%@ page import="ca.openosp.openo.report.reportByTemplate.ReportObject" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -90,7 +91,7 @@
                             }
                     %>
 
-                    <option value="<%=value%>"><%=templateGroups.get(i)%>
+                    <option value="<%=Encode.forHtmlAttribute(String.valueOf(value))%>"><%=Encode.forHtml(String.valueOf(templateGroups.get(i)))%>
                     </option>
                     <% }%>
                 </select>
@@ -121,14 +122,14 @@
                     ReportObject curReport = (ReportObject) templates.get(i);
             %>
             <tr id="t<%=i%>">
-                <td align="center"><%=String.valueOf(i + 1)%>
+                <td align="center"><%=Encode.forHtml(String.valueOf(String.valueOf(i + 1)))%>
                 </td>
                 <td><a style="display:block;outline:none;"
-                       href="reportConfiguration.jsp?templateid=<%=curReport.getTemplateId()%>"><%=curReport.getTitle()%>
+                       href="reportConfiguration.jsp?templateid=<%=Encode.forUriComponent(String.valueOf(curReport.getTemplateId()))%>"><%=Encode.forHtml(String.valueOf(curReport.getTitle()))%>
                 </a></td>
-                <td><%=curReport.getDescription()%>
+                <td><%=Encode.forHtml(String.valueOf(curReport.getDescription()))%>
                 </td>
-                <td style="display:none;" id="<%=curReport.getTemplateId()%>"></td>
+                <td style="display:none;" id="<%=Encode.forHtmlAttribute(String.valueOf(curReport.getTemplateId()))%>"></td>
             </tr>
             <% } %>
 

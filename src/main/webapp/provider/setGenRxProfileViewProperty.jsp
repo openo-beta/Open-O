@@ -28,6 +28,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="java.util.*" %>
 <%@ page import="java.util.ResourceBundle"%>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     if (session.getValue("user") == null)
         response.sendRedirect(request.getContextPath() + "/logout.htm");
@@ -52,7 +53,7 @@
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
-        <title><%=bundle.getString(providertitle)%></title>
+        <title><%=Encode.forHtml(String.valueOf(bundle.getString(providertitle)))%></title>
 
         <link rel="stylesheet" type="text/css"
               href="<%= request.getContextPath() %>/oscarEncounter/encounterStyles.css">
@@ -107,22 +108,22 @@
 
     <table class="MainTable" id="scrollNumber1" name="encounterTable">
         <tr class="MainTableTopRow">
-            <td class="MainTableTopRowLeftColumn"><%=bundle.getString(providermsgPrefs)%></td>
-            <td style="color: white" class="MainTableTopRowRightColumn"><%=bundle.getString(providermsgProvider)%></td>
+            <td class="MainTableTopRowLeftColumn"><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgPrefs)))%></td>
+            <td style="color: white" class="MainTableTopRowRightColumn"><%=Encode.forHtml(String.valueOf(bundle.getString(providermsgProvider)))%></td>
         </tr>
         <tr>
             <td class="MainTableLeftColumn">&nbsp;</td>
             <td class="MainTableRightColumn">
                 <%if (request.getAttribute("status") == null) {%>
-                <%=bundle.getString(providermsgEdit)%>
+                <%=Encode.forHtml(String.valueOf(bundle.getString(providermsgEdit)))%>
                 <form action="${pageContext.request.contextPath}/setProviderStaleDate.do" method="post">
                     <input type="hidden" name="method" value="<c:out value="${method}"/>">
                     <c:forEach var="viewChoice" items="${viewChoices}">
                         <input type="checkbox" name="valueArray" value="<c:out value="${viewChoice.value}"/>"/> <c:out value="${viewChoice.label}"/>
                     </c:forEach>
                     <br/>
-                    <input type="submit" value="<%=bundle.getString(providerbtnSubmit)%>"/>
-                </form> <%} else {%> <%=bundle.getString(providermsgSuccess)%> <br>
+                    <input type="submit" value="<%=Encode.forHtmlAttribute(String.valueOf(bundle.getString(providerbtnSubmit)))%>"/>
+                </form> <%} else {%> <%=Encode.forHtml(String.valueOf(bundle.getString(providermsgSuccess)))%> <br>
                 <%}%>
             </td>
         </tr>

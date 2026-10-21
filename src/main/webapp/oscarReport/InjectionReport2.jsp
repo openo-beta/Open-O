@@ -46,6 +46,7 @@
 <%@ page import="ca.openosp.openo.prevention.PreventionData" %>
 <%@ page import="ca.openosp.openo.util.UtilDateUtilities" %>
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
@@ -135,10 +136,10 @@
                     <legend>Injections</legend>
                     <label>Start
                         Date:</label> <input type="text" size="9" name="startDate"
-                                             value="<%=startStr%>"/> <label>End Date:</label> <input type="text"
+                                             value="<%=Encode.forHtmlAttribute(String.valueOf(startStr))%>"/> <label>End Date:</label> <input type="text"
                                                                                                      size="9"
                                                                                                      name="endDate"
-                                                                                                     value="<%=endStr%>"/>
+                                                                                                     value="<%=Encode.forHtmlAttribute(String.valueOf(endStr))%>"/>
                     <label>Injection
                         Type:</label> <select name="injectionType">
                     <option value="RH" <%=selled("RH", injectionType)%>>Rh</option>
@@ -162,7 +163,7 @@
                     <option value="Rabies" <%=selled("Rabies", injectionType)%>>Rabies</option>
 
                     <option value="Tuberculosis"
-                            <%=selled("Tuberculosis", injectionType)%>>Tuberculosis
+                            <%=Encode.forHtml(String.valueOf(selled("Tuberculosis", injectionType)))%>>Tuberculosis
                     </option>
                     <option value="Pneumovax" <%=selled("Pneumovax", injectionType)%>>Pneumovax</option>
                     <option value="TdP" <%=selled("TdP", injectionType)%>>TdP</option>
@@ -204,20 +205,20 @@
         }
     %>
     <tr>
-        <td><%=i + 1%>
+        <td><%=Encode.forHtml(String.valueOf(i + 1))%>
         </td>
-        <td><%=demog.getFirstName()%>
+        <td><%=Encode.forHtml(String.valueOf(demog.getFirstName()))%>
         </td>
-        <td><%=demog.getLastName()%>
+        <td><%=Encode.forHtml(String.valueOf(demog.getLastName()))%>
         </td>
-        <td><%=DemographicData.getDob(demog, "-")%>
+        <td><%=Encode.forHtml(String.valueOf(DemographicData.getDob(demog, "-")))%>
         </td>
-        <td><%=demog.getChartNo()%>
+        <td><%=Encode.forHtml(String.valueOf(demog.getChartNo()))%>
         </td>
-        <td><%=h.get("val")%>&nbsp;</td>
-        <td><%=h.get("prevention_date")%>
+        <td><%=Encode.forHtml(String.valueOf(h.get("val")))%>&nbsp;</td>
+        <td><%=Encode.forHtml(String.valueOf(h.get("prevention_date")))%>
         </td>
-        <td><%=comments%>
+        <td><%=Encode.forHtml(String.valueOf(comments))%>
         </td>
     </tr>
     <%}%>

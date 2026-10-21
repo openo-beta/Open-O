@@ -20,10 +20,8 @@ public class FrmOvulationRecord extends FrmRecord {
 
         if (existingID <= 0) {
 
-            String sql = "SELECT demographic_no, last_name, first_name, " +
-                    "year_of_birth, month_of_birth, date_of_birth, hin, ver " +
-                    "FROM demographic WHERE demographic_no = " + demographicNo;
-            ResultSet rs = DBHandler.GetSQL(sql);
+            String sql = "SELECT demographic_no, last_name, first_name, year_of_birth, month_of_birth, date_of_birth, hin, ver FROM demographic WHERE demographic_no = ?";
+            ResultSet rs = DBHandler.GetPreSQL(sql, demographicNo);
 
             if (rs.next()) {
                 java.util.Date dob = UtilDateUtilities.calcDate(Misc.getString(rs, "year_of_birth"), Misc.getString(rs, "month_of_birth"), Misc.getString(rs, "date_of_birth"));
@@ -39,8 +37,8 @@ public class FrmOvulationRecord extends FrmRecord {
             rs.close();
 
         } else {
-            String sql = "SELECT * FROM formovulation WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
-            props = (new FrmRecordHelp()).getFormRecord(sql);
+            String sql = "SELECT * FROM formovulation WHERE demographic_no = ? AND ID = ?";
+            props = (new FrmRecordHelp()).getFormRecord(sql, demographicNo, existingID);
         }
 
         return props;
@@ -48,14 +46,14 @@ public class FrmOvulationRecord extends FrmRecord {
 
     public int saveFormRecord(Properties props) throws SQLException {
         String demographic_no = props.getProperty("demographic_no");
-        String sql = "SELECT * FROM formovulation WHERE demographic_no=" + demographic_no + " AND ID=0";
+        String sql = "SELECT * FROM formovulation WHERE demographic_no = ? AND ID = 0";
 
-        return ((new FrmRecordHelp()).saveFormRecord(props, sql));
+        return ((new FrmRecordHelp()).saveFormRecord(props, sql, demographic_no));
     }
 
     public Properties getPrintRecord(int demographicNo, int existingID) throws SQLException {
-        String sql = "SELECT * FROM formovulation WHERE demographic_no = " + demographicNo + " AND ID = " + existingID;
-        return ((new FrmRecordHelp()).getPrintRecord(sql));
+        String sql = "SELECT * FROM formovulation WHERE demographic_no = ? AND ID = ?";
+        return ((new FrmRecordHelp()).getPrintRecord(sql, demographicNo, existingID));
     }
 
 

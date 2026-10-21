@@ -81,7 +81,8 @@ public class EChartPrint2Action extends ActionSupport {
         Demographic demographic = demographicDao.getClientByDemographicNo(Integer.parseInt(demographicNo));
 
         response.setContentType("application/pdf"); // octet-stream
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + demographicNo + ".pdf\"");
+        String sanitizedDemoNo = demographicNo.replaceAll("[^a-zA-Z0-9_-]", "");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + sanitizedDemoNo + ".pdf\"");
 
         OscarChartPrinter printer = new OscarChartPrinter(request, response.getOutputStream());
         printer.setDemographic(demographic);

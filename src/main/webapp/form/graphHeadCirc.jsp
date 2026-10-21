@@ -44,6 +44,7 @@
 <%@ page import="ca.openosp.openo.form.FrmRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRourkeRecord" %>
 <%@ page import="ca.openosp.openo.form.FrmRecordFactory" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 
 <html>
@@ -152,7 +153,7 @@
         function graphHC(age, hc) {
             if ((hc != "") && (age != "") && isInteger(hc) && isInteger(age)) {
                 if ((hc >= 28) && (hc < 54) && (age >= 0) && (age < 38)) {
-                    fHeadCirc(age, hc, "<img src='<%=red%>'>");
+                    fHeadCirc(age, hc, "<img src='<%=Encode.forJavaScript(String.valueOf(red))%>'>");
                 }
             }
         }
@@ -160,7 +161,7 @@
         function graphWeight(length, w) {
             if ((w != "") && (length != "") && isInteger(w) && isInteger(length)) {
                 if ((w > 0) && (w < 23) && (length > 44) && (length < 105)) {
-                    fWeight(length, w, "<img src='<%=blue%>'>");
+                    fWeight(length, w, "<img src='<%=Encode.forJavaScript(String.valueOf(blue))%>'>");
                 }
             }
         }
@@ -178,31 +179,31 @@
         }
 
         function graphChart() {
-            fPercent(65, 7.9, "<%=props.getProperty("pName", "")%>");
+            fPercent(65, 7.9, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("pName", "")))%>");
 
-            graphHC(<%=age(props.getProperty("birthDate"),props.getProperty("birthDate"))%>, "<%=props.getProperty("headCirc", "")%>");
-            graphHC(<%=age(props.getProperty("birthDate"),props.getProperty("date1w"))%>, "<%=props.getProperty("hc1w", "")%>");
-            graphHC(<%=age(props.getProperty("birthDate"),props.getProperty("date2w"))%>, "<%=props.getProperty("hc2w", "")%>");
-            graphHC(<%=age(props.getProperty("birthDate"),props.getProperty("date1m"))%>, "<%=props.getProperty("hc1m", "")%>");
-            graphHC(<%=age(props.getProperty("birthDate"),props.getProperty("date2m"))%>, "<%=props.getProperty("hc2m", "")%>");
-            graphHC(<%=age(props.getProperty("birthDate"),props.getProperty("date4m"))%>, "<%=props.getProperty("hc4m", "")%>");
-            graphHC(<%=age(props.getProperty("birthDate"),props.getProperty("date6m"))%>, "<%=props.getProperty("hc6m", "")%>");
-            graphHC(<%=age(props.getProperty("birthDate"),props.getProperty("date9m"))%>, "<%=props.getProperty("hc9m", "")%>");
-            graphHC(<%=age(props.getProperty("birthDate"),props.getProperty("date12m"))%>, "<%=props.getProperty("hc12m", "")%>");
-            graphHC(<%=age(props.getProperty("birthDate"),props.getProperty("date18m"))%>, "<%=props.getProperty("hc18m", "")%>");
-            graphHC(<%=age(props.getProperty("birthDate"),props.getProperty("date2y"))%>, "<%=props.getProperty("hc2y", "")%>");
+            graphHC(<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("birthDate"))))%>, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("headCirc", "")))%>");
+            graphHC(<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date1w"))))%>, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc1w", "")))%>");
+            graphHC(<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date2w"))))%>, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc2w", "")))%>");
+            graphHC(<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date1m"))))%>, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc1m", "")))%>");
+            graphHC(<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date2m"))))%>, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc2m", "")))%>");
+            graphHC(<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date4m"))))%>, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc4m", "")))%>");
+            graphHC(<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date6m"))))%>, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc6m", "")))%>");
+            graphHC(<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date9m"))))%>, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc9m", "")))%>");
+            graphHC(<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date12m"))))%>, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc12m", "")))%>");
+            graphHC(<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date18m"))))%>, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc18m", "")))%>");
+            graphHC(<%=Encode.forJavaScript(String.valueOf(age(props.getProperty("birthDate"),props.getProperty("date2y"))))%>, "<%=Encode.forJavaScript(String.valueOf(props.getProperty("hc2y", "")))%>");
 
-            graphWeight("<%=props.getProperty("length", "")%>", "<%=props.getProperty("birthWeight", "")%>");
-            graphWeight("<%=props.getProperty("ht1w", "")%>", "<%=props.getProperty("wt1w", "")%>");
-            graphWeight("<%=props.getProperty("ht2w", "")%>", "<%=props.getProperty("wt2w", "")%>");
-            graphWeight("<%=props.getProperty("ht1m", "")%>", "<%=props.getProperty("wt1m", "")%>");
-            graphWeight("<%=props.getProperty("ht2m", "")%>", "<%=props.getProperty("wt2m", "")%>");
-            graphWeight("<%=props.getProperty("ht4m", "")%>", "<%=props.getProperty("wt4m", "")%>");
-            graphWeight("<%=props.getProperty("ht6m", "")%>", "<%=props.getProperty("wt6m", "")%>");
-            graphWeight("<%=props.getProperty("ht9m", "")%>", "<%=props.getProperty("wt9m", "")%>");
-            graphWeight("<%=props.getProperty("ht12m", "")%>", "<%=props.getProperty("wt12m", "")%>");
-            graphWeight("<%=props.getProperty("ht18m", "")%>", "<%=props.getProperty("wt18m", "")%>");
-            graphWeight("<%=props.getProperty("ht2y", "")%>", "<%=props.getProperty("wt2y", "")%>");
+            graphWeight("<%=Encode.forJavaScript(String.valueOf(props.getProperty("length", "")))%>", "<%=Encode.forJavaScript(String.valueOf(props.getProperty("birthWeight", "")))%>");
+            graphWeight("<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht1w", "")))%>", "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt1w", "")))%>");
+            graphWeight("<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht2w", "")))%>", "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt2w", "")))%>");
+            graphWeight("<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht1m", "")))%>", "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt1m", "")))%>");
+            graphWeight("<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht2m", "")))%>", "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt2m", "")))%>");
+            graphWeight("<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht4m", "")))%>", "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt4m", "")))%>");
+            graphWeight("<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht6m", "")))%>", "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt6m", "")))%>");
+            graphWeight("<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht9m", "")))%>", "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt9m", "")))%>");
+            graphWeight("<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht12m", "")))%>", "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt12m", "")))%>");
+            graphWeight("<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht18m", "")))%>", "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt18m", "")))%>");
+            graphWeight("<%=Encode.forJavaScript(String.valueOf(props.getProperty("ht2y", "")))%>", "<%=Encode.forJavaScript(String.valueOf(props.getProperty("wt2y", "")))%>");
         }
 
         //-->
@@ -210,7 +211,7 @@
 
 
     <body class="graph">
-    <img name="chart" src="<%=chart%>" onLoad="javascript:graphChart();"
+    <img name="chart" src="<%=Encode.forHtmlAttribute(String.valueOf(chart))%>" onLoad="javascript:graphChart();"
          border="0"
          style="position: absolute; width: 943px; z-index: 0; top: 0; left: 0;"/>
     <a name="ctls" id="ctls"></a>

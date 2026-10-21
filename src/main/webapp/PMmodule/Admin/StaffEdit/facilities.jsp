@@ -30,6 +30,7 @@
 <%@ page import="ca.openosp.openo.PMmodule.web.formbean.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="ca.openosp.openo.commn.model.Facility" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <script>
     function facility_change(facility_id) {

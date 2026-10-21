@@ -31,9 +31,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Properties;
 
 import org.apache.logging.log4j.Logger;
+import ca.openosp.OscarProperties;
 import ca.openosp.openo.commn.dao.OscarAppointmentDao;
 import ca.openosp.openo.commn.model.Appointment;
 import ca.openosp.openo.commn.model.Demographic;
@@ -60,7 +60,7 @@ public class ObecData {
     public ObecData() {
     }
 
-    public String generateOBEC(String sDate, String eDate, Properties pp) {
+    public String generateOBEC(String sDate, String eDate, OscarProperties pp) {
         int count = 0;
         String retval = "";
         String filename = "";
@@ -104,10 +104,10 @@ public class ObecData {
         return outputString;
     }
 
-    public String writeFile(String value1, Properties pp) {
+    public String writeFile(String value1, OscarProperties pp) {
         String obecFilename = "";
         try {
-            String oscarHome = pp.getProperty("DOCUMENT_DIR");
+            String oscarHome = pp.getDocumentDirectory();
 
             String outbox = pp.getProperty("ONEDT_OUTBOX", "");
             Path outboxPath = Paths.get(outbox);

@@ -38,6 +38,7 @@
 <%@page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@page import="ca.openosp.openo.commn.dao.EncounterDao" %>
 <%@page import="ca.openosp.openo.commn.model.Encounter" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%
     DemographicAccessoryDao demographicAccessoryDao = (DemographicAccessoryDao) SpringUtils.getBean(DemographicAccessoryDao.class);
     DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
@@ -107,9 +108,9 @@
 
                 <table width="100%" border="0">
                     <tr>
-                        <td align="left"><font color="blue"><%=demoname%> <i><%="" + age%>
+                        <td align="left"><font color="blue"><%=Encode.forHtml(String.valueOf(demoname))%> <i><%=Encode.forHtml(String.valueOf("" + age))%>
                         </i>
-                            <%=gender%> <i>RS: <%=roster == null ? "NONE" : roster%>
+                            <%=Encode.forHtml(String.valueOf(gender))%> <i>RS: <%=Encode.forHtml(String.valueOf(roster == null ? "NONE" : roster))%>
                             </i></font></td>
             </td>
         </tr>
@@ -122,10 +123,10 @@
         </tr>
         <tr>
             <td><font size="-1">
-                <pre>&nbsp;<%=xml_Problem_List%></pre>
+                <pre>&nbsp;<%=Encode.forHtml(String.valueOf(xml_Problem_List))%></pre>
             </font></td>
             <td><font size="-1">
-                <pre>&nbsp;<%=xml_Medication%></pre>
+                <pre>&nbsp;<%=Encode.forHtml(String.valueOf(xml_Medication))%></pre>
             </font></td>
         </tr>
         <tr bgcolor="#339999">
@@ -134,10 +135,10 @@
         </tr>
         <tr>
             <td><font size="-1">
-                <pre>&nbsp;<%=xml_Alert%></pre>
+                <pre>&nbsp;<%=Encode.forHtml(String.valueOf(xml_Alert))%></pre>
             </font></td>
             <td><font size="-1">
-                <pre>&nbsp;<%=xml_Family_Social_History%></pre>
+                <pre>&nbsp;<%=Encode.forHtml(String.valueOf(xml_Family_Social_History))%></pre>
             </font></td>
         </tr>
     </table>
@@ -152,7 +153,7 @@
                 <%
                     for (Encounter e : encounterDao.findByDemographicNo(Integer.parseInt(demographic_no))) {
 
-                %> &nbsp;<%=e.getEncounterDate()%> <%=e.getEncounterTime()%><font
+                %> &nbsp;<%=Encode.forHtml(String.valueOf(e.getEncounterDate()))%> <%=Encode.forHtml(String.valueOf(e.getEncounterTime()))%><font
                     color="blue"><%
                 String historysubject = e.getSubject() == null ? "No Subject" : e.getSubject().equals("") ? "No Subject" : e.getSubject();
                 StringTokenizer st = new StringTokenizer(historysubject, ":");
@@ -165,12 +166,12 @@
                 if (strForm.toLowerCase().compareTo("form") == 0 && st.hasMoreTokens()) {
                     strTemplateURL = "template" + (new String(st.nextToken())).trim().toLowerCase() + ".jsp";
             %> <a href=#
-                  onClick="popupPage(600,800,'<%= request.getContextPath() %>/provider/providercontrol.jsp?encounter_no=<%=e.getId()%>&dboperation=search_encountersingle&displaymodevariable=<%=strTemplateURL%>&displaymode=vary&bNewForm=0')"><%=e.getSubject() == null ? "No Subject" : e.getSubject().equals("") ? "No Subject" : e.getSubject()%>
+                  onClick="popupPage(600,800,'<%= request.getContextPath() %>/provider/providercontrol.jsp?encounter_no=<%=Encode.forUriComponent(String.valueOf(e.getId()))%>&dboperation=search_encountersingle&displaymodevariable=<%=Encode.forUriComponent(String.valueOf(strTemplateURL))%>&displaymode=vary&bNewForm=0')"><%=Encode.forHtml(String.valueOf(e.getSubject() == null ? "No Subject" : e.getSubject().equals("") ? "No Subject" : e.getSubject()))%>
             </a></font><br>
                 <%
                 } else if (strForm.compareTo("") != 0) {
                 %> <a href=#
-                      onClick="popupPage(400,600,'<%= request.getContextPath() %>/provider/providercontrol.jsp?encounter_no=<%=e.getId()%>&template=<%=strForm%>&dboperation=search_encountersingle&displaymode=encountersingle')"><%=e.getSubject() == null ? "No Subject" : e.getSubject().equals("") ? "No Subject" : e.getSubject()%>
+                      onClick="popupPage(400,600,'<%= request.getContextPath() %>/provider/providercontrol.jsp?encounter_no=<%=Encode.forUriComponent(String.valueOf(e.getId()))%>&template=<%=Encode.forUriComponent(String.valueOf(strForm))%>&dboperation=search_encountersingle&displaymode=encountersingle')"><%=Encode.forHtml(String.valueOf(e.getSubject() == null ? "No Subject" : e.getSubject().equals("") ? "No Subject" : e.getSubject()))%>
             </a></font><br>
                 <%
                         }

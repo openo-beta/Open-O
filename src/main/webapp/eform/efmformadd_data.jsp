@@ -30,6 +30,7 @@
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.eform.data.EForm" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
@@ -61,7 +62,7 @@
     <div class="action-errors">
         <ul>
             <% for (String error : actionErrors) { %>
-                <li><%= error %></li>
+                <li><%=Encode.forHtml(String.valueOf(error))%></li>
             <% } %>
         </ul>
     </div>
@@ -97,6 +98,9 @@
     String eform_link = request.getParameter("eform_link");
     String source = request.getParameter("source");
 
+    // Validate numeric parameters to prevent injection
+    if (fid != null && !fid.matches("\\d+")) { fid = null; }
+    if (demographic_no != null && !demographic_no.matches("\\d+")) { demographic_no = null; }
 
     EForm thisEForm = null;
     if (fid == null || demographic_no == null) {

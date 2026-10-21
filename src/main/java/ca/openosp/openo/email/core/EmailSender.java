@@ -77,6 +77,10 @@ public class EmailSender {
      * all email parameters collected in an EmailData object. It extracts recipients,
      * subject, body, attachments, and additional parameters from the EmailData instance.</p>
      *
+     * <p>The body taken here is the body with the footer appended, which is what the recipient
+     * receives. The footer is deliberately absent from the body recorded on the email log, so it
+     * never reaches the patient's chart note.</p>
+     *
      * @param loggedInInfo LoggedInInfo containing the current user's session information and provider context
      * @param emailConfig EmailConfig defining the email provider and delivery method (SMTP or API)
      * @param emailData EmailData containing all email content and recipient information
@@ -86,7 +90,7 @@ public class EmailSender {
         this.emailConfig = emailConfig;
         this.recipients = emailData.getRecipients();
         this.subject = emailData.getSubject();
-        this.body = emailData.getBody();
+        this.body = emailData.getBodyWithFooter();
         this.attachments = emailData.getAttachments();
         this.additionalParams = emailData.getAdditionalParams();
     }

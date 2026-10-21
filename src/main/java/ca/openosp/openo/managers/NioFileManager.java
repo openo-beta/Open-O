@@ -44,7 +44,7 @@ import ca.openosp.OscarProperties;
  * in every single page of OSCAR code.
  */
 public interface NioFileManager {
-    public static final String DOCUMENT_DIRECTORY = OscarProperties.getInstance().getProperty("DOCUMENT_DIR");
+    public static final String DOCUMENT_DIRECTORY = OscarProperties.getInstance().getDocumentDirectory();
 
     public Path hasCacheVersion2(LoggedInInfo loggedInInfo, String filename, Integer pageNum);
 

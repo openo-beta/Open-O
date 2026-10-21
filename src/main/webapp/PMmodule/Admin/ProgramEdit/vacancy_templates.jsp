@@ -27,6 +27,7 @@
 <%@page import="ca.openosp.openo.PMmodule.model.VacancyTemplate" %>
 <%@page import="ca.openosp.openo.PMmodule.service.VacancyTemplateManager" %>
 <%@page import="java.util.List" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%@ include file="/taglibs.jsp" %>
 
@@ -38,8 +39,8 @@
 
 
 <div class="tabs" id="tabs">
-    <input type="hidden" name="id" id="id" value="<%= currentProgramId%>"/>
-    <input type="hidden" name="programId" id="programId" value="<%=request.getAttribute("id")%>"/>
+    <input type="hidden" name="id" id="id" value="<%=Encode.forHtmlAttribute(String.valueOf(currentProgramId))%>"/>
+    <input type="hidden" name="programId" id="programId" value="<%=Encode.forHtmlAttribute(String.valueOf(request.getAttribute("id")))%>"/>
     <table cellpadding="3" cellspacing="0" border="0">
         <tr>
             <th title="Programs" class="nofocus"><a
@@ -58,8 +59,8 @@
     <% for (VacancyTemplate vt : templates) { %>
     <tr class="b">
         <td class="beright">
-            <a onclick="javascript:clickLink('General','Vacancy Template Add', '<%=vt.getId() %>');return false;"
-               href="javascript:void(0)"><%=vt.getName() %>
+            <a onclick="javascript:clickLink('General','Vacancy Template Add', '<%=Encode.forJavaScript(String.valueOf(vt.getId()))%>');return false;"
+               href="javascript:void(0)"><%=Encode.forHtml(String.valueOf(vt.getName()))%>
             </a>
         <td><%=vt.getActive() == true ? "Yes" : "No" %>
         </td>

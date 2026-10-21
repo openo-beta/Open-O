@@ -30,6 +30,7 @@
 <%@ page
         import="java.util.*, ca.openosp.openo.encounter.oscarMeasurements.data.MeasurementMapConfig, ca.openosp.OscarProperties, ca.openosp.openo.util.StringUtils" %>
 <%@ page import="ca.openosp.openo.commn.model.MeasurementMap" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
 
@@ -98,10 +99,10 @@
 
 <body>
 <form method="post" name="CONFIG" action="RemapMeasurementMap.do">
-    <input type="hidden" name="id" value="<%= id %>"> <input
-        type="hidden" name="identifier" value="<%= identifier %>"> <input
-        type="hidden" name="name" value="<%= name %>"> <input
-        type="hidden" name="type" value="<%= type %>">
+    <input type="hidden" name="id" value="<%=Encode.forHtmlAttribute(String.valueOf(id))%>"> <input
+        type="hidden" name="identifier" value="<%=Encode.forHtmlAttribute(String.valueOf(identifier))%>"> <input
+        type="hidden" name="name" value="<%=Encode.forHtmlAttribute(String.valueOf(name))%>"> <input
+        type="hidden" name="type" value="<%=Encode.forHtmlAttribute(String.valueOf(type))%>">
     <table width="100%" height="100%" border="0">
         <tr class="MainTableTopRow">
             <td class="MainTableTopRow" colspan="9" align="left">
@@ -128,17 +129,17 @@
                         </tr>
                         <tr>
                             <td class="Cell" width="20%">Identifier:</td>
-                            <td class="Cell" width="80%"><%= identifier %>
+                            <td class="Cell" width="80%"><%=Encode.forHtml(String.valueOf(identifier))%>
                             </td>
                         </tr>
                         <tr>
                             <td class="Cell" width="20%">Name:</td>
-                            <td class="Cell" width="80%"><%= name %>
+                            <td class="Cell" width="80%"><%=Encode.forHtml(String.valueOf(name))%>
                             </td>
                         </tr>
                         <tr>
                             <td class="Cell" width="20%">Lab Type:</td>
-                            <td class="Cell" width="80%"><%= type %>
+                            <td class="Cell" width="80%"><%=Encode.forHtml(String.valueOf(type))%>
                             </td>
                         </tr>
                         <tr>
@@ -150,7 +151,7 @@
                                         searchstring = "";
                                 %>
                                 <input type="text" size="30" name="searchstring"
-                                       value="<%= searchstring %>"/> <input type="submit" value="Search"
+                                       value="<%=Encode.forHtmlAttribute(String.valueOf(searchstring))%>"/> <input type="submit" value="Search"
                                                                             onclick="return reloadPage()"/></td>
                         <tr>
                             <td class="Cell" width="20%">Select code to map to:</td>
@@ -160,7 +161,7 @@
                                     List<MeasurementMap> loincCodes = mmc.getLoincCodes(searchstring);
                                     for (MeasurementMap loincCode : loincCodes) {
                                 %>
-                                <option value="<%= loincCode.getLoincCode() %>"><%= loincCode.getLoincCode() + " - " + loincCode.getName()%>
+                                <option value="<%=Encode.forHtmlAttribute(String.valueOf(loincCode.getLoincCode()))%>"><%=Encode.forHtml(String.valueOf(loincCode.getLoincCode() + " - " + loincCode.getName()))%>
                                 </option>
                                 <% }%>
                             </select></td>
