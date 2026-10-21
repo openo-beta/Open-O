@@ -270,6 +270,7 @@
                     if (original != null) {
                         appointmentArchiveDao.archiveAppointment(original);
                         appointmentDao.remove(original.getId());
+                        rowsAffected = 1;
                     }
                     appointmentDao.persist(a);
                     rowsAffected = 1;
