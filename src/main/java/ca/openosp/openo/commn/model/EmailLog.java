@@ -56,6 +56,10 @@ public class EmailLog extends AbstractModel<Integer> implements Comparable<Email
     @Column(columnDefinition = "BLOB")
     private byte[] body;
 
+    @Lob
+    @Column(columnDefinition = "BLOB")
+    private byte[] footer;
+
     @Enumerated(EnumType.STRING)
     private EmailStatus status;
 
@@ -158,6 +162,28 @@ public class EmailLog extends AbstractModel<Integer> implements Comparable<Email
 
     public void setBody(String body) {
         this.body = Base64.encodeBase64(body.getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Gets the footer appended to the outgoing email.
+     * The footer is boilerplate such as a clinic signature or an unsubscribe line. It is sent
+     * to the recipient but left out of the chart note, so it is stored apart from the body.
+     * Rows written before the footer column existed decode as an empty string.
+     *
+     * @return String the decoded footer, or an empty string if no footer was sent
+     */
+    public String getFooter() {
+        return footer == null ? "" : new String(Base64.decodeBase64(footer), StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Sets the footer appended to the outgoing email.
+     * The footer is automatically Base64-encoded before storage.
+     *
+     * @param footer String the footer content to encode and store; null is stored as an empty string
+     */
+    public void setFooter(String footer) {
+        this.footer = Base64.encodeBase64((footer == null ? "" : footer).getBytes(StandardCharsets.UTF_8));
     }
 
     public EmailStatus getStatus() {

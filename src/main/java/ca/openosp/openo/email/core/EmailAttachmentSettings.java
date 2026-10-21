@@ -53,6 +53,7 @@ public record EmailAttachmentSettings(
     String senderEmail,
     String subjectEmail,
     String bodyEmail,
+    String footerEmail,
     String encryptedMessageEmail,
     String emailPatientChartOption
 ) {
@@ -98,6 +99,7 @@ public record EmailAttachmentSettings(
             req.getParameter("senderEmail"),
             req.getParameter("subjectEmail"),
             req.getParameter("bodyEmail"),
+            req.getParameter("footerEmail"),
             req.getParameter("encryptedMessageEmail"),
             req.getParameter("emailPatientChartOption")
         );
