@@ -73,8 +73,11 @@
         return "<div class='note-control-panel'><div class='note-controls'>" + controls.join("") + "<\/div><\/div>";
     }
 
+    // collapsed notes all look the same: the first characters of the note over the footer (minNonEditableNoteView);
+    // an unsaved new note (id starts with 0) is not in the database, so it cannot be fetched back and keeps minView
     function collapseNoteControl(nId) {
-        return noteControl("quitImg" + nId, "collapse", collapseNoteTitle, "minView(event)", "collapseViewTrigger");
+        let collapse = String(nId).substr(0, 1) == "0" ? "minView(event)" : "minNonEditableNoteView(" + nId + ")";
+        return noteControl("quitImg" + nId, "collapse", collapseNoteTitle, collapse, "collapseViewTrigger");
     }
 
     function printNoteControl(nId) {
