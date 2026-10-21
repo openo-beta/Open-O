@@ -209,12 +209,6 @@
                     Appointment original = null;
                     if (request.getParameter("appointment_no" + datano) != null) {
                         original = appointmentDao.find(Integer.parseInt(request.getParameter("appointment_no" + datano)));
-                        if (original != null) {
-                            appointmentArchiveDao.archiveAppointment(original);
-                            appointmentDao.remove(original.getId());
-                            rowsAffected = 1;
-
-                        }
                     }
 
                     String[] paramu = new String[20];
@@ -271,6 +265,11 @@
                     a.setUrgency(request.getParameter("urgency"));
                     a.setReasonCode(Integer.parseInt(request.getParameter("reasonCode")));
 
+                    // Replaced only now, so nothing that can fail runs between removing it and saving its copy.
+                    if (original != null) {
+                        appointmentArchiveDao.archiveAppointment(original);
+                        appointmentDao.remove(original.getId());
+                    }
                     appointmentDao.persist(a);
                     rowsAffected = 1;
 
