@@ -49,11 +49,8 @@ public class DelegateFactory {
     private static UserPropertyDAO userPropertyDAO = SpringUtils.getBean(UserPropertyDAO.class);
     private static Map<String, EDTDelegate> edtDelegates = new HashMap<>();
 
-    public static EDTDelegate getEDTDelegateInstance(String serviceId) {
-        if (edtDelegates.get(serviceId) == null) {
-            edtDelegates.put(serviceId, newDelegate(serviceId));
-        }
-        return edtDelegates.get(serviceId);
+    public static synchronized EDTDelegate getEDTDelegateInstance(String serviceId) {
+        return edtDelegates.computeIfAbsent(serviceId, DelegateFactory::newDelegate);
     }
 
     public static EDTDelegate getEDTDelegateInstance() {
@@ -87,7 +84,7 @@ public class DelegateFactory {
     /**
      * Refreshes created delegates in the event that information has been updated
      */
-    public static void refreshDelegates() {
+    public static synchronized void refreshDelegates() {
         // For each service id, create a new updated delegate
         for (String serviceId : ActionUtils.getServiceIds()) {
             edtDelegates.put(serviceId, newDelegate(serviceId));
