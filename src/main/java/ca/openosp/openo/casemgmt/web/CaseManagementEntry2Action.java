@@ -1232,7 +1232,7 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         }
         Appointment appointment = appointmentDao.find(appointmentNo);
         if (appointment == null || !String.valueOf(appointment.getDemographicNo()).equals(demographicNo)) {
-            logger.warn("Not linking note to appointment " + appointmentNo + ": it does not belong to the note's patient");
+            logger.warn("Not linking note to appointment " + appointmentNo + ": it doesn't exist or belongs to another patient");
             return 0;
         }
         return appointmentNo;
@@ -1996,10 +1996,10 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         if (toBill != null && toBill.equalsIgnoreCase("true")) {
             String region = this.getBillRegion();
-            // Try to get appointment number from the note first, before the action field
+            // The note holds the posted appointment once it has passed the patient check
             Integer noteApptNo = this.getCaseNote() != null ? this.getCaseNote().getAppointmentNo() : null;
             String appointmentNo = (noteApptNo != null && noteApptNo > 0) ?
-                String.valueOf(noteApptNo) : this.getAppointmentNo();
+                String.valueOf(noteApptNo) : "0";
             String name = this.getDemoName(demoNo);
             String date = this.getAppointmentDate();
             String start_time = this.getStart_time();
