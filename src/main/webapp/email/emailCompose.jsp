@@ -376,6 +376,25 @@
 
                 <div class="card mt-4">
                     <div class="card-header">
+                        <h5 class="card-title">Footer</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <c:set var="footerEmail"
+                                           value="${ empty param.footerEmail ? footerEmail : param.footerEmail }"/>
+                                    <p class="text-muted mb-2">Any text added into this section will be emailed but will not be included if this email is charted as a new note in the patient&#8217;s chart</p>
+                                    <textarea class="form-control" name="footerEmail" id="footerEmail" rows="4"
+                                              placeholder="Clinic signature, unsubscribe line, disclaimer...">${ e:forHtmlContent(not empty footerEmail ? footerEmail : '') }</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
                         <h5 class="card-title">
                             <span class="icon-lock"></span> Encryption <span id="encryptionOptionsInfo"
                                                                              class="icon-info-sign"

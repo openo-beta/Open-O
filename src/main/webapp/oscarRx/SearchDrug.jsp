@@ -486,9 +486,9 @@
                                                     %> <a href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?show=all"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgShowAll"/></a> <%
                                                         }
                                                     %> &nbsp;&nbsp;&nbsp; <a
-                                                            href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?status=active<%=Encode.forUriComponent(String.valueOf(show))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgActive"/></a> - <a
-                                                            href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?status=inactive<%=Encode.forUriComponent(String.valueOf(show))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgInactive"/></a> - <a
-                                                            href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?status=all<%=Encode.forUriComponent(String.valueOf(show))%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgAll"/></a></td>
+                                                            href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?status=active<%=show%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgActive"/></a> - <a
+                                                            href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?status=inactive<%=show%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgInactive"/></a> - <a
+                                                            href="<%= request.getContextPath() %>/oscarRx/SearchDrug.jsp?status=all<%=show%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="SearchDrug.msgAll"/></a></td>
                                                     <td align="right">
                                                                     <span style="width: 350px; align: right">
                                                                        <input type="button" name="cmdAllergies"

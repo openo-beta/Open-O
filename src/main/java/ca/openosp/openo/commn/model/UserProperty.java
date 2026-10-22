@@ -30,6 +30,10 @@ import java.io.Serializable;
 @Table(name = "property")
 public class UserProperty extends AbstractModel<Integer> implements Serializable {
 
+    /*
+     * These constants are deprecated.
+     * Use model/enumerator/UserPropertyKey instead.
+     */
     public static final String STALE_NOTEDATE = "cme_note_date";
     public static final String STALE_FORMAT = "cme_note_format";
     public static final String ONTARIO_MD_USERNAME = "ontario_md_username";
@@ -164,6 +168,11 @@ public class UserProperty extends AbstractModel<Integer> implements Serializable
     public static final String EMAIL_COMMUNICATION = "email_communication";
 
     public static final String SCHEDULE_WEEK_VIEW_WEEKENDS = "schedule.week_view_weekends";
+
+    /*
+     * Constants are deprecated. Do not add new ones here,
+     * add them to model/enumerator/UserPropertyKey.
+     */
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

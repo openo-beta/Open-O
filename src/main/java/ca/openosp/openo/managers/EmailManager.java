@@ -112,9 +112,12 @@ public class EmailManager {
      * 2. Sanitizes email data fields
      * 3. Creates email log entry in FAILED status
      * 4. Encrypts message and/or attachments if requested
-     * 5. Sends email via configured email server
+     * 5. Sends email via configured email server, with the footer appended to the body
      * 6. Updates log status to SUCCESS or FAILED
      * 7. Creates chart note if configured for WITH_FULL_NOTE display
+     *
+     * The chart note is built from the body recorded on the email log, which excludes the footer,
+     * so footer boilerplate such as a clinic signature or unsubscribe line never enters the chart.
      *
      * @param loggedInInfo LoggedInInfo the logged-in user session information
      * @param emailData EmailData containing email subject, body, recipients, attachments, and configuration options
@@ -181,6 +184,9 @@ public class EmailManager {
 
         EmailLog emailLog = new EmailLog(emailConfig, emailConfig.getSenderEmail(), emailData.getRecipients(), emailData.getSubject(), emailData.getBody(), EmailStatus.FAILED);
         setEmailAttachments(emailLog, emailData.getAttachments());
+        // The footer is kept off the body so it stays out of the chart note, and is recorded
+        // here so the sent email can be reconstructed for audit and for resend.
+        emailLog.setFooter(emailData.getFooter());
         emailLog.setEncryptedMessage(emailData.getEncryptedMessage());
         emailLog.setPassword(emailData.getPassword());
         emailLog.setPasswordClue(emailData.getPasswordClue());

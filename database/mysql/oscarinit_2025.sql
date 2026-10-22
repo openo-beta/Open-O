@@ -881,6 +881,11 @@ ALTER TABLE security ADD mfaSecret VARCHAR(255);
 UPDATE `preventions` SET prevention_type = "RSV" WHERE `prevention_type` = "RSVPreF3";
 
 --
+-- Alter table structure for table emailLog, added footer
+--
+ALTER TABLE emailLog ADD COLUMN footer BLOB DEFAULT NULL AFTER body;
+
+--
 -- Alter table structure for LookupListItem, appointment and appointmentArchive: Item Style and Location Code
 --
 ALTER TABLE LookupListItem
