@@ -11,52 +11,77 @@
 package ca.openosp.openo.hospitalReportManager.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
-import org.apache.commons.lang3.StringUtils;
 import ca.openosp.openo.commn.dao.AbstractDaoImpl;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Data access for HRM (Hospital Report Manager) reports: lookups by id, hash and
+ * sending-facility key, parent/child report relationships, and the filtered,
+ * paged listing behind the HRM Inbox page.
+ *
+ * @since 2011-06-18
+ */
 @Repository
 public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
 
     /**
-     * Maps allowed order column names to their safe HQL ORDER BY fragments (ascending).
-     * Only values from this map are used in query construction, preventing HQL injection.
+     * Columns the HRM Inbox can be sorted by. Each value pairs the DataTables column name
+     * sent by inbox.js with the HRMDocument field it sorts on, so only these fields ever
+     * reach the HQL and no request text is concatenated into it.
      */
-    private static final Map<String, String> ORDER_ASC_FRAGMENTS = new HashMap<>();
-    private static final Map<String, String> ORDER_DESC_FRAGMENTS = new HashMap<>();
-    static {
-        ORDER_ASC_FRAGMENTS.put("formattedName", " ORDER BY x.formattedName ASC");
-        ORDER_ASC_FRAGMENTS.put("dob",           " ORDER BY x.dob ASC");
-        ORDER_ASC_FRAGMENTS.put("reportDate",    " ORDER BY x.reportDate ASC");
-        ORDER_ASC_FRAGMENTS.put("timeReceived",  " ORDER BY x.timeReceived ASC");
-        ORDER_ASC_FRAGMENTS.put("sourceFacility"," ORDER BY x.sourceFacility ASC");
+    public enum InboxSortColumn {
+        PATIENT_NAME("patient_name", "x.formattedName"),
+        PATIENT_DOB("patient_dob", "x.dob"),
+        REPORT_DATE("report_date", "x.reportDate"),
+        RECEIVED_DATE("received_date", "x.timeReceived"),
+        SENDING_FACILITY("sending_facility", "x.sourceFacility");
 
-        ORDER_DESC_FRAGMENTS.put("formattedName", " ORDER BY x.formattedName DESC");
-        ORDER_DESC_FRAGMENTS.put("dob",           " ORDER BY x.dob DESC");
-        ORDER_DESC_FRAGMENTS.put("reportDate",    " ORDER BY x.reportDate DESC");
-        ORDER_DESC_FRAGMENTS.put("timeReceived",  " ORDER BY x.timeReceived DESC");
-        ORDER_DESC_FRAGMENTS.put("sourceFacility"," ORDER BY x.sourceFacility DESC");
+        private final String requestName;
+        private final String hqlField;
+
+        InboxSortColumn(String requestName, String hqlField) {
+            this.requestName = requestName;
+            this.hqlField = hqlField;
+        }
+
+        /**
+         * Finds the sort column for a DataTables column name.
+         *
+         * @param requestName String the "columns[n][data]" value from the request, may be null
+         * @return InboxSortColumn the matching column, or null when that column is not sortable
+         */
+        public static InboxSortColumn fromRequestName(String requestName) {
+            for (InboxSortColumn column : values()) {
+                if (column.requestName.equals(requestName)) {
+                    return column;
+                }
+            }
+            return null;
+        }
     }
 
     /**
-     * Returns a safe, pre-built ORDER BY HQL fragment for the given column and direction,
-     * or an empty string if the column or direction is not in the allowlist.
+     * Sort direction of the HRM Inbox listing.
      */
-    private static String getSafeOrderByFragment(String orderColumn, String orderDirection) {
-        if (StringUtils.isEmpty(orderColumn) || StringUtils.isEmpty(orderDirection)) {
-            return "";
+    public enum SortDirection {
+        ASC, DESC;
+
+        /**
+         * Reads a DataTables "order[0][dir]" value. Anything other than "desc" sorts ascending.
+         *
+         * @param requestValue String "asc" or "desc" in any case, may be null
+         * @return SortDirection never null
+         */
+        public static SortDirection fromRequestValue(String requestValue) {
+            return "DESC".equalsIgnoreCase(requestValue) ? DESC : ASC;
         }
-        Map<String, String> fragments = "DESC".equalsIgnoreCase(orderDirection) ? ORDER_DESC_FRAGMENTS : ORDER_ASC_FRAGMENTS;
-        String fragment = fragments.get(orderColumn);
-        return fragment != null ? fragment : "";
     }
 
     public HRMDocumentDao() {
@@ -187,98 +212,79 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
 
 
     /**
-     * Builds the base HQL string for querying HRM documents.
-     * All parts are string literals; no user input is concatenated into the HQL.
+     * Lists one page of HRM Inbox reports. A report is listed once, no matter how many
+     * recipients it has, and only when it has at least one HRMDocumentToProvider row that
+     * passes the provider filters. Child reports (parentReport set) are never listed.
      *
-     * @param demographicUnmatched filter for unmatched demographics
-     * @param providerUnmatched filter for unmatched providers
-     * @param providerNo provider number filter (null if not filtering)
-     * @param noSignOff filter for unsigned documents
-     * @param isCount true to build a COUNT query, false for entity selection
-     * @return the base HQL string with named parameters
+     * @param providerNo String provider the report must be addressed to, null for any provider
+     * @param providerUnmatched boolean true lists only reports whose recipient could not be matched (provider "-1"); noSignOff is then ignored
+     * @param noSignOff boolean true lists only reports the provider has not signed off
+     * @param demographicUnmatched boolean true lists only reports with no linked patient
+     * @param categoryUnmatched boolean true lists only reports with no category
+     * @param start int first row of the page
+     * @param length int page size
+     * @param sortColumn InboxSortColumn column to sort by, null for no ordering
+     * @param sortDirection SortDirection ascending or descending
+     * @return List<HRMDocument> the page of matching reports
      */
-    private String buildQueryHql(boolean demographicUnmatched, boolean providerUnmatched,
-                                  String providerNo, boolean noSignOff, boolean categoryUnmatched, boolean isCount) {
-        String selectPart = isCount
-                ? "select count(x) from HRMDocument x"
-                : "select x from HRMDocument x";
-
-        String joinPart = " inner JOIN x.matchedProviders p";
-        String wherePart = " WHERE x.parentReport IS NULL";
-
-        String demoFilter = demographicUnmatched ? " AND SIZE(x.matchedDemographics) = 0" : "";
-
-        // A null hrmCategoryId means the report did not match any configured category mapping at import.
-        String categoryFilter = categoryUnmatched ? " AND x.hrmCategoryId IS NULL" : "";
-
-        String providerFilter;
-        if (providerUnmatched) {
-            providerFilter = " AND p.providerNo = :pNo";
-        } else {
-            String pNoFilter = (providerNo != null) ? " AND p.providerNo = :pNo" : "";
-            String signOffFilter = noSignOff ? " AND p.signedOff = 0" : "";
-            providerFilter = pNoFilter + signOffFilter;
-        }
-
-        return selectPart + joinPart + wherePart + demoFilter + categoryFilter + providerFilter;
-    }
-
-    public List<HRMDocument> query(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, boolean categoryUnmatched, int start, int length, String orderColumn, String orderDirection) {
-
-        // Build HQL using pre-built safe fragments to prevent HQL injection.
-        // orderColumn and orderDirection are validated via the allowlisted ORDER_*_FRAGMENTS maps.
-        String hql = buildQueryHql(demographicUnmatched, providerUnmatched, providerNo, noSignOff, categoryUnmatched, false);
-        hql = hql + getSafeOrderByFragment(orderColumn, orderDirection);
-
-        System.out.println("[HRM-INBOX-DEBUG] DAO query hql=" + hql);
-        System.out.println("[HRM-INBOX-DEBUG] DAO query params providerNo=" + providerNo + " providerUnmatched=" + providerUnmatched
-                + " noSignOff=" + noSignOff + " demographicUnmatched=" + demographicUnmatched + " categoryUnmatched=" + categoryUnmatched
-                + " start=" + start + " length=" + length + " orderColumn=" + orderColumn + " orderDirection=" + orderDirection);
-
-        Query query = entityManager.createQuery(hql);
-
-        if (providerUnmatched) {
-            query.setParameter("pNo", "-1");
-            System.out.println("[HRM-INBOX-DEBUG] DAO query bound pNo=-1 (unmatched)");
-        } else {
-            if (providerNo != null) {
-                query.setParameter("pNo", providerNo);
-                System.out.println("[HRM-INBOX-DEBUG] DAO query bound pNo=" + providerNo);
-            } else {
-                System.out.println("[HRM-INBOX-DEBUG] DAO query no pNo bound (all providers)");
-            }
-        }
-
+    public List<HRMDocument> query(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, boolean categoryUnmatched, int start, int length, InboxSortColumn sortColumn, SortDirection sortDirection) {
+        String orderBy = sortColumn == null ? "" : " order by " + sortColumn.hqlField + " " + sortDirection;
+        TypedQuery<HRMDocument> query = createInboxQuery("select x", HRMDocument.class, providerNo, providerUnmatched, noSignOff, demographicUnmatched, categoryUnmatched, orderBy);
         query.setFirstResult(start);
         query.setMaxResults(length);
-
-        @SuppressWarnings("unchecked")
-        List<HRMDocument> documents = query.getResultList();
-        System.out.println("[HRM-INBOX-DEBUG] DAO query returned " + documents.size() + " documents");
-        return documents;
+        return query.getResultList();
     }
 
-    public long queryForCount(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, boolean categoryUnmatched, String orderColumn, String orderDirection) {
+    /**
+     * Counts the HRM Inbox reports that {@link #query} would list for the same filters.
+     *
+     * @param providerNo String provider the report must be addressed to, null for any provider
+     * @param providerUnmatched boolean true counts only reports whose recipient could not be matched (provider "-1")
+     * @param noSignOff boolean true counts only reports the provider has not signed off
+     * @param demographicUnmatched boolean true counts only reports with no linked patient
+     * @param categoryUnmatched boolean true counts only reports with no category
+     * @return long number of matching reports
+     */
+    public long queryForCount(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, boolean categoryUnmatched) {
+        return createInboxQuery("select count(x)", Long.class, providerNo, providerUnmatched, noSignOff, demographicUnmatched, categoryUnmatched, "").getSingleResult();
+    }
 
-        // Build HQL using pre-built safe fragments to prevent HQL injection.
-        // orderColumn and orderDirection are validated via the allowlisted ORDER_*_FRAGMENTS maps.
-        String hql = buildQueryHql(demographicUnmatched, providerUnmatched, providerNo, noSignOff, categoryUnmatched, true);
-        hql = hql + getSafeOrderByFragment(orderColumn, orderDirection);
+    /**
+     * Builds and binds the HRM Inbox query shared by {@link #query} and {@link #queryForCount}.
+     * The provider filters sit in an EXISTS subquery on HRMDocumentToProvider, so a report with
+     * several recipients comes back once and the count needs no DISTINCT.
+     *
+     * @param select String "select x" or "select count(x)"
+     * @param resultType Class<R> HRMDocument.class or Long.class, matching the select
+     * @param orderBy String ORDER BY clause built by {@link #query}, "" for none
+     * @return TypedQuery<R> the query with its parameter bound
+     */
+    private <R> TypedQuery<R> createInboxQuery(String select, Class<R> resultType, String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, boolean categoryUnmatched, String orderBy) {
+        String pNo = providerUnmatched ? "-1" : providerNo;
 
-        Query query = entityManager.createQuery(hql);
-
-        if (providerUnmatched) {
-            query.setParameter("pNo", "-1");
-        } else {
-            if (providerNo != null) {
-                query.setParameter("pNo", providerNo);
-            }
+        StringBuilder hql = new StringBuilder(select).append(" from HRMDocument x where x.parentReport is null");
+        if (demographicUnmatched) {
+            hql.append(" and size(x.matchedDemographics) = 0");
         }
+        if (categoryUnmatched) {
+            // A null hrmCategoryId means the report did not match any configured category mapping at import.
+            hql.append(" and x.hrmCategoryId is null");
+        }
+        hql.append(" and exists (select p.id from HRMDocumentToProvider p where p.hrmDocumentId = x.id");
+        if (pNo != null) {
+            hql.append(" and p.providerNo = :pNo");
+        }
+        if (!providerUnmatched && noSignOff) {
+            hql.append(" and p.signedOff = 0");
+        }
+        hql.append(")").append(orderBy);
 
-        Long count = (Long) query.getSingleResult();
 
-        System.out.println("[HRM-INBOX-DEBUG] DAO queryForCount hql=" + hql + " -> count=" + count);
-        return count;
+        TypedQuery<R> query = entityManager.createQuery(hql.toString(), resultType);
+        if (pNo != null) {
+            query.setParameter("pNo", pNo);
+        }
+        return query;
     }
 
     /**

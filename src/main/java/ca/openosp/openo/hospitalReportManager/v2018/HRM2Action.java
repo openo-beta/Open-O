@@ -68,6 +68,8 @@ import ca.openosp.openo.hospitalReportManager.HRMReportParser;
 import ca.openosp.openo.hospitalReportManager.SFTPConnector;
 import ca.openosp.openo.hospitalReportManager.dao.HRMCategoryDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
+import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao.InboxSortColumn;
+import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao.SortDirection;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMSendingFacilityDao;
@@ -881,11 +883,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         String length = request.getParameter("length");
 
         String orderingColumnIndex = request.getParameter("order[0][column]"); //idx (eg 0)
-        String orderingColumnDirection = request.getParameter("order[0][dir]"); //asc,desc
-        // Validate ordering direction to prevent SQL injection - whitelist to ASC/DESC only
-        if (orderingColumnDirection != null && !"ASC".equalsIgnoreCase(orderingColumnDirection) && !"DESC".equalsIgnoreCase(orderingColumnDirection)) {
-            orderingColumnDirection = "ASC";
-        }
+        SortDirection sortDirection = SortDirection.fromRequestValue(request.getParameter("order[0][dir]"));
 
 
         String providerNo = request.getParameter("providerNo");
@@ -895,7 +893,9 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         String demographicUnmatched = StringUtils.trimToEmpty(request.getParameter("demographicUnmatched"));
         String categoryUnmatched = StringUtils.trimToEmpty(request.getParameter("categoryUnmatched"));
 
-        if (isHrmAdmin && "ALL".equals(providerNo)) {
+        // The provider dropdown is shown to both _hrm.administrator and _admin.hrm users
+        // (inbox.jsp), so "ALL" must mean "no provider filter" for both of them.
+        if ((isHrmAdmin || isAdmin) && "ALL".equals(providerNo)) {
             providerNo = null;
             System.out.println("[HRM-INBOX-DEBUG] hrm admin chose ALL -> providerNo filter cleared");
         }
@@ -920,28 +920,17 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
             idx++;
         }
 
-        String orderBy = null;
-
+        InboxSortColumn sortColumn = null;
         if (!StringUtils.isEmpty(orderingColumnIndex)) {
             ColumnInfo columnInfo = columnMap.get(Integer.parseInt(orderingColumnIndex));
-            if ("patient_name".equals(columnInfo.getData())) {
-                orderBy = "formattedName";
-            } else if ("patient_dob".equals(columnInfo.getData())) {
-                orderBy = "dob";
-            } else if ("report_date".equals(columnInfo.getData())) {
-                orderBy = "reportDate";
-            } else if ("received_date".equals(columnInfo.getData())) {
-                orderBy = "timeReceived";
-            } else if ("sending_facility".equals(columnInfo.getData())) {
-                orderBy = "sourceFacility";
-            }
+            sortColumn = InboxSortColumn.fromRequestName(columnInfo.getData());
         }
 
         JSONArray data = new JSONArray();
 
         long total = 0L;
 
-        System.out.println("[HRM-INBOX-DEBUG] ordering: orderBy=" + orderBy + " direction=" + orderingColumnDirection + " columnMap size=" + columnMap.size());
+        System.out.println("[HRM-INBOX-DEBUG] ordering: sortColumn=" + sortColumn + " direction=" + sortDirection + " columnMap size=" + columnMap.size());
 
         if (!isHrm) {
             System.out.println("[HRM-INBOX-DEBUG] user has NO _hrm read privilege -> returning empty table");
@@ -950,9 +939,9 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         if (isHrm) {
             hrmDocumentDao.debugPrintCounts();
 
-            List<HRMDocument> docs = hrmDocumentDao.query(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), "true".equals(categoryUnmatched), Integer.parseInt(start), Integer.parseInt(length), orderBy, orderingColumnDirection);
+            List<HRMDocument> docs = hrmDocumentDao.query(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), "true".equals(categoryUnmatched), Integer.parseInt(start), Integer.parseInt(length), sortColumn, sortDirection);
 
-            total = hrmDocumentDao.queryForCount(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), "true".equals(categoryUnmatched), orderBy, orderingColumnDirection);
+            total = hrmDocumentDao.queryForCount(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), "true".equals(categoryUnmatched));
 
             System.out.println("[HRM-INBOX-DEBUG] fetched " + docs.size() + " documents for this page, total matching filters=" + total);
             for (HRMDocument d : docs) {
