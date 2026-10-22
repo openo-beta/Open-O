@@ -45,6 +45,9 @@
     List<Provider> providers = providerDao.getActiveProviders();
     String myProviderNo = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
 
+    System.out.println("[HRM-INBOX-DEBUG] inbox.jsp opened by providerNo=" + myProviderNo
+            + " isHrmAdmin(_hrm.administrator)=" + isHrmAdmin + " isAdmin(_admin.hrm)=" + isAdmin + " isHrm(_hrm)=" + isHrm
+            + " provider dropdown shown=" + (isHrmAdmin || isAdmin) + " active providers in dropdown=" + providers.size());
 %>
 
 <!DOCTYPE html >

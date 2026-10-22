@@ -74,6 +74,7 @@ import ca.openosp.openo.hospitalReportManager.dao.HRMSendingFacilityDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMSendingFacility;
 import ca.openosp.openo.hospitalReportManager.model.HRMCategory;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
+import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentSubClass;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.hospitalReportManager.model.HRMProviderConfidentialityStatement;
@@ -864,6 +865,17 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         boolean isHrm = securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_hrm", "r", null);
         boolean isAdmin = securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin.hrm", "r", null);
 
+        System.out.println("[HRM-INBOX-DEBUG] ===== inbox list request ===== method=" + method
+                + " loggedInProviderNo=" + LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo()
+                + " isHrmAdmin(_hrm.administrator)=" + isHrmAdmin + " isHrm(_hrm)=" + isHrm + " isAdmin(_admin.hrm)=" + isAdmin);
+        System.out.println("[HRM-INBOX-DEBUG] raw params: providerNo=" + request.getParameter("providerNo")
+                + " providerUnmatched=" + request.getParameter("providerUnmatched")
+                + " noSignOff=" + request.getParameter("noSignOff")
+                + " demographicUnmatched=" + request.getParameter("demographicUnmatched")
+                + " categoryUnmatched=" + request.getParameter("categoryUnmatched")
+                + " start=" + request.getParameter("start") + " length=" + request.getParameter("length")
+                + " draw=" + request.getParameter("draw")
+                + " order[0][column]=" + request.getParameter("order[0][column]") + " order[0][dir]=" + request.getParameter("order[0][dir]"));
 
         String start = request.getParameter("start");
         String length = request.getParameter("length");
@@ -885,10 +897,17 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
 
         if (isHrmAdmin && "ALL".equals(providerNo)) {
             providerNo = null;
+            System.out.println("[HRM-INBOX-DEBUG] hrm admin chose ALL -> providerNo filter cleared");
         }
         if (!isHrmAdmin && !isAdmin) {
             providerNo = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
+            System.out.println("[HRM-INBOX-DEBUG] not hrm admin / not admin -> providerNo forced to logged in provider " + providerNo);
         }
+        if (!isHrmAdmin && isAdmin && "ALL".equals(providerNo)) {
+            System.out.println("[HRM-INBOX-DEBUG] WARNING: _admin.hrm without _hrm.administrator and providerNo=ALL -> query binds the literal string ALL, nothing can match");
+        }
+        System.out.println("[HRM-INBOX-DEBUG] effective filters: providerNo=" + providerNo + " providerUnmatched=" + providerUnmatched
+                + " noSignOff=" + noSignOff + " demographicUnmatched=" + demographicUnmatched + " categoryUnmatched=" + categoryUnmatched);
 
         //setup a column map from request parameters
         Map<Integer, ColumnInfo> columnMap = new HashMap<Integer, ColumnInfo>();
@@ -922,11 +941,30 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
 
         long total = 0L;
 
+        System.out.println("[HRM-INBOX-DEBUG] ordering: orderBy=" + orderBy + " direction=" + orderingColumnDirection + " columnMap size=" + columnMap.size());
+
+        if (!isHrm) {
+            System.out.println("[HRM-INBOX-DEBUG] user has NO _hrm read privilege -> returning empty table");
+        }
 
         if (isHrm) {
+            hrmDocumentDao.debugPrintCounts();
+
             List<HRMDocument> docs = hrmDocumentDao.query(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), "true".equals(categoryUnmatched), Integer.parseInt(start), Integer.parseInt(length), orderBy, orderingColumnDirection);
 
             total = hrmDocumentDao.queryForCount(providerNo, "true".equals(providerUnmatched), "true".equals(noSignOff), "true".equals(demographicUnmatched), "true".equals(categoryUnmatched), orderBy, orderingColumnDirection);
+
+            System.out.println("[HRM-INBOX-DEBUG] fetched " + docs.size() + " documents for this page, total matching filters=" + total);
+            for (HRMDocument d : docs) {
+                StringBuilder provs = new StringBuilder();
+                for (HRMDocumentToProvider p : d.getMatchedProviders()) {
+                    provs.append(p.getProviderNo()).append("/signedOff=").append(p.getSignedOff()).append(" ");
+                }
+                System.out.println("[HRM-INBOX-DEBUG]   doc id=" + d.getId() + " recipientProviderNo=" + d.getRecipientProviderNo()
+                        + " sourceFacility=" + d.getSourceFacility() + " timeReceived=" + d.getTimeReceived()
+                        + " parentReport=" + d.getParentReport() + " categoryId=" + d.getHrmCategoryId()
+                        + " matchedProviders=[" + provs.toString().trim() + "] matchedDemographics=" + d.getMatchedDemographics().size());
+            }
 
 
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -936,6 +974,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
             Map<String, HRMSendingFacility> sfRegistry = hrmSendingFacilityDao.getRegistryById();
 
             for (HRMDocument d : docs) {
+              try {
                 HRMCategory category = null;
                 if (d.getHrmCategoryId() != null) {
                     category = hrmCategoryDao.find(d.getHrmCategoryId());
@@ -996,6 +1035,11 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
                 data1.put("description", d.getDescription());
 
                 data.put(data1);
+              } catch (Exception rowEx) {
+                System.out.println("[HRM-INBOX-DEBUG] building row for doc id=" + d.getId() + " FAILED: " + rowEx);
+                rowEx.printStackTrace(System.out);
+                throw rowEx;
+              }
             }
         }
 
@@ -1005,6 +1049,8 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         obj.put("recordsFiltered", total);
         obj.put("data", data);
         //obj.put("error", "error occurred");
+
+        System.out.println("[HRM-INBOX-DEBUG] response: draw=" + draw + " (request draw=" + request.getParameter("draw") + ") recordsTotal=" + total + " rows in data=" + data.length());
 
         response.setContentType("application/json");
         obj.write(response.getWriter());

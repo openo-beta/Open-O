@@ -230,13 +230,22 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
         String hql = buildQueryHql(demographicUnmatched, providerUnmatched, providerNo, noSignOff, categoryUnmatched, false);
         hql = hql + getSafeOrderByFragment(orderColumn, orderDirection);
 
+        System.out.println("[HRM-INBOX-DEBUG] DAO query hql=" + hql);
+        System.out.println("[HRM-INBOX-DEBUG] DAO query params providerNo=" + providerNo + " providerUnmatched=" + providerUnmatched
+                + " noSignOff=" + noSignOff + " demographicUnmatched=" + demographicUnmatched + " categoryUnmatched=" + categoryUnmatched
+                + " start=" + start + " length=" + length + " orderColumn=" + orderColumn + " orderDirection=" + orderDirection);
+
         Query query = entityManager.createQuery(hql);
 
         if (providerUnmatched) {
             query.setParameter("pNo", "-1");
+            System.out.println("[HRM-INBOX-DEBUG] DAO query bound pNo=-1 (unmatched)");
         } else {
             if (providerNo != null) {
                 query.setParameter("pNo", providerNo);
+                System.out.println("[HRM-INBOX-DEBUG] DAO query bound pNo=" + providerNo);
+            } else {
+                System.out.println("[HRM-INBOX-DEBUG] DAO query no pNo bound (all providers)");
             }
         }
 
@@ -245,6 +254,7 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
 
         @SuppressWarnings("unchecked")
         List<HRMDocument> documents = query.getResultList();
+        System.out.println("[HRM-INBOX-DEBUG] DAO query returned " + documents.size() + " documents");
         return documents;
     }
 
@@ -267,6 +277,47 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
 
         Long count = (Long) query.getSingleResult();
 
+        System.out.println("[HRM-INBOX-DEBUG] DAO queryForCount hql=" + hql + " -> count=" + count);
         return count;
+    }
+
+    /**
+     * Debug only: prints raw table counts so the inbox filter result can be compared
+     * against what is actually in the database.
+     */
+    public void debugPrintCounts() {
+        try {
+            Object totalDocs = entityManager.createQuery("select count(x) from HRMDocument x").getSingleResult();
+            Object parentDocs = entityManager.createQuery("select count(x) from HRMDocument x where x.parentReport IS NULL").getSingleResult();
+            Object childDocs = entityManager.createQuery("select count(x) from HRMDocument x where x.parentReport IS NOT NULL").getSingleResult();
+            Object docsNoProvider = entityManager.createQuery("select count(x) from HRMDocument x where SIZE(x.matchedProviders) = 0").getSingleResult();
+            Object docsNoDemo = entityManager.createQuery("select count(x) from HRMDocument x where SIZE(x.matchedDemographics) = 0").getSingleResult();
+            Object docsNoCategory = entityManager.createQuery("select count(x) from HRMDocument x where x.hrmCategoryId IS NULL").getSingleResult();
+            Object providerRows = entityManager.createQuery("select count(p) from HRMDocumentToProvider p").getSingleResult();
+            Object providerRowsUnsigned = entityManager.createQuery("select count(p) from HRMDocumentToProvider p where p.signedOff = 0").getSingleResult();
+            Object providerRowsSigned = entityManager.createQuery("select count(p) from HRMDocumentToProvider p where p.signedOff <> 0").getSingleResult();
+            Object providerRowsNullSigned = entityManager.createQuery("select count(p) from HRMDocumentToProvider p where p.signedOff IS NULL").getSingleResult();
+            Object orphanProviderRows = entityManager.createQuery("select count(p) from HRMDocumentToProvider p where p.hrmDocumentId NOT IN (select x.id from HRMDocument x)").getSingleResult();
+            @SuppressWarnings("unchecked")
+            List<Object[]> perProvider = entityManager.createQuery("select p.providerNo, p.signedOff, count(p) from HRMDocumentToProvider p group by p.providerNo, p.signedOff").getResultList();
+            @SuppressWarnings("unchecked")
+            List<Object[]> docIds = entityManager.createQuery("select x.id, x.recipientProviderNo, x.parentReport, x.timeReceived, SIZE(x.matchedProviders) from HRMDocument x order by x.id desc").setMaxResults(50).getResultList();
+
+            System.out.println("[HRM-INBOX-DEBUG] DB counts: HRMDocument total=" + totalDocs + " parentReport null=" + parentDocs + " parentReport set(children, hidden)=" + childDocs);
+            System.out.println("[HRM-INBOX-DEBUG] DB counts: docs with NO HRMDocumentToProvider row (hidden by inner join)=" + docsNoProvider
+                    + " docs with no demographic=" + docsNoDemo + " docs with null category=" + docsNoCategory);
+            System.out.println("[HRM-INBOX-DEBUG] DB counts: HRMDocumentToProvider total=" + providerRows + " signedOff=0 -> " + providerRowsUnsigned
+                    + " signedOff<>0 -> " + providerRowsSigned + " signedOff null -> " + providerRowsNullSigned + " orphan rows (no document)=" + orphanProviderRows);
+            for (Object[] row : perProvider) {
+                System.out.println("[HRM-INBOX-DEBUG] DB HRMDocumentToProvider providerNo=" + row[0] + " signedOff=" + row[1] + " rows=" + row[2]);
+            }
+            for (Object[] row : docIds) {
+                System.out.println("[HRM-INBOX-DEBUG] DB HRMDocument id=" + row[0] + " recipientProviderNo=" + row[1]
+                        + " parentReport=" + row[2] + " timeReceived=" + row[3] + " providerRows=" + row[4]);
+            }
+        } catch (Exception e) {
+            System.out.println("[HRM-INBOX-DEBUG] debugPrintCounts failed: " + e);
+            e.printStackTrace(System.out);
+        }
     }
 }

@@ -65,6 +65,15 @@ $(document).ready(function () {
                 d.noSignOff = $("#noSignOff").is(":checked");
                 d.demographicUnmatched = $("#demographicUnmatched").is(":checked");
                 d.categoryUnmatched = $("#categoryUnmatched").is(":checked");
+                console.log("[HRM-INBOX-DEBUG] sending request: providerNo=" + d.providerNo
+                    + " (select exists=" + ($("#providerNo").length > 0) + ", disabled=" + $("#providerNo").prop('disabled') + ")"
+                    + " providerUnmatched=" + d.providerUnmatched + " noSignOff=" + d.noSignOff
+                    + " demographicUnmatched=" + d.demographicUnmatched + " categoryUnmatched=" + d.categoryUnmatched
+                    + " start=" + d.start + " length=" + d.length + " draw=" + d.draw);
+            },
+            "error": function (xhr, textStatus, errorThrown) {
+                console.log("[HRM-INBOX-DEBUG] ajax ERROR status=" + xhr.status + " textStatus=" + textStatus + " errorThrown=" + errorThrown);
+                console.log("[HRM-INBOX-DEBUG] ajax ERROR response (first 2000 chars): " + (xhr.responseText || "").substring(0, 2000));
             }
         },
         searching: false,
@@ -113,23 +122,45 @@ $(document).ready(function () {
 
     });
 
+    $('#libraryTable').on('xhr.dt', function (e, settings, json, xhr) {
+        if (!json) {
+            console.log("[HRM-INBOX-DEBUG] response received but JSON is null/invalid, http status=" + (xhr ? xhr.status : "?"));
+            return;
+        }
+        console.log("[HRM-INBOX-DEBUG] response: draw=" + json.draw + " recordsTotal=" + json.recordsTotal
+            + " recordsFiltered=" + json.recordsFiltered + " rows in data=" + (json.data ? json.data.length : "no data array")
+            + (json.error ? " error=" + json.error : ""));
+        if (json.data && json.data.length > 0) {
+            console.log("[HRM-INBOX-DEBUG] first row: " + JSON.stringify(json.data[0]));
+        }
+    });
+    $('#libraryTable').on('draw.dt', function () {
+        console.log("[HRM-INBOX-DEBUG] table drawn, visible rows=" + $('#libraryTable tbody tr').length
+            + " page info=" + JSON.stringify($("#libraryTable").DataTable().page.info()));
+    });
+
     $("#uploadHRM").on('click', function () {
         $("#uploadHRMDialog").modal();
     });
 
     $("#providerUnmatched").on('change', function () {
+        console.log("[HRM-INBOX-DEBUG] filter change: providerUnmatched=" + $(this).is(":checked"));
         updateProviderFilter();
     });
     $("#providerNo").on('change', function () {
+        console.log("[HRM-INBOX-DEBUG] filter change: providerNo=" + $(this).val());
         updateProviderFilter();
     });
     $("#noSignOff").on('change', function () {
+        console.log("[HRM-INBOX-DEBUG] filter change: noSignOff=" + $(this).is(":checked"));
         reloadTable();
     });
     $("#demographicUnmatched").on('change', function () {
+        console.log("[HRM-INBOX-DEBUG] filter change: demographicUnmatched=" + $(this).is(":checked"));
         reloadTable();
     });
     $("#categoryUnmatched").on('change', function () {
+        console.log("[HRM-INBOX-DEBUG] filter change: categoryUnmatched=" + $(this).is(":checked"));
         reloadTable();
     });
 
@@ -158,6 +189,7 @@ $(document).ready(function () {
 function updateProviderFilter() {
     var providerNoVal = $("#providerNo").val();
     var providerUnmatchedVal = $("#providerUnmatched").is(':checked');
+    console.log("[HRM-INBOX-DEBUG] updateProviderFilter: providerNo=" + providerNoVal + " providerUnmatched=" + providerUnmatchedVal);
 
     if (providerUnmatchedVal) {
         $("#providerNo").prop('disabled', true);
@@ -174,6 +206,7 @@ function updateProviderFilter() {
 }
 
 function reloadTable() {
+    console.log("[HRM-INBOX-DEBUG] reloadTable()");
     $("#libraryTable").DataTable().ajax.reload();
 }
 
