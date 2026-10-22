@@ -897,14 +897,11 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         // (inbox.jsp), so "ALL" must mean "no provider filter" for both of them.
         if ((isHrmAdmin || isAdmin) && "ALL".equals(providerNo)) {
             providerNo = null;
-            System.out.println("[HRM-INBOX-DEBUG] hrm admin chose ALL -> providerNo filter cleared");
+            System.out.println("[HRM-INBOX-DEBUG] admin chose ALL -> providerNo filter cleared");
         }
         if (!isHrmAdmin && !isAdmin) {
             providerNo = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
             System.out.println("[HRM-INBOX-DEBUG] not hrm admin / not admin -> providerNo forced to logged in provider " + providerNo);
-        }
-        if (!isHrmAdmin && isAdmin && "ALL".equals(providerNo)) {
-            System.out.println("[HRM-INBOX-DEBUG] WARNING: _admin.hrm without _hrm.administrator and providerNo=ALL -> query binds the literal string ALL, nothing can match");
         }
         System.out.println("[HRM-INBOX-DEBUG] effective filters: providerNo=" + providerNo + " providerUnmatched=" + providerUnmatched
                 + " noSignOff=" + noSignOff + " demographicUnmatched=" + demographicUnmatched + " categoryUnmatched=" + categoryUnmatched);

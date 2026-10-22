@@ -232,7 +232,9 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
         TypedQuery<HRMDocument> query = createInboxQuery("select x", HRMDocument.class, providerNo, providerUnmatched, noSignOff, demographicUnmatched, categoryUnmatched, orderBy);
         query.setFirstResult(start);
         query.setMaxResults(length);
-        return query.getResultList();
+        List<HRMDocument> documents = query.getResultList();
+        System.out.println("[HRM-INBOX-DEBUG] DAO query start=" + start + " length=" + length + " returned " + documents.size() + " documents");
+        return documents;
     }
 
     /**
@@ -246,7 +248,9 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
      * @return long number of matching reports
      */
     public long queryForCount(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, boolean categoryUnmatched) {
-        return createInboxQuery("select count(x)", Long.class, providerNo, providerUnmatched, noSignOff, demographicUnmatched, categoryUnmatched, "").getSingleResult();
+        long count = createInboxQuery("select count(x)", Long.class, providerNo, providerUnmatched, noSignOff, demographicUnmatched, categoryUnmatched, "").getSingleResult();
+        System.out.println("[HRM-INBOX-DEBUG] DAO queryForCount -> " + count);
+        return count;
     }
 
     /**
@@ -279,6 +283,7 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
         }
         hql.append(")").append(orderBy);
 
+        System.out.println("[HRM-INBOX-DEBUG] DAO hql=" + hql + " pNo=" + pNo);
 
         TypedQuery<R> query = entityManager.createQuery(hql.toString(), resultType);
         if (pNo != null) {
