@@ -2,6 +2,8 @@
     Location List dropdown for the booking screens, shown in place of the free-text location when
     ca.openosp.openo.appt.LocationList#isLocationMode() is true. It posts locationCode, and a
     hidden location holding the Legacy Location, if any; LocationList.applyPostedLocation saves them.
+    Each location's option carries its Location Chip in data-chip, which the locationmenu widget in
+    js/appointment/locationSelect.js draws beside its name.
 
     The first choice is blank and gives a Blank Location, as in the Type and Reason dropdowns. An
     appointment with a Legacy Location (location text with no item) also gets that text as a choice,
@@ -28,6 +30,7 @@
 <%@ attribute name="savedCode" required="false" type="java.lang.Integer" %>
 <%@ attribute name="savedName" required="false" %>
 <%@ tag import="ca.openosp.openo.appt.LocationList" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="appt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
@@ -53,7 +56,8 @@
         </c:choose>
         <%-- A body-set var is a String, so the comparison is text, like the posted value. --%>
         <c:set var="optionValue">${item.id}</c:set>
-        <option value="${e:forHtmlAttribute(optionValue)}" ${optionValue eq selected ? 'selected' : ''} ${item.active ? '' : 'data-inactive'}><c:out value="${optionLabel}"/></option>
+        <c:set var="chip"><appt:locationChip item="${item}" name="${itemName}"/></c:set>
+        <option value="${e:forHtmlAttribute(optionValue)}" ${optionValue eq selected ? 'selected' : ''} ${item.active ? '' : 'data-inactive'} data-chip="${e:forHtmlAttribute(chip)}"><c:out value="${optionLabel}"/></option>
     </c:forEach>
 </select>
 <input type="hidden" name="location" value="${e:forHtmlAttribute(legacy)}">

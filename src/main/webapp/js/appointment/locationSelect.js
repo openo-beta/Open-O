@@ -1,8 +1,63 @@
 /**
- * Location List dropdown helpers for the booking screens (WEB-INF/tags/locationSelect.tag).
+ * Location List dropdown for the booking screens (WEB-INF/tags/locationSelect.tag): the locationmenu
+ * widget that draws it, and the helpers that choose a location.
  *
  * @since 2026-09-21
  */
+
+/**
+ * A jQuery UI selectmenu that draws each option's Location Chip (its data-chip) before its name, in the
+ * menu and on the button. It redraws on the select's change event, so code that sets the value fires one.
+ * Its menu carries the class location-menu, for the page to size its rows.
+ */
+jQuery.widget('custom.locationmenu', jQuery.ui.selectmenu, {
+    options: {
+        classes: {'ui-selectmenu-menu': 'location-menu'}
+    },
+
+    _create: function () {
+        this.tabIndex = this.element.attr('tabindex');
+        this._super();
+        this._on({change: 'refresh'});
+    },
+
+    _drawButton: function () {
+        this._super();
+        // selectmenu hides the select, and the browser then refuses a required blank one without saying
+        // why. Keep it laid out, unseen, at the button, so the browser's message points there; the button
+        // takes its place in the tab order.
+        this.element.attr('tabindex', -1)
+            .css({display: 'block', position: 'absolute', width: '1px', opacity: 0, pointerEvents: 'none'});
+        this.button.attr('tabindex', this.tabIndex);
+    },
+
+    // selectmenu sets the button's tabindex back to 0 each time it draws the menu.
+    _setOptionDisabled: function (value) {
+        this._super(value);
+        if (!value) {
+            this.button.attr('tabindex', this.tabIndex);
+        }
+    },
+
+    _renderItem: function (ul, item) {
+        const li = this._super(ul, item);
+        this._prependChip(li.children('div'), item);
+        return li;
+    },
+
+    _renderButtonItem: function (item) {
+        return this._prependChip(this._super(item), item);
+    },
+
+    // The chip is hidden from screen readers, which read the name beside it.
+    _prependChip: function (element, item) {
+        const chip = item.element.attr('data-chip');
+        if (chip) {
+            element.prepend(jQuery('<span aria-hidden="true">').html(chip), ' ');
+        }
+        return element;
+    }
+});
 
 /**
  * Chooses the active location whose name matches, ignoring case and surrounding spaces, as when an
@@ -23,6 +78,7 @@ function selectLocationByName(select, name) {
     });
     if (match) {
         select.value = match.value;
+        select.dispatchEvent(new Event('change'));
     }
 }
 
@@ -40,4 +96,5 @@ function selectLocationCode(select, code) {
         return option.value === code && !option.hasAttribute('data-legacy');
     });
     select.value = offered ? code : '';
+    select.dispatchEvent(new Event('change'));
 }

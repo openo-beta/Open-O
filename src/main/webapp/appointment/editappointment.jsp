@@ -257,6 +257,25 @@
         line-height: 1 !important;
     }
 
+    /* The rule above gives glyph icons Arial too; the glyph is drawn in ::before, which it doesn't reach. */
+    .location-chip .glyphicon::before {
+        font-family: 'Glyphicons Halflings';
+    }
+
+    /* Location menu rows a little roomier than the browser's own list, as in Reason. The rule above sets 12px and
+       line-height 1, so this needs !important and enough classes to outrank it. The 16px line fits a chip, which sits
+       at its top. */
+    .ui-selectmenu-menu.location-menu .ui-menu .ui-menu-item-wrapper {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        font-size: 13px !important;
+        line-height: 16px !important;
+    }
+
+    .location-menu .location-chip {
+        vertical-align: top;
+    }
+
     .form-wrapper {
         display:flex;
     }
@@ -696,6 +715,8 @@
                 }
             });
             jQuery(document).ready(function () {
+
+                jQuery('[name="locationCode"]').locationmenu();
 
                 var url = "<%= request.getContextPath() %>/demographic/SearchDemographic.do?jqueryJSON=true&activeOnly=true";
 
