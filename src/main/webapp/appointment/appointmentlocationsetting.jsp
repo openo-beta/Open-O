@@ -32,7 +32,8 @@
     above the table shows whether the Location Requirement is on, for every user. A user who may
     change locations gets the switch enabled, saving on click; pencil buttons that open the item
     style editor (js/appointment/itemStyleEditor.js) for the name, colour and icon, where a new name
-    asks first when it would also rename upcoming appointments; buttons to move
+    asks first when it would also rename upcoming appointments, counting them again on Save
+    (dispatch=upcomingCount); buttons to move
     an active location along the order; a button to make an active location the default or to
     remove the default; an Enable or Disable button on each row; and a link to the Look-Up List
     Manager, where locations are added. Changes post back to AppointmentLocation2Action.
@@ -48,7 +49,8 @@
       canAdd                 Boolean whether the user may add one in the Look-Up List Manager
       upcomingCounts         Map<Integer, Long> each location's appointments from today on, which a
                              rename also renames, by location id; set only when the user may change
-                             locations, and a location with none is left out
+                             locations, and a location with none is left out. A rename's confirmation
+                             uses it only when it can't count them again
       saveFailed             Boolean true when the last change was rejected
       saveFailedKey          String the message for a change refused with a reason, if any
       saveFailedParam        String that message's parameter, if it takes one
@@ -277,8 +279,8 @@
         });
 
         // A new name also renames the location on its appointments from today on, so say how many first.
-        function confirmRename(id, name, current) {
-            const count = Number(document.getElementById('location-' + id).dataset.upcoming) || 0;
+        async function confirmRename(id, name, current) {
+            const count = await upcomingCount(id);
             if (count === 0) {
                 return true;
             }
@@ -287,6 +289,23 @@
             return window.confirm(message.replace(/\{(old|new|count)\}/g, function (placeholder, key) {
                 return values[key];
             }));
+        }
+
+        // The count as of now, since the one drawn with the page misses anything booked since. If the
+        // server can't say, for example once the session has ended, it is the page's count.
+        async function upcomingCount(id) {
+            try {
+                const url = new URL(document.querySelector('#itemStyleEditor form').action);
+                url.search = new URLSearchParams({dispatch: 'upcomingCount', ID: id});
+                const response = await fetch(url);
+                const count = response.ok ? (await response.json()).count : null;
+                if (Number.isInteger(count)) {
+                    return count;
+                }
+            } catch (e) {
+                // Not JSON, as when the server answers with the login page, or no answer at all.
+            }
+            return Number(document.getElementById('location-' + id).dataset.upcoming) || 0;
         }
 
         ItemStyleEditor.init({description: {confirm: confirmRename}, colour: {}, icon: {}});

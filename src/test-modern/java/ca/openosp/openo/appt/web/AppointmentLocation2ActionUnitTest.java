@@ -450,4 +450,64 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
             }
         }
     }
+
+    @Nested
+    @DisplayName("counting a location's upcoming appointments for a rename's confirmation")
+    class UpcomingCount {
+
+        @BeforeEach
+        void asked() {
+            request.setMethod("GET");
+            request.setParameter("dispatch", "upcomingCount");
+        }
+
+        @Test
+        @DisplayName("should answer the location's count as of now as JSON, on a GET")
+        void shouldAnswerCount_whenAdminUpdate() throws Exception {
+            grant("_admin", SecurityInfoManager.UPDATE);
+            when(locationManager.countUpcomingAppointments(loggedInInfo)).thenReturn(Map.of(11, 3L));
+            request.setParameter("ID", "11");
+
+            assertThat(action.execute()).isNull();
+
+            assertThat(response.getContentType()).startsWith("application/json");
+            assertThat(response.getContentAsString()).isEqualTo("{\"count\":3}");
+        }
+
+        @Test
+        @DisplayName("should answer 0 for a location with no upcoming appointments")
+        void shouldAnswerZero_whenNoneUpcoming() throws Exception {
+            grant("_admin", SecurityInfoManager.UPDATE);
+            when(locationManager.countUpcomingAppointments(loggedInInfo)).thenReturn(Map.of(11, 3L));
+            request.setParameter("ID", "12");
+
+            action.execute();
+
+            assertThat(response.getContentAsString()).isEqualTo("{\"count\":0}");
+        }
+
+        @Test
+        @DisplayName("should tell a user who may not rename nothing")
+        void shouldThrow_whenNoAdminUpdate() {
+            grant("_admin.schedule", SecurityInfoManager.UPDATE);
+            grant("_admin", SecurityInfoManager.READ);
+            request.setParameter("ID", "11");
+
+            assertThatThrownBy(() -> action.execute()).isInstanceOf(SecurityException.class);
+
+            verifyNoInteractions(locationManager);
+        }
+
+        @Test
+        @DisplayName("should answer 400 for a malformed id, which the page never sends")
+        void shouldAnswerBadRequest_whenIdMalformed() {
+            grant("_admin", SecurityInfoManager.UPDATE);
+            request.setParameter("ID", "abc");
+
+            assertThat(action.execute()).isNull();
+
+            assertThat(response.getStatus()).isEqualTo(400);
+            verifyNoInteractions(locationManager);
+        }
+    }
 }

@@ -404,9 +404,24 @@
         const confirm = config[editing.kind].confirm;
         if (value === editing.initial) {
             dialog.close();
-        } else if (!confirm || confirm(editing.id, value, editing.initial)) {
-            save(value);
+            return;
         }
+        if (!confirm) {
+            save(value);
+            return;
+        }
+        // A confirm may answer later, with a promise. Save waits for it, so a second click can't post
+        // twice, and a dialog closed or reopened meanwhile saves nothing.
+        const asked = editing;
+        const saveButton = form.querySelector('button[type="submit"]');
+        saveButton.disabled = true;
+        Promise.resolve(confirm(asked.id, value, asked.initial)).then(function (confirmed) {
+            if (confirmed && editing === asked && dialog.open) {
+                save(value);
+            }
+        }).finally(function () {
+            saveButton.disabled = false;
+        });
     }
 
     /**
@@ -414,9 +429,9 @@
      * Call once, after the dialog markup.
      *
      * @param {Object} options one entry per kind the page edits: description, colour, icon
-     * @param {function(string, string, string): boolean} [options.<kind>.confirm] asked before a
-     *        changed value is saved, with the item id, the new value and the current one; false
-     *        keeps the dialog open
+     * @param {function(string, string, string): (boolean|Promise<boolean>)} [options.<kind>.confirm]
+     *        asked before a changed value is saved, with the item id, the new value and the current
+     *        one; false keeps the dialog open. It may answer with a promise, which Save waits for.
      */
     function init(options) {
         dialog = document.getElementById('itemStyleEditor');
