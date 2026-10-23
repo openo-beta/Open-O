@@ -13,12 +13,12 @@ import ca.openosp.openo.utility.LoggedInInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -39,7 +39,6 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
  * Unit tests for the lookupListItem changes in {@link LookupListManager}:
@@ -105,12 +104,12 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
     }
 
     /** Every item change that needs _admin update, named for the test report. */
-    static Stream<Arguments> updates() {
+    static Stream<Named<ItemChange>> updates() {
         return Stream.of(
-                arguments("updateLookupListItemColour", (ItemChange) (m, info, id) -> m.updateLookupListItemColour(info, id, "#445566")),
-                arguments("updateLookupListItemIcon", (ItemChange) (m, info, id) -> m.updateLookupListItemIcon(info, id, "glyphicon-star")),
-                arguments("restoreLookupListItem", (ItemChange) (m, info, id) -> m.restoreLookupListItem(info, id)),
-                arguments("moveLookupListItem", (ItemChange) (m, info, id) -> m.moveLookupListItem(info, id, true)));
+                Named.of("updateLookupListItemColour", (ItemChange) (m, info, id) -> m.updateLookupListItemColour(info, id, "#445566")),
+                Named.of("updateLookupListItemIcon", (ItemChange) (m, info, id) -> m.updateLookupListItemIcon(info, id, "glyphicon-star")),
+                Named.of("restoreLookupListItem", (ItemChange) (m, info, id) -> m.restoreLookupListItem(info, id)),
+                Named.of("moveLookupListItem", (ItemChange) (m, info, id) -> m.moveLookupListItem(info, id, true)));
     }
 
     @Nested
@@ -208,7 +207,7 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
         @ParameterizedTest(name = "{0}")
         @MethodSource("ca.openosp.openo.managers.LookupListManagerUnitTest#updates")
         @DisplayName("should deny the change and touch nothing without _admin update")
-        void shouldDeny_whenUserLacksAdminUpdate(String name, ItemChange change) {
+        void shouldDeny_whenUserLacksAdminUpdate(ItemChange change) {
             when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null))
                     .thenReturn(false);
 
@@ -221,7 +220,7 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
         @ParameterizedTest(name = "{0}")
         @MethodSource("ca.openosp.openo.managers.LookupListManagerUnitTest#updates")
         @DisplayName("should return false and save nothing when the item does not exist")
-        void shouldReturnFalse_whenItemMissing(String name, ItemChange change) {
+        void shouldReturnFalse_whenItemMissing(ItemChange change) {
             assertThat(change.apply(manager, loggedInInfo, 99)).isFalse();
 
             verify(lookupListItemDao, never()).merge(any());

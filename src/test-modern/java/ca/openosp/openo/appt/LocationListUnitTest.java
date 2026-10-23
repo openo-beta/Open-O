@@ -2,6 +2,7 @@ package ca.openosp.openo.appt;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import ca.openosp.openo.commn.IsPropertiesOn;
 import ca.openosp.openo.PMmodule.model.Program;
@@ -78,22 +79,20 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
 
     /** The site setups, each with the properties that turn it on and the Location Mode it gives. */
     enum SiteSetup {
-        MULTISITES(LocationList.LocationMode.SITES, "multisites", "on"),
-        SCHEDULE_SITES(LocationList.LocationMode.SCHEDULE_SITES, "scheduleSiteID", "site1|site2"),
-        PROGRAMS(LocationList.LocationMode.PROGRAMS, "ModuleNames", "HRM,Caisi", "useProgramLocation", "true");
+        MULTISITES(LocationList.LocationMode.SITES, Map.of("multisites", "on")),
+        SCHEDULE_SITES(LocationList.LocationMode.SCHEDULE_SITES, Map.of("scheduleSiteID", "site1|site2")),
+        PROGRAMS(LocationList.LocationMode.PROGRAMS, Map.of("ModuleNames", "HRM,Caisi", "useProgramLocation", "true"));
 
         final LocationList.LocationMode mode;
-        private final String[] properties;
+        private final Map<String, String> properties;
 
-        SiteSetup(LocationList.LocationMode mode, String... properties) {
+        SiteSetup(LocationList.LocationMode mode, Map<String, String> properties) {
             this.mode = mode;
             this.properties = properties;
         }
 
         void turnOn(OscarPropertiesOverride override) {
-            for (int i = 0; i < properties.length; i += 2) {
-                override.set(properties[i], properties[i + 1]);
-            }
+            properties.forEach(override::set);
         }
     }
 
