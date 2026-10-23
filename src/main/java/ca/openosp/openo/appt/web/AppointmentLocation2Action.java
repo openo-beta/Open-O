@@ -1,8 +1,15 @@
 package ca.openosp.openo.appt.web;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiPredicate;
+
+import javax.servlet.http.HttpServletResponse;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ca.openosp.openo.appt.LocationList;
 import ca.openosp.openo.commn.model.LookupList;
@@ -31,6 +38,9 @@ import ca.openosp.openo.utility.SpringUtils;
  *   <li>{@code updateRequirement} acts on the whole list, not an item: it turns the Location
  *       Requirement on when {@code value} is {@code true} and off otherwise, as the page's switch
  *       posts {@code value} only while it is on.</li>
+ *   <li>{@code upcomingCount} changes nothing: it answers {@code {"count": n}}, location
+ *       {@code ID}'s appointments from today on as of now, which a rename's confirmation asks for
+ *       because the counts drawn with the page miss anything booked since.</li>
  *   <li>Anything else renders the page.</li>
  * </ul>
  *
@@ -49,6 +59,8 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
     /** Location changes are Look-Up List edits, which the managers check against _admin. */
     private static final List<String> ADMIN = List.of("_admin");
 
+    private static final ObjectMapper JSON = new ObjectMapper();
+
     private LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
     private AppointmentLocationManager locationManager = SpringUtils.getBean(AppointmentLocationManager.class);
 
@@ -57,7 +69,8 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
     /**
      * Renders the Location List's items, or applies the change named by {@code dispatch}.
      *
-     * @return String {@code success} to render the list, or {@code saved} to redirect back to it
+     * @return String {@code success} to render the list, {@code saved} to redirect back to it, or
+     *         null once {@code upcomingCount} has written its answer
      * @throws SecurityException if the user lacks the privilege, or a change was not posted
      */
     @Override
@@ -78,6 +91,7 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
             case "makeDefault" -> changeLocation(this::makeDefault);
             case "removeDefault" -> changeLocation(this::removeDefault);
             case "updateRequirement" -> change(this::updateRequirement);
+            case "upcomingCount" -> upcomingCount();
             default -> show();
         };
     }
@@ -190,6 +204,31 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
     private boolean updateRequirement() {
         locationManager.setRequired(getLoggedInInfo(), Boolean.parseBoolean(value()));
         return true;
+    }
+
+    /*
+     * Answers a rename's confirmation with the location's count as of now. It changes nothing, so a
+     * GET will do, but only users who may rename are told, as only they see the counts on the page.
+     */
+    private String upcomingCount() {
+        if (!canChange()) {
+            throw new SecurityException("missing the privilege to change appointment settings");
+        }
+        int id;
+        try {
+            id = intParameter("ID");
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+        long count = locationManager.countUpcomingAppointments(getLoggedInInfo()).getOrDefault(id, 0L);
+        response.setContentType("application/json");
+        try {
+            response.getWriter().write(JSON.writeValueAsString(Map.of("count", count)));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+        return null;
     }
 
     private static void requireNameFree(LocationList locations, String name, LookupListItem item) {
