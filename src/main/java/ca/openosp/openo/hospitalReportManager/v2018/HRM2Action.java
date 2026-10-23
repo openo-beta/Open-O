@@ -127,7 +127,6 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
-    static int draw = 0;
 
     Logger logger = MiscUtils.getLogger();
 
@@ -162,6 +161,21 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
      * @throws Exception if report processing fails
      * @throws SecurityException if user lacks _hrm read privilege
      */
+    /**
+     * Reads the DataTables request counter so the response can echo it. DataTables
+     * discards a response whose draw is lower than the one it sent, so the value must
+     * come from the request, not from a server-side counter.
+     *
+     * @return int the "draw" request parameter, 0 when missing or not a number
+     */
+    private int requestDraw() {
+        try {
+            return Integer.parseInt(request.getParameter("draw"));
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
     public String uploadReport() throws Exception {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
 
@@ -758,7 +772,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         }
 
         JSONObject obj = new JSONObject();
-        obj.put("draw", ++draw);
+        obj.put("draw", requestDraw());
         obj.put("recordsTotal", data.length());
         obj.put("recordsFiltered", data.length());
         obj.put("data", data);
@@ -1030,13 +1044,13 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         }
 
         JSONObject obj = new JSONObject();
-        obj.put("draw", ++draw);
+        obj.put("draw", requestDraw());
         obj.put("recordsTotal", total);
         obj.put("recordsFiltered", total);
         obj.put("data", data);
         //obj.put("error", "error occurred");
 
-        System.out.println("[HRM-INBOX-DEBUG] response: draw=" + draw + " (request draw=" + request.getParameter("draw") + ") recordsTotal=" + total + " rows in data=" + data.length());
+        System.out.println("[HRM-INBOX-DEBUG] response: draw=" + requestDraw() + " recordsTotal=" + total + " rows in data=" + data.length());
 
         response.setContentType("application/json");
         obj.write(response.getWriter());

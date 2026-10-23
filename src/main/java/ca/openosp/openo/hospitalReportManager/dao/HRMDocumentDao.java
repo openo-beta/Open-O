@@ -214,7 +214,7 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
     /**
      * Lists one page of HRM Inbox reports. A report is listed once, no matter how many
      * recipients it has, and only when it has at least one HRMDocumentToProvider row that
-     * passes the provider filters. Child reports (parentReport set) are never listed.
+     * passes the provider filters. Child reports (parentReport pointing at another report) are never listed.
      *
      * @param providerNo String provider the report must be addressed to, null for any provider
      * @param providerUnmatched boolean true lists only reports whose recipient could not be matched (provider "-1"); noSignOff is then ignored
@@ -266,7 +266,8 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
     private <R> TypedQuery<R> createInboxQuery(String select, Class<R> resultType, String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, boolean categoryUnmatched, String orderBy) {
         String pNo = providerUnmatched ? "-1" : providerNo;
 
-        StringBuilder hql = new StringBuilder(select).append(" from HRMDocument x where x.parentReport is null");
+        // A parent report has no parentReport or, in older imports, points at itself.
+        StringBuilder hql = new StringBuilder(select).append(" from HRMDocument x where (x.parentReport is null or x.parentReport = x.id)");
         if (demographicUnmatched) {
             hql.append(" and size(x.matchedDemographics) = 0");
         }
