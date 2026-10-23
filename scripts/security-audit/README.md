@@ -47,6 +47,7 @@ Exit code is **1** when HIGH severity findings are present (so it can gate CI),
 | A10 | `Encode.forJavaScript(year + "-" + month)` — same `\-` problem |
 | A11 | `Encode.X(Encode.Y(...))` — chained encoders (double encoding) |
 | A12 | `value=<%=...%>` — HTML attribute missing quotes |
+| A13 | `Encode.forUriComponent("&view=" + v)`, or of a variable holding a pre-built `&a=b` fragment or query string — `&`/`=` become `%26`/`%3D`, so parameters merge (500s, dropped parameters). Exempts `param=<%=Encode.forUriComponent(...)%>`, which `CalendarPopup.jsp` expects as one encoded value |
 
 ### MEDIUM severity — wrong context, may break in edge cases
 

@@ -59,12 +59,13 @@
 
     StringBuffer sb = new StringBuffer();
     Hashtable h = new Hashtable();
+    //drugForGraph is a query fragment: encode the values here, never the whole fragment (that turns "&" into "%26")
     String drugForGraph = "";
     if (request.getParameterValues("drug") != null) {
         String[] drugs = request.getParameterValues("drug");
 
         for (String d : drugs) {
-            sb.append("&drug=" + d);
+            sb.append("&drug=" + Encode.forUriComponent(d));
             h.put(d, "drug");
         }
         drugForGraph = sb.toString();
@@ -200,7 +201,7 @@
                             </tr-->
             </table>
 
-            <img src="<%= request.getContextPath() %>/oscarEncounter/GraphMeasurements.do?method=actualLab&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&labType=<%=Encode.forUriComponent(String.valueOf(labType))%>&identifier=<%=Encode.forUriComponent(String.valueOf(identifier))%>&testName=<%=Encode.forUriComponent(String.valueOf(testName))%><%=Encode.forUriComponent(String.valueOf(drugForGraph))%>"/>
+            <img src="<%= request.getContextPath() %>/oscarEncounter/GraphMeasurements.do?method=actualLab&demographic_no=<%=Encode.forUriComponent(String.valueOf(demographicNo))%>&labType=<%=Encode.forUriComponent(String.valueOf(labType))%>&identifier=<%=Encode.forUriComponent(String.valueOf(identifier))%>&testName=<%=Encode.forUriComponent(String.valueOf(testName))%><%=Encode.forHtmlAttribute(drugForGraph)%>"/>
 
 
             <table width="100%" border="0" cellspacing="0" cellpadding="3"

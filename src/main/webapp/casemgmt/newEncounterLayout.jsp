@@ -406,7 +406,7 @@
         <% if ("ocean".equals(OscarProperties.getInstance().get("cme_js"))) {
             int randomNo = new Random().nextInt();%>
         <script id="mainScript"
-                src="${ pageContext.request.contextPath }/js/custom/ocean/cme.js?no-cache=<%=Encode.forJavaScript(String.valueOf(randomNo))%>&autoRefresh=true"
+                src="${ pageContext.request.contextPath }/js/custom/ocean/cme.js?no-cache=<%=Encode.forHtmlAttribute(String.valueOf(randomNo))%>&autoRefresh=true"
                 ocean-host="<%=Encode.forHtmlAttribute(OscarProperties.getInstance().getProperty("ocean_host"))%>"></script>
         <% } %>
 
