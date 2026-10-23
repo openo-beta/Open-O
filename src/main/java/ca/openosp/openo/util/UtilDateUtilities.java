@@ -36,6 +36,8 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 /**
  * @deprecated 2013-04-28 use ca.openosp.openo.util.DateUtils instead
  */
@@ -132,7 +134,7 @@ public class UtilDateUtilities {
         if (DOB == null) return (null);
 
         // If as of date is before birth, return "Not born"
-        if (pointInTime.before(DOB)) {
+        if (DateUtils.truncatedCompareTo(pointInTime, DOB, Calendar.DATE) < 0) {
             return ResourceBundle.getBundle("oscarResources").getString("global.notBorn");
         }
 
