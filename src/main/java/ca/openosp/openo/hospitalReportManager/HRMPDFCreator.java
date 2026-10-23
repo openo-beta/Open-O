@@ -59,6 +59,8 @@ public class HRMPDFCreator extends PdfPageEventHelper {
     private HRMReport hrmReport;
     private Document document;
     private LoggedInInfo loggedInInfo;
+    // Statement drawn by onEndPage in the bottom margin of every page, null when the provider has none
+    private PdfPTable confidentialityStatementFooter;
 
 
     public HRMPDFCreator(OutputStream outputStream, Integer hrmId, LoggedInInfo loggedInInfo) {
@@ -90,14 +92,7 @@ public class HRMPDFCreator extends PdfPageEventHelper {
     public void printPdf() {
         try {
             if (!hrmReport.isBinary()) {
-                document = new Document();
-
-                PdfWriter writer = PdfWriter.getInstance(document, outputStream);
-                writer.setPageEvent(this);
-
-                document.setPageSize(PageSize.LETTER);
-
-                document.open();
+                openDocument(outputStream, false);
 
                 if (hrmReport != null) {
                     generateHRMReport(hrmReport);
@@ -129,13 +124,16 @@ public class HRMPDFCreator extends PdfPageEventHelper {
     }
 
     /**
-     * Opens a letter-size PDF on the given stream with this class as page event handler.
+     * Opens a letter-size PDF on the given stream with this class as page event handler. The bottom
+     * margin is raised by the height of the confidentiality statement so {@link #onEndPage} can draw
+     * it under the content of every page.
      *
      * @param target   OutputStream where the PDF bytes go
      * @param fullPage boolean true removes the margins so an image can use the whole page
      * @throws DocumentException if the writer cannot be created
+     * @throws IOException       if the statement font cannot be created
      */
-    private void openDocument(OutputStream target, boolean fullPage) throws DocumentException {
+    private void openDocument(OutputStream target, boolean fullPage) throws DocumentException, IOException {
         document = new Document();
         PdfWriter writer = PdfWriter.getInstance(document, target);
         writer.setPageEvent(this);
@@ -143,17 +141,35 @@ public class HRMPDFCreator extends PdfPageEventHelper {
         if (fullPage) {
             document.setMargins(0, 0, 0, 0);
         }
+        confidentialityStatementFooter = buildConfidentialityStatementTable(PageSize.LETTER.getWidth() - document.leftMargin() - document.rightMargin());
+        if (confidentialityStatementFooter != null) {
+            document.setMargins(document.leftMargin(), document.rightMargin(), document.topMargin(), document.bottomMargin() + confidentialityStatementFooter.getTotalHeight());
+        }
         document.open();
     }
 
     /**
-     * Builds the confidentiality statement block printed under an image page.
+     * Draws the confidentiality statement in the bottom margin of the page just finished.
      *
+     * @param writer PdfWriter the writer of the PDF being built
+     * @param page   Document the document whose page is ending
+     */
+    @Override
+    public void onEndPage(PdfWriter writer, Document page) {
+        if (confidentialityStatementFooter != null) {
+            confidentialityStatementFooter.writeSelectedRows(0, -1, page.left(), page.bottom(), writer.getDirectContent());
+        }
+    }
+
+    /**
+     * Builds the confidentiality statement block printed at the foot of every page.
+     *
+     * @param width float the width of the block in points, the page width between the side margins
      * @return PdfPTable the statement block, or null when the printing provider has no statement
      * @throws IOException       if the font cannot be created
      * @throws DocumentException if the font cannot be created
      */
-    private PdfPTable buildConfidentialityStatementTable() throws IOException, DocumentException {
+    private PdfPTable buildConfidentialityStatementTable(float width) throws IOException, DocumentException {
         HRMProviderConfidentialityStatementDao hrmProviderConfidentialityStatementDao = SpringUtils.getBean(HRMProviderConfidentialityStatementDao.class);
         String confidentialityStatement = hrmProviderConfidentialityStatementDao.getConfidentialityStatementForProvider(loggedInInfo.getLoggedInProviderNo());
         if (confidentialityStatement == null || confidentialityStatement.trim().length() == 0) {
@@ -169,7 +185,7 @@ public class HRMPDFCreator extends PdfPageEventHelper {
         space.setBorder(0);
         space.setFixedHeight(2f);
         PdfPTable table = new PdfPTable(1);
-        table.setTotalWidth(PageSize.LETTER.getWidth());
+        table.setTotalWidth(width);
         table.setLockedWidth(true);
         PdfPCell cell = new PdfPCell();
         cell.setBorder(0);
@@ -183,24 +199,21 @@ public class HRMPDFCreator extends PdfPageEventHelper {
     }
 
     /**
-     * Adds one image to the current page, scaled to the page and rotated when it is wider than tall,
-     * with the confidentiality statement under it.
+     * Adds one image to the current page, scaled to the area inside the margins and rotated when it
+     * is wider than tall. The confidentiality statement footer below that area comes from onEndPage.
      *
-     * @param image                        Image the page content
-     * @param confidentialityStatementTable PdfPTable the statement block, or null to print none
+     * @param image Image the page content
      * @throws DocumentException if the image cannot be added
      */
-    private void addImagePage(Image image, PdfPTable confidentialityStatementTable) throws DocumentException {
-        float footerHeight = confidentialityStatementTable != null ? confidentialityStatementTable.getTotalHeight() + 5 : 0f;
-        image.scaleToFit(document.getPageSize().getWidth(), document.getPageSize().getHeight() - footerHeight);
-        if (image.getScaledWidth() >= document.getPageSize().getWidth() && image.getScaledHeight() <= document.getPageSize().getWidth()) {
+    private void addImagePage(Image image) throws DocumentException {
+        float width = document.right() - document.left();
+        float height = document.top() - document.bottom();
+        image.scaleToFit(width, height);
+        if (image.getScaledWidth() >= width && image.getScaledHeight() <= width) {
             image.setRotationDegrees(90);
-            image.scaleToFit(document.getPageSize().getWidth(), document.getPageSize().getHeight() - footerHeight);
+            image.scaleToFit(width, height);
         }
         document.add(image);
-        if (confidentialityStatementTable != null) {
-            document.add(confidentialityStatementTable);
-        }
     }
 
     /**
@@ -227,8 +240,9 @@ public class HRMPDFCreator extends PdfPageEventHelper {
      * @param extension String the attachment extension named in the notice
      * @return byte[] the notice page
      * @throws DocumentException if the page cannot be written
+     * @throws IOException       if the statement font cannot be created
      */
-    private byte[] unsupportedAttachmentPage(String extension) throws DocumentException {
+    private byte[] unsupportedAttachmentPage(String extension) throws DocumentException, IOException {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         openDocument(buffer, false);
         document.add(new Paragraph("This report has a " + extension + " attachment that cannot be printed. Open the report and use the download link."));
@@ -256,11 +270,10 @@ public class HRMPDFCreator extends PdfPageEventHelper {
                 return pdf;
             } else if (isImageExtension(extension)) {
                 openDocument(buffer, true);
-                addImagePage(Image.getInstance(hrmReport.getBinaryContent()), buildConfidentialityStatementTable());
+                addImagePage(Image.getInstance(hrmReport.getBinaryContent()));
                 document.close();
             } else if (".tiff".equals(extension)) {
                 openDocument(buffer, true);
-                PdfPTable confidentialityStatementTable = buildConfidentialityStatementTable();
                 // A TIFF file can hold several pages; each one becomes a page of the PDF
                 RandomAccessFileOrArray tiff = new RandomAccessFileOrArray(new RandomAccessSourceFactory().createSource(hrmReport.getBinaryContent()));
                 int pageCount = TiffImage.getNumberOfPages(tiff);
@@ -268,7 +281,7 @@ public class HRMPDFCreator extends PdfPageEventHelper {
                     if (page > 1) {
                         document.newPage();
                     }
-                    addImagePage(TiffImage.getTiffImage(tiff, page), confidentialityStatementTable);
+                    addImagePage(TiffImage.getTiffImage(tiff, page));
                 }
                 document.close();
             } else if (".rtf".equals(extension)) {
@@ -296,7 +309,8 @@ public class HRMPDFCreator extends PdfPageEventHelper {
     }
 
     /**
-     * Lays out the report header, the given body text, the confidentiality statement and the metadata box.
+     * Lays out the report header, the given body text and the metadata box. The confidentiality
+     * statement is drawn by onEndPage at the foot of every page.
      *
      * @param hrmReport  HRMReport the report being printed
      * @param reportText String the text to print as the report body
@@ -361,18 +375,6 @@ public class HRMPDFCreator extends PdfPageEventHelper {
         cell.setPhrase(new Phrase(reportText, font));
         mainPage.addCell(cell);
         mainPage.addCell(space);
-
-        //Add confidentiality statement to PDF
-        HRMProviderConfidentialityStatementDao hrmProviderConfidentialityStatementDao = SpringUtils.getBean(HRMProviderConfidentialityStatementDao.class);
-        String confidentialityStatement = hrmProviderConfidentialityStatementDao.getConfidentialityStatementForProvider(loggedInInfo.getLoggedInProviderNo());
-        if (confidentialityStatement != null && confidentialityStatement.trim().length() > 0) {
-            mainPage.addCell(separator);
-            cell.setPhrase(new Phrase("Confidentiality Statement:", italicFont));
-            mainPage.addCell(cell);
-            cell.setPhrase(new Phrase(confidentialityStatement, font));
-            mainPage.addCell(cell);
-            mainPage.addCell(space);
-        }
 
         //Creates a box at the bottom of the report that contains the metadata
         float[] metaDataBoxWidths = {1f, 2f};
