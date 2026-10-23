@@ -419,7 +419,7 @@
                     <table>
                         <tr>
                             <td><fmt:message key="inboxmanager.document.DocumentUploaded"/></td>
-                            <td><%=curdoc.getDateTimeStamp()%>
+                            <td><%=Encode.forHtml(ConversionUtils.toTimestampString(curdoc.getContentDateTime()))%>
                             </td>
                         </tr>
                         <tr>
