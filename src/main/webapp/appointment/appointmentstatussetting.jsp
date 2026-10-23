@@ -29,7 +29,6 @@
 
     Request attributes, set by AppointmentStatus2Action (appointment/apptStatusSetting.do):
       allStatus             List<AppointmentStatus> every status
-      descriptionMaxLength  Integer the description column's width
       saveFailed            Boolean true when the last change was rejected
       saveFailedKey         String the message for a change refused with a reason, if any
       saveFailedParam       String that message's parameter, if it takes one
@@ -58,6 +57,7 @@
 <c:set var="statusAction" value="/appointment/apptStatusSetting.do"/>
 <c:set var="activeTab" value="status"/>
 <c:set var="itemStyleEditorAction" value="${statusAction}"/>
+<c:set var="itemStyleEditorDescriptionMaxLength" value="<%= ca.openosp.openo.appt.status.service.AppointmentStatusMgr.DESCRIPTION_MAX_LENGTH %>"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -96,8 +96,7 @@
 <fmt:message key="admin.appt.status.mgr.label.lockedTitle" var="lockedTitle"/>
 
 <div class="table-responsive">
-    <table id="statusTable" class="table table-sm table-striped align-middle"
-           data-description-max-length="${e:forHtmlAttribute(descriptionMaxLength)}">
+    <table id="statusTable" class="table table-sm table-striped align-middle">
         <thead>
         <tr>
             <th scope="col"><fmt:message key="admin.appt.status.mgr.label.status"/></th>
@@ -167,8 +166,6 @@
 <%@ include file="itemStyleEditorDialog.jspf" %>
 <script>
     (function () {
-        const table = document.getElementById('statusTable');
-
         // Reset overwrites every editable status's description, colour and icon, with no undo.
         document.querySelectorAll('form[data-confirm]').forEach(function (form) {
             form.addEventListener('submit', function (event) {
@@ -178,11 +175,7 @@
             });
         });
 
-        ItemStyleEditor.init({
-            description: {maxLength: Number(table.dataset.descriptionMaxLength)},
-            colour: {clearable: false},
-            icon: {clearable: false}
-        });
+        ItemStyleEditor.init({description: {}, colour: {}, icon: {}});
     })();
 </script>
 </body>

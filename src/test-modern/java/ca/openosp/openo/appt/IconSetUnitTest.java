@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("IconSet unit tests")
 @Tag("unit")
 @Tag("fast")
+@Tag("appointment")
 public class IconSetUnitTest {
 
     /* The width of appointment_status.icon, the narrower of the two icon columns. */
@@ -42,7 +43,7 @@ public class IconSetUnitTest {
 
         @Test
         @DisplayName("should offer the status images first, then the glyphs, each once")
-        void shouldListImagesThenGlyphs() {
+        void shouldListImagesThenGlyphs_whenOffered() {
             assertThat(IconSet.ICONS).hasSize(225)
                     .doesNotHaveDuplicates()
                     .containsExactlyElementsOf(Stream.concat(IconSet.IMAGES.stream(), IconSet.GLYPHS.stream()).toList());
@@ -52,7 +53,7 @@ public class IconSetUnitTest {
 
         @Test
         @DisplayName("should fit every icon in the status icon column")
-        void shouldFitIconColumn() {
+        void shouldFitIconColumn_whenStored() {
             assertThat(IconSet.ICONS).allSatisfy(icon -> assertThat(icon).hasSizeLessThanOrEqualTo(ICON_COLUMN_WIDTH));
         }
 
@@ -90,7 +91,8 @@ public class IconSetUnitTest {
 
         @ParameterizedTest
         @NullAndEmptySource
-        @ValueSource(strings = {"Shere.gif", "lts.gif", "glyphicon-nope", "glyphicon-Home", " here.gif", "../here.gif"})
+        @ValueSource(strings = {"Shere.gif", "lts.gif", "glyphicon-nope", "glyphicon-Home", " here.gif", "../here.gif",
+                "home", "glyphicon-", "fa-home", "glyphicon home", "glyphicon-home\" onclick=\"x", "here.gif\" onerror=\"x"})
         @DisplayName("should refuse anything outside the set")
         void shouldRefuse_whenNotInSet(String icon) {
             assertThat(IconSet.contains(icon)).isFalse();

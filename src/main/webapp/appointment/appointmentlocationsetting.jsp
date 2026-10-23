@@ -77,6 +77,8 @@
 <c:set var="locationAction" value="/appointment/apptLocationSetting.do"/>
 <c:set var="itemStyleEditorAction" value="${locationAction}"/>
 <c:set var="itemStyleEditorDescriptionTitleKey" value="admin.appt.location.label.editName"/>
+<c:set var="itemStyleEditorDescriptionMaxLength" value="<%= ca.openosp.openo.appt.LocationList.LABEL_MAX_LENGTH %>"/>
+<c:set var="itemStyleEditorClearable" value="${true}"/>
 <fmt:message key="admin.appt.location.label.editName" var="editNameLabel"/>
 <fmt:message key="admin.appt.location.msg.confirmLastDisable" var="confirmLastDisable"/>
 <%-- Shown without parameters, so {old}, {new} and {count} reach the page's script as they are. --%>
@@ -104,8 +106,7 @@
         }
     </style>
 </head>
-<body class="p-3" data-name-max-length="<%= ca.openosp.openo.appt.LocationList.LABEL_MAX_LENGTH %>"
-      data-confirm-rename="${e:forHtmlAttribute(confirmRename)}" data-confirm-rename-one="${e:forHtmlAttribute(confirmRenameOne)}">
+<body class="p-3" data-confirm-rename="${e:forHtmlAttribute(confirmRename)}" data-confirm-rename-one="${e:forHtmlAttribute(confirmRenameOne)}">
 <%@ include file="appointmentSettingsNav.jspf" %>
 
 <div class="d-flex align-items-center mb-3">
@@ -288,11 +289,7 @@
             }));
         }
 
-        ItemStyleEditor.init({
-            description: {maxLength: Number(document.body.dataset.nameMaxLength), confirm: confirmRename},
-            colour: {clearable: true},
-            icon: {clearable: true}
-        });
+        ItemStyleEditor.init({description: {confirm: confirmRename}, colour: {}, icon: {}});
     })();
 </script>
 </body>

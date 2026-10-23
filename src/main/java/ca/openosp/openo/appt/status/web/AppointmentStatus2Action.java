@@ -19,16 +19,10 @@
 package ca.openosp.openo.appt.status.web;
 
 import java.util.Objects;
-import java.util.function.BiPredicate;
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
-
-import org.apache.commons.lang3.StringUtils;
 
 import ca.openosp.openo.appt.status.service.AppointmentStatusMgr;
 import ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl;
 import ca.openosp.openo.appt.web.AppointmentSettingsAction;
-import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.managers.SecurityInfoManager;
 
 /**
@@ -46,7 +40,7 @@ import ca.openosp.openo.managers.SecurityInfoManager;
  * </ul>
  *
  * <p>Locked statuses (editable=0) can't be changed: edits and Enable/Disable refuse them, and Reset
- * skips them. Each saved change writes an audit log row.</p>
+ * skips them. The manager writes an audit log row for each saved change.</p>
  *
  * @since 2024-12-06
  */
@@ -65,39 +59,20 @@ public class AppointmentStatus2Action extends AppointmentSettingsAction {
         // The admin menu links here with no dispatch, and a switch on null throws.
         String dispatch = Objects.toString(request.getParameter("dispatch"), "view");
         return switch (dispatch) {
-            case "reset" -> changeAudited(dispatch, () -> {
-                appointmentStatusMgr.reset();
+            case "reset" -> change(() -> {
+                appointmentStatusMgr.reset(getLoggedInInfo());
                 return true;
-            }, () -> "every editable status restored to its default description, colour and icon");
-            case "changestatus" -> changeAudited(dispatch,
-                    () -> appointmentStatusMgr.changeStatus(intParameter("statusID"), intParameter("iActive")),
-                    () -> "appointment_status id " + intParameter("statusID") + ": active set to " + intParameter("iActive"));
-            case "updateDescription" -> changeStyle(dispatch, "description", appointmentStatusMgr::updateDescription);
-            case "updateColour" -> changeStyle(dispatch, "colour", appointmentStatusMgr::updateColour);
-            case "updateIcon" -> changeStyle(dispatch, "icon", appointmentStatusMgr::updateIcon);
+            });
+            case "changestatus" -> change(() ->
+                    appointmentStatusMgr.changeStatus(getLoggedInInfo(), intParameter("statusID"), intParameter("iActive")));
+            case "updateDescription" -> change(() ->
+                    appointmentStatusMgr.updateDescription(getLoggedInInfo(), intParameter("ID"), request.getParameter("value")));
+            case "updateColour" -> change(() ->
+                    appointmentStatusMgr.updateColour(getLoggedInInfo(), intParameter("ID"), request.getParameter("value")));
+            case "updateIcon" -> change(() ->
+                    appointmentStatusMgr.updateIcon(getLoggedInInfo(), intParameter("ID"), request.getParameter("value")));
             default -> show();
         };
-    }
-
-    /* Sets status ID's description, colour or icon to the posted value. */
-    private String changeStyle(String dispatch, String field, BiPredicate<Integer, String> update) {
-        String value = request.getParameter("value");
-        return changeAudited(dispatch, () -> update.test(intParameter("ID"), value),
-                () -> "appointment_status id " + intParameter("ID") + ": " + field + " set to [" + StringUtils.trimToEmpty(value) + "]");
-    }
-
-    /*
-     * Applies a change and, once it is saved, writes its audit row, as the Location tab's manager
-     * does for its changes. A refused change writes none.
-     */
-    private String changeAudited(String dispatch, BooleanSupplier change, Supplier<String> data) {
-        return change(() -> {
-            boolean saved = change.getAsBoolean();
-            if (saved) {
-                LogAction.addLogSynchronous(getLoggedInInfo(), "AppointmentStatus2Action." + dispatch, data.get());
-            }
-            return saved;
-        });
     }
 
     @Override
@@ -108,7 +83,6 @@ public class AppointmentStatus2Action extends AppointmentSettingsAction {
     @Override
     protected String view() {
         request.setAttribute("allStatus", appointmentStatusMgr.getAllStatus());
-        request.setAttribute("descriptionMaxLength", AppointmentStatusMgr.DESCRIPTION_MAX_LENGTH);
         return SUCCESS;
     }
 }

@@ -203,6 +203,7 @@ Ontario, Canada
         <script src="<%= request.getContextPath() %>/js/global.js"></script>
         <script src="<%= request.getContextPath() %>/js/checkDate.js"></script>
         <script src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
+        <link href="<%= request.getContextPath() %>/css/locationSelect.css" rel="stylesheet">
         <script src="<%= request.getContextPath() %>/js/appointment/locationSelect.js"></script>
 
         <style>
@@ -214,25 +215,6 @@ Ontario, Canada
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		line-height: 1 !important;
-	}
-
-	/* The rule above gives glyph icons Arial too; the glyph is drawn in ::before, which it doesn't reach. */
-	.location-chip .glyphicon::before {
-		font-family: 'Glyphicons Halflings';
-	}
-
-	/* Location menu rows a little roomier than the browser's own list, as in Reason. The rule above sets 12px and
-	   line-height 1, so this needs !important and enough classes to outrank it. The 16px line fits a chip, which sits
-	   at its top. */
-	.ui-selectmenu-menu.location-menu .ui-menu .ui-menu-item-wrapper {
-		padding-top: 5px;
-		padding-bottom: 5px;
-		font-size: 13px !important;
-		line-height: 16px !important;
-	}
-
-	.location-menu .location-chip {
-		vertical-align: top;
 	}
 
             .form-wrapper {
@@ -534,11 +516,8 @@ Ontario, Canada
                 document.forms[0].notes.value = "<%= Encode.forJavaScriptBlock(apptObj.getNotes()) %>";
                 document.forms[0].resources.value = "<%=Encode.forJavaScriptBlock(apptObj.getResources())%>";
                 document.forms[0].type.value = "<%=Encode.forJavaScriptBlock(apptObj.getType())%>";
-                <% if (locationMode) { %>
-                selectLocationCode(document.forms[0].locationCode, "<%=Encode.forJavaScriptBlock(StringUtils.defaultString(apptObj.getLocationCode()))%>");
-                <% } else { %>
-                document.forms[0].location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
-                <% } %>
+                pasteLocation(document.forms[0], "<%=Encode.forJavaScriptBlock(StringUtils.defaultString(apptObj.getLocationCode()))%>",
+                        "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>");
                 if ('<%=apptObj.getUrgency()%>' == 'critical') {
                     document.forms[0].urgency.checked = "checked";
                 }
@@ -1328,9 +1307,7 @@ Ontario, Canada
                                 </select>
                                 <% } else if (locationMode) { %>
                                 <%-- The Default Location only on first display: a patient search posts back staff's choice. --%>
-                                <appt:locationSelect choices="<%=locations.getActiveItems()%>"
-                                                     selected='<%=bFirstDisp ? locations.getNewBookingValue(loggedInInfo) : request.getParameter("locationCode")%>'
-                                                     required="<%=locations.isRequiredForNewBooking(loggedInInfo)%>"/>
+                                <appt:locationSelect dropdown='<%=locations.newBookingDropdown(loggedInInfo, bFirstDisp ? null : request.getParameter("locationCode"))%>'/>
                                 <% } else { %>
 	            <input type="TEXT" name="location" tabindex="4" tabindex="4" value="<%=loc%>" class="form-control">
                                 <% } %>

@@ -34,11 +34,14 @@
     The icon grid carries the Icon Set (IconSet.ICONS) and where its images are.
 
     Include with a static include inside <body>, after setting:
-      itemStyleEditorAction  the context-relative form action, e.g. /appointment/apptStatusSetting.do
+      itemStyleEditorAction                the context-relative form action, e.g. /appointment/apptStatusSetting.do
+      itemStyleEditorDescriptionMaxLength  Integer the most characters a description may have
     and optionally:
       itemStyleEditorDescriptionTitleKey  the message key heading the description editor, when the
                                           page calls the value something of its own, such as a
                                           location's name; defaults to "Edit Description"
+      itemStyleEditorClearable            true to offer Clear for a colour or an icon, which saves
+                                          a blank value; a description is never cleared
 
     Posts: ID, dispatch (updateDescription, updateColour or updateIcon) and value.
 
@@ -74,7 +77,7 @@
                     <fmt:message key="${empty itemStyleEditorDescriptionTitleKey ? 'appointment.itemStyleEditor.title.description' : itemStyleEditorDescriptionTitleKey}"/>
                 </label>
                 <input type="text" class="form-control item-style-editor-description" id="itemStyleEditorDescription"
-                       required pattern=".*\S.*">
+                       required pattern=".*\S.*" maxlength="${e:forHtmlAttribute(itemStyleEditorDescriptionMaxLength)}">
             </fieldset>
 
             <fieldset data-kind="colour" hidden disabled>
@@ -100,9 +103,11 @@
         </div>
 
         <div class="card-footer d-flex gap-2 justify-content-end">
-            <button type="button" class="btn btn-outline-danger me-auto" data-action="clear" hidden>
-                <fmt:message key="global.clear"/>
-            </button>
+            <c:if test="${itemStyleEditorClearable}">
+                <button type="button" class="btn btn-outline-danger me-auto" data-action="clear" hidden>
+                    <fmt:message key="global.clear"/>
+                </button>
+            </c:if>
             <button type="button" class="btn btn-secondary" data-action="cancel">
                 <fmt:message key="global.btnCancel"/>
             </button>

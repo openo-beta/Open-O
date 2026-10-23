@@ -7,6 +7,7 @@ import java.util.function.BiPredicate;
 import ca.openosp.openo.appt.LocationList;
 import ca.openosp.openo.commn.model.LookupList;
 import ca.openosp.openo.commn.model.LookupListItem;
+import ca.openosp.openo.managers.AppointmentLocationManager;
 import ca.openosp.openo.managers.LookupListManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.SpringUtils;
@@ -33,8 +34,9 @@ import ca.openosp.openo.utility.SpringUtils;
  *   <li>Anything else renders the page.</li>
  * </ul>
  *
- * <p>Changes need update on {@code _admin}, which {@link LookupListManager} requires, except
- * disabling, which needs delete because it is the manager's remove. The link to add locations
+ * <p>Changes need update on {@code _admin}, which {@link LookupListManager} and
+ * {@link AppointmentLocationManager} require, except disabling, which needs delete because it is
+ * the Look-Up List Manager's remove. The link to add locations
  * needs write, because the manager's Add does. All changes must be posted (see
  * {@link AppointmentSettingsAction}). A location's name must be at most
  * {@link LocationList#LABEL_MAX_LENGTH} characters, because a booking saves a copy of it, and may
@@ -44,10 +46,11 @@ import ca.openosp.openo.utility.SpringUtils;
  */
 public class AppointmentLocation2Action extends AppointmentSettingsAction {
 
-    /** Location changes are Look-Up List edits, which LookupListManager checks against _admin. */
+    /** Location changes are Look-Up List edits, which the managers check against _admin. */
     private static final List<String> ADMIN = List.of("_admin");
 
     private LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
+    private AppointmentLocationManager locationManager = SpringUtils.getBean(AppointmentLocationManager.class);
 
     private String anchor = "";
 
@@ -106,17 +109,17 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
 
     @Override
     protected String view() {
-        LookupList list = lookupListManager.findAppointmentLocationList(getLoggedInInfo());
+        LookupList list = locationManager.findLocationList(getLoggedInInfo());
         LocationList locations = LocationList.of(list);
         request.setAttribute("locationListName", list == null ? null : list.getName());
         request.setAttribute("locations", locations.getItemsActiveFirst());
         request.setAttribute("activeLocationCount", locations.getActiveItems().size());
         request.setAttribute("defaultLocation", locations.getDefault(getLoggedInInfo()));
-        request.setAttribute("locationRequired", lookupListManager.isAppointmentLocationRequired(getLoggedInInfo()));
+        request.setAttribute("locationRequired", locationManager.isRequired(getLoggedInInfo()));
         request.setAttribute("canDeactivate", isCanDeactivate());
         // A rename asks first when it would also rename upcoming appointments, so the page needs their count.
         if (canChange()) {
-            request.setAttribute("upcomingCounts", lookupListManager.countUpcomingAppointmentsByLocation(getLoggedInInfo()));
+            request.setAttribute("upcomingCounts", locationManager.countUpcomingAppointments(getLoggedInInfo()));
         }
         // The Add link opens the Look-Up List Manager, whose Add needs write, not update.
         request.setAttribute("canAdd", hasAnyPrivilege(ADMIN, SecurityInfoManager.WRITE));
@@ -130,7 +133,7 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
     private String changeLocation(BiPredicate<LocationList, LookupListItem> change) {
         return change(() -> {
             int id = intParameter("ID");
-            LocationList locations = LocationList.of(lookupListManager.findAppointmentLocationList(getLoggedInInfo()));
+            LocationList locations = LocationList.of(locationManager.findLocationList(getLoggedInInfo()));
             LookupListItem item = locations.find(id);
             if (item == null) {
                 throw new IllegalArgumentException("not a Location List item: " + id);
@@ -149,7 +152,7 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
         }
         requireNameFree(locations, name, item);
 
-        return lookupListManager.updateLookupListItemLabel(getLoggedInInfo(), item.getId(), name);
+        return locationManager.rename(getLoggedInInfo(), item.getId(), name);
     }
 
     /* Enables a location, unless an active one already has its name. */
@@ -168,24 +171,15 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
         return lookupListManager.removeLookupListItem(getLoggedInInfo(), item.getId());
     }
 
-    /* Makes a location the default; an inactive one can't be, because no new booking offers it. */
+    /* Makes a location the default; the manager refuses an inactive one. */
     private boolean makeDefault(LocationList locations, LookupListItem item) {
-        if (!item.isActive()) {
-            throw new IllegalArgumentException("an inactive location can't be the default: " + item.getId());
-        }
-
-        lookupListManager.setAppointmentLocationDefault(getLoggedInInfo(), item.getId());
+        locationManager.makeDefault(getLoggedInInfo(), item.getId());
         return true;
     }
 
-    /*
-     * Removes the default, but only while it is still this location: a page left open while another
-     * location was made the default must not remove that one.
-     */
+    /* Removes the default, which the manager does only while it is still this location. */
     private boolean removeDefault(LocationList locations, LookupListItem item) {
-        if (item.getId().equals(lookupListManager.findAppointmentLocationDefault(getLoggedInInfo()))) {
-            lookupListManager.setAppointmentLocationDefault(getLoggedInInfo(), null);
-        }
+        locationManager.removeDefault(getLoggedInInfo(), item.getId());
         return true;
     }
 
@@ -194,7 +188,7 @@ public class AppointmentLocation2Action extends AppointmentSettingsAction {
      * unchecked checkbox posts nothing, which turns the requirement off.
      */
     private boolean updateRequirement() {
-        lookupListManager.setAppointmentLocationRequired(getLoggedInInfo(), Boolean.parseBoolean(value()));
+        locationManager.setRequired(getLoggedInInfo(), Boolean.parseBoolean(value()));
         return true;
     }
 

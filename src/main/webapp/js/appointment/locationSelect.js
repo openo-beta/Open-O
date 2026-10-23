@@ -8,7 +8,7 @@
 /**
  * A jQuery UI selectmenu that draws each option's Location Chip (its data-chip) before its name, in the
  * menu and on the button. It redraws on the select's change event, so code that sets the value fires one.
- * Its menu carries the class location-menu, for the page to size its rows.
+ * Its menu carries the class location-menu, which css/locationSelect.css sizes its rows by.
  */
 jQuery.widget('custom.locationmenu', jQuery.ui.selectmenu, {
     options: {
@@ -97,4 +97,21 @@ function selectLocationCode(select, code) {
     });
     select.value = offered ? code : '';
     select.dispatchEvent(new Event('change'));
+}
+
+/**
+ * Pastes a copied appointment's location into a booking form: its code into the Location List
+ * dropdown when the form offers one (see selectLocationCode), otherwise its text into the location
+ * field, which sites, programs and free text all post.
+ *
+ * @param {HTMLFormElement} form the booking form
+ * @param {string} code the copied location code, or blank
+ * @param {string} text the copied location text, or blank
+ */
+function pasteLocation(form, code, text) {
+    if (form.locationCode) {
+        selectLocationCode(form.locationCode, code);
+    } else {
+        form.location.value = text;
+    }
 }

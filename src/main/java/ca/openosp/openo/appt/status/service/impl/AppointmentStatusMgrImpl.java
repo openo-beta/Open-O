@@ -39,6 +39,8 @@ import ca.openosp.openo.appt.IconSet;
 import ca.openosp.openo.appt.ItemStyleColour;
 import ca.openosp.openo.commn.dao.AppointmentStatusDao;
 import ca.openosp.openo.commn.model.AppointmentStatus;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
 
 import ca.openosp.openo.appt.status.service.AppointmentStatusMgr;
@@ -145,37 +147,37 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
     }
 
     @Override
-    public boolean changeStatus(int id, int active) {
+    public boolean changeStatus(LoggedInInfo loggedInInfo, int id, int active) {
         if (active != 0 && active != 1) {
             throw new IllegalArgumentException("appointment status active must be 0 or 1");
         }
-        return updateEditable(id, active, AppointmentStatus::setActive);
+        return updateEditable(loggedInInfo, id, active, AppointmentStatus::setActive, "changeStatus", "active is now " + active);
     }
 
     @Override
-    public boolean updateDescription(int id, String description) {
+    public boolean updateDescription(LoggedInInfo loggedInInfo, int id, String description) {
         String value = StringUtils.trimToEmpty(description);
         if (value.isEmpty() || value.length() > DESCRIPTION_MAX_LENGTH) {
             throw new IllegalArgumentException("appointment status description must be 1-" + DESCRIPTION_MAX_LENGTH + " characters");
         }
-        return updateEditable(id, value, AppointmentStatus::setDescription);
+        return updateEditable(loggedInInfo, id, value, AppointmentStatus::setDescription, "updateDescription", "description is now [" + value + "]");
     }
 
     @Override
-    public boolean updateColour(int id, String colour) {
+    public boolean updateColour(LoggedInInfo loggedInInfo, int id, String colour) {
         String value = StringUtils.trimToEmpty(colour);
         if (!ItemStyleColour.isColour(value)) {
             throw new IllegalArgumentException("appointment status colour must be #rrggbb or #rrggbbaa");
         }
-        return updateEditable(id, value, AppointmentStatus::setColor);
+        return updateEditable(loggedInInfo, id, value, AppointmentStatus::setColor, "updateColour", "colour is now [" + value + "]");
     }
 
     @Override
-    public boolean updateIcon(int id, String icon) {
+    public boolean updateIcon(LoggedInInfo loggedInInfo, int id, String icon) {
         if (!IconSet.contains(icon)) {
             throw new IllegalArgumentException("appointment status icon must be in the Icon Set");
         }
-        return updateEditable(id, icon, AppointmentStatus::setIcon);
+        return updateEditable(loggedInInfo, id, icon, AppointmentStatus::setIcon, "updateIcon", "icon is now [" + icon + "]");
     }
 
     /* Locked statuses (editable=0) keep their seeded look: neither an edit nor Reset writes them. */
@@ -183,18 +185,21 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
         return status.getEditable() == 1;
     }
 
-    private <T> boolean updateEditable(int id, T value, BiConsumer<AppointmentStatus, T> setter) {
+    /* Saves one change to an editable status and audits it; change names it on the audit row. */
+    private <T> boolean updateEditable(LoggedInInfo loggedInInfo, int id, T value, BiConsumer<AppointmentStatus, T> setter,
+                                       String change, String result) {
         AppointmentStatus status = appointStatusDao.find(id);
         if (status == null || !isEditable(status)) {
             return false;
         }
         setter.accept(status, value);
         appointStatusDao.merge(status);
+        LogAction.addLogSynchronous(loggedInInfo, "AppointmentStatusMgr." + change, "appointment_status id " + id + ": " + result);
         return true;
     }
 
     @Override
-    public void reset() {
+    public void reset(LoggedInInfo loggedInInfo) {
         List<AppointmentStatus> changed = new ArrayList<>();
         for (AppointmentStatus status : appointStatusDao.findAll()) {
             StatusStyle style = DEFAULT_STYLES.get(status.getStatus());
@@ -206,5 +211,7 @@ public class AppointmentStatusMgrImpl implements AppointmentStatusMgr {
             }
         }
         appointStatusDao.mergeAll(changed);
+        LogAction.addLogSynchronous(loggedInInfo, "AppointmentStatusMgr.reset",
+                "every editable status restored to its default description, colour and icon");
     }
 }
