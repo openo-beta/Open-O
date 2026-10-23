@@ -56,12 +56,15 @@
 <%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 <%@ page import="ca.openosp.openo.commn.model.TicklerTextSuggest" %>
 <%@ page import="ca.openosp.openo.commn.model.UserProperty" %>
+<%@ page import="ca.openosp.openo.managers.SecurityInfoManager" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.MyDateFormat" %>
 <%@ page import="ca.openosp.OscarProperties" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="java.util.GregorianCalendar" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.apache.commons.lang3.StringUtils" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -86,6 +89,7 @@
   UserPropertyDAO propertyDao = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
   OscarAppointmentDao appointmentDao = SpringUtils.getBean(OscarAppointmentDao.class);
   TicklerTextSuggestDao ticklerTextSuggestDao = SpringUtils.getBean(TicklerTextSuggestDao.class);
+  SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 %>
 
 <%
@@ -102,11 +106,24 @@
     String demoName = request.getParameter("name");
     String defaultTaskAssignee = "";
 
+    boolean showDemoInfo = false;
+    String demoHin = "";
+    String demoEmail = "";
+    String demoMrpName = "";
+
     Demographic demographic = demographicDao.getDemographic(request.getParameter("demographic_no"));
     if (demographic != null) {
         demoName = demographic.getFormattedName();
         demoMRP = demographic.getProviderNo();
         bFirstDisp = false;
+
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        showDemoInfo = securityInfoManager.hasPrivilege(loggedInInfo, "_demographic", "r", demographic.getDemographicNo());
+        if (showDemoInfo) {
+            demoHin = (StringUtils.trimToEmpty(demographic.getHin()) + " " + StringUtils.trimToEmpty(demographic.getVer())).trim();
+            demoEmail = StringUtils.trimToEmpty(demographic.getEmail());
+            demoMrpName = providerDao.getProviderName(demoMRP);
+        }
     }
 
     if (demoName == null) {
@@ -185,6 +202,13 @@
         }
         table tr td {
           border:none !important;
+        }
+        /* align labels with the text inside their fields */
+        table tr td:first-child label {
+          padding-top: 11px;
+        }
+        table tr td:first-child label[for="ticklerMessage"] {
+          padding-top: 7px;
         }
       </style>
       <link href="<%=request.getContextPath()%>/share/css/dateTimeQuickPick.css" rel="stylesheet" type="text/css" />
@@ -558,6 +582,7 @@
             <input type="hidden" name="updateParent" value="<%=Encode.forHtmlAttribute(updateParent)%>">
 
           <table class="table table-condensed">
+                <colgroup><col style="width: 20%;"><col></colgroup>
                 <tr>
                     <td style="border:none;">
                       <label for="keyword">
@@ -583,6 +608,7 @@
             <input type="hidden" name="demographic_no" id="demogrpahic_no" value="<%=bFirstDisp ? "" : request.getParameter("demographic_no").isEmpty() ? "" : Encode.forHtmlAttribute(request.getParameter("demographic_no"))%>">
 <%--            <input type="hidden" name="writeToEncounter" value="<%=Encode.forHtmlAttribute(writeToEncounter.toString())%>">--%>
             <table class="table table-condensed">
+                <colgroup><col style="width: 20%;"><col></colgroup>
 
 <%--                <tr>--%>
 <%--                  <td><label for="demogrpahic_no"> <fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.formChartNo"/>:</label></td>--%>
@@ -716,6 +742,12 @@
                         <input type="hidden" name="docId" value="<%=Encode.forHtmlAttribute(request.getParameter("docId") != null ? request.getParameter("docId") : "")%>">
                     </td>
                 </tr>
+                <% if (showDemoInfo) { %>
+                <tr>
+                    <td><label for="demoMrp"><fmt:message key="tickler.ticklerMain.MRP"/>:</label></td>
+                    <td><input type="text" class="form-control" id="demoMrp" readonly value="<%=Encode.forHtmlAttribute(demoMrpName)%>"></td>
+                </tr>
+                <% } %>
                 <tr>
                     <td >
                       <a href="#" onclick="openBrWindow('./ticklerSuggestedText.jsp','','width=680,height=400')" >
@@ -743,6 +775,16 @@
                       <textarea name="ticklerMessage" id="ticklerMessage" class="form-control"></textarea>
                     </td>
                 </tr>
+                <% if (showDemoInfo) { %>
+                <tr>
+                    <td><label for="demoHin"><fmt:message key="demographic.patient.context.hin"/>:</label></td>
+                    <td><input type="text" class="form-control" id="demoHin" readonly value="<%=Encode.forHtmlAttribute(demoHin)%>"></td>
+                </tr>
+                <tr>
+                    <td><label for="demoEmail"><fmt:message key="tickler.ticklerEdit.email"/>:</label></td>
+                    <td><input type="text" class="form-control" id="demoEmail" readonly value="<%=Encode.forHtmlAttribute(demoEmail)%>"></td>
+                </tr>
+                <% } %>
                 <tr>
                     <td colspan="2"><input type="button" name="Button" class="btn btn-primary"
                                value="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerAdd.btnSubmit"/>"
