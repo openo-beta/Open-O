@@ -365,8 +365,8 @@
             }
 
             function addPrintOption(name, bean) {
-                var test1Str = "<img style=\"cursor: pointer;\" title=\"Print " + name + "\" id=\"img" + name + "\" alt=\"Print " + name + "\" onclick=\"return printInfo(this, 'extPrint" + name + "');\" src=\"" + ctx + "/oscarEncounter/graphics/printer.png\">&nbsp;" + name;
-                jQuery("#printDateRow").before("<tr><td></td><td>" + test1Str + "</tr></tr>");
+                var test1Str = "<label title=\"Print " + name + "\"><input type=\"checkbox\" id=\"chk" + name + "\" onclick=\"printInfo(this, 'extPrint" + name + "');\"> " + name + "</label>";
+                jQuery("#printDateRow").before("<tr><td></td><td>" + test1Str + "</td></tr>");
                 jQuery("form[name='caseManagementEntryForm']").append("<input name=\"extPrint" + name + "\" id=\"extPrint" + name + "\" value=\"false\" type=\"hidden\"/>");
                 jQuery.ajax({
                     url: ctx + "/casemgmt/ExtPrintRegistry.do?method=register&name=" + name + "&bean=" + bean,
@@ -805,58 +805,38 @@
         <form id="frmPrintOps" action="" onsubmit="return false;">
             <table id="printElementsTable">
                 <tr>
-                    <td><input type="radio" id="printopSelected" name="printop"
-                               value="selected">
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintSelect"/></td>
+                    <td><input type="radio" id="printopAll" name="printop"
+                               value="all">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintAll"/></td>
                     <td>
                         <security:oscarSec roleName="<%=roleName%>"
                                            objectName="_newCasemgmt.cpp" rights="r" reverse="false">
-                            <img style="cursor: pointer;"
-                                 title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.print.title"/>"
-                                 id='imgPrintCPP'
-                                 alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintCPP.title"/>"
-                                 onclick="return printInfo(this,'printCPP');"
-                                 src='<c:out value="${ctx}"/>/oscarEncounter/graphics/printer.png'>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.cpp.title"/>
+                            <label title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintCPP.title"/>"><input type="checkbox" id="chkPrintCPP"
+                                   onclick="printInfo(this, 'printCPP');"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.cpp.title"/></label>
                         </security:oscarSec>
                     </td>
                 </tr>
                 <tr>
-                    <td><input type="radio" id="printopAll" name="printop"
-                               value="all">
-                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintAll"/></td>
-                    <td><img style="cursor: pointer;"
-                             title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.print.title"/>"
-                             id='imgPrintRx'
-                             alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintRx.title"/>"
-                             onclick="return printInfo(this, 'printRx');"
-                             src='<c:out value="${ctx}"/>/oscarEncounter/graphics/printer.png'>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Rx.title"/></td>
+                    <td><input type="radio" id="printopSelected" name="printop"
+                               value="selected">
+                        <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintSelect"/></td>
+                    <td><label title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintRx.title"/>"><input type="checkbox" id="chkPrintRx"
+                                   onclick="printInfo(this, 'printRx');"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Rx.title"/></label></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><img style="cursor: pointer;"
-                             title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.print.title"/>"
-                             id='imgPrintLabs'
-                             alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintLabs.title"/>"
-                             onclick="return printInfo(this, 'printLabs');"
-                             src='<c:out value="${ctx}"/>/oscarEncounter/graphics/printer.png'>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Labs.title"/></td>
+                    <td><label title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintLabs.title"/>"><input type="checkbox" id="chkPrintLabs"
+                                   onclick="printInfo(this, 'printLabs');"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Labs.title"/></label></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><img style="cursor: pointer;"
-                             title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.print.title"/>"
-                             id='imgPrintPreventions'
-                             alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintPreventions.title"/>"
-                             onclick="return printInfo(this, 'printPreventions');"
-                             src='<c:out value="${ctx}"/>/oscarEncounter/graphics/printer.png'>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Preventions.title"/></td>
+                    <td><label title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintPreventions.title"/>"><input type="checkbox" id="chkPrintPreventions"
+                                   onclick="printInfo(this, 'printPreventions');"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Preventions.title"/></label></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><img style="cursor: pointer;"
-                             title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.print.title"/>"
-                             id='imgPrintAllergies'
-                             alt="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintAllergies.title"/>"
-                             onclick="return printInfo(this, 'printAllergies');"
-                             src='<c:out value="${ctx}"/>/oscarEncounter/graphics/printer.png'>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Allergies.title"/></td>
+                    <td><label title="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.togglePrintAllergies.title"/>"><input type="checkbox" id="chkPrintAllergies"
+                                   onclick="printInfo(this, 'printAllergies');"> <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Allergies.title"/></label></td>
                 </tr>
                 <!--  extension point -->
                 <tr id="printDateRow">
@@ -869,26 +849,26 @@
                 </tr>
             </table>
 
-            <div style="float: left; margin-left: 5px; width: 30px;">
-                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintFrom"/>
-                :
-            </div>
-            <img src="<c:out value="${ctx}/images/cal.gif" />"
-                 id="printStartDate_cal" alt="calendar">&nbsp;<input
-                type="text" id="printStartDate" name="printStartDate"
-                ondblclick="this.value='';"
-                style="font-style: italic; border: 1px solid #7682b1; width: 125px; background-color: #FFFFFF;"
-                readonly value=""><br>
-            <div style="float: left; margin-left: 5px; width: 30px;">
-                <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintTo"/>
-                :
-            </div>
-            <img src="<c:out value="${ctx}/images/cal.gif" />"
-                 id="printEndDate_cal" alt="calendar">&nbsp;<input type="text"
-                                                                   id="printEndDate" name="printEndDate"
-                                                                   ondblclick="this.value='';"
-                                                                   style="font-style: italic; border: 1px solid #7682b1; width: 125px; background-color: #FFFFFF;"
-                                                                   readonly value=""><br>
+            <table style="width: 100%; margin: 4px 0;">
+                <tr>
+                    <td style="white-space: nowrap;"><label for="printStartDate"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintFrom"/>:</label></td>
+                    <td style="width: 20px;"><img src="<c:out value="${ctx}/images/cal.gif" />"
+                                                   id="printStartDate_cal" alt="calendar"></td>
+                    <td style="width: 100%;"><input type="text" id="printStartDate" name="printStartDate" size="11"
+                                                    ondblclick="this.value='';"
+                                                    style="font-style: italic; border: 1px solid #7682b1; width: 100%; box-sizing: border-box; background-color: #FFFFFF;"
+                                                    readonly value=""></td>
+                </tr>
+                <tr>
+                    <td style="white-space: nowrap;"><label for="printEndDate"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.Index.PrintTo"/>:</label></td>
+                    <td style="width: 20px;"><img src="<c:out value="${ctx}/images/cal.gif" />"
+                                                   id="printEndDate_cal" alt="calendar"></td>
+                    <td style="width: 100%;"><input type="text" id="printEndDate" name="printEndDate" size="11"
+                                                    ondblclick="this.value='';"
+                                                    style="font-style: italic; border: 1px solid #7682b1; width: 100%; box-sizing: border-box; background-color: #FFFFFF;"
+                                                    readonly value=""></td>
+                </tr>
+            </table>
             <div style="margin-top: 5px; text-align: center">
                 <input type="submit" id="printOp" style="border: 1px solid #7682b1;"
                        value="Print" onclick="return printNotes();">
