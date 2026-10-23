@@ -31,7 +31,8 @@
  * appending new ones.
  *
  * Page contract:
- * - Include itemStyleEditorDialog.jspf, css/itemStyleEditor.css and this script; add
+ * - Include itemStyleEditorDialog.jspf, which sets the description's length and whether Clear is
+ *   offered, css/itemStyleEditor.css and this script; add
  *   css/glyphicons-standalone.css when the page edits or shows icons, and Coloris
  *   (library/coloris/0.25.0/coloris.min.css and .js, before this script) when the page edits colours.
  * - Each edit trigger carries data-item-style-edit (description, colour or icon),
@@ -80,6 +81,8 @@
 
     let dialog;
     let form;
+    /** The dialog's Clear button, for colours and icons, or null on a page that doesn't offer it. */
+    let clearButton = null;
     let config = {};
     let editing = null;
     /** The Icon Set, from the dialog's icon grid: {base: the images' URL prefix, names}. */
@@ -204,8 +207,8 @@
         }
 
         document.addEventListener('coloris:pick', function (event) {
-            // An emptied value box picks blank, which only a clearable colour may save.
-            if (event.detail.color || config.colour.clearable) {
+            // An emptied value box picks blank, which only a page that offers Clear may save.
+            if (event.detail.color || clearButton) {
                 picked = event.detail.color;
             }
         });
@@ -276,10 +279,8 @@
     const KINDS = Object.freeze({
         description: {
             dispatch: 'updateDescription',
-            load: function (current, kindConfig) {
-                const input = form.querySelector('.item-style-editor-description');
-                input.maxLength = kindConfig.maxLength || 255;
-                input.value = current;
+            load: function (current) {
+                form.querySelector('.item-style-editor-description').value = current;
             },
             read: function () {
                 return form.querySelector('.item-style-editor-description').value.trim();
@@ -336,8 +337,10 @@
         // The visible field's label names the dialog for screen readers.
         dialog.setAttribute('aria-labelledby', 'itemStyleEditorTitle-' + kind);
         dialog.dataset.kind = kind;
-        form.querySelector('[data-action="clear"]').hidden = !config[kind].clearable;
-        KINDS[kind].load(current, config[kind]);
+        if (clearButton) {
+            clearButton.hidden = kind === 'description';
+        }
+        KINDS[kind].load(current);
 
         editing = {kind: kind, id: id, initial: KINDS[kind].read()};
         dialog.showModal();
@@ -409,15 +412,14 @@
      * Call once, after the dialog markup.
      *
      * @param {Object} options one entry per kind the page edits: description, colour, icon
-     * @param {boolean} [options.<kind>.clearable] whether to offer Clear, which saves a blank value
      * @param {function(string, string, string): boolean} [options.<kind>.confirm] asked before a
      *        changed value is saved, with the item id, the new value and the current one; false
      *        keeps the dialog open
-     * @param {number} [options.description.maxLength] the description column's width
      */
     function init(options) {
         dialog = document.getElementById('itemStyleEditor');
         form = dialog.querySelector('form');
+        clearButton = form.querySelector('[data-action="clear"]');
         config = options;
         const grid = form.querySelector('.item-style-editor-icons');
         iconSet = {base: grid.dataset.iconBase, names: grid.dataset.iconNames.split(' ')};
@@ -432,9 +434,11 @@
 
         form.addEventListener('submit', onSubmit);
         dialog.addEventListener('close', stopFitting);
-        form.querySelector('[data-action="clear"]').addEventListener('click', function () {
-            save('');
-        });
+        if (clearButton) {
+            clearButton.addEventListener('click', function () {
+                save('');
+            });
+        }
         form.querySelector('[data-action="cancel"]').addEventListener('click', function () {
             dialog.close();
         });

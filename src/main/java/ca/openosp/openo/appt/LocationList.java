@@ -22,19 +22,19 @@ import ca.openosp.openo.commn.IsPropertiesOn;
 import ca.openosp.openo.commn.model.Appointment;
 import ca.openosp.openo.commn.model.LookupList;
 import ca.openosp.openo.commn.model.LookupListItem;
-import ca.openosp.openo.managers.LookupListManager;
+import ca.openosp.openo.managers.AppointmentLocationManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
 
 /**
  * The Location List as the appointment screens use it: the places an appointment can be booked.
  *
- * <p>When the Location List is the clinic's Location Mode (see {@link #isLocationMode()}), the
+ * <p>When the Location List is the clinic's Location Mode (see {@link #getMode()}), the
  * booking screens offer its items in place of the free-text location. Choosing an item saves its id
  * as the appointment's location code and a snapshot of its label as the location text, so screens
  * that only read the text keep working. Every screen shows that saved name: renaming a location
  * also renames it on its appointments from today on
- * ({@link LookupListManager#updateLookupListItemLabel}), and earlier
+ * ({@link AppointmentLocationManager#rename}), and earlier
  * appointments keep the name they were saved with.</p>
  *
  * <p>It also decides how the schedule marks and names an appointment's location, which depends on
@@ -69,42 +69,65 @@ public final class LocationList {
         }
     }
 
+    /**
+     * A booking's location dropdown, as WEB-INF/tags/locationSelect.tag draws it: the blank option,
+     * the Legacy Location if there is one, then the locations. Built by {@link #newBookingDropdown}
+     * and {@link #editDropdown}.
+     *
+     * @param options List&lt;Option&gt; the locations offered, in display order
+     * @param selected String the chosen option's value: an item's id, {@link #LEGACY_VALUE}, or blank
+     *                 for a Blank Location
+     * @param legacy String the Legacy Location offered, or null when there is none
+     * @param required boolean true to make the browser refuse a save on the blank option
+     * @since 2026-10-23
+     */
+    public record Dropdown(List<Option> options, String selected, String legacy, boolean required) {
+    }
+
+    /**
+     * A location a dropdown offers, and the name it shows.
+     *
+     * @param item LookupListItem the location, active or not
+     * @param name String the item's name, or for an edited booking's own location the name the booking
+     *             was saved with
+     * @since 2026-10-23
+     */
+    public record Option(LookupListItem item, String name) {
+    }
+
     private final List<LookupListItem> items;
 
     /** Program names already looked up, by program id; a day view names the same few programs many times. */
     private final Map<Integer, Optional<String>> programNames = new HashMap<>();
 
     /**
-     * The clinic's site setup, read once per list and only when first asked: a day view asks for
-     * every appointment, a save never asks, and each missing property logs a warning.
+     * How the booking screens offer a location. A site setup comes first, and shows the clinic's own
+     * places instead of the Location List: multisite sites, then CAISI program locations, then
+     * schedule sites ({@code scheduleSiteID}). Without one, the booking screens offer the Location List
+     * once it has an active location, and free text before that, so there is no separate switch to
+     * leave half-set.
+     *
+     * @since 2026-10-23
      */
-    private SiteSetup siteSetup;
+    public enum LocationMode {
+        SITES, PROGRAMS, SCHEDULE_SITES, LOCATION_LIST, FREE_TEXT;
 
-    /**
-     * Whether the booking screens offer a site setup (multisite sites, schedule sites or CAISI
-     * programs), and whether it is CAISI programs, which sites come before when both are on.
-     */
-    private record SiteSetup(boolean any, boolean programs) {
-
-        static SiteSetup read() {
-            OscarProperties properties = OscarProperties.getInstance();
-            boolean multisites = IsPropertiesOn.isMultisitesEnable();
-            boolean programs = !multisites
-                    && StringUtils.containsIgnoreCase(properties.getProperty("ModuleNames"), "Caisi")
-                    && "true".equals(properties.getProperty("useProgramLocation"));
-            return new SiteSetup(multisites || !properties.getProperty("scheduleSiteID", "").isEmpty() || programs, programs);
+        /**
+         * @return boolean true for a site setup, whose schedule shows its own location and no chip
+         */
+        public boolean isSiteSetup() {
+            return this == SITES || this == PROGRAMS || this == SCHEDULE_SITES;
         }
     }
+
+    /**
+     * The clinic's Location Mode, read once per list and only when first asked: a day view asks for
+     * every appointment, a save never asks, and each missing site setup property logs a warning.
+     */
+    private LocationMode mode;
 
     private LocationList(List<LookupListItem> items) {
         this.items = items;
-    }
-
-    private SiteSetup siteSetup() {
-        if (siteSetup == null) {
-            siteSetup = SiteSetup.read();
-        }
-        return siteSetup;
     }
 
     /**
@@ -114,14 +137,14 @@ public final class LocationList {
      * @return LocationList the list, which is empty if the list is missing
      */
     public static LocationList load(LoggedInInfo loggedInInfo) {
-        LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
-        return of(lookupListManager.findAppointmentLocationList(loggedInInfo));
+        AppointmentLocationManager locationManager = SpringUtils.getBean(AppointmentLocationManager.class);
+        return of(locationManager.findLocationList(loggedInInfo));
     }
 
     /**
      * Wraps a Location List that was already loaded.
      *
-     * @param list LookupList the list from {@link LookupListManager#findAppointmentLocationList}, or null
+     * @param list LookupList the list from {@link AppointmentLocationManager#findLocationList}, or null
      * @return LocationList the list, which is empty if list is null
      */
     public static LocationList of(LookupList list) {
@@ -185,7 +208,7 @@ public final class LocationList {
 
     /**
      * The first appointment date a location's rename reaches: today. Appointments from it on take
-     * the new name ({@link LookupListManager#updateLookupListItemLabel}); earlier ones keep the name
+     * the new name ({@link AppointmentLocationManager#rename}); earlier ones keep the name
      * they were saved with, and an edit keeps it too ({@link #applyPostedLocation}).
      *
      * @return Date today at midnight, as the appointment date column stores a date
@@ -236,16 +259,52 @@ public final class LocationList {
     }
 
     /**
-     * Works out the option a new booking's dropdown starts on: the Default Location, or the blank
-     * option for a Blank Location when there is none. An edit screen never starts on it.
+     * Builds a new booking's dropdown: the active locations. It starts on the Default Location, or on
+     * the blank option for a Blank Location when there is none, and a patient search keeps staff's
+     * choice. It is required under the Location Requirement ({@link #isRequiredForNewBooking}).
      *
      * @param loggedInInfo LoggedInInfo the current user; no privilege is needed
-     * @return String the Default Location's id, or blank
-     * @since 2026-09-30
+     * @param posted String the {@code locationCode} a patient search posted back, or null on first display
+     * @return Dropdown the dropdown to draw
+     * @since 2026-10-23
      */
-    public String getNewBookingValue(LoggedInInfo loggedInInfo) {
+    public Dropdown newBookingDropdown(LoggedInInfo loggedInInfo, String posted) {
+        List<Option> options = getActiveItems().stream().map(item -> new Option(item, item.getLabel())).toList();
+        String selected = posted != null ? posted : getNewBookingValue(loggedInInfo);
+        return new Dropdown(options, selected, null, isRequiredForNewBooking(loggedInInfo));
+    }
+
+    /* The Default Location's id, or blank for a Blank Location when there is none. */
+    private String getNewBookingValue(LoggedInInfo loggedInInfo) {
         LookupListItem item = getDefault(loggedInInfo);
         return item != null ? String.valueOf(item.getId()) : "";
+    }
+
+    /**
+     * Builds an edit screen's dropdown for a saved booking. It offers the active locations, plus the
+     * location chosen and the one the booking was saved with if either has since been disabled, so
+     * saving it unchanged keeps it, and staff who moved off it can still go back after a patient
+     * search. The saved location shows the name the booking was saved with ({@link #getDisplayName}):
+     * one dated before a rename keeps its old name, and saving it keeps it. It is never required,
+     * because a Blank Location is the honest answer when staff aren't sure.
+     *
+     * @param saved Appointment the booking as saved; after a patient search, null if it is gone since
+     *              the page was opened
+     * @param posted Choice what a patient search posted back, or null on first display, which starts
+     *               on {@link #choiceFor} the saved booking
+     * @return Dropdown the dropdown to draw
+     * @since 2026-10-23
+     */
+    public Dropdown editDropdown(Appointment saved, Choice posted) {
+        Choice choice = posted != null ? posted : choiceFor(saved.getLocationCode(), saved.getLocation());
+        LookupListItem chosen = find(choice.code());
+        LookupListItem savedItem = saved == null ? null : find(saved.getLocationCode());
+        String savedName = savedItem == null ? null : getDisplayName(saved);
+        List<Option> options = items.stream()
+                .filter(item -> item.isActive() || item == chosen || item == savedItem)
+                .map(item -> new Option(item, item == savedItem && StringUtils.isNotEmpty(savedName) ? savedName : item.getLabel()))
+                .toList();
+        return new Dropdown(options, choice.value(), choice.legacy(), false);
     }
 
     /**
@@ -259,8 +318,8 @@ public final class LocationList {
      * @since 2026-09-30
      */
     public LookupListItem getDefault(LoggedInInfo loggedInInfo) {
-        LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
-        LookupListItem item = find(lookupListManager.findAppointmentLocationDefault(loggedInInfo));
+        AppointmentLocationManager locationManager = SpringUtils.getBean(AppointmentLocationManager.class);
+        LookupListItem item = find(locationManager.findDefault(loggedInInfo));
         return item != null && item.isActive() ? item : null;
     }
 
@@ -274,8 +333,8 @@ public final class LocationList {
      * @since 2026-09-30
      */
     public boolean isRequiredForNewBooking(LoggedInInfo loggedInInfo) {
-        LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
-        return isLocationMode() && lookupListManager.isAppointmentLocationRequired(loggedInInfo);
+        AppointmentLocationManager locationManager = SpringUtils.getBean(AppointmentLocationManager.class);
+        return isLocationMode() && locationManager.isRequired(loggedInInfo);
     }
 
     /**
@@ -289,7 +348,7 @@ public final class LocationList {
      * @since 2026-09-21
      */
     public String getDisplayName(Appointment appointment) {
-        String name = siteSetup().programs() ? programName(appointment.getLocation()) : appointment.getLocation();
+        String name = getMode() == LocationMode.PROGRAMS ? programName(appointment.getLocation()) : appointment.getLocation();
         return name == null || "null".equals(name) ? "" : name.trim();
     }
 
@@ -302,7 +361,7 @@ public final class LocationList {
      * @since 2026-09-22
      */
     public LookupListItem getChipItem(Appointment appointment) {
-        return siteSetup().any() ? null : find(appointment.getLocationCode());
+        return getMode().isSiteSetup() ? null : find(appointment.getLocationCode());
     }
 
     /**
@@ -334,15 +393,35 @@ public final class LocationList {
     }
 
     /**
-     * Whether the booking screens offer the Location List. Site setups come first: multisite sites,
-     * then schedule sites ({@code scheduleSiteID}), then CAISI program locations. The list only
-     * replaces the free-text location, and only once it has an active item, so there is no separate
-     * switch to leave half-set.
+     * Works out the clinic's Location Mode from its site setup and this list.
+     *
+     * @return LocationMode how the booking screens offer a location
+     * @since 2026-10-23
+     */
+    public LocationMode getMode() {
+        if (mode == null) {
+            OscarProperties properties = OscarProperties.getInstance();
+            if (IsPropertiesOn.isMultisitesEnable()) {
+                mode = LocationMode.SITES;
+            } else if (StringUtils.containsIgnoreCase(properties.getProperty("ModuleNames"), "Caisi")
+                    && "true".equals(properties.getProperty("useProgramLocation"))) {
+                mode = LocationMode.PROGRAMS;
+            } else if (!properties.getProperty("scheduleSiteID", "").isEmpty()) {
+                mode = LocationMode.SCHEDULE_SITES;
+            } else {
+                mode = items.stream().anyMatch(LookupListItem::isActive) ? LocationMode.LOCATION_LIST : LocationMode.FREE_TEXT;
+            }
+        }
+        return mode;
+    }
+
+    /**
+     * Whether the booking screens offer the Location List ({@link LocationMode#LOCATION_LIST}).
      *
      * @return boolean true if the booking screens offer the list's active items
      */
     public boolean isLocationMode() {
-        return !siteSetup().any() && items.stream().anyMatch(LookupListItem::isActive);
+        return getMode() == LocationMode.LOCATION_LIST;
     }
 
     /**
@@ -400,17 +479,5 @@ public final class LocationList {
                 .filter(item -> !item.isActive())
                 .sorted(Comparator.comparing(LookupListItem::getLabel, String.CASE_INSENSITIVE_ORDER));
         return Stream.concat(getActiveItems().stream(), inactive).toList();
-    }
-
-    /**
-     * Lists the items a booking may choose when it already has a location code: the active items,
-     * plus its current item if that has since been deactivated, so saving it unchanged keeps it.
-     *
-     * @param current Integer the booking's location code, or null
-     * @return List&lt;LookupListItem&gt; the choices, in display order
-     */
-    public List<LookupListItem> getChoices(Integer current) {
-        LookupListItem currentItem = find(current);
-        return items.stream().filter(item -> item.isActive() || item == currentItem).toList();
     }
 }

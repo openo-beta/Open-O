@@ -243,6 +243,7 @@
     <script src="<%= request.getContextPath() %>/js/global.js"></script>
     <script src="<%= request.getContextPath() %>/js/checkDate.js"></script>
     <script src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
+    <link href="<%= request.getContextPath() %>/css/locationSelect.css" rel="stylesheet">
     <script src="<%= request.getContextPath() %>/js/appointment/locationSelect.js"></script>
 
         <style>
@@ -254,25 +255,6 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         line-height: 1 !important;
-    }
-
-    /* The rule above gives glyph icons Arial too; the glyph is drawn in ::before, which it doesn't reach. */
-    .location-chip .glyphicon::before {
-        font-family: 'Glyphicons Halflings';
-    }
-
-    /* Location menu rows a little roomier than the browser's own list, as in Reason. The rule above sets 12px and
-       line-height 1, so this needs !important and enough classes to outrank it. The 16px line fits a chip, which sits
-       at its top. */
-    .ui-selectmenu-menu.location-menu .ui-menu .ui-menu-item-wrapper {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        font-size: 13px !important;
-        line-height: 16px !important;
-    }
-
-    .location-menu .location-chip {
-        vertical-align: top;
     }
 
     .form-wrapper {
@@ -599,11 +581,8 @@
                 document.EDITAPPT.demographic_no.value = "<%=Encode.forJavaScriptBlock(apptObj.getDemographic_no())%>";
                 document.forms[0].reason.value = "<%= Encode.forJavaScriptBlock(apptObj.getReason()) %>";
                 document.forms[0].notes.value = "<%= Encode.forJavaScriptBlock(apptObj.getNotes()) %>";
-                <% if (locationMode) { %>
-                selectLocationCode(document.EDITAPPT.locationCode, "<%=Encode.forJavaScriptBlock(StringUtils.defaultString(apptObj.getLocationCode()))%>");
-                <% } else { %>
-                document.EDITAPPT.location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
-                <% } %>
+                pasteLocation(document.EDITAPPT, "<%=Encode.forJavaScriptBlock(StringUtils.defaultString(apptObj.getLocationCode()))%>",
+                        "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>");
                 document.EDITAPPT.resources.value = "<%=Encode.forJavaScriptBlock(apptObj.getResources())%>";
                 document.EDITAPPT.type.value = "<%=Encode.forJavaScriptBlock(apptObj.getType())%>";
                 if ('<%=Encode.forJavaScript(String.valueOf(apptObj.getUrgency()))%>' === 'critical') {
@@ -1107,14 +1086,11 @@
                             %>
                         </select>
                         <% } else if (locationMode) {
-                            LocationList.Choice locationChoice = bFirstDisp ? locations.choiceFor(appt.getLocationCode(), loc)
-                                    : new LocationList.Choice(request.getParameter("locationCode"), loc);
                             // A patient search shows the page again without the appointment, so read its saved location again.
                             Appointment saved = bFirstDisp ? appt : appointmentDao.find(Integer.parseInt(appointment_no));
+                            LocationList.Choice posted = bFirstDisp ? null : new LocationList.Choice(request.getParameter("locationCode"), loc);
                         %>
-                        <appt:locationSelect choices="<%=locations.getChoices(locationChoice.code())%>" selected="<%=locationChoice.value()%>"
-                                             legacy="<%=locationChoice.legacy()%>" savedCode="<%=saved == null ? null : saved.getLocationCode()%>"
-                                             savedName="<%=saved == null ? null : locations.getDisplayName(saved)%>"/>
+                        <appt:locationSelect dropdown="<%=locations.editDropdown(saved, posted)%>"/>
                         <% } else { %>
 		        <input type="text" class="form-control" name="location" tabindex="4"
                        value="<%=Encode.forHtmlAttribute(bFirstDisp?appt.getLocation():request.getParameter("location"))%>" >

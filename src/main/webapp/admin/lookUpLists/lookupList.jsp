@@ -28,7 +28,7 @@
 <%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <fmt:setBundle basename="oscarResources"/>
-<c:set var="appointmentLocationList" value="<%= ca.openosp.openo.managers.LookupListManager.APPOINTMENT_LOCATION_LIST %>"/>
+<c:set var="appointmentLocationList" value="<%= ca.openosp.openo.managers.AppointmentLocationManager.LOCATION_LIST %>"/>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>

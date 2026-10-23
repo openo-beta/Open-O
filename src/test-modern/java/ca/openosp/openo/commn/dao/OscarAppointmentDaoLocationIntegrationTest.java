@@ -134,6 +134,8 @@ public class OscarAppointmentDaoLocationIntegrationTest extends OpenOTestBase {
         AppointmentArchive edit = archives.stream().filter(a -> a.getId().equals(byEdit)).findFirst().orElseThrow();
         AppointmentArchive rename = archives.stream().filter(a -> !a.getId().equals(byEdit)).findFirst().orElseThrow();
         assertThat(nullFields(edit)).as("archive fields the fixture leaves empty, where a missing column would go unseen").isEmpty();
+        assertThat(edit.getLocationCode()).isEqualTo(MIDTOWN);
+        assertThat(edit.getLocation()).isEqualTo("Midtown");
         assertThat(rename).usingRecursiveComparison().ignoringFields("id").isEqualTo(edit);
     }
 

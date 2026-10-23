@@ -3,8 +3,11 @@ package ca.openosp.openo.appt.status.service.impl;
 import ca.openosp.openo.appt.IconSet;
 import ca.openosp.openo.appt.status.service.AppointmentStatusMgr;
 import ca.openosp.openo.commn.dao.AppointmentStatusDao;
+import ca.openosp.openo.commn.dao.OscarLogDao;
 import ca.openosp.openo.commn.model.AppointmentStatus;
+import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
+import ca.openosp.openo.utility.LoggedInInfo;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,13 +16,16 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.transaction.support.TransactionSynchronizationUtils;
 
@@ -29,6 +35,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,11 +43,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
  * Unit tests for the status changes in {@link AppointmentStatusMgrImpl}: {@code updateDescription},
@@ -58,23 +69,29 @@ import static org.mockito.Mockito.when;
 @DisplayName("AppointmentStatusMgrImpl update unit tests")
 @Tag("unit")
 @Tag("fast")
-@Tag("update")
+@Tag("manager")
 public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
 
     private static final int STATUS_ID = 3;
     @Mock
     private AppointmentStatusDao appointmentStatusDao;
 
-    private AppointmentStatusDao originalDao;
+    @RegisterExtension
+    final AppointmentStatusCacheExtension statusCache = new AppointmentStatusCacheExtension();
+
     private AppointmentStatusMgrImpl manager;
     private AppointmentStatus status;
+    private final LoggedInInfo loggedInInfo = new LoggedInInfo();
+    private MockedStatic<LogAction> logActionMock;
 
     @BeforeEach
     void setUp() {
-        // The DAO is a static field filled on class load, so swap it in and put the original back after.
+        // The DAO is a static field filled on class load, so register it first, then swap it in.
         registerMock(AppointmentStatusDao.class, appointmentStatusDao);
-        originalDao = (AppointmentStatusDao) ReflectionTestUtils.getField(AppointmentStatusMgrImpl.class, "appointStatusDao");
-        ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "appointStatusDao", appointmentStatusDao);
+        // LogAction's static initializer looks up OscarLogDao, so register it before mocking LogAction
+        registerMock(OscarLogDao.class, mock(OscarLogDao.class));
+        logActionMock = mockStatic(LogAction.class);
+        statusCache.useDao(appointmentStatusDao);
         manager = new AppointmentStatusMgrImpl();
 
         status = new AppointmentStatus();
@@ -87,8 +104,23 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
     }
 
     @AfterEach
-    void restoreDao() {
-        ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "appointStatusDao", originalDao);
+    void closeLogAction() {
+        logActionMock.close();
+    }
+
+    /** A change to one status, as the shared-rule tests apply it. */
+    @FunctionalInterface
+    interface StatusChange {
+        boolean apply(AppointmentStatusMgrImpl manager, LoggedInInfo loggedInInfo, int id);
+    }
+
+    /** Every change to one status, named for the test report. */
+    static Stream<Arguments> changes() {
+        return Stream.of(
+                arguments("updateDescription", (StatusChange) (m, info, id) -> m.updateDescription(info, id, "Renamed")),
+                arguments("updateColour", (StatusChange) (m, info, id) -> m.updateColour(info, id, "#445566")),
+                arguments("updateIcon", (StatusChange) (m, info, id) -> m.updateIcon(info, id, "1.gif")),
+                arguments("changeStatus", (StatusChange) (m, info, id) -> m.changeStatus(info, id, 0)));
     }
 
     @Nested
@@ -99,7 +131,7 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
         @ValueSource(strings = {"Waiting room", "  Waiting room  "})
         @DisplayName("should save the trimmed description")
         void shouldSaveTrimmedDescription_whenNotBlank(String description) {
-            assertThat(manager.updateDescription(STATUS_ID, description)).isTrue();
+            assertThat(manager.updateDescription(loggedInInfo, STATUS_ID, description)).isTrue();
 
             assertThat(status.getDescription()).isEqualTo("Waiting room");
             verify(appointmentStatusDao).merge(status);
@@ -110,7 +142,7 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
         void shouldSaveDescription_whenExactlyColumnWidth() {
             String description = "x".repeat(AppointmentStatusMgr.DESCRIPTION_MAX_LENGTH);
 
-            assertThat(manager.updateDescription(STATUS_ID, description)).isTrue();
+            assertThat(manager.updateDescription(loggedInInfo, STATUS_ID, description)).isTrue();
 
             assertThat(status.getDescription()).isEqualTo(description);
         }
@@ -120,7 +152,7 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
         @ValueSource(strings = {"   ", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"})
         @DisplayName("should reject a blank or over-long description and load nothing")
         void shouldRejectDescription_whenBlankOrTooLong(String description) {
-            assertThatThrownBy(() -> manager.updateDescription(STATUS_ID, description))
+            assertThatThrownBy(() -> manager.updateDescription(loggedInInfo, STATUS_ID, description))
                     .isInstanceOf(IllegalArgumentException.class);
 
             verify(appointmentStatusDao, never()).find(anyInt());
@@ -136,28 +168,18 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
         @ValueSource(strings = {"#1a2B3c", "  #1a2B3c  "})
         @DisplayName("should save the trimmed colour when it is #rrggbb")
         void shouldSaveColour_whenHexColour(String colour) {
-            assertThat(manager.updateColour(STATUS_ID, colour)).isTrue();
+            assertThat(manager.updateColour(loggedInInfo, STATUS_ID, colour)).isTrue();
 
             assertThat(status.getColor()).isEqualTo("#1a2B3c");
             verify(appointmentStatusDao).merge(status);
         }
 
         @ParameterizedTest
-        @ValueSource(strings = {"#1a2b3c80", "#1a2b3c00"})
-        @DisplayName("should save a see-through colour as it is, fully see-through included")
-        void shouldSaveColour_whenSeeThrough(String colour) {
-            assertThat(manager.updateColour(STATUS_ID, colour)).isTrue();
-
-            assertThat(status.getColor()).isEqualTo(colour);
-            verify(appointmentStatusDao).merge(status);
-        }
-
-        @ParameterizedTest
         @NullAndEmptySource
-        @ValueSource(strings = {"red", "#fff", "112233", "#12345g", "#1122334", "#112233445", "#1122334g", "#112233;background:url(x)"})
-        @DisplayName("should reject the colour and load nothing when it is neither #rrggbb nor #rrggbbaa")
+        @ValueSource(strings = {"#112233;background:url(x)"})
+        @DisplayName("should reject no colour, or one ItemStyleColour refuses, and load nothing")
         void shouldRejectColour_whenNotHexColour(String colour) {
-            assertThatThrownBy(() -> manager.updateColour(STATUS_ID, colour))
+            assertThatThrownBy(() -> manager.updateColour(loggedInInfo, STATUS_ID, colour))
                     .isInstanceOf(IllegalArgumentException.class);
 
             verify(appointmentStatusDao, never()).find(anyInt());
@@ -170,10 +192,10 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
     class Icon {
 
         @ParameterizedTest
-        @ValueSource(strings = {"here.gif", "16.gif", "glyphicon-home", "glyphicon-sort-by-attributes-alt"})
+        @ValueSource(strings = {"here.gif", "glyphicon-home"})
         @DisplayName("should save an icon in the Icon Set, image or glyph")
         void shouldSaveIcon_whenInIconSet(String icon) {
-            assertThat(manager.updateIcon(STATUS_ID, icon)).isTrue();
+            assertThat(manager.updateIcon(loggedInInfo, STATUS_ID, icon)).isTrue();
 
             assertThat(status.getIcon()).isEqualTo(icon);
             verify(appointmentStatusDao).merge(status);
@@ -181,10 +203,10 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
 
         @ParameterizedTest
         @NullAndEmptySource
-        @ValueSource(strings = {"lts.gif", "Shere.gif", "../here.gif", " here.gif", "here.gif\" onerror=\"x", "glyphicon-nope"})
-        @DisplayName("should reject the icon and load nothing when it is not in the Icon Set")
+        @ValueSource(strings = {"here.gif\" onerror=\"x"})
+        @DisplayName("should reject no icon, or one outside the Icon Set, and load nothing")
         void shouldRejectIcon_whenNotInIconSet(String icon) {
-            assertThatThrownBy(() -> manager.updateIcon(STATUS_ID, icon))
+            assertThatThrownBy(() -> manager.updateIcon(loggedInInfo, STATUS_ID, icon))
                     .isInstanceOf(IllegalArgumentException.class);
 
             verify(appointmentStatusDao, never()).find(anyInt());
@@ -202,39 +224,17 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
         void shouldSaveActive_whenStatusEditable(int active) {
             status.setActive(1 - active);
 
-            assertThat(manager.changeStatus(STATUS_ID, active)).isTrue();
+            assertThat(manager.changeStatus(loggedInInfo, STATUS_ID, active)).isTrue();
 
             assertThat(status.getActive()).isEqualTo(active);
             verify(appointmentStatusDao).merge(status);
-        }
-
-        @Test
-        @DisplayName("should leave a locked status as it is")
-        void shouldReturnFalse_whenStatusLocked() {
-            status.setEditable(0);
-            status.setActive(1);
-
-            assertThat(manager.changeStatus(STATUS_ID, 0)).isFalse();
-
-            assertThat(status.getActive()).isEqualTo(1);
-            verify(appointmentStatusDao, never()).merge(any());
-        }
-
-        @Test
-        @DisplayName("should return false when the status does not exist")
-        void shouldReturnFalse_whenStatusMissing() {
-            when(appointmentStatusDao.find(99)).thenReturn(null);
-
-            assertThat(manager.changeStatus(99, 0)).isFalse();
-
-            verify(appointmentStatusDao, never()).merge(any());
         }
 
         @ParameterizedTest
         @ValueSource(ints = {-1, 2})
         @DisplayName("should reject an active flag other than 0 or 1")
         void shouldReject_whenActiveNotZeroOrOne(int active) {
-            assertThatThrownBy(() -> manager.changeStatus(STATUS_ID, active)).isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> manager.changeStatus(loggedInInfo, STATUS_ID, active)).isInstanceOf(IllegalArgumentException.class);
 
             verify(appointmentStatusDao, never()).merge(any());
         }
@@ -245,26 +245,39 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
     class SharedRules {
 
         @Test
-        @DisplayName("should change nothing when the status is locked")
-        void shouldReturnFalse_whenStatusLocked() {
-            status.setEditable(0);
+        @DisplayName("should write an audit row naming the user, the status and its new value")
+        void shouldAudit_whenSaved() {
+            manager.updateColour(loggedInInfo, STATUS_ID, " #445566 ");
+            manager.changeStatus(loggedInInfo, STATUS_ID, 0);
 
-            assertThat(manager.updateDescription(STATUS_ID, "Renamed")).isFalse();
-            assertThat(manager.updateColour(STATUS_ID, "#445566")).isFalse();
-            assertThat(manager.updateIcon(STATUS_ID, "1.gif")).isFalse();
+            logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
+                    eq("AppointmentStatusMgr.updateColour"), eq("appointment_status id 3: colour is now [#445566]")));
+            logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
+                    eq("AppointmentStatusMgr.changeStatus"), eq("appointment_status id 3: active is now 0")));
+        }
+
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImplUnitTest#changes")
+        @DisplayName("should change nothing, and audit nothing, when the status is locked")
+        void shouldReturnFalse_whenStatusLocked(String name, StatusChange change) {
+            status.setEditable(0);
+            status.setActive(1);
+
+            assertThat(change.apply(manager, loggedInInfo, STATUS_ID)).isFalse();
 
             assertThat(status.getDescription()).isEqualTo("Here");
             assertThat(status.getColor()).isEqualTo("#00ee00");
             assertThat(status.getIcon()).isEqualTo("here.gif");
+            assertThat(status.getActive()).isEqualTo(1);
             verify(appointmentStatusDao, never()).merge(any());
+            logActionMock.verifyNoInteractions();
         }
 
-        @Test
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImplUnitTest#changes")
         @DisplayName("should return false when the status does not exist")
-        void shouldReturnFalse_whenStatusMissing() {
-            when(appointmentStatusDao.find(99)).thenReturn(null);
-
-            assertThat(manager.updateColour(99, "#445566")).isFalse();
+        void shouldReturnFalse_whenStatusMissing(String name, StatusChange change) {
+            assertThat(change.apply(manager, loggedInInfo, 99)).isFalse();
 
             verify(appointmentStatusDao, never()).merge(any());
         }
@@ -272,7 +285,7 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
         @Test
         @DisplayName("should leave the other fields alone")
         void shouldKeepOtherFields_whenOneFieldUpdated() {
-            manager.updateIcon(STATUS_ID, "1.gif");
+            manager.updateIcon(loggedInInfo, STATUS_ID, "1.gif");
 
             assertThat(status.getDescription()).isEqualTo("Here");
             assertThat(status.getColor()).isEqualTo("#00ee00");
@@ -323,21 +336,9 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
     @DisplayName("status cache")
     class StatusCache {
 
-        private Object originalCache;
-        private Object originalCacheIsDirty;
-
         @BeforeEach
         void emptyCache() {
-            originalCache = ReflectionTestUtils.getField(AppointmentStatusMgrImpl.class, "cachedStatuses");
-            originalCacheIsDirty = ReflectionTestUtils.getField(AppointmentStatusMgrImpl.class, "cacheIsDirty");
-            ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cachedStatuses", null);
-            ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cacheIsDirty", false);
-        }
-
-        @AfterEach
-        void restoreCache() {
-            ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cachedStatuses", originalCache);
-            ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cacheIsDirty", originalCacheIsDirty);
+            statusCache.empty();
         }
 
         @Test
@@ -466,9 +467,10 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
             when(appointmentStatusDao.findAll()).thenReturn(table);
             ArgumentCaptor<List<AppointmentStatus>> saved = ArgumentCaptor.forClass(List.class);
 
-            manager.reset();
+            manager.reset(loggedInInfo);
 
             verify(appointmentStatusDao).mergeAll(saved.capture());
+            logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo), eq("AppointmentStatusMgr.reset"), any()));
             return saved.getValue();
         }
 

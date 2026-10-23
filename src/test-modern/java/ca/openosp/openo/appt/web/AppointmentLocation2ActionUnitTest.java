@@ -2,16 +2,17 @@ package ca.openosp.openo.appt.web;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
-import ca.openosp.OscarProperties;
 import ca.openosp.openo.commn.model.LookupList;
 import ca.openosp.openo.commn.model.LookupListItem;
+import ca.openosp.openo.managers.AppointmentLocationManager;
 import ca.openosp.openo.managers.LookupListManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
 import ca.openosp.openo.utility.LoggedInInfo;
 
-import com.opensymphony.xwork2.ActionContext;
+import org.apache.struts2.ActionContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +21,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -29,18 +30,20 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link AppointmentLocation2Action}: who may view and change locations, which
- * items a change may touch, the rules on a location's name and on the Default Location, the
- * Location Requirement's switch, and the saved/rejected outcomes.
+ * Unit tests for {@link AppointmentLocation2Action}: what the Location tab shows, that every change
+ * needs update on _admin and acts only on a Location List item, and which manager each change goes
+ * to. The page handling it shares with the Status tab is tested in {@link AppointmentSettingsActionUnitTest},
+ * and the rules on names, order and the Default Location in the LocationList and manager tests.
  *
  * @since 2026-09-15
  */
@@ -51,15 +54,31 @@ import static org.mockito.Mockito.when;
 @Tag("web")
 public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
 
+    /** Every change the page posts on item ID. */
+    private static final List<String> ITEM_CHANGES = List.of("updateColour", "updateIcon", "updateDescription",
+            "restore", "deactivate", "moveUp", "moveDown", "makeDefault", "removeDefault");
+
+    static List<String> itemChanges() {
+        return ITEM_CHANGES;
+    }
+
+    /** Every change the page posts: the item changes, and the Location Requirement's switch. */
+    static List<String> changes() {
+        return Stream.concat(ITEM_CHANGES.stream(), Stream.of("updateRequirement")).toList();
+    }
+
     @Mock
     private SecurityInfoManager securityInfoManager;
 
     @Mock
     private LookupListManager lookupListManager;
 
+    @Mock
+    private AppointmentLocationManager locationManager;
+
     private final LoggedInInfo loggedInInfo = new LoggedInInfo();
-    private final LookupListItem room = item(11, true);
-    private final LookupListItem retired = item(12, false);
+    private final LookupListItem room = item(11, "Room 11", true);
+    private final LookupListItem retired = item(12, "Room 12", false);
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
     private AppointmentLocation2Action action;
@@ -68,16 +87,13 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
     void setUp() {
         registerMock(SecurityInfoManager.class, securityInfoManager);
         registerMock(LookupListManager.class, lookupListManager);
-
-        LookupList locationList = new LookupList();
-        locationList.setName("appointmentLocationCode");
-        locationList.setItems(List.of(room, retired));
-        lenient().when(lookupListManager.findAppointmentLocationList(any())).thenReturn(locationList);
+        registerMock(AppointmentLocationManager.class, locationManager);
+        locations(room, retired);
 
         request = new MockHttpServletRequest("POST", "/appointment/apptLocationSetting.do");
         response = new MockHttpServletResponse();
         LoggedInInfo.setLoggedInInfoIntoSession(request.getSession(), loggedInInfo);
-        ActionContext.bind(ActionContext.of().withServletRequest(request).withServletResponse(response));
+        ActionContext.of().withServletRequest(request).withServletResponse(response).bind();
 
         action = new AppointmentLocation2Action();
     }
@@ -87,20 +103,30 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
         ActionContext.clear();
     }
 
-    private static LookupListItem item(int id, boolean active) {
+    private static LookupListItem item(int id, String label, boolean active) {
         LookupListItem item = new LookupListItem();
         item.setId(id);
-        item.setLabel("Room " + id);
+        item.setLabel(label);
         item.setActive(active);
         return item;
+    }
+
+    private void locations(LookupListItem... items) {
+        LookupList list = new LookupList();
+        list.setName("appointmentLocationCode");
+        list.setItems(List.of(items));
+        lenient().when(locationManager.findLocationList(any())).thenReturn(list);
     }
 
     private void grant(String object, String privilege) {
         lenient().when(securityInfoManager.hasPrivilege(loggedInInfo, object, privilege, null)).thenReturn(true);
     }
 
-    private void defaultLocation(int id) {
-        when(lookupListManager.findAppointmentLocationDefault(loggedInInfo)).thenReturn(id);
+    private String post(String dispatch, String id, String value) {
+        request.setParameter("dispatch", dispatch);
+        request.setParameter("ID", id);
+        request.setParameter("value", value);
+        return action.execute();
     }
 
     @Nested
@@ -108,43 +134,41 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
     class Viewing {
 
         @BeforeEach
-        void get() {
+        void readOnly() {
             request.setMethod("GET");
+            grant("_admin.schedule", SecurityInfoManager.READ);
         }
 
-        @ParameterizedTest
-        @ValueSource(strings = {"_admin", "_admin.userAdmin", "_admin.schedule"})
-        @DisplayName("should list the active items with read on any Appointment Settings object")
-        void shouldListActiveItems_whenReadOnAnyObject(String object) {
-            grant(object, SecurityInfoManager.READ);
+        @Test
+        @DisplayName("should list the locations, the Default Location and the Location Requirement")
+        void shouldShowLocations_whenRead() {
+            when(locationManager.findDefault(loggedInInfo)).thenReturn(11);
+            when(locationManager.isRequired(loggedInInfo)).thenReturn(true);
 
             assertThat(action.execute()).isEqualTo("success");
 
             assertThat(request.getAttribute("locations")).isEqualTo(List.of(room, retired));
             assertThat(request.getAttribute("activeLocationCount")).isEqualTo(1);
             assertThat(request.getAttribute("locationListName")).isEqualTo("appointmentLocationCode");
+            assertThat(request.getAttribute("defaultLocation")).isSameAs(room);
+            assertThat(request.getAttribute("locationRequired")).isEqualTo(true);
         }
 
         @Test
-        @DisplayName("should list the inactive locations after the active ones, for enabling one")
-        void shouldListInactiveItemsLast_whenRead() {
-            grant("_admin", SecurityInfoManager.READ);
-            LookupListItem annex = item(13, false);
-            LookupListItem hall = item(14, true);
-            LookupList locationList = new LookupList();
-            locationList.setItems(List.of(annex, room, retired, hall));
-            when(lookupListManager.findAppointmentLocationList(any())).thenReturn(locationList);
-
+        @DisplayName("should offer changes only with update on _admin, which the managers check")
+        void shouldOfferChanges_whenAdminUpdate() {
+            grant("_admin.schedule", SecurityInfoManager.UPDATE);
             action.execute();
+            assertThat(request.getAttribute("canChange")).isEqualTo(false);
 
-            assertThat(request.getAttribute("locations")).isEqualTo(List.of(room, hall, retired, annex));
-            assertThat(request.getAttribute("activeLocationCount")).isEqualTo(2);
+            grant("_admin", SecurityInfoManager.UPDATE);
+            action.execute();
+            assertThat(request.getAttribute("canChange")).isEqualTo(true);
         }
 
         @Test
         @DisplayName("should offer disabling a location only with delete on _admin")
         void shouldOfferDeactivate_whenAdminDelete() {
-            grant("_admin", SecurityInfoManager.READ);
             grant("_admin", SecurityInfoManager.UPDATE);
             action.execute();
             assertThat(request.getAttribute("canDeactivate")).isEqualTo(false);
@@ -157,7 +181,6 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
         @Test
         @DisplayName("should offer adding locations only with write on _admin, which the manager's Add needs")
         void shouldOfferAdd_whenAdminWrite() {
-            grant("_admin", SecurityInfoManager.READ);
             grant("_admin", SecurityInfoManager.UPDATE);
             action.execute();
             assertThat(request.getAttribute("canAdd")).isEqualTo(false);
@@ -168,63 +191,10 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should mark the Default Location for any reader")
-        void shouldMarkDefault_whenRead() {
-            grant("_admin.schedule", SecurityInfoManager.READ);
-            defaultLocation(11);
-
-            action.execute();
-
-            assertThat(request.getAttribute("defaultLocation")).isSameAs(room);
-        }
-
-        @Test
-        @DisplayName("should mark no Default Location when the one set is inactive")
-        void shouldMarkNoDefault_whenDefaultInactive() {
-            grant("_admin.schedule", SecurityInfoManager.READ);
-            defaultLocation(12);
-
-            action.execute();
-
-            assertThat(request.getAttribute("defaultLocation")).isNull();
-        }
-
-        @Test
-        @DisplayName("should show whether the Location Requirement is on to any reader")
-        void shouldShowRequirement_whenRead() {
-            grant("_admin.schedule", SecurityInfoManager.READ);
-            when(lookupListManager.isAppointmentLocationRequired(loggedInInfo)).thenReturn(true);
-
-            action.execute();
-
-            assertThat(request.getAttribute("locationRequired")).isEqualTo(true);
-        }
-
-        @Test
-        @DisplayName("should refuse the page without read on any Appointment Settings object")
-        void shouldThrow_whenNoReadPrivilege() {
-            assertThatThrownBy(() -> action.execute()).isInstanceOf(SecurityException.class);
-        }
-
-        @Test
-        @DisplayName("should offer changes only with update on _admin")
-        void shouldOfferChanges_whenAdminUpdate() {
-            grant("_admin.schedule", SecurityInfoManager.READ);
-            grant("_admin.schedule", SecurityInfoManager.UPDATE);
-            action.execute();
-            assertThat(request.getAttribute("canChange")).isEqualTo(false);
-
-            grant("_admin", SecurityInfoManager.UPDATE);
-            action.execute();
-            assertThat(request.getAttribute("canChange")).isEqualTo(true);
-        }
-
-        @Test
         @DisplayName("should count each location's upcoming appointments, which a rename asks about, only for a user who may change them")
         void shouldCountUpcomingAppointments_whenAdminUpdate() {
             Map<Integer, Long> counts = Map.of(11, 3L);
-            when(lookupListManager.countUpcomingAppointmentsByLocation(loggedInInfo)).thenReturn(counts);
-            grant("_admin.schedule", SecurityInfoManager.READ);
+            when(locationManager.countUpcomingAppointments(loggedInInfo)).thenReturn(counts);
             action.execute();
             assertThat(request.getAttribute("upcomingCounts")).isNull();
 
@@ -232,98 +202,69 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
             action.execute();
             assertThat(request.getAttribute("upcomingCounts")).isSameAs(counts);
         }
-
-        @Test
-        @DisplayName("should show the Status tab only when the schedule uses editable statuses")
-        void shouldShowStatusTab_whenEditableStatusesOn() {
-            grant("_admin", SecurityInfoManager.READ);
-            OscarProperties properties = OscarProperties.getInstance();
-            Object saved = properties.get("ENABLE_EDIT_APPT_STATUS");
-            try {
-                properties.remove("ENABLE_EDIT_APPT_STATUS");
-                action.execute();
-                assertThat(request.getAttribute("statusTabEnabled")).isEqualTo(false);
-
-                properties.setProperty("ENABLE_EDIT_APPT_STATUS", "yes");
-                action.execute();
-                assertThat(request.getAttribute("statusTabEnabled")).isEqualTo(true);
-            } finally {
-                properties.remove("ENABLE_EDIT_APPT_STATUS");
-                if (saved != null) {
-                    properties.put("ENABLE_EDIT_APPT_STATUS", saved);
-                }
-            }
-        }
     }
 
     @Nested
-    @DisplayName("changes")
-    class Changes {
+    @DisplayName("refusing a change before it runs")
+    class Refusing {
 
-        private String post(String dispatch, String id, String value) {
-            request.setParameter("dispatch", dispatch);
-            request.setParameter("ID", id);
-            request.setParameter("value", value);
-            return action.execute();
-        }
-
-        @Test
-        @DisplayName("should refuse a change with update on another Appointment Settings object only")
-        void shouldThrow_whenNoAdminUpdate() {
+        @ParameterizedTest
+        @MethodSource("ca.openosp.openo.appt.web.AppointmentLocation2ActionUnitTest#changes")
+        @DisplayName("should refuse every change with update on another Appointment Settings object only")
+        void shouldThrow_whenNoAdminUpdate(String dispatch) {
             grant("_admin.schedule", SecurityInfoManager.UPDATE);
+            grant("_admin", SecurityInfoManager.DELETE);
 
-            assertThatThrownBy(() -> post("updateColour", "11", "#445566")).isInstanceOf(SecurityException.class);
+            assertThatThrownBy(() -> post(dispatch, "11", "true")).isInstanceOf(SecurityException.class);
 
-            verify(lookupListManager, never()).updateLookupListItemColour(any(), anyInt(), any());
+            verifyNoInteractions(lookupListManager, locationManager);
         }
 
         @ParameterizedTest
-        @ValueSource(strings = {"makeDefault", "removeDefault"})
-        @DisplayName("should refuse changing the default with update on another Appointment Settings object only")
-        void shouldThrow_whenChangingDefaultWithoutAdminUpdate(String dispatch) {
-            grant("_admin.schedule", SecurityInfoManager.UPDATE);
-
-            assertThatThrownBy(() -> post(dispatch, "11", "")).isInstanceOf(SecurityException.class);
-
-            verify(lookupListManager, never()).setAppointmentLocationDefault(any(), any());
-        }
-
-        @Test
-        @DisplayName("should refuse switching the Location Requirement with update on another Appointment Settings object only")
-        void shouldThrow_whenSwitchingRequirementWithoutAdminUpdate() {
-            grant("_admin.schedule", SecurityInfoManager.UPDATE);
-
-            assertThatThrownBy(() -> post("updateRequirement", "", "true")).isInstanceOf(SecurityException.class);
-
-            verify(lookupListManager, never()).setAppointmentLocationRequired(any(), anyBoolean());
-        }
-
-        @ParameterizedTest
-        @ValueSource(strings = {"updateColour", "updateIcon", "updateDescription", "restore", "deactivate",
-                "moveUp", "moveDown", "makeDefault", "removeDefault", "updateRequirement"})
-        @DisplayName("should refuse a change that is not posted")
-        void shouldThrow_whenChangeNotPosted(String dispatch) {
+        @MethodSource("ca.openosp.openo.appt.web.AppointmentLocation2ActionUnitTest#changes")
+        @DisplayName("should refuse every change that is not posted")
+        void shouldThrow_whenNotPosted(String dispatch) {
             grant("_admin", SecurityInfoManager.UPDATE);
+            grant("_admin", SecurityInfoManager.DELETE);
             request.setMethod("GET");
 
             assertThatThrownBy(() -> post(dispatch, "11", "true")).isInstanceOf(SecurityException.class);
 
-            verify(lookupListManager, never()).findAppointmentLocationList(any());
-            verify(lookupListManager, never()).setAppointmentLocationRequired(any(), anyBoolean());
+            verifyNoInteractions(lookupListManager, locationManager);
+        }
+    }
+
+    @Nested
+    @DisplayName("with update on _admin")
+    class Changes {
+
+        @BeforeEach
+        void allowUpdate() {
+            grant("_admin", SecurityInfoManager.UPDATE);
+        }
+
+        @ParameterizedTest
+        @MethodSource("ca.openosp.openo.appt.web.AppointmentLocation2ActionUnitTest#itemChanges")
+        @DisplayName("should refuse every change to an item from another lookup list")
+        void shouldRefuse_whenItemNotInLocationList(String dispatch) {
+            grant("_admin", SecurityInfoManager.DELETE);
+
+            assertThat(post(dispatch, "99", "Midtown")).isEqualTo("success");
+
+            assertThat(response.getStatus()).isEqualTo(400);
+            verifyNoInteractions(lookupListManager);
+            verify(locationManager, never()).rename(any(), anyInt(), anyString());
+            verify(locationManager, never()).makeDefault(any(), anyInt());
+            verify(locationManager, never()).removeDefault(any(), anyInt());
         }
 
         @Nested
-        @DisplayName("with update on _admin")
-        class WithAdminUpdate {
-
-            @BeforeEach
-            void allowUpdate() {
-                grant("_admin", SecurityInfoManager.UPDATE);
-            }
+        @DisplayName("colour and icon")
+        class Style {
 
             @Test
             @DisplayName("should save the colour and return to the row that changed")
-            void shouldRedirect_whenColourSaved() {
+            void shouldRedirectToRow_whenColourSaved() {
                 when(lookupListManager.updateLookupListItemColour(loggedInInfo, 11, "#445566")).thenReturn(true);
 
                 assertThat(post("updateColour", "11", "#445566")).isEqualTo("saved");
@@ -331,80 +272,12 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
             }
 
             @Test
-            @DisplayName("should save the icon and redirect to the list")
-            void shouldRedirect_whenIconSaved() {
-                when(lookupListManager.updateLookupListItemIcon(loggedInInfo, 11, "glyphicon-home")).thenReturn(true);
-
-                assertThat(post("updateIcon", "11", "glyphicon-home")).isEqualTo("saved");
-            }
-
-            @Test
-            @DisplayName("should pass a blank value on, which clears the style")
-            void shouldClear_whenValueBlank() {
+            @DisplayName("should pass a blank icon on, which clears it, even on a disabled location")
+            void shouldClearIcon_whenValueBlank() {
                 when(lookupListManager.updateLookupListItemIcon(loggedInInfo, 12, "")).thenReturn(true);
 
                 assertThat(post("updateIcon", "12", "")).isEqualTo("saved");
             }
-
-            @Test
-            @DisplayName("should refuse an item from another lookup list")
-            void shouldShowError_whenItemNotInLocationList() {
-                assertThat(post("updateColour", "99", "#445566")).isEqualTo("success");
-
-                assertThat(response.getStatus()).isEqualTo(400);
-                assertThat(request.getAttribute("saveFailed")).isEqualTo(true);
-                verify(lookupListManager, never()).updateLookupListItemColour(any(), anyInt(), anyString());
-            }
-
-            @Test
-            @DisplayName("should show the list with an error when the value is invalid")
-            void shouldShowError_whenValueInvalid() {
-                when(lookupListManager.updateLookupListItemIcon(loggedInInfo, 11, "home"))
-                        .thenThrow(new IllegalArgumentException("not a glyphicon"));
-
-                assertThat(post("updateIcon", "11", "home")).isEqualTo("success");
-
-                assertThat(response.getStatus()).isEqualTo(400);
-                assertThat(request.getAttribute("locations")).isEqualTo(List.of(room, retired));
-            }
-
-            @Test
-            @DisplayName("should show the list with an error when the id is not a number")
-            void shouldShowError_whenIdMalformed() {
-                assertThat(post("updateColour", "abc", "#445566")).isEqualTo("success");
-
-                assertThat(response.getStatus()).isEqualTo(400);
-            }
-        }
-    }
-
-    @Nested
-    @DisplayName("managing locations")
-    class Managing {
-
-        @BeforeEach
-        void allowUpdate() {
-            grant("_admin", SecurityInfoManager.UPDATE);
-        }
-
-        private String post(String dispatch, String id, String value) {
-            request.setParameter("dispatch", dispatch);
-            request.setParameter("ID", id);
-            request.setParameter("value", value);
-            return action.execute();
-        }
-
-        private void locations(LookupListItem... items) {
-            LookupList list = new LookupList();
-            list.setName("appointmentLocationCode");
-            list.setItems(List.of(items));
-            lenient().when(lookupListManager.findAppointmentLocationList(any())).thenReturn(list);
-        }
-
-        private LookupListItem named(int id, String label, boolean active) {
-            LookupListItem item = item(id, active);
-            item.setLabel(label);
-            return item;
         }
 
         @Nested
@@ -412,104 +285,63 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
         class Renaming {
 
             @Test
-            @DisplayName("should save the trimmed name and redirect to the list")
-            void shouldRedirect_whenRenamed() {
-                when(lookupListManager.updateLookupListItemLabel(loggedInInfo, 11, "Midtown")).thenReturn(true);
+            @DisplayName("should save the trimmed name, which also renames upcoming appointments")
+            void shouldRename_whenNameFree() {
+                when(locationManager.rename(loggedInInfo, 11, "Midtown")).thenReturn(true);
 
                 assertThat(post("updateDescription", "11", "  Midtown  ")).isEqualTo("saved");
             }
 
             @Test
-            @DisplayName("should refuse a name longer than a booking can store")
+            @DisplayName("should say so when the name is longer than a booking can store, and keep one that fits")
             void shouldRefuse_whenNameTooLong() {
                 assertThat(post("updateDescription", "11", "x".repeat(81))).isEqualTo("success");
 
-                assertThat(response.getStatus()).isEqualTo(400);
                 assertThat(request.getAttribute("saveFailedKey")).isEqualTo("admin.appt.location.msg.nameTooLong");
-                verify(lookupListManager, never()).updateLookupListItemLabel(any(), anyInt(), anyString());
+                verify(locationManager, never()).rename(any(), anyInt(), anyString());
+
+                when(locationManager.rename(loggedInInfo, 11, "x".repeat(80))).thenReturn(true);
+                assertThat(post("updateDescription", "11", "x".repeat(80))).isEqualTo("saved");
             }
 
             @Test
-            @DisplayName("should keep a name that is exactly as long as a booking can store")
-            void shouldSave_whenNameExactlyMaxLength() {
-                String name = "x".repeat(80);
-                when(lookupListManager.updateLookupListItemLabel(loggedInInfo, 11, name)).thenReturn(true);
-
-                assertThat(post("updateDescription", "11", name)).isEqualTo("saved");
-            }
-
-            @Test
-            @DisplayName("should refuse a name another location in use already has, whatever its case")
+            @DisplayName("should say so when another location in use already has the name")
             void shouldRefuse_whenNameInUse() {
-                locations(named(11, "Midtown", true), named(13, "Eastside", true));
+                locations(item(11, "Midtown", true), item(13, "Eastside", true));
 
                 assertThat(post("updateDescription", "11", "EASTSIDE")).isEqualTo("success");
 
-                assertThat(response.getStatus()).isEqualTo(400);
                 assertThat(request.getAttribute("saveFailedKey")).isEqualTo("admin.appt.location.msg.nameInUse");
                 assertThat(request.getAttribute("saveFailedParam")).isEqualTo("EASTSIDE");
-                verify(lookupListManager, never()).updateLookupListItemLabel(any(), anyInt(), anyString());
-            }
-
-            @Test
-            @DisplayName("should allow a location to change the case of its own name")
-            void shouldSave_whenOnlyItsOwnCaseChanges() {
-                locations(named(11, "midtown", true), named(13, "Eastside", true));
-                when(lookupListManager.updateLookupListItemLabel(loggedInInfo, 11, "Midtown")).thenReturn(true);
-
-                assertThat(post("updateDescription", "11", "Midtown")).isEqualTo("saved");
-            }
-
-            @Test
-            @DisplayName("should allow a name that only an inactive location has")
-            void shouldSave_whenNameOnlyHeldByInactive() {
-                locations(named(11, "Midtown", true), named(12, "Eastside", false));
-                when(lookupListManager.updateLookupListItemLabel(loggedInInfo, 11, "Eastside")).thenReturn(true);
-
-                assertThat(post("updateDescription", "11", "Eastside")).isEqualTo("saved");
-            }
-
-            @Test
-            @DisplayName("should refuse an item from another lookup list")
-            void shouldRefuse_whenItemNotInLocationList() {
-                assertThat(post("updateDescription", "99", "Midtown")).isEqualTo("success");
-
-                assertThat(response.getStatus()).isEqualTo(400);
-                assertThat(request.getAttribute("saveFailedKey")).isNull();
+                verify(locationManager, never()).rename(any(), anyInt(), anyString());
             }
         }
 
         @Nested
-        @DisplayName("enabling")
-        class Restoring {
+        @DisplayName("enabling and disabling")
+        class Lifecycle {
 
             @Test
-            @DisplayName("should enable the location and redirect to the list")
-            void shouldRedirect_whenRestored() {
+            @DisplayName("should enable a location")
+            void shouldRestore_whenNameFree() {
                 when(lookupListManager.restoreLookupListItem(loggedInInfo, 12)).thenReturn(true);
 
                 assertThat(post("restore", "12", "")).isEqualTo("saved");
             }
 
             @Test
-            @DisplayName("should refuse enabling a location whose name an active one has")
-            void shouldRefuse_whenNameInUse() {
-                locations(named(11, "Midtown", true), named(12, "midtown", false));
+            @DisplayName("should say so when enabling a location whose name an active one has")
+            void shouldRefuse_whenRestoringOntoActiveName() {
+                locations(item(11, "Midtown", true), item(12, "midtown", false));
 
                 assertThat(post("restore", "12", "")).isEqualTo("success");
 
-                assertThat(response.getStatus()).isEqualTo(400);
                 assertThat(request.getAttribute("saveFailedKey")).isEqualTo("admin.appt.location.msg.nameInUse");
                 verify(lookupListManager, never()).restoreLookupListItem(any(), anyInt());
             }
-        }
-
-        @Nested
-        @DisplayName("disabling")
-        class Deactivating {
 
             @Test
-            @DisplayName("should refuse without delete on _admin, which the Look-Up List Manager requires")
+            @DisplayName("should refuse disabling without delete on _admin, which the Look-Up List Manager requires")
             void shouldThrow_whenNoAdminDelete() {
                 assertThatThrownBy(() -> post("deactivate", "11", "")).isInstanceOf(SecurityException.class);
 
@@ -517,8 +349,8 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
             }
 
             @Test
-            @DisplayName("should disable the location with delete on _admin")
-            void shouldRedirect_whenDeactivated() {
+            @DisplayName("should disable a location with delete on _admin")
+            void shouldDeactivate_whenAdminDelete() {
                 grant("_admin", SecurityInfoManager.DELETE);
                 when(lookupListManager.removeLookupListItem(loggedInInfo, 11)).thenReturn(true);
 
@@ -531,20 +363,14 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
         class Moving {
 
             @Test
-            @DisplayName("should move the location and return to the row that moved")
-            void shouldRedirectToRow_whenMoved() {
+            @DisplayName("should move the location either way and return to its row")
+            void shouldMove_whenAsked() {
                 when(lookupListManager.moveLookupListItem(loggedInInfo, 11, true)).thenReturn(true);
-
-                assertThat(post("moveUp", "11", "")).isEqualTo("saved");
-                assertThat(action.getAnchor()).isEqualTo("#location-11");
-            }
-
-            @Test
-            @DisplayName("should move the location the other way")
-            void shouldMoveDown_whenAsked() {
                 when(lookupListManager.moveLookupListItem(loggedInInfo, 11, false)).thenReturn(true);
 
+                assertThat(post("moveUp", "11", "")).isEqualTo("saved");
                 assertThat(post("moveDown", "11", "")).isEqualTo("saved");
+                assertThat(action.getAnchor()).isEqualTo("#location-11");
             }
 
             @Test
@@ -561,50 +387,30 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
         class Default {
 
             @Test
-            @DisplayName("should make an active location the default and return to its row")
-            void shouldMakeDefault_whenActive() {
+            @DisplayName("should make the location the default and return to its row")
+            void shouldMakeDefault_whenAsked() {
                 assertThat(post("makeDefault", "11", "")).isEqualTo("saved");
 
-                verify(lookupListManager).setAppointmentLocationDefault(loggedInInfo, 11);
+                verify(locationManager).makeDefault(loggedInInfo, 11);
                 assertThat(action.getAnchor()).isEqualTo("#location-11");
             }
 
             @Test
-            @DisplayName("should refuse to make an inactive location the default, since no new booking offers it")
-            void shouldRefuse_whenMakingInactiveDefault() {
+            @DisplayName("should show the list with an error when the manager refuses the default")
+            void shouldRefuse_whenManagerRefusesDefault() {
+                doThrow(new IllegalArgumentException("inactive")).when(locationManager).makeDefault(loggedInInfo, 12);
+
                 assertThat(post("makeDefault", "12", "")).isEqualTo("success");
 
                 assertThat(response.getStatus()).isEqualTo(400);
-                verify(lookupListManager, never()).setAppointmentLocationDefault(any(), any());
             }
 
             @Test
-            @DisplayName("should refuse to make an item from another lookup list the default")
-            void shouldRefuse_whenMakingDefaultOutsideLocationList() {
-                assertThat(post("makeDefault", "99", "")).isEqualTo("success");
-
-                assertThat(response.getStatus()).isEqualTo(400);
-                verify(lookupListManager, never()).setAppointmentLocationDefault(any(), any());
-            }
-
-            @Test
-            @DisplayName("should remove the default, even while that location is inactive")
-            void shouldRemoveDefault_whenStillDefault() {
-                defaultLocation(12);
-
+            @DisplayName("should ask the manager to remove the default, even while that location is inactive")
+            void shouldRemoveDefault_whenAsked() {
                 assertThat(post("removeDefault", "12", "")).isEqualTo("saved");
 
-                verify(lookupListManager).setAppointmentLocationDefault(loggedInInfo, null);
-            }
-
-            @Test
-            @DisplayName("should leave the default alone when the page asking to remove it is out of date")
-            void shouldKeepDefault_whenAnotherLocationIsDefault() {
-                defaultLocation(11);
-
-                assertThat(post("removeDefault", "12", "")).isEqualTo("saved");
-
-                verify(lookupListManager, never()).setAppointmentLocationDefault(any(), any());
+                verify(locationManager).removeDefault(loggedInInfo, 12);
             }
         }
 
@@ -626,7 +432,7 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
             void shouldTurnOn_whenSwitchedOn() {
                 assertThat(switchTo(true)).isEqualTo("saved");
 
-                verify(lookupListManager).setAppointmentLocationRequired(loggedInInfo, true);
+                verify(locationManager).setRequired(loggedInInfo, true);
                 assertThat(action.getAnchor()).isEmpty();
             }
 
@@ -635,7 +441,7 @@ public class AppointmentLocation2ActionUnitTest extends OpenOUnitTestBase {
             void shouldTurnOff_whenSwitchedOff() {
                 assertThat(switchTo(false)).isEqualTo("saved");
 
-                verify(lookupListManager).setAppointmentLocationRequired(loggedInInfo, false);
+                verify(locationManager).setRequired(loggedInInfo, false);
             }
         }
     }

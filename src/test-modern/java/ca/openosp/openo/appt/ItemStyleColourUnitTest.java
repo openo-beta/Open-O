@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("ItemStyleColour unit tests")
 @Tag("unit")
 @Tag("fast")
+@Tag("appointment")
 public class ItemStyleColourUnitTest {
 
     @Nested
@@ -35,7 +36,7 @@ public class ItemStyleColourUnitTest {
 
         @ParameterizedTest
         @NullAndEmptySource
-        @ValueSource(strings = {"red", "red;top:0", "#fff", "#1122334", "#112233445", "#1122334g", "#112233;background:url(x)"})
+        @ValueSource(strings = {"red", "red;top:0", "#fff", "112233", "#12345g", "#1122334", "#112233445", "#1122334g", "#112233;background:url(x)"})
         @DisplayName("should reject anything else, and no value")
         void shouldReject_whenNotHexColour(String colour) {
             assertThat(ItemStyleColour.isColour(colour)).isFalse();

@@ -1,27 +1,23 @@
 package ca.openosp.openo.appt;
 
-import ca.openosp.OscarProperties;
+import ca.openosp.openo.appt.status.service.impl.AppointmentStatusCacheExtension;
 import ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl;
 import ca.openosp.openo.commn.dao.AppointmentStatusDao;
 import ca.openosp.openo.commn.model.AppointmentStatus;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
-import org.junit.jupiter.api.AfterEach;
+import ca.openosp.openo.test.unit.OscarPropertiesOverride;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.MockedStatic;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for how {@link ApptStatusData} draws an appointment's status on the schedule, with
@@ -34,31 +30,26 @@ import static org.mockito.Mockito.when;
 @DisplayName("ApptStatusData schedule status unit tests")
 @Tag("unit")
 @Tag("fast")
+@Tag("appointment")
 public class ApptStatusDataUnitTest extends OpenOUnitTestBase {
 
-    private List<AppointmentStatus> originalCache;
-    private Object originalCacheIsDirty;
+    @RegisterExtension
+    final AppointmentStatusCacheExtension statusCache = new AppointmentStatusCacheExtension();
+
+    @RegisterExtension
+    final OscarPropertiesOverride properties = new OscarPropertiesOverride();
 
     @BeforeEach
-    @SuppressWarnings("unchecked")
     void setUp() {
         // The manager fills its DAO on class load, so a mock is registered before the class is touched.
         registerMock(AppointmentStatusDao.class, mock(AppointmentStatusDao.class));
-        originalCache = (List<AppointmentStatus>) ReflectionTestUtils.getField(AppointmentStatusMgrImpl.class, "cachedStatuses");
-        originalCacheIsDirty = ReflectionTestUtils.getField(AppointmentStatusMgrImpl.class, "cacheIsDirty");
         AppointmentStatus picked = status(3, "P", "picked.gif");
         picked.setDescription("Picked");
         picked.setColor("#FFBBFF");
         picked.setActive(0);
-        AppointmentStatusMgrImpl.setCachedStatuses(new ArrayList<>(List.of(
-                status(4, "E", "empty.gif"), picked, status(2, "G", "glyphicon-home"), status(1, "H", "here.gif"))));
-        ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cacheIsDirty", false);
-    }
-
-    @AfterEach
-    void restoreCache() {
-        ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cachedStatuses", originalCache);
-        ReflectionTestUtils.setField(AppointmentStatusMgrImpl.class, "cacheIsDirty", originalCacheIsDirty);
+        statusCache.fill(List.of(status(4, "E", "empty.gif"), picked, status(2, "G", "glyphicon-home"), status(1, "H", "here.gif")));
+        // ApptStatusData reads ENABLE_EDIT_APPT_STATUS when it is made; "yes" draws the statuses as edited.
+        properties.set("ENABLE_EDIT_APPT_STATUS", "yes");
     }
 
     @ParameterizedTest
@@ -140,16 +131,10 @@ public class ApptStatusDataUnitTest extends OpenOUnitTestBase {
         assertThat(apptStatusData("P").getShortLetterColour()).isNull();
     }
 
-    /* ApptStatusData reads ENABLE_EDIT_APPT_STATUS when it is made; "yes" draws the statuses as edited. */
     private static ApptStatusData apptStatusData(String apptStatus) {
-        try (MockedStatic<OscarProperties> properties = mockStatic(OscarProperties.class)) {
-            OscarProperties editable = mock(OscarProperties.class);
-            when(editable.getProperty("ENABLE_EDIT_APPT_STATUS")).thenReturn("yes");
-            properties.when(OscarProperties::getInstance).thenReturn(editable);
-            ApptStatusData data = new ApptStatusData();
-            data.setApptStatus(apptStatus);
-            return data;
-        }
+        ApptStatusData data = new ApptStatusData();
+        data.setApptStatus(apptStatus);
+        return data;
     }
 
     private static AppointmentStatus status(int id, String code, String icon) {

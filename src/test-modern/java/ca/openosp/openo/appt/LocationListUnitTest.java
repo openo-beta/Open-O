@@ -1,19 +1,17 @@
 package ca.openosp.openo.appt;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import ca.openosp.OscarProperties;
 import ca.openosp.openo.commn.IsPropertiesOn;
 import ca.openosp.openo.PMmodule.model.Program;
 import ca.openosp.openo.PMmodule.service.ProgramManager;
 import ca.openosp.openo.commn.model.Appointment;
 import ca.openosp.openo.commn.model.LookupList;
 import ca.openosp.openo.commn.model.LookupListItem;
-import ca.openosp.openo.managers.LookupListManager;
+import ca.openosp.openo.managers.AppointmentLocationManager;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
+import ca.openosp.openo.test.unit.OscarPropertiesOverride;
 import ca.openosp.openo.utility.LoggedInInfo;
 
 import org.junit.jupiter.api.AfterEach;
@@ -23,8 +21,11 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
@@ -52,12 +53,13 @@ import static org.mockito.Mockito.verifyNoInteractions;
 @DisplayName("LocationList unit tests")
 @Tag("unit")
 @Tag("fast")
+@Tag("appointment")
 public class LocationListUnitTest extends OpenOUnitTestBase {
 
     private static final int LOCATION_LIST_ID = 5;
 
     @Mock
-    private LookupListManager lookupListManager;
+    private AppointmentLocationManager locationManager;
 
     @Mock
     private ProgramManager programManager;
@@ -66,43 +68,53 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
     private final LookupListItem retired = item(12, "Old Annex", false);
     private final LookupListItem room2 = item(13, "Room 2", true);
 
-    /** The site setups that decide the Location Mode; each test starts with none and ends as it found them. */
-    private static final List<String> MODE_KEYS = List.of("multisites", "scheduleSiteID", "ModuleNames", "useProgramLocation");
-    private final Map<String, String> savedModeProperties = new HashMap<>();
-    private final OscarProperties properties = OscarProperties.getInstance();
+    /** The properties that decide the Location Mode; each test starts with none set. */
+    private static final String[] MODE_KEYS = {"multisites", "scheduleSiteID", "ModuleNames", "useProgramLocation"};
+
+    @RegisterExtension
+    final OscarPropertiesOverride properties = new OscarPropertiesOverride();
 
     private LookupList locationList;
 
-    @BeforeEach
-    void clearModeProperties() {
-        for (String key : MODE_KEYS) {
-            String value = (String) properties.remove(key);
-            if (value != null) {
-                savedModeProperties.put(key, value);
+    /** The site setups, each with the properties that turn it on and the Location Mode it gives. */
+    enum SiteSetup {
+        MULTISITES(LocationList.LocationMode.SITES, "multisites", "on"),
+        SCHEDULE_SITES(LocationList.LocationMode.SCHEDULE_SITES, "scheduleSiteID", "site1|site2"),
+        PROGRAMS(LocationList.LocationMode.PROGRAMS, "ModuleNames", "HRM,Caisi", "useProgramLocation", "true");
+
+        final LocationList.LocationMode mode;
+        private final String[] properties;
+
+        SiteSetup(LocationList.LocationMode mode, String... properties) {
+            this.mode = mode;
+            this.properties = properties;
+        }
+
+        void turnOn(OscarPropertiesOverride override) {
+            for (int i = 0; i < properties.length; i += 2) {
+                override.set(properties[i], properties[i + 1]);
             }
         }
     }
 
-    @AfterEach
-    void restoreModeProperties() {
-        MODE_KEYS.forEach(properties::remove);
-        properties.putAll(savedModeProperties);
+    @BeforeEach
+    void clearModeProperties() {
+        properties.remove(MODE_KEYS);
     }
 
     @BeforeEach
     void setUp() {
-        registerMock(LookupListManager.class, lookupListManager);
+        registerMock(AppointmentLocationManager.class, locationManager);
         registerMock(ProgramManager.class, programManager);
         locationList = new LookupList();
         locationList.setId(LOCATION_LIST_ID);
         locationList.setName("appointmentLocationCode");
         locationList.setItems(List.of(room1, retired, room2));
-        lenient().when(lookupListManager.findAppointmentLocationList(any())).thenReturn(locationList);
+        lenient().when(locationManager.findLocationList(any())).thenReturn(locationList);
     }
 
     private void programLocations() {
-        properties.setProperty("ModuleNames", "HRM,Caisi");
-        properties.setProperty("useProgramLocation", "true");
+        SiteSetup.PROGRAMS.turnOn(properties);
     }
 
     private static Program program(String name, String location) {
@@ -150,21 +162,6 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should keep a booking's deactivated item among its choices, in place")
-        void shouldIncludeCurrentItem_whenDeactivated() {
-            assertThat(LocationList.of(locationList).getChoices(12)).containsExactly(room1, retired, room2);
-        }
-
-        @Test
-        @DisplayName("should offer only active items when the booking has no or an active item")
-        void shouldListActiveItems_whenCurrentActiveOrNone() {
-            LocationList locations = LocationList.of(locationList);
-
-            assertThat(locations.getChoices(null)).containsExactly(room1, room2);
-            assertThat(locations.getChoices(13)).containsExactly(room1, room2);
-        }
-
-        @Test
         @DisplayName("should be empty when the list is missing")
         void shouldBeEmpty_whenListMissing() {
             LocationList locations = LocationList.of(null);
@@ -181,7 +178,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
 
         @Test
         @DisplayName("should list the active locations in order, then the inactive ones by name")
-        void shouldListActiveFirstThenInactiveByName() {
+        void shouldListActiveFirstThenInactiveByName_whenListed() {
             LookupListItem annexB = item(14, "annex B", false);
             LookupListItem clinicA = item(15, "Clinic A", false);
             locationList.setItems(List.of(room1, clinicA, retired, annexB, room2));
@@ -239,54 +236,56 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
     }
 
     @Nested
-    @DisplayName("isLocationMode")
-    class LocationMode {
+    @DisplayName("getMode")
+    class Modes {
+
+        private LocationList.LocationMode mode() {
+            return LocationList.of(locationList).getMode();
+        }
 
         @Test
         @DisplayName("should use the list when it has an active item and no site setup applies")
-        void shouldBeLocationMode_whenActiveItemAndNoSites() {
+        void shouldBeLocationList_whenActiveItemAndNoSites() {
+            assertThat(mode()).isEqualTo(LocationList.LocationMode.LOCATION_LIST);
             assertThat(LocationList.of(locationList).isLocationMode()).isTrue();
         }
 
         @Test
-        @DisplayName("should not use the list when it has no active item")
-        void shouldNotBeLocationMode_whenNoActiveItem() {
+        @DisplayName("should stay free text while the list has no active item")
+        void shouldBeFreeText_whenNoActiveItem() {
             locationList.setItems(List.of(retired));
 
+            assertThat(mode()).isEqualTo(LocationList.LocationMode.FREE_TEXT);
             assertThat(LocationList.of(locationList).isLocationMode()).isFalse();
         }
 
-        @Test
-        @DisplayName("should give way to multisite sites")
-        void shouldNotBeLocationMode_whenMultisites() {
-            properties.setProperty("multisites", "on");
+        @ParameterizedTest
+        @EnumSource(SiteSetup.class)
+        @DisplayName("should give way to a site setup")
+        void shouldBeSiteSetup_whenOneIsOn(SiteSetup setup) {
+            setup.turnOn(properties);
 
-            assertThat(LocationList.of(locationList).isLocationMode()).isFalse();
-        }
-
-        @Test
-        @DisplayName("should give way to schedule sites")
-        void shouldNotBeLocationMode_whenScheduleSites() {
-            properties.setProperty("scheduleSiteID", "Main|Annex");
-
-            assertThat(LocationList.of(locationList).isLocationMode()).isFalse();
-        }
-
-        @Test
-        @DisplayName("should give way to CAISI program locations")
-        void shouldNotBeLocationMode_whenProgramLocations() {
-            properties.setProperty("ModuleNames", "HRM,Caisi");
-            properties.setProperty("useProgramLocation", "true");
-
-            assertThat(LocationList.of(locationList).isLocationMode()).isFalse();
+            assertThat(mode()).isEqualTo(setup.mode);
+            assertThat(mode().isSiteSetup()).isTrue();
         }
 
         @Test
         @DisplayName("should still use the list when CAISI is on without program locations")
-        void shouldBeLocationMode_whenCaisiWithoutProgramLocations() {
-            properties.setProperty("ModuleNames", "Caisi");
+        void shouldBeLocationList_whenCaisiWithoutProgramLocations() {
+            properties.set("ModuleNames", "Caisi");
 
-            assertThat(LocationList.of(locationList).isLocationMode()).isTrue();
+            assertThat(mode()).isEqualTo(LocationList.LocationMode.LOCATION_LIST);
+        }
+
+        @Test
+        @DisplayName("should put sites before programs, and programs before schedule sites, as the booking screens do")
+        void shouldFollowBookingScreenOrder_whenSetupsOverlap() {
+            SiteSetup.PROGRAMS.turnOn(properties);
+            SiteSetup.SCHEDULE_SITES.turnOn(properties);
+            assertThat(mode()).isEqualTo(LocationList.LocationMode.PROGRAMS);
+
+            SiteSetup.MULTISITES.turnOn(properties);
+            assertThat(mode()).isEqualTo(LocationList.LocationMode.SITES);
         }
     }
 
@@ -322,22 +321,13 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
             assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("Front desk");
         }
 
-        @Test
+        @ParameterizedTest
+        @EnumSource(value = SiteSetup.class, names = {"MULTISITES", "SCHEDULE_SITES"})
         @DisplayName("should use the saved text, the site, when the schedule shows sites")
-        void shouldUseText_whenMultisites() {
-            appointment.setLocationCode(13);
-            appointment.setLocation("Downtown");
-            properties.setProperty("multisites", "on");
-
-            assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("Downtown");
-        }
-
-        @Test
-        @DisplayName("should use the saved text, the site, when the schedule shows schedule sites")
-        void shouldUseText_whenScheduleSites() {
+        void shouldUseText_whenSites(SiteSetup setup) {
             appointment.setLocationCode(13);
             appointment.setLocation("site1");
-            properties.setProperty("scheduleSiteID", "site1|site2");
+            setup.turnOn(properties);
 
             assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("site1");
         }
@@ -391,7 +381,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         @DisplayName("should use the saved text, not a program, when sites and programs are both on")
         void shouldUseText_whenMultisitesAndProgramLocations() {
             programLocations();
-            properties.setProperty("multisites", "on");
+            SiteSetup.MULTISITES.turnOn(properties);
             appointment.setLocation("10034");
 
             assertThat(LocationList.of(locationList).getDisplayName(appointment)).isEqualTo("10034");
@@ -424,14 +414,10 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         }
 
         @ParameterizedTest
-        @ValueSource(strings = {"multisites", "scheduleSiteID", "programs"})
+        @EnumSource(SiteSetup.class)
         @DisplayName("should give no chip in a site setup, for a code saved before the switch")
-        void shouldGiveNoChip_whenSiteSetup(String setup) {
-            switch (setup) {
-                case "multisites" -> properties.setProperty("multisites", "on");
-                case "scheduleSiteID" -> properties.setProperty("scheduleSiteID", "site1|site2");
-                default -> programLocations();
-            }
+        void shouldGiveNoChip_whenSiteSetup(SiteSetup setup) {
+            setup.turnOn(properties);
             appointment.setLocationCode(13);
 
             assertThat(LocationList.of(locationList).getChipItem(appointment)).isNull();
@@ -551,6 +537,117 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
     }
 
     @Nested
+    @DisplayName("dropdowns")
+    class Dropdowns {
+
+        private final LoggedInInfo loggedInInfo = new LoggedInInfo();
+        private final Appointment saved = new Appointment();
+        private LocationList locations;
+
+        @BeforeEach
+        void wrapList() {
+            locations = LocationList.of(locationList);
+        }
+
+        private List<LookupListItem> offered(LocationList.Dropdown dropdown) {
+            return dropdown.options().stream().map(LocationList.Option::item).toList();
+        }
+
+        @Test
+        @DisplayName("should offer a new booking the active locations under their own names")
+        void shouldOfferActiveItems_whenNewBooking() {
+            LocationList.Dropdown dropdown = locations.newBookingDropdown(loggedInInfo, null);
+
+            assertThat(dropdown.options()).containsExactly(new LocationList.Option(room1, "Room 1"), new LocationList.Option(room2, "Room 2"));
+            assertThat(dropdown.legacy()).isNull();
+        }
+
+        @Test
+        @DisplayName("should keep the choice a patient search posted back over the Default Location")
+        void shouldKeepPostedChoice_whenNewBookingRedisplayed() {
+            lenient().when(locationManager.findDefault(loggedInInfo)).thenReturn(13);
+
+            assertThat(locations.newBookingDropdown(loggedInInfo, "11").selected()).isEqualTo("11");
+            assertThat(locations.newBookingDropdown(loggedInInfo, "").selected()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should make a new booking's dropdown required under the Location Requirement")
+        void shouldBeRequired_whenRequirementOn() {
+            when(locationManager.isRequired(loggedInInfo)).thenReturn(true);
+
+            assertThat(locations.newBookingDropdown(loggedInInfo, null).required()).isTrue();
+        }
+
+        @Test
+        @DisplayName("should start an edit on the saved booking's choice, offering its deactivated location in place")
+        void shouldStartOnSavedChoice_whenEditFirstDisplayed() {
+            saved.setLocationCode(12);
+            saved.setLocation("Old Annex");
+
+            LocationList.Dropdown dropdown = locations.editDropdown(saved, null);
+
+            assertThat(dropdown.selected()).isEqualTo("12");
+            assertThat(offered(dropdown)).containsExactly(room1, retired, room2);
+            assertThat(dropdown.required()).isFalse();
+        }
+
+        @Test
+        @DisplayName("should offer only active locations when the booking has none or an active one")
+        void shouldOfferActiveItems_whenSavedActiveOrNone() {
+            assertThat(offered(locations.editDropdown(saved, null))).containsExactly(room1, room2);
+
+            saved.setLocationCode(13);
+            saved.setLocation("Room 2");
+            assertThat(offered(locations.editDropdown(saved, null))).containsExactly(room1, room2);
+        }
+
+        @Test
+        @DisplayName("should show the booking's own location under the name it was saved with")
+        void shouldShowSavedName_whenItemRenamedSince() {
+            saved.setLocationCode(13);
+            saved.setLocation("Second Room");
+
+            assertThat(locations.editDropdown(saved, null).options())
+                    .containsExactly(new LocationList.Option(room1, "Room 1"), new LocationList.Option(room2, "Second Room"));
+        }
+
+        @Test
+        @DisplayName("should still offer the saved deactivated location after a patient search posted another")
+        void shouldKeepSavedItem_whenPostedAnother() {
+            saved.setLocationCode(12);
+            saved.setLocation("Old Annex");
+
+            LocationList.Dropdown dropdown = locations.editDropdown(saved, new LocationList.Choice("11", null));
+
+            assertThat(dropdown.selected()).isEqualTo("11");
+            assertThat(offered(dropdown)).containsExactly(room1, retired, room2);
+        }
+
+        @Test
+        @DisplayName("should keep a posted Legacy Location, and offer no deactivated location the booking doesn't have")
+        void shouldKeepPostedLegacy_whenRedisplayed() {
+            saved.setLocation("Room 5 (old)");
+
+            LocationList.Dropdown dropdown = locations.editDropdown(saved,
+                    new LocationList.Choice(LocationList.LEGACY_VALUE, "Room 5 (old)"));
+
+            assertThat(dropdown.selected()).isEqualTo(LocationList.LEGACY_VALUE);
+            assertThat(dropdown.legacy()).isEqualTo("Room 5 (old)");
+            assertThat(offered(dropdown)).containsExactly(room1, room2);
+        }
+
+        @Test
+        @DisplayName("should offer what was posted when the booking is gone since the page opened")
+        void shouldOfferPostedChoice_whenSavedBookingGone() {
+            LocationList.Dropdown dropdown = locations.editDropdown(null, new LocationList.Choice("12", null));
+
+            assertThat(dropdown.selected()).isEqualTo("12");
+            assertThat(offered(dropdown)).containsExactly(room1, retired, room2);
+        }
+    }
+
+    @Nested
     @DisplayName("Default Location")
     class DefaultLocation {
 
@@ -563,7 +660,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         }
 
         private void defaultSetTo(Integer id) {
-            when(lookupListManager.findAppointmentLocationDefault(loggedInInfo)).thenReturn(id);
+            when(locationManager.findDefault(loggedInInfo)).thenReturn(id);
         }
 
         @Test
@@ -572,34 +669,18 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
             defaultSetTo(13);
 
             assertThat(locations.getDefault(loggedInInfo)).isSameAs(room2);
-            assertThat(locations.getNewBookingValue(loggedInInfo)).isEqualTo("13");
+            assertThat(locations.newBookingDropdown(loggedInInfo, null).selected()).isEqualTo("13");
         }
 
-        @Test
-        @DisplayName("should have no default when the one set is inactive")
-        void shouldHaveNoDefault_whenDefaultInactive() {
-            defaultSetTo(12);
+        @ParameterizedTest
+        @NullSource
+        @ValueSource(ints = {12, 99})
+        @DisplayName("should start on the blank option when no default is set, or the one set is inactive or no item of the list")
+        void shouldHaveNoDefault_whenNoneOrInactiveOrElsewhere(Integer id) {
+            defaultSetTo(id);
 
             assertThat(locations.getDefault(loggedInInfo)).isNull();
-            assertThat(locations.getNewBookingValue(loggedInInfo)).isEmpty();
-        }
-
-        @Test
-        @DisplayName("should have no default when none is set")
-        void shouldHaveNoDefault_whenNoneSet() {
-            defaultSetTo(null);
-
-            assertThat(locations.getDefault(loggedInInfo)).isNull();
-            assertThat(locations.getNewBookingValue(loggedInInfo)).isEmpty();
-        }
-
-        @Test
-        @DisplayName("should have no default when the one set is no item of the list")
-        void shouldHaveNoDefault_whenDefaultNotInList() {
-            defaultSetTo(99);
-
-            assertThat(locations.getDefault(loggedInInfo)).isNull();
-            assertThat(locations.getNewBookingValue(loggedInInfo)).isEmpty();
+            assertThat(locations.newBookingDropdown(loggedInInfo, null).selected()).isEmpty();
         }
     }
 
@@ -612,7 +693,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         @Test
         @DisplayName("should require a location on a new booking when the requirement is on")
         void shouldRequire_whenRequirementOn() {
-            when(lookupListManager.isAppointmentLocationRequired(loggedInInfo)).thenReturn(true);
+            when(locationManager.isRequired(loggedInInfo)).thenReturn(true);
 
             assertThat(LocationList.of(locationList).isRequiredForNewBooking(loggedInInfo)).isTrue();
         }
@@ -620,7 +701,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         @Test
         @DisplayName("should not require a location when the requirement is off")
         void shouldNotRequire_whenRequirementOff() {
-            when(lookupListManager.isAppointmentLocationRequired(loggedInInfo)).thenReturn(false);
+            when(locationManager.isRequired(loggedInInfo)).thenReturn(false);
 
             assertThat(LocationList.of(locationList).isRequiredForNewBooking(loggedInInfo)).isFalse();
         }
@@ -629,16 +710,17 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
         @DisplayName("should ignore the requirement when no location is active, since bookings take a typed one")
         void shouldNotRequire_whenNoActiveItem() {
             locationList.setItems(List.of(retired));
-            lenient().when(lookupListManager.isAppointmentLocationRequired(loggedInInfo)).thenReturn(true);
+            lenient().when(locationManager.isRequired(loggedInInfo)).thenReturn(true);
 
             assertThat(LocationList.of(locationList).isRequiredForNewBooking(loggedInInfo)).isFalse();
         }
 
-        @Test
+        @ParameterizedTest
+        @EnumSource(SiteSetup.class)
         @DisplayName("should ignore the requirement in a site setup, which offers its own places")
-        void shouldNotRequire_whenSiteSetup() {
-            properties.setProperty("multisites", "on");
-            lenient().when(lookupListManager.isAppointmentLocationRequired(loggedInInfo)).thenReturn(true);
+        void shouldNotRequire_whenSiteSetup(SiteSetup setup) {
+            setup.turnOn(properties);
+            lenient().when(locationManager.isRequired(loggedInInfo)).thenReturn(true);
 
             assertThat(LocationList.of(locationList).isRequiredForNewBooking(loggedInInfo)).isFalse();
         }
@@ -667,7 +749,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
 
             assertThat(appointment.getLocation()).isEqualTo("Before");
             assertThat(appointment.getLocationCode()).isEqualTo(7);
-            verifyNoInteractions(lookupListManager);
+            verifyNoInteractions(locationManager);
         }
 
         @Test
@@ -692,7 +774,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
 
             assertThat(appointment.getLocation()).isEqualTo(typed);
             assertThat(appointment.getLocationCode()).isNull();
-            verifyNoInteractions(lookupListManager);
+            verifyNoInteractions(locationManager);
         }
 
         @Test
@@ -748,7 +830,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
 
             assertThat(appointment.getLocationCode()).isNull();
             assertThat(appointment.getLocation()).isEqualTo("Room 5 (old)");
-            verifyNoInteractions(lookupListManager);
+            verifyNoInteractions(locationManager);
         }
 
         @Test
@@ -794,16 +876,21 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
                 pinnedToday.close();
             }
 
+            /* Saves the appointment, dated days from today and saved at code under name, as the form posts posted. */
+            private void save(int days, Integer code, String name, String posted) {
+                // A date read from the database is a java.sql.Date, whose toInstant() throws.
+                appointment.setAppointmentDate(java.sql.Date.valueOf(today.plusDays(days)));
+                appointment.setLocationCode(code);
+                appointment.setLocation(name);
+                request.setParameter("locationCode", posted);
+
+                LocationList.applyPostedLocation(appointment, request);
+            }
+
             @Test
             @DisplayName("should keep the saved name when an appointment before today stays at its renamed item")
             void shouldKeepSavedName_whenPastAppointmentKeepsItem() {
-                // A date read from the database is a java.sql.Date, whose toInstant() throws.
-                appointment.setAppointmentDate(java.sql.Date.valueOf(today.minusDays(1)));
-                appointment.setLocationCode(13);
-                appointment.setLocation("Room Two");
-                request.setParameter("locationCode", "13");
-
-                LocationList.applyPostedLocation(appointment, request);
+                save(-1, 13, "Room Two", "13");
 
                 assertThat(appointment.getLocationCode()).isEqualTo(13);
                 assertThat(appointment.getLocation()).isEqualTo("Room Two");
@@ -813,12 +900,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
             @ValueSource(ints = {0, 7})
             @DisplayName("should take the item's current name when an appointment from today on stays at its item")
             void shouldTakeCurrentName_whenAppointmentFromTodayKeepsItem(int daysAhead) {
-                appointment.setAppointmentDate(java.sql.Date.valueOf(today.plusDays(daysAhead)));
-                appointment.setLocationCode(13);
-                appointment.setLocation("Room Two");
-                request.setParameter("locationCode", "13");
-
-                LocationList.applyPostedLocation(appointment, request);
+                save(daysAhead, 13, "Room Two", "13");
 
                 assertThat(appointment.getLocation()).isEqualTo("Room 2");
             }
@@ -826,12 +908,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
             @Test
             @DisplayName("should take the current name when an appointment before today moves to another item")
             void shouldTakeCurrentName_whenPastAppointmentChangesItem() {
-                appointment.setAppointmentDate(java.sql.Date.valueOf(today.minusDays(1)));
-                appointment.setLocationCode(11);
-                appointment.setLocation("Room One");
-                request.setParameter("locationCode", "13");
-
-                LocationList.applyPostedLocation(appointment, request);
+                save(-1, 11, "Room One", "13");
 
                 assertThat(appointment.getLocationCode()).isEqualTo(13);
                 assertThat(appointment.getLocation()).isEqualTo("Room 2");
@@ -842,12 +919,7 @@ public class LocationListUnitTest extends OpenOUnitTestBase {
             @ValueSource(strings = " ")
             @DisplayName("should take the current name when an appointment before today saved no name")
             void shouldTakeCurrentName_whenPastAppointmentHasNoSavedName(String saved) {
-                appointment.setAppointmentDate(java.sql.Date.valueOf(today.minusDays(1)));
-                appointment.setLocationCode(13);
-                appointment.setLocation(saved);
-                request.setParameter("locationCode", "13");
-
-                LocationList.applyPostedLocation(appointment, request);
+                save(-1, 13, saved, "13");
 
                 assertThat(appointment.getLocation()).isEqualTo("Room 2");
             }

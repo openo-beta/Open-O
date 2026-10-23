@@ -1,18 +1,11 @@
 package ca.openosp.openo.managers;
 
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Stream;
 
-import ca.openosp.openo.appt.LocationList;
-import ca.openosp.openo.commn.dao.LookupListDao;
 import ca.openosp.openo.commn.dao.LookupListItemDao;
-import ca.openosp.openo.commn.dao.OscarAppointmentDao;
 import ca.openosp.openo.commn.dao.OscarLogDao;
-import ca.openosp.openo.commn.dao.SystemPreferencesDao;
-import ca.openosp.openo.commn.model.LookupList;
 import ca.openosp.openo.commn.model.LookupListItem;
-import ca.openosp.openo.commn.model.Provider;
-import ca.openosp.openo.commn.model.SystemPreferences;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.test.unit.OpenOUnitTestBase;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -25,12 +18,13 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.ArgumentCaptor;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,54 +33,39 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
  * Unit tests for the lookupListItem changes in {@link LookupListManager}:
  * {@code updateLookupListItemColour}, {@code updateLookupListItemIcon},
- * {@code updateLookupListItemLabel}, {@code removeLookupListItem}, {@code restoreLookupListItem}
- * and {@code moveLookupListItem}; for {@code findAppointmentLocationList}, the one place the
- * Location List is resolved; and for {@code findAppointmentLocationDefault},
- * {@code setAppointmentLocationDefault}, {@code isAppointmentLocationRequired} and
- * {@code setAppointmentLocationRequired}, the one place its Default Location and Location
- * Requirement are stored; and for how {@code updateLookupListItemLabel} carries a location's
- * new name to its upcoming appointments, which {@code countUpcomingAppointmentsByLocation} counts.
+ * {@code removeLookupListItem}, {@code restoreLookupListItem} and {@code moveLookupListItem}.
  *
- * <p>Both values end up in class and style attributes on the schedule, so the tests pin the
- * whitelist: a valid value is stored, blank clears it, anything else is rejected before the
- * item is loaded, and every path requires _admin update.</p>
+ * <p>A colour or an icon ends up in style and class attributes on the schedule, so a valid value
+ * is stored, blank clears it, and anything ItemStyleColour or IconSet refuses is rejected before
+ * the item is loaded; their own tests hold the full lists. Every change requires _admin update.</p>
  *
  * @since 2026-09-15
  */
 @ExtendWith(MockitoExtension.class)
-@DisplayName("LookupListManager style update and Location List unit tests")
+@DisplayName("LookupListManager item change unit tests")
 @Tag("unit")
 @Tag("fast")
 @Tag("manager")
-@Tag("update")
 public class LookupListManagerUnitTest extends OpenOUnitTestBase {
 
     private static final int ITEM_ID = 7;
-    private static final int LOCATION_LIST_ID = 5;
-    private static final java.sql.Date TODAY = java.sql.Date.valueOf("2026-10-16");
-
-    @Mock
-    private LookupListDao lookupListDao;
 
     @Mock
     private LookupListItemDao lookupListItemDao;
 
     @Mock
-    private SystemPreferencesDao systemPreferencesDao;
-
-    @Mock
-    private OscarAppointmentDao appointmentDao;
+    private AppointmentLocationManager appointmentLocationManager;
 
     @Mock
     private SecurityInfoManager securityInfoManager;
@@ -96,7 +75,6 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
 
     private final LoggedInInfo loggedInInfo = new LoggedInInfo();
     private MockedStatic<LogAction> logActionMock;
-    private MockedStatic<LocationList> locationListMock;
     private LookupListItem item;
 
     @BeforeEach
@@ -104,9 +82,6 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
         // LogAction's static initializer looks up OscarLogDao, so register it before mocking LogAction
         registerMock(OscarLogDao.class, mock(OscarLogDao.class));
         logActionMock = mockStatic(LogAction.class);
-        // Pin today, so a run across midnight can't give the manager another date than the test expects
-        locationListMock = mockStatic(LocationList.class, CALLS_REAL_METHODS);
-        locationListMock.when(LocationList::firstRenamedDate).thenReturn(TODAY);
 
         lenient().when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null))
                 .thenReturn(true);
@@ -121,164 +96,21 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
     @AfterEach
     void tearDown() {
         logActionMock.close();
-        locationListMock.close();
     }
 
-    /* The one system preference a Location tab setting saved. */
-    private SystemPreferences saved() {
-        ArgumentCaptor<SystemPreferences> preference = ArgumentCaptor.forClass(SystemPreferences.class);
-        verify(systemPreferencesDao).saveEntity(preference.capture());
-        return preference.getValue();
+    /** A change to one item, as the guard tests apply it. */
+    @FunctionalInterface
+    interface ItemChange {
+        boolean apply(LookupListManager manager, LoggedInInfo loggedInInfo, int lookupListItemId);
     }
 
-    @Nested
-    @DisplayName("findAppointmentLocationList")
-    class LocationListResolver {
-
-        @Test
-        @DisplayName("should resolve the appointmentLocationCode list without a privilege check")
-        void shouldFindLocationList_whenAnyUser() {
-            LookupList locationList = new LookupList();
-            when(lookupListDao.findByName("appointmentLocationCode")).thenReturn(locationList);
-
-            assertThat(manager.findAppointmentLocationList(loggedInInfo)).isSameAs(locationList);
-
-            verify(securityInfoManager, never()).hasPrivilege(any(), any(), any(), any());
-        }
-    }
-
-    @Nested
-    @DisplayName("findAppointmentLocationDefault and setAppointmentLocationDefault")
-    class LocationDefault {
-
-        private final SystemPreferences.APPOINTMENT_LOCATION_KEYS key =
-                SystemPreferences.APPOINTMENT_LOCATION_KEYS.appointment_default_location;
-
-        @Test
-        @DisplayName("should find the default's id without a privilege check")
-        void shouldFindDefault_whenAnyUser() {
-            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(new SystemPreferences(key.name(), "58"));
-
-            assertThat(manager.findAppointmentLocationDefault(loggedInInfo)).isEqualTo(58);
-
-            verify(securityInfoManager, never()).hasPrivilege(any(), any(), any(), any());
-        }
-
-        @Test
-        @DisplayName("should find no default when none was ever set")
-        void shouldFindNoDefault_whenNeverSet() {
-            assertThat(manager.findAppointmentLocationDefault(loggedInInfo)).isNull();
-        }
-
-        @ParameterizedTest
-        @ValueSource(strings = {"", "abc", "-13", "0"})
-        @DisplayName("should find no default when the stored value is cleared or not an id")
-        void shouldFindNoDefault_whenValueNotAnId(String value) {
-            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(new SystemPreferences(key.name(), value));
-
-            assertThat(manager.findAppointmentLocationDefault(loggedInInfo)).isNull();
-        }
-
-        @Test
-        @DisplayName("should store the first default as a new system preference")
-        void shouldCreatePreference_whenNoDefaultYet() {
-            manager.setAppointmentLocationDefault(loggedInInfo, ITEM_ID);
-
-            SystemPreferences preference = saved();
-            assertThat(preference.getName()).isEqualTo("appointment_default_location");
-            assertThat(preference.getValue()).isEqualTo(String.valueOf(ITEM_ID));
-        }
-
-        @Test
-        @DisplayName("should replace the default in the existing preference and log the old and the new")
-        void shouldReplaceDefault_whenOneIsSet() {
-            SystemPreferences existing = new SystemPreferences(key.name(), "3");
-            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(existing);
-
-            manager.setAppointmentLocationDefault(loggedInInfo, ITEM_ID);
-
-            assertThat(saved()).isSameAs(existing);
-            assertThat(existing.getValue()).isEqualTo(String.valueOf(ITEM_ID));
-            logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
-                    eq("LookupListManager.setAppointmentLocationDefault"), contains("was [3], now [" + ITEM_ID + "]")));
-        }
-
-        @Test
-        @DisplayName("should clear the default when given none")
-        void shouldClearDefault_whenGivenNull() {
-            SystemPreferences existing = new SystemPreferences(key.name(), "3");
-            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(existing);
-
-            manager.setAppointmentLocationDefault(loggedInInfo, null);
-
-            assertThat(saved().getValue()).isEmpty();
-        }
-
-        @Test
-        @DisplayName("should refuse the change and save nothing without _admin update")
-        void shouldDeny_whenUserLacksAdminUpdate() {
-            when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null))
-                    .thenReturn(false);
-
-            assertThatThrownBy(() -> manager.setAppointmentLocationDefault(loggedInInfo, ITEM_ID))
-                    .hasMessage("Access Denied");
-
-            verify(systemPreferencesDao, never()).saveEntity(any());
-        }
-    }
-
-    @Nested
-    @DisplayName("isAppointmentLocationRequired and setAppointmentLocationRequired")
-    class LocationRequirement {
-
-        private final SystemPreferences.APPOINTMENT_LOCATION_KEYS key =
-                SystemPreferences.APPOINTMENT_LOCATION_KEYS.appointment_location_required;
-
-        @Test
-        @DisplayName("should read the requirement without a privilege check")
-        void shouldReadRequirement_whenAnyUser() {
-            when(systemPreferencesDao.isReadBooleanPreference(key)).thenReturn(true);
-
-            assertThat(manager.isAppointmentLocationRequired(loggedInInfo)).isTrue();
-
-            verify(securityInfoManager, never()).hasPrivilege(any(), any(), any(), any());
-        }
-
-        @Test
-        @DisplayName("should store the first change as a new system preference")
-        void shouldCreatePreference_whenNeverSet() {
-            manager.setAppointmentLocationRequired(loggedInInfo, true);
-
-            SystemPreferences preference = saved();
-            assertThat(preference.getName()).isEqualTo("appointment_location_required");
-            assertThat(preference.getValue()).isEqualTo("true");
-        }
-
-        @Test
-        @DisplayName("should turn the requirement off in the existing preference and log the old and the new")
-        void shouldTurnOff_whenOn() {
-            SystemPreferences existing = new SystemPreferences(key.name(), "true");
-            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(existing);
-
-            manager.setAppointmentLocationRequired(loggedInInfo, false);
-
-            assertThat(saved()).isSameAs(existing);
-            assertThat(existing.getValue()).isEqualTo("false");
-            logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
-                    eq("LookupListManager.setAppointmentLocationRequired"), contains("was [true], now [false]")));
-        }
-
-        @Test
-        @DisplayName("should refuse the change and save nothing without _admin update")
-        void shouldDeny_whenUserLacksAdminUpdate() {
-            when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null))
-                    .thenReturn(false);
-
-            assertThatThrownBy(() -> manager.setAppointmentLocationRequired(loggedInInfo, true))
-                    .hasMessage("Access Denied");
-
-            verify(systemPreferencesDao, never()).saveEntity(any());
-        }
+    /** Every item change that needs _admin update, named for the test report. */
+    static Stream<Arguments> updates() {
+        return Stream.of(
+                arguments("updateLookupListItemColour", (ItemChange) (m, info, id) -> m.updateLookupListItemColour(info, id, "#445566")),
+                arguments("updateLookupListItemIcon", (ItemChange) (m, info, id) -> m.updateLookupListItemIcon(info, id, "glyphicon-star")),
+                arguments("restoreLookupListItem", (ItemChange) (m, info, id) -> m.restoreLookupListItem(info, id)),
+                arguments("moveLookupListItem", (ItemChange) (m, info, id) -> m.moveLookupListItem(info, id, true)));
     }
 
     @Nested
@@ -306,21 +138,10 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
             verify(lookupListItemDao).merge(item);
         }
 
-        @ParameterizedTest
-        @ValueSource(strings = {"#1a2b3c80", "#1a2b3c00"})
-        @DisplayName("should store a see-through colour as it is, keeping its hue even when fully see-through")
-        void shouldStoreColour_whenSeeThrough(String colour) {
-            assertThat(manager.updateLookupListItemColour(loggedInInfo, ITEM_ID, colour)).isTrue();
-
-            assertThat(item.getColour()).isEqualTo(colour);
-            verify(lookupListItemDao).merge(item);
-        }
-
-        @ParameterizedTest
-        @ValueSource(strings = {"red", "#fff", "112233", "#12345g", "#1122334", "#112233445", "#1122334g", "#112233;background:url(x)"})
-        @DisplayName("should reject the colour and save nothing when it is neither #rrggbb nor #rrggbbaa")
-        void shouldRejectColour_whenNotHexColour(String colour) {
-            assertThatThrownBy(() -> manager.updateLookupListItemColour(loggedInInfo, ITEM_ID, colour))
+        @Test
+        @DisplayName("should reject a colour ItemStyleColour refuses, such as one breaking out of its style attribute")
+        void shouldRejectColour_whenNotHexColour() {
+            assertThatThrownBy(() -> manager.updateLookupListItemColour(loggedInInfo, ITEM_ID, "#112233;background:url(x)"))
                     .isInstanceOf(IllegalArgumentException.class);
 
             assertThat(item.getColour()).isEqualTo("#112233");
@@ -341,7 +162,7 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
     class Icon {
 
         @ParameterizedTest
-        @ValueSource(strings = {"glyphicon-map-marker", "here.gif", "thumb.png"})
+        @ValueSource(strings = {"glyphicon-map-marker", "here.gif"})
         @DisplayName("should store the icon when it is in the Icon Set, a glyph or an image")
         void shouldStoreIcon_whenInIconSet(String icon) {
             assertThat(manager.updateLookupListItemIcon(loggedInInfo, ITEM_ID, icon)).isTrue();
@@ -361,12 +182,10 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
             verify(lookupListItemDao).merge(item);
         }
 
-        @ParameterizedTest
-        @ValueSource(strings = {"home", "glyphicon-", "glyphicon-Home", "fa-home", "glyphicon home",
-                "glyphicon-home\" onclick=\"x", "glyphicon-nope", "Shere.gif", "../here.gif"})
-        @DisplayName("should reject the icon and save nothing when it is not in the Icon Set")
-        void shouldRejectIcon_whenNotInIconSet(String icon) {
-            assertThatThrownBy(() -> manager.updateLookupListItemIcon(loggedInInfo, ITEM_ID, icon))
+        @Test
+        @DisplayName("should reject an icon outside the Icon Set, such as one breaking out of its class attribute")
+        void shouldRejectIcon_whenNotInIconSet() {
+            assertThatThrownBy(() -> manager.updateLookupListItemIcon(loggedInInfo, ITEM_ID, "glyphicon-home\" onclick=\"x"))
                     .isInstanceOf(IllegalArgumentException.class);
 
             assertThat(item.getIcon()).isEqualTo("glyphicon-home");
@@ -386,26 +205,24 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
     @DisplayName("shared rules")
     class SharedRules {
 
-        @Test
-        @DisplayName("should deny both updates and touch nothing without _admin update")
-        void shouldDenyUpdate_whenUserLacksAdminUpdate() {
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("ca.openosp.openo.managers.LookupListManagerUnitTest#updates")
+        @DisplayName("should deny the change and touch nothing without _admin update")
+        void shouldDeny_whenUserLacksAdminUpdate(String name, ItemChange change) {
             when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null))
                     .thenReturn(false);
 
-            assertThatThrownBy(() -> manager.updateLookupListItemColour(loggedInInfo, ITEM_ID, "#445566"))
-                    .hasMessage("Access Denied");
-            assertThatThrownBy(() -> manager.updateLookupListItemIcon(loggedInInfo, ITEM_ID, "bad value"))
-                    .hasMessage("Access Denied");
+            assertThatThrownBy(() -> change.apply(manager, loggedInInfo, ITEM_ID)).hasMessage("Access Denied");
 
             verify(lookupListItemDao, never()).find(anyInt());
             verify(lookupListItemDao, never()).merge(any());
         }
 
-        @Test
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("ca.openosp.openo.managers.LookupListManagerUnitTest#updates")
         @DisplayName("should return false and save nothing when the item does not exist")
-        void shouldReturnFalse_whenItemMissing() {
-            assertThat(manager.updateLookupListItemColour(loggedInInfo, 99, "#445566")).isFalse();
-            assertThat(manager.updateLookupListItemIcon(loggedInInfo, 0, "glyphicon-star")).isFalse();
+        void shouldReturnFalse_whenItemMissing(String name, ItemChange change) {
+            assertThat(change.apply(manager, loggedInInfo, 99)).isFalse();
 
             verify(lookupListItemDao, never()).merge(any());
         }
@@ -421,177 +238,8 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
     }
 
     @Nested
-    @DisplayName("updateLookupListItemLabel")
-    class Label {
-
-        @ParameterizedTest
-        @ValueSource(strings = {"Midtown", "  Midtown  "})
-        @DisplayName("should store the trimmed name")
-        void shouldStoreLabel_whenGiven(String label) {
-            assertThat(manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, label)).isTrue();
-
-            assertThat(item.getLabel()).isEqualTo("Midtown");
-            verify(lookupListItemDao).merge(item);
-        }
-
-        @ParameterizedTest
-        @NullAndEmptySource
-        @ValueSource(strings = {"   "})
-        @DisplayName("should reject a blank name, which would leave an unnamed choice")
-        void shouldThrow_whenBlank(String label) {
-            assertThatThrownBy(() -> manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, label))
-                    .isInstanceOf(IllegalArgumentException.class);
-
-            verify(lookupListItemDao, never()).merge(any());
-        }
-
-        @Test
-        @DisplayName("should reject a name longer than the column")
-        void shouldThrow_whenLongerThanColumn() {
-            assertThatThrownBy(() -> manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, "x".repeat(256)))
-                    .isInstanceOf(IllegalArgumentException.class);
-
-            assertThat(manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, "x".repeat(255))).isTrue();
-        }
-
-        @Test
-        @DisplayName("should refuse the rename without _admin update")
-        void shouldThrow_whenNoPrivilege() {
-            when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null))
-                    .thenReturn(false);
-
-            assertThatThrownBy(() -> manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, "Midtown"))
-                    .isInstanceOf(RuntimeException.class)
-                    .hasMessage("Access Denied");
-
-            verify(lookupListItemDao, never()).merge(any());
-        }
-
-        @Test
-        @DisplayName("should return false when the item does not exist")
-        void shouldReturnFalse_whenItemMissing() {
-            assertThat(manager.updateLookupListItemLabel(loggedInInfo, 99, "Midtown")).isFalse();
-
-            verify(lookupListItemDao, never()).merge(any());
-        }
-
-        @Test
-        @DisplayName("should log the old and the new name, the one change that loses information")
-        void shouldLogBothNames_whenRenamed() {
-            item.setLabel("midtown");
-
-            manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, "Midtown East");
-
-            logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
-                    eq("LookupListManager.updateLookupListItemLabel"), contains("midtown")));
-        }
-    }
-
-    @Nested
-    @DisplayName("updateLookupListItemLabel on a Location List location")
-    class LocationLabel {
-
-        @BeforeEach
-        void locationListItem() {
-            Provider provider = new Provider();
-            provider.setProviderNo("999998");
-            loggedInInfo.setLoggedInProvider(provider);
-
-            LookupList locationList = new LookupList();
-            locationList.setId(LOCATION_LIST_ID);
-            lenient().when(lookupListDao.findByName(LookupListManager.APPOINTMENT_LOCATION_LIST)).thenReturn(locationList);
-            item.setLookupListId(LOCATION_LIST_ID);
-            item.setLabel("Midtown");
-        }
-
-        @ParameterizedTest
-        @ValueSource(strings = {"Midtown Clinic", "  Midtown Clinic  "})
-        @DisplayName("should rename the location and its appointments from today on, as the user")
-        void shouldRenameUpcomingAppointments_whenRenamed(String label) {
-            when(appointmentDao.renameLocationFrom(ITEM_ID, "Midtown Clinic", TODAY, "999998")).thenReturn(3);
-
-            assertThat(manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, label)).isTrue();
-
-            assertThat(item.getLabel()).isEqualTo("Midtown Clinic");
-            verify(lookupListItemDao).merge(item);
-            verify(appointmentDao).renameLocationFrom(ITEM_ID, "Midtown Clinic", TODAY, "999998");
-            logActionMock.verify(() -> LogAction.addLogSynchronous(eq(loggedInInfo),
-                    eq("LookupListManager.updateLookupListItemLabel"), contains("on 3 appointments")));
-        }
-
-        @Test
-        @DisplayName("should rename the appointments when only the name's case changes")
-        void shouldRenameUpcomingAppointments_whenOnlyCaseChanges() {
-            manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, "MIDTOWN");
-
-            verify(appointmentDao).renameLocationFrom(ITEM_ID, "MIDTOWN", TODAY, "999998");
-        }
-
-        @Test
-        @DisplayName("should leave appointments alone when the name is unchanged")
-        void shouldNotRenameAppointments_whenNameUnchanged() {
-            assertThat(manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, " Midtown ")).isTrue();
-
-            verify(appointmentDao, never()).renameLocationFrom(anyInt(), any(), any(), any());
-        }
-
-        @Test
-        @DisplayName("should keep a location's name short enough for an appointment's copy")
-        void shouldThrow_whenLongerThanAppointmentColumn() {
-            String tooLong = "x".repeat(LocationList.LABEL_MAX_LENGTH + 1);
-
-            assertThatThrownBy(() -> manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, tooLong))
-                    .isInstanceOf(IllegalArgumentException.class);
-
-            verify(lookupListItemDao, never()).merge(any());
-            verify(appointmentDao, never()).renameLocationFrom(anyInt(), any(), any(), any());
-            assertThat(manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, "x".repeat(LocationList.LABEL_MAX_LENGTH))).isTrue();
-        }
-
-        @Test
-        @DisplayName("should rename only the item, up to the column's width, when it is on another list")
-        void shouldNotRenameAppointments_whenNotLocationListItem() {
-            item.setLookupListId(LOCATION_LIST_ID + 1);
-            String longName = "x".repeat(LocationList.LABEL_MAX_LENGTH + 1);
-
-            assertThat(manager.updateLookupListItemLabel(loggedInInfo, ITEM_ID, longName)).isTrue();
-
-            verify(lookupListItemDao).merge(item);
-            verify(appointmentDao, never()).renameLocationFrom(anyInt(), any(), any(), any());
-        }
-    }
-
-    @Nested
-    @DisplayName("countUpcomingAppointmentsByLocation")
-    class CountUpcomingAppointments {
-
-        @Test
-        @DisplayName("should count each location's appointments from today on")
-        void shouldCountFromToday_whenAsked() {
-            Map<Integer, Long> counts = Map.of(ITEM_ID, 3L);
-            when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.READ, null)).thenReturn(true);
-            when(appointmentDao.countByLocationCodeFrom(TODAY)).thenReturn(counts);
-
-            assertThat(manager.countUpcomingAppointmentsByLocation(loggedInInfo)).isSameAs(counts);
-        }
-
-        @Test
-        @DisplayName("should refuse the count without _admin read")
-        void shouldThrow_whenNoPrivilege() {
-            assertThatThrownBy(() -> manager.countUpcomingAppointmentsByLocation(loggedInInfo))
-                    .isInstanceOf(RuntimeException.class)
-                    .hasMessage("Access Denied");
-
-            verify(appointmentDao, never()).countByLocationCodeFrom(any());
-        }
-    }
-
-    @Nested
     @DisplayName("removeLookupListItem")
     class Remove {
-
-        private final SystemPreferences.APPOINTMENT_LOCATION_KEYS key =
-                SystemPreferences.APPOINTMENT_LOCATION_KEYS.appointment_default_location;
 
         @BeforeEach
         void allowDelete() {
@@ -601,27 +249,13 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should disable the item and clear the default when it is the Default Location")
-        void shouldClearDefault_whenItemIsDefault() {
-            SystemPreferences existing = new SystemPreferences(key.name(), String.valueOf(ITEM_ID));
-            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(existing);
-
+        @DisplayName("should disable the item and stop it being the Default Location, if it is")
+        void shouldRemoveDefault_whenDisabled() {
             assertThat(manager.removeLookupListItem(loggedInInfo, ITEM_ID)).isTrue();
 
             assertThat(item.isActive()).isFalse();
-            assertThat(saved()).isSameAs(existing);
-            assertThat(existing.getValue()).isEmpty();
-        }
-
-        @Test
-        @DisplayName("should disable the item and keep the default when another location is the default")
-        void shouldKeepDefault_whenAnotherItemIsDefault() {
-            when(systemPreferencesDao.findPreferenceByName(key)).thenReturn(new SystemPreferences(key.name(), "3"));
-
-            assertThat(manager.removeLookupListItem(loggedInInfo, ITEM_ID)).isTrue();
-
-            assertThat(item.isActive()).isFalse();
-            verify(systemPreferencesDao, never()).saveEntity(any());
+            verify(lookupListItemDao).merge(item);
+            verify(appointmentLocationManager).removeDefault(loggedInInfo, ITEM_ID);
         }
     }
 
@@ -667,25 +301,6 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
             assertThat(manager.restoreLookupListItem(loggedInInfo, ITEM_ID)).isTrue();
 
             assertThat(item.getDisplayOrder()).isEqualTo(2);
-            verify(lookupListItemDao, never()).merge(any());
-        }
-
-        @Test
-        @DisplayName("should refuse the restore without _admin update")
-        void shouldThrow_whenNoPrivilege() {
-            when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null))
-                    .thenReturn(false);
-
-            assertThatThrownBy(() -> manager.restoreLookupListItem(loggedInInfo, ITEM_ID))
-                    .isInstanceOf(RuntimeException.class)
-                    .hasMessage("Access Denied");
-        }
-
-        @Test
-        @DisplayName("should return false when the item does not exist")
-        void shouldReturnFalse_whenItemMissing() {
-            assertThat(manager.restoreLookupListItem(loggedInInfo, 99)).isFalse();
-
             verify(lookupListItemDao, never()).merge(any());
         }
     }
@@ -769,25 +384,6 @@ public class LookupListManagerUnitTest extends OpenOUnitTestBase {
             item.setActive(false);
 
             assertThat(manager.moveLookupListItem(loggedInInfo, ITEM_ID, true)).isFalse();
-
-            verify(lookupListItemDao, never()).merge(any());
-        }
-
-        @Test
-        @DisplayName("should refuse the move without _admin update")
-        void shouldThrow_whenNoPrivilege() {
-            when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null))
-                    .thenReturn(false);
-
-            assertThatThrownBy(() -> manager.moveLookupListItem(loggedInInfo, ITEM_ID, true))
-                    .isInstanceOf(RuntimeException.class)
-                    .hasMessage("Access Denied");
-        }
-
-        @Test
-        @DisplayName("should return false when the item does not exist")
-        void shouldReturnFalse_whenItemMissing() {
-            assertThat(manager.moveLookupListItem(loggedInInfo, 99, true)).isFalse();
 
             verify(lookupListItemDao, never()).merge(any());
         }
