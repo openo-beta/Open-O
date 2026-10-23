@@ -20,12 +20,12 @@ import ca.openosp.openo.utility.LoggedInInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -48,7 +48,6 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
  * Unit tests for {@link AppointmentLocationManager}: the one place the Location List is resolved,
@@ -136,18 +135,18 @@ public class AppointmentLocationManagerUnitTest extends OpenOUnitTestBase {
     }
 
     /** Every change that needs _admin update, named for the test report. */
-    static Stream<Arguments> updates() {
+    static Stream<Named<Change>> updates() {
         return Stream.of(
-                arguments("makeDefault", (Change) (m, info) -> m.makeDefault(info, ITEM_ID)),
-                arguments("removeDefault", (Change) (m, info) -> m.removeDefault(info, ITEM_ID)),
-                arguments("setRequired", (Change) (m, info) -> m.setRequired(info, true)),
-                arguments("rename", (Change) (m, info) -> m.rename(info, ITEM_ID, "Midtown Clinic")));
+                Named.of("makeDefault", (Change) (m, info) -> m.makeDefault(info, ITEM_ID)),
+                Named.of("removeDefault", (Change) (m, info) -> m.removeDefault(info, ITEM_ID)),
+                Named.of("setRequired", (Change) (m, info) -> m.setRequired(info, true)),
+                Named.of("rename", (Change) (m, info) -> m.rename(info, ITEM_ID, "Midtown Clinic")));
     }
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("updates")
     @DisplayName("should refuse a change and save nothing without _admin update")
-    void shouldDeny_whenUserLacksAdminUpdate(String name, Change change) {
+    void shouldDeny_whenUserLacksAdminUpdate(Change change) {
         when(securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null)).thenReturn(false);
         // removeDefault only saves, and so only checks, when the location is still the default
         lenient().when(systemPreferencesDao.findPreferenceByName(SystemPreferences.APPOINTMENT_LOCATION_KEYS.appointment_default_location))

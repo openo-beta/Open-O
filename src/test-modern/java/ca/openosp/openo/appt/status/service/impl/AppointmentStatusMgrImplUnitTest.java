@@ -12,13 +12,13 @@ import ca.openosp.openo.utility.LoggedInInfo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -51,7 +51,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 /**
  * Unit tests for the status changes in {@link AppointmentStatusMgrImpl}: {@code updateDescription},
@@ -115,12 +114,12 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
     }
 
     /** Every change to one status, named for the test report. */
-    static Stream<Arguments> changes() {
+    static Stream<Named<StatusChange>> changes() {
         return Stream.of(
-                arguments("updateDescription", (StatusChange) (m, info, id) -> m.updateDescription(info, id, "Renamed")),
-                arguments("updateColour", (StatusChange) (m, info, id) -> m.updateColour(info, id, "#445566")),
-                arguments("updateIcon", (StatusChange) (m, info, id) -> m.updateIcon(info, id, "1.gif")),
-                arguments("changeStatus", (StatusChange) (m, info, id) -> m.changeStatus(info, id, 0)));
+                Named.of("updateDescription", (StatusChange) (m, info, id) -> m.updateDescription(info, id, "Renamed")),
+                Named.of("updateColour", (StatusChange) (m, info, id) -> m.updateColour(info, id, "#445566")),
+                Named.of("updateIcon", (StatusChange) (m, info, id) -> m.updateIcon(info, id, "1.gif")),
+                Named.of("changeStatus", (StatusChange) (m, info, id) -> m.changeStatus(info, id, 0)));
     }
 
     @Nested
@@ -259,7 +258,7 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
         @ParameterizedTest(name = "{0}")
         @MethodSource("ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImplUnitTest#changes")
         @DisplayName("should change nothing, and audit nothing, when the status is locked")
-        void shouldReturnFalse_whenStatusLocked(String name, StatusChange change) {
+        void shouldReturnFalse_whenStatusLocked(StatusChange change) {
             status.setEditable(0);
             status.setActive(1);
 
@@ -276,7 +275,7 @@ public class AppointmentStatusMgrImplUnitTest extends OpenOUnitTestBase {
         @ParameterizedTest(name = "{0}")
         @MethodSource("ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImplUnitTest#changes")
         @DisplayName("should return false when the status does not exist")
-        void shouldReturnFalse_whenStatusMissing(String name, StatusChange change) {
+        void shouldReturnFalse_whenStatusMissing(StatusChange change) {
             assertThat(change.apply(manager, loggedInInfo, 99)).isFalse();
 
             verify(appointmentStatusDao, never()).merge(any());
