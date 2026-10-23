@@ -24,8 +24,14 @@
  */
 package ca.openosp.openo.managers;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
+import ca.openosp.openo.appt.IconSet;
+import ca.openosp.openo.appt.ItemStyleColour;
 import ca.openosp.openo.commn.dao.LookupListDao;
 import ca.openosp.openo.commn.dao.LookupListItemDao;
 import ca.openosp.openo.commn.model.LookupList;
@@ -33,6 +39,7 @@ import ca.openosp.openo.commn.model.LookupListItem;
 import ca.openosp.openo.utility.LoggedInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ca.openosp.openo.log.LogAction;
 
@@ -43,6 +50,8 @@ public class LookupListManager {
     private LookupListDao lookupListDao;
     @Autowired
     private LookupListItemDao lookupListItemDao;
+    @Autowired
+    private AppointmentLocationManager appointmentLocationManager;
     @Autowired
     SecurityInfoManager securityInfoManager;
 
@@ -144,8 +153,15 @@ public class LookupListManager {
     }
 
     /**
-     * Remove a lookupListItem by it's id.
+     * Disables a lookupListItem by its id. Disabling the Location List's Default Location also
+     * clears the default, in the same transaction ({@link AppointmentLocationManager#removeDefault}).
+     *
+     * @param loggedInInfo LoggedInInfo the current user, who needs _admin delete and update
+     * @param lookupListItemId int the item to disable
+     * @return boolean true when the item was disabled
+     * @throws RuntimeException if the user lacks _admin delete or update
      */
+    @Transactional
     public boolean removeLookupListItem(LoggedInInfo loggedInInfo, int lookupListItemId) {
 
         if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.DELETE, null)) {
@@ -158,6 +174,7 @@ public class LookupListManager {
         if (lookupListItem != null) {
             lookupListItem.setActive(Boolean.FALSE);
             id = updateLookupListItem(loggedInInfo, lookupListItem);
+            appointmentLocationManager.removeDefault(loggedInInfo, id);
         }
         LogAction.addLogSynchronous(loggedInInfo, "LookupListManager.removeLookupListItem", "Removed lookupListItem Id: " + id);
 
@@ -189,5 +206,161 @@ public class LookupListManager {
         return (id == lookupListItemId);
     }
 
+    /**
+     * Sets or clears the colour a lookupListItem is drawn in. A fully see-through colour
+     * ({@code #rrggbb00}) is kept as it is, so raising its opacity later brings its hue back.
+     *
+     * @param loggedInInfo LoggedInInfo the current user, who needs _admin update
+     * @param lookupListItemId int the item to change
+     * @param colour String a #rrggbb hex colour, #rrggbbaa when see-through, or null or blank to clear it
+     * @return boolean true if the item exists and was updated, false if there is no such item
+     * @throws RuntimeException if the user lacks _admin update
+     * @throws IllegalArgumentException if colour is neither blank, #rrggbb nor #rrggbbaa
+     * @since 2026-09-15
+     */
+    public boolean updateLookupListItemColour(LoggedInInfo loggedInInfo, int lookupListItemId, String colour) {
+        return updateLookupListItemStyle(loggedInInfo, lookupListItemId, colour, ItemStyleColour::isColour, LookupListItem::setColour);
+    }
 
+    /**
+     * Sets or clears the icon drawn for a lookupListItem.
+     *
+     * @param loggedInInfo LoggedInInfo the current user, who needs _admin update
+     * @param lookupListItemId int the item to change
+     * @param icon String an icon in {@link IconSet#ICONS}, an image or a glyph, or null or blank to clear it
+     * @return boolean true if the item exists and was updated, false if there is no such item
+     * @throws RuntimeException if the user lacks _admin update
+     * @throws IllegalArgumentException if icon is neither blank nor in the Icon Set
+     * @since 2026-09-15
+     */
+    public boolean updateLookupListItemIcon(LoggedInInfo loggedInInfo, int lookupListItemId, String icon) {
+        return updateLookupListItemStyle(loggedInInfo, lookupListItemId, icon, IconSet::contains, LookupListItem::setIcon);
+    }
+
+    /**
+     * Makes a deactivated lookupListItem a choice again, at the end of its list.
+     *
+     * <p>The reverse of {@link #removeLookupListItem}. An item that is already active is left
+     * where it is.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the current user, who needs _admin update
+     * @param lookupListItemId int the item to restore
+     * @return boolean true if the item exists and is now active, false if there is no such item
+     * @throws RuntimeException if the user lacks _admin update
+     * @since 2026-09-17
+     */
+    public boolean restoreLookupListItem(LoggedInInfo loggedInInfo, int lookupListItemId) {
+
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null)) {
+            throw new RuntimeException("Access Denied");
+        }
+
+        LookupListItem lookupListItem = findLookupListItemById(loggedInInfo, lookupListItemId);
+        if (lookupListItem == null) {
+            return false;
+        }
+
+        if (!lookupListItem.isActive()) {
+            List<LookupListItem> active = findLookupListItemsByLookupListId(loggedInInfo, lookupListItem.getLookupListId());
+            int last = active.isEmpty() ? 0 : active.get(active.size() - 1).getDisplayOrder();
+
+            lookupListItem.setActive(Boolean.TRUE);
+            lookupListItem.setDisplayOrder(last + 1);
+            updateLookupListItem(loggedInInfo, lookupListItem);
+            LogAction.addLogSynchronous(loggedInInfo, "LookupListManager.restoreLookupListItem",
+                    "Restored lookupListItem Id: " + lookupListItemId + " at display order " + (last + 1));
+        }
+
+        return true;
+    }
+
+    /**
+     * Moves an active lookupListItem one place along its list's display order.
+     *
+     * @param loggedInInfo LoggedInInfo the current user, who needs _admin update
+     * @param lookupListItemId int the item to move
+     * @param up boolean true to move it towards the start of the list, false towards the end
+     * @return boolean true if the item moved, false if there is no such active item or it is
+     *         already at that end of the list
+     * @throws RuntimeException if the user lacks _admin update
+     * @since 2026-09-17
+     */
+    @Transactional
+    public boolean moveLookupListItem(LoggedInInfo loggedInInfo, int lookupListItemId, boolean up) {
+
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null)) {
+            throw new RuntimeException("Access Denied");
+        }
+
+        LookupListItem lookupListItem = findLookupListItemById(loggedInInfo, lookupListItemId);
+        if (lookupListItem == null || !lookupListItem.isActive()) {
+            return false;
+        }
+
+        List<LookupListItem> ordered =
+                new ArrayList<>(findLookupListItemsByLookupListId(loggedInInfo, lookupListItem.getLookupListId()));
+        int from = indexOfItem(ordered, lookupListItemId);
+        int to = up ? from - 1 : from + 1;
+        if (from < 0 || to < 0 || to >= ordered.size()) {
+            return false;
+        }
+
+        Collections.swap(ordered, from, to);
+        renumber(loggedInInfo, ordered);
+        LogAction.addLogSynchronous(loggedInInfo, "LookupListManager.moveLookupListItem",
+                "Moved lookupListItem Id: " + lookupListItemId + " " + (up ? "up" : "down")
+                        + " to display order " + (to + 1));
+
+        return true;
+    }
+
+    private static int indexOfItem(List<LookupListItem> items, int lookupListItemId) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getId() != null && items.get(i).getId() == lookupListItemId) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /*
+     * Numbers the items 1..n, writing only the ones that move. Display orders can repeat, because
+     * an item added while another is deactivated takes an order the deactivated one still holds,
+     * so swapping two stored orders would not always reorder anything.
+     */
+    private void renumber(LoggedInInfo loggedInInfo, List<LookupListItem> ordered) {
+        for (int i = 0; i < ordered.size(); i++) {
+            LookupListItem item = ordered.get(i);
+            if (item.getDisplayOrder() != i + 1) {
+                item.setDisplayOrder(i + 1);
+                updateLookupListItem(loggedInInfo, item);
+            }
+        }
+    }
+
+    /*
+     * Style values are later written into class, src and style attributes, so only
+     * values the check accepts are stored; blank means clear.
+     */
+    private boolean updateLookupListItemStyle(LoggedInInfo loggedInInfo, int lookupListItemId, String value,
+                                              Predicate<String> valid, BiConsumer<LookupListItem, String> setter) {
+
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", SecurityInfoManager.UPDATE, null)) {
+            throw new RuntimeException("Access Denied");
+        }
+
+        String style = value == null || value.isBlank() ? null : value.trim();
+        if (style != null && !valid.test(style)) {
+            throw new IllegalArgumentException("lookupListItem style value is not allowed");
+        }
+
+        LookupListItem lookupListItem = findLookupListItemById(loggedInInfo, lookupListItemId);
+        if (lookupListItem == null) {
+            return false;
+        }
+
+        setter.accept(lookupListItem, style);
+        updateLookupListItem(loggedInInfo, lookupListItem);
+        return true;
+    }
 }

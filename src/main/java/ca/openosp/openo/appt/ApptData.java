@@ -49,6 +49,7 @@ public class ApptData {
     String ohipNo;
     String urgency;
     String reasonCode;
+    String locationCode;
 
     public String getAppointment_date() {
         return appointment_date;
@@ -266,6 +267,26 @@ public class ApptData {
 
     public void setReasonCode(String reasonCode) {
         this.reasonCode = reasonCode;
+    }
+
+    /**
+     * Gets the copied appointment's Location List item.
+     *
+     * @return String the LookupListItem id as posted, or null or blank when none was chosen
+     * @since 2026-09-15
+     */
+    public String getLocationCode() {
+        return locationCode;
+    }
+
+    /**
+     * Sets the copied appointment's Location List item.
+     *
+     * @param locationCode String the LookupListItem id as posted, or null or blank for none
+     * @since 2026-09-15
+     */
+    public void setLocationCode(String locationCode) {
+        this.locationCode = locationCode;
     }
 
 

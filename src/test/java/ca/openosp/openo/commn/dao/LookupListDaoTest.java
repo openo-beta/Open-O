@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;
@@ -90,7 +91,11 @@ public class LookupListDaoTest extends DaoTestFixtures {
         dao.persist(lookupList4);
 
         List<LookupList> expectedResult = new ArrayList<LookupList>(Arrays.asList(lookupList4, lookupList1, lookupList3));
-        List<LookupList> result = dao.findAllActive().subList(0, 3);
+        // The table keeps its seeded lists, so compare only the names used here.
+        List<String> testNames = Arrays.asList(name1, name2, name3);
+        List<LookupList> result = dao.findAllActive().stream()
+                .filter(lookupList -> testNames.contains(lookupList.getName()))
+                .collect(Collectors.toList());
 
         Logger logger = MiscUtils.getLogger();
 

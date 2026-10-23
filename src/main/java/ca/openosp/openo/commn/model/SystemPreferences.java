@@ -60,6 +60,15 @@ public class SystemPreferences extends AbstractModel<Integer> {
 
     public enum DOCUMENT_SETTINGS_KEYS {document_description_typeahead, inbox_use_fax_dropdown}
 
+    /**
+     * Appointment location settings, made on the Appointment Settings Location tab.
+     * {@code appointment_default_location} holds the id of the Location List item new bookings start on;
+     * {@code appointment_location_required} is {@code true} while new bookings must choose a location.
+     *
+     * @since 2026-09-30
+     */
+    public enum APPOINTMENT_LOCATION_KEYS {appointment_default_location, appointment_location_required}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

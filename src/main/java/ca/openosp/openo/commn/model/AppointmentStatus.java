@@ -142,6 +142,6 @@ public class AppointmentStatus extends AbstractModel<Integer> {
     @PostPersist
     @PostUpdate
     public void on_jpa_update() {
-        AppointmentStatusMgrImpl.setCacheIsDirty(true);
+        AppointmentStatusMgrImpl.markCacheDirty();
     }
 }
