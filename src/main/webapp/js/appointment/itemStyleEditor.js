@@ -343,12 +343,14 @@
         KINDS[kind].load(current);
 
         editing = {kind: kind, id: id, initial: KINDS[kind].read()};
-        dialog.showModal();
+        // Fit before opening: opened first, it centres in the whole iframe, and the browser scrolls the
+        // admin page down to reach its first field.
         if (window.frameElement) {
             fitToVisibleArea();
             window.parent.addEventListener('scroll', fitToVisibleArea);
             window.parent.addEventListener('resize', fitToVisibleArea);
         }
+        dialog.showModal();
         if (KINDS[kind].opened) {
             KINDS[kind].opened();
         }
