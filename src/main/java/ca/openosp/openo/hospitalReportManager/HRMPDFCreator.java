@@ -336,6 +336,8 @@ public class HRMPDFCreator extends PdfPageEventHelper {
         //Creates the main page table
         PdfPTable mainPage = new PdfPTable(1);
         mainPage.setWidthPercentage(100);
+        // The report text is one cell; split it on the first page instead of carrying it whole to page 2
+        mainPage.setSplitLate(false);
         PdfPCell cell = new PdfPCell();
         cell.setBorder(0);
 
