@@ -78,9 +78,26 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String OscarMsgRecvd() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_pref", SecurityInfoManager.UPDATE, null)) {
+            throw new SecurityException("missing required sec object (_pref)");
+        }
 
+        // POST only, so CSRFGuard checks the token
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            return null;
+        }
 
-        userPropertyDAO.saveProp(request.getParameter("provider_no"), UserProperty.OSCAR_MSG_RECVD, request.getParameter("value"));
+        // The preference page reads this back as "hour:minute"
+        String value = request.getParameter("value");
+        if (value == null || !value.matches("\\d{1,2}:\\d{1,2}")) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+
+        // Always the logged in provider, never a provider number sent by the browser
+        userPropertyDAO.saveProp(loggedInInfo.getLoggedInProviderNo(), UserProperty.OSCAR_MSG_RECVD, value);
 
         return null;
     }
@@ -1076,6 +1093,8 @@ public class ProviderProperty2Action extends ActionSupport {
 
         if (prop == null) {
             prop = new UserProperty();
+            // multi line is the default, so the popup preselects it until the provider saves a choice
+            prop.setValue("multi");
         }
 
         ArrayList<LabelValueBean> serviceList = new ArrayList<LabelValueBean>();
@@ -1085,11 +1104,13 @@ public class ProviderProperty2Action extends ActionSupport {
         request.setAttribute("dropOpts", serviceList);
 
         request.setAttribute("dateProperty", prop);
+        request.setAttribute("checkboxProperty", this.userPropertyDAO.getProp(providerNo, UserProperty.CONSULT_PASTE_HEADING));
 
         request.setAttribute("providertitle", "provider.setConsulReqtPasteFmt.title");
         request.setAttribute("providermsgPrefs", "provider.setConsulReqtPasteFmt.msgPrefs");
         request.setAttribute("providermsgProvider", "provider.setConsulReqtPasteFmt.msgProvider");
         request.setAttribute("providermsgEdit", "provider.setConsulReqtPasteFmt.msgEdit");
+        request.setAttribute("providermsgCheckbox", "provider.setConsulReqtPasteFmt.msgHeading");
         request.setAttribute("providerbtnSubmit", "provider.setConsulReqtPasteFmt.btnSubmit");
         request.setAttribute("providermsgSuccess", "provider.setConsulReqtPasteFmt.msgSuccess");
         request.setAttribute("method", "saveConsultPasteFmt");
@@ -1109,14 +1130,30 @@ public class ProviderProperty2Action extends ActionSupport {
 
         UserProperty saveProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.CONSULTATION_REQ_PASTE_FMT);
 
-        if (saveProperty == null) {
+        // saving the preselected "multi" creates no row: a missing row means each form's own
+        // default, and formBCAR2020Attachments.jsp treats a missing row as single line
+        if (saveProperty == null && !"multi".equalsIgnoreCase(fmt)) {
             saveProperty = new UserProperty();
             saveProperty.setProviderNo(providerNo);
             saveProperty.setName(UserProperty.CONSULTATION_REQ_PASTE_FMT);
         }
 
-        saveProperty.setValue(fmt);
-        this.userPropertyDAO.saveProp(saveProperty);
+        if (saveProperty != null) {
+            saveProperty.setValue(fmt);
+            this.userPropertyDAO.saveProp(saveProperty);
+        }
+
+        UserProperty headingProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.CONSULT_PASTE_HEADING);
+
+        if (headingProperty == null) {
+            headingProperty = new UserProperty();
+            headingProperty.setProviderNo(providerNo);
+            headingProperty.setName(UserProperty.CONSULT_PASTE_HEADING);
+        }
+
+        // an unchecked checkbox sends no parameter, so absence means false
+        headingProperty.setValue(String.valueOf("true".equals(request.getParameter("checkboxValue"))));
+        this.userPropertyDAO.saveProp(headingProperty);
 
         request.setAttribute("status", "success");
         request.setAttribute("providertitle", "provider.setConsulReqtPasteFmt.title");
@@ -2097,7 +2134,7 @@ public class ProviderProperty2Action extends ActionSupport {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        UserProperty length = this.userPropertyDAO.getProp(providerNo, "patientNameLength");
+        UserProperty length = this.userPropertyDAO.getProp(providerNo, UserProperty.PATIENT_NAME_LENGTH);
 
         if (length == null) {
             length = new UserProperty();
@@ -2128,11 +2165,11 @@ public class ProviderProperty2Action extends ActionSupport {
 
         String length = s != null ? s.getValue() : "";
 
-        UserProperty wProperty = this.userPropertyDAO.getProp(providerNo,"patientNameLength");
+        UserProperty wProperty = this.userPropertyDAO.getProp(providerNo, UserProperty.PATIENT_NAME_LENGTH);
         if (wProperty == null) {
             wProperty = new UserProperty();
             wProperty.setProviderNo(providerNo);
-            wProperty.setName("patientNameLength");
+            wProperty.setName(UserProperty.PATIENT_NAME_LENGTH);
         }
         wProperty.setValue(length);
         userPropertyDAO.saveProp(wProperty);

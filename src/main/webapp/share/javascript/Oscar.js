@@ -65,6 +65,18 @@ function popup2(height, width, top, left, url, windowName) {
    // Reference the 'winRefs' array from the proper context (parent or current window)
    const winRefs = context.popup2.winRefs;
 
+   // Pages on another site, such as the Resource link, get their own window name
+   // so they never share a window with an OpenO page.
+   let site = null;
+   try {
+      site = new URL(url, document.baseURI);
+   } catch (e) {
+      // An address the browser cannot read keeps the window name it was given.
+   }
+   if (site && (site.protocol === "http:" || site.protocol === "https:") && site.origin !== window.location.origin) {
+      windowName = "oscarExternal_" + (windowName || site.host);
+   }
+
    // Check if the popup window already exists or if it has been closed
    if (typeof winRefs[windowName] === 'undefined' || winRefs[windowName].closed) {
       // If the window does not exist or is closed, open a new popup with the specified properties

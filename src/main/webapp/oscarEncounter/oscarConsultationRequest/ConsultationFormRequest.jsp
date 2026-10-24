@@ -61,9 +61,11 @@
 <%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctConsultationFormRequestUtil" %>
 <%@page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.EctViewRequest2Action" %>
+<%@page import="ca.openosp.openo.encounter.oscarConsultationRequest.pageUtil.ConsultationRequestCopy" %>
 <%@page import="ca.openosp.openo.utility.MiscUtils,ca.openosp.openo.clinic.ClinicData" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.utility.DigitalSignatureUtils" %>
+<%@ page import="ca.openosp.openo.utility.HtmlEncodingUtils" %>
 <%@ page import="ca.openosp.openo.ui.servlet.ImageRenderingServlet" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="ca.openosp.openo.utility.MiscUtils" %>
@@ -151,6 +153,33 @@
             consultUtil.estRequestFromId(loggedInInfo, requestId);
         }
 
+        // A copy is a new request prefilled from a saved one (the edit view's copy button). It belongs to
+        // the source's patient, so a link that names a different patient, or no valid request, is refused.
+        String copyFromParam = (requestId == null && segmentId == null) ? request.getParameter("copyFrom") : null;
+        String copyFromId = WebUtils.positiveIntParamOrNull(copyFromParam);
+        boolean copyMode = copyFromId != null;
+        if (copyFromParam != null && !copyMode) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        if (copyMode) {
+            boolean copied;
+            try {
+                copied = ConsultationRequestCopy.prefill(loggedInInfo, Integer.valueOf(copyFromId), consultUtil);
+            } catch (SecurityException e) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+            if (!copied) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            if (demo != null && !demo.equals(consultUtil.demoNo)) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+        }
+
         if (demo == null) {
             demo = consultUtil.demoNo;
         }
@@ -217,14 +246,16 @@
 			// Get attached documents and labs
 		 --%>
     <%
-        if (requestId != null && Integer.parseInt(requestId) > 0) {
-            List<EDoc> attachedDocuments = EDocUtil.listDocs(loggedInInfo, demo, requestId, EDocUtil.ATTACHED);
+        // a copy starts with everything attached to the request it was copied from, deleted items included
+        String attachmentsRequestId = copyMode ? copyFromId : requestId;
+        if (attachmentsRequestId != null && Integer.parseInt(attachmentsRequestId) > 0) {
+            List<EDoc> attachedDocuments = EDocUtil.listDocs(loggedInInfo, demo, attachmentsRequestId, EDocUtil.ATTACHED);
             CommonLabResultData commonLabResultData = new CommonLabResultData();
-            List<LabResultData> attachedLabs = commonLabResultData.populateLabResultsData(loggedInInfo, demo, requestId, CommonLabResultData.ATTACHED);
+            List<LabResultData> attachedLabs = commonLabResultData.populateLabResultsData(loggedInInfo, demo, attachmentsRequestId, CommonLabResultData.ATTACHED);
             ConsultationManager consultationManager = SpringUtils.getBean(ConsultationManager.class);
-            List<EctFormData.PatientForm> attachedForms = consultationManager.getAttachedForms(loggedInInfo, Integer.parseInt(requestId), Integer.parseInt(demo));
-            List<EFormData> attachedEForms = consultationManager.getAttachedEForms(requestId);
-            ArrayList<HashMap<String, ? extends Object>> attachedHRMDocuments = consultationManager.getAttachedHRMDocuments(loggedInInfo, demo, requestId);
+            List<EctFormData.PatientForm> attachedForms = consultationManager.getAttachedForms(loggedInInfo, Integer.parseInt(attachmentsRequestId), Integer.parseInt(demo));
+            List<EFormData> attachedEForms = consultationManager.getAttachedEForms(attachmentsRequestId);
+            ArrayList<HashMap<String, ? extends Object>> attachedHRMDocuments = consultationManager.getAttachedHRMDocuments(loggedInInfo, demo, attachmentsRequestId);
 
             Collections.sort(attachedLabs);
             List<LabResultData> attachedLabsSortedByVersions = new ArrayList<>();
@@ -528,7 +559,7 @@
         <% if ("ocean".equals(props.get("cme_js"))) {
             int randomNo = new Random().nextInt();%>
         <script id="mainScript"
-                src="${ pageContext.request.contextPath }/js/custom/ocean/conreq.js?no-cache=<%=Encode.forJavaScript(String.valueOf(randomNo))%>&autoRefresh=true"
+                src="${ pageContext.request.contextPath }/js/custom/ocean/conreq.js?no-cache=<%=Encode.forHtmlAttribute(String.valueOf(randomNo))%>&autoRefresh=true"
                 ocean-host="<%=Encode.forHtmlAttribute(props.getProperty("ocean_host"))%>"></script>
         <% } %>
         <link rel="stylesheet" type="text/css" href="${ pageContext.request.contextPath }/css/healthCareTeam.css"/>
@@ -536,6 +567,17 @@
               href="${ pageContext.request.contextPath }/oscarEncounter/encounterStyles.css">
 
         <style type="text/css">
+
+            /* cog that opens the CPP Paste Format preference popup; the stroke thickens the glyph */
+            a.pastePrefCog {
+                margin-left: 4px;
+                font-size: 18px;
+                font-weight: bold;
+                -webkit-text-stroke: 0.6px #333;
+                color: #333;
+                text-decoration: none;
+                vertical-align: middle;
+            }
 
             /* Ocean refer style */
             span.oceanRefer {
@@ -892,13 +934,17 @@
     <script type="text/javascript">
 
         function getClinicalData(data, target) {
+            // the CPP Paste Format preference applies only to the two fields whose button bars carry its cog
+            data.pastePreferences = (target === "#clinicalInformation" || target === "#concurrentProblems");
             jQuery.ajax({
                 method: "POST",
                 url: "${ pageContext.request.contextPath }/oscarConsultationRequest/consultationClinicalData.do",
                 data: data,
                 dataType: 'JSON',
                 success: function (data) {
-                    jQuery(target).val(jQuery(target).val() + "\n" + data.note);
+                    if (data.note) {
+                        jQuery(target).val(jQuery(target).val() + "\n" + data.note);
+                    }
                 }
             });
         }
@@ -1284,6 +1330,72 @@
                     popup.opener = self;
                 }
             }
+        }
+
+        // The form as the page set it up, taken at the user's first click or keypress. Comparing against it
+        // catches every change, including ones made by buttons (the imports, Clear Date & Time) that fire no
+        // input event, while the page's own setup (loading the specialists, filling defaults) never counts.
+        // Text that arrives with no click or keypress first (dictation, autofill, a drop) marks the form directly.
+        var consultFormBaseline = null;
+        var consultFormChangedBeforeBaseline = false;
+
+        function serializeConsultForm() {
+            return new URLSearchParams(new FormData(document.forms['EctConsultationFormRequest2Form'])).toString();
+        }
+
+        function takeConsultFormBaseline(e) {
+            if (e.isTrusted && consultFormBaseline === null) {
+                consultFormBaseline = serializeConsultForm();
+            }
+        }
+
+        function markConsultFormChangedBeforeBaseline(e) {
+            if (e.isTrusted && consultFormBaseline === null) {
+                consultFormChangedBeforeBaseline = true;
+            }
+        }
+
+        document.addEventListener('mousedown', takeConsultFormBaseline, true);
+        document.addEventListener('keydown', takeConsultFormBaseline, true);
+        document.addEventListener('input', markConsultFormChangedBeforeBaseline, true);
+        document.addEventListener('change', markConsultFormChangedBeforeBaseline, true);
+
+        function isConsultFormChanged() {
+            return consultFormChangedBeforeBaseline
+                || (consultFormBaseline !== null && serializeConsultForm() !== consultFormBaseline);
+        }
+
+        // the copy this page opened; once submitted, its window moves on to the confirmation page
+        var copyWindow = null;
+
+        function isCopyStillOpen() {
+            try {
+                return copyWindow !== null && !copyWindow.closed
+                    && (copyWindow.location.href === 'about:blank' || copyWindow.location.href.indexOf('copyFrom=') !== -1);
+            } catch (e) {
+                return false;
+            }
+        }
+
+        /**
+         * Opens a new consultation request prefilled from this saved one, in its own window. The copy is
+         * built from the saved version, so unsaved changes here are confirmed first. While a copy is still
+         * open and unsubmitted, clicking again brings it back instead of opening a second one.
+         */
+        function copyToNewConsultationRequest() {
+            if (isCopyStillOpen()) {
+                copyWindow.focus();
+                return false;
+            }
+            var signatureChanged = typeof isSignatureDirty !== 'undefined' && isSignatureDirty;
+            <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgCopyUnsavedChanges" var="copyUnsavedChangesMsg"/>
+            if ((isConsultFormChanged() || signatureChanged) && !confirm('${e:forJavaScript(copyUnsavedChangesMsg)}')) {
+                return false;
+            }
+            var url = ctx + '/oscarEncounter/oscarConsultationRequest/ConsultationFormRequest.jsp?de='
+                + encodeURIComponent(demographicNo) + '&copyFrom=' + encodeURIComponent(requestId);
+            copyWindow = window.open(url, '_blank', 'height=700,width=960,location=no,scrollbars=yes,menubars=no,toolbars=no,resizable=yes');
+            return false;
         }
 
     </script>
@@ -1742,6 +1854,12 @@ if (userAgent != null) {
                     EctViewRequest2Action.fillFormValues(thisForm, segmentId);
                     thisForm.setSiteName(consultUtil.siteName);
                     defaultSiteName = consultUtil.siteName;
+                } else if (copyMode) {
+                    // the fields ConsultationRequestCopy picked, and new-request defaults for the rest
+                    EctViewRequest2Action.fillFormValues(thisForm, consultUtil);
+                    thisForm.setStatus("1");
+                    thisForm.setSiteName(consultUtil.siteName);
+                    defaultSiteName = consultUtil.siteName;
                 } else if (request.getAttribute("validateError") == null) {
                     //  new request
                     if (demo != null) {
@@ -1920,7 +2038,7 @@ if (userAgent != null) {
                                                 <%-- <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.attachDoc"/> --%>
                                             <a href="javascript:void(0);" id="attachDocumentPanelBtn"
                                                title="Add Attachment"
-                                               data-poload="${ ctx }/previewDocs.do?method=fetchConsultDocuments&amp;demographicNo=<%=Encode.forHtmlAttribute(String.valueOf(demo))%>&amp;requestId=<%=Encode.forHtmlAttribute(String.valueOf(requestId))%>">
+                                               data-poload="${ ctx }/previewDocs.do?method=fetchConsultDocuments&amp;demographicNo=<%=Encode.forHtmlAttribute(String.valueOf(demo))%>&amp;requestId=<%=Encode.forHtmlAttribute(String.valueOf(attachmentsRequestId))%>">
                                                 Manage Attachments
                                             </a>
                                             <input type="hidden" id="isOceanEReferral"
@@ -1929,7 +2047,7 @@ if (userAgent != null) {
                                             } else { %>
                                             <a href="javascript:void(0);" id="attachDocumentPanelBtn"
                                                title="Add Attachment"
-                                               data-poload="${ ctx }/previewDocs.do?method=fetchConsultDocuments&amp;demographicNo=<%=Encode.forHtmlAttribute(String.valueOf(demo))%>&amp;requestId=<%=Encode.forHtmlAttribute(String.valueOf(requestId))%>">
+                                               data-poload="${ ctx }/previewDocs.do?method=fetchConsultDocuments&amp;demographicNo=<%=Encode.forHtmlAttribute(String.valueOf(demo))%>&amp;requestId=<%=Encode.forHtmlAttribute(String.valueOf(attachmentsRequestId))%>">
                                                 Manage Attachments
                                             </a>
 
@@ -1947,7 +2065,7 @@ if (userAgent != null) {
                                                 <c:forEach items="${ attachedEForms }" var="attachedEForm">
                                                     <tr id="entry_eFormNo${ attachedEForm.id }">
                                                         <td>
-                                                            <c:out value="${ attachedEForm.formName }"/>
+                                                            <c:out value="${ attachedEForm.formName }"/><c:if test="${ not attachedEForm.current }"> (deleted)</c:if>
                                                             <input name="eFormNo" value="${ attachedEForm.id }"
                                                                    id="delegate_eFormNo${ attachedEForm.id }"
                                                                    class="delegateAttachment" type="hidden">
@@ -1967,7 +2085,7 @@ if (userAgent != null) {
                                                 <c:forEach items="${ attachedDocuments }" var="attachedDocument">
                                                     <tr id="entry_docNo${ attachedDocument.docId }">
                                                         <td>
-                                                            <c:out value="${ attachedDocument.description }"/>
+                                                            <c:out value="${ attachedDocument.description }"/><c:if test="${ fn:contains(attachedDocument.status, 'D') }"> (deleted)</c:if>
                                                             <input name="docNo" value="${ attachedDocument.docId }"
                                                                    id="delegate_docNo${ attachedDocument.docId }"
                                                                    data-delegate-type="doc"
@@ -2116,6 +2234,16 @@ if (userAgent != null) {
                                 </c:if>
 
                                 <% } %>
+                            </td>
+                        </tr>
+                        <% } %>
+                        <% if (request.getAttribute("id") != null) { %>
+                        <%-- on its own row: it saves nothing here, and eReferrals (updated in Ocean) have no other buttons --%>
+                        <tr>
+                            <td class="tite4 controlPanel" colspan=2>
+                                <input name="copyToNew" type="button"
+                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.btnCopyToNewConsultationRequest"/>"
+                                       onclick="return copyToNewConsultationRequest();"/>
                             </td>
                         </tr>
                         <% } %>
@@ -2428,7 +2556,8 @@ if (userAgent != null) {
                                     <tr>
                                         <td class="tite4"><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ConsultationFormRequest.msgAddress"/>
                                         </td>
-                                        <td class="tite1"><%=Encode.forHtml(String.valueOf(thisForm.getPatientAddress().replace("null", "")))%>
+                                        <%-- the address lines are joined with <br>, which the PDFs also rely on --%>
+                                        <td class="tite1"><%=HtmlEncodingUtils.encodeForHtmlAllowingBreaks(thisForm.getPatientAddress().replace("null", ""))%>
                                         </td>
                                     </tr>
                                     <tr>
@@ -2758,6 +2887,8 @@ if (userAgent != null) {
                                                    class="btn medicationData" value="Active Medications"/>
                                             <input id="fetchLongTermMedications_clinicalInformation" type="button"
                                                    class="btn medicationData" value="Long Term Medications"/>
+                                            <a href="#" title="Paste preferences" class="pastePrefCog"
+                                               onclick="popupPage(230,860,'<%=Encode.forJavaScriptAttribute(request.getContextPath())%>/setProviderStaleDate.do?method=viewConsultPasteFmt'); return false;">&#9881;&#xFE0E;</a>
                                             <% } %>
                                         </td>
                                     </tr>
@@ -2807,6 +2938,8 @@ if (userAgent != null) {
                                                    class="btn medicationData" value="Active Medications"/>
                                             <input id="fetchLongTermMedications_concurrentProblems" type="button"
                                                    class="btn medicationData" value="Long Term Medications"/>
+                                            <a href="#" title="Paste preferences" class="pastePrefCog"
+                                               onclick="popupPage(230,860,'<%=Encode.forJavaScriptAttribute(request.getContextPath())%>/setProviderStaleDate.do?method=viewConsultPasteFmt'); return false;">&#9881;&#xFE0E;</a>
                                             <% } %>
                                         </td>
                                     </tr>

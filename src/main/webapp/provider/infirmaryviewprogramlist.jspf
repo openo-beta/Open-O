@@ -116,7 +116,7 @@ function submitStatus(ctrl) {// only place other than infirmaction.java to set i
 	</select>
 	<caisi:isModuleLoad moduleName="TORONTO_RFQ" reverse="true">
 		<caisi:ProgramExclusiveView providerNo="<%=Encode.forHtmlAttribute(String.valueOf(((LoggedInInfo)LoggedInInfo.getLoggedInInfoFromSession(request)).getLoggedInProviderNo()))%>" value="no">
-			<a href='providercontrol.jsp?infirmaryView_isOscar=true&GoToCaisiViewFromOscarView=false&<%=Encode.forUriComponent(String.valueOf(session.getAttribute("infirmaryView_OscarQue")))%>'>|
+			<a href='providercontrol.jsp?infirmaryView_isOscar=true&GoToCaisiViewFromOscarView=false&<%=Encode.forHtmlAttribute(String.valueOf(session.getAttribute("infirmaryView_OscarQue")))%>'>|
 			Oscar View</a>
 		</caisi:ProgramExclusiveView>
 	</caisi:isModuleLoad>
@@ -125,7 +125,7 @@ function submitStatus(ctrl) {// only place other than infirmaction.java to set i
 <c:if test="${infirmaryView_isOscar == 'true'}">
 	<caisi:ProgramExclusiveView providerNo="<%=Encode.forHtmlAttribute(String.valueOf(((LoggedInInfo)LoggedInInfo.getLoggedInInfoFromSession(request)).getLoggedInProviderNo()))%>" value="no">
 		<div align="right"><a
-			href='providercontrol.jsp?infirmaryView_isOscar=false&GoToCaisiViewFromOscarView=true&<%=Encode.forUriComponent(String.valueOf(session.getAttribute("infirmaryView_OscarQue")))%>'>|
+			href='providercontrol.jsp?infirmaryView_isOscar=false&GoToCaisiViewFromOscarView=true&<%=Encode.forHtmlAttribute(String.valueOf(session.getAttribute("infirmaryView_OscarQue")))%>'>|
 		Case Management View</a></div>
 	</caisi:ProgramExclusiveView>
 </c:if>

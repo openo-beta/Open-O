@@ -1224,7 +1224,7 @@
 
                     %>
                     <td align="right"><a
-                            href="<%=request.getContextPath() %>/lab/DownloadEmbeddedDocumentFromLab.do?labNo=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&segment=<%=j%>&group=<%=k%><%=Encode.forUriComponent(String.valueOf(legacy))%>">PDF
+                            href="<%=request.getContextPath() %>/lab/DownloadEmbeddedDocumentFromLab.do?labNo=<%=Encode.forUriComponent(String.valueOf(segmentID))%>&segment=<%=j%>&group=<%=k%><%=legacy%>">PDF
                         Report</a></td>
                     <%
                     } else {

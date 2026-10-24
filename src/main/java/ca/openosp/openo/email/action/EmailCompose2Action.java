@@ -88,7 +88,7 @@ public class EmailCompose2Action extends ActionSupport {
         "deleteEFormAfterEmail", "isEmailEncrypted",
         "isEmailAttachmentEncrypted", "isEmailAutoSend",
         "openEFormAfterEmail", "senderEmail", "subjectEmail",
-        "bodyEmail", "encryptedMessageEmail",
+        "bodyEmail", "footerEmail", "encryptedMessageEmail",
         "emailPatientChartOption"
     };
 
@@ -140,6 +140,7 @@ public class EmailCompose2Action extends ActionSupport {
      *   <li>senderEmail (String) - sender email address</li>
      *   <li>subjectEmail (String) - email subject line</li>
      *   <li>bodyEmail (String) - email message body</li>
+     *   <li>footerEmail (String) - footer appended to the email but kept out of the chart note</li>
      *   <li>encryptedMessageEmail (String) - encrypted message content</li>
      *   <li>emailPatientChartOption (String) - patient chart email option setting</li>
      * </ul>
@@ -215,6 +216,7 @@ public class EmailCompose2Action extends ActionSupport {
         String senderEmail = (String) session.getAttribute("senderEmail");
         String subjectEmail = (String) session.getAttribute("subjectEmail");
         String bodyEmail = (String) session.getAttribute("bodyEmail");
+        String footerEmail = (String) session.getAttribute("footerEmail");
         String encryptedMessageEmail = (String) session.getAttribute("encryptedMessageEmail");
         String emailPatientChartOption = (String) session.getAttribute("emailPatientChartOption");
 
@@ -266,6 +268,7 @@ public class EmailCompose2Action extends ActionSupport {
         request.setAttribute("senderEmail", senderEmail);
         request.setAttribute("subjectEmail", subjectEmail);
         request.setAttribute("bodyEmail", bodyEmail);
+        request.setAttribute("footerEmail", footerEmail);
         request.setAttribute("encryptedMessageEmail", encryptedMessageEmail);
         request.setAttribute("emailPatientChartOption", emailPatientChartOption);
         request.setAttribute("demographicId", demographicId);
