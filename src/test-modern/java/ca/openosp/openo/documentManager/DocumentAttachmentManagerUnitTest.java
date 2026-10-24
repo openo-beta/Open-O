@@ -23,11 +23,14 @@ package ca.openosp.openo.documentManager;
 
 import ca.openosp.openo.commn.dao.DocumentDao;
 import ca.openosp.openo.commn.dao.EFormDataDao;
+import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
 import ca.openosp.openo.commn.dao.TicklerDocsDao;
 import ca.openosp.openo.commn.model.Document;
 import ca.openosp.openo.commn.model.EFormData;
+import ca.openosp.openo.commn.model.PatientLabRouting;
 import ca.openosp.openo.commn.model.TicklerDocs;
 import ca.openosp.openo.commn.model.enumerator.DocumentType;
+import ca.openosp.openo.documentManager.data.AttachmentLabResultData;
 import ca.openosp.openo.documentManager.data.TicklerAttachmentData;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.hospitalReportManager.HRMUtil;
@@ -38,6 +41,8 @@ import ca.openosp.openo.utility.LoggedInInfo;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -55,8 +60,8 @@ import static org.mockito.Mockito.*;
 /**
  * Unit tests for {@link DocumentAttachmentManagerImpl#getTicklerAttachmentDetails}.
  *
- * <p>The LAB branch is not covered: it depends on lab infrastructure
- * ({@code CommonLabResultData}) that cannot be mocked meaningfully here.</p>
+ * <p>LAB display names depend on lab infrastructure ({@code CommonLabResultData}), so the LAB
+ * view URL tests stub the lab-name lookup on a spy instead.</p>
  *
  * @since 2026-07-19
  */
@@ -271,6 +276,172 @@ public class DocumentAttachmentManagerUnitTest extends OpenOUnitTestBase {
 
             // Then
             assertThat(details).isEmpty();
+        }
+    }
+
+    /**
+     * Covers the viewer URLs the Edit Tickler window links attachments to.
+     */
+    @Nested
+    @DisplayName("View URL Resolution")
+    class ViewUrlResolution {
+
+        @Mock
+        private PatientLabRoutingDao mockPatientLabRoutingDao;
+
+        @BeforeEach
+        void setUpProvider() {
+            lenient().when(mockLoggedInInfo.getLoggedInProviderNo()).thenReturn(PROVIDER_NO);
+            injectDependency(manager, "patientLabRoutingDao", mockPatientLabRoutingDao);
+        }
+
+        /**
+         * Spies the manager so the lab-name lookup, which needs lab infrastructure, can be stubbed.
+         */
+        private DocumentAttachmentManagerImpl spyWithLabs(String... segmentIds) {
+            DocumentAttachmentManagerImpl spyManager = spy(manager);
+            List<AttachmentLabResultData> labs = new ArrayList<>();
+            for (String segmentId : segmentIds) {
+                labs.add(new AttachmentLabResultData(segmentId, "CBC " + segmentId, null));
+            }
+            doReturn(labs).when(spyManager).getAllLabsSortedByVersions(mockLoggedInInfo, String.valueOf(DEMOGRAPHIC_NO));
+            return spyManager;
+        }
+
+        @Test
+        @DisplayName("should link a document to the document viewer")
+        void shouldBuildDocumentViewerUrl_whenDocAttached() {
+            // Given
+            when(mockTicklerDocsDao.findByTicklerId(TICKLER_ID)).thenReturn(Collections.singletonList(
+                    new TicklerDocs(TICKLER_ID, 12, TicklerDocs.DOCTYPE_DOC, PROVIDER_NO)));
+
+            // When
+            List<TicklerAttachmentData> details = manager.getTicklerAttachmentDetails(mockLoggedInInfo, TICKLER_ID, DEMOGRAPHIC_NO);
+
+            // Then
+            assertThat(details.get(0).getViewUrl()).isEqualTo(
+                    "/documentManager/ManageDocument.do?method=display&doc_no=12&providerNo=999990&searchProviderNo=999990&status=");
+        }
+
+        @Test
+        @DisplayName("should link an eForm to the eForm viewer")
+        void shouldBuildEFormViewerUrl_whenEFormAttached() {
+            // Given
+            when(mockTicklerDocsDao.findByTicklerId(TICKLER_ID)).thenReturn(Collections.singletonList(
+                    new TicklerDocs(TICKLER_ID, 33, TicklerDocs.DOCTYPE_EFORM, PROVIDER_NO)));
+
+            // When
+            List<TicklerAttachmentData> details = manager.getTicklerAttachmentDetails(mockLoggedInInfo, TICKLER_ID, DEMOGRAPHIC_NO);
+
+            // Then
+            assertThat(details.get(0).getViewUrl()).isEqualTo("/eform/efmshowform_data.jsp?fdid=33");
+        }
+
+        @Test
+        @DisplayName("should link an HRM report to the HRM viewer")
+        void shouldBuildHrmViewerUrl_whenHrmAttached() {
+            // Given
+            when(mockTicklerDocsDao.findByTicklerId(TICKLER_ID)).thenReturn(Collections.singletonList(
+                    new TicklerDocs(TICKLER_ID, 7, TicklerDocs.DOCTYPE_HRM, PROVIDER_NO)));
+
+            try (MockedStatic<HRMUtil> hrmUtilMock = mockStatic(HRMUtil.class)) {
+                hrmUtilMock.when(() -> HRMUtil.listHRMDocuments(any(), anyString(), anyBoolean(), anyString(), anyBoolean()))
+                        .thenReturn(new ArrayList<>());
+
+                // When
+                List<TicklerAttachmentData> details = manager.getTicklerAttachmentDetails(mockLoggedInInfo, TICKLER_ID, DEMOGRAPHIC_NO);
+
+                // Then
+                assertThat(details.get(0).getViewUrl()).isEqualTo("/hospitalReportManager/Display.do?id=7&segmentID=7");
+            }
+        }
+
+        @Test
+        @DisplayName("should link an encounter form by its URL-encoded name")
+        void shouldBuildFormViewerUrl_whenFormNameResolves() {
+            // Given
+            when(mockTicklerDocsDao.findByTicklerId(TICKLER_ID)).thenReturn(Collections.singletonList(
+                    new TicklerDocs(TICKLER_ID, 55, TicklerDocs.DOCTYPE_FORM, PROVIDER_NO)));
+            EctFormData.PatientForm patientForm = mock(EctFormData.PatientForm.class);
+            when(patientForm.getFormId()).thenReturn("55");
+            when(patientForm.getFormName()).thenReturn("Rourke Baby Record");
+            when(mockFormsManager.getEncounterFormsByDemographicNumbers(eq(mockLoggedInInfo), anyCollection(), eq(true), eq(true)))
+                    .thenReturn(Map.of(DEMOGRAPHIC_NO, Collections.singletonList(patientForm)));
+
+            // When
+            List<TicklerAttachmentData> details = manager.getTicklerAttachmentDetails(mockLoggedInInfo, TICKLER_ID, DEMOGRAPHIC_NO);
+
+            // Then
+            assertThat(details.get(0).getViewUrl()).isEqualTo(
+                    "/form/forwardshortcutname.do?formname=Rourke%20Baby%20Record&demographic_no=12345&formId=55");
+        }
+
+        @Test
+        @DisplayName("should leave an encounter form unlinked when its name no longer resolves")
+        void shouldReturnNullViewUrl_whenFormNameUnresolved() {
+            // Given
+            when(mockTicklerDocsDao.findByTicklerId(TICKLER_ID)).thenReturn(Collections.singletonList(
+                    new TicklerDocs(TICKLER_ID, 55, TicklerDocs.DOCTYPE_FORM, PROVIDER_NO)));
+            when(mockFormsManager.getEncounterFormsByDemographicNumbers(eq(mockLoggedInInfo), anyCollection(), eq(true), eq(true)))
+                    .thenReturn(Collections.emptyMap());
+
+            // When
+            List<TicklerAttachmentData> details = manager.getTicklerAttachmentDetails(mockLoggedInInfo, TICKLER_ID, DEMOGRAPHIC_NO);
+
+            // Then
+            assertThat(details.get(0).getDisplayName()).isEqualTo("form #55");
+            assertThat(details.get(0).getViewUrl()).isNull();
+        }
+
+        @ParameterizedTest(name = "lab type {0} -> {1}")
+        @CsvSource(value = {
+                "HL7, /lab/CA/ALL/labDisplay.jsp",
+                "MDS, /oscarMDS/SegmentDisplay.jsp",
+                "CML, /lab/CA/ON/CMLDisplay.jsp",
+                "BCP, /lab/CA/BC/labDisplay.jsp",
+                "NULL, /lab/CA/BC/labDisplay.jsp"
+        }, nullValues = "NULL")
+        @DisplayName("should route a lab to the viewer for its sub-type, falling back to the BC viewer")
+        void shouldBuildLabViewerUrl_forEachLabType(String labType, String expectedPath) {
+            // Given
+            when(mockTicklerDocsDao.findByTicklerId(TICKLER_ID)).thenReturn(Collections.singletonList(
+                    new TicklerDocs(TICKLER_ID, 88, TicklerDocs.DOCTYPE_LAB, PROVIDER_NO)));
+            when(mockPatientLabRoutingDao.findByLabNos(Collections.singletonList(88))).thenReturn(labType == null
+                    ? Collections.emptyList()
+                    : Collections.singletonList(new PatientLabRouting(88, labType, DEMOGRAPHIC_NO)));
+            DocumentAttachmentManagerImpl spyManager = spyWithLabs("88");
+
+            // When
+            List<TicklerAttachmentData> details = spyManager.getTicklerAttachmentDetails(mockLoggedInInfo, TICKLER_ID, DEMOGRAPHIC_NO);
+
+            // Then
+            assertThat(details.get(0).getDisplayName()).isEqualTo("CBC 88");
+            assertThat(details.get(0).getViewUrl()).isEqualTo(
+                    expectedPath + "?segmentID=88&providerNo=999990&searchProviderNo=999990&status=");
+        }
+
+        @Test
+        @DisplayName("should look up lab sub-types once for all of a tickler's labs")
+        void shouldBatchLabTypeLookup_whenSeveralLabsAttached() {
+            // Given
+            when(mockTicklerDocsDao.findByTicklerId(TICKLER_ID)).thenReturn(List.of(
+                    new TicklerDocs(TICKLER_ID, 88, TicklerDocs.DOCTYPE_LAB, PROVIDER_NO),
+                    new TicklerDocs(TICKLER_ID, 12, TicklerDocs.DOCTYPE_DOC, PROVIDER_NO),
+                    new TicklerDocs(TICKLER_ID, 89, TicklerDocs.DOCTYPE_LAB, PROVIDER_NO)));
+            when(mockPatientLabRoutingDao.findByLabNos(List.of(88, 89))).thenReturn(List.of(
+                    new PatientLabRouting(88, "HL7", DEMOGRAPHIC_NO),
+                    new PatientLabRouting(89, "MDS", DEMOGRAPHIC_NO)));
+            DocumentAttachmentManagerImpl spyManager = spyWithLabs("88", "89");
+
+            // When
+            List<TicklerAttachmentData> details = spyManager.getTicklerAttachmentDetails(mockLoggedInInfo, TICKLER_ID, DEMOGRAPHIC_NO);
+
+            // Then
+            verify(mockPatientLabRoutingDao, times(1)).findByLabNos(anyList());
+            assertThat(details).extracting(TicklerAttachmentData::getViewUrl).containsExactly(
+                    "/lab/CA/ALL/labDisplay.jsp?segmentID=88&providerNo=999990&searchProviderNo=999990&status=",
+                    "/documentManager/ManageDocument.do?method=display&doc_no=12&providerNo=999990&searchProviderNo=999990&status=",
+                    "/oscarMDS/SegmentDisplay.jsp?segmentID=89&providerNo=999990&searchProviderNo=999990&status=");
         }
     }
 
