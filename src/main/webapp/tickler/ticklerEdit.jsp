@@ -610,7 +610,16 @@
                                         if (ticklerAttachment.getDocumentType() != attachEntry.getKey()) {
                                             continue;
                                         }
-                                        groupItems.append("<li>").append(Encode.forHtmlContent(ticklerAttachment.getDisplayName())).append("</li>");
+                                        String attachmentName = Encode.forHtmlContent(ticklerAttachment.getDisplayName());
+                                        String viewUrl = ticklerAttachment.getViewUrl();
+                                        if (viewUrl == null) {
+                                            groupItems.append("<li>").append(attachmentName).append("</li>");
+                                        } else {
+                                            groupItems.append("<li><a class=\"attachment-link\" target=\"_blank\" title=\"View attachment\" href=\"")
+                                                    .append(Encode.forHtmlAttribute(request.getContextPath() + viewUrl))
+                                                    .append("\" data-attachment-key=\"").append(Encode.forHtmlAttribute(paramName + ticklerAttachment.getDocumentId()))
+                                                    .append("\">").append(attachmentName).append("</a></li>");
+                                        }
                                     }
                             %>
                             <div class="attachment-group" id="attachmentGroup_<%=paramName%>" <%=groupItems.length() == 0 ? "style=\"display:none;\"" : ""%>>
@@ -690,6 +699,11 @@
                     // attachToTickler() diffs this against the stored set, so submitting the full
                     // current selection per type is sufficient for both adds and removals.
                     $form.find(".delegateAttachment").remove();
+                    // Saved attachments keep their viewer links; new picks stay plain text until Update.
+                    var viewUrls = {};
+                    jQuery('#attachmentNames a.attachment-link').each(function () {
+                        viewUrls[jQuery(this).attr('data-attachment-key')] = jQuery(this).attr('href');
+                    });
                     jQuery('#attachmentNames ul').empty();
                     // Track which delegates we've added so each one is only added once.
                     var seenDelegates = {};
@@ -707,7 +721,19 @@
                                 id: "delegate_" + element.attr('name') + element.val(),
                                 "class": 'delegateAttachment'
                             }).appendTo($form);
-                            jQuery("<li>").text(element.attr('title')).appendTo('#attachmentNames_' + element.attr('name'));
+                            var item = jQuery("<li>");
+                            if (viewUrls[key]) {
+                                jQuery("<a>", {
+                                    "class": 'attachment-link',
+                                    target: '_blank',
+                                    title: 'View attachment',
+                                    href: viewUrls[key],
+                                    "data-attachment-key": key
+                                }).text(element.attr('title')).appendTo(item);
+                            } else {
+                                item.text(element.attr('title'));
+                            }
+                            item.appendTo('#attachmentNames_' + element.attr('name'));
                         });
                     jQuery('#attachmentNames .attachment-group').each(function () {
                         jQuery(this).toggle(jQuery(this).find('li').length > 0);
@@ -715,6 +741,12 @@
                     jQuery('#attachmentCount').text($form.find(".delegateAttachment").length);
                 }
             });
+        });
+
+        // Open attachment links in the same popup size the tickler list uses.
+        jQuery(document).on('click', '#attachmentNames a.attachment-link', function (event) {
+            event.preventDefault();
+            popupPage(660, 960, this.href);
         });
     </script>
 

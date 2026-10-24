@@ -22,6 +22,7 @@ import ca.openosp.openo.documentManager.data.TicklerAttachmentData;
 import ca.openosp.openo.utility.DateUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.PDFGenerationException;
+import org.owasp.encoder.Encode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -465,8 +466,8 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
     }
 
     /**
-     * Retrieves every attachment on a tickler with its display name resolved. Patient-wide
-     * lookups (labs, HRM, forms) are loaded lazily, only when that type is attached.
+     * Retrieves every attachment on a tickler with its display name and viewer URL resolved.
+     * Patient-wide lookups (labs, HRM, forms) are loaded lazily, only when that type is attached.
      *
      * @param loggedInInfo LoggedInInfo the current user's session information
      * @param ticklerId Integer the unique identifier of the tickler
@@ -482,16 +483,21 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
 
         List<TicklerAttachmentData> attachmentDetails = new ArrayList<>();
         Map<String, String> labNamesBySegmentId = null;
+        Map<Integer, String> labTypesByLabNo = null;
         ArrayList<HashMap<String, ? extends Object>> allHrmDocuments = null;
         Map<String, String> formNamesByFormId = null;
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
 
-        for (TicklerDocs ticklerDoc : ticklerDocsDao.findByTicklerId(ticklerId)) {
+        List<TicklerDocs> ticklerDocs = ticklerDocsDao.findByTicklerId(ticklerId);
+        for (TicklerDocs ticklerDoc : ticklerDocs) {
             DocumentType documentType = DocumentType.fromType(ticklerDoc.getDocType());
             if (documentType == null) {
                 continue;
             }
             String documentId = String.valueOf(ticklerDoc.getDocumentNo());
             String displayName = null;
+            String labType = null;
+            String formName = null;
 
             switch (documentType) {
                 case DOC:
@@ -505,6 +511,10 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
                         labNamesBySegmentId = buildLabNamesBySegmentId(loggedInInfo, demographicNo);
                     }
                     displayName = labNamesBySegmentId.get(documentId);
+                    if (labTypesByLabNo == null) {
+                        labTypesByLabNo = loadLabTypesByLabNo(ticklerDocs);
+                    }
+                    labType = labTypesByLabNo.get(ticklerDoc.getDocumentNo());
                     break;
                 case EFORM:
                     EFormData eForm = eFormDataDao.find(ticklerDoc.getDocumentNo());
@@ -527,16 +537,76 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
                     if (formNamesByFormId == null) {
                         formNamesByFormId = getFormNamesByFormId(loggedInInfo, demographicNo);
                     }
-                    displayName = formNamesByFormId.get(documentId);
+                    formName = formNamesByFormId.get(documentId);
+                    displayName = formName;
                     break;
             }
 
             if (StringUtils.isNullOrEmpty(displayName)) {
                 displayName = documentType.getName() + " #" + documentId;
             }
-            attachmentDetails.add(new TicklerAttachmentData(documentType, documentId, displayName));
+            String viewUrl = buildTicklerAttachmentViewUrl(documentType, documentId, labType, formName, demographicNo, providerNo);
+            attachmentDetails.add(new TicklerAttachmentData(documentType, documentId, displayName, viewUrl));
         }
         return attachmentDetails;
+    }
+
+    /**
+     * Maps each lab attached to a tickler to its sub-type (MDS/CML/HL7/BC) in one batched lookup.
+     */
+    private Map<Integer, String> loadLabTypesByLabNo(List<TicklerDocs> ticklerDocs) {
+        List<Integer> labNos = new ArrayList<>();
+        for (TicklerDocs ticklerDoc : ticklerDocs) {
+            if (DocumentType.LAB.getType().equals(ticklerDoc.getDocType())) {
+                labNos.add(ticklerDoc.getDocumentNo());
+            }
+        }
+        Map<Integer, String> labTypes = new HashMap<>();
+        for (ca.openosp.openo.commn.model.PatientLabRouting routing : patientLabRoutingDao.findByLabNos(labNos)) {
+            labTypes.putIfAbsent(routing.getLabNo(), routing.getLabType());
+        }
+        return labTypes;
+    }
+
+    /**
+     * Builds the context-relative URL of the viewer for one tickler attachment, using the same
+     * viewers as the tickler list. Labs are routed by sub-type, falling back to the BC viewer.
+     *
+     * @return String the viewer URL, or null for a form whose name no longer resolves, since
+     *         encounter forms span many tables and the id alone cannot address one
+     */
+    private String buildTicklerAttachmentViewUrl(DocumentType documentType, String documentId, String labType,
+                                                 String formName, Integer demographicNo, String providerNo) {
+        String id = Encode.forUriComponent(documentId);
+        String providerParams = "&providerNo=" + Encode.forUriComponent(String.valueOf(providerNo))
+                + "&searchProviderNo=" + Encode.forUriComponent(String.valueOf(providerNo)) + "&status=";
+        switch (documentType) {
+            case DOC:
+                return "/documentManager/ManageDocument.do?method=display&doc_no=" + id + providerParams;
+            case EFORM:
+                return "/eform/efmshowform_data.jsp?fdid=" + id;
+            case HRM:
+                return "/hospitalReportManager/Display.do?id=" + id + "&segmentID=" + id;
+            case FORM:
+                if (StringUtils.isNullOrEmpty(formName)) {
+                    return null;
+                }
+                return "/form/forwardshortcutname.do?formname=" + Encode.forUriComponent(formName)
+                        + "&demographic_no=" + Encode.forUriComponent(String.valueOf(demographicNo)) + "&formId=" + id;
+            case LAB:
+                if (LabResultData.MDS.equals(labType)) {
+                    return "/oscarMDS/SegmentDisplay.jsp?segmentID=" + id + providerParams;
+                }
+                if (LabResultData.CML.equals(labType)) {
+                    return "/lab/CA/ON/CMLDisplay.jsp?segmentID=" + id + providerParams;
+                }
+                if (LabResultData.HL7TEXT.equals(labType)) {
+                    return "/lab/CA/ALL/labDisplay.jsp?segmentID=" + id + providerParams;
+                }
+                return "/lab/CA/BC/labDisplay.jsp?segmentID=" + id + providerParams;
+            default:
+                return null;
+        }
     }
 
     /**

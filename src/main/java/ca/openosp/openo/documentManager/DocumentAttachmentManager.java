@@ -208,8 +208,8 @@ public interface DocumentAttachmentManager {
     public List<String> getTicklerAttachments(LoggedInInfo loggedInInfo, Integer ticklerId, DocumentType documentType, Integer demographicNo);
 
     /**
-     * Retrieves every attachment on a tickler, of all types, with display names resolved.
-     * Used to render the named attachment lists in the Add/Edit Tickler windows.
+     * Retrieves every attachment on a tickler, of all types, with display names and viewer URLs
+     * resolved. Used to render the named attachment lists in the Add/Edit Tickler windows.
      *
      * @param loggedInInfo LoggedInInfo the current user's session information
      * @param ticklerId Integer the unique identifier of the tickler
