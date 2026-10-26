@@ -65,6 +65,17 @@ public class PrescriptionDaoImpl extends AbstractDaoImpl<Prescription> implement
         return query.executeUpdate();
     }
 
+    @Override
+    public int lockPrescriberSignature(Integer scriptNo, String prescriberSignature, String textView) {
+        // A bulk update skips @PreUpdate, so the update date is set here
+        Query query = entityManager.createQuery("UPDATE Prescription p SET p.prescriberSignature = ?1, p.textView = ?2, p.lastUpdateDate = ?3 WHERE p.id = ?4 AND p.prescriberSignature IS NULL");
+        query.setParameter(1, prescriberSignature);
+        query.setParameter(2, textView);
+        query.setParameter(3, new Date());
+        query.setParameter(4, scriptNo);
+        return query.executeUpdate();
+    }
+
     /**
      * @return results ordered by lastUpdateDate
      */

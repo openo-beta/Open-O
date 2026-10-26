@@ -2,13 +2,16 @@ package ca.openosp.openo.managers;
 
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.casemgmt.model.ProviderExt;
+import ca.openosp.openo.commn.dao.PrescriptionDao;
 import ca.openosp.openo.commn.dao.ProviderExtDao;
 import ca.openosp.openo.commn.dao.ProviderSignatureDao;
+import ca.openosp.openo.commn.model.Prescription;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.ProviderSignature;
 import ca.openosp.openo.managers.model.SignatureChoice;
 import ca.openosp.openo.prescript.data.RxProviderData;
 import ca.openosp.openo.utility.LoggedInInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +38,9 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     @Autowired
     private ProviderDao providerDao;
 
+    @Autowired
+    private PrescriptionDao prescriptionDao;
+
     @Override
     public String getDefaultSignature(String providerNo) {
         String defaultText = getSavedDefaultText(providerNo);
@@ -48,6 +54,47 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
             return "";
         }
         return RxProviderData.prescriberFirstName(provider.getFirstName()) + " " + provider.getLastName();
+    }
+
+    @Override
+    public String getSavedSignature(String scriptNo) {
+        Prescription prescription = StringUtils.isNumeric(scriptNo) ? prescriptionDao.find(Integer.valueOf(scriptNo)) : null;
+        return prescription == null ? null : prescription.getPrescriberSignature();
+    }
+
+    @Override
+    public String getPrintedSignature(String scriptNo, String prescriberNo) {
+        String savedSignature = getSavedSignature(scriptNo);
+        return savedSignature == null ? getDefaultSignature(prescriberNo) : savedSignature;
+    }
+
+    @Override
+    public String lockForPrescription(LoggedInInfo loggedInInfo, Integer scriptNo, Integer demographicNo, Integer signatureId) {
+        Prescription prescription = prescriptionDao.find(scriptNo);
+        if (prescription == null || !prescription.getDemographicId().equals(demographicNo)) {
+            throw new SecurityException("Prescription " + scriptNo + " is not for the patient in this prescription window");
+        }
+        if (prescription.getPrescriberSignature() != null) {
+            return prescription.getPrescriberSignature();
+        }
+
+        String prescriberNo = prescription.getProviderNo();
+        String signature;
+        if (!loggedInInfo.getLoggedInProviderNo().equals(prescriberNo)) {
+            // Only the prescriber chooses; a reprint by anyone else saves the prescriber's default
+            signature = getDefaultSignature(prescriberNo);
+        } else if (signatureId == null) {
+            signature = getPrescriberName(prescriberNo);
+        } else {
+            signature = getOwnSignature(prescriberNo, signatureId).getSignature();
+        }
+
+        if (prescriptionDao.lockPrescriberSignature(scriptNo, signature, withFirstLine(prescription.getTextView(), signature)) == 0) {
+            // Another window printed it first; its signature stands
+            prescriptionDao.refresh(prescription);
+            return prescription.getPrescriberSignature();
+        }
+        return signature;
     }
 
     @Override
@@ -149,6 +196,22 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
             providerExt.setSignature(text);
             providerExtDao.merge(providerExt);
         }
+    }
+
+    /**
+     * Puts a signature on the first line of a prescription's text copy, where the prescriber's
+     * signature has been written since prescriptions were first saved.
+     *
+     * @param textView String the text copy, which may be null or empty
+     * @param signature String the signature
+     * @return String the text copy with its first line replaced, or the text copy unchanged when it is null or empty
+     */
+    static String withFirstLine(String textView, String signature) {
+        if (textView == null || textView.isEmpty()) {
+            return textView;
+        }
+        int endOfFirstLine = textView.indexOf('\n');
+        return endOfFirstLine < 0 ? signature : signature + textView.substring(endOfFirstLine);
     }
 
     private ProviderSignature addRow(String providerNo, String text, String updatedBy) {
