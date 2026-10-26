@@ -123,17 +123,20 @@ public abstract class OpenOTestBase {
     /**
      * Capture the application context for static initialization.
      *
-     * <p>This method is called by Spring during context initialization.
-     * We store the context statically to enable SpringUtils initialization
-     * for all test instances.
+     * <p>This method is called by Spring when it injects each test instance.
+     * We store the context statically and point SpringUtils at it, switching
+     * whenever a test runs in a different context than the one before.
      *
      * @param context the Spring application context
      */
     @Autowired
     public void setApplicationContext(ApplicationContext context) {
         this.applicationContext = context;
-        if (staticContext == null) {
+        // Test classes with different configuration (OpenODaoTestBase adds properties) get their own
+        // cached context, so SpringUtils follows the one this test runs in, not the first one created
+        if (staticContext != context) {
             staticContext = context;
+            springUtilsInitialized = false;
             initializeSpringUtils();
         }
     }
