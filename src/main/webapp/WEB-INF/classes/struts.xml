@@ -1276,7 +1276,8 @@
             <result name="input">/oscarMaintenance/oscarMaintenanceInput.jsp</result>
         </action-->
         <action name="EnterSignature" class="ca.openosp.openo.providers.pageUtil.ProEditSignature2Action">
-            <result name="success">/provider/providerSignature.jsp</result>
+            <result name="success" type="redirect">/provider/providerSignature.jsp</result>
+            <result name="input">/provider/editSignature.jsp</result>
         </action>
         <action name="EditPhoneNum" class="ca.openosp.openo.providers.pageUtil.ProEditPhoneNum2Action">
             <result name="success">/provider/providerPhone.jsp</result>
