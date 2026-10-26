@@ -79,12 +79,13 @@ public class FrmCustomedPDFServlet extends HttpServlet {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(req);
         boolean isFax = "oscarRxFax".equals(req.getParameter("__method"));
-        try (ByteArrayOutputStream baosPDF = generatePDFDocumentBytes(req, this.getServletContext());
-             PrintWriter writer = res.getWriter()) {
+        try (ByteArrayOutputStream baosPDF = generatePDFDocumentBytes(req, this.getServletContext())) {
 
             if (isFax) {
                 // this fax method shouldn't be here and will be removed in future edits.
                 res.setContentType("text/html");
+                // Taken only here: the PDF branch needs getOutputStream(), and a response allows one or the other.
+                PrintWriter writer = res.getWriter();
                 String faxNo = req.getParameter("pharmaFax");
                 if (faxNo != null) {
                     faxNo = faxNo.trim().replaceAll("\\D", "");
@@ -496,7 +497,8 @@ public class FrmCustomedPDFServlet extends HttpServlet {
                  *  with the bottom left corner located at X: 75f Y: -31f
                  *  Also need to account for the height of the signature
                  */
-                if (this.imgPath != null) {
+                // The print window posts an empty imgFile until a signature is drawn.
+                if (this.imgPath != null && !this.imgPath.isEmpty()) {
                     Image img = Image.getInstance(this.imgPath);
                     float imageWidth = 185f;
                     float imageHeight = 40f;
