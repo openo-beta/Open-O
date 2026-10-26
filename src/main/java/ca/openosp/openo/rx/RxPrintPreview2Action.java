@@ -225,7 +225,15 @@ public class RxPrintPreview2Action extends ActionSupport {
 
         ca.openosp.openo.prescript.data.RxProviderData.Provider provider = new ca.openosp.openo.prescript.data.RxProviderData().getProvider(signingProvider);
 
-        String doctorName = providerSignatureManager.getDefaultSignature(signingProvider);
+        // Saved at the first print, fax or PDF; until then the prescriber can pick it in this window
+        String scriptNo = sessionBean.getStashSize() > 0 ? sessionBean.getStashItem(0).getScript_no() : null;
+        String savedSignature = providerSignatureManager.getSavedSignature(scriptNo);
+        boolean signatureLocked = savedSignature != null;
+        String doctorName = signatureLocked ? savedSignature : providerSignatureManager.getDefaultSignature(signingProvider);
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        request.setAttribute("signatureLocked", signatureLocked);
+        request.setAttribute("signatureEditable", !signatureLocked && signingProvider.equals(loggedInInfo.getLoggedInProviderNo()));
+        request.setAttribute("signatureChoices", providerSignatureManager.getChoices(signingProvider));
 
         String pracNo = provider.getPractitionerNo();
 

@@ -2,8 +2,10 @@ package ca.openosp.openo.managers;
 
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.casemgmt.model.ProviderExt;
+import ca.openosp.openo.commn.dao.PrescriptionDao;
 import ca.openosp.openo.commn.dao.ProviderExtDao;
 import ca.openosp.openo.commn.dao.ProviderSignatureDao;
+import ca.openosp.openo.commn.model.Prescription;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.ProviderSignature;
 import ca.openosp.openo.managers.model.SignatureChoice;
@@ -32,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -44,7 +47,8 @@ import static org.mockito.Mockito.when;
  * which is what prescriptions printed before signatures could be chosen. The list is the prescriber
  * name first, then the saved signatures in the order they were added. Adding never changes the
  * default; editing or deleting the default carries the default with it; a provider can only change
- * their own signatures.</p>
+ * their own signatures. A prescription saves its signature once, at its first print: the prescriber's
+ * choice, or the prescriber's default when someone else prints it, and then never changes.</p>
  *
  * @since 2026-10-26
  */
@@ -69,6 +73,9 @@ class ProviderSignatureManagerUnitTest {
 
     @Mock
     private ProviderDao providerDao;
+
+    @Mock
+    private PrescriptionDao prescriptionDao;
 
     @InjectMocks
     private ProviderSignatureManagerImpl providerSignatureManager;
@@ -423,6 +430,150 @@ class ProviderSignatureManagerUnitTest {
 
             assertThatThrownBy(() -> providerSignatureManager.makeDefault(loggedInInfo, 3))
                     .isInstanceOf(SecurityException.class);
+        }
+    }
+
+    /**
+     * Saving the signature on a prescription at its first print, fax or PDF.
+     */
+    @Nested
+    @DisplayName("lock on a prescription")
+    class LockForPrescription {
+
+        private static final int SCRIPT_NO = 287;
+        private static final int DEMOGRAPHIC_NO = 1;
+        private static final String TEXT_VIEW = "Alex\nMHI Org\nHamilton\nAMOXICILLIN 125MG";
+
+        private Prescription prescription;
+
+        @BeforeEach
+        void givenUnsavedPrescription() {
+            prescription = new Prescription();
+            ReflectionTestUtils.setField(prescription, "id", SCRIPT_NO);
+            prescription.setProviderNo(PROVIDER_NO);
+            prescription.setDemographicId(DEMOGRAPHIC_NO);
+            prescription.setTextView(TEXT_VIEW);
+            when(prescriptionDao.find(Integer.valueOf(SCRIPT_NO))).thenReturn(prescription);
+            when(prescriptionDao.lockPrescriberSignature(any(), any(), any())).thenReturn(1);
+        }
+
+        private LoggedInInfo loggedInAs(String providerNo) {
+            LoggedInInfo info = new LoggedInInfo();
+            info.setLoggedInProvider(new Provider(providerNo));
+            return info;
+        }
+
+        @Test
+        @DisplayName("should save the prescriber's chosen signature and put it on the first line of the text copy")
+        void shouldSaveChosenSignature_whenPrescriberPrints() {
+            signature(2, PROVIDER_NO, UNDER_WELCH);
+
+            String saved = providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, 2);
+
+            assertThat(saved).isEqualTo(UNDER_WELCH);
+            verify(prescriptionDao).lockPrescriberSignature(SCRIPT_NO, UNDER_WELCH, UNDER_WELCH + "\nMHI Org\nHamilton\nAMOXICILLIN 125MG");
+        }
+
+        @Test
+        @DisplayName("should save the prescriber name when the prescriber picks it")
+        void shouldSavePrescriberName_whenPrescriberPicksIt() {
+            givenSavedDefault(UNDER_ARMSTRONG);
+
+            assertThat(providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, null))
+                    .isEqualTo("Dr. doctor openodoc");
+        }
+
+        @Test
+        @DisplayName("should save the prescriber's default whatever someone else picks")
+        void shouldSavePrescriberDefault_whenSomeoneElsePrints() {
+            givenSavedDefault(UNDER_ARMSTRONG);
+            signature(2, PROVIDER_NO, UNDER_WELCH);
+
+            String saved = providerSignatureManager.lockForPrescription(loggedInAs(OTHER_PROVIDER_NO), SCRIPT_NO, DEMOGRAPHIC_NO, 2);
+
+            assertThat(saved).isEqualTo(UNDER_ARMSTRONG);
+            verify(prescriptionDao).lockPrescriberSignature(SCRIPT_NO, UNDER_ARMSTRONG, UNDER_ARMSTRONG + "\nMHI Org\nHamilton\nAMOXICILLIN 125MG");
+        }
+
+        @Test
+        @DisplayName("should keep the saved signature when the prescription has one already")
+        void shouldKeepSavedSignature_whenAlreadySaved() {
+            prescription.setPrescriberSignature(UNDER_ARMSTRONG);
+            signature(2, PROVIDER_NO, UNDER_WELCH);
+
+            assertThat(providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, 2)).isEqualTo(UNDER_ARMSTRONG);
+            verify(prescriptionDao, never()).lockPrescriberSignature(any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("should return the other window's signature when another window saved one first")
+        void shouldReturnOtherWindowsSignature_whenItSavedFirst() {
+            signature(2, PROVIDER_NO, UNDER_WELCH);
+            when(prescriptionDao.lockPrescriberSignature(any(), any(), any())).thenReturn(0);
+            doAnswer(invocation -> {
+                prescription.setPrescriberSignature(UNDER_ARMSTRONG);
+                return null;
+            }).when(prescriptionDao).refresh(prescription);
+
+            assertThat(providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, 2)).isEqualTo(UNDER_ARMSTRONG);
+        }
+
+        @Test
+        @DisplayName("should refuse a prescription for another patient")
+        void shouldRefuse_whenPrescriptionIsForAnotherPatient() {
+            assertThatThrownBy(() -> providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, 2, null))
+                    .isInstanceOf(SecurityException.class);
+            verify(prescriptionDao, never()).lockPrescriberSignature(any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("should refuse a signature from another provider's list")
+        void shouldRefuse_whenSignatureBelongsToAnotherProvider() {
+            signature(3, OTHER_PROVIDER_NO, UNDER_WELCH);
+
+            assertThatThrownBy(() -> providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, 3))
+                    .isInstanceOf(SecurityException.class);
+            verify(prescriptionDao, never()).lockPrescriberSignature(any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("should print the saved signature once there is one, and the default before then")
+        void shouldPrintSavedSignatureOnceSaved_andDefaultBefore() {
+            givenSavedDefault(UNDER_ARMSTRONG);
+
+            assertThat(providerSignatureManager.getPrintedSignature(String.valueOf(SCRIPT_NO), PROVIDER_NO)).isEqualTo(UNDER_ARMSTRONG);
+            prescription.setPrescriberSignature(UNDER_WELCH);
+            assertThat(providerSignatureManager.getPrintedSignature(String.valueOf(SCRIPT_NO), PROVIDER_NO)).isEqualTo(UNDER_WELCH);
+            assertThat(providerSignatureManager.getPrintedSignature(null, PROVIDER_NO)).isEqualTo(UNDER_ARMSTRONG);
+        }
+    }
+
+    /**
+     * Writing the signature on the first line of a prescription's text copy.
+     */
+    @Nested
+    @DisplayName("text copy first line")
+    class TextCopyFirstLine {
+
+        @Test
+        @DisplayName("should replace only the first line")
+        void shouldReplaceOnlyFirstLine_whenTextHasSeveralLines() {
+            assertThat(ProviderSignatureManagerImpl.withFirstLine("Alex\nMHI Org\n\nDrug", UNDER_WELCH))
+                    .isEqualTo(UNDER_WELCH + "\nMHI Org\n\nDrug");
+        }
+
+        @Test
+        @DisplayName("should replace the whole text when it is one line")
+        void shouldReplaceWholeText_whenTextIsOneLine() {
+            assertThat(ProviderSignatureManagerImpl.withFirstLine("Alex", UNDER_WELCH)).isEqualTo(UNDER_WELCH);
+        }
+
+        @ParameterizedTest(name = "text copy [{0}]")
+        @NullSource
+        @ValueSource(strings = {""})
+        @DisplayName("should leave a missing or empty text copy as it is")
+        void shouldLeaveTextCopy_whenMissingOrEmpty(String textView) {
+            assertThat(ProviderSignatureManagerImpl.withFirstLine(textView, UNDER_WELCH)).isEqualTo(textView);
         }
     }
 

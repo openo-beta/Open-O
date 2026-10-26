@@ -47,6 +47,40 @@ public interface ProviderSignatureManager {
     String getPrescriberName(String providerNo);
 
     /**
+     * Gets the signature saved on a prescription at its first print, fax or PDF.
+     *
+     * @param scriptNo String the prescription's number, or null when there isn't one yet
+     * @return String the saved signature, or null when the prescription hasn't been printed yet
+     */
+    String getSavedSignature(String scriptNo);
+
+    /**
+     * Gets the signature a prescription prints: the one saved at its first print, fax or PDF, or
+     * before then the prescriber's default.
+     *
+     * @param scriptNo String the prescription's number, or null when there isn't one yet
+     * @param prescriberNo String the prescriber's number
+     * @return String the signature to print
+     */
+    String getPrintedSignature(String scriptNo, String prescriberNo);
+
+    /**
+     * Saves the signature on a prescription at its first print, fax or PDF, so every reprint shows
+     * the same one, and writes it on the first line of the prescription's text copy. Only the
+     * prescriber chooses; anyone else saves the prescriber's default. When the prescription already
+     * has a signature, nothing changes.
+     *
+     * @param loggedInInfo LoggedInInfo the user printing the prescription
+     * @param scriptNo Integer the prescription's number
+     * @param demographicNo Integer the patient of the user's prescription window
+     * @param signatureId Integer the prescriber's chosen signature, or null for their prescriber name
+     * @return String the signature saved on the prescription
+     * @throws SecurityException when the prescription isn't for that patient, or the chosen
+     *                           signature isn't the prescriber's
+     */
+    String lockForPrescription(LoggedInInfo loggedInInfo, Integer scriptNo, Integer demographicNo, Integer signatureId);
+
+    /**
      * Gets a provider's signature list: their prescriber name first, then their saved signatures
      * in the order they were added, with the default marked.
      *

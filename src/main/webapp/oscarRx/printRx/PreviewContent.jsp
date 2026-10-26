@@ -89,7 +89,7 @@
 
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post" id="preview2Form">
         <%-- Rendered here because this page is loaded into the Rx modal, where csrfguard.js does not inject tokens. --%>
-        <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
+        <input type="hidden" id="previewCsrfToken" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
         <input type="hidden" name="demographic_no" value="${sessionScope.RxSessionBean.demographicNo}"/>
         <table>
             <tr>
@@ -101,7 +101,7 @@
                                 <input type="image"
                                        src="oscarRx/img/rx.gif" border="0" alt="[Submit]"
                                        name="submit" title="Print in a half letter size paper"
-                                       onclick="onPrint2('<%= "true".equals(request.getAttribute("reprint")) ? "rePrint" : "print" %>',
+                                       onclick="printRxPdf('<%= "true".equals(request.getAttribute("reprint")) ? "rePrint" : "print" %>',
                                                '<%= Encode.forJavaScript(Objects.toString(request.getParameter("scriptId"), "")) %>',
                                                <%= Boolean.TRUE.equals(request.getAttribute("useSC")) %>,
                                                '<%= Encode.forJavaScript(Objects.toString(request.getAttribute("selectedAddress"), "")) %>',
@@ -149,12 +149,12 @@
                                        value="<fmt:message key="RxPreview.msgTel"/>: <%=StringEscapeUtils.escapeHtml((String)request.getAttribute("patientPhone")) %>"/>
                                 <input type="hidden" name="rxDate"
                                        value="<%= StringEscapeUtils.escapeHtml((String)request.getAttribute("rxDateFormatted")) %>"/>
-                                <input type="hidden" name="sigDoctorName"
+                                <input type="hidden" name="sigDoctorName" id="sigDoctorName"
                                        value="<%= StringEscapeUtils.escapeHtml((String)request.getAttribute("doctorName")) %>"/>
                                 <!--img src="img/rx.gif" border="0"-->
                             </th>
                             <th valign=top height="100px" id="clinicAddress">
-                                <b>${requestScope.doctorName}</b><br>
+                                <b id="prescriberSignatureHeader"><c:out value="${requestScope.doctorName}"/></b><br>
                                 <c:choose>
                                     <c:when test="${empty infirmaryView_programAddress}">
                                         <%= ((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicName().replaceAll("\\(\\d{6}\\)", "") %>
@@ -265,7 +265,7 @@
                                 </c:if>
                             </td>
                             <td height=25px>
-                                &nbsp; <c:out value="${requestScope.doctorName}"/>
+                                &nbsp; <span id="prescriberSignatureLine"><c:out value="${requestScope.doctorName}"/></span>
                                 <c:if test="${not empty requestScope.pracNo && requestScope.pracNo ne 'null'}">
                                     <br>
                                     &nbsp;<fmt:message key="RxPreview.PractNo"/> <c:out value="${requestScope.pracNo}"/>

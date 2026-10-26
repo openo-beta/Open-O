@@ -79,6 +79,10 @@ public class Prescription extends AbstractModel<Integer> implements Serializable
 	@Column(name = "digital_signature_id")
 	private Integer digitalSignatureId;
 
+    /** The signature printed on the prescription, saved at its first print, fax or PDF. Null until then. */
+    @Column(name = "prescriber_signature")
+    private String prescriberSignature;
+
     @PreRemove
     protected void jpaPreventDelete() {
         throw (new UnsupportedOperationException("Remove is not allowed for this type of item."));
@@ -190,4 +194,12 @@ public class Prescription extends AbstractModel<Integer> implements Serializable
 	public void setDigitalSignatureId(Integer digitalSignatureId) {
 		this.digitalSignatureId = digitalSignatureId;
 	}
+
+    public String getPrescriberSignature() {
+        return prescriberSignature;
+    }
+
+    public void setPrescriberSignature(String prescriberSignature) {
+        this.prescriberSignature = prescriberSignature;
+    }
 }
