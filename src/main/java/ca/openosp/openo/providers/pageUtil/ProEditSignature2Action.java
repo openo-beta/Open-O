@@ -24,52 +24,77 @@
  */
 
 
+
 package ca.openosp.openo.providers.pageUtil;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.openo.managers.ProviderSignatureManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
-
-import ca.openosp.openo.utility.MiscUtils;
-import ca.openosp.openo.providers.data.ProSignatureData;
+import ca.openosp.openo.utility.SpringUtils;
 
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
+/**
+ * Adds, edits and deletes the signatures in the logged-in provider's list, and picks their default.
+ *
+ * <p>The {@code method} parameter picks the change: {@code save} (adds when there is no
+ * {@code signatureId}, otherwise edits), {@code delete} or {@code makeDefault} (no
+ * {@code signatureId} makes the prescriber name the default).
+ *
+ * @since 2026-10-26
+ */
 public class ProEditSignature2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
     HttpServletResponse response = ServletActionContext.getResponse();
 
+    private final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private final ProviderSignatureManager providerSignatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
 
-    public String execute()
-            throws ServletException, IOException {
-        String providerNo = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();
-        if (providerNo == null)
-            return "eject";
+    /**
+     * Applies one change to the logged-in provider's signature list.
+     *
+     * @return String "success" to go back to the list, "input" to show the edit page again with
+     *         the problem, or null when the request isn't a POST
+     * @throws SecurityException when the user can't change their preferences, or the signature isn't theirs
+     */
+    @Override
+    public String execute() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_pref", SecurityInfoManager.UPDATE, null)) {
+            throw new SecurityException("missing required sec object (_pref)");
+        }
 
-        ProSignatureData sigData = new ProSignatureData();
-        //String sig = frm.getSignature();
-        sigData.enterSignature(providerNo, this.signature);
+        // POST only, so CSRFGuard checks the token
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            return null;
+        }
 
-
+        String signatureIdParam = request.getParameter("signatureId");
+        Integer signatureId = signatureIdParam == null || signatureIdParam.isEmpty() ? null : Integer.valueOf(signatureIdParam);
+        String method = request.getParameter("method");
+        if ("delete".equals(method)) {
+            providerSignatureManager.deleteSignature(loggedInInfo, signatureId);
+        } else if ("makeDefault".equals(method)) {
+            providerSignatureManager.makeDefault(loggedInInfo, signatureId);
+        } else {
+            String text = request.getParameter("signature");
+            try {
+                if (signatureId == null) {
+                    providerSignatureManager.addSignature(loggedInInfo, text);
+                } else {
+                    providerSignatureManager.editSignature(loggedInInfo, signatureId, text);
+                }
+            } catch (IllegalArgumentException e) {
+                // The message is the key of the problem, shown above the text box
+                request.setAttribute("errorKey", e.getMessage());
+                return INPUT;
+            }
+        }
         return SUCCESS;
-
-    }
-
-    String signature;
-
-    public String getSignature() {
-        if (signature == null)
-            signature = new String();
-        return signature;
-    }
-
-    public void setSignature(String str) {
-        MiscUtils.getLogger().debug("signature has been set");
-        signature = str;
     }
 }
