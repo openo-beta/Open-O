@@ -234,6 +234,8 @@ public class RxPrintPreview2Action extends ActionSupport {
         request.setAttribute("signatureLocked", signatureLocked);
         request.setAttribute("signatureEditable", !signatureLocked && signingProvider.equals(loggedInInfo.getLoggedInProviderNo()));
         request.setAttribute("signatureChoices", providerSignatureManager.getChoices(signingProvider));
+        // A reprint names the person reprinting, not the prescriber's signature
+        request.setAttribute("reprintedBy", ca.openosp.openo.providers.data.ProviderData.getProviderName(loggedInInfo.getLoggedInProviderNo()));
 
         String pracNo = provider.getPractitionerNo();
 

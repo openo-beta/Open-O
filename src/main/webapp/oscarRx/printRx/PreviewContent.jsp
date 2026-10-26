@@ -280,13 +280,14 @@
                                     <td height=55px colspan="2">
 										<span style="float:right; font-size:10px;">
 											<fmt:message key="RxPreview.msgReprintBy"/> <c:out
-                                                value="${ProviderData.getProviderName(sessionScope.user)}"/> <br>
+                                                value="${requestScope.reprintedBy}"/> <br>
 											<fmt:message key="RxPreview.msgOrigPrinted"/>:&nbsp;${rx.printDate} <br>
 											<fmt:message key="RxPreview.msgTimesPrinted"/>:&nbsp;${rx.numPrints}
 										</span>
                                         <input type="hidden" name="origPrintDate" value="${rx.printDate}"/>
                                         <input type="hidden" name="numPrints" value="${rx.numPrints}"/>
                                         <input type="hidden" name="rxReprint" value="true"/>
+                                        <input type="hidden" name="reprintedBy" value="<c:out value='${requestScope.reprintedBy}'/>"/>
                                     </td>
                                 </tr>
                             </c:if>
