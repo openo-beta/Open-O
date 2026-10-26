@@ -32,9 +32,8 @@
 <%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="ca.openosp.openo.providers.data.ProSignatureData" %>
+<%@ page import="ca.openosp.openo.managers.ProviderSignatureManager" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
-<%@ page import="ca.openosp.openo.prescript.data.RxProviderData" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
 
@@ -102,15 +101,8 @@
                     if (result != null) location = result.getLocation();
                 }
 
-                RxProviderData.Provider provider = new RxProviderData().getProvider(bean.getProviderNo());
-                ProSignatureData sig = new ProSignatureData();
-                boolean hasSig = sig.hasSignature(bean.getProviderNo());
-                String doctorName = "";
-                if (hasSig) {
-                    doctorName = sig.getSignature(bean.getProviderNo());
-                } else {
-                    doctorName = (provider.getFirstName() + ' ' + provider.getSurname());
-                }
+                ProviderSignatureManager providerSignatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
+                String doctorName = providerSignatureManager.getDefaultSignature(bean.getProviderNo());
                 doctorName = doctorName.replaceAll("\\d{6}", "");
                 doctorName = doctorName.replaceAll("\\-", "");
 
@@ -134,15 +126,8 @@
 
 
             } else if (props.getProperty("clinicSatelliteName") != null) {
-                RxProviderData.Provider provider = new RxProviderData().getProvider(bean.getProviderNo());
-                ProSignatureData sig = new ProSignatureData();
-                boolean hasSig = sig.hasSignature(bean.getProviderNo());
-                String doctorName = "";
-                if (hasSig) {
-                    doctorName = sig.getSignature(bean.getProviderNo());
-                } else {
-                    doctorName = (provider.getFirstName() + ' ' + provider.getSurname());
-                }
+                ProviderSignatureManager providerSignatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
+                String doctorName = providerSignatureManager.getDefaultSignature(bean.getProviderNo());
 
                 ClinicData clinic = new ClinicData();
                 vecAddressName = new Vector();
