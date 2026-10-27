@@ -1,8 +1,6 @@
 package ca.openosp.openo.rx;
 
 import ca.openosp.openo.commn.exception.ProviderSignatureException;
-import ca.openosp.openo.log.LogAction;
-import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.managers.ProviderSignatureManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.managers.model.SignatureChoice;
@@ -84,8 +82,6 @@ public class RxPrescriberSignature2Action extends ActionSupport {
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             return null;
         }
-        LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), LogConst.UPDATE, LogConst.CON_PRESCRIPTION, String.valueOf(scriptNo),
-                request.getRemoteAddr(), String.valueOf(sessionBean.getDemographicNo()), "prescriber signature");
 
         ObjectNode json = new ObjectMapper().createObjectNode();
         json.put("signature", signature);

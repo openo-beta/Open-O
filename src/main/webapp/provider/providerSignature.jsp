@@ -43,8 +43,10 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%
-    if (session.getValue("user") == null)
+    if (session.getValue("user") == null) {
         response.sendRedirect(request.getContextPath() + "/logout.htm");
+        return;
+    }
     String curUser_no = (String) session.getAttribute("user");
     ProviderSignatureManager providerSignatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
     List<SignatureChoice> choices = providerSignatureManager.getChoices(curUser_no);

@@ -226,9 +226,10 @@ public class RxPrintPreview2Action extends ActionSupport {
 
         ca.openosp.openo.prescript.data.RxProviderData.Provider provider = new ca.openosp.openo.prescript.data.RxProviderData().getProvider(signingProvider);
 
-        // Saved at the first print, fax or PDF; until then the prescriber can pick it in this window
+        // Saved at the first print, fax or PDF; until then the prescriber can pick it in this window.
+        // scriptId is the prescription this window prints, faxes and annotates.
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        SignatureCard signatureCard = providerSignatureManager.getSignatureCard(loggedInInfo, sessionBean.getStashScriptNo(), signingProvider);
+        SignatureCard signatureCard = providerSignatureManager.getSignatureCard(loggedInInfo, request.getParameter("scriptId"), signingProvider);
         String doctorName = signatureCard.getSignature();
         request.setAttribute("signatureCard", signatureCard);
         // A reprint names the person reprinting, not the prescriber's signature
