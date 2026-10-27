@@ -31,7 +31,7 @@
     When EnterSignature.do comes back here with an errorKey request attribute, the page shows the
     problem and keeps the text that was typed.
 
-    @since 2026-10-26
+    @since 2002-11-08
 --%>
 
 <!-- add by caisi -->
