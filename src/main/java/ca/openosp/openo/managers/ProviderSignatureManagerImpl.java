@@ -9,6 +9,8 @@ import ca.openosp.openo.commn.exception.ProviderSignatureException;
 import ca.openosp.openo.commn.model.Prescription;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.ProviderSignature;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.managers.model.SignatureCard;
 import ca.openosp.openo.managers.model.SignatureChoice;
 import ca.openosp.openo.prescript.data.RxProviderData;
@@ -92,6 +94,8 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
             prescriptionDao.refresh(prescription);
             return prescription.getPrescriberSignature();
         }
+        LogAction.addLog(loggedInInfo, LogConst.UPDATE, LogConst.CON_PRESCRIPTION, String.valueOf(scriptNo),
+                String.valueOf(demographicNo), "prescriber signature");
         return signature;
     }
 
@@ -311,7 +315,13 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
      * @return String the saved signature, or null when the prescription hasn't been printed yet
      */
     private String getSavedSignature(String scriptNo) {
-        Prescription prescription = StringUtils.isNumeric(scriptNo) ? prescriptionDao.find(Integer.valueOf(scriptNo)) : null;
+        Prescription prescription;
+        try {
+            prescription = StringUtils.isNumeric(scriptNo) ? prescriptionDao.find(Integer.valueOf(scriptNo)) : null;
+        } catch (NumberFormatException e) {
+            // Too big to be a prescription number
+            prescription = null;
+        }
         return prescription == null ? null : prescription.getPrescriberSignature();
     }
 }

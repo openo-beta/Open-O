@@ -68,7 +68,7 @@ public interface ProviderSignatureManager {
      * Saves the signature on a prescription at its first print, fax or PDF, so every reprint shows
      * the same one, and writes it on the first line of the prescription's text copy. Only the
      * prescriber chooses; anyone else saves the prescriber's default. When the prescription already
-     * has a signature, nothing changes.
+     * has a signature, nothing changes. Only a save writes an audit entry.
      *
      * @param loggedInInfo LoggedInInfo the user printing the prescription
      * @param scriptNo Integer the prescription's number

@@ -750,8 +750,9 @@ public class FrmCustomedPDFServlet extends HttpServlet {
 
         // 285=left margin+width of box, 5f is space for looking nice
         // document.setMargins(15, pageSize.getWidth() - 285f + 5f, 170, 60);// left, right, top , bottom
-        // A long signature makes the heading and footer taller, so the prescriptions get that much less room
-        document.setMargins(15, pageSize.getWidth() - 285f + 5f, 185 + endPage.getHeadingOverflow(), 60 + endPage.getSignatureNameOverflow());// left, right, top , bottom
+        // Left, right, top, bottom. A long signature makes the heading and footer taller, so the
+        // prescriptions get that much less room.
+        document.setMargins(15, pageSize.getWidth() - 285f + 5f, 185 + endPage.getHeadingOverflow(), 60 + endPage.getSignatureNameOverflow());
 
         //writer = PdfWriter.getInstance(document, baosPDF);
         writer.setPageEvent(endPage);

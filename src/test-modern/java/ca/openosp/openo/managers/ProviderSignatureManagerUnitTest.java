@@ -2,6 +2,7 @@ package ca.openosp.openo.managers;
 
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.casemgmt.model.ProviderExt;
+import ca.openosp.openo.commn.dao.OscarLogDao;
 import ca.openosp.openo.commn.dao.PrescriptionDao;
 import ca.openosp.openo.commn.dao.ProviderExtDao;
 import ca.openosp.openo.commn.dao.ProviderSignatureDao;
@@ -9,9 +10,13 @@ import ca.openosp.openo.commn.exception.ProviderSignatureException;
 import ca.openosp.openo.commn.model.Prescription;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.ProviderSignature;
+import ca.openosp.openo.log.LogAction;
+import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.managers.model.SignatureCard;
 import ca.openosp.openo.managers.model.SignatureChoice;
+import ca.openosp.openo.test.unit.OpenOUnitTestBase;
 import ca.openosp.openo.utility.LoggedInInfo;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -24,6 +29,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -37,6 +43,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -62,7 +70,7 @@ import static org.mockito.Mockito.when;
 @Tag("unit")
 @Tag("fast")
 @Tag("manager")
-class ProviderSignatureManagerUnitTest {
+class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
 
     private static final String PROVIDER_NO = "999998";
     private static final String OTHER_PROVIDER_NO = "999997";
@@ -86,11 +94,21 @@ class ProviderSignatureManagerUnitTest {
 
     private LoggedInInfo loggedInInfo;
 
+    private MockedStatic<LogAction> logActionMock;
+
     @BeforeEach
     void setUp() {
+        // LogAction's static initializer gets OscarLogDao from SpringUtils, so register it before mocking LogAction
+        registerMock(OscarLogDao.class, mock(OscarLogDao.class));
+        logActionMock = mockStatic(LogAction.class);
         givenProvider("doctor", "openodoc");
         loggedInInfo = new LoggedInInfo();
         loggedInInfo.setLoggedInProvider(new Provider(PROVIDER_NO));
+    }
+
+    @AfterEach
+    void tearDown() {
+        logActionMock.close();
     }
 
     private void givenProvider(String firstName, String lastName) {
@@ -328,6 +346,15 @@ class ProviderSignatureManagerUnitTest {
 
             assertThat(card).extracting(SignatureCard::getScriptNo, SignatureCard::getSignature, SignatureCard::isLocked)
                     .containsExactly(null, UNDER_ARMSTRONG, false);
+        }
+
+        @Test
+        @DisplayName("should treat a prescription number too big to exist as not printed")
+        void shouldTreatAsNotPrinted_whenScriptNoIsTooBig() {
+            SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, "99999999999", PROVIDER_NO);
+
+            assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked)
+                    .containsExactly(UNDER_ARMSTRONG, false);
         }
     }
 
@@ -710,6 +737,48 @@ class ProviderSignatureManagerUnitTest {
 
             assertThat(providerSignatureManager.lockForPrescription(loggedInAs(OTHER_PROVIDER_NO), SCRIPT_NO, DEMOGRAPHIC_NO, null)).isNull();
             verify(prescriptionDao, never()).lockPrescriberSignature(any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("should write an audit entry when it saves the signature")
+        void shouldWriteAuditEntry_whenItSavesTheSignature() {
+            givenList(signature(2, PROVIDER_NO, UNDER_WELCH));
+
+            providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, 2);
+
+            logActionMock.verify(() -> LogAction.addLog(loggedInInfo, LogConst.UPDATE, LogConst.CON_PRESCRIPTION,
+                    String.valueOf(SCRIPT_NO), String.valueOf(DEMOGRAPHIC_NO), "prescriber signature"));
+        }
+
+        @Test
+        @DisplayName("should write no audit entry when the prescription has a signature already")
+        void shouldWriteNoAuditEntry_whenAlreadySaved() {
+            prescription.setPrescriberSignature(UNDER_ARMSTRONG);
+
+            providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, null);
+
+            logActionMock.verifyNoInteractions();
+        }
+
+        @Test
+        @DisplayName("should write no audit entry when another window saved first")
+        void shouldWriteNoAuditEntry_whenAnotherWindowSavedFirst() {
+            givenList(signature(2, PROVIDER_NO, UNDER_WELCH));
+            when(prescriptionDao.lockPrescriberSignature(any(), any(), any())).thenReturn(0);
+
+            providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, 2);
+
+            logActionMock.verifyNoInteractions();
+        }
+
+        @Test
+        @DisplayName("should write no audit entry when there is nothing to save")
+        void shouldWriteNoAuditEntry_whenNothingToSave() {
+            when(providerDao.getProvider(PROVIDER_NO)).thenReturn(null);
+
+            providerSignatureManager.lockForPrescription(loggedInAs(OTHER_PROVIDER_NO), SCRIPT_NO, DEMOGRAPHIC_NO, null);
+
+            logActionMock.verifyNoInteractions();
         }
 
         @Test
