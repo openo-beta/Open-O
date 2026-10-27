@@ -373,7 +373,8 @@ function previewPrescriberSignature(select) {
  * the page has no signature dropdown.
  *
  * @param {string} ctx the context path, or empty to work it out from the page
- * @returns {Promise<boolean>} true once the signature is saved; false, after telling the user, when it couldn't be
+ * @returns {Promise<boolean>} true once the signature is saved, or when there is none to save; false, after
+ *          telling the user, when it couldn't be saved or the picked one has been deleted
  */
 function lockPrescriberSignature(ctx) {
     const select = document.getElementById('prescriberSignature');
@@ -393,25 +394,47 @@ function lockPrescriberSignature(ctx) {
 
     return fetch(resolveContextPath(ctx) + '/oscarRx/prescriberSignature.do', {method: 'POST', body: body})
         .then(response => {
+            if (response.status === 409) {
+                // Deleted in another window: drop it, so the next pick is one that still exists, and go
+                // back to the default (the prescriber name, the first option, if the default was the one deleted)
+                select.remove(select.selectedIndex);
+                const defaultOption = select.querySelector('option[data-default="true"]');
+                select.selectedIndex = defaultOption ? defaultOption.index : 0;
+                previewPrescriberSignature(select);
+                alert(select.dataset.deletedError);
+                return false;
+            }
             if (!response.ok) {
                 throw new Error('HTTP ' + response.status);
             }
-            return response.json();
-        })
-        .then(result => {
-            // Another window may have printed it first, so show what was actually saved
-            showPrescriberSignature(result.signature);
-            select.replaceChildren(new Option(result.signature, ''));
-            select.disabled = true;
-            select.dataset.locked = 'true';
-            document.getElementById('prescriberSignatureSaved').hidden = false;
-            return true;
+            return response.json().then(result => {
+                if (result.signature !== null) {
+                    lockPrescriberSignatureCard(select, result.signature);
+                }
+                // Null when there was none to save (the prescriber has no name on file): print as shown
+                return true;
+            });
         })
         .catch(error => {
             console.error('Could not save the prescription signature', error);
             alert(select.dataset.saveError);
             return false;
         });
+}
+
+/**
+ * Shows the signature saved on the prescription and locks the dropdown on it.
+ *
+ * @param {HTMLSelectElement} select the signature dropdown
+ * @param {string} signature the saved signature
+ */
+function lockPrescriberSignatureCard(select, signature) {
+    // Another window may have printed it first, so show what was actually saved
+    showPrescriberSignature(signature);
+    select.replaceChildren(new Option(signature, ''));
+    select.disabled = true;
+    select.dataset.locked = 'true';
+    document.getElementById('prescriberSignatureSaved').hidden = false;
 }
 
 /**

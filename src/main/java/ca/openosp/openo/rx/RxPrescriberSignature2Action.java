@@ -25,6 +25,8 @@ import java.io.IOException;
  * <p>Parameters: {@code scriptNo}, the prescription; {@code signatureId}, the prescriber's chosen
  * signature, or empty for their prescriber name; {@code demographicNo}, the patient of the
  * prescription window. A user who isn't the prescriber saves the prescriber's default, whatever they send.
+ * The signature is null when there was none to save. A chosen signature deleted in another window
+ * answers 409, so the window can ask for another pick.
  *
  * @since 2026-10-26
  */
@@ -59,17 +61,33 @@ public class RxPrescriberSignature2Action extends ActionSupport {
 
         // RxSessionFilter picks this window's patient from the demographicNo parameter
         RxSessionBean sessionBean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
-        String scriptNoParam = request.getParameter("scriptNo");
-        if (sessionBean == null || !StringUtils.isNumeric(scriptNoParam)) {
+        Integer scriptNo;
+        Integer signatureId;
+        try {
+            scriptNo = Integer.valueOf(request.getParameter("scriptNo"));
+            String signatureIdParam = request.getParameter("signatureId");
+            signatureId = StringUtils.isEmpty(signatureIdParam) ? null : Integer.valueOf(signatureIdParam);
+        } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-        Integer scriptNo = Integer.valueOf(scriptNoParam);
-        String signatureIdParam = request.getParameter("signatureId");
-        Integer signatureId = StringUtils.isEmpty(signatureIdParam) ? null : Integer.valueOf(signatureIdParam);
+        if (sessionBean == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
 
-        String signature = providerSignatureManager.lockForPrescription(loggedInInfo, scriptNo, sessionBean.getDemographicNo(), signatureId);
-        LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), LogConst.UPDATE, LogConst.CON_PRESCRIPTION, scriptNoParam,
+        String signature;
+        try {
+            signature = providerSignatureManager.lockForPrescription(loggedInInfo, scriptNo, sessionBean.getDemographicNo(), signatureId);
+        } catch (IllegalArgumentException e) {
+            if (!ProviderSignatureManager.ERROR_DELETED.equals(e.getMessage())) {
+                throw e;
+            }
+            // Deleted in another window after this one opened
+            response.setStatus(HttpServletResponse.SC_CONFLICT);
+            return null;
+        }
+        LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), LogConst.UPDATE, LogConst.CON_PRESCRIPTION, String.valueOf(scriptNo),
                 request.getRemoteAddr(), String.valueOf(sessionBean.getDemographicNo()), "prescriber signature");
 
         ObjectNode json = new ObjectMapper().createObjectNode();

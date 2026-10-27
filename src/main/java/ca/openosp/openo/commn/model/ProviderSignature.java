@@ -40,41 +40,68 @@ public class ProviderSignature extends AbstractModel<Integer> {
     @Column(nullable = false)
     private Date lastUpdateDate;
 
+    /**
+     * Stamps the time of each save.
+     */
     @PreUpdate
     @PrePersist
     protected void autoSetUpdateTime() {
         lastUpdateDate = new Date();
     }
 
+    /**
+     * @return Integer the signature's id
+     */
     @Override
     public Integer getId() {
         return id;
     }
 
+    /**
+     * @return String the number of the provider whose list this signature is in
+     */
     public String getProviderNo() {
         return providerNo;
     }
 
+    /**
+     * @param providerNo String the number of the provider whose list this signature is in
+     */
     public void setProviderNo(String providerNo) {
         this.providerNo = providerNo;
     }
 
+    /**
+     * @return String the text printed on the prescription
+     */
     public String getSignature() {
         return signature;
     }
 
+    /**
+     * @param signature String the text printed on the prescription
+     */
     public void setSignature(String signature) {
         this.signature = signature;
     }
 
+    /**
+     * @return String the number of the provider who last saved this signature
+     */
     public String getLastUpdateUser() {
         return lastUpdateUser;
     }
 
+    /**
+     * @param lastUpdateUser String the number of the provider saving this signature
+     */
     public void setLastUpdateUser(String lastUpdateUser) {
         this.lastUpdateUser = lastUpdateUser;
     }
 
+    /**
+     * @return Date when this signature was last saved
+     */
     public Date getLastUpdateDate() {
         return lastUpdateDate;
     }

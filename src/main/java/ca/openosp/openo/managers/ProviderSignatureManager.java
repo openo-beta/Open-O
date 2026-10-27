@@ -29,6 +29,9 @@ public interface ProviderSignatureManager {
     /** Message key for a signature already in the provider's list. */
     String ERROR_DUPLICATE = "provider.providerSignature.errDuplicate";
 
+    /** Message key for a signature deleted, in another window, after the page showing it opened. */
+    String ERROR_DELETED = "provider.providerSignature.errDeleted";
+
     /**
      * Gets the signature printed for a provider when no other one is chosen.
      *
@@ -73,16 +76,21 @@ public interface ProviderSignatureManager {
      * @param loggedInInfo LoggedInInfo the user printing the prescription
      * @param scriptNo Integer the prescription's number
      * @param demographicNo Integer the patient of the user's prescription window
-     * @param signatureId Integer the prescriber's chosen signature, or null for their prescriber name
-     * @return String the signature saved on the prescription
+     * @param signatureId Integer the prescriber's chosen signature, null for their prescriber name, or
+     *                    {@link SignatureChoice#UNLISTED_DEFAULT_ID} for their default
+     * @return String the signature saved on the prescription, or null when there is none to save
+     *         because the prescriber has no name or default on file (their provider record is gone)
      * @throws SecurityException when the prescription isn't for that patient, or the chosen
      *                           signature isn't the prescriber's
+     * @throws IllegalArgumentException with {@link #ERROR_DELETED} as its message when the chosen
+     *                                  signature has been deleted
      */
     String lockForPrescription(LoggedInInfo loggedInInfo, Integer scriptNo, Integer demographicNo, Integer signatureId);
 
     /**
      * Gets a provider's signature list: their prescriber name first, then their saved signatures
-     * in the order they were added, with the default marked.
+     * in the order they were added, then their default if it isn't in the list, with the default
+     * marked. Nothing is saved.
      *
      * @param providerNo String the provider's number
      * @return List&lt;SignatureChoice&gt; the provider's choices, never empty
@@ -107,14 +115,15 @@ public interface ProviderSignatureManager {
      * @param signatureId Integer the signature to change
      * @param text String the new text
      * @throws IllegalArgumentException with {@link #ERROR_BLANK}, {@link #ERROR_TOO_LONG} or
-     *                                  {@link #ERROR_DUPLICATE} as its message when the text can't be saved
+     *                                  {@link #ERROR_DUPLICATE} as its message when the text can't be saved,
+     *                                  or {@link #ERROR_DELETED} when the signature has been deleted
      * @throws SecurityException when the signature isn't the logged-in provider's
      */
     void editSignature(LoggedInInfo loggedInInfo, Integer signatureId, String text);
 
     /**
      * Deletes one of the logged-in provider's signatures. When it is their default, their
-     * prescriber name becomes the default.
+     * prescriber name becomes the default. Nothing changes when it has been deleted already.
      *
      * @param loggedInInfo LoggedInInfo the logged-in provider
      * @param signatureId Integer the signature to delete
@@ -123,7 +132,8 @@ public interface ProviderSignatureManager {
     void deleteSignature(LoggedInInfo loggedInInfo, Integer signatureId);
 
     /**
-     * Makes a signature, or the prescriber name, the logged-in provider's default.
+     * Makes a signature, or the prescriber name, the logged-in provider's default. Nothing changes
+     * when the signature has been deleted.
      *
      * @param loggedInInfo LoggedInInfo the logged-in provider
      * @param signatureId Integer the signature to make the default, or null for the prescriber name

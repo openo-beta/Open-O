@@ -66,8 +66,8 @@
                 .filter(c -> signatureIdParam.equals(String.valueOf(c.getSignatureId())))
                 .findFirst()
                 .orElse(null);
-        if (choice == null || choice.isPrescriberName()) {
-            // Not one of this provider's signatures, e.g. deleted in another window
+        if (choice == null || !choice.isSavedSignature()) {
+            // Not one of this provider's saved signatures, e.g. deleted in another window
             response.sendRedirect(request.getContextPath() + "/provider/providerSignature.jsp");
             return;
         }

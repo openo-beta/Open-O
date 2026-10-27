@@ -139,7 +139,7 @@
                             <% } %>
                         </td>
                         <td>
-                            <% if (!choice.isPrescriberName()) { %>
+                            <% if (choice.isSavedSignature()) { %>
                             <a href="<%= request.getContextPath() %>/provider/editSignature.jsp?signatureId=<%= Encode.forUriComponent(signatureId) %>"><fmt:message key="provider.providerSignature.btnEdit"/></a>
                             |
                             <form action="<%= request.getContextPath() %>/EnterSignature.do" method="post"
@@ -151,7 +151,7 @@
                             </form>
                             <% } %>
                             <% if (!choice.isDefaultChoice()) { %>
-                            <% if (!choice.isPrescriberName()) { %>|<% } %>
+                            <% if (choice.isSavedSignature()) { %>|<% } %>
                             <form action="<%= request.getContextPath() %>/EnterSignature.do" method="post">
                                 <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
                                 <input type="hidden" name="method" value="makeDefault"/>
