@@ -13,6 +13,9 @@
 <%@page import="java.util.*, ca.openosp.openo.hospitalReportManager.*,ca.openosp.openo.hospitalReportManager.model.HRMCategory" %>
 <%@ page import="ca.openosp.openo.hospitalReportManager.HRMUtil" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
+<%@ page import="ca.openosp.openo.commn.dao.DemographicDao" %>
+<%@ page import="ca.openosp.openo.commn.model.Demographic" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -44,6 +47,15 @@
 
     ArrayList<HashMap<String, ? extends Object>> hrmdocs;
     hrmdocs = HRMUtil.listHRMDocuments(loggedInInfo, orderBy, asc, demographic_no, true);
+
+    // Patient name and health card number under the heading, so the list says whose reports these are
+    DemographicDao demographicDao = SpringUtils.getBean(DemographicDao.class);
+    Demographic demographic = demographicDao.getDemographic(demographic_no);
+    String patientName = demographic != null ? demographic.getFormattedName() : "";
+    String patientHin = "";
+    if (demographic != null && demographic.getHin() != null) {
+        patientHin = demographic.getHin() + (demographic.getVer() != null ? demographic.getVer() : "");
+    }
 
 %>
 
@@ -96,7 +108,12 @@
             <td class="MainTableTopRowRightColumn">
                 <table class="TopStatusBar" style="width:100%">
                     <tr>
-                        <td><h4><fmt:setBundle basename="oscarResources"/><fmt:message key="hrm.displayHRMDocList.displaydocs"/></h4></td>
+                        <td>
+                            <h4><fmt:setBundle basename="oscarResources"/><fmt:message key="hrm.displayHRMDocList.displaydocs"/></h4>
+                            <div>
+                                <strong>Patient:</strong> <%=Encode.forHtml(patientName)%>&nbsp;&nbsp;&nbsp;&nbsp;<strong>HCN:</strong> <%=Encode.forHtml(patientHin)%>
+                            </div>
+                        </td>
                         <td>&nbsp;</td>
                     </tr>
                 </table>
@@ -116,6 +133,7 @@
                         <th>Report Date</th>
                         <th><fmt:setBundle basename="oscarResources"/><fmt:message key="hrm.displayHRMDocList.timeReceived"/></th>
                         <th>Sending Facility</th>
+                        <th>Recipients</th>
                         <th>Report Number</th>
                         <th>Category</th>
                         <th>Class/Subclass/Accompanying Subclass</th>
@@ -130,7 +148,7 @@
                     <tr>
 
                         <td><a href="#"
-                               ONCLICK="popupPage('<%=request.getContextPath() %>/hospitalReportManager/Display.do?id=<%=Encode.forUriComponent(String.valueOf(curhrmdoc.get("id")))%>', 'HRM Report'); return false;"
+                               ONCLICK="popupPage('<%=request.getContextPath() %>/hospitalReportManager/Display.do?id=<%=Encode.forUriComponent(String.valueOf(curhrmdoc.get("id")))%>&duplicateLabIds=<%=Encode.forUriComponent(String.valueOf(curhrmdoc.get("duplicateLabIds") != null ? curhrmdoc.get("duplicateLabIds") : ""))%>', 'HRM Report'); return false;"
                         ><%=Encode.forHtml(String.valueOf(curhrmdoc.get("report_type")))%>
                         </a></td>
                         <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("description")))%>
@@ -142,6 +160,7 @@
                         <td style="text-align: center;"><%=Encode.forHtml(String.valueOf(curhrmdoc.get("time_received")))%>
                         </td>
                         <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("sending_facility") != null ? curhrmdoc.get("sending_facility") : ""))%></td>
+                        <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("recipients") != null ? curhrmdoc.get("recipients") : ""))%></td>
                         <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("report_number") != null ? curhrmdoc.get("report_number") : ""))%></td>
                         <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("category") != null ? curhrmdoc.get("category")  : ""))%></td>
                         <td><%=Encode.forHtml(String.valueOf(curhrmdoc.get("class_subclass") != null ? curhrmdoc.get("class_subclass")  : ""))%></td>
@@ -152,6 +171,8 @@
                     %>
                     <tr>
                         <td><fmt:setBundle basename="oscarResources"/><fmt:message key="eform.showmyform.msgNoData"/></td>
+                        <td></td>
+                        <!-- this empty td is here so that the number of columns matches the <th>, an important requirement when using jquery datatables-->
                         <td></td>
                         <!-- this empty td is here so that the number of columns matches the <th>, an important requirement when using jquery datatables-->
                         <td></td>

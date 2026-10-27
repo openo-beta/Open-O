@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import ca.openosp.OscarProperties;
+import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.dao.IncomingLabRulesDao;
 import ca.openosp.openo.commn.model.IncomingLabRules;
 import ca.openosp.openo.hospitalReportManager.dao.*;
@@ -56,6 +57,7 @@ public class HRMUtil {
     private static IncomingLabRulesDao incomingLabRulesDao = SpringUtils.getBean(IncomingLabRulesDao.class);
     private static final NioFileManager nioFileManager = SpringUtils.getBean(NioFileManager.class);
     private static final SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
+    private static final ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
 
 
     public HRMUtil() {
@@ -155,6 +157,13 @@ public class HRMUtil {
             curht.put("name", displayHRMDocumentName);
             curht.put("sending_facility", hrmSendingFacilityDao.getDisplayName(hrmReport.getSendingFacilityId(), sfRegistry));
             curht.put("report_number", hrmReport.getSendingFacilityReportNo() != null ? hrmReport.getSendingFacilityReportNo() : "");
+
+            // Names of the providers the report is assigned to, the unclaimed system user left out
+            List<String> recipientNames = new ArrayList<String>();
+            for (HRMDocumentToProvider recipient : hrmDocumentToProviderDao.findByHrmDocumentIdNoSystemUser(hrmDocument.getId())) {
+                recipientNames.add(providerDao.getProviderName(recipient.getProviderNo()));
+            }
+            curht.put("recipients", String.join(", ", recipientNames));
 
             if (filterDuplicates) {
                 StringBuilder duplicateLabIdQueryString = new StringBuilder();
