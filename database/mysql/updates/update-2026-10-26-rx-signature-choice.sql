@@ -1,6 +1,5 @@
 -- Choosing prescription signatures: each provider keeps a list of signatures, and each
 -- prescription keeps the signature it was first printed with.
--- Safe to run more than once.
 
 -- The signatures in each provider's list. The default stays in providerExt.signature.
 CREATE TABLE IF NOT EXISTS providerSignature (
@@ -22,7 +21,7 @@ WHERE pe.signature IS NOT NULL AND TRIM(pe.signature) <> ''
 GROUP BY pe.provider_no;
 
 -- The signature printed on the prescription, saved at its first print, fax or PDF.
-ALTER TABLE prescription ADD COLUMN IF NOT EXISTS prescriber_signature varchar(255) NULL AFTER textView;
+ALTER TABLE prescription ADD COLUMN prescriber_signature varchar(255) NULL AFTER textView;
 
 -- Existing prescriptions keep the signature saved with them: line 1 of textView, since 2004.
 UPDATE prescription
