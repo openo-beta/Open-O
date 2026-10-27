@@ -45,6 +45,7 @@
 <%@page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@page import="ca.openosp.openo.managers.DemographicManager" %>
 <%@page import="ca.openosp.OscarProperties" %>
+<%@page import="org.apache.commons.lang3.StringUtils" %>
 <%
     TicklerManager ticklerManager = SpringUtils.getBean(TicklerManager.class);
     DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
@@ -82,9 +83,13 @@
 
     Tickler t = null;
     Demographic d = null;
+    String demoHin = "";
+    String demoMrpName = "";
     if (ticklerNo != null) {
         t = ticklerManager.getTickler(loggedInInfo, ticklerNo);
         d = demographicManager.getDemographicWithExt(loggedInInfo, t.getDemographicNo());
+        demoHin = (StringUtils.trimToEmpty(d.getHin()) + " " + StringUtils.trimToEmpty(d.getVer())).trim();
+        demoMrpName = ((ProviderDao) SpringUtils.getBean(ProviderDao.class)).getProviderName(d.getProviderNo());
     } else {
         response.sendRedirect(request.getContextPath() + "/errorpage.jsp");
     }
@@ -125,6 +130,15 @@
             *:not(h2):not(.btn) {
               line-height: 1 !important;
               font-size: 12px !important;
+            }
+
+            /* Put phone number labels in their own column so phone numbers line up in any font. */
+            /* Without this, '(W)' would render wider than '(H)', causing the numbers to not be aligned */
+            .phone-list {
+                display: grid;
+                grid-template-columns: max-content 1fr;
+                column-gap: 0.5em;
+                row-gap: 4px;
             }
 
             /*.grid {*/
@@ -259,10 +273,14 @@
                 return dat;
             }
 
+            function openEChart() {
+                window.open('<%=request.getContextPath()%>/oscarEncounter/IncomingEncounter.do?demographicNo=<%=Encode.forUriComponent(String.valueOf(d.getDemographicNo()))%>&providerNo=<%=Encode.forUriComponent(String.valueOf(loggedInInfo.getLoggedInProviderNo()))%>&curDate=<%=Encode.forUriComponent(String.valueOf(curYear))%>-<%=Encode.forUriComponent(String.valueOf(curMonth))%>-<%=Encode.forUriComponent(String.valueOf(curDay))%>&encType=&status=', '', 'height=700,width=960');
+            }
+
             function validate(form, writeToEncounter) {
                 if (validateDate(form) <%=caisiEnabled?"&& validateSelectedProgram()":""%>) {
                     if (writeToEncounter) {
-                        window.open('<%=request.getContextPath()%>/oscarEncounter/IncomingEncounter.do?demographicNo=<%=d.getDemographicNo()%>&providerNo=<%=loggedInInfo.getLoggedInProviderNo()%>&curDate=<%=curYear%>-<%=curMonth%>-<%=curDay%>&encType=&status=', '', 'height=700,width=960');
+                        openEChart();
                     }
                     form.submit();
                     return true;
@@ -318,30 +336,51 @@
                     <td><a href="javascript:void(0)"
                            onClick="popupPage(600,800,'<%=request.getContextPath() %>/demographic/demographiccontrol.jsp?demographic_no=<%=d.getDemographicNo()%>&displaymode=edit&dboperation=search_detail')">
                         <%=Encode.forHtmlContent(d.getLastName())%>,<%=Encode.forHtmlContent(d.getFirstName())%>
-                    </a></td>
+                    </a>
+                    <security:oscarSec roleName="<%=roleName$%>" objectName="_eChart" rights="r">
+                        <a href="javascript:void(0)" onClick="openEChart()" style="color: blue;">[<fmt:message key="admin.admin.eChart"/>]</a>
+                    </security:oscarSec>
+                    </td>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.phoneNumbers"/></th>
-                    <td>(H) <%=Encode.forHtmlContent(d.getPhone())%><br>(W) <%=Encode.forHtmlContent(d.getPhone2())%>
-                        <br>(C) <%=Encode.forHtmlContent(d.getCellPhone())%>
+                    <td>
+                        <div class="phone-list">
+                            <span>(H)</span><span><%=Encode.forHtmlContent(d.getPhone())%></span>
+                            <span>(W)</span><span><%=Encode.forHtmlContent(d.getPhone2())%></span>
+                            <span>(C)</span><span><%=Encode.forHtmlContent(d.getCellPhone())%></span>
+                        </div>
                     </td>
                 </tr>
                 <tr>
-                    <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.chartNo"/></th>
-                    <td><%=d.getChartNo()%>
+                    <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.demoNo"/></th>
+                    <td><%=Encode.forHtml(String.valueOf(d.getDemographicNo()))%>
                     </td>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.phoneComments"/></th>
                     <td><%=Encode.forHtmlContent(d.getPhoneComment())%>
                     </td>
                 </tr>
                 <tr>
-                    <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.age"/></th>
-                    <td><%=d.getAge()%>(<%=d.getFormattedDob()%>)</td>
+                    <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.chartNo"/></th>
+                    <td><%=Encode.forHtml(String.valueOf(d.getChartNo()))%>
+                    </td>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.email"/></th>
                     <td><%=Encode.forHtmlContent(d.getEmail())%>
                     </td>
                 </tr>
+                <tr>
+                    <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.age"/></th>
+                    <td><%=Encode.forHtml(String.valueOf(d.getAge()))%> (<%=Encode.forHtml(String.valueOf(d.getFormattedDob()))%>)</td>
+                    <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerMain.MRP"/></th>
+                    <td><%=Encode.forHtmlContent(demoMrpName)%>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="background-color: #EEEEFF; border-bottom: 1px solid #ddd;"><fmt:message key="demographic.patient.context.hin"/></th>
+                    <td style="border-bottom: 1px solid #ddd;"><%=Encode.forHtmlContent(demoHin)%></td>
+                    <td colspan="2"></td>
+                </tr>
 
                 <tr>
-                    <td colspan="4" style="padding-bottom:1em;"></td>
+                    <td colspan="4" style="padding-bottom:1em; border-top: none;"></td>
                 </tr>
                 <tr>
                     <th colspan="2" style="background-color: #336666;color:white;"><fmt:message key="tickler.ticklerEdit.messages"/></th>
