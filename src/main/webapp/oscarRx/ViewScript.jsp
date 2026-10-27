@@ -33,6 +33,9 @@
 <%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.managers.ProviderSignatureManager" %>
+<%@ page import="ca.openosp.openo.managers.model.SignatureCard" %>
+<%@ page import="ca.openosp.openo.managers.model.SignatureChoice" %>
+<%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPrescriptionData" %>
 <%@ page import="ca.openosp.openo.commn.IsPropertiesOn" %>
@@ -41,6 +44,8 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
+<%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 
 <%! boolean bMultisites = IsPropertiesOn.isMultisitesEnable(); %>
 <%
@@ -150,7 +155,24 @@
                 }
             }
             String comment = (String) request.getAttribute("comment");
+
+            // The signature the preview shows, and the choice the first print saves. This page has no
+            // dropdown, so the prescriber saves their default; anyone else gets it saved by the server.
+            String scriptNo = bean.getStashScriptNo();
+            String signingProvider = reprint.equalsIgnoreCase("true") && bean.getStashSize() > 0
+                    ? bean.getStashItem(0).getProviderNo() : bean.getProviderNo();
+            ProviderSignatureManager signatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
+            SignatureCard signatureCard = signatureManager.getSignatureCard(LoggedInInfo.getLoggedInInfoFromSession(request), scriptNo, signingProvider);
+            String defaultChoiceId = "";
+            for (SignatureChoice choice : signatureCard.getChoices()) {
+                if (choice.isDefaultChoice()) {
+                    defaultChoiceId = choice.getPostedId();
+                }
+            }
         %>
+        <fmt:setBundle basename="oscarResources"/>
+        <fmt:message key="oscarRx.Preview.signatureSaveError" var="signatureSaveError"/>
+        <fmt:message key="oscarRx.Preview.signatureChangedError" var="signatureChangedError"/>
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/oscarRx/styles.css"/>
         <link rel="stylesheet" type="text/css" media="all" href="<%= request.getContextPath() %>/share/css/extractedFromPages.css"/>
         <script type="text/javascript" src="<%= request.getContextPath() %>/share/javascript/prototype.js"></script>
@@ -185,6 +207,32 @@
                 var params = "scriptNo=<%=Encode.forUriComponent(String.valueOf(request.getAttribute("scriptId")))%>&comment=" + comment + "&rand=" + ran_number;  //]
                 new Ajax.Request(url, {method: 'post', parameters: params});
                 frames['preview'].document.getElementById('additNotes').innerHTML = document.getElementById('additionalNotes').value;
+            }
+
+            /**
+             * Saves the signature on the prescription at its first print, then prints. The saved signature
+             * must be the one the preview shows; a prescription that has one already keeps it.
+             *
+             * @param {function} print prints the prescription once its signature is saved
+             */
+            function savePrescriberSignature(print) {
+                const shownSignature = '<%=Encode.forJavaScript(signatureCard.getSignature())%>';
+                const saveError = '${e:forJavaScript(signatureSaveError)}';
+                const changedError = '${e:forJavaScript(signatureChangedError)}';
+                const body = new URLSearchParams({
+                    scriptNo: '<%=Encode.forJavaScript(scriptNo == null ? "" : scriptNo)%>',
+                    demographicNo: '<%=Encode.forJavaScript(Integer.toString(bean.getDemographicNo()))%>',
+                    signatureId: '<%=Encode.forJavaScript(defaultChoiceId)%>'
+                });
+                body.append('<csrf:tokenname/>', '<csrf:tokenvalue/>');
+                fetch('<%=request.getContextPath()%>/oscarRx/prescriberSignature.do', {method: 'POST', body: body})
+                    // 409: the default this page saves was deleted in another window
+                    .then(response => response.ok ? response.json()
+                        : Promise.reject(response.status === 409 ? changedError : saveError))
+                    // A null signature means there was none to save, so the page prints as shown
+                    .then(result => result.signature === null || result.signature === shownSignature
+                        ? true : Promise.reject(changedError))
+                    .then(() => print(), message => alert(typeof message === 'string' ? message : saveError));
             }
 
 
@@ -353,14 +401,14 @@
                                             <td><span><input type=button
                                                              value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgPrint"/>"
                                                              class="ControlPushButton" style="width: 200px"
-                                                             onClick="javascript:printIframe();"/></span></td>
+                                                             onClick="savePrescriberSignature(printIframe);"/></span></td>
                                         </tr>
                                         <tr>
                                             <td width=10px></td>
                                             <td><span><input type=button
 							<%=reprint.equals("true") ? "disabled='true'" : ""%>" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="ViewScript.msgPrintPasteEmr"/>"
 							class="ControlPushButton" style="width: 200px"
-							onClick="javascript:printPaste2Parent();" /></span></td>
+							onClick="savePrescriberSignature(printPaste2Parent);" /></span></td>
                                         </tr>
                                         <tr>
                                             <td width=10px></td>
