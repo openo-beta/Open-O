@@ -101,7 +101,7 @@
                             <span class="icon-bar"></span>
                         </button>
                         <b>
-                            <a class="navbar-brand" href="#"><i class="icon-hospital"></i>&nbsp;Health Report
+                            <a class="navbar-brand" href="${pageContext.request.contextPath}/hospitalReportManager/inbox.jsp"><i class="icon-hospital"></i>&nbsp;Health Report
                                 Manager</a>
                         </b>
                     </div>

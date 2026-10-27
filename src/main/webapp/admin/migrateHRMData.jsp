@@ -107,10 +107,6 @@
                 <table class="TopStatusBar">
                     <tr>
                         <td>Migrate HRM</td>
-                        <td style="text-align: right;">
-                            <a href="javascript: popupStart(300, 400, 'About.jsp')">About</a> |
-                            <a href="javascript: popupStart(300, 400, 'License.jsp')">License</a>
-                        </td>
                     </tr>
                 </table>
             </td>
@@ -120,7 +116,7 @@
 
     <%if (request.getParameter("action") == null) { %>
 
-    <form action="migrateHRMData.jsp">
+    <form action="${pageContext.request.contextPath}/admin/migrateHRMData.jsp">
 
         <h3>Update</h3>
 

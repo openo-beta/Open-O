@@ -65,11 +65,6 @@
 
         <div class="col-sm-12">
             <h4>Show Mappings</h4>
-            <p class="pull-right">
-                <a href="javascript:popupStart(300,400,'Help.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.help"/></a> |
-                <a href="javascript:popupStart(300,400,'About.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.about"/></a> |
-                <a href="javascript:popupStart(300,400,'License.jsp')"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.license"/></a>
-            </p>
             <div>
                 <% if (request.getAttribute("success") != null) {
                     if ((Boolean) request.getAttribute("success")) {

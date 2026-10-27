@@ -37,7 +37,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>HRM Inbox - OSCAR EMR</title>
+        <title>HRM Upload - OSCAR EMR</title>
 
         <link rel="stylesheet" type="text/css"
               href="${ pageContext.request.contextPath }/library/bootstrap/3.0.0/css/bootstrap.min.css"/>
@@ -73,7 +73,7 @@
                             <span class="icon-bar"></span>
                         </button>
                         <b>
-                            <a class="navbar-brand" href="#">Health Report Manager</a>
+                            <a class="navbar-brand" href="${pageContext.request.contextPath}/hospitalReportManager/inbox.jsp">Health Report Manager</a>
                         </b>
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
@@ -81,7 +81,7 @@
 
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="inbox.jsp">HRM Inbox</a></li>
+                            <li><a href="${pageContext.request.contextPath}/hospitalReportManager/inbox.jsp">HRM Inbox</a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
