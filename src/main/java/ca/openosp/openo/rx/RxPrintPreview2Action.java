@@ -231,6 +231,7 @@ public class RxPrintPreview2Action extends ActionSupport {
         boolean signatureLocked = savedSignature != null;
         String doctorName = signatureLocked ? savedSignature : providerSignatureManager.getDefaultSignature(signingProvider);
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        request.setAttribute("signatureScriptNo", scriptNo);
         request.setAttribute("signatureLocked", signatureLocked);
         request.setAttribute("signatureEditable", !signatureLocked && signingProvider.equals(loggedInInfo.getLoggedInProviderNo()));
         request.setAttribute("signatureChoices", providerSignatureManager.getChoices(signingProvider));

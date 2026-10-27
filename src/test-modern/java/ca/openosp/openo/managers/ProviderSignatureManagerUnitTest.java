@@ -45,7 +45,8 @@ import static org.mockito.Mockito.when;
  * <p>The contract: the default lives in {@code providerExt.signature}. A missing, empty or blank one
  * means the prescriber name ("Dr. " unless the first name has it, the first name, the last name),
  * which is what prescriptions printed before signatures could be chosen. The list is the prescriber
- * name first, then the saved signatures in the order they were added. Adding never changes the
+ * name first, then the saved signatures in the order they were added, then a default saved outside the
+ * list; reading it saves nothing. Adding never changes the
  * default; editing or deleting the default carries the default with it; a provider can only change
  * their own signatures. A prescription saves its signature once, at its first print: the prescriber's
  * choice, or the prescriber's default when someone else prints it, and then never changes.</p>
@@ -212,16 +213,32 @@ class ProviderSignatureManagerUnitTest {
         }
 
         @Test
-        @DisplayName("should add the saved default to the list when it isn't in it, so it can be pre-selected")
-        void shouldAddSavedDefaultToList_whenItIsNotInTheList() {
+        @DisplayName("should show the saved default last, without saving it, when it isn't in the list")
+        void shouldShowUnlistedDefaultWithoutSavingIt_whenItIsNotInTheList() {
             givenSavedDefault(UNDER_ARMSTRONG);
+            givenList(signature(2, PROVIDER_NO, UNDER_WELCH));
 
             List<SignatureChoice> choices = providerSignatureManager.getChoices(PROVIDER_NO);
 
-            assertThat(persistedSignature()).extracting(ProviderSignature::getProviderNo, ProviderSignature::getSignature)
-                    .containsExactly(PROVIDER_NO, UNDER_ARMSTRONG);
-            assertThat(choices).extracting(SignatureChoice::getText, SignatureChoice::isDefaultChoice)
-                    .containsExactly(tuple("Dr. doctor openodoc", false), tuple(UNDER_ARMSTRONG, true));
+            assertThat(choices).extracting(SignatureChoice::getSignatureId, SignatureChoice::getText, SignatureChoice::isDefaultChoice)
+                    .containsExactly(
+                            tuple(null, "Dr. doctor openodoc", false),
+                            tuple(2, UNDER_WELCH, false),
+                            tuple(SignatureChoice.UNLISTED_DEFAULT_ID, UNDER_ARMSTRONG, true));
+            assertThat(choices.get(2).isSavedSignature()).isFalse();
+            verify(providerSignatureDao, never()).persist(any());
+        }
+
+        @Test
+        @DisplayName("should mark a listed signature as the default when only surrounding spaces differ")
+        void shouldMarkListedSignatureDefault_whenOnlySurroundingSpacesDiffer() {
+            givenSavedDefault(UNDER_ARMSTRONG);
+            givenList(signature(1, PROVIDER_NO, UNDER_ARMSTRONG + "\t"));
+
+            List<SignatureChoice> choices = providerSignatureManager.getChoices(PROVIDER_NO);
+
+            assertThat(choices).extracting(SignatureChoice::getSignatureId, SignatureChoice::isDefaultChoice)
+                    .containsExactly(tuple(null, false), tuple(1, true));
         }
     }
 
@@ -336,6 +353,15 @@ class ProviderSignatureManagerUnitTest {
                     .isInstanceOf(SecurityException.class);
             assertThat(theirs.getSignature()).isEqualTo(UNDER_WELCH);
         }
+
+        @Test
+        @DisplayName("should refuse the change with the deleted message when the signature was deleted in another window")
+        void shouldRefuseEdit_whenSignatureWasDeleted() {
+            assertThatThrownBy(() -> providerSignatureManager.editSignature(loggedInInfo, 4, UNDER_WELCH))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage(ProviderSignatureManager.ERROR_DELETED);
+            verify(providerSignatureDao, never()).merge(any());
+        }
     }
 
     /**
@@ -377,6 +403,18 @@ class ProviderSignatureManagerUnitTest {
             assertThatThrownBy(() -> providerSignatureManager.deleteSignature(loggedInInfo, 3))
                     .isInstanceOf(SecurityException.class);
             verify(providerSignatureDao, never()).remove(any(ProviderSignature.class));
+        }
+
+        @Test
+        @DisplayName("should change nothing when the signature was deleted already")
+        void shouldChangeNothing_whenSignatureWasDeletedAlready() {
+            ProviderExt providerExt = givenSavedDefault(UNDER_ARMSTRONG);
+
+            providerSignatureManager.deleteSignature(loggedInInfo, 4);
+
+            assertThat(providerExt.getSignature()).isEqualTo(UNDER_ARMSTRONG);
+            verify(providerSignatureDao, never()).remove(any(ProviderSignature.class));
+            verify(providerExtDao, never()).merge(any());
         }
     }
 
@@ -430,6 +468,17 @@ class ProviderSignatureManagerUnitTest {
 
             assertThatThrownBy(() -> providerSignatureManager.makeDefault(loggedInInfo, 3))
                     .isInstanceOf(SecurityException.class);
+        }
+
+        @Test
+        @DisplayName("should leave the default alone when the signature was deleted in another window")
+        void shouldLeaveDefault_whenSignatureWasDeleted() {
+            ProviderExt providerExt = givenSavedDefault(UNDER_ARMSTRONG);
+
+            providerSignatureManager.makeDefault(loggedInInfo, 4);
+
+            assertThat(providerExt.getSignature()).isEqualTo(UNDER_ARMSTRONG);
+            verify(providerExtDao, never()).merge(any());
         }
     }
 
@@ -533,6 +582,35 @@ class ProviderSignatureManagerUnitTest {
 
             assertThatThrownBy(() -> providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, 3))
                     .isInstanceOf(SecurityException.class);
+            verify(prescriptionDao, never()).lockPrescriberSignature(any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("should refuse with the deleted message when the chosen signature was deleted in another window")
+        void shouldRefuseWithDeletedMessage_whenChosenSignatureWasDeleted() {
+            assertThatThrownBy(() -> providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, 4))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage(ProviderSignatureManager.ERROR_DELETED);
+            verify(prescriptionDao, never()).lockPrescriberSignature(any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("should save the prescriber's default when they pick a default that isn't in their list")
+        void shouldSaveDefault_whenPrescriberPicksUnlistedDefault() {
+            givenSavedDefault(UNDER_ARMSTRONG);
+
+            String saved = providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, SignatureChoice.UNLISTED_DEFAULT_ID);
+
+            assertThat(saved).isEqualTo(UNDER_ARMSTRONG);
+            verify(prescriptionDao).lockPrescriberSignature(SCRIPT_NO, UNDER_ARMSTRONG, UNDER_ARMSTRONG + "\nMHI Org\nHamilton\nAMOXICILLIN 125MG");
+        }
+
+        @Test
+        @DisplayName("should save nothing when the prescriber has no name or default on file")
+        void shouldSaveNothing_whenPrescriberHasNoNameOrDefault() {
+            when(providerDao.getProvider(PROVIDER_NO)).thenReturn(null);
+
+            assertThat(providerSignatureManager.lockForPrescription(loggedInAs(OTHER_PROVIDER_NO), SCRIPT_NO, DEMOGRAPHIC_NO, null)).isNull();
             verify(prescriptionDao, never()).lockPrescriberSignature(any(), any(), any());
         }
 

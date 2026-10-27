@@ -85,8 +85,18 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
             signature = getDefaultSignature(prescriberNo);
         } else if (signatureId == null) {
             signature = getPrescriberName(prescriberNo);
+        } else if (signatureId == SignatureChoice.UNLISTED_DEFAULT_ID) {
+            signature = getDefaultSignature(prescriberNo);
         } else {
-            signature = getOwnSignature(prescriberNo, signatureId).getSignature();
+            ProviderSignature chosen = findOwnSignature(prescriberNo, signatureId);
+            if (chosen == null) {
+                throw new IllegalArgumentException(ERROR_DELETED);
+            }
+            signature = chosen.getSignature().strip();
+        }
+        if (signature.isBlank()) {
+            // Saving a blank would keep it for good; left unsaved, a later print can still save a name
+            return null;
         }
 
         if (prescriptionDao.lockPrescriberSignature(scriptNo, signature, withFirstLine(prescription.getTextView(), signature)) == 0) {
@@ -100,16 +110,17 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     @Override
     public List<SignatureChoice> getChoices(String providerNo) {
         String defaultText = getSavedDefaultText(providerNo);
-        List<ProviderSignature> signatures = new ArrayList<>(providerSignatureDao.findByProviderNo(providerNo));
-        // A default saved before the list existed joins it, so the print window can pre-select it.
-        if (defaultText != null && signatures.stream().noneMatch(s -> s.getSignature().equals(defaultText))) {
-            signatures.add(addRow(providerNo, defaultText, providerNo));
-        }
-
         List<SignatureChoice> choices = new ArrayList<>();
         choices.add(new SignatureChoice(null, getPrescriberName(providerNo), defaultText == null));
-        for (ProviderSignature signature : signatures) {
-            choices.add(new SignatureChoice(signature.getId(), signature.getSignature(), signature.getSignature().equals(defaultText)));
+        boolean defaultListed = false;
+        for (ProviderSignature signature : providerSignatureDao.findByProviderNo(providerNo)) {
+            boolean isDefault = hasText(signature, defaultText);
+            defaultListed |= isDefault;
+            choices.add(new SignatureChoice(signature.getId(), signature.getSignature(), isDefault));
+        }
+        // A default saved outside the list still shows, so the print window can pre-select it
+        if (defaultText != null && !defaultListed) {
+            choices.add(new SignatureChoice(SignatureChoice.UNLISTED_DEFAULT_ID, defaultText, true));
         }
         return choices;
     }
@@ -123,9 +134,12 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     @Override
     public void editSignature(LoggedInInfo loggedInInfo, Integer signatureId, String text) {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
-        ProviderSignature signature = getOwnSignature(providerNo, signatureId);
+        ProviderSignature signature = findOwnSignature(providerNo, signatureId);
+        if (signature == null) {
+            throw new IllegalArgumentException(ERROR_DELETED);
+        }
         String newText = checkText(providerNo, signatureId, text);
-        if (signature.getSignature().equals(getSavedDefaultText(providerNo))) {
+        if (hasText(signature, getSavedDefaultText(providerNo))) {
             saveDefaultText(providerNo, newText);
         }
         signature.setSignature(newText);
@@ -136,8 +150,11 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     @Override
     public void deleteSignature(LoggedInInfo loggedInInfo, Integer signatureId) {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
-        ProviderSignature signature = getOwnSignature(providerNo, signatureId);
-        if (signature.getSignature().equals(getSavedDefaultText(providerNo))) {
+        ProviderSignature signature = findOwnSignature(providerNo, signatureId);
+        if (signature == null) {
+            return;
+        }
+        if (hasText(signature, getSavedDefaultText(providerNo))) {
             saveDefaultText(providerNo, null);
         }
         providerSignatureDao.remove(signature);
@@ -148,8 +165,11 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         if (signatureId == null) {
             saveDefaultText(providerNo, null);
-        } else {
-            saveDefaultText(providerNo, getOwnSignature(providerNo, signatureId).getSignature());
+            return;
+        }
+        ProviderSignature signature = findOwnSignature(providerNo, signatureId);
+        if (signature != null) {
+            saveDefaultText(providerNo, signature.getSignature().strip());
         }
     }
 
@@ -157,7 +177,7 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     public void saveDefaultSignatureText(LoggedInInfo loggedInInfo, String providerNo, String text) {
         String defaultText = text == null || text.isBlank() ? null : text.strip();
         if (defaultText != null
-                && providerSignatureDao.findByProviderNo(providerNo).stream().noneMatch(s -> s.getSignature().equals(defaultText))) {
+                && providerSignatureDao.findByProviderNo(providerNo).stream().noneMatch(s -> hasText(s, defaultText))) {
             addRow(providerNo, defaultText, loggedInInfo.getLoggedInProviderNo());
         }
         saveDefaultText(providerNo, defaultText);
@@ -214,6 +234,14 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
         return endOfFirstLine < 0 ? signature : signature + textView.substring(endOfFirstLine);
     }
 
+    /**
+     * Whether a saved signature has the given text, ignoring surrounding spaces, which signatures
+     * copied into the list when it was created may still have.
+     */
+    private static boolean hasText(ProviderSignature signature, String text) {
+        return signature.getSignature().strip().equals(text);
+    }
+
     private ProviderSignature addRow(String providerNo, String text, String updatedBy) {
         ProviderSignature signature = new ProviderSignature();
         signature.setProviderNo(providerNo);
@@ -226,11 +254,12 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     /**
      * Gets one of a provider's own signatures.
      *
-     * @throws SecurityException when the signature doesn't exist or belongs to another provider
+     * @return ProviderSignature the signature, or null when it doesn't exist, e.g. deleted in another window
+     * @throws SecurityException when the signature belongs to another provider
      */
-    private ProviderSignature getOwnSignature(String providerNo, Integer signatureId) {
+    private ProviderSignature findOwnSignature(String providerNo, Integer signatureId) {
         ProviderSignature signature = signatureId == null ? null : providerSignatureDao.find(signatureId);
-        if (signature == null || !signature.getProviderNo().equals(providerNo)) {
+        if (signature != null && !signature.getProviderNo().equals(providerNo)) {
             throw new SecurityException("Signature " + signatureId + " is not in the logged-in provider's list");
         }
         return signature;
@@ -253,7 +282,7 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
         }
         boolean duplicate = signature.equals(getPrescriberName(providerNo))
                 || providerSignatureDao.findByProviderNo(providerNo).stream()
-                .anyMatch(s -> !s.getId().equals(signatureId) && s.getSignature().equals(signature));
+                .anyMatch(s -> !s.getId().equals(signatureId) && hasText(s, signature));
         if (duplicate) {
             throw new IllegalArgumentException(ERROR_DUPLICATE);
         }

@@ -2,11 +2,16 @@ package ca.openosp.openo.managers.model;
 
 /**
  * One option in a provider's signature list: one of their saved signatures, or their prescriber
- * name, which is always in the list and has no signature id.
+ * name, which is always in the list and has no signature id. A default saved somewhere other than
+ * the list (it is kept in {@code providerExt.signature}) shows as one more option, which can't be
+ * edited or deleted.
  *
  * @since 2026-10-26
  */
 public class SignatureChoice {
+
+    /** Signature id of a default that isn't in the provider's list. No saved signature has this id. */
+    public static final int UNLISTED_DEFAULT_ID = 0;
 
     private final Integer signatureId;
     private final String text;
@@ -15,7 +20,8 @@ public class SignatureChoice {
     /**
      * Creates a choice.
      *
-     * @param signatureId Integer the saved signature's id, or null for the prescriber name
+     * @param signatureId Integer the saved signature's id, null for the prescriber name, or
+     *                    {@link #UNLISTED_DEFAULT_ID} for a default that isn't in the list
      * @param text String the text printed on the prescription
      * @param defaultChoice boolean whether this is the provider's default
      */
@@ -26,7 +32,8 @@ public class SignatureChoice {
     }
 
     /**
-     * @return Integer the saved signature's id, or null for the prescriber name
+     * @return Integer the saved signature's id, null for the prescriber name, or
+     *         {@link #UNLISTED_DEFAULT_ID} for a default that isn't in the list
      */
     public Integer getSignatureId() {
         return signatureId;
@@ -51,5 +58,12 @@ public class SignatureChoice {
      */
     public boolean isPrescriberName() {
         return signatureId == null;
+    }
+
+    /**
+     * @return boolean whether this is a signature saved in the provider's list, which they can edit and delete
+     */
+    public boolean isSavedSignature() {
+        return signatureId != null && signatureId != UNLISTED_DEFAULT_ID;
     }
 }

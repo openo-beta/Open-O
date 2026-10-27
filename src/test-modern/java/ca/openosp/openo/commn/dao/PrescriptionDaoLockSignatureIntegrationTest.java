@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Integration tests for {@link PrescriptionDao#lockPrescriberSignature}: a prescription's signature is
- * saved once, with its text copy, and a second save changes nothing.
+ * saved once, with its text copy, and neither a second save nor saving a copy loaded earlier changes it.
  *
  * @since 2026-10-26
  */
@@ -78,5 +78,23 @@ public class PrescriptionDaoLockSignatureIntegrationTest extends OpenOTestBase {
         assertThat(reload(prescription))
                 .extracting(Prescription::getPrescriberSignature, Prescription::getTextView)
                 .containsExactly(UNDER_ARMSTRONG, UNDER_ARMSTRONG + "\nMHI Org\nAMOXICILLIN 125MG");
+    }
+
+    @Test
+    @DisplayName("should keep the signature and text copy when a copy loaded before they were saved is saved")
+    void shouldKeepSignatureAndTextCopy_whenCopyLoadedBeforeTheyWereSavedIsSaved() {
+        Prescription prescription = unprintedPrescription();
+        // Loaded and let go, as PrescriptionManager.print() and setPrescriptionSignature() do in their own transactions
+        Prescription loadedBefore = reload(prescription);
+        entityManager.clear();
+        prescriptionDao.lockPrescriberSignature(prescription.getId(), UNDER_ARMSTRONG, UNDER_ARMSTRONG + "\nMHI Org\nAMOXICILLIN 125MG");
+
+        loadedBefore.setDigitalSignatureId(7);
+        prescriptionDao.merge(loadedBefore);
+        entityManager.flush();
+
+        assertThat(reload(prescription))
+                .extracting(Prescription::getPrescriberSignature, Prescription::getTextView, Prescription::getDigitalSignatureId)
+                .containsExactly(UNDER_ARMSTRONG, UNDER_ARMSTRONG + "\nMHI Org\nAMOXICILLIN 125MG", 7);
     }
 }
