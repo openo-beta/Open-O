@@ -62,10 +62,12 @@
         text = request.getParameter("signature") == null ? "" : request.getParameter("signature");
     } else if (editing) {
         ProviderSignatureManager providerSignatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
-        SignatureChoice choice = providerSignatureManager.getChoices(curUser_no).stream()
-                .filter(c -> signatureIdParam.equals(String.valueOf(c.getSignatureId())))
-                .findFirst()
-                .orElse(null);
+        SignatureChoice choice;
+        try {
+            choice = providerSignatureManager.findChoice(curUser_no, SignatureChoice.parsePostedId(signatureIdParam)).orElse(null);
+        } catch (NumberFormatException e) {
+            choice = null;
+        }
         if (choice == null || !choice.isSavedSignature()) {
             // Not one of this provider's saved signatures, e.g. deleted in another window
             response.sendRedirect(request.getContextPath() + "/provider/providerSignature.jsp");

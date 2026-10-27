@@ -125,7 +125,7 @@
                         <th><fmt:message key="provider.providerSignature.colActions"/></th>
                     </tr>
                     <% for (SignatureChoice choice : choices) {
-                        String signatureId = choice.isPrescriberName() ? "" : String.valueOf(choice.getSignatureId()); %>
+                        String signatureId = choice.getPostedId(); %>
                     <tr>
                         <td>
                             <%= Encode.forHtml(choice.getText()) %>

@@ -127,10 +127,7 @@ function printIframe(providerNo, demographicNo, userName, ctx) {
         alert("Use of Microsoft Internet Explorer is not permitted")
     } else {
         // Saved before the print dialog, because the window closes right after it
-        lockPrescriberSignature(ctx).then(saved => {
-            if (!saved) {
-                return;
-            }
+        whenSignatureSaved(ctx, () => {
             if ('function' === typeof window.onbeforeunload) {
                 window.onbeforeunload = null;
             }
@@ -438,6 +435,28 @@ function lockPrescriberSignatureCard(select, signature) {
 }
 
 /**
+ * Saves the signature (see lockPrescriberSignature), then does what the button does.
+ *
+ * @param {string} ctx the context path, or empty to work it out from the page
+ * @param {function(): *} action what the button does once the signature is saved
+ * @param {function(): *} [refused] what to do instead when it couldn't be saved; the user has been told already
+ * @returns {Promise<*>} what action, or refused, returns
+ */
+function whenSignatureSaved(ctx, action, refused = () => undefined) {
+    return lockPrescriberSignature(ctx).then(saved => saved ? action() : refused());
+}
+
+/**
+ * A promise that never settles, for a button whose caller chains the next step with then(): that step
+ * then never runs.
+ *
+ * @returns {Promise<never>} the promise
+ */
+function neverSettles() {
+    return new Promise(() => {});
+}
+
+/**
  * The Rx icon: saves the signature, then opens the prescription as a PDF in a new tab.
  *
  * @param {string} method "print", or "rePrint" for a reprint
@@ -450,13 +469,9 @@ function printRxPdf(method, scriptId, useSC, scAddress, ctx) {
     // Opened during the click, so the pop-up blocker allows it although the PDF is posted after the save
     const target = 'rxPdf' + Date.now();
     const pdfWindow = window.open('', target);
-    lockPrescriberSignature(ctx).then(saved => {
-        if (saved) {
-            onPrint2(method, scriptId, useSC, scAddress, ctx, target);
-        } else if (pdfWindow) {
-            pdfWindow.close();
-        }
-    });
+    whenSignatureSaved(ctx,
+        () => onPrint2(method, scriptId, useSC, scAddress, ctx, target),
+        () => pdfWindow && pdfWindow.close());
 }
 
 function closeRxPreviewBootstrapModal() {
@@ -490,10 +505,7 @@ function onPrint2(method, scriptId, useSC, scAddress, ctx, target) {
 
 function sendFax(scriptId, signatureRequestId, useSC, scAddress, ctx) {
     // The fax carries the signature saved on the prescription, so it is saved first
-    lockPrescriberSignature(ctx).then(saved => {
-        if (!saved) {
-            return;
-        }
+    whenSignatureSaved(ctx, () => {
         if ('function' === typeof window.onbeforeunload) {
             window.onbeforeunload = null;
         }
@@ -508,19 +520,15 @@ function sendFax(scriptId, signatureRequestId, useSC, scAddress, ctx) {
 function printPasteToParent(ctx, rxPasteAsterisk, prefPharmacy, demographicNo, providerName, providerNo, pharmacyName,
                             pharmacyFax, prescribedBy, pharmacyPhone = "") {
     // Saved before the note is pasted, so a failed save pastes nothing
-    return lockPrescriberSignature(ctx).then(saved => saved
-        ? printPaste2Parent(ctx, true, false, true, rxPasteAsterisk, prefPharmacy, demographicNo, providerName,
-            providerNo, pharmacyName, pharmacyFax, prescribedBy, pharmacyPhone)
-        : undefined);
+    return whenSignatureSaved(ctx, () => printPaste2Parent(ctx, true, false, true, rxPasteAsterisk, prefPharmacy,
+        demographicNo, providerName, providerNo, pharmacyName, pharmacyFax, prescribedBy, pharmacyPhone));
 }
 
 function faxPasteToParent(ctx, rxPasteAsterisk, prefPharmacy, demographicNo, providerName, providerNo, pharmacyName,
                             pharmacyFax, prescribedBy, pharmacyPhone = "") {
-    // Saved before the note is pasted; when it fails the promise never settles, so the caller doesn't fax either
-    return lockPrescriberSignature(ctx).then(saved => saved
-        ? printPaste2Parent(ctx, false, true, true, rxPasteAsterisk, prefPharmacy, demographicNo, providerName,
-            providerNo, pharmacyName, pharmacyFax, prescribedBy, pharmacyPhone)
-        : new Promise(() => {}));
+    // Saved before the note is pasted; when it fails, the button's chained fax doesn't run either
+    return whenSignatureSaved(ctx, () => printPaste2Parent(ctx, false, true, true, rxPasteAsterisk, prefPharmacy,
+        demographicNo, providerName, providerNo, pharmacyName, pharmacyFax, prescribedBy, pharmacyPhone), neverSettles);
 }
 
 function printPaste2Parent(ctx, print, fax, pasteRx, rxPasteAsterisk, prefPharmacy, demographicNo, providerName,

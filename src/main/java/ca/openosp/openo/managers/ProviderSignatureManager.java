@@ -1,9 +1,12 @@
 package ca.openosp.openo.managers;
 
+import ca.openosp.openo.commn.exception.ProviderSignatureException;
+import ca.openosp.openo.managers.model.SignatureCard;
 import ca.openosp.openo.managers.model.SignatureChoice;
 import ca.openosp.openo.utility.LoggedInInfo;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Looks up and keeps the signatures a provider prints on prescriptions.
@@ -41,23 +44,6 @@ public interface ProviderSignatureManager {
     String getDefaultSignature(String providerNo);
 
     /**
-     * Gets a provider's name the way prescriptions print it: "Dr. " (unless the first name
-     * already has it), the first name, then the last name.
-     *
-     * @param providerNo String the provider's number
-     * @return String the prescriber name, or an empty string when the provider doesn't exist
-     */
-    String getPrescriberName(String providerNo);
-
-    /**
-     * Gets the signature saved on a prescription at its first print, fax or PDF.
-     *
-     * @param scriptNo String the prescription's number, or null when there isn't one yet
-     * @return String the saved signature, or null when the prescription hasn't been printed yet
-     */
-    String getSavedSignature(String scriptNo);
-
-    /**
      * Gets the signature a prescription prints: the one saved at its first print, fax or PDF, or
      * before then the prescriber's default.
      *
@@ -68,6 +54,17 @@ public interface ProviderSignatureManager {
     String getPrintedSignature(String scriptNo, String prescriberNo);
 
     /**
+     * Gets what the prescription window's signature card shows. Only the prescriber may choose, and
+     * only until the first print, fax or PDF saves the signature on the prescription.
+     *
+     * @param loggedInInfo LoggedInInfo the user who opened the window
+     * @param scriptNo String the prescription's number, or null when there isn't one yet
+     * @param prescriberNo String the prescriber's number
+     * @return SignatureCard the signature the prescription prints, and the list to choose from when the user may choose
+     */
+    SignatureCard getSignatureCard(LoggedInInfo loggedInInfo, String scriptNo, String prescriberNo);
+
+    /**
      * Saves the signature on a prescription at its first print, fax or PDF, so every reprint shows
      * the same one, and writes it on the first line of the prescription's text copy. Only the
      * prescriber chooses; anyone else saves the prescriber's default. When the prescription already
@@ -76,14 +73,12 @@ public interface ProviderSignatureManager {
      * @param loggedInInfo LoggedInInfo the user printing the prescription
      * @param scriptNo Integer the prescription's number
      * @param demographicNo Integer the patient of the user's prescription window
-     * @param signatureId Integer the prescriber's chosen signature, null for their prescriber name, or
-     *                    {@link SignatureChoice#UNLISTED_DEFAULT_ID} for their default
+     * @param signatureId Integer the prescriber's choice: the id of an entry in their {@link #getChoices} list
      * @return String the signature saved on the prescription, or null when there is none to save
      *         because the prescriber has no name or default on file (their provider record is gone)
-     * @throws SecurityException when the prescription isn't for that patient, or the chosen
-     *                           signature isn't the prescriber's
-     * @throws IllegalArgumentException with {@link #ERROR_DELETED} as its message when the chosen
-     *                                  signature has been deleted
+     * @throws SecurityException when the prescription isn't for that patient
+     * @throws ProviderSignatureException with {@link #ERROR_DELETED} when the choice isn't in the
+     *                                    prescriber's list, e.g. deleted in another window
      */
     String lockForPrescription(LoggedInInfo loggedInInfo, Integer scriptNo, Integer demographicNo, Integer signatureId);
 
@@ -98,12 +93,21 @@ public interface ProviderSignatureManager {
     List<SignatureChoice> getChoices(String providerNo);
 
     /**
+     * Finds one entry of a provider's {@link #getChoices} list by its id.
+     *
+     * @param providerNo String the provider's number
+     * @param signatureId Integer the entry's id, null for the prescriber name
+     * @return Optional&lt;SignatureChoice&gt; the entry, or empty when it isn't in the list, e.g. deleted in another window
+     */
+    Optional<SignatureChoice> findChoice(String providerNo, Integer signatureId);
+
+    /**
      * Adds a signature to the logged-in provider's list. It does not become the default.
      *
      * @param loggedInInfo LoggedInInfo the logged-in provider
      * @param text String the signature text
-     * @throws IllegalArgumentException with {@link #ERROR_BLANK}, {@link #ERROR_TOO_LONG} or
-     *                                  {@link #ERROR_DUPLICATE} as its message when the text can't be saved
+     * @throws ProviderSignatureException with {@link #ERROR_BLANK}, {@link #ERROR_TOO_LONG} or
+     *                                    {@link #ERROR_DUPLICATE} when the text can't be saved
      */
     void addSignature(LoggedInInfo loggedInInfo, String text);
 
@@ -114,9 +118,9 @@ public interface ProviderSignatureManager {
      * @param loggedInInfo LoggedInInfo the logged-in provider
      * @param signatureId Integer the signature to change
      * @param text String the new text
-     * @throws IllegalArgumentException with {@link #ERROR_BLANK}, {@link #ERROR_TOO_LONG} or
-     *                                  {@link #ERROR_DUPLICATE} as its message when the text can't be saved,
-     *                                  or {@link #ERROR_DELETED} when the signature has been deleted
+     * @throws ProviderSignatureException with {@link #ERROR_BLANK}, {@link #ERROR_TOO_LONG} or
+     *                                    {@link #ERROR_DUPLICATE} when the text can't be saved, or
+     *                                    {@link #ERROR_DELETED} when the signature has been deleted
      * @throws SecurityException when the signature isn't the logged-in provider's
      */
     void editSignature(LoggedInInfo loggedInInfo, Integer signatureId, String text);

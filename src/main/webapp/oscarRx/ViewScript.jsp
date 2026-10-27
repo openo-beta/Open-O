@@ -103,7 +103,7 @@
                 }
 
                 ProviderSignatureManager providerSignatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
-                String doctorName = providerSignatureManager.getPrintedSignature(bean.getStashSize() > 0 ? bean.getStashItem(0).getScript_no() : null, bean.getProviderNo());
+                String doctorName = providerSignatureManager.getPrintedSignature(bean.getStashScriptNo(), bean.getProviderNo());
                 doctorName = doctorName.replaceAll("\\d{6}", "");
                 doctorName = doctorName.replaceAll("\\-", "");
 
@@ -128,7 +128,7 @@
 
             } else if (props.getProperty("clinicSatelliteName") != null) {
                 ProviderSignatureManager providerSignatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
-                String doctorName = providerSignatureManager.getPrintedSignature(bean.getStashSize() > 0 ? bean.getStashItem(0).getScript_no() : null, bean.getProviderNo());
+                String doctorName = providerSignatureManager.getPrintedSignature(bean.getStashScriptNo(), bean.getProviderNo());
 
                 ClinicData clinic = new ClinicData();
                 vecAddressName = new Vector();

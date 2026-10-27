@@ -5,9 +5,11 @@ import ca.openosp.openo.casemgmt.model.ProviderExt;
 import ca.openosp.openo.commn.dao.PrescriptionDao;
 import ca.openosp.openo.commn.dao.ProviderExtDao;
 import ca.openosp.openo.commn.dao.ProviderSignatureDao;
+import ca.openosp.openo.commn.exception.ProviderSignatureException;
 import ca.openosp.openo.commn.model.Prescription;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.ProviderSignature;
+import ca.openosp.openo.managers.model.SignatureCard;
 import ca.openosp.openo.managers.model.SignatureChoice;
 import ca.openosp.openo.utility.LoggedInInfo;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +51,8 @@ import static org.mockito.Mockito.when;
  * list; reading it saves nothing. Adding never changes the
  * default; editing or deleting the default carries the default with it; a provider can only change
  * their own signatures. A prescription saves its signature once, at its first print: the prescriber's
- * choice, or the prescriber's default when someone else prints it, and then never changes.</p>
+ * choice from that same list, or the prescriber's default when someone else prints it, and then never
+ * changes. Only the prescriber gets the list to choose from in the print window.</p>
  *
  * @since 2026-10-26
  */
@@ -168,7 +171,7 @@ class ProviderSignatureManagerUnitTest {
         void shouldNotAddSecondDr_whenFirstNameHasIt() {
             givenProvider("Dr. Ty", "Armstrong");
 
-            assertThat(providerSignatureManager.getPrescriberName(PROVIDER_NO)).isEqualTo("Dr. Ty Armstrong");
+            assertThat(providerSignatureManager.getDefaultSignature(PROVIDER_NO)).isEqualTo("Dr. Ty Armstrong");
         }
 
         @Test
@@ -176,7 +179,7 @@ class ProviderSignatureManagerUnitTest {
         void shouldReturnEmptyName_whenProviderDoesNotExist() {
             when(providerDao.getProvider(PROVIDER_NO)).thenReturn(null);
 
-            assertThat(providerSignatureManager.getPrescriberName(PROVIDER_NO)).isEmpty();
+            assertThat(providerSignatureManager.getDefaultSignature(PROVIDER_NO)).isEmpty();
         }
     }
 
@@ -230,15 +233,101 @@ class ProviderSignatureManagerUnitTest {
         }
 
         @Test
-        @DisplayName("should mark a listed signature as the default when only surrounding spaces differ")
+        @DisplayName("should mark a listed signature as the default, and show it trimmed, when only surrounding spaces differ")
         void shouldMarkListedSignatureDefault_whenOnlySurroundingSpacesDiffer() {
             givenSavedDefault(UNDER_ARMSTRONG);
             givenList(signature(1, PROVIDER_NO, UNDER_ARMSTRONG + "\t"));
 
             List<SignatureChoice> choices = providerSignatureManager.getChoices(PROVIDER_NO);
 
-            assertThat(choices).extracting(SignatureChoice::getSignatureId, SignatureChoice::isDefaultChoice)
-                    .containsExactly(tuple(null, false), tuple(1, true));
+            assertThat(choices).extracting(SignatureChoice::getSignatureId, SignatureChoice::getText, SignatureChoice::isDefaultChoice)
+                    .containsExactly(tuple(null, "Dr. doctor openodoc", false), tuple(1, UNDER_ARMSTRONG, true));
+        }
+
+        @Test
+        @DisplayName("should find an entry by its id, the prescriber name by no id, and nothing for an id not in the list")
+        void shouldFindEntryById_whenItIsInTheList() {
+            givenList(signature(2, PROVIDER_NO, UNDER_WELCH));
+
+            assertThat(providerSignatureManager.findChoice(PROVIDER_NO, 2)).map(SignatureChoice::getText).contains(UNDER_WELCH);
+            assertThat(providerSignatureManager.findChoice(PROVIDER_NO, null)).map(SignatureChoice::getText).contains("Dr. doctor openodoc");
+            assertThat(providerSignatureManager.findChoice(PROVIDER_NO, 4)).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should post the prescriber name's id as empty and read it back as no id")
+        void shouldPostPrescriberNameIdAsEmpty_andReadItBack() {
+            List<SignatureChoice> choices = providerSignatureManager.getChoices(PROVIDER_NO);
+
+            assertThat(choices.get(0).getPostedId()).isEmpty();
+            assertThat(SignatureChoice.parsePostedId("")).isNull();
+            assertThat(SignatureChoice.parsePostedId(null)).isNull();
+            assertThat(SignatureChoice.parsePostedId("2")).isEqualTo(2);
+            assertThatThrownBy(() -> SignatureChoice.parsePostedId("abc")).isInstanceOf(NumberFormatException.class);
+        }
+    }
+
+    /**
+     * What the print window's signature card shows.
+     */
+    @Nested
+    @DisplayName("signature card")
+    class Card {
+
+        private static final int SCRIPT_NO = 287;
+
+        private Prescription prescription;
+
+        @BeforeEach
+        void givenUnsavedPrescription() {
+            prescription = new Prescription();
+            when(prescriptionDao.find(Integer.valueOf(SCRIPT_NO))).thenReturn(prescription);
+            givenSavedDefault(UNDER_ARMSTRONG);
+            givenList(signature(1, PROVIDER_NO, UNDER_ARMSTRONG), signature(2, PROVIDER_NO, UNDER_WELCH));
+        }
+
+        @Test
+        @DisplayName("should show the saved signature, locked, with nothing to choose, once the prescription has one")
+        void shouldShowSavedSignatureLocked_whenPrescriptionHasOne() {
+            prescription.setPrescriberSignature(UNDER_WELCH);
+
+            SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, String.valueOf(SCRIPT_NO), PROVIDER_NO);
+
+            assertThat(card).extracting(SignatureCard::getScriptNo, SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable)
+                    .containsExactly(String.valueOf(SCRIPT_NO), UNDER_WELCH, true, false);
+            assertThat(card.getChoices()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should give the prescriber their list, with the default shown, before the first print")
+        void shouldGivePrescriberTheirList_whenNotPrintedYet() {
+            SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, String.valueOf(SCRIPT_NO), PROVIDER_NO);
+
+            assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable)
+                    .containsExactly(UNDER_ARMSTRONG, false, true);
+            assertThat(card.getChoices()).extracting(SignatureChoice::getSignatureId).containsExactly(null, 1, 2);
+        }
+
+        @Test
+        @DisplayName("should show anyone else the prescriber's default with nothing to choose")
+        void shouldShowSomeoneElseTheDefault_whenTheyAreNotThePrescriber() {
+            LoggedInInfo someoneElse = new LoggedInInfo();
+            someoneElse.setLoggedInProvider(new Provider(OTHER_PROVIDER_NO));
+
+            SignatureCard card = providerSignatureManager.getSignatureCard(someoneElse, String.valueOf(SCRIPT_NO), PROVIDER_NO);
+
+            assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable)
+                    .containsExactly(UNDER_ARMSTRONG, false, false);
+            assertThat(card.getChoices()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should treat a window with no prescription yet as not printed")
+        void shouldTreatAsNotPrinted_whenThereIsNoPrescription() {
+            SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, null, PROVIDER_NO);
+
+            assertThat(card).extracting(SignatureCard::getScriptNo, SignatureCard::getSignature, SignatureCard::isLocked)
+                    .containsExactly(null, UNDER_ARMSTRONG, false);
         }
     }
 
@@ -266,7 +355,7 @@ class ProviderSignatureManagerUnitTest {
         @DisplayName("should refuse a signature with no text")
         void shouldRefuseSignature_whenTextIsBlank(String text) {
             assertThatThrownBy(() -> providerSignatureManager.addSignature(loggedInInfo, text))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(ProviderSignatureException.class)
                     .hasMessage(ProviderSignatureManager.ERROR_BLANK);
         }
 
@@ -274,7 +363,7 @@ class ProviderSignatureManagerUnitTest {
         @DisplayName("should refuse a signature longer than the column")
         void shouldRefuseSignature_whenTextIsTooLong() {
             assertThatThrownBy(() -> providerSignatureManager.addSignature(loggedInInfo, "x".repeat(ProviderSignatureManager.MAX_LENGTH + 1)))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(ProviderSignatureException.class)
                     .hasMessage(ProviderSignatureManager.ERROR_TOO_LONG);
         }
 
@@ -284,7 +373,7 @@ class ProviderSignatureManagerUnitTest {
             givenList(signature(1, PROVIDER_NO, UNDER_WELCH));
 
             assertThatThrownBy(() -> providerSignatureManager.addSignature(loggedInInfo, UNDER_WELCH))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(ProviderSignatureException.class)
                     .hasMessage(ProviderSignatureManager.ERROR_DUPLICATE);
         }
 
@@ -292,7 +381,7 @@ class ProviderSignatureManagerUnitTest {
         @DisplayName("should refuse a signature that is the prescriber name, which is always in the list")
         void shouldRefuseSignature_whenSameAsPrescriberName() {
             assertThatThrownBy(() -> providerSignatureManager.addSignature(loggedInInfo, "Dr. doctor openodoc"))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(ProviderSignatureException.class)
                     .hasMessage(ProviderSignatureManager.ERROR_DUPLICATE);
         }
     }
@@ -358,7 +447,7 @@ class ProviderSignatureManagerUnitTest {
         @DisplayName("should refuse the change with the deleted message when the signature was deleted in another window")
         void shouldRefuseEdit_whenSignatureWasDeleted() {
             assertThatThrownBy(() -> providerSignatureManager.editSignature(loggedInInfo, 4, UNDER_WELCH))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(ProviderSignatureException.class)
                     .hasMessage(ProviderSignatureManager.ERROR_DELETED);
             verify(providerSignatureDao, never()).merge(any());
         }
@@ -515,7 +604,7 @@ class ProviderSignatureManagerUnitTest {
         @Test
         @DisplayName("should save the prescriber's chosen signature and put it on the first line of the text copy")
         void shouldSaveChosenSignature_whenPrescriberPrints() {
-            signature(2, PROVIDER_NO, UNDER_WELCH);
+            givenList(signature(2, PROVIDER_NO, UNDER_WELCH));
 
             String saved = providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, 2);
 
@@ -557,7 +646,7 @@ class ProviderSignatureManagerUnitTest {
         @Test
         @DisplayName("should return the other window's signature when another window saved one first")
         void shouldReturnOtherWindowsSignature_whenItSavedFirst() {
-            signature(2, PROVIDER_NO, UNDER_WELCH);
+            givenList(signature(2, PROVIDER_NO, UNDER_WELCH));
             when(prescriptionDao.lockPrescriberSignature(any(), any(), any())).thenReturn(0);
             doAnswer(invocation -> {
                 prescription.setPrescriberSignature(UNDER_ARMSTRONG);
@@ -576,20 +665,29 @@ class ProviderSignatureManagerUnitTest {
         }
 
         @Test
-        @DisplayName("should refuse a signature from another provider's list")
+        @DisplayName("should refuse a signature from another provider's list, which isn't in the prescriber's")
         void shouldRefuse_whenSignatureBelongsToAnotherProvider() {
             signature(3, OTHER_PROVIDER_NO, UNDER_WELCH);
 
             assertThatThrownBy(() -> providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, 3))
-                    .isInstanceOf(SecurityException.class);
+                    .isInstanceOf(ProviderSignatureException.class)
+                    .hasMessage(ProviderSignatureManager.ERROR_DELETED);
             verify(prescriptionDao, never()).lockPrescriberSignature(any(), any(), any());
+        }
+
+        @Test
+        @DisplayName("should save a listed signature without the surrounding spaces it was copied in with")
+        void shouldSaveTrimmedText_whenListedSignatureHasSurroundingSpaces() {
+            givenList(signature(2, PROVIDER_NO, " " + UNDER_WELCH + "\t"));
+
+            assertThat(providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, 2)).isEqualTo(UNDER_WELCH);
         }
 
         @Test
         @DisplayName("should refuse with the deleted message when the chosen signature was deleted in another window")
         void shouldRefuseWithDeletedMessage_whenChosenSignatureWasDeleted() {
             assertThatThrownBy(() -> providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, 4))
-                    .isInstanceOf(IllegalArgumentException.class)
+                    .isInstanceOf(ProviderSignatureException.class)
                     .hasMessage(ProviderSignatureManager.ERROR_DELETED);
             verify(prescriptionDao, never()).lockPrescriberSignature(any(), any(), any());
         }
