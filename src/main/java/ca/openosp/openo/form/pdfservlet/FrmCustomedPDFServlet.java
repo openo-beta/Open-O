@@ -662,7 +662,9 @@ public class FrmCustomedPDFServlet extends HttpServlet {
         String rx = req.getParameter("rx");
         String patientDOB = req.getParameter("patientDOB");
         String showPatientDOB = req.getParameter("showPatientDOB");
-        String imgFile = req.getParameter("imgFile");
+        // Only the signature the user drew in this window goes on the PDF
+        File drawnSignature = DrawnSignatureFile.find(req.getParameter("imgFile"), loggedInInfo.getLoggedInProviderNo());
+        String imgFile = drawnSignature == null ? null : drawnSignature.getPath();
         String patientHIN = req.getParameter("patientHIN");
         String patientChartNo = req.getParameter("patientChartNo");
         String pracNo = req.getParameter("pracNo");
