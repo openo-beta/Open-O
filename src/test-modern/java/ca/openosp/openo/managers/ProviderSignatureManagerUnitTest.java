@@ -263,6 +263,56 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
+        @DisplayName("should list the prescriber name once, as the default, when the saved default is a copy of it")
+        void shouldListPrescriberNameOnceAsDefault_whenSavedDefaultIsACopyOfIt() {
+            givenSavedDefault("Dr. doctor openodoc");
+            givenList(signature(1, PROVIDER_NO, "Dr. doctor openodoc"), signature(2, PROVIDER_NO, UNDER_WELCH));
+
+            List<SignatureChoice> choices = providerSignatureManager.getChoices(PROVIDER_NO);
+
+            assertThat(choices).extracting(SignatureChoice::getSignatureId, SignatureChoice::getText, SignatureChoice::isDefaultChoice)
+                    .containsExactly(tuple(null, "Dr. doctor openodoc", true), tuple(2, UNDER_WELCH, false));
+            assertThat(providerSignatureManager.findChoice(PROVIDER_NO, 1)).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should not show the default again when it is the prescriber name and isn't in the list")
+        void shouldNotShowDefaultAgain_whenItIsThePrescriberNameAndNotInTheList() {
+            givenSavedDefault("Dr. doctor openodoc");
+            givenList(signature(2, PROVIDER_NO, UNDER_WELCH));
+
+            List<SignatureChoice> choices = providerSignatureManager.getChoices(PROVIDER_NO);
+
+            assertThat(choices).extracting(SignatureChoice::getSignatureId, SignatureChoice::getText, SignatureChoice::isDefaultChoice)
+                    .containsExactly(tuple(null, "Dr. doctor openodoc", true), tuple(2, UNDER_WELCH, false));
+        }
+
+        @Test
+        @DisplayName("should leave out a saved copy of the prescriber name when another signature is the default")
+        void shouldLeaveOutCopyOfPrescriberName_whenAnotherSignatureIsTheDefault() {
+            givenSavedDefault(UNDER_WELCH);
+            givenList(signature(1, PROVIDER_NO, " Dr. doctor openodoc"), signature(2, PROVIDER_NO, UNDER_WELCH));
+
+            List<SignatureChoice> choices = providerSignatureManager.getChoices(PROVIDER_NO);
+
+            assertThat(choices).extracting(SignatureChoice::getSignatureId, SignatureChoice::getText, SignatureChoice::isDefaultChoice)
+                    .containsExactly(tuple(null, "Dr. doctor openodoc", false), tuple(2, UNDER_WELCH, true));
+        }
+
+        @Test
+        @DisplayName("should list a copy of the old name as a signature once the prescriber's name changes")
+        void shouldListCopyOfOldName_whenPrescriberNameChanges() {
+            givenProvider("Jane", "openodoc");
+            givenSavedDefault("Dr. doctor openodoc");
+            givenList(signature(1, PROVIDER_NO, "Dr. doctor openodoc"));
+
+            List<SignatureChoice> choices = providerSignatureManager.getChoices(PROVIDER_NO);
+
+            assertThat(choices).extracting(SignatureChoice::getSignatureId, SignatureChoice::getText, SignatureChoice::isDefaultChoice)
+                    .containsExactly(tuple(null, "Dr. Jane openodoc", false), tuple(1, "Dr. doctor openodoc", true));
+        }
+
+        @Test
         @DisplayName("should find an entry by its id, the prescriber name by no id, and nothing for an id not in the list")
         void shouldFindEntryById_whenItIsInTheList() {
             givenList(signature(2, PROVIDER_NO, UNDER_WELCH));
