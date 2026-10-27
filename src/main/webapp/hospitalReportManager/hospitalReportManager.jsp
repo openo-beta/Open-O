@@ -333,7 +333,7 @@
             <div class="control-group">
                 <label class="control-label">Provider Confidentiality Statement</label>
                 <div class="controls">
-                    <textarea name="statement"><%=Encode.forHtml(String.valueOf(statement))%></textarea>
+                    <textarea name="statement"><%=Encode.forHtml(statement)%></textarea>
                 </div>
             </div>
             <div>
