@@ -70,6 +70,18 @@
                 width: 100%;
                 border-collapse: collapse;
                 margin-bottom: 6px;
+                /* encounterStyles.css shrinks the text of every table; keep the page's size */
+                font-size: inherit;
+                /* Set widths, so the links stay put when Make default moves between rows */
+                table-layout: fixed;
+            }
+
+            .signatureList .defaultColumn {
+                width: 10em;
+            }
+
+            .signatureList .actionsColumn {
+                width: 19em;
             }
 
             .signatureList th {
@@ -81,6 +93,7 @@
             .signatureList td {
                 border-bottom: 1px solid #dddddd;
                 padding: 3px 6px;
+                overflow-wrap: break-word;
             }
 
             .signatureList form {
@@ -123,8 +136,8 @@
                 <table class="signatureList">
                     <tr>
                         <th><fmt:message key="provider.providerSignature.colSignature"/></th>
-                        <th></th>
-                        <th><fmt:message key="provider.providerSignature.colActions"/></th>
+                        <th class="defaultColumn"></th>
+                        <th class="actionsColumn"><fmt:message key="provider.providerSignature.colActions"/></th>
                     </tr>
                     <% for (SignatureChoice choice : choices) {
                         String signatureId = choice.getPostedId(); %>
