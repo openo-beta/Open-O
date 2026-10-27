@@ -47,7 +47,7 @@ import org.apache.struts2.ServletActionContext;
  * {@code signatureId}, otherwise edits), {@code delete} or {@code makeDefault} (no
  * {@code signatureId} makes the prescriber name the default).
  *
- * @since 2026-10-26
+ * @since 2003-07-22
  */
 public class ProEditSignature2Action extends ActionSupport {
     HttpServletRequest request = ServletActionContext.getRequest();
