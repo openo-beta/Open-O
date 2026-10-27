@@ -1,16 +1,17 @@
 package ca.openosp.openo.rx;
 
+import ca.openosp.openo.commn.exception.ProviderSignatureException;
 import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.managers.ProviderSignatureManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.model.SignatureChoice;
 import ca.openosp.openo.prescript.pageUtil.RxSessionBean;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +23,11 @@ import java.io.IOException;
  * it, and answers with the saved signature as JSON ({@code {"signature": "..."}}), which the window
  * then shows and prints.
  *
- * <p>Parameters: {@code scriptNo}, the prescription; {@code signatureId}, the prescriber's chosen
- * signature, or empty for their prescriber name; {@code demographicNo}, the patient of the
+ * <p>Parameters: {@code scriptNo}, the prescription; {@code signatureId}, the prescriber's choice as
+ * {@link SignatureChoice#getPostedId()} writes it; {@code demographicNo}, the patient of the
  * prescription window. A user who isn't the prescriber saves the prescriber's default, whatever they send.
- * The signature is null when there was none to save. A chosen signature deleted in another window
- * answers 409, so the window can ask for another pick.
+ * The signature is null when there was none to save. A choice that is no longer in the prescriber's
+ * list (deleted in another window) answers 409, so the window can ask for another pick.
  *
  * @since 2026-10-26
  */
@@ -42,8 +43,8 @@ public class RxPrescriberSignature2Action extends ActionSupport {
      *
      * @return String null, the response is written here
      * @throws IOException when the response can't be written
-     * @throws SecurityException when the user can't read prescriptions, or the prescription or
-     *                           signature doesn't belong to this prescription window
+     * @throws SecurityException when the user can't read prescriptions, or the prescription doesn't
+     *                           belong to this prescription window
      */
     @Override
     public String execute() throws IOException {
@@ -65,8 +66,7 @@ public class RxPrescriberSignature2Action extends ActionSupport {
         Integer signatureId;
         try {
             scriptNo = Integer.valueOf(request.getParameter("scriptNo"));
-            String signatureIdParam = request.getParameter("signatureId");
-            signatureId = StringUtils.isEmpty(signatureIdParam) ? null : Integer.valueOf(signatureIdParam);
+            signatureId = SignatureChoice.parsePostedId(request.getParameter("signatureId"));
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
@@ -79,11 +79,8 @@ public class RxPrescriberSignature2Action extends ActionSupport {
         String signature;
         try {
             signature = providerSignatureManager.lockForPrescription(loggedInInfo, scriptNo, sessionBean.getDemographicNo(), signatureId);
-        } catch (IllegalArgumentException e) {
-            if (!ProviderSignatureManager.ERROR_DELETED.equals(e.getMessage())) {
-                throw e;
-            }
-            // Deleted in another window after this one opened
+        } catch (ProviderSignatureException e) {
+            // The choice isn't in the prescriber's list any more: deleted in another window after this one opened
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             return null;
         }

@@ -37,6 +37,7 @@ import ca.openosp.openo.commn.model.UserProperty;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.FaxManager;
 import ca.openosp.openo.managers.ProviderSignatureManager;
+import ca.openosp.openo.managers.model.SignatureCard;
 import ca.openosp.openo.prescript.data.RxPatientData;
 import ca.openosp.openo.prescript.data.RxPharmacyData;
 import ca.openosp.openo.prescript.data.RxPrescriptionData;
@@ -226,15 +227,10 @@ public class RxPrintPreview2Action extends ActionSupport {
         ca.openosp.openo.prescript.data.RxProviderData.Provider provider = new ca.openosp.openo.prescript.data.RxProviderData().getProvider(signingProvider);
 
         // Saved at the first print, fax or PDF; until then the prescriber can pick it in this window
-        String scriptNo = sessionBean.getStashSize() > 0 ? sessionBean.getStashItem(0).getScript_no() : null;
-        String savedSignature = providerSignatureManager.getSavedSignature(scriptNo);
-        boolean signatureLocked = savedSignature != null;
-        String doctorName = signatureLocked ? savedSignature : providerSignatureManager.getDefaultSignature(signingProvider);
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        request.setAttribute("signatureScriptNo", scriptNo);
-        request.setAttribute("signatureLocked", signatureLocked);
-        request.setAttribute("signatureEditable", !signatureLocked && signingProvider.equals(loggedInInfo.getLoggedInProviderNo()));
-        request.setAttribute("signatureChoices", providerSignatureManager.getChoices(signingProvider));
+        SignatureCard signatureCard = providerSignatureManager.getSignatureCard(loggedInInfo, sessionBean.getStashScriptNo(), signingProvider);
+        String doctorName = signatureCard.getSignature();
+        request.setAttribute("signatureCard", signatureCard);
         // A reprint names the person reprinting, not the prescriber's signature
         request.setAttribute("reprintedBy", ca.openosp.openo.providers.data.ProviderData.getProviderName(loggedInInfo.getLoggedInProviderNo()));
 

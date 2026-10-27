@@ -66,4 +66,22 @@ public class SignatureChoice {
     public boolean isSavedSignature() {
         return signatureId != null && signatureId != UNLISTED_DEFAULT_ID;
     }
+
+    /**
+     * @return String the id as the pages post it back: empty for the prescriber name
+     */
+    public String getPostedId() {
+        return signatureId == null ? "" : String.valueOf(signatureId);
+    }
+
+    /**
+     * Reads a signature id the way the pages post it, the reverse of {@link #getPostedId()}.
+     *
+     * @param postedId String the posted id, empty or missing for the prescriber name
+     * @return Integer the id, or null for the prescriber name
+     * @throws NumberFormatException when the posted id isn't a number
+     */
+    public static Integer parsePostedId(String postedId) {
+        return postedId == null || postedId.isEmpty() ? null : Integer.valueOf(postedId);
+    }
 }

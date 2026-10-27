@@ -5,9 +5,11 @@ import ca.openosp.openo.casemgmt.model.ProviderExt;
 import ca.openosp.openo.commn.dao.PrescriptionDao;
 import ca.openosp.openo.commn.dao.ProviderExtDao;
 import ca.openosp.openo.commn.dao.ProviderSignatureDao;
+import ca.openosp.openo.commn.exception.ProviderSignatureException;
 import ca.openosp.openo.commn.model.Prescription;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.ProviderSignature;
+import ca.openosp.openo.managers.model.SignatureCard;
 import ca.openosp.openo.managers.model.SignatureChoice;
 import ca.openosp.openo.prescript.data.RxProviderData;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -18,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Keeps each provider's signature list in {@code providerSignature} and their default in
@@ -48,24 +52,19 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     }
 
     @Override
-    public String getPrescriberName(String providerNo) {
-        Provider provider = providerDao.getProvider(providerNo);
-        if (provider == null) {
-            return "";
-        }
-        return RxProviderData.prescriberFirstName(provider.getFirstName()) + " " + provider.getLastName();
-    }
-
-    @Override
-    public String getSavedSignature(String scriptNo) {
-        Prescription prescription = StringUtils.isNumeric(scriptNo) ? prescriptionDao.find(Integer.valueOf(scriptNo)) : null;
-        return prescription == null ? null : prescription.getPrescriberSignature();
-    }
-
-    @Override
     public String getPrintedSignature(String scriptNo, String prescriberNo) {
         String savedSignature = getSavedSignature(scriptNo);
         return savedSignature == null ? getDefaultSignature(prescriberNo) : savedSignature;
+    }
+
+    @Override
+    public SignatureCard getSignatureCard(LoggedInInfo loggedInInfo, String scriptNo, String prescriberNo) {
+        String savedSignature = getSavedSignature(scriptNo);
+        if (savedSignature != null) {
+            return new SignatureCard(scriptNo, savedSignature, true, List.of());
+        }
+        List<SignatureChoice> choices = choosesSignature(loggedInInfo, prescriberNo) ? getChoices(prescriberNo) : List.of();
+        return new SignatureCard(scriptNo, getDefaultSignature(prescriberNo), false, choices);
     }
 
     @Override
@@ -79,21 +78,10 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
         }
 
         String prescriberNo = prescription.getProviderNo();
-        String signature;
-        if (!loggedInInfo.getLoggedInProviderNo().equals(prescriberNo)) {
-            // Only the prescriber chooses; a reprint by anyone else saves the prescriber's default
-            signature = getDefaultSignature(prescriberNo);
-        } else if (signatureId == null) {
-            signature = getPrescriberName(prescriberNo);
-        } else if (signatureId == SignatureChoice.UNLISTED_DEFAULT_ID) {
-            signature = getDefaultSignature(prescriberNo);
-        } else {
-            ProviderSignature chosen = findOwnSignature(prescriberNo, signatureId);
-            if (chosen == null) {
-                throw new IllegalArgumentException(ERROR_DELETED);
-            }
-            signature = chosen.getSignature().strip();
-        }
+        // The window posts an id from the same list getSignatureCard gave it; anyone else saves the default
+        String signature = choosesSignature(loggedInInfo, prescriberNo)
+                ? findChoice(prescriberNo, signatureId).orElseThrow(() -> new ProviderSignatureException(ERROR_DELETED)).getText()
+                : getDefaultSignature(prescriberNo);
         if (signature.isBlank()) {
             // Saving a blank would keep it for good; left unsaved, a later print can still save a name
             return null;
@@ -116,13 +104,18 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
         for (ProviderSignature signature : providerSignatureDao.findByProviderNo(providerNo)) {
             boolean isDefault = hasText(signature, defaultText);
             defaultListed |= isDefault;
-            choices.add(new SignatureChoice(signature.getId(), signature.getSignature(), isDefault));
+            choices.add(new SignatureChoice(signature.getId(), signature.getSignature().strip(), isDefault));
         }
         // A default saved outside the list still shows, so the print window can pre-select it
         if (defaultText != null && !defaultListed) {
             choices.add(new SignatureChoice(SignatureChoice.UNLISTED_DEFAULT_ID, defaultText, true));
         }
         return choices;
+    }
+
+    @Override
+    public Optional<SignatureChoice> findChoice(String providerNo, Integer signatureId) {
+        return getChoices(providerNo).stream().filter(choice -> Objects.equals(choice.getSignatureId(), signatureId)).findFirst();
     }
 
     @Override
@@ -136,7 +129,7 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         ProviderSignature signature = findOwnSignature(providerNo, signatureId);
         if (signature == null) {
-            throw new IllegalArgumentException(ERROR_DELETED);
+            throw new ProviderSignatureException(ERROR_DELETED);
         }
         String newText = checkText(providerNo, signatureId, text);
         if (hasText(signature, getSavedDefaultText(providerNo))) {
@@ -270,22 +263,55 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
      *
      * @param signatureId Integer the signature being edited, left out of the duplicate check; null when adding
      * @return String the text without surrounding spaces
-     * @throws IllegalArgumentException with the message key of the problem
+     * @throws ProviderSignatureException with the message key of the problem
      */
     private String checkText(String providerNo, Integer signatureId, String text) {
         String signature = text == null ? "" : text.strip();
         if (signature.isEmpty()) {
-            throw new IllegalArgumentException(ERROR_BLANK);
+            throw new ProviderSignatureException(ERROR_BLANK);
         }
         if (signature.length() > MAX_LENGTH) {
-            throw new IllegalArgumentException(ERROR_TOO_LONG);
+            throw new ProviderSignatureException(ERROR_TOO_LONG);
         }
         boolean duplicate = signature.equals(getPrescriberName(providerNo))
                 || providerSignatureDao.findByProviderNo(providerNo).stream()
                 .anyMatch(s -> !s.getId().equals(signatureId) && hasText(s, signature));
         if (duplicate) {
-            throw new IllegalArgumentException(ERROR_DUPLICATE);
+            throw new ProviderSignatureException(ERROR_DUPLICATE);
         }
         return signature;
+    }
+
+    /**
+     * Whether the user picks the prescription's signature: only the prescriber does. Anyone else
+     * printing it gets the prescriber's default.
+     */
+    private static boolean choosesSignature(LoggedInInfo loggedInInfo, String prescriberNo) {
+        return loggedInInfo.getLoggedInProviderNo().equals(prescriberNo);
+    }
+
+    /**
+     * Gets a provider's name the way prescriptions print it: "Dr. " (unless the first name
+     * already has it), the first name, then the last name.
+     *
+     * @return String the prescriber name, or an empty string when the provider doesn't exist
+     */
+    private String getPrescriberName(String providerNo) {
+        Provider provider = providerDao.getProvider(providerNo);
+        if (provider == null) {
+            return "";
+        }
+        return RxProviderData.prescriberFirstName(provider.getFirstName()) + " " + provider.getLastName();
+    }
+
+    /**
+     * Gets the signature saved on a prescription at its first print, fax or PDF.
+     *
+     * @param scriptNo String the prescription's number, or null when there isn't one yet
+     * @return String the saved signature, or null when the prescription hasn't been printed yet
+     */
+    private String getSavedSignature(String scriptNo) {
+        Prescription prescription = StringUtils.isNumeric(scriptNo) ? prescriptionDao.find(Integer.valueOf(scriptNo)) : null;
+        return prescription == null ? null : prescription.getPrescriberSignature();
     }
 }

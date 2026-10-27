@@ -128,16 +128,16 @@
                         <div class="card-body">
                             <label for="prescriberSignature" class="form-label"><fmt:message key="oscarRx.Preview.signatureLabel"/></label>
                             <select id="prescriberSignature" class="form-select" onchange="previewPrescriberSignature(this);"
-                                    data-locked="<c:out value='${signatureLocked}'/>"
-                                    data-script-no="<c:out value='${signatureScriptNo}'/>"
+                                    data-locked="<c:out value='${signatureCard.locked}'/>"
+                                    data-script-no="<c:out value='${signatureCard.scriptNo}'/>"
                                     data-demographic-no="<c:out value='${requestScope.sessionBean.demographicNo}'/>"
                                     data-save-error="<c:out value='${signatureSaveError}'/>"
                                     data-deleted-error="<c:out value='${signatureDeletedError}'/>"
-                                    <c:if test="${not signatureEditable}">disabled</c:if>>
+                                    <c:if test="${not signatureCard.editable}">disabled</c:if>>
                                 <c:choose>
-                                    <c:when test="${signatureEditable}">
-                                        <c:forEach var="choice" items="${signatureChoices}">
-                                            <option value="<c:out value='${choice.signatureId}'/>"
+                                    <c:when test="${signatureCard.editable}">
+                                        <c:forEach var="choice" items="${signatureCard.choices}">
+                                            <option value="<c:out value='${choice.postedId}'/>"
                                                     data-signature="<c:out value='${choice.text}'/>"
                                                     <c:if test="${choice.defaultChoice}">data-default="true" selected</c:if>>
                                                 <c:out value="${choice.text}"/>
@@ -147,12 +147,12 @@
                                     </c:when>
                                     <c:otherwise>
                                         <%-- Saved already, or not the prescriber's to choose: what will print --%>
-                                        <option value="" data-signature="<c:out value='${requestScope.doctorName}'/>"><c:out value="${requestScope.doctorName}"/></option>
+                                        <option value="" data-signature="<c:out value='${signatureCard.signature}'/>"><c:out value="${signatureCard.signature}"/></option>
                                     </c:otherwise>
                                 </c:choose>
                             </select>
                             <div id="prescriberSignatureSaved" class="form-text"
-                                 <c:if test="${not signatureLocked}">hidden</c:if>><fmt:message key="oscarRx.Preview.signatureSaved"/></div>
+                                 <c:if test="${not signatureCard.locked}">hidden</c:if>><fmt:message key="oscarRx.Preview.signatureSaved"/></div>
                         </div>
                     </div>
 

@@ -235,6 +235,16 @@ public class FrmCustomedPDFServlet extends HttpServlet {
      * into gimp, switch to pt. coordinate system and use the mouse to find the coordinates. Prepare to be bored!
      */
 
+    /**
+     * The reprint line at the bottom of a reprinted prescription.
+     *
+     * @param origPrintDate String when the prescription was first printed
+     * @param numPrint String how many times it has been printed
+     * @param reprintedBy String who is reprinting it, or null from the older views, which name the prescriber instead
+     */
+    record Reprint(String origPrintDate, String numPrint, String reprintedBy) {
+    }
+
     class EndPage extends PdfPageEventHelper {
 
         /** Room between the top of the prescriber heading and the date row below it. */
@@ -257,22 +267,28 @@ public class FrmCustomedPDFServlet extends HttpServlet {
         private String sigDoctorName;
         private String rxDate;
         private String promoText;
-        private String origPrintDate = null;
-        private String numPrint = null;
-        private String reprintedBy;
+        private Reprint reprint;
         private String imgPath;
         Locale locale = null;
         private String billingNumber;
 
         private PharmacyInfo pharmacyInfo;
 
-        public EndPage() {
-        }
+        // Worked out once from the signature, for the margins and for every page
+        private final PdfPTable prescriberHeadingTable;
+        private final float headingOverflow;
+        private final List<String> signatureNameLines;
+        private final float signatureNameOverflow;
 
+        /**
+         * @param reprint Reprint the reprint line's details, or null when the prescription isn't a reprint
+         * @throws DocumentException when the font can't be loaded
+         * @throws IOException when the font can't be loaded
+         */
         public EndPage(String clinicName, String clinicTel, String clinicFax, String patientPhone, String patientCityPostal, String patientAddress,
-                       String patientName, String patientDOB, String sigDoctorName, String rxDate, String origPrintDate, String numPrint,
-                       String reprintedBy, String imgPath, String patientHIN, String patientChartNo, String pracNo, Locale locale,
-                       String billingNumber, String pharmacyInfo) {
+                       String patientName, String patientDOB, String sigDoctorName, String rxDate, Reprint reprint,
+                       String imgPath, String patientHIN, String patientChartNo, String pracNo, Locale locale,
+                       String billingNumber, String pharmacyInfo) throws DocumentException, IOException {
             this.clinicName = clinicName == null ? "" : clinicName;
             this.clinicTel = clinicTel == null ? "" : clinicTel;
             this.clinicFax = clinicFax == null ? "" : clinicFax;
@@ -284,9 +300,7 @@ public class FrmCustomedPDFServlet extends HttpServlet {
             this.sigDoctorName = sigDoctorName == null ? "" : sigDoctorName;
             this.rxDate = rxDate;
             this.promoText = OscarProperties.getInstance().getProperty("FORMS_PROMOTEXT");
-            this.origPrintDate = origPrintDate;
-            this.numPrint = numPrint;
-            this.reprintedBy = reprintedBy;
+            this.reprint = reprint;
             if (promoText == null) {
                 promoText = "";
             }
@@ -300,6 +314,12 @@ public class FrmCustomedPDFServlet extends HttpServlet {
                 RxPharmacyData pharmacyData = new RxPharmacyData();
                 this.pharmacyInfo = pharmacyData.getPharmacy(pharmacyInfo);
             }
+
+            BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            this.prescriberHeadingTable = prescriberHeading(bf);
+            this.headingOverflow = Math.max(0f, prescriberHeadingTable.getTotalHeight() - HEADING_SPACE);
+            this.signatureNameLines = PdfLineWrapper.wrap(this.sigDoctorName, bf, 10, SIGNATURE_NAME_WIDTH);
+            this.signatureNameOverflow = (signatureNameLines.size() - 1) * SIGNATURE_NAME_LEADING;
         }
 
         @Override
@@ -312,12 +332,9 @@ public class FrmCustomedPDFServlet extends HttpServlet {
          * prescriptions move down by this much, so the heading never covers them.
          *
          * @return float the overflow in points, 0 when the heading fits
-         * @throws DocumentException when the font can't be loaded
-         * @throws IOException when the font can't be loaded
          */
-        float getHeadingOverflow() throws DocumentException, IOException {
-            BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-            return Math.max(0f, prescriberHeading(bf).getTotalHeight() - HEADING_SPACE);
+        float getHeadingOverflow() {
+            return headingOverflow;
         }
 
         /**
@@ -325,12 +342,9 @@ public class FrmCustomedPDFServlet extends HttpServlet {
          * it wraps. The footer below it moves down by this much.
          *
          * @return float the extra height in points, 0 when the name fits on one line
-         * @throws DocumentException when the font can't be loaded
-         * @throws IOException when the font can't be loaded
          */
-        float getSignatureNameOverflow() throws DocumentException, IOException {
-            BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-            return (PdfLineWrapper.wrap(this.sigDoctorName, bf, 10, SIGNATURE_NAME_WIDTH).size() - 1) * SIGNATURE_NAME_LEADING;
+        float getSignatureNameOverflow() {
+            return signatureNameOverflow;
         }
 
         /**
@@ -449,9 +463,7 @@ public class FrmCustomedPDFServlet extends HttpServlet {
                  * create a column for placing the prescriber information
                  * next to the Rx logo.
                  */
-                PdfPTable prescriberHeadingTable = prescriberHeading(bf);
                 prescriberHeadingTable.writeSelectedRows(0, -1, 80f, height - 13f, cb);
-                float headingOverflow = Math.max(0f, prescriberHeadingTable.getTotalHeight() - HEADING_SPACE);
 
                 /*
                  * Create the patient information heading
@@ -495,9 +507,8 @@ public class FrmCustomedPDFServlet extends HttpServlet {
                  */
                 float endPara = writer.getVerticalPosition(true);
                 // A long prescriber name wraps under the signature line and pushes the box bottom and footer down
-                List<String> signatureNameLines = PdfLineWrapper.wrap(this.sigDoctorName, bf, 10, SIGNATURE_NAME_WIDTH);
-                float signatureNameOverflow = (signatureNameLines.size() - 1) * SIGNATURE_NAME_LEADING;
-                float boxBottom = endPara - 60 - signatureNameOverflow;
+                float footerBase = endPara - signatureNameOverflow;
+                float boxBottom = footerBase - 60;
 
                 // draw left line
                 cb.setRGBColorStrokeF(0f, 0f, 0f);
@@ -567,18 +578,18 @@ public class FrmCustomedPDFServlet extends HttpServlet {
                 /*
                  * add the number times printed to the bottom right of the Rx
                  */
-                if (origPrintDate != null && numPrint != null) {
+                if (reprint != null) {
                     // Older views post no reprinter, and keep naming the prescriber as they always have
-                    String reprinter = this.reprintedBy != null ? this.reprintedBy : this.sigDoctorName;
-                    String rePrintStr = geti18nTagValue(locale, "RxPreview.msgReprintBy") + " " + reprinter + "; " + geti18nTagValue(locale, "RxPreview.msgOrigPrinted") + ": " + origPrintDate + "; " + geti18nTagValue(locale, "RxPreview.msgTimesPrinted") + ": " + numPrint;
-                    writeDirectContent(cb, bf, 6, PdfContentByte.ALIGN_LEFT, rePrintStr, 50, endPara - 48 - signatureNameOverflow, 0);
+                    String reprinter = reprint.reprintedBy() != null ? reprint.reprintedBy() : this.sigDoctorName;
+                    String rePrintStr = geti18nTagValue(locale, "RxPreview.msgReprintBy") + " " + reprinter + "; " + geti18nTagValue(locale, "RxPreview.msgOrigPrinted") + ": " + reprint.origPrintDate() + "; " + geti18nTagValue(locale, "RxPreview.msgTimesPrinted") + ": " + reprint.numPrint();
+                    writeDirectContent(cb, bf, 6, PdfContentByte.ALIGN_LEFT, rePrintStr, 50, footerBase - 48, 0);
                 }
 
                 /*
                  * Add the page number, also to the bottom right of the Rx
                  */
                 String footer = String.valueOf(writer.getPageNumber());
-                writeDirectContent(cb, bf, 10, PdfContentByte.ALIGN_RIGHT, footer, 280, endPara - 57 - signatureNameOverflow, 0);
+                writeDirectContent(cb, bf, 10, PdfContentByte.ALIGN_RIGHT, footer, 280, footerBase - 57, 0);
 
                 /*
                  * Add preferred fax cover page disclaimer comment to bottom of Faxed Rx
@@ -623,13 +634,14 @@ public class FrmCustomedPDFServlet extends HttpServlet {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(req);
         String newline = System.getProperty("line.separator");
         String method = req.getParameter("__method");
-        String origPrintDate = null;
-        String numPrint = null;
-        String reprintedBy = null;
+        // The reprint line needs the first print date and the print count; without both there is none
+        Reprint reprint = null;
         if ("true".equals(req.getParameter("rxReprint"))) {
-            origPrintDate = req.getParameter("origPrintDate");
-            numPrint = req.getParameter("numPrints");
-            reprintedBy = req.getParameter("reprintedBy");
+            String origPrintDate = req.getParameter("origPrintDate");
+            String numPrint = req.getParameter("numPrints");
+            if (origPrintDate != null && numPrint != null) {
+                reprint = new Reprint(origPrintDate, numPrint, req.getParameter("reprintedBy"));
+            }
         }
 
         logger.debug("method in generatePDFDocumentBytes " + method);
@@ -734,7 +746,7 @@ public class FrmCustomedPDFServlet extends HttpServlet {
 
         document.setPageSize(pageSize);
 
-        EndPage endPage = new EndPage(clinicName, clinicTel, clinicFax, patientPhone, patientCityPostal, patientAddress, patientName, patientDOB, sigDoctorName, rxDate, origPrintDate, numPrint, reprintedBy, imgFile, patientHIN, patientChartNo, pracNo, locale, billingNumber, pharmacyInfo);
+        EndPage endPage = new EndPage(clinicName, clinicTel, clinicFax, patientPhone, patientCityPostal, patientAddress, patientName, patientDOB, sigDoctorName, rxDate, reprint, imgFile, patientHIN, patientChartNo, pracNo, locale, billingNumber, pharmacyInfo);
 
         // 285=left margin+width of box, 5f is space for looking nice
         // document.setMargins(15, pageSize.getWidth() - 285f + 5f, 170, 60);// left, right, top , bottom

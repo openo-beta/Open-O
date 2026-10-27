@@ -30,8 +30,10 @@ package ca.openosp.openo.providers.pageUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.openo.commn.exception.ProviderSignatureException;
 import ca.openosp.openo.managers.ProviderSignatureManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
+import ca.openosp.openo.managers.model.SignatureChoice;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
 
@@ -58,7 +60,7 @@ public class ProEditSignature2Action extends ActionSupport {
      * Applies one change to the logged-in provider's signature list.
      *
      * @return String "success" to go back to the list, "input" to show the edit page again with
-     *         the problem, or null when the request isn't a POST
+     *         the problem, or null when the request isn't a POST or its signature id isn't a number
      * @throws SecurityException when the user can't change their preferences, or the signature isn't theirs
      */
     @Override
@@ -74,8 +76,13 @@ public class ProEditSignature2Action extends ActionSupport {
             return null;
         }
 
-        String signatureIdParam = request.getParameter("signatureId");
-        Integer signatureId = signatureIdParam == null || signatureIdParam.isEmpty() ? null : Integer.valueOf(signatureIdParam);
+        Integer signatureId;
+        try {
+            signatureId = SignatureChoice.parsePostedId(request.getParameter("signatureId"));
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
         String method = request.getParameter("method");
         if ("delete".equals(method)) {
             providerSignatureManager.deleteSignature(loggedInInfo, signatureId);
@@ -89,9 +96,9 @@ public class ProEditSignature2Action extends ActionSupport {
                 } else {
                     providerSignatureManager.editSignature(loggedInInfo, signatureId, text);
                 }
-            } catch (IllegalArgumentException e) {
-                // The message is the key of the problem, shown above the text box
-                request.setAttribute("errorKey", e.getMessage());
+            } catch (ProviderSignatureException e) {
+                // Shown above the text box
+                request.setAttribute("errorKey", e.getMessageKey());
                 return INPUT;
             }
         }
