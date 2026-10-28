@@ -55,15 +55,18 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
 
     @Override
     public String getPrintedSignature(String scriptNo, String prescriberNo) {
-        String savedSignature = getSavedSignature(scriptNo);
+        Prescription prescription = findPrescription(scriptNo);
+        String savedSignature = prescription == null ? null : prescription.getPrescriberSignature();
         return savedSignature == null ? getDefaultSignature(prescriberNo) : savedSignature;
     }
 
     @Override
-    public SignatureCard getSignatureCard(LoggedInInfo loggedInInfo, String scriptNo, String prescriberNo) {
-        String savedSignature = getSavedSignature(scriptNo);
-        if (savedSignature != null) {
-            return new SignatureCard(scriptNo, savedSignature, true, List.of());
+    public SignatureCard getSignatureCard(LoggedInInfo loggedInInfo, String scriptNo, Integer demographicNo, String prescriberNo) {
+        Prescription prescription = findPrescription(scriptNo);
+        // Another patient's prescription shows as not printed, the way lockForPrescription refuses it
+        if (prescription != null && Objects.equals(prescription.getDemographicId(), demographicNo)
+                && prescription.getPrescriberSignature() != null) {
+            return new SignatureCard(scriptNo, prescription.getPrescriberSignature(), true, List.of());
         }
         List<SignatureChoice> choices = choosesSignature(loggedInInfo, prescriberNo) ? getChoices(prescriberNo) : List.of();
         return new SignatureCard(scriptNo, getDefaultSignature(prescriberNo), false, choices);
@@ -315,19 +318,17 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     }
 
     /**
-     * Gets the signature saved on a prescription at its first print, fax or PDF.
+     * Finds a prescription by the number a page gives for it.
      *
      * @param scriptNo String the prescription's number, or null when there isn't one yet
-     * @return String the saved signature, or null when the prescription hasn't been printed yet
+     * @return Prescription the prescription, or null when there is no such number
      */
-    private String getSavedSignature(String scriptNo) {
-        Prescription prescription;
+    private Prescription findPrescription(String scriptNo) {
         try {
-            prescription = StringUtils.isNumeric(scriptNo) ? prescriptionDao.find(Integer.valueOf(scriptNo)) : null;
+            return StringUtils.isNumeric(scriptNo) ? prescriptionDao.find(Integer.valueOf(scriptNo)) : null;
         } catch (NumberFormatException e) {
             // Too big to be a prescription number
-            prescription = null;
+            return null;
         }
-        return prescription == null ? null : prescription.getPrescriberSignature();
     }
 }

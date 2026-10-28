@@ -55,14 +55,16 @@ public interface ProviderSignatureManager {
 
     /**
      * Gets what the prescription window's signature card shows. Only the prescriber may choose, and
-     * only until the first print, fax or PDF saves the signature on the prescription.
+     * only until the first print, fax or PDF saves the signature on the prescription. A prescription
+     * for another patient is treated as not printed yet, since saving on it is refused.
      *
      * @param loggedInInfo LoggedInInfo the user who opened the window
      * @param scriptNo String the prescription's number, or null when there isn't one yet
+     * @param demographicNo Integer the patient in the prescription window
      * @param prescriberNo String the prescriber's number
      * @return SignatureCard the signature the prescription prints, and the list to choose from when the user may choose
      */
-    SignatureCard getSignatureCard(LoggedInInfo loggedInInfo, String scriptNo, String prescriberNo);
+    SignatureCard getSignatureCard(LoggedInInfo loggedInInfo, String scriptNo, Integer demographicNo, String prescriberNo);
 
     /**
      * Saves the signature on a prescription at its first print, fax or PDF, so every reprint shows

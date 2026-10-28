@@ -343,12 +343,14 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
     class Card {
 
         private static final int SCRIPT_NO = 287;
+        private static final int DEMOGRAPHIC_NO = 1;
 
         private Prescription prescription;
 
         @BeforeEach
         void givenUnsavedPrescription() {
             prescription = new Prescription();
+            prescription.setDemographicId(DEMOGRAPHIC_NO);
             when(prescriptionDao.find(Integer.valueOf(SCRIPT_NO))).thenReturn(prescription);
             givenSavedDefault(UNDER_ARMSTRONG);
             givenList(signature(1, PROVIDER_NO, UNDER_ARMSTRONG), signature(2, PROVIDER_NO, UNDER_WELCH));
@@ -359,7 +361,7 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
         void shouldShowSavedSignatureLocked_whenPrescriptionHasOne() {
             prescription.setPrescriberSignature(UNDER_WELCH);
 
-            SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, String.valueOf(SCRIPT_NO), PROVIDER_NO);
+            SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, String.valueOf(SCRIPT_NO), DEMOGRAPHIC_NO, PROVIDER_NO);
 
             assertThat(card).extracting(SignatureCard::getScriptNo, SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable)
                     .containsExactly(String.valueOf(SCRIPT_NO), UNDER_WELCH, true, false);
@@ -367,9 +369,20 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
+        @DisplayName("should not show another patient's saved signature, treating their prescription as not printed")
+        void shouldNotShowSavedSignature_whenPrescriptionIsAnotherPatients() {
+            prescription.setPrescriberSignature(UNDER_WELCH);
+
+            SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, String.valueOf(SCRIPT_NO), DEMOGRAPHIC_NO + 1, PROVIDER_NO);
+
+            assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked)
+                    .containsExactly(UNDER_ARMSTRONG, false);
+        }
+
+        @Test
         @DisplayName("should give the prescriber their list, with the default shown, before the first print")
         void shouldGivePrescriberTheirList_whenNotPrintedYet() {
-            SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, String.valueOf(SCRIPT_NO), PROVIDER_NO);
+            SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, String.valueOf(SCRIPT_NO), DEMOGRAPHIC_NO, PROVIDER_NO);
 
             assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable)
                     .containsExactly(UNDER_ARMSTRONG, false, true);
@@ -382,7 +395,7 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
             LoggedInInfo someoneElse = new LoggedInInfo();
             someoneElse.setLoggedInProvider(new Provider(OTHER_PROVIDER_NO));
 
-            SignatureCard card = providerSignatureManager.getSignatureCard(someoneElse, String.valueOf(SCRIPT_NO), PROVIDER_NO);
+            SignatureCard card = providerSignatureManager.getSignatureCard(someoneElse, String.valueOf(SCRIPT_NO), DEMOGRAPHIC_NO, PROVIDER_NO);
 
             assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable)
                     .containsExactly(UNDER_ARMSTRONG, false, false);
@@ -392,7 +405,7 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
         @Test
         @DisplayName("should treat a window with no prescription yet as not printed")
         void shouldTreatAsNotPrinted_whenThereIsNoPrescription() {
-            SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, null, PROVIDER_NO);
+            SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, null, DEMOGRAPHIC_NO, PROVIDER_NO);
 
             assertThat(card).extracting(SignatureCard::getScriptNo, SignatureCard::getSignature, SignatureCard::isLocked)
                     .containsExactly(null, UNDER_ARMSTRONG, false);
@@ -401,7 +414,7 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
         @Test
         @DisplayName("should treat a prescription number too big to exist as not printed")
         void shouldTreatAsNotPrinted_whenScriptNoIsTooBig() {
-            SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, "99999999999", PROVIDER_NO);
+            SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, "99999999999", DEMOGRAPHIC_NO, PROVIDER_NO);
 
             assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked)
                     .containsExactly(UNDER_ARMSTRONG, false);
