@@ -41,6 +41,7 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
         PATIENT_DOB("patient_dob", "x.dob"),
         REPORT_DATE("report_date", "x.reportDate"),
         RECEIVED_DATE("received_date", "x.timeReceived"),
+        REPORT_STATUS("report_status", "x.reportStatus"),
         SENDING_FACILITY("sending_facility", "x.sourceFacility");
 
         private final String requestName;
@@ -214,10 +215,11 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
     /**
      * Lists one page of HRM Inbox reports. A report is listed once, no matter how many
      * recipients it has, and only when it has at least one HRMDocumentToProvider row that
-     * passes the provider filters. Child reports (parentReport pointing at another report) are never listed.
+     * passes the provider filters, or no provider row at all when providerNo is null or providerUnmatched is set.
+     * Child reports (parentReport pointing at another report) are never listed.
      *
      * @param providerNo String provider the report must be addressed to, null for any provider
-     * @param providerUnmatched boolean true lists only reports whose recipient could not be matched (provider "-1"); noSignOff is then ignored
+     * @param providerUnmatched boolean true lists only reports whose recipient could not be matched (provider "-1" or no provider row); noSignOff is then ignored
      * @param noSignOff boolean true lists only reports the provider has not signed off
      * @param demographicUnmatched boolean true lists only reports with no linked patient
      * @param categoryUnmatched boolean true lists only reports with no category
@@ -276,12 +278,18 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
             // A null hrmCategoryId means the report did not match any configured category mapping at import.
             hql.append(" and x.hrmCategoryId is null");
         }
-        hql.append(" and exists (select p.id from HRMDocumentToProvider p where p.hrmDocumentId = x.id");
+        hql.append(" and (exists (select p.id from HRMDocumentToProvider p where p.hrmDocumentId = x.id");
         if (pNo != null) {
             hql.append(" and p.providerNo = :pNo");
         }
         if (!providerUnmatched && noSignOff) {
             hql.append(" and p.signedOff = 0");
+        }
+        hql.append(")");
+        if (pNo == null || providerUnmatched) {
+            // A report whose last provider link was removed has no row at all; it is unmatched too,
+            // so ALL providers and Unmatched only both list it
+            hql.append(" or not exists (select q.id from HRMDocumentToProvider q where q.hrmDocumentId = x.id)");
         }
         hql.append(")").append(orderBy);
 

@@ -86,13 +86,13 @@ $(document).ready(function () {
                 }
             },
             {
+                // Recipient named in the report, then every EMR provider the report is assigned to
                 "data": "recipient_name", render: function (data, type, full, meta) {
-                    if (full.provider_no != null && full.provider_no.length > 0) {
-                        return "<a href='javascript:void(0)' title='This recipient has been linked to a providers record'>" + full.recipient_name + "</a>";
-                    } else {
-                        return full.recipient_name;
+                    var cell = $('<div>').text(full.recipient_name).html();
+                    if (full.assigned_providers != null && full.assigned_providers.length > 0) {
+                        cell += "<br/><small title='EMR providers this report is assigned to'>" + $('<div>').text(full.assigned_providers).html() + "</small>";
                     }
-
+                    return cell;
                 }
             },
             {
@@ -104,18 +104,32 @@ $(document).ready(function () {
                     return r;
                 }
             },
-            {"data": "patient_dob", "visible": false},
-            {"data": "patient_hcn", "visible": false},
-            {"data": "patient_gender", "visible": false},
+            {
+                // Which side of the report has no EMR record: the provider, the patient, or both
+                "orderable": false, render: function (data, type, full, meta) {
+                    var sides = [];
+                    if (full.provider_unmatched) {
+                        sides.push("Provider");
+                    }
+                    if (full.demographic_unmatched) {
+                        sides.push("Patient");
+                    }
+                    return sides.join(", ");
+                }
+            },
+            {"data": "patient_dob"},
+            {"data": "patient_hcn"},
+            {"data": "patient_gender"},
             {"data": "report_date"},
             {"data": "received_date"},
+            {"data": "report_status"},
             {"data": "sending_facility"},
             {"data": "report_number"},
             {"data": "class_subclass"},
             {"data": "category", "visible": false},
             {"data": "description"}
         ],
-        "order": [[6, "desc"]],
+        "order": [[7, "desc"]],
         "language": {
             "url": ctx + "/library/DataTables/i18n/" + lang + ".json"
         }
@@ -165,13 +179,13 @@ $(document).ready(function () {
     });
 
     $("#showAddlPatientInfo").on('change', function () {
-        $("#libraryTable").DataTable().column(3).visible($(this).is(":checked"));
         $("#libraryTable").DataTable().column(4).visible($(this).is(":checked"));
         $("#libraryTable").DataTable().column(5).visible($(this).is(":checked"));
+        $("#libraryTable").DataTable().column(6).visible($(this).is(":checked"));
     });
 
     $("#showCategoryInfo").on('change', function () {
-        $("#libraryTable").DataTable().column(11).visible($(this).is(":checked"));
+        $("#libraryTable").DataTable().column(13).visible($(this).is(":checked"));
     });
 
     $('#hrm_file').fileupload({

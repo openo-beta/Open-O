@@ -170,7 +170,7 @@
                         <tr>
                             <td><b>Display</b>:</td>
                             <td colspan="3">
-                                <input type="checkbox" name="showAddlPatientInfo" id="showAddlPatientInfo"/>Additional
+                                <input type="checkbox" checked="checked" name="showAddlPatientInfo" id="showAddlPatientInfo"/>Additional
                                 Patient Information &nbsp;&nbsp;
                                 <input type="checkbox" name="showCategoryInfo" id="showCategoryInfo"/>Categorization
                                 &nbsp;&nbsp;
@@ -189,11 +189,13 @@
                             <th></th>
                             <th>Recipient</th>
                             <th>Patient Name</th>
+                            <th>Unmatched</th>
                             <th>DOB</th>
                             <th>Health Card #</th>
                             <th>Gender</th>
                             <th>Report Date</th>
                             <th>Received Date</th>
+                            <th>Status</th>
                             <th>Sending Facility</th>
                             <th>Report Number</th>
                             <th>Class/Sub-class</th>
