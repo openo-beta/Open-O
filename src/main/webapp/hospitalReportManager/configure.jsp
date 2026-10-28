@@ -53,6 +53,12 @@
               href="${ pageContext.request.contextPath }/hospitalReportManager/inbox.css">
         <link href="<%=request.getContextPath() %>/css/bootstrap.css" rel="stylesheet" type="text/css">
         <link href="<%=request.getContextPath() %>/css/DT_bootstrap.css" rel="stylesheet" type="text/css">
+        <style>
+            /* The Bootstrap 2 sheet above makes the collapse div relative, which lays it over the brand link */
+            #navbar.navbar-collapse {
+                position: static;
+            }
+        </style>
 
         <script src="<%=request.getContextPath() %>/library/jquery/jquery-3.6.4.min.js"></script>
         <script src="<%=request.getContextPath() %>/library/DataTables/datatables.min.js"></script><!-- 1.13.4 -->
