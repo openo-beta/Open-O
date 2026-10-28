@@ -77,6 +77,19 @@ class DrawnSignatureFileUnitTest {
     }
 
     @Test
+    @DisplayName("should keep the time's leading zeros, so its digits can't shift into another provider's number")
+    void shouldKeepLeadingZeros_whenTimeStartsWithZero() throws IOException {
+        // Provider 10's drawing, which provider 101's time 0799999999999 would name without its zero
+        File othersDrawing = new File(System.getProperty("java.io.tmpdir"), "signature_101799999999999.jpg");
+        Files.write(othersDrawing.toPath(), new byte[]{1});
+        try {
+            assertThat(DrawnSignatureFile.find("signature_1010799999999999.jpg", "101")).isNull();
+        } finally {
+            Files.deleteIfExists(othersDrawing.toPath());
+        }
+    }
+
+    @Test
     @DisplayName("should not use a drawing whose file is gone")
     void shouldNotUseDrawing_whenFileIsGone() throws IOException {
         Files.delete(drawing.toPath());
