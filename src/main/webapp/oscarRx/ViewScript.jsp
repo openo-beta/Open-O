@@ -162,7 +162,8 @@
             String signingProvider = reprint.equalsIgnoreCase("true") && bean.getStashSize() > 0
                     ? bean.getStashItem(0).getProviderNo() : bean.getProviderNo();
             ProviderSignatureManager signatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
-            SignatureCard signatureCard = signatureManager.getSignatureCard(LoggedInInfo.getLoggedInInfoFromSession(request), scriptNo, signingProvider);
+            SignatureCard signatureCard = signatureManager.getSignatureCard(LoggedInInfo.getLoggedInInfoFromSession(request), scriptNo,
+                    bean.getDemographicNo(), signingProvider);
             String defaultChoiceId = "";
             for (SignatureChoice choice : signatureCard.getChoices()) {
                 if (choice.isDefaultChoice()) {

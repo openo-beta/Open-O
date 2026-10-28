@@ -229,7 +229,8 @@ public class RxPrintPreview2Action extends ActionSupport {
         // Saved at the first print, fax or PDF; until then the prescriber can pick it in this window.
         // scriptId is the prescription this window prints, faxes and annotates.
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        SignatureCard signatureCard = providerSignatureManager.getSignatureCard(loggedInInfo, request.getParameter("scriptId"), signingProvider);
+        SignatureCard signatureCard = providerSignatureManager.getSignatureCard(loggedInInfo, request.getParameter("scriptId"),
+                sessionBean.getDemographicNo(), signingProvider);
         String doctorName = signatureCard.getSignature();
         request.setAttribute("signatureCard", signatureCard);
         // A reprint names the person reprinting, not the prescriber's signature
