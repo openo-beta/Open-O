@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import ca.openosp.openo.util.UtilDateUtilities;
 
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -928,6 +929,46 @@ public class OscarAppointmentDaoImpl extends AbstractDaoImpl<Appointment> implem
         query.setParameter(1, sDate == null ? new Date(Long.MIN_VALUE) : sDate);
         query.setParameter(2, eDate == null ? new Date(Long.MIN_VALUE) : eDate);
         return query.getResultList();
+    }
+
+    @Override
+    public Map<Integer, Long> countByLocationCodeFrom(Date from) {
+        Query query = entityManager.createQuery("SELECT a.locationCode, COUNT(a) FROM Appointment a"
+                + " WHERE a.locationCode IS NOT NULL AND a.appointmentDate >= ?1 GROUP BY a.locationCode");
+        query.setParameter(1, from, TemporalType.DATE);
+
+        Map<Integer, Long> counts = new HashMap<>();
+        for (Object[] row : (List<Object[]>) query.getResultList()) {
+            counts.put((Integer) row[0], ((Number) row[1]).longValue());
+        }
+        return counts;
+    }
+
+    @Override
+    public int renameLocationFrom(int locationCode, String location, Date from, String providerNo) {
+        // The archive copies the same columns archiveAppointment does, before the rename changes them.
+        Query archive = entityManager.createNativeQuery("INSERT INTO appointmentArchive (appointment_no, provider_no,"
+                + " appointment_date, start_time, end_time, name, demographic_no, program_id, notes, reason, location,"
+                + " locationCode, resources, type, style, billing, status, imported_status, createdatetime,"
+                + " updatedatetime, creator, lastupdateuser, remarks, urgency, creatorSecurityId, bookingSource)"
+                + " SELECT appointment_no, provider_no, appointment_date, start_time, end_time, name, demographic_no,"
+                + " program_id, notes, reason, location, locationCode, resources, type, style, billing, status,"
+                + " imported_status, createdatetime, updatedatetime, creator, lastupdateuser, remarks, urgency,"
+                + " creatorSecurityId, bookingSource"
+                + " FROM appointment WHERE locationCode = ?1 AND appointment_date >= ?2");
+        archive.setParameter(1, locationCode);
+        archive.setParameter(2, from, TemporalType.DATE);
+        archive.executeUpdate();
+
+        // A bulk update skips Appointment's @PreUpdate, so the update time is set here.
+        Query rename = entityManager.createQuery("UPDATE Appointment a SET a.location = ?1, a.lastUpdateUser = ?2,"
+                + " a.updateDateTime = ?3 WHERE a.locationCode = ?4 AND a.appointmentDate >= ?5");
+        rename.setParameter(1, location);
+        rename.setParameter(2, providerNo);
+        rename.setParameter(3, new Date(), TemporalType.TIMESTAMP);
+        rename.setParameter(4, locationCode);
+        rename.setParameter(5, from, TemporalType.DATE);
+        return rename.executeUpdate();
     }
 
 }

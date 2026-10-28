@@ -42,6 +42,7 @@ import org.jdom2.input.SAXBuilder;
 import ca.openosp.openo.PMmodule.dao.ProgramDao;
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.PMmodule.model.Program;
+import ca.openosp.openo.appt.LocationList;
 import ca.openosp.openo.commn.OtherIdManager;
 import ca.openosp.openo.commn.dao.AdmissionDao;
 import ca.openosp.openo.commn.dao.DemographicDao;
@@ -457,7 +458,7 @@ public class PhsStarHandler extends BasePhsStarHandler {
         appt.setAppointmentDate(getApptStartDate());
         appt.setStartTime(getApptStartDate());
         appt.setEndTime(getApptEndDate());
-        appt.setLocation(getApptLocation());
+        LocationList.setLocationText(appt, getApptLocation());
         appt.setType(getApptType());
         appt.setReason(getApptReason());
 
