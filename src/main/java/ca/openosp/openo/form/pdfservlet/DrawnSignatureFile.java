@@ -45,7 +45,9 @@ final class DrawnSignatureFile {
         if (time.length() != TIME_DIGITS || !StringUtils.isNumeric(time)) {
             return null;
         }
-        File drawing = new File(DigitalSignatureUtils.getTempFilePath(requestId));
+        // Rebuilt from the provider's number and the time read as a number, zeros kept, so the path holds no posted text
+        String ownRequestId = providerNo + String.format("%0" + TIME_DIGITS + "d", Long.parseLong(time));
+        File drawing = new File(DigitalSignatureUtils.getTempFilePath(ownRequestId));
         return drawing.isFile() ? drawing : null;
     }
 }
