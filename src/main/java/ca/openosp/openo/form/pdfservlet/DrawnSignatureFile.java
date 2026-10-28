@@ -46,7 +46,7 @@ final class DrawnSignatureFile {
             return null;
         }
         // Rebuilt from the provider's number and the time read as a number, zeros kept, so the path holds no posted text
-        String ownRequestId = providerNo + String.format("%0" + TIME_DIGITS + "d", Long.parseLong(time));
+        String ownRequestId = providerNo + StringUtils.leftPad(Long.toString(Long.parseLong(time)), TIME_DIGITS, '0');
         File drawing = new File(DigitalSignatureUtils.getTempFilePath(ownRequestId));
         return drawing.isFile() ? drawing : null;
     }
