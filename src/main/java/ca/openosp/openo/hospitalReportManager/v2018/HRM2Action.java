@@ -75,6 +75,7 @@ import ca.openosp.openo.hospitalReportManager.dao.HRMSendingFacilityDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMSendingFacility;
 import ca.openosp.openo.hospitalReportManager.model.HRMCategory;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocument;
+import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToProvider;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentSubClass;
 import ca.openosp.openo.hospitalReportManager.model.HRMDocumentToDemographic;
 import ca.openosp.openo.hospitalReportManager.model.HRMProviderConfidentialityStatement;
@@ -951,8 +952,22 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
                 Integer demographicNo = ptList.isEmpty() ? null : ptList.get(0).getDemographicNo();
                 JSONObject data1 = new JSONObject();
                 data1.put("id", d.getId() + "");
-                data1.put("provider_no", d.getRecipientProviderNo() != null ? d.getRecipientProviderNo() : "");
+                // The recipient is matched when the report is linked to at least one real provider; "-1" is the unclaimed system user
+                String matchedProviderNo = "";
+                List<String> assignedProviderNames = new ArrayList<String>();
+                for (HRMDocumentToProvider link : d.getMatchedProviders()) {
+                    if (link.getProviderNo() != null && !"-1".equals(link.getProviderNo())) {
+                        if (matchedProviderNo.isEmpty()) {
+                            matchedProviderNo = link.getProviderNo();
+                        }
+                        assignedProviderNames.add(providerDao.getProviderName(link.getProviderNo()));
+                    }
+                }
+                data1.put("provider_no", matchedProviderNo);
+                data1.put("provider_unmatched", matchedProviderNo.isEmpty());
+                data1.put("assigned_providers", String.join(", ", assignedProviderNames));
                 data1.put("demographic_no", demographicNo != null ? demographicNo.toString() : "");
+                data1.put("demographic_unmatched", demographicNo == null);
                 data1.put("recipient_name", d.getRecipientName() != null ? d.getRecipientName() : "");
                 data1.put("patient_name", d.getFormattedName());
                 data1.put("patient_dob", d.getDob());
@@ -971,6 +986,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
                 }
 
                 data1.put("report_date", reportDate != null ? reportDate : "");
+                data1.put("report_status", d.getReportStatus() != null ? d.getReportStatus() : "");
 
 
                 data1.put("sending_facility", hrmSendingFacilityDao.getDisplayName(d.getSourceFacility(), sfRegistry));
