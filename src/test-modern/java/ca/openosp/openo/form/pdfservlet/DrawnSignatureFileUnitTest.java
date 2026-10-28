@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -86,6 +87,22 @@ class DrawnSignatureFileUnitTest {
             assertThat(DrawnSignatureFile.find("signature_1010799999999999.jpg", "101")).isNull();
         } finally {
             Files.deleteIfExists(othersDrawing.toPath());
+        }
+    }
+
+    @Test
+    @DisplayName("should find the drawing when the server's locale writes numbers in other digits")
+    void shouldFindOwnDrawing_whenDefaultLocaleUsesOtherDigits() throws IOException {
+        Locale serverLocale = Locale.getDefault();
+        try {
+            Locale.setDefault(Locale.forLanguageTag("ar-EG"));
+
+            File found = DrawnSignatureFile.find(drawing.getPath(), PROVIDER_NO);
+
+            assertThat(found).isNotNull();
+            assertThat(found.getCanonicalPath()).isEqualTo(drawing.getCanonicalPath());
+        } finally {
+            Locale.setDefault(serverLocale);
         }
     }
 
