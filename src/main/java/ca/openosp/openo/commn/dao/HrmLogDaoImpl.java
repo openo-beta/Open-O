@@ -30,8 +30,11 @@ public class HrmLogDaoImpl extends AbstractDaoImpl<HrmLog> implements HrmLogDao 
         String validatedOrderColumn = validateOrderColumn(orderColumn);
         String validatedOrderDirection = validateOrderDirection(orderDirection);
         
+        // The id tie-break keeps the page boundaries stable when rows share a sort value.
         if (validatedOrderColumn != null && validatedOrderDirection != null) {
-            sql += " ORDER BY d." + validatedOrderColumn + " " + validatedOrderDirection;
+            sql += " ORDER BY d." + validatedOrderColumn + " " + validatedOrderDirection + ", d.id DESC";
+        } else {
+            sql += " ORDER BY d.id DESC";
         }
         
         Query query = entityManager.createQuery(sql);
@@ -43,6 +46,19 @@ public class HrmLogDaoImpl extends AbstractDaoImpl<HrmLog> implements HrmLogDao 
         query.setMaxResults(length);
 
         return query.getResultList();
+    }
+
+    @Override
+    public long count(String providerNo) {
+        String sql = "SELECT COUNT(d) FROM HrmLog d";
+        if (providerNo != null) {
+            sql += " WHERE d.initiatingProviderNo = ?1";
+        }
+        Query query = entityManager.createQuery(sql);
+        if (providerNo != null) {
+            query.setParameter(1, providerNo);
+        }
+        return (Long) query.getSingleResult();
     }
 
     private static final Set<String> VALID_ORDER_COLUMNS = Set.of(

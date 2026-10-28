@@ -70,7 +70,6 @@ import ca.openosp.openo.hospitalReportManager.dao.HRMCategoryDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao.InboxSortColumn;
 import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentDao.SortDirection;
-import ca.openosp.openo.hospitalReportManager.dao.HRMDocumentToDemographicDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao;
 import ca.openosp.openo.hospitalReportManager.dao.HRMSendingFacilityDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMSendingFacility;
@@ -135,7 +134,6 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
     private HrmLogDao hrmLogDao = SpringUtils.getBean(HrmLogDao.class);
     private ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
     private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
-    private HRMDocumentToDemographicDao hrmDocumentToDemographicDao = SpringUtils.getBean(HRMDocumentToDemographicDao.class);
     private HRMSendingFacilityDao hrmSendingFacilityDao = SpringUtils.getBean(HRMSendingFacilityDao.class);
 
     // Struts 2 file upload properties for HRM report upload
@@ -745,6 +743,7 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
         }
 
         List<HrmLog> logs = hrmLogDao.query(Integer.parseInt(start), Integer.parseInt(length), orderBy, orderingColumnDirection, limitToProvider);
+        long total = hrmLogDao.count(limitToProvider);
 
         JSONArray data = new JSONArray();
 
@@ -772,8 +771,8 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
 
         JSONObject obj = new JSONObject();
         obj.put("draw", requestDraw());
-        obj.put("recordsTotal", data.length());
-        obj.put("recordsFiltered", data.length());
+        obj.put("recordsTotal", total);
+        obj.put("recordsFiltered", total);
         obj.put("data", data);
         //obj.put("error", "error occurred");
 
@@ -939,13 +938,16 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
             // without a per-row query (avoids N+1 across the inbox page).
             Map<String, HRMSendingFacility> sfRegistry = hrmSendingFacilityDao.getRegistryById();
 
+            // Categories are few and repeat across rows, so each one is read once per page.
+            Map<Integer, HRMCategory> categoriesById = new HashMap<Integer, HRMCategory>();
+
             for (HRMDocument d : docs) {
                 HRMCategory category = null;
                 if (d.getHrmCategoryId() != null) {
-                    category = hrmCategoryDao.find(d.getHrmCategoryId());
+                    category = categoriesById.computeIfAbsent(d.getHrmCategoryId(), hrmCategoryDao::find);
                 }
 
-                List<HRMDocumentToDemographic> ptList = hrmDocumentToDemographicDao.findByHrmDocumentId(d.getId());
+                List<HRMDocumentToDemographic> ptList = d.getMatchedDemographics();
                 Integer demographicNo = ptList.isEmpty() ? null : ptList.get(0).getDemographicNo();
                 JSONObject data1 = new JSONObject();
                 data1.put("id", d.getId() + "");

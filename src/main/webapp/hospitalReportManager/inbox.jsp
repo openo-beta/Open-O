@@ -41,6 +41,12 @@
     boolean isAdmin = securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_admin.hrm", "r", null);
     boolean isHrm = securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_hrm", "r", null);
 
+    // The listing behind this page (HRM2Action) returns nothing without _hrm, so stop here with a reason.
+    if (!isHrm) {
+        response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_hrm");
+        return;
+    }
+
     ProviderDao providerDao = SpringUtils.getBean(ProviderDao.class);
     List<Provider> providers = providerDao.getActiveProviders();
     String myProviderNo = LoggedInInfo.getLoggedInInfoFromSession(request).getLoggedInProviderNo();

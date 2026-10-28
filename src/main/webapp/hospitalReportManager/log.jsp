@@ -67,6 +67,7 @@
                     serverSide: true,
                     ajax: "<%=request.getContextPath()%>/hospitalReportManager/hrm.do?method=viewLog",
                     searching: false,
+                    "order": [[0, "desc"]],
                     "dom": '<"top"i>rt<"bottom"lp><"clear">',
                     "language": {"url": "<%=request.getContextPath() %>/library/DataTables/i18n/<fmt:setBundle basename="oscarResources"/><fmt:message key="global.i18nLanguagecode"/>.json"},
                     "columns": [

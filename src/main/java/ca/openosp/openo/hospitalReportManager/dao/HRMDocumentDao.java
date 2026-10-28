@@ -223,12 +223,13 @@ public class HRMDocumentDao extends AbstractDaoImpl<HRMDocument> {
      * @param categoryUnmatched boolean true lists only reports with no category
      * @param start int first row of the page
      * @param length int page size
-     * @param sortColumn InboxSortColumn column to sort by, null for no ordering
+     * @param sortColumn InboxSortColumn column to sort by, null sorts by id, newest first
      * @param sortDirection SortDirection ascending or descending
      * @return List<HRMDocument> the page of matching reports
      */
     public List<HRMDocument> query(String providerNo, boolean providerUnmatched, boolean noSignOff, boolean demographicUnmatched, boolean categoryUnmatched, int start, int length, InboxSortColumn sortColumn, SortDirection sortDirection) {
-        String orderBy = sortColumn == null ? "" : " order by " + sortColumn.hqlField + " " + sortDirection;
+        // The id tie-break keeps the page boundaries stable when reports share a sort value.
+        String orderBy = sortColumn == null ? " order by x.id desc" : " order by " + sortColumn.hqlField + " " + sortDirection + ", x.id desc";
         TypedQuery<HRMDocument> query = createInboxQuery("select x", HRMDocument.class, providerNo, providerUnmatched, noSignOff, demographicUnmatched, categoryUnmatched, orderBy);
         query.setFirstResult(start);
         query.setMaxResults(length);
