@@ -80,11 +80,8 @@
         skipComment = true;
     }
 
-    uProp = userPropertyDAO.getProp(providerNo, UserProperty.DISPLAY_DOCUMENT_AS);
-    String displayDocumentAs = UserProperty.IMAGE;
-    if (uProp != null && uProp.getValue().equals(UserProperty.PDF)) {
-        displayDocumentAs = UserProperty.PDF;
-    }
+    // Documents always display as PDF. UserProperty.IMAGE has been deprecated.
+    String displayDocumentAs = UserProperty.PDF;
 
     String demoName = request.getParameter("demoName");
     String documentNo = request.getParameter("segmentID");

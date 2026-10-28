@@ -2822,8 +2822,6 @@ public class ProviderProperty2Action extends ActionSupport {
         methodMap.put("saveIntegratorProperties", this::saveIntegratorProperties);
         methodMap.put("viewPatientNameLength", this::viewPatientNameLength);
         methodMap.put("savePatientNameLength", this::savePatientNameLength);
-        methodMap.put("viewDisplayDocumentAs", this::viewDisplayDocumentAs);
-        methodMap.put("saveDisplayDocumentAs", this::saveDisplayDocumentAs);
         methodMap.put("viewHideOldEchartLinkInAppt", this::viewHideOldEchartLinkInAppt);
         methodMap.put("saveHideOldEchartLinkInAppt", this::saveHideOldEchartLinkInAppt);
         methodMap.put("viewDashboardPrefs", this::viewDashboardPrefs);

@@ -734,10 +734,6 @@
             </tr>
             <tr>
                 <td><a href=#
-                                      onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewDisplayDocumentAs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnSetDisplayDocumentAs"/></a></td>
-            </tr>
-            <tr>
-                <td><a href=#
                                       onClick="popupPage(230,860,'<%=request.getContextPath()%>/setProviderStaleDate.do?method=viewAppointmentCardPrefs');return false;"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.btnEditSetAppointmentCardPrefs"/></a></td>
             </tr>
 
