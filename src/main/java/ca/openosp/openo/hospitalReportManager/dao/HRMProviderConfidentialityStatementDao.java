@@ -28,7 +28,9 @@ public class HRMProviderConfidentialityStatementDao extends AbstractDaoImpl<HRMP
         Query query = entityManager.createQuery(sql);
         query.setParameter(1, providerNo);
         try {
-            return (String) query.getSingleResult();
+            String statement = (String) query.getSingleResult();
+            // A row with a NULL statement reads the same as no row
+            return statement != null ? statement : "";
         } catch (Exception e) {
             // No statement for this providers
             return "";

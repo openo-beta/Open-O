@@ -32,6 +32,12 @@ public class HRMStatementModify2Action extends ActionSupport {
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         String statement = request.getParameter("statement");
 
+        // Only a submitted form carries the statement field; a plain GET of this
+        // action must not overwrite the saved statement with null
+        if (statement == null) {
+            return SUCCESS;
+        }
+
         HRMProviderConfidentialityStatement confStatement;
         try {
             confStatement = hrmProviderConfidentialityStatementDao.find(providerNo);
