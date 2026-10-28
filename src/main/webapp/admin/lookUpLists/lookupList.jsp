@@ -29,6 +29,7 @@
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
 <fmt:setBundle basename="oscarResources"/>
 <c:set var="appointmentLocationList" value="<%= ca.openosp.openo.managers.AppointmentLocationManager.LOCATION_LIST %>"/>
+<c:set var="locationNameMaxLength" value="<%= ca.openosp.openo.appt.LocationList.LABEL_MAX_LENGTH %>"/>
 <%
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
 %>
@@ -81,8 +82,10 @@
 
     <div class="addLookupListItemTools">
         <div class="addInput">
+            <%-- A booking saves a copy of a location's name, which is at most LocationList.LABEL_MAX_LENGTH characters. --%>
             <input type="text" class="lookupListItemLabel" id="lookupListItemLabel_${ lookuplist.id }"
-                   name="lookupListItemLabel_${ lookuplist.id }" value=""/>
+                   name="lookupListItemLabel_${ lookuplist.id }" value=""
+                   <c:if test="${ lookuplist.name eq appointmentLocationList }">maxlength="${ locationNameMaxLength }"</c:if>/>
         </div>
         <div class="addInputButton">
             <input type="button" class="addLookupListItemButton" id="addLookupListItemButton_${ lookuplist.id }"
