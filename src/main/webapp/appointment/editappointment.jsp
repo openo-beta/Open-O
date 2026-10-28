@@ -1172,14 +1172,14 @@
 
                             if (strEditable != null && strEditable.equalsIgnoreCase("yes")) { %>
 
-                <select name="status" class="form-control" style="background-color:<%=((AppointmentStatus)allStatus.get(curSelect)).getColor()%>" onchange='this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor' >
+                <select name="status" class="form-control" style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(((AppointmentStatus)allStatus.get(curSelect)).getColor()))%>" onchange='this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor' >
                             <% for (int i = 0; i < allStatus.size(); i++) {
                                 AppointmentStatus statusChoice = (AppointmentStatus) allStatus.get(i); %>
-                            <option class="<%=statusChoice.getStatus()%>"
-                                    style="background-color:<%=statusChoice.getColor()%>"
-                                    value="<%=statusChoice.getStatus()+signOrVerify%>"
+                            <option class="<%=Encode.forHtmlAttribute(String.valueOf(statusChoice.getStatus()))%>"
+                                    style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(statusChoice.getColor()))%>"
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(statusChoice.getStatus()+signOrVerify))%>"
                                     <%=statusChoice.getStatus().equals(statusCode) ? "SELECTED" : ""%>><%
-                                if (statusChoice.getActive() == 1) { %><%=statusChoice.getDescription()%><%
+                                if (statusChoice.getActive() == 1) { %><%=Encode.forHtml(String.valueOf(statusChoice.getDescription()))%><%
                                 } else { %><fmt:message key="appointment.status.inactiveItem"><fmt:param value="<%=Encode.forHtml(String.valueOf(statusChoice.getDescription()))%>"/></fmt:message><% } %>
                             </option>
                             <% } %>
