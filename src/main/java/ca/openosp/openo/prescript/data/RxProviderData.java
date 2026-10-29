@@ -82,9 +82,7 @@ public class RxProviderData {
             firstName = p.getFirstName();
             practitionerNo = p.getPractitionerNo();
             practitionerNoType = p.getPractitionerNoType();
-            if (firstName.indexOf("Dr.") < 0) {
-                firstName = "Dr. " + firstName;
-            }
+            firstName = prescriberFirstName(firstName);
 
             if (p.getWorkPhone() != null && p.getWorkPhone().length() > 0) {
                 clinicPhone = p.getWorkPhone();
@@ -135,6 +133,19 @@ public class RxProviderData {
         }
 
         return prov;
+    }
+
+    /**
+     * Gets a first name the way prescriptions print it, with "Dr. " in front unless it already has it.
+     *
+     * @param firstName String the provider's first name
+     * @return String the first name as printed on prescriptions
+     */
+    public static String prescriberFirstName(String firstName) {
+        if (firstName.indexOf("Dr.") < 0) {
+            return "Dr. " + firstName;
+        }
+        return firstName;
     }
 
     private String readProperty(String providerNo, String key) {

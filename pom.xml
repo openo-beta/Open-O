@@ -1814,6 +1814,8 @@
                                 <include>**/managers/**/*Test.java</include>
                                 <include>**/documentManager/**/*UnitTest.java</include>
                                 <include>**/eform/**/*Test.java</include>
+                                <include>**/commn/dao/**/*Test.java</include>
+                                <include>**/form/pdfservlet/**/*Test.java</include>
                                 <include>**/encounter/oscarConsultationRequest/**/*UnitTest.java</include>
                             </includes>
                             <excludes>
