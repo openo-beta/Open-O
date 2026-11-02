@@ -52,6 +52,7 @@
 <%@page import="ca.openosp.openo.commn.dao.AppointmentArchiveDao" %>
 <%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@page import="ca.openosp.openo.commn.model.Appointment" %>
+<%@page import="ca.openosp.openo.appt.LocationList" %>
 <%@page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@page import="java.text.SimpleDateFormat" %>
 <%@ page import="ca.openosp.openo.util.UtilMisc" %>
@@ -111,7 +112,7 @@
                 a.setName(request.getParameter("keyword"));
                 a.setNotes(request.getParameter("notes"));
                 a.setReason(request.getParameter("reason"));
-                a.setLocation(request.getParameter("location"));
+                LocationList.applyPostedLocation(a, request);
                 a.setResources(request.getParameter("resources"));
                 a.setType(request.getParameter("type"));
                 a.setStyle(request.getParameter("style"));
@@ -252,7 +253,7 @@
                         appt.setDemographicNo(Integer.parseInt((String) paramE[9]));
                         appt.setNotes(request.getParameter("notes"));
                         appt.setReason(request.getParameter("reason"));
-                        appt.setLocation(request.getParameter("location"));
+                        LocationList.applyPostedLocation(appt, request);
                         appt.setResources(request.getParameter("resources"));
                         appt.setUpdateDateTime(ConversionUtils.fromTimestampString(createdDateTime));
                         appt.setLastUpdateUser(userName);

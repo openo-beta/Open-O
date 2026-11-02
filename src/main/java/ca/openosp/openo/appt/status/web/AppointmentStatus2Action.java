@@ -18,158 +18,71 @@
 
 package ca.openosp.openo.appt.status.web;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.logging.log4j.Logger;
-import ca.openosp.openo.commn.model.AppointmentStatus;
-import ca.openosp.openo.utility.MiscUtils;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import java.util.Objects;
 
 import ca.openosp.openo.appt.status.service.AppointmentStatusMgr;
 import ca.openosp.openo.appt.status.service.impl.AppointmentStatusMgrImpl;
+import ca.openosp.openo.appt.web.AppointmentSettingsAction;
+import ca.openosp.openo.managers.SecurityInfoManager;
 
-import org.apache.struts2.ActionSupport;
-import org.apache.struts2.ServletActionContext;
+/**
+ * Appointment Status Manager: lists the appointment statuses and applies changes to them.
+ *
+ * <p>Routed on the {@code dispatch} parameter. Anything other than a change renders the list. A
+ * change needs update on one of the Appointment Settings objects, the same ones read opens the page
+ * with, and must be posted (see {@link AppointmentSettingsAction}):</p>
+ * <ul>
+ *   <li>{@code reset}: puts every editable status back to its seeded description, colour and icon</li>
+ *   <li>{@code changestatus}: enables or disables {@code statusID} ({@code iActive} 1 or 0); the
+ *       appointments that have a disabled status keep it</li>
+ *   <li>{@code updateDescription}, {@code updateColour}, {@code updateIcon}: sets status {@code ID}
+ *       to {@code value}; posted by the item style editor on the list page</li>
+ * </ul>
+ *
+ * <p>Locked statuses (editable=0) can't be changed: edits and Enable/Disable refuse them, and Reset
+ * skips them. The manager writes an audit log row for each saved change.</p>
+ *
+ * @since 2024-12-06
+ */
+public class AppointmentStatus2Action extends AppointmentSettingsAction {
 
-public class AppointmentStatus2Action extends ActionSupport {
-    HttpServletRequest request = ServletActionContext.getRequest();
-    HttpServletResponse response = ServletActionContext.getResponse();
+    private AppointmentStatusMgr appointmentStatusMgr = new AppointmentStatusMgrImpl();
 
-    private static final Logger logger = MiscUtils.getLogger();
-
+    /**
+     * Renders the status list, or applies the change named by {@code dispatch}.
+     *
+     * @return String {@code success} to render the list, or {@code saved} to redirect back to it
+     * @throws SecurityException if the user lacks the privilege, or a change was not posted
+     */
+    @Override
     public String execute() {
-        String method = request.getParameter("dispatch");
-        if ("view".equals(method)) {
-            return view();
-        } else if ("reset".equals(method)) {
-            return reset();
-        } else if ("changestatus".equals(method)) {
-            return changestatus();
-        } else if ("modify".equals(method)) {
-            return modify();
-        } else if ("update".equals(method)) {
-            return update();
-        }
-        return view();
+        // The admin menu links here with no dispatch, and a switch on null throws.
+        String dispatch = Objects.toString(request.getParameter("dispatch"), "view");
+        return switch (dispatch) {
+            case "reset" -> change(() -> {
+                appointmentStatusMgr.reset(getLoggedInInfo());
+                return true;
+            });
+            case "changestatus" -> change(() ->
+                    appointmentStatusMgr.changeStatus(getLoggedInInfo(), intParameter("statusID"), intParameter("iActive")));
+            case "updateDescription" -> change(() ->
+                    appointmentStatusMgr.updateDescription(getLoggedInInfo(), intParameter("ID"), request.getParameter("value")));
+            case "updateColour" -> change(() ->
+                    appointmentStatusMgr.updateColour(getLoggedInInfo(), intParameter("ID"), request.getParameter("value")));
+            case "updateIcon" -> change(() ->
+                    appointmentStatusMgr.updateIcon(getLoggedInInfo(), intParameter("ID"), request.getParameter("value")));
+            default -> show();
+        };
     }
 
-    public String view() {
-        logger.warn("view");
-        populateAllStatus(request);
+    @Override
+    protected boolean canChange() {
+        return hasAnyPrivilege(SEC_OBJECTS, SecurityInfoManager.UPDATE);
+    }
+
+    @Override
+    protected String view() {
+        request.setAttribute("allStatus", appointmentStatusMgr.getAllStatus());
         return SUCCESS;
-    }
-
-    public String reset() {
-        logger.warn("reset");
-        AppointmentStatusMgr apptStatusMgr = getApptStatusMgr();
-        apptStatusMgr.reset();
-        populateAllStatus(request);
-        return SUCCESS;
-    }
-
-    public String changestatus() {
-        logger.warn("changestatus");
-        AppointmentStatusMgr apptStatusMgr = getApptStatusMgr();
-        int ID = Integer.parseInt(request.getParameter("statusID"));
-        int iActive = Integer.parseInt(request.getParameter("iActive"));
-        apptStatusMgr.changeStatus(ID, iActive);
-        populateAllStatus(request);
-        return SUCCESS;
-    }
-
-    public String modify() {
-        logger.warn("modify");
-        AppointmentStatusMgr apptStatusMgr = getApptStatusMgr();
-        int ID = Integer.parseInt(request.getParameter("statusID"));
-        AppointmentStatus appt = apptStatusMgr.getStatus(ID);
-
-        this.setID(ID);
-        this.setApptStatus(appt.getStatus());
-        this.setApptDesc(appt.getDescription());
-        this.setApptOldColor(appt.getColor());
-
-        return "edit";
-    }
-
-    public String update() {
-        logger.warn("update");
-        AppointmentStatusMgr apptStatusMgr = getApptStatusMgr();
-
-        int ID = this.getID();
-        String strDesc = this.getApptDesc();
-        String strColor = this.getApptColor();
-        if (null == strColor || strColor.equals(""))
-            strColor = this.getApptOldColor();
-        apptStatusMgr.modifyStatus(ID, strDesc, strColor);
-        populateAllStatus(request);
-        return SUCCESS;
-    }
-
-    public WebApplicationContext getApptContext() {
-        return WebApplicationContextUtils.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
-    }
-
-    public AppointmentStatusMgr getApptStatusMgr() {
-        return new AppointmentStatusMgrImpl();
-    }
-
-    private void populateAllStatus(HttpServletRequest request) {
-        AppointmentStatusMgr apptStatusMgr = getApptStatusMgr();
-        List allStatus = apptStatusMgr.getAllStatus();
-        request.setAttribute("allStatus", allStatus);
-        int iUseStatus = apptStatusMgr.checkStatusUsuage(allStatus);
-        if (iUseStatus > 0) {
-            request.setAttribute("useStatus", apptStatusMgr.getStatus(iUseStatus + 1).getStatus());
-        }
-    }
-
-    private int ID;
-    private String apptStatus;
-    private String apptDesc;
-    private String apptOldColor;
-    private String apptColor;
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
-
-    public String getApptStatus() {
-        return apptStatus;
-    }
-
-    public void setApptStatus(String apptStatus) {
-        this.apptStatus = apptStatus;
-    }
-
-    public String getApptDesc() {
-        return apptDesc;
-    }
-
-    public void setApptDesc(String apptDesc) {
-        this.apptDesc = apptDesc;
-    }
-
-    public String getApptOldColor() {
-        return apptOldColor;
-    }
-
-    public void setApptOldColor(String apptOldColor) {
-        this.apptOldColor = apptOldColor;
-    }
-
-    public String getApptColor() {
-        return apptColor;
-    }
-
-    public void setApptColor(String apptColor) {
-        this.apptColor = apptColor;
     }
 }

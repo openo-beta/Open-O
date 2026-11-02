@@ -48,6 +48,8 @@
 <%@ page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@ page import="ca.openosp.openo.PMmodule.model.ProgramProvider" %>
 
+<%@ page import="ca.openosp.openo.appt.LocationList" %>
+<%@ page import="ca.openosp.openo.appt.ItemStyleColour" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.utility.MiscUtils" %>
@@ -80,6 +82,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="appt" %>
 
 <%
     LoggedInInfo loggedInInfo1 = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -157,6 +160,7 @@
     for (LookupListItem lli : reasonCodes.getItems()) {
         reasonCodesMap.put(lli.getId(), lli);
     }
+    LocationList locations = LocationList.load(loggedInInfo1);
 
     // are prevention stop sign icons being loaded? This needs to be known when loading the schedule
     pageContext.setAttribute("isPreventionWarningDisabled", providerPreventionManager.isDisabled());
@@ -1850,14 +1854,18 @@
 
                                                          //multi-site. if a site have been selected, only display appointment in that site
                                                    if (!bMultisites || (selectedSite == null && CurrentSiteMap.get(sitename) != null) || sitename.equals(selectedSite)) {
+                                                       // The chip and both tooltips show the location name the appointment saved.
+                                                       String apptLocation = locations.getDisplayName(appointment);
                                                     %>
-                                                    <td class="appt" bgcolor='<%=Encode.forHtmlAttribute(String.valueOf(as.getBgColor()))%>'
+                                                    <td class="appt" bgcolor='<%=Encode.forHtmlAttribute(ItemStyleColour.overWhite(String.valueOf(as.getBgColor())))%>'
                                                         rowspan="<%=Encode.forHtmlAttribute(String.valueOf(iRows))%>"
                                                         nowrap>
                                                         <!-- multisites : add colour-coded to the "location" value of that appointment. -->
                                                         <%if (bMultisites) {%>
                                                         <span title="<%=Encode.forHtmlAttribute(String.valueOf(sitename))%>"
                                                               style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(siteBgColor.get(sitename)))%>;">&nbsp;</span>|
+                                                        <%} else {%>
+                                                        <appt:locationChip item="<%=locations.getChipItem(appointment)%>" name="<%=apptLocation%>"/>
                                                         <%} %>
 
                                                         <%
@@ -1897,9 +1905,8 @@
                                                             } else {
                                                             %>
 
-                                                            <img src="<%= request.getContextPath() %>/images/<%=Encode.forHtmlAttribute(String.valueOf(as.getImageName()))%>"
-                                                                 border="0" height="10"
-                                                                 alt="<%=Encode.forHtmlAttribute(statusTitle)%>">
+                                                            <appt:statusIcon icon="<%=String.valueOf(as.getIcon())%>" signOff="<%=as.getSignOff()%>"
+                                                                             label="<%=statusTitle%>"/>
 
                                                             <%
                                                                     }
@@ -1918,6 +1925,7 @@
                                                         <% } %>
                                                             <%--|--%>
                                                         <%
+                                                            String locationLine = apptLocation.isEmpty() ? "" : "&#013;&#010;location: " + Encode.forHtmlAttribute(apptLocation);
                                                             if (demographic_no == 0) {
                                                         %>
                                                         <!--  caisi  -->
@@ -1959,7 +1967,7 @@
                                                             // Build tooltip variants for privacy-compliant display (dot-name format)
                                                             // Always show reason/notes labels, but handle "null" string from String.valueOf(null)
                                                             String timeRange = iS + ":" + (iSm > 10 ? "" : "0") + iSm + "-" + iE + ":" + iEm;
-                                                            String dotTooltipShort = timeRange + " " + Encode.forHtmlAttribute(name) + ((type != null && !type.isEmpty()) ? "&#013;&#010;type: " + Encode.forHtmlAttribute(type) : "");
+                                                            String dotTooltipShort = timeRange + " " + Encode.forHtmlAttribute(name) + ((type != null && !type.isEmpty()) ? "&#013;&#010;type: " + Encode.forHtmlAttribute(type) : "") + locationLine;
                                                             String dotReasonDisplay = (reason != null && !"null".equals(reason)) ? reason : "";
                                                             String dotNotesDisplay = (notes != null && !"null".equals(notes)) ? notes : "";
                                                             String dotTooltipFull = dotTooltipShort + "&#013;&#010;reason: " + Encode.forHtmlAttribute(dotReasonDisplay) + "&#013;&#010;notes: " + Encode.forHtmlAttribute(dotNotesDisplay);
@@ -2060,7 +2068,7 @@
                                                         <%
                                                             // Build tooltip variants for privacy-compliant display
                                                             // Always show reason/notes labels, but handle "null" string from String.valueOf(null)
-                                                            String tooltipShort = Encode.forHtmlAttribute(name) + ((type != null && !type.isEmpty()) ? "&#013;&#010;type: " + Encode.forHtmlAttribute(type) : "");
+                                                            String tooltipShort = Encode.forHtmlAttribute(name) + ((type != null && !type.isEmpty()) ? "&#013;&#010;type: " + Encode.forHtmlAttribute(type) : "") + locationLine;
                                                             String reasonDisplay = (reason != null && !"null".equals(reason)) ? reason : "";
                                                             String notesDisplay = (notes != null && !"null".equals(notes)) ? notes : "";
                                                             String tooltipFull = tooltipShort + "&#013;&#010;reason: " + Encode.forHtmlAttribute(reasonDisplay) + "&#013;&#010;notes: " + Encode.forHtmlAttribute(notesDisplay);

@@ -84,6 +84,7 @@
 <%@ page import="ca.openosp.openo.commn.dao.AppointmentTypeDao" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="ca.openosp.openo.appt.ApptUtil" %>
+<%@ page import="ca.openosp.openo.appt.LocationList" %>
 <%@ page import="ca.openosp.openo.appt.ApptData" %>
 <%@ page import="ca.openosp.openo.demographic.data.DemographicData" %>
 <%@ page import="ca.openosp.openo.casemgmt.model.CaseManagementNoteLink" %>
@@ -96,6 +97,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <%@ taglib uri="/WEB-INF/oscar-tag.tld" prefix="oscar" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="appt" %>
 <jsp:useBean id="providerBean" class="java.util.Properties" scope="session"/>
 <%
 
@@ -143,6 +145,8 @@
     LookupListManager lookupListManager = SpringUtils.getBean(LookupListManager.class);
     LookupList reasonCodes = lookupListManager.findLookupListByName(loggedInInfo, "reasonCode");
     pageContext.setAttribute("reasonCodes", reasonCodes);
+    LocationList locations = LocationList.load(loggedInInfo);
+    boolean locationMode = locations.isLocationMode();
 
     ApptData apptObj = ApptUtil.getAppointmentFromSession(request);
 
@@ -157,7 +161,6 @@
     String apptStatusHere = pros.getProperty("appt_status_here");
 
     AppointmentStatusMgr apptStatusMgr = new AppointmentStatusMgrImpl();
-    List allStatus = apptStatusMgr.getAllActiveStatus();
 
     String useProgramLocation = OscarProperties.getInstance().getProperty("useProgramLocation");
     String moduleNames = OscarProperties.getInstance().getProperty("ModuleNames");
@@ -195,6 +198,7 @@
         signOrVerify = statusCode.substring(1, 2);
         statusCode = statusCode.substring(0, 1);
     }
+    List allStatus = apptStatusMgr.getStatusChoices(statusCode);
     if (bFirstDisp) {
         demono = String.valueOf(appt.getDemographicNo());
     } else if (request.getParameter("demographic_no") != null && !request.getParameter("demographic_no").equals("")) {
@@ -239,6 +243,8 @@
     <script src="<%= request.getContextPath() %>/js/global.js"></script>
     <script src="<%= request.getContextPath() %>/js/checkDate.js"></script>
     <script src="<%= request.getContextPath() %>/share/javascript/Oscar.js"></script>
+    <link href="<%= request.getContextPath() %>/css/locationSelect.css" rel="stylesheet">
+    <script src="<%= request.getContextPath() %>/js/appointment/locationSelect.js"></script>
 
         <style>
 
@@ -575,7 +581,8 @@
                 document.EDITAPPT.demographic_no.value = "<%=Encode.forJavaScriptBlock(apptObj.getDemographic_no())%>";
                 document.forms[0].reason.value = "<%= Encode.forJavaScriptBlock(apptObj.getReason()) %>";
                 document.forms[0].notes.value = "<%= Encode.forJavaScriptBlock(apptObj.getNotes()) %>";
-                document.EDITAPPT.location.value = "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>";
+                pasteLocation(document.EDITAPPT, "<%=Encode.forJavaScriptBlock(StringUtils.defaultString(apptObj.getLocationCode()))%>",
+                        "<%=Encode.forJavaScriptBlock(apptObj.getLocation())%>");
                 document.EDITAPPT.resources.value = "<%=Encode.forJavaScriptBlock(apptObj.getResources())%>";
                 document.EDITAPPT.type.value = "<%=Encode.forJavaScriptBlock(apptObj.getType())%>";
                 if ('<%=Encode.forJavaScript(String.valueOf(apptObj.getUrgency()))%>' === 'critical') {
@@ -609,7 +616,10 @@
                 document.forms['EDITAPPT'].duration.value = durSel;
                 document.forms['EDITAPPT'].resources.value = resSel;
                 var loc = document.forms['EDITAPPT'].location;
-                if (loc.nodeName.toUpperCase() === 'SELECT') {
+                // The Location List takes the type's location by name, and no free text.
+                if (document.forms['EDITAPPT'].locationCode) {
+                    selectLocationByName(document.forms['EDITAPPT'].locationCode, locSel);
+                } else if (loc.nodeName.toUpperCase() === 'SELECT') {
                     for (c = 0; c < loc.length; c++) {
                         if (loc.options[c].innerHTML === locSel) {
                             loc.selectedIndex = c;
@@ -683,6 +693,8 @@
                 }
             });
             jQuery(document).ready(function () {
+
+                jQuery('[name="locationCode"]').locationmenu();
 
                 var url = "<%= request.getContextPath() %>/demographic/SearchDemographic.do?jqueryJSON=true&activeOnly=true";
 
@@ -1073,6 +1085,12 @@
                             }
                             %>
                         </select>
+                        <% } else if (locationMode) {
+                            // A patient search shows the page again without the appointment, so read its saved location again.
+                            Appointment saved = bFirstDisp ? appt : appointmentDao.find(Integer.parseInt(appointment_no));
+                            LocationList.Choice posted = bFirstDisp ? null : new LocationList.Choice(request.getParameter("locationCode"), loc);
+                        %>
+                        <appt:locationSelect dropdown="<%=locations.editDropdown(saved, posted)%>"/>
                         <% } else { %>
 		        <input type="text" class="form-control" name="location" tabindex="4"
                        value="<%=Encode.forHtmlAttribute(bFirstDisp?appt.getLocation():request.getParameter("location"))%>" >
@@ -1154,11 +1172,14 @@
                             if (strEditable != null && strEditable.equalsIgnoreCase("yes")) { %>
 
                 <select name="status" class="form-control" style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(((AppointmentStatus)allStatus.get(curSelect)).getColor()))%>" onchange='this.style.backgroundColor=this.options[this.selectedIndex].style.backgroundColor' >
-                            <% for (int i = 0; i < allStatus.size(); i++) { %>
-                            <option class="<%=Encode.forHtmlAttribute(String.valueOf(((AppointmentStatus)allStatus.get(i)).getStatus()))%>"
-                                    style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(((AppointmentStatus)allStatus.get(i)).getColor()))%>"
-                                    value="<%=Encode.forHtmlAttribute(String.valueOf(((AppointmentStatus)allStatus.get(i)).getStatus()+signOrVerify))%>"
-                                    <%=((AppointmentStatus) allStatus.get(i)).getStatus().equals(statusCode) ? "SELECTED" : ""%>><%=Encode.forHtml(String.valueOf(((AppointmentStatus) allStatus.get(i)).getDescription()))%>
+                            <% for (int i = 0; i < allStatus.size(); i++) {
+                                AppointmentStatus statusChoice = (AppointmentStatus) allStatus.get(i); %>
+                            <option class="<%=Encode.forHtmlAttribute(String.valueOf(statusChoice.getStatus()))%>"
+                                    style="background-color:<%=Encode.forHtmlAttribute(String.valueOf(statusChoice.getColor()))%>"
+                                    value="<%=Encode.forHtmlAttribute(String.valueOf(statusChoice.getStatus()+signOrVerify))%>"
+                                    <%=statusChoice.getStatus().equals(statusCode) ? "SELECTED" : ""%>><%
+                                if (statusChoice.getActive() == 1) { %><%=Encode.forHtml(String.valueOf(statusChoice.getDescription()))%><%
+                                } else { %><fmt:message key="appointment.status.inactiveItem"><fmt:param value="<%=Encode.forHtml(String.valueOf(statusChoice.getDescription()))%>"/></fmt:message><% } %>
                             </option>
                             <% } %>
                         </select> <%
@@ -1184,6 +1205,7 @@
 
         <% AppointmentTypeDao appDao = SpringUtils.getBean(AppointmentTypeDao.class);
                                 List<AppointmentType> types = appDao.listAll();
+                                String selectedType = bFirstDisp ? appt.getType() : request.getParameter("type");
                 for(AppointmentType type : types) {
                             %>
                     <option data-dur="<%=Encode.forHtmlAttribute(String.valueOf(type.getDuration()))%>"
@@ -1191,7 +1213,7 @@
                             data-loc="<%= Encode.forHtmlAttribute(type.getLocation()) %>"
                             data-notes="<%= Encode.forHtmlAttribute(type.getNotes()) %>"
                             data-resources="<%= Encode.forHtmlAttribute(type.getResources()) %>"
-                            <%= type.getName().equalsIgnoreCase(appt.getType()) ? "selected" : ""%>>
+                            <%= type.getName().equalsIgnoreCase(selectedType) ? "selected" : ""%>>
                         <%=Encode.forHtml(type.getName())%>
                             </option>
                             <% } %>

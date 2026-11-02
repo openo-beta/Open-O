@@ -24,6 +24,15 @@
 
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
+<%@ taglib uri="/WEB-INF/security.tld" prefix="security" %>
+<fmt:setBundle basename="oscarResources"/>
+<c:set var="appointmentLocationList" value="<%= ca.openosp.openo.managers.AppointmentLocationManager.LOCATION_LIST %>"/>
+<c:set var="locationNameMaxLength" value="<%= ca.openosp.openo.appt.LocationList.LABEL_MAX_LENGTH %>"/>
+<%
+    String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
+%>
 
 <div class="lookupListItemsWrapper">
 
@@ -37,6 +46,20 @@
 			</span>
             <%-- 			<a class="showHideEdit" id="edit_${ lookuplist.id }" href="javascript:void(0);" >edit</a> --%>
             <%-- 			<a class="showHideEdit" id="cancel_${ lookuplist.id }" style="display: none;" href="javascript:void(0);" >cancel</a>			 --%>
+            <%-- Locations are only added here; whoever may open Appointment Settings is sent there for the rest. --%>
+            <c:if test="${ lookuplist.name eq appointmentLocationList }">
+                <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.userAdmin,_admin.schedule" rights="r">
+                    <c:url var="locationSettingsUrl" value="/appointment/apptLocationSetting.do"/>
+                    <fmt:message key="admin.admin.ScheduleManagement" var="sectionLabel"/>
+                    <fmt:message key="admin.admin.appointmentStatusSetting" var="settingsLabel"/>
+                    <fmt:message key="admin.appt.settings.tab.location" var="tabLabel"/>
+                    <div class="lookupListNote">
+                        <fmt:message key="admin.appt.location.msg.managerNote">
+                            <fmt:param><a href="${ e:forHtmlAttribute(locationSettingsUrl) }">${ e:forHtml(sectionLabel) } &rarr; ${ e:forHtml(settingsLabel) } &rarr; ${ e:forHtml(tabLabel) }</a></fmt:param>
+                        </fmt:message>
+                    </div>
+                </security:oscarSec>
+            </c:if>
         </div>
     </div>
 
@@ -59,8 +82,10 @@
 
     <div class="addLookupListItemTools">
         <div class="addInput">
+            <%-- A booking saves a copy of a location's name, which is at most LocationList.LABEL_MAX_LENGTH characters. --%>
             <input type="text" class="lookupListItemLabel" id="lookupListItemLabel_${ lookuplist.id }"
-                   name="lookupListItemLabel_${ lookuplist.id }" value=""/>
+                   name="lookupListItemLabel_${ lookuplist.id }" value=""
+                   <c:if test="${ lookuplist.name eq appointmentLocationList }">maxlength="${ locationNameMaxLength }"</c:if>/>
         </div>
         <div class="addInputButton">
             <input type="button" class="addLookupListItemButton" id="addLookupListItemButton_${ lookuplist.id }"
