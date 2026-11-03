@@ -31,6 +31,7 @@ import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.enumerator.DocumentType;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import ca.openosp.openo.email.core.EmailAttachmentSettings;
+import ca.openosp.openo.email.core.EmailComposeStore;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.EformDataManager;
 import ca.openosp.openo.managers.EmailManager;
@@ -338,7 +339,6 @@ public class AddEForm2Action extends ActionSupport {
 
                 return "download";
             } else if (isEmailEForm) {
-                String path = request.getContextPath() + "/email/emailComposeAction.do?method=prepareComposeEFormMailer&fid=" + Encode.forUriComponent(fid);
                 EmailAttachmentSettings settings = EmailAttachmentSettings.of(
                     request,
                     fdid,
@@ -349,7 +349,8 @@ public class AddEForm2Action extends ActionSupport {
                     attachedHRMDocuments,
                     attachedForms
                 );
-                addEmailAttachmentsToSession(request, settings);
+                String composeKey = EmailComposeStore.putEForm(request.getSession(), settings);
+                String path = request.getContextPath() + "/email/emailComposeAction.do?method=prepareComposeEFormMailer&fid=" + Encode.forUriComponent(fid) + "&composeKey=" + Encode.forUriComponent(composeKey);
                 try {
                     response.sendRedirect(path);
                 } catch (IOException e) {
@@ -432,7 +433,6 @@ public class AddEForm2Action extends ActionSupport {
 
                 return "download";
             } else if (isEmailEForm) {
-                String path = request.getContextPath() + "/email/emailComposeAction.do?method=prepareComposeEFormMailer&fid=" + Encode.forUriComponent(fid);
                 EmailAttachmentSettings settings = EmailAttachmentSettings.of(
                     request,
                     prev_fdid,
@@ -443,7 +443,8 @@ public class AddEForm2Action extends ActionSupport {
                     attachedHRMDocuments,
                     attachedForms
                 );
-                addEmailAttachmentsToSession(request, settings);
+                String composeKey = EmailComposeStore.putEForm(request.getSession(), settings);
+                String path = request.getContextPath() + "/email/emailComposeAction.do?method=prepareComposeEFormMailer&fid=" + Encode.forUriComponent(fid) + "&composeKey=" + Encode.forUriComponent(composeKey);
                 try {
                     response.sendRedirect(path);
                 } catch (IOException e) {
@@ -507,38 +508,6 @@ public class AddEForm2Action extends ActionSupport {
         String formattedDate = dateFormat.format(currentDate);
 
         return formattedDate + "_" + demographicLastName + ".pdf";
-    }
-
-    /**
-     * Stores email attachment data in session for use after redirect.
-     * Session attributes survive redirects, unlike request attributes.
-     *
-     * @param request HTTP request
-     * @param settings EmailAttachmentSettings containing all attachment configuration
-     */
-    private void addEmailAttachmentsToSession(HttpServletRequest request, EmailAttachmentSettings settings) {
-        HttpSession session = request.getSession();
-        session.setAttribute("deleteEFormAfterEmail", settings.deleteEFormAfterEmail());
-        session.setAttribute("isEmailEncrypted", settings.isEmailEncrypted());
-        session.setAttribute("isEmailAttachmentEncrypted", settings.isEmailAttachmentEncrypted());
-        session.setAttribute("isEmailAutoSend", settings.isEmailAutoSend());
-        session.setAttribute("openEFormAfterEmail", settings.openAfterEmail());
-        session.setAttribute("attachEFormItSelf", settings.attachEFormItSelf());
-        session.setAttribute("fdid", settings.fdid());
-        session.setAttribute("demographicId", settings.demographicNo());
-        session.setAttribute("attachedEForms", settings.attachedEForms());
-        session.setAttribute("attachedDocuments", settings.attachedDocuments());
-        session.setAttribute("attachedLabs", settings.attachedLabs());
-        session.setAttribute("attachedHRMDocuments", settings.attachedHRMDocuments());
-        session.setAttribute("attachedForms", settings.attachedForms());
-        session.setAttribute("emailPDFPassword", settings.emailPDFPassword());
-        session.setAttribute("emailPDFPasswordClue", settings.emailPDFPasswordClue());
-        session.setAttribute("senderEmail", settings.senderEmail());
-        session.setAttribute("subjectEmail", settings.subjectEmail());
-        session.setAttribute("bodyEmail", settings.bodyEmail());
-        session.setAttribute("footerEmail", settings.footerEmail());
-        session.setAttribute("encryptedMessageEmail", settings.encryptedMessageEmail());
-        session.setAttribute("emailPatientChartOption", settings.emailPatientChartOption());
     }
 
     /**
