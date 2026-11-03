@@ -41,6 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Email compose store keeps each compose page separate")
 @Tag("unit")
 @Tag("fast")
+@Tag("service")
 @Tag("email")
 class EmailComposeStoreUnitTest {
 
