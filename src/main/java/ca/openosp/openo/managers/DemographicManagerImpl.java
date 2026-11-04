@@ -211,14 +211,6 @@ public class DemographicManagerImpl implements DemographicManager {
 
         result = demographicExtDao.getDemographicExtByDemographicNo(id);
 
-        // --- log action ---
-        if (result != null) {
-            for (DemographicExt item : result) {
-                LogAction.addLogSynchronous(loggedInInfo, "DemographicManager.getDemographicExts",
-                        "id=" + item.getId() + "(" + id.toString() + ")");
-            }
-        }
-
         return result;
     }
 
