@@ -644,11 +644,6 @@ public class TicklerManagerImpl implements TicklerManager {
 
         List<Tickler> result = ticklerDao.listTicklers(demographicNo, beginDate, endDate);
 
-        for (Tickler tmp : result) {
-            // --- log action ---
-            LogAction.addLogSynchronous(loggedInInfo, "TicklerManager.listTicklers", "ticklerId=" + tmp.getId());
-        }
-
         return result;
     }
 
@@ -657,11 +652,6 @@ public class TicklerManagerImpl implements TicklerManager {
         checkPrivilege(loggedInInfo, PRIVILEGE_READ);
 
         List<Tickler> result = ticklerDao.findActiveByDemographicNo(demographicNo);
-
-        for (Tickler tmp : result) {
-            // --- log action ---
-            LogAction.addLogSynchronous(loggedInInfo, "TicklerManager.listTicklers", "ticklerId=" + tmp.getId());
-        }
 
         return result;
     }
@@ -754,14 +744,6 @@ public class TicklerManagerImpl implements TicklerManager {
 
         List<TicklerListDTO> result = ticklerDao.getTicklerDTOs(filter);
 
-        // Log access when filtering by demographic (matches search_tickler_bydemo behavior)
-        if (filter.getDemographicNo() != null && !filter.getDemographicNo().isEmpty()) {
-            for (TicklerListDTO dto : result) {
-                LogAction.addLogSynchronous(loggedInInfo, "TicklerManager.getTicklerDTOs",
-                        "ticklerId=" + dto.getId());
-            }
-        }
-
         return result;
     }
 
@@ -775,14 +757,6 @@ public class TicklerManagerImpl implements TicklerManager {
         checkPrivilege(loggedInInfo, PRIVILEGE_READ);
 
         List<TicklerListDTO> result = ticklerDao.getTicklerDTOs(filter, offset, limit);
-
-        // Log access when filtering by demographic (matches search_tickler_bydemo behavior)
-        if (filter.getDemographicNo() != null && !filter.getDemographicNo().isEmpty()) {
-            for (TicklerListDTO dto : result) {
-                LogAction.addLogSynchronous(loggedInInfo, "TicklerManager.getTicklerDTOs",
-                        "ticklerId=" + dto.getId());
-            }
-        }
 
         return result;
     }
