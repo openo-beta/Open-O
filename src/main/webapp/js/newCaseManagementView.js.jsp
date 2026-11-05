@@ -1738,7 +1738,10 @@ function updateCPPNote() {
 
     function viewEmailByLogId(width, height, url) {
         // One window for all viewed emails, so each View replaces the previous one
-        window.open(url, "viewEmail", "width=1100,height=1000");
+        var viewWindow = window.open(url, "viewEmail", "width=1100,height=1000");
+        if (viewWindow != null) {
+            viewWindow.focus();
+        }
     }
 
 //this func fires only if maximize button is clicked

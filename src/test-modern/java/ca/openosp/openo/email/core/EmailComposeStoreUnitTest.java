@@ -34,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * <ul>
  *   <li>every compose page has its own entry, and other pages cannot change it</li>
  *   <li>Send takes the entry once, so the same page cannot send twice</li>
+ *   <li>A failed send puts the entry back, unchanged, so the same page can send again</li>
  *   <li>a refresh keeps the entry, Cancel removes only its own entry</li>
  *   <li>the store is bounded and is not kept across a Tomcat restart</li>
  * </ul>
@@ -345,16 +346,58 @@ class EmailComposeStoreUnitTest {
     }
 
     @Nested
+    @DisplayName("Failed send")
+    class FailedSend {
+
+        @Test
+        @DisplayName("should send again under the same key after the entry is restored")
+        void shouldSendAgain_whenEntryRestored() {
+            String key = EmailComposeStore.putDirect(session, 1, documents(1));
+            EmailComposeStore.Entry entry = EmailComposeStore.take(session, key);
+
+            EmailComposeStore.restore(session, key, entry);
+
+            assertThat(documentIds(EmailComposeStore.take(session, key))).containsExactly(1);
+            assertThat(EmailComposeStore.take(session, key)).isNull();
+        }
+
+        @Test
+        @DisplayName("should refuse a second send while the first is still sending")
+        void shouldRefuseSecondSend_whileFirstIsSending() {
+            String key = EmailComposeStore.putDirect(session, 1, documents(1));
+
+            EmailComposeStore.Entry sending = EmailComposeStore.take(session, key);
+
+            assertThat(sending).isNotNull();
+            assertThat(EmailComposeStore.take(session, key)).isNull();
+        }
+
+        @Test
+        @DisplayName("should keep the stored file path when a copied attachment is encrypted")
+        void shouldKeepStoredFilePath_whenCopyIsEncrypted() {
+            String key = EmailComposeStore.putDirect(session, 1, documents(1));
+            EmailComposeStore.Entry entry = EmailComposeStore.take(session, key);
+
+            entry.copyOfAttachments().get(0).setFilePath("/tmp/encrypted.pdf");
+
+            EmailAttachment stored = entry.attachments().get(0);
+            assertThat(stored.getFilePath()).isEqualTo("/tmp/doc1.pdf");
+            assertThat(entry.copyOfAttachments().get(0).getFilePath()).isEqualTo("/tmp/doc1.pdf");
+        }
+    }
+
+    @Nested
     @DisplayName("Size limit and restart")
     class LimitAndRestart {
 
         @Test
-        @DisplayName("should drop the least recently used page when more than 50 pages are waiting")
-        void shouldDropLeastRecentlyUsed_whenOver50Pages() {
-            String oldest = EmailComposeStore.putEForm(session, eFormSettings("1", "1"));
-            String refreshed = EmailComposeStore.putEForm(session, eFormSettings("2", "1"));
+        @DisplayName("should drop the least recently used old email before any eForm page")
+        void shouldDropLeastRecentlyUsedOldEmail_whenOver50Pages() {
+            String eForm = EmailComposeStore.putEForm(session, eFormSettings("1", "1"));
+            String oldest = EmailComposeStore.putDirect(session, 1, List.of());
+            String refreshed = EmailComposeStore.putDirect(session, 1, List.of());
             List<String> others = new ArrayList<>();
-            for (int i = 0; i < 48; i++) {
+            for (int i = 0; i < 47; i++) {
                 others.add(EmailComposeStore.putDirect(session, 1, List.of()));
             }
             EmailComposeStore.get(session, refreshed);
@@ -362,9 +405,27 @@ class EmailComposeStoreUnitTest {
             String newest = EmailComposeStore.putDirect(session, 1, List.of());
 
             assertThat(EmailComposeStore.get(session, oldest)).isNull();
+            assertThat(EmailComposeStore.get(session, eForm)).isNotNull();
             assertThat(EmailComposeStore.get(session, refreshed)).isNotNull();
             assertThat(EmailComposeStore.get(session, newest)).isNotNull();
             assertThat(others).allMatch(key -> EmailComposeStore.get(session, key) != null);
+        }
+
+        @Test
+        @DisplayName("should drop the least recently used eForm page when only eForm pages are waiting")
+        void shouldDropLeastRecentlyUsedEForm_whenOnlyEFormPages() {
+            String oldest = EmailComposeStore.putEForm(session, eFormSettings("1", "1"));
+            String refreshed = EmailComposeStore.putEForm(session, eFormSettings("2", "1"));
+            for (int i = 0; i < 48; i++) {
+                EmailComposeStore.putEForm(session, eFormSettings(String.valueOf(i + 3), "1"));
+            }
+            EmailComposeStore.get(session, refreshed);
+
+            String newest = EmailComposeStore.putEForm(session, eFormSettings("51", "1"));
+
+            assertThat(EmailComposeStore.get(session, oldest)).isNull();
+            assertThat(EmailComposeStore.get(session, refreshed)).isNotNull();
+            assertThat(EmailComposeStore.get(session, newest)).isNotNull();
         }
 
         @Test

@@ -26,6 +26,7 @@
 package ca.openosp.openo.email.core;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,10 +43,12 @@ import ca.openosp.openo.commn.model.EmailLog.TransactionType;
  * The key goes on the compose page and is posted back on Send or Cancel. Send uses only the
  * patient, eForm and attachments stored under that key, so a second compose page, or viewing an
  * old email from the eChart, can never change what another page sends. Send and Cancel remove the
- * entry, so the same page cannot send twice. A refresh of the compose page keeps the entry.
+ * entry, so the same page cannot send twice. A send that fails puts the entry back, so the user can
+ * press Send again. A refresh of the compose page keeps the entry.
  * <p>
  * Entries that are never sent or cancelled are dropped once more than {@value #MAX_ENTRIES} are
- * waiting (the least recently used first), or when the user logs out.
+ * waiting, or when the user logs out. Viewed or resent old emails go first, the least recently used
+ * of them, because they can be opened again and a half-written eForm email cannot.
  * <p>
  * Nothing here survives a Tomcat restart: the store is not serializable, so Tomcat drops it
  * when it saves sessions, and an email page opened before the restart is refused on Send.
@@ -71,6 +74,21 @@ public final class EmailComposeStore {
      */
     public record Entry(EmailAttachmentSettings settings, TransactionType transactionType, String demographicNo,
                         String fdid, ArrayList<EmailAttachment> attachments) {
+
+        /**
+         * Copies the attachments for one send. Encrypting an email changes the file path on its
+         * attachments, so a failed send has to leave these unencrypted for the next Send.
+         *
+         * @return List&lt;EmailAttachment&gt; a new list of new attachments with the same values
+         */
+        public List<EmailAttachment> copyOfAttachments() {
+            List<EmailAttachment> copies = new ArrayList<>();
+            for (EmailAttachment attachment : attachments) {
+                copies.add(new EmailAttachment(attachment.getFileName(), attachment.getFilePath(),
+                        attachment.getDocumentType(), attachment.getDocumentId(), attachment.getFileSize()));
+            }
+            return copies;
+        }
     }
 
     /**
@@ -152,6 +170,17 @@ public final class EmailComposeStore {
     }
 
     /**
+     * Puts back an entry that {@link #take} removed, when the email was not sent, so the same page can send again.
+     *
+     * @param session HttpSession the logged in user's session
+     * @param key String the key the entry was taken with
+     * @param entry Entry the entry to put back
+     */
+    public static void restore(HttpSession session, String key, Entry entry) {
+        store(session, key, entry);
+    }
+
+    /**
      * Removes the entry stored under a key, when the email is cancelled.
      *
      * @param session HttpSession the logged in user's session
@@ -161,15 +190,19 @@ public final class EmailComposeStore {
         take(session, key);
     }
 
-    private static synchronized String put(HttpSession session, Entry entry) {
+    private static String put(HttpSession session, Entry entry) {
+        String key = UUID.randomUUID().toString();
+        store(session, key, entry);
+        return key;
+    }
+
+    private static synchronized void store(HttpSession session, String key, Entry entry) {
         Entries entries = (Entries) session.getAttribute(SESSION_KEY);
         if (entries == null) {
             entries = new Entries();
         }
-        String key = UUID.randomUUID().toString();
         entries.put(key, entry);
         session.setAttribute(SESSION_KEY, entries);
-        return key;
     }
 
     /**
@@ -180,7 +213,17 @@ public final class EmailComposeStore {
         private final Map<String, Entry> map = new LinkedHashMap<>(16, 0.75f, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<String, Entry> eldest) {
-                return size() > MAX_ENTRIES;
+                if (size() <= MAX_ENTRIES) {
+                    return false;
+                }
+                Iterator<EmailComposeStore.Entry> pages = values().iterator();
+                while (pages.hasNext()) {
+                    if (pages.next().transactionType() == TransactionType.DIRECT) {
+                        pages.remove();
+                        return false;
+                    }
+                }
+                return true;
             }
         };
 
