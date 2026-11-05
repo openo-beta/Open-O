@@ -28,18 +28,3 @@ UPDATE prescription
 SET prescriber_signature = LEFT(SUBSTRING_INDEX(textView, CHAR(10), 1), 255)
 WHERE prescriber_signature IS NULL AND textView IS NOT NULL
   AND TRIM(SUBSTRING_INDEX(textView, CHAR(10), 1)) <> '';
-
--- A blank line 1 means the signature was blank when saved, which now prints the prescriber's name.
--- Prescriptions add "Dr. " to the first name unless it already has it (RxProviderData).
-UPDATE prescription p
-JOIN provider pr ON pr.provider_no = p.provider_no
-SET p.prescriber_signature = LEFT(CONCAT(IF(LOCATE(BINARY 'Dr.', pr.first_name) > 0, '', 'Dr. '), pr.first_name, ' ', pr.last_name), 255)
-WHERE p.prescriber_signature IS NULL AND p.textView IS NOT NULL AND p.textView <> '';
-
--- Rows with no text copy get the prescriber's signature as it is now, or their name.
-UPDATE prescription p
-JOIN provider pr ON pr.provider_no = p.provider_no
-SET p.prescriber_signature = LEFT(COALESCE(
-      (SELECT MAX(NULLIF(TRIM(pe.signature), '')) FROM providerExt pe WHERE pe.provider_no = p.provider_no),
-      CONCAT(IF(LOCATE(BINARY 'Dr.', pr.first_name) > 0, '', 'Dr. '), pr.first_name, ' ', pr.last_name)), 255)
-WHERE p.prescriber_signature IS NULL;
