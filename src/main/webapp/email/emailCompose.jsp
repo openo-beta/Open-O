@@ -195,8 +195,6 @@
                 <input type="hidden" name="demographicId" value="${demographicId}"/>
                 <input type="hidden" name="fdid" value="${fdid}"/>
                 <input type="hidden" name="fid" id="fid" value="<c:out value='${fid}'/>"/>
-                <input type="hidden" name="openEFormAfterEmail" value="${openEFormAfterEmail}"/>
-                <input type="hidden" name="deleteEFormAfterEmail" value="${deleteEFormAfterEmail}"/>
                 <input type="hidden" name="transactionType" id="transactionType" value="${transactionType}"/>
                 <input type="hidden" name="composeKey" value="${e:forHtmlAttribute(composeKey)}"/>
 

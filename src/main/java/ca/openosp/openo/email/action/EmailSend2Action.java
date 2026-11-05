@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.commn.model.EmailLog;
 import ca.openosp.openo.commn.model.EmailLog.EmailStatus;
+import ca.openosp.openo.email.core.EmailAttachmentSettings;
 import ca.openosp.openo.email.core.EmailComposeStore;
 import ca.openosp.openo.email.core.EmailData;
 import ca.openosp.openo.managers.EformDataManager;
@@ -92,28 +93,27 @@ public class EmailSend2Action extends ActionSupport {
      *   <li>Setting request attributes for success status, EForm opening preference, and email log</li>
      * </ul>
      *
-     * <p>The method checks the "deleteEFormAfterEmail" request parameter to determine if the
-     * EForm should be removed after successful email delivery. The EForm id comes from the entry
-     * stored under the compose key, not from the request.</p>
+     * <p>The EForm id and the choices to delete or reopen the EForm after sending come from the
+     * entry stored under the compose key, not from the request.</p>
      *
      * @return String Struts2 SUCCESS result for rendering the email result page
      */
     public String sendEFormEmail() {
-        boolean deleteEFormAfterEmail = request.getParameter("deleteEFormAfterEmail") != null && "true".equalsIgnoreCase(request.getParameter("deleteEFormAfterEmail"));
-
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         EmailComposeStore.Entry entry = takeComposeEntry();
         if (entry == null) {
             return refuseSend();
         }
-        EmailLog emailLog = emailManager.sendEmail(loggedInInfo, prepareEmailFields(request, entry));
+        EmailLog emailLog = sendEntry(loggedInInfo, entry);
 
         boolean isEmailSuccessful = emailLog.getStatus() == EmailStatus.SUCCESS;
         request.setAttribute("isEmailSuccessful", isEmailSuccessful);
-        if (isEmailSuccessful && deleteEFormAfterEmail && !entry.fdid().isEmpty()) {
+        // A key from a resend page reaches here with no eForm settings
+        EmailAttachmentSettings settings = entry.settings();
+        if (isEmailSuccessful && settings != null && settings.deleteEFormAfterEmail() && !entry.fdid().isEmpty()) {
             eformDataManager.removeEFormData(loggedInInfo, entry.fdid());
         }
-        request.setAttribute("isOpenEForm", request.getParameter("openEFormAfterEmail"));
+        request.setAttribute("isOpenEForm", settings != null && settings.openAfterEmail());
         request.setAttribute("fdid", entry.fdid());
         request.setAttribute("emailLog", emailLog);
         return SUCCESS;
@@ -138,7 +138,7 @@ public class EmailSend2Action extends ActionSupport {
         if (entry == null) {
             return refuseSend();
         }
-        EmailLog emailLog = emailManager.sendEmail(loggedInInfo, prepareEmailFields(request, entry));
+        EmailLog emailLog = sendEntry(loggedInInfo, entry);
         boolean isEmailSuccessful = emailLog.getStatus() == EmailStatus.SUCCESS;
         request.setAttribute("isEmailSuccessful", isEmailSuccessful);
         request.setAttribute("emailLog", emailLog);
@@ -191,13 +191,34 @@ public class EmailSend2Action extends ActionSupport {
     }
 
     /**
-     * Shows the "not sent" message on the compose page instead of sending the email.
+     * Sends the entry's email and puts the entry back when it was not sent, so the page can send again.
+     *
+     * <p>The entry stays out of the store during the send, so a second Send of the page is refused meanwhile.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the logged in user
+     * @param entry EmailComposeStore.Entry the entry taken for this compose page
+     * @return EmailLog the log of this send, with its status
+     */
+    private EmailLog sendEntry(LoggedInInfo loggedInInfo, EmailComposeStore.Entry entry) {
+        EmailLog emailLog = null;
+        try {
+            emailLog = emailManager.sendEmail(loggedInInfo, prepareEmailFields(request, entry));
+            return emailLog;
+        } finally {
+            if (emailLog == null || emailLog.getStatus() != EmailStatus.SUCCESS) {
+                EmailComposeStore.restore(request.getSession(), request.getParameter("composeKey"), entry);
+            }
+        }
+    }
+
+    /**
+     * Shows the "already used or expired" message on the compose page instead of sending the email.
      *
      * @return String Struts2 SUCCESS result; the compose page shows the message and closes
      */
     private String refuseSend() {
         request.setAttribute("isEmailError", true);
-        request.setAttribute("emailErrorMessage", "This email was NOT sent because this email page is out of date. Please close it and start the email again.");
+        request.setAttribute("emailErrorMessage", "This email page has already been used or has expired, so nothing was sent just now. If you already pressed Send, check Manage Emails or the patient's chart before sending again.");
         return SUCCESS;
     }
 
@@ -247,7 +268,7 @@ public class EmailSend2Action extends ActionSupport {
         emailData.setDemographicNo(entry.demographicNo());
         emailData.setProviderNo(providerNo);
         emailData.setAdditionalParams(additionalParams);
-        emailData.setAttachments(entry.attachments());
+        emailData.setAttachments(entry.copyOfAttachments());
 
         return emailData;
     }

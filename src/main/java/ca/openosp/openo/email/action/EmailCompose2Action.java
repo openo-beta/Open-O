@@ -192,7 +192,7 @@ public class EmailCompose2Action extends ActionSupport {
         EmailAttachmentSettings settings = entry == null ? null : entry.settings();
         if (settings == null) {
             request.setAttribute("isEmailError", true);
-            request.setAttribute("emailErrorMessage", "This email page has expired. Open the eForm again and click Email.");
+            request.setAttribute("emailErrorMessage", "This email page has already been used or has expired. If you already pressed Send, check Manage Emails or the patient's chart. Otherwise open the eForm again and click Email.");
             return "compose";
         }
 
@@ -230,6 +230,7 @@ public class EmailCompose2Action extends ActionSupport {
             emailAttachmentList.addAll(emailComposeManager.prepareFormAttachments(request, response, settings.attachedForms(), Integer.parseInt(demographicId)));
         } catch (PDFGenerationException e) {
             logger.error(e.getMessage(), e);
+            EmailComposeStore.remove(request.getSession(), composeKey);
             return emailComposeError(request,"This eForm (and attachments, if applicable) could not be emailed. \\n\\n" + e.getMessage());
         }
         emailComposeManager.sanitizeAttachments(emailAttachmentList);
@@ -253,8 +254,6 @@ public class EmailCompose2Action extends ActionSupport {
         request.setAttribute("demographicId", demographicId);
         request.setAttribute("fdid", settings.fdid());
         request.setAttribute("fid", fid);
-        request.setAttribute("openEFormAfterEmail", settings.openAfterEmail());
-        request.setAttribute("deleteEFormAfterEmail", settings.deleteEFormAfterEmail());
         request.setAttribute("isEmailEncrypted", settings.isEmailEncrypted());
         request.setAttribute("isEmailAttachmentEncrypted", settings.isEmailAttachmentEncrypted());
         request.setAttribute("isEmailAutoSend", settings.isEmailAutoSend());
