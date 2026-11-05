@@ -13,7 +13,6 @@ import ca.openosp.openo.log.LogAction;
 import ca.openosp.openo.log.LogConst;
 import ca.openosp.openo.managers.model.SignatureCard;
 import ca.openosp.openo.managers.model.SignatureChoice;
-import ca.openosp.openo.prescript.data.RxProviderData;
 import ca.openosp.openo.utility.LoggedInInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -298,8 +297,8 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     }
 
     /**
-     * Gets a provider's name the way prescriptions print it: "Dr. " (unless the first name
-     * already has it), the first name, then the last name.
+     * Gets a provider's name as prescriptions print it: the first and last name as entered, with
+     * nothing added, the same as chart notes sign with.
      *
      * @return String the prescriber name, or an empty string when the provider doesn't exist
      */
@@ -308,7 +307,7 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
         if (provider == null) {
             return "";
         }
-        return RxProviderData.prescriberFirstName(provider.getFirstName()) + " " + provider.getLastName();
+        return provider.getFullName();
     }
 
     /**

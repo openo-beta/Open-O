@@ -53,12 +53,10 @@ import static org.mockito.Mockito.when;
  * Tests for {@link ProviderSignatureManagerImpl}: a provider's signature list and their default.
  *
  * <p>The contract: the default lives in {@code providerExt.signature}. A missing, empty or blank one
- * means the prescriber name ("Dr. " unless the first name has it, the first name, the last name),
- * which is what prescriptions printed before signatures could be chosen. The list is the prescriber
- * name first, then the saved signatures in the order they were added, then a default saved outside the
- * list; reading it saves nothing. Adding never changes the
- * default; editing or deleting the default carries the default with it; a provider can only change
- * their own signatures. A prescription saves its signature once, at its first print: the prescriber's
+ * means the prescriber name: the first and last name as entered, with nothing added. The list is the
+ * prescriber name first, then the saved signatures in the order they were added, then a default saved
+ * outside the list; reading it saves nothing. Adding never changes the default; editing or deleting the
+ * default carries the default with it; a provider can only change their own signatures. A prescription saves its signature once, at its first print: the prescriber's
  * choice from that same list, or the prescriber's default when someone else prints it, and then never
  * changes. Only the prescriber gets the list to choose from in the print window.</p>
  *
@@ -167,13 +165,13 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
         void shouldReturnPrescriberName_whenSavedSignatureIsMissingOrBlank(String signature) {
             givenSavedDefault(signature);
 
-            assertThat(providerSignatureManager.getDefaultSignature(PROVIDER_NO)).isEqualTo("Dr. doctor openodoc");
+            assertThat(providerSignatureManager.getDefaultSignature(PROVIDER_NO)).isEqualTo("doctor openodoc");
         }
 
         @Test
         @DisplayName("should return the prescriber name when the provider has no providerExt row")
         void shouldReturnPrescriberName_whenNoProviderExtRow() {
-            assertThat(providerSignatureManager.getDefaultSignature(PROVIDER_NO)).isEqualTo("Dr. doctor openodoc");
+            assertThat(providerSignatureManager.getDefaultSignature(PROVIDER_NO)).isEqualTo("doctor openodoc");
         }
     }
 
@@ -185,11 +183,31 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
     class PrescriberName {
 
         @Test
-        @DisplayName("should not add a second Dr. when the first name already has it")
-        void shouldNotAddSecondDr_whenFirstNameHasIt() {
+        @DisplayName("should print the first and last name with no Dr. added")
+        void shouldAddNoDr_whenNameIsPrinted() {
+            givenProvider("Ty", "Armstrong");
+
+            assertThat(providerSignatureManager.getDefaultSignature(PROVIDER_NO)).isEqualTo("Ty Armstrong");
+        }
+
+        @Test
+        @DisplayName("should keep a Dr. that is part of the first name as entered")
+        void shouldKeepDr_whenFirstNameIsEnteredWithIt() {
             givenProvider("Dr. Ty", "Armstrong");
 
             assertThat(providerSignatureManager.getDefaultSignature(PROVIDER_NO)).isEqualTo("Dr. Ty Armstrong");
+        }
+
+        @Test
+        @DisplayName("should list an old signature with Dr. as its own entry, apart from the name, when it is the default")
+        void shouldListOldDrSignatureApartFromName_whenItIsTheDefault() {
+            // A signature from before the upgrade, when prescriptions added Dr. to the name
+            givenSavedDefault("Dr. doctor openodoc");
+            givenList(signature(1, PROVIDER_NO, "Dr. doctor openodoc"));
+
+            assertThat(providerSignatureManager.getChoices(PROVIDER_NO))
+                    .extracting(SignatureChoice::getSignatureId, SignatureChoice::getText, SignatureChoice::isDefaultChoice)
+                    .containsExactly(tuple(null, "doctor openodoc", false), tuple(1, "Dr. doctor openodoc", true));
         }
 
         @Test
@@ -218,7 +236,7 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
 
             assertThat(choices).extracting(SignatureChoice::getSignatureId, SignatureChoice::getText, SignatureChoice::isDefaultChoice)
                     .containsExactly(
-                            tuple(null, "Dr. doctor openodoc", false),
+                            tuple(null, "doctor openodoc", false),
                             tuple(1, UNDER_ARMSTRONG, true),
                             tuple(2, UNDER_WELCH, false));
         }
@@ -243,7 +261,7 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
 
             assertThat(choices).extracting(SignatureChoice::getSignatureId, SignatureChoice::getText, SignatureChoice::isDefaultChoice)
                     .containsExactly(
-                            tuple(null, "Dr. doctor openodoc", false),
+                            tuple(null, "doctor openodoc", false),
                             tuple(2, UNDER_WELCH, false),
                             tuple(SignatureChoice.UNLISTED_DEFAULT_ID, UNDER_ARMSTRONG, true));
             assertThat(choices.get(2).isSavedSignature()).isFalse();
@@ -259,20 +277,20 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
             List<SignatureChoice> choices = providerSignatureManager.getChoices(PROVIDER_NO);
 
             assertThat(choices).extracting(SignatureChoice::getSignatureId, SignatureChoice::getText, SignatureChoice::isDefaultChoice)
-                    .containsExactly(tuple(null, "Dr. doctor openodoc", false), tuple(1, UNDER_ARMSTRONG, true));
+                    .containsExactly(tuple(null, "doctor openodoc", false), tuple(1, UNDER_ARMSTRONG, true));
         }
 
         @Test
         @DisplayName("should list a saved signature that copies the prescriber name as its own entry, marked as the default")
         void shouldListCopyOfPrescriberNameAsOwnEntry_whenItIsTheDefault() {
             // e.g. copied in by the upgrade: the provider sees the signature they had, and can delete it
-            givenSavedDefault("Dr. doctor openodoc");
-            givenList(signature(1, PROVIDER_NO, "Dr. doctor openodoc"));
+            givenSavedDefault("doctor openodoc");
+            givenList(signature(1, PROVIDER_NO, "doctor openodoc"));
 
             List<SignatureChoice> choices = providerSignatureManager.getChoices(PROVIDER_NO);
 
             assertThat(choices).extracting(SignatureChoice::getSignatureId, SignatureChoice::getText, SignatureChoice::isDefaultChoice)
-                    .containsExactly(tuple(null, "Dr. doctor openodoc", false), tuple(1, "Dr. doctor openodoc", true));
+                    .containsExactly(tuple(null, "doctor openodoc", false), tuple(1, "doctor openodoc", true));
         }
 
         @Test
@@ -281,7 +299,7 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
             givenList(signature(2, PROVIDER_NO, UNDER_WELCH));
 
             assertThat(providerSignatureManager.findChoice(PROVIDER_NO, 2)).map(SignatureChoice::getText).contains(UNDER_WELCH);
-            assertThat(providerSignatureManager.findChoice(PROVIDER_NO, null)).map(SignatureChoice::getText).contains("Dr. doctor openodoc");
+            assertThat(providerSignatureManager.findChoice(PROVIDER_NO, null)).map(SignatureChoice::getText).contains("doctor openodoc");
             assertThat(providerSignatureManager.findChoice(PROVIDER_NO, 4)).isEmpty();
         }
 
@@ -433,7 +451,7 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
         @Test
         @DisplayName("should refuse a signature that is the prescriber name, which is always in the list")
         void shouldRefuseSignature_whenSameAsPrescriberName() {
-            assertThatThrownBy(() -> providerSignatureManager.addSignature(loggedInInfo, "Dr. doctor openodoc"))
+            assertThatThrownBy(() -> providerSignatureManager.addSignature(loggedInInfo, "doctor openodoc"))
                     .isInstanceOf(ProviderSignatureException.class)
                     .hasMessage(ProviderSignatureManager.ERROR_DUPLICATE);
         }
@@ -671,7 +689,7 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
             givenSavedDefault(UNDER_ARMSTRONG);
 
             assertThat(providerSignatureManager.lockForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO, null))
-                    .isEqualTo("Dr. doctor openodoc");
+                    .isEqualTo("doctor openodoc");
         }
 
         @Test
