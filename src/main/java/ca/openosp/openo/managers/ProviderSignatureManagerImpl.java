@@ -105,22 +105,16 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     @Override
     public List<SignatureChoice> getChoices(String providerNo) {
         String defaultText = getSavedDefaultText(providerNo);
-        String prescriberName = getPrescriberName(providerNo);
-        // A default saved as the prescriber name prints the same as no default, so the name entry carries it
-        boolean defaultListed = defaultText == null || defaultText.equals(prescriberName);
         List<SignatureChoice> choices = new ArrayList<>();
-        choices.add(new SignatureChoice(null, prescriberName, defaultListed));
+        choices.add(new SignatureChoice(null, getPrescriberName(providerNo), defaultText == null));
+        boolean defaultListed = false;
         for (ProviderSignature signature : providerSignatureDao.findByProviderNo(providerNo)) {
-            // A saved copy of the prescriber name, e.g. from the upgrade, would list it twice
-            if (hasText(signature, prescriberName)) {
-                continue;
-            }
             boolean isDefault = hasText(signature, defaultText);
             defaultListed |= isDefault;
             choices.add(new SignatureChoice(signature.getId(), signature.getSignature().strip(), isDefault));
         }
         // A default saved outside the list still shows, so the print window can pre-select it
-        if (!defaultListed) {
+        if (defaultText != null && !defaultListed) {
             choices.add(new SignatureChoice(SignatureChoice.UNLISTED_DEFAULT_ID, defaultText, true));
         }
         return choices;

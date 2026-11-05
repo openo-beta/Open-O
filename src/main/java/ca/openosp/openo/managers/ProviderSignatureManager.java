@@ -87,8 +87,7 @@ public interface ProviderSignatureManager {
     /**
      * Gets a provider's signature list: their prescriber name first, then their saved signatures
      * in the order they were added, then their default if it isn't in the list, with the default
-     * marked. A saved signature that is the prescriber name isn't listed again; when it is the
-     * default, the prescriber name entry is marked instead. Nothing is saved.
+     * marked. Nothing is saved.
      *
      * @param providerNo String the provider's number
      * @return List&lt;SignatureChoice&gt; the provider's choices, never empty
