@@ -195,9 +195,8 @@
                 <input type="hidden" name="demographicId" value="${demographicId}"/>
                 <input type="hidden" name="fdid" value="${fdid}"/>
                 <input type="hidden" name="fid" id="fid" value="<c:out value='${fid}'/>"/>
-                <input type="hidden" name="openEFormAfterEmail" value="${openEFormAfterEmail}"/>
-                <input type="hidden" name="deleteEFormAfterEmail" value="${deleteEFormAfterEmail}"/>
                 <input type="hidden" name="transactionType" id="transactionType" value="${transactionType}"/>
+                <input type="hidden" name="composeKey" value="${e:forHtmlAttribute(composeKey)}"/>
 
                 <div class="card">
                     <div class="card-header">
@@ -654,10 +653,22 @@
         }
     });
 
+    // Set once the email is submitted, so a second click cannot send it again
+    let isEmailSubmitted = false;
+
+    // Browser Back can restore this page from its cache with Send locked and the spinner on; unlock it
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            isEmailSubmitted = false;
+            HideSpin();
+        }
+    });
+
     function validateEmailForm() {
-        if (!validateForm()) {
+        if (isEmailSubmitted || !validateForm()) {
             return false;
         }
+        isEmailSubmitted = true;
         ShowSpin(true);
         return true;
     }
@@ -764,6 +775,7 @@
         const emailComposeForm = document.getElementById('emailComposeForm');
         const isAutoSend = "${isEmailAutoSend}" === "true";
         if (isAutoSend && validateForm()) {
+            isEmailSubmitted = true;
             ShowSpin(true);
             emailComposeForm.submit();
         }
