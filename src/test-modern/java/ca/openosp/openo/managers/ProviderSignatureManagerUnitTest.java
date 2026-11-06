@@ -198,6 +198,22 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
             when(providerDao.getProvider(PROVIDER_NO)).thenReturn(null);
 
             assertThat(providerSignatureManager.getDefaultSignature(PROVIDER_NO)).isEmpty();
+            assertThat(providerSignatureManager.getProviderName(PROVIDER_NO)).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should give the provider name as entered, with no Dr. added, for the preferences list")
+        void shouldGiveNameAsEntered_whenListedInPreferences() {
+            assertThat(providerSignatureManager.getProviderName(PROVIDER_NO)).isEqualTo("doctor openodoc");
+            assertThat(providerSignatureManager.getDefaultSignature(PROVIDER_NO)).isEqualTo("Dr. doctor openodoc");
+        }
+
+        @Test
+        @DisplayName("should keep a Dr. that is part of the first name as entered")
+        void shouldKeepDr_whenFirstNameIsEnteredWithIt() {
+            givenProvider("Dr. Ty", "Armstrong");
+
+            assertThat(providerSignatureManager.getProviderName(PROVIDER_NO)).isEqualTo("Dr. Ty Armstrong");
         }
     }
 
@@ -431,11 +447,21 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should refuse a signature that is the prescriber name, which is always in the list")
-        void shouldRefuseSignature_whenSameAsPrescriberName() {
-            assertThatThrownBy(() -> providerSignatureManager.addSignature(loggedInInfo, "Dr. doctor openodoc"))
+        @DisplayName("should refuse a signature that is the provider name as the list shows it")
+        void shouldRefuseSignature_whenSameAsProviderName() {
+            assertThatThrownBy(() -> providerSignatureManager.addSignature(loggedInInfo, " doctor openodoc "))
                     .isInstanceOf(ProviderSignatureException.class)
                     .hasMessage(ProviderSignatureManager.ERROR_DUPLICATE);
+        }
+
+        @Test
+        @DisplayName("should add the provider name with Dr., which the list doesn't show and chart notes would sign with")
+        void shouldAddSignature_whenItIsTheProviderNameWithDr() {
+            givenList();
+
+            providerSignatureManager.addSignature(loggedInInfo, "Dr. doctor openodoc");
+
+            assertThat(persistedSignature().getSignature()).isEqualTo("Dr. doctor openodoc");
         }
     }
 

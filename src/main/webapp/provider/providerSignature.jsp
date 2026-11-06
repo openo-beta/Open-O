@@ -27,8 +27,9 @@
     The logged-in provider's signature list, opened from Provider Preferences.
 
     Lists the provider's prescriber name and their saved signatures, marks the default (pre-selected
-    when they print a prescription), and links to add, edit, delete and make default. Changes post to
-    EnterSignature.do, which comes back here.
+    when they print a prescription), and links to add, edit, delete and make default. The provider name
+    is listed as entered; a note under the list says prescriptions add "Dr." to it, and not to custom
+    signatures. Changes post to EnterSignature.do, which comes back here.
 
     @since 2002-11-08
 --%>
@@ -50,6 +51,8 @@
     String curUser_no = (String) session.getAttribute("user");
     ProviderSignatureManager providerSignatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
     List<SignatureChoice> choices = providerSignatureManager.getChoices(curUser_no);
+    // Listed as entered; the note under the list says prescriptions add "Dr."
+    String providerName = providerSignatureManager.getProviderName(curUser_no);
 %>
 
 <fmt:setBundle basename="oscarResources"/>
@@ -100,6 +103,10 @@
                 display: inline;
             }
 
+            .signatureNote {
+                margin: 0 0 6px 0;
+            }
+
             /* Delete and Make default post a form but look like the Edit link */
             .linkButton {
                 background: none;
@@ -143,7 +150,7 @@
                         String signatureId = choice.getPostedId(); %>
                     <tr>
                         <td>
-                            <%= Encode.forHtml(choice.getText()) %>
+                            <%= Encode.forHtml(choice.isPrescriberName() ? providerName : choice.getText()) %>
                             <% if (choice.isPrescriberName()) { %>
                             <i>(<fmt:message key="provider.providerSignature.msgYourName"/>)</i>
                             <% } %>
@@ -179,6 +186,7 @@
                     </tr>
                     <% } %>
                 </table>
+                <p class="signatureNote"><fmt:message key="provider.providerSignature.msgPrescriberNameNote"/></p>
                 <a href="<%= request.getContextPath() %>/provider/editSignature.jsp"><fmt:message key="provider.providerSignature.btnClickHere"/></a>
                 <fmt:message key="provider.providerSignature.msgAdd"/>
             </td>
