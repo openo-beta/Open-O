@@ -44,6 +44,16 @@ public interface ProviderSignatureManager {
     String getDefaultSignature(String providerNo);
 
     /**
+     * Gets a provider's name as entered: the first and last name, with nothing added. Preferences
+     * lists it as the provider name, and chart notes sign with it; prescriptions print it with
+     * "Dr." added. A saved signature can't repeat it.
+     *
+     * @param providerNo String the provider's number
+     * @return String the provider's name, or an empty string when the provider doesn't exist
+     */
+    String getProviderName(String providerNo);
+
+    /**
      * Gets the signature a prescription prints: the one saved at its first print, fax or PDF, or
      * before then the prescriber's default.
      *

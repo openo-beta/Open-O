@@ -54,6 +54,12 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     }
 
     @Override
+    public String getProviderName(String providerNo) {
+        Provider provider = providerDao.getProvider(providerNo);
+        return provider == null ? "" : provider.getFullName();
+    }
+
+    @Override
     public String getPrintedSignature(String scriptNo, String prescriberNo) {
         Prescription prescription = findPrescription(scriptNo);
         String savedSignature = prescription == null ? null : prescription.getPrescriberSignature();
@@ -280,7 +286,8 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
         if (signature.length() > MAX_LENGTH) {
             throw new ProviderSignatureException(ERROR_TOO_LONG);
         }
-        boolean duplicate = signature.equals(getPrescriberName(providerNo))
+        // The list shows the provider name as entered, so that is the copy refused; "Dr. " + name is allowed
+        boolean duplicate = signature.equals(getProviderName(providerNo))
                 || providerSignatureDao.findByProviderNo(providerNo).stream()
                 .anyMatch(s -> !s.getId().equals(signatureId) && hasText(s, signature));
         if (duplicate) {
