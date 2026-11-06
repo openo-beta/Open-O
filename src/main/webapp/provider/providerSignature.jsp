@@ -103,8 +103,10 @@
                 display: inline;
             }
 
+            /* Muted like the print window's form-text notes, at the list's size; this page doesn't load Bootstrap */
             .signatureNote {
                 margin: 0 0 6px 0;
+                color: #6c757d;
             }
 
             /* Delete and Make default post a form but look like the Edit link */
