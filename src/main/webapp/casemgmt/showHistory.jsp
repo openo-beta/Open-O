@@ -24,6 +24,7 @@
 
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" prefix="e" %>
 <%@ include file="/casemgmt/taglibs.jsp" %>
 <%@page import="ca.openosp.openo.casemgmt.model.CaseManagementNote" %>
 <%
@@ -54,7 +55,7 @@
 </head>
 <body>
     <h3 style="text-align: center;">${title}</h3>
-    <h3 style="text-align: center;">${demoName}</h3>
+    <h3 style="text-align: center;">${e:forHtmlContent(demoName)}</h3>
     <c:forEach var="note" items="${history}" varStatus="idx">
         <div style="width: 99%; background-color: #EFEFEF; font-size: 12px; border-left: thin groove #000000; border-bottom: thin groove #000000; border-right: thin groove #000000;">
             <div>

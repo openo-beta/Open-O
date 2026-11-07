@@ -78,9 +78,26 @@ public class ProviderProperty2Action extends ActionSupport {
     }
 
     public String OscarMsgRecvd() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_pref", SecurityInfoManager.UPDATE, null)) {
+            throw new SecurityException("missing required sec object (_pref)");
+        }
 
+        // POST only, so CSRFGuard checks the token
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            return null;
+        }
 
-        userPropertyDAO.saveProp(request.getParameter("provider_no"), UserProperty.OSCAR_MSG_RECVD, request.getParameter("value"));
+        // The preference page reads this back as "hour:minute"
+        String value = request.getParameter("value");
+        if (value == null || !value.matches("\\d{1,2}:\\d{1,2}")) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+
+        // Always the logged in provider, never a provider number sent by the browser
+        userPropertyDAO.saveProp(loggedInInfo.getLoggedInProviderNo(), UserProperty.OSCAR_MSG_RECVD, value);
 
         return null;
     }
@@ -2805,8 +2822,6 @@ public class ProviderProperty2Action extends ActionSupport {
         methodMap.put("saveIntegratorProperties", this::saveIntegratorProperties);
         methodMap.put("viewPatientNameLength", this::viewPatientNameLength);
         methodMap.put("savePatientNameLength", this::savePatientNameLength);
-        methodMap.put("viewDisplayDocumentAs", this::viewDisplayDocumentAs);
-        methodMap.put("saveDisplayDocumentAs", this::saveDisplayDocumentAs);
         methodMap.put("viewHideOldEchartLinkInAppt", this::viewHideOldEchartLinkInAppt);
         methodMap.put("saveHideOldEchartLinkInAppt", this::saveHideOldEchartLinkInAppt);
         methodMap.put("viewDashboardPrefs", this::viewDashboardPrefs);

@@ -31,10 +31,8 @@ import javax.ws.rs.core.Response;
 /**
  * REST controller for application-level health and monitoring endpoints.
  */
-@Path(ApplicationRestController.CONTROLLER_PATH)
+@Path("/")
 public class ApplicationRestController {
-
-    public static final String CONTROLLER_PATH = "/health";
 
     /**
      * Simple heartbeat endpoint to verify the application is running.

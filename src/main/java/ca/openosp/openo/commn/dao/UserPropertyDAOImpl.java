@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.persistence.Query;
 
 import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.commn.model.enumerator.UserPropertyKey;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -92,6 +93,22 @@ public class UserPropertyDAOImpl extends AbstractDaoImpl<UserProperty> implement
         return query.getResultList();
     }
 
+    /**
+     * Gets one setting of a provider.
+     *
+     * @param prov String the provider number
+     * @param property UserPropertyKey the setting to read
+     * @return UserProperty the stored row, or null when the provider has not set it
+     */
+    @Override
+    public UserProperty getProp(String prov, UserPropertyKey property) {
+        return getProp(prov, property.getName());
+    }
+
+    /**
+     * @deprecated use {@link #getProp(String, UserPropertyKey)}
+     */
+    @Deprecated
     public UserProperty getProp(String prov, String name) {
         Query query = entityManager.createQuery("select p from UserProperty p where p.providerNo = ?1 and p.name = ?2");
         query.setParameter(1, prov);
@@ -106,6 +123,11 @@ public class UserPropertyDAOImpl extends AbstractDaoImpl<UserProperty> implement
             return null;
     }
 
+    /**
+     * @deprecated returns the first row with this name for any provider;
+     * read a provider's own setting with {@link #getProp(String, UserPropertyKey)}
+     */
+    @Deprecated
     public UserProperty getProp(String name) {
         Query query = entityManager.createQuery("select p from UserProperty p where p.name = ?1");
         query.setParameter(1, name);

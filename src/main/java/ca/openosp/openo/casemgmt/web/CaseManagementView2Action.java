@@ -248,8 +248,20 @@ public class CaseManagementView2Action extends ActionSupport {
         String programId = (String) request.getSession().getAttribute("case_program_id");
 
         viewCurrentIssuesTab_newCmeNotes(demoNo, programId);
+        setStaleNoteDate(providerNo);
 
         return "ajaxDisplayNotes";
+    }
+
+    /**
+     * Puts the provider's stale note date preference on the request for ChartNotesAjax.jsp,
+     * which opens notes older than that date collapsed. Without it the JSP falls back to one year.
+     *
+     * @param providerNo String the logged in provider
+     */
+    private void setStaleNoteDate(String providerNo) {
+        UserProperty staleNoteDate = caseManagementMgr.getUserProperty(providerNo, UserProperty.STALE_NOTEDATE);
+        request.setAttribute(UserProperty.STALE_NOTEDATE, staleNoteDate);
     }
 
     /* show case management view */
@@ -551,8 +563,7 @@ public class CaseManagementView2Action extends ActionSupport {
         logger.debug("Get stale note date");
         startTime = System.currentTimeMillis();
         // filter the notes by the checked issues and date if set
-        UserProperty userProp = caseManagementMgr.getUserProperty(providerNo, UserProperty.STALE_NOTEDATE);
-        request.setAttribute(UserProperty.STALE_NOTEDATE, userProp);
+        setStaleNoteDate(providerNo);
         UserProperty userProp2 = caseManagementMgr.getUserProperty(providerNo, UserProperty.STALE_FORMAT);
         request.setAttribute(UserProperty.STALE_FORMAT, userProp2);
         logger.debug("Get stale note date " + (System.currentTimeMillis() - startTime));
@@ -795,8 +806,7 @@ public class CaseManagementView2Action extends ActionSupport {
 
         logger.debug("Get stale note date");
         // filter the notes by the checked issues and date if set
-        UserProperty userProp = caseManagementMgr.getUserProperty(providerNo, UserProperty.STALE_NOTEDATE);
-        request.setAttribute(UserProperty.STALE_NOTEDATE, userProp);
+        setStaleNoteDate(providerNo);
         UserProperty userProp2 = caseManagementMgr.getUserProperty(providerNo, UserProperty.STALE_FORMAT);
         request.setAttribute(UserProperty.STALE_FORMAT, userProp2);
         logger.debug("Get stale note date " + (System.currentTimeMillis() - startTime));
@@ -1817,6 +1827,7 @@ public class CaseManagementView2Action extends ActionSupport {
             request.setAttribute("moreNotes", true);
         }
         request.setAttribute("notesToDisplay", result.getNotes());
+        setStaleNoteDate(loggedInInfo.getLoggedInProviderNo());
         return "ajaxDisplayNotes";
     }
 

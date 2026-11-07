@@ -39,6 +39,7 @@ public class ProviderPropertyAction {
 
     /**
      * typically set from inside the JSP class providerupdatepreference.jsp
+     * These properties are written to the Property table.
      *
      * @param request
      */
@@ -50,6 +51,7 @@ public class ProviderPropertyAction {
         String propertyValue;
         UserProperty property;
 
+        // schedule view settings
         propertyValue = StringUtils.trimToNull(request.getParameter(UserProperty.SCHEDULE_WEEK_VIEW_WEEKENDS));
         property = propertyDAO.getProp(providerNo, UserProperty.SCHEDULE_WEEK_VIEW_WEEKENDS);
         if (property == null) {

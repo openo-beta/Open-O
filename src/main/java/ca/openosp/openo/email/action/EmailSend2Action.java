@@ -88,6 +88,7 @@ public class EmailSend2Action extends ActionSupport {
         String[] receiverEmails = request.getParameterValues("receiverEmailAddress");
         String subject = request.getParameter("subjectEmail");
         String body = request.getParameter("bodyEmail");
+        String footer = request.getParameter("footerEmail");
         String encryptedMessage = request.getParameter("encryptedMessage");
         String password = request.getParameter("emailPDFPassword");
         String passwordClue = request.getParameter("emailPDFPasswordClue");
@@ -108,6 +109,7 @@ public class EmailSend2Action extends ActionSupport {
         emailData.setRecipients(receiverEmails);
         emailData.setSubject(subject);
         emailData.setBody(body);
+        emailData.setFooter(footer);
         emailData.setEncryptedMessage(encryptedMessage);
         emailData.setPassword(password);
         emailData.setPasswordClue(passwordClue);

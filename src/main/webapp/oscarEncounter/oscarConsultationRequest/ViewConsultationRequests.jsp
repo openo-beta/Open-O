@@ -390,7 +390,7 @@ background-color:rgb(212, 212, 254);
                         <td style="margin: 0; padding: 0;">
                             <form id="consultSearchForm" action="${pageContext.request.contextPath}/oscarEncounter/ViewConsultation.do" method="get">
                                 <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formSelectTeam"/>:
-                                <select name="sendTo">
+                                <select name="sendTo" style="margin-right: 10px;">
                                     <option value=""><fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.formViewAll"/></option>
                                     <%
                                         if (team.equals("-1")) { %>
@@ -413,11 +413,13 @@ background-color:rgb(212, 212, 254);
                                         }
                                     %>
                                 </select>
+                                Select Consultant:
                                 <input type="text" id="consultantSearch" autocomplete="off" size="22"
-                                       placeholder="All Consultants"
+                                       placeholder="All Consultants" style="margin-right: 10px;"
                                        value="<%=Encode.forHtmlAttribute(selectedConsultantLabel)%>"/>
                                 <input type="hidden" name="consultantId" id="consultantId"
                                        value="<%=Encode.forHtmlAttribute(consultantId != null ? consultantId.toString() : "")%>"/>
+                                Select Provider:
                                 <select name="filterProviderNo" id="filterProviderNo">
                                     <option value="">All Providers</option>
                                     <%
@@ -428,17 +430,13 @@ background-color:rgb(212, 212, 254);
                                     <option value="<%=Encode.forHtmlAttribute(pvNo)%>" <%=pvSelected ? "selected" : ""%>><%=Encode.forHtml(pv.getFormattedName())%></option>
                                     <% } %>
                                 </select>
-                                <input type="submit"
-                                       value="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.btnConsReq"/>"/>
-                                <div style="margin: 0; padding: 0; ">
+                                <div style="margin-top: 5px; padding: 0; ">
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgStart"/>:
                                     <input type="text" name="startDate" size="8" id="startDate" value="<%= formattedStartDate %>" /><a id="SCal"><img
                                         title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgEnd"/>:
-                                    <input type="text" name="endDate" size="8" id="endDate" value="<%= formattedEndDate %>" /><a id="ECal"><img
+                                    <input type="text" name="endDate" size="8" id="endDate" value="<%= formattedEndDate %>" /><a id="ECal" style="margin-right: 10px;"><img
                                         title="Calendar" src="<%= request.getContextPath() %>/images/cal.gif" alt="Calendar" border="0"/></a>
-                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgIncludeCompleted"/>:
-                                    <input type="checkbox" name="includeCompleted" <%= includeCompleted ? "checked" : "" %> />
                                     <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgSearchon"/>
                                     <input type="radio" name="searchDate" value="0" titleKey="Search on Referal Date"
                                         <%= "0".equals(searchDate) ? "checked" : "" %> />
@@ -450,6 +448,11 @@ background-color:rgb(212, 212, 254);
                                     <input type="hidden" name="desc" id="desc" value="<%= Encode.forHtmlAttribute(desc != null ? desc : "") %>"/>
                                     <input type="hidden" name="offset" id="offset" value="<%= Encode.forHtmlAttribute(String.valueOf(offset)) %>"/>
                                     <input type="hidden" name="limit" id="limit" value="<%= Encode.forHtmlAttribute(String.valueOf(limit)) %>"/>
+                                </div>
+                                <div style="margin-top: 5px; padding: 0;">
+                                    <fmt:setBundle basename="oscarResources"/><fmt:message key="oscarEncounter.oscarConsultationRequest.ViewConsultationRequests.msgIncludeCompleted"/>:
+                                    <input type="checkbox" name="includeCompleted" style="margin: 0 10px 0 0;" <%= includeCompleted ? "checked" : "" %> />
+                                    <input type="submit" value="Search"/>
                                 </div>
                             </form>
                             <script type="text/javascript">

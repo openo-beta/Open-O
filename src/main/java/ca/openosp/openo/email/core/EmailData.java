@@ -51,6 +51,7 @@ public class EmailData {
     private String[] recipients;
     private String subject;
     private String body;
+    private String footer;
     private String encryptedMessage;
     private String password;
     private String passwordClue;
@@ -178,6 +179,40 @@ public class EmailData {
      */
     public void setBody(String body) {
         this.body = body != null ? body : "";
+    }
+
+    /**
+     * Gets the footer appended to the outgoing email.
+     * The footer is boilerplate such as a clinic signature or an unsubscribe line. It is sent
+     * to the recipient but left out of the chart note, so it is held apart from the body.
+     *
+     * @return String the footer content, empty string if cleared, or null if never set
+     */
+    public String getFooter() {
+        return footer;
+    }
+
+    /**
+     * Sets the footer appended to the outgoing email.
+     *
+     * @param footer String the footer content; null values are converted to empty string
+     */
+    public void setFooter(String footer) {
+        this.footer = footer != null ? footer : "";
+    }
+
+    /**
+     * Gets the body as it should be transmitted, with the footer appended below it.
+     * The recipient's copy ends with the footer; the copy kept in {@link #getBody()} does not,
+     * which is what keeps the footer out of the patient's chart note.
+     *
+     * @return String the body followed by the footer, or just the body when no footer is set
+     */
+    public String getBodyWithFooter() {
+        if (StringUtils.isNullOrEmpty(footer)) {
+            return body;
+        }
+        return (body != null ? body : "") + "\n\n" + footer.trim();
     }
 
     /**

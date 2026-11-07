@@ -80,11 +80,8 @@
         skipComment = true;
     }
 
-    uProp = userPropertyDAO.getProp(providerNo, UserProperty.DISPLAY_DOCUMENT_AS);
-    String displayDocumentAs = UserProperty.IMAGE;
-    if (uProp != null && uProp.getValue().equals(UserProperty.PDF)) {
-        displayDocumentAs = UserProperty.PDF;
-    }
+    // Documents always display as PDF. UserProperty.IMAGE has been deprecated.
+    String displayDocumentAs = UserProperty.PDF;
 
     String demoName = request.getParameter("demoName");
     String documentNo = request.getParameter("segmentID");
@@ -419,7 +416,7 @@
                     <table>
                         <tr>
                             <td><fmt:message key="inboxmanager.document.DocumentUploaded"/></td>
-                            <td><%=curdoc.getDateTimeStamp()%>
+                            <td><%=Encode.forHtml(ConversionUtils.toTimestampString(curdoc.getContentDateTime()))%>
                             </td>
                         </tr>
                         <tr>

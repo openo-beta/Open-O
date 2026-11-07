@@ -262,7 +262,7 @@ public final class ConvertToEdoc {
         Path path = null;
         String document = tidyDocument(eformString, isEForm);
         try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-            renderPDF(document, os);
+            renderPDF(document, os, isEForm);
             path = nioFileManager.saveTempFile(filename, os);
         } catch (DocumentException e1) {
             logger.error("Exception parsing file to PDF. File not saved. ", e1);
@@ -328,10 +328,14 @@ public final class ConvertToEdoc {
      * use the Flying Saucer tools if there is a failure.
      * Flying Saucer requires a well formed w3c XHTML document - which is usually
      * not the case.
+     *
+     * @param isEForm boolean true for an eForm, which is laid out at the eForm resolution so
+     *                its text wraps where the browser wraps it
      */
-    private static void renderPDF(final String document, ByteArrayOutputStream os)
+    private static void renderPDF(final String document, ByteArrayOutputStream os, final boolean isEForm)
             throws DocumentException, IOException {
-        EDocConverterInterface converter = new InternalEDocConverter();
+        int dpi = isEForm ? InternalEDocConverter.EFORM_LAYOUT_DPI : InternalEDocConverter.DEFAULT_LAYOUT_DPI;
+        EDocConverterInterface converter = new InternalEDocConverter(dpi);
 
         try {
             converter.convert(document, os);

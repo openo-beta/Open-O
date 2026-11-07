@@ -30,6 +30,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.commn.dao.UserPropertyDAO;
 import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.integration.mcedt.DelegateFactory;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.OscarProperties;
 
@@ -70,8 +71,10 @@ public class User2Action extends ActionSupport {
             }
             prop.setValue(this.getPassword());
             userPropertyDAO.saveProp(prop);
+            DelegateFactory.refreshDelegates();
             request.getSession().setAttribute("isPassChange", "true");
         } catch (Exception e) {
+            logger.error("Unable to update MCEDT password", e);
             request.getSession().setAttribute("isPassChange", "false");
         }
 
