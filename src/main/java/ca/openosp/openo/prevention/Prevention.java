@@ -346,19 +346,10 @@ public class Prevention {
     private int getNumMonths(Date dStart, Date dEnd) {
         if (dStart == null || dEnd == null)
             return -1;
-        int i = 0;
         log.debug("Getting the number of months between " + getStrDate(dStart) + " and " + getStrDate(dEnd));
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dStart);
-        while (calendar.getTime().before(dEnd) || calendar.getTime().equals(dEnd)) {
-            calendar.add(Calendar.MONTH, 1);
-            i++;
-        }
-        i--;
-        if (i < 0) {
-            i = 0;
-        }
-        return i;
+        // Delegates to the shared calendar-month calculation, which does not drift for
+        // month-end start dates (Jan 31 -> Feb 28 -> Mar 28)
+        return ca.openosp.openo.util.UtilDateUtilities.getNumMonths(dStart, dEnd);
     }
 
     private int getNumMonths(Calendar dStart, Calendar dEnd) {
@@ -367,18 +358,8 @@ public class Prevention {
 
     private int getNumYears(Date dStart, Date dEnd) {
         if (dStart == null || dEnd == null) return -1;
-        int i = 0;
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dStart);
-        while (calendar.getTime().before(dEnd) || calendar.getTime().equals(dEnd)) {
-            calendar.add(Calendar.MONTH, 12);
-            i++;
-        }
-        i--;
-        if (i < 0) {
-            i = 0;
-        }
-        return i;
+        // Completed calendar years: a whole number of 12-month periods
+        return ca.openosp.openo.util.UtilDateUtilities.getNumMonths(dStart, dEnd) / 12;
     }
 
     private int getNumDays(Date dStart, Date dEnd) {
