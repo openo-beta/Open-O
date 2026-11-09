@@ -715,7 +715,8 @@ public final class DateUtils {
 
         int yearDiff = date2.get(Calendar.YEAR) - date1.get(Calendar.YEAR);
 
-        if (date2.get(Calendar.MONTH) > date1.get(Calendar.MONTH)) yearDiff--;
+        // Subtract a year if the anniversary of date1 has not yet been reached in date2's year
+        if (date2.get(Calendar.MONTH) < date1.get(Calendar.MONTH)) yearDiff--;
         else if (date2.get(Calendar.MONTH) == date1.get(Calendar.MONTH) && date2.get(Calendar.DAY_OF_MONTH) < date1.get(Calendar.DAY_OF_MONTH))
             yearDiff--;
 
