@@ -1816,6 +1816,8 @@
                                 <include>**/eform/**/*Test.java</include>
                                 <include>**/encounter/oscarConsultationRequest/**/*UnitTest.java</include>
                                 <include>**/casemgmt/**/*UnitTest.java</include>
+                                <include>**/util/UtilDateUtilities*Test.java</include>
+                                <include>**/util/DateUtils*Test.java</include>
                             </includes>
                             <excludes>
                                 <!-- Exclude archive tests from modern test run -->
