@@ -3,15 +3,15 @@ package ca.openosp.openo.email.action;
 
 import java.io.IOException;
 import org.owasp.encoder.Encode;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.Logger;
-import ca.openosp.openo.commn.model.EmailAttachment;
 import ca.openosp.openo.commn.model.EmailLog;
 import ca.openosp.openo.commn.model.EmailLog.EmailStatus;
+import ca.openosp.openo.email.core.EmailAttachmentSettings;
+import ca.openosp.openo.email.core.EmailComposeStore;
 import ca.openosp.openo.email.core.EmailData;
 import ca.openosp.openo.managers.EformDataManager;
 import ca.openosp.openo.managers.EmailManager;
@@ -30,7 +30,7 @@ import org.apache.struts2.ServletActionContext;
  *   <li>Sending emails directly with healthcare data and attachments</li>
  *   <li>Sending electronic forms (EForms) via email with optional deletion after send</li>
  *   <li>Handling email encryption and password protection for PHI compliance</li>
- *   <li>Managing email attachments from session storage</li>
+ *   <li>Sending only the attachments stored under the compose page's key</li>
  *   <li>Canceling email operations and redirecting to source contexts</li>
  * </ul>
  *
@@ -87,30 +87,34 @@ public class EmailSend2Action extends ActionSupport {
      *
      * <p>This method handles the complete workflow for emailing EForms including:</p>
      * <ul>
+     *   <li>Taking the patient, eForm and attachments stored under the compose page's key; the email is not sent when the key is unknown or already used</li>
      *   <li>Processing email send operation via EmailManager</li>
      *   <li>Optionally deleting the source EForm if send is successful and deletion is requested</li>
      *   <li>Setting request attributes for success status, EForm opening preference, and email log</li>
      * </ul>
      *
-     * <p>The method checks the "deleteEFormAfterEmail" request parameter to determine if the
-     * EForm should be removed after successful email delivery. This is useful for workflows
-     * where the EForm is a temporary artifact used only for email generation.</p>
+     * <p>The EForm id and the choices to delete or reopen the EForm after sending come from the
+     * entry stored under the compose key, not from the request.</p>
      *
      * @return String Struts2 SUCCESS result for rendering the email result page
      */
     public String sendEFormEmail() {
-        boolean deleteEFormAfterEmail = request.getParameter("deleteEFormAfterEmail") != null && "true".equalsIgnoreCase(request.getParameter("deleteEFormAfterEmail"));
-
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        EmailLog emailLog = sendEmail(request);
+        EmailComposeStore.Entry entry = takeComposeEntry();
+        if (entry == null) {
+            return refuseSend();
+        }
+        EmailLog emailLog = sendEntry(loggedInInfo, entry);
 
         boolean isEmailSuccessful = emailLog.getStatus() == EmailStatus.SUCCESS;
         request.setAttribute("isEmailSuccessful", isEmailSuccessful);
-        if (isEmailSuccessful && deleteEFormAfterEmail) {
-            eformDataManager.removeEFormData(loggedInInfo, request.getParameter("fdid"));
+        // A key from a resend page reaches here with no eForm settings
+        EmailAttachmentSettings settings = entry.settings();
+        if (isEmailSuccessful && settings != null && settings.deleteEFormAfterEmail() && !entry.fdid().isEmpty()) {
+            eformDataManager.removeEFormData(loggedInInfo, entry.fdid());
         }
-        request.setAttribute("isOpenEForm", request.getParameter("openEFormAfterEmail"));
-        request.setAttribute("fdid", request.getParameter("fdid"));
+        request.setAttribute("isOpenEForm", settings != null && settings.openAfterEmail());
+        request.setAttribute("fdid", entry.fdid());
         request.setAttribute("emailLog", emailLog);
         return SUCCESS;
     }
@@ -119,19 +123,22 @@ public class EmailSend2Action extends ActionSupport {
      * Sends an email directly without electronic form (EForm) context.
      *
      * <p>This method provides a simplified email sending workflow for scenarios where
-     * the email is not associated with an EForm. It handles:</p>
+     * the email is not associated with an EForm, such as resending an old email. It handles:</p>
      * <ul>
+     *   <li>Taking the patient and attachments stored under the compose page's key; the email is not sent when the key is unknown or already used</li>
      *   <li>Processing the email send operation via EmailManager</li>
      *   <li>Setting request attributes for success status and email log</li>
      * </ul>
      *
-     * <p>Unlike sendEFormEmail(), this method does not handle EForm deletion or opening
-     * preferences, making it suitable for general-purpose email sending within the EMR.</p>
-     *
      * @return String Struts2 SUCCESS result for rendering the email result page
      */
     public String sendDirectEmail() {
-        EmailLog emailLog = sendEmail(request);
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        EmailComposeStore.Entry entry = takeComposeEntry();
+        if (entry == null) {
+            return refuseSend();
+        }
+        EmailLog emailLog = sendEntry(loggedInInfo, entry);
         boolean isEmailSuccessful = emailLog.getStatus() == EmailStatus.SUCCESS;
         request.setAttribute("isEmailSuccessful", isEmailSuccessful);
         request.setAttribute("emailLog", emailLog);
@@ -143,20 +150,18 @@ public class EmailSend2Action extends ActionSupport {
      *
      * <p>This method handles the cancel workflow by:</p>
      * <ul>
-     *   <li>Preparing email fields from the request (to determine transaction type)</li>
-     *   <li>Performing context-specific redirects based on the transaction type</li>
+     *   <li>Removing the entry stored under this compose page's key</li>
+     *   <li>Reading the transaction type from the request</li>
      *   <li>For EFORM transactions: redirects to the EForm display page with original form data</li>
      * </ul>
-     *
-     * <p>The method uses the transaction type from the email data to determine the
-     * appropriate return destination, ensuring users are returned to their original
-     * workflow context when canceling an email operation.</p>
      *
      * @return String Struts2 result identifier matching the transaction type name
      * @throws RuntimeException if IOException occurs during redirect for EFORM transactions
      */
     public String cancel() {
-        EmailData emailData = prepareEmailFields(request);
+        EmailComposeStore.remove(request.getSession(), request.getParameter("composeKey"));
+        EmailData emailData = new EmailData();
+        emailData.setTransactionType(request.getParameter("transactionType"));
         String emailRedirect = emailData.getTransactionType().name();
         if (emailData.getTransactionType().equals(EmailLog.TransactionType.EFORM)) {
             try {
@@ -169,48 +174,66 @@ public class EmailSend2Action extends ActionSupport {
     }
 
     /**
-     * Sends an email using the EmailManager service with data extracted from the HTTP request.
+     * Takes the entry stored under the compose page's key, so a second Send of the same page gets nothing.
      *
-     * <p>This private helper method coordinates the email sending process by:</p>
-     * <ul>
-     *   <li>Retrieving logged-in provider information from the session</li>
-     *   <li>Preparing email data from request parameters via prepareEmailFields()</li>
-     *   <li>Delegating to EmailManager for actual email transmission</li>
-     * </ul>
+     * <p>Returns null when the key is missing, unknown, already sent or cancelled, or dropped at logout.
+     * The email is then not sent, so it never goes out twice, with another window's attachments,
+     * or silently without its attachments.</p>
      *
-     * @param request HttpServletRequest containing email parameters and session data
-     * @return EmailLog entity containing the result of the email send operation including
-     *         status (SUCCESS/FAILURE), timestamps, and any error messages
+     * @return EmailComposeStore.Entry the patient, eForm id, email type and attachments to send, or null
      */
-    private EmailLog sendEmail(HttpServletRequest request) {
-        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
-        EmailData emailData = prepareEmailFields(request);
-        return emailManager.sendEmail(loggedInInfo, emailData);
+    private EmailComposeStore.Entry takeComposeEntry() {
+        EmailComposeStore.Entry entry = EmailComposeStore.take(request.getSession(), request.getParameter("composeKey"));
+        if (entry == null) {
+            logger.warn("Email not sent: the compose page key is missing, unknown or already used");
+        }
+        return entry;
     }
 
     /**
-     * Extracts and prepares email data from HTTP request parameters and session attributes.
+     * Sends the entry's email and puts the entry back when it was not sent, so the page can send again.
      *
-     * <p>This private helper method performs comprehensive email data preparation including:</p>
-     * <ul>
-     *   <li>Extracting sender and recipient email addresses</li>
-     *   <li>Retrieving subject, body, footer, and internal comment fields</li>
-     *   <li>Processing encryption settings (email body and attachment encryption)</li>
-     *   <li>Handling password protection parameters (password and password clue)</li>
-     *   <li>Retrieving patient chart display options and demographic information</li>
-     *   <li>Extracting transaction type and additional URL parameters</li>
-     *   <li>Retrieving email attachments from session storage</li>
-     *   <li>Cleaning up session by removing attachment list after extraction</li>
-     * </ul>
+     * <p>The entry stays out of the store during the send, so a second Send of the page is refused meanwhile.</p>
      *
-     * <p>The method supports PHI protection through encryption options and associates
-     * emails with specific healthcare providers and patients for audit trail purposes.</p>
+     * @param loggedInInfo LoggedInInfo the logged in user
+     * @param entry EmailComposeStore.Entry the entry taken for this compose page
+     * @return EmailLog the log of this send, with its status
+     */
+    private EmailLog sendEntry(LoggedInInfo loggedInInfo, EmailComposeStore.Entry entry) {
+        EmailLog emailLog = null;
+        try {
+            emailLog = emailManager.sendEmail(loggedInInfo, prepareEmailFields(request, entry));
+            return emailLog;
+        } finally {
+            if (emailLog == null || emailLog.getStatus() != EmailStatus.SUCCESS) {
+                EmailComposeStore.restore(request.getSession(), request.getParameter("composeKey"), entry);
+            }
+        }
+    }
+
+    /**
+     * Shows the "already used or expired" message on the compose page instead of sending the email.
      *
-     * @param request HttpServletRequest containing email form parameters and session data
+     * @return String Struts2 SUCCESS result; the compose page shows the message and closes
+     */
+    private String refuseSend() {
+        request.setAttribute("isEmailError", true);
+        request.setAttribute("emailErrorMessage", "This email page has already been used or has expired, so nothing was sent just now. If you already pressed Send, check Manage Emails or the patient's chart before sending again.");
+        return SUCCESS;
+    }
+
+    /**
+     * Prepares email data from the HTTP request parameters and the entry stored under the compose page's key.
+     *
+     * <p>Subject, body, recipients, encryption and chart options come from the request. The patient,
+     * email type and attachments come only from the stored entry.</p>
+     *
+     * @param request HttpServletRequest containing email form parameters
+     * @param entry EmailComposeStore.Entry the patient, email type and attachments of this compose page
      * @return EmailData populated data transfer object containing all email parameters
      *         ready for processing by EmailManager
      */
-    private EmailData prepareEmailFields(HttpServletRequest request) {
+    private EmailData prepareEmailFields(HttpServletRequest request, EmailComposeStore.Entry entry) {
         String senderConfigId = request.getParameter("senderConfigId");
         String[] receiverEmails = request.getParameterValues("receiverEmailAddress");
         String subject = request.getParameter("subjectEmail");
@@ -223,10 +246,7 @@ public class EmailSend2Action extends ActionSupport {
         String isAttachmentEncrypted = request.getParameter("isEmailAttachmentEncrypted");
         String chartDisplayOption = request.getParameter("patientChartOption");
         String internalComment = request.getParameter("internalComment");
-        String transactionType = request.getParameter("transactionType");
-        String demographicNo = request.getParameter("demographicId");
         String additionalParams = request.getParameter("additionalURLParams");
-        List<EmailAttachment> emailAttachmentList = (List<EmailAttachment>) request.getSession().getAttribute("emailAttachmentList");
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
@@ -244,13 +264,11 @@ public class EmailSend2Action extends ActionSupport {
         emailData.setIsAttachmentEncrypted(isAttachmentEncrypted);
         emailData.setChartDisplayOption(chartDisplayOption);
         emailData.setInternalComment(internalComment);
-        emailData.setTransactionType(transactionType);
-        emailData.setDemographicNo(demographicNo);
+        emailData.setTransactionType(entry.transactionType());
+        emailData.setDemographicNo(entry.demographicNo());
         emailData.setProviderNo(providerNo);
         emailData.setAdditionalParams(additionalParams);
-        emailData.setAttachments(emailAttachmentList);
-
-        request.getSession().removeAttribute("emailAttachmentList");
+        emailData.setAttachments(entry.copyOfAttachments());
 
         return emailData;
     }
