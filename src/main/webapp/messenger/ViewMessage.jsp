@@ -486,13 +486,13 @@
                                                 <td bgcolor="#EEEEFF"></td>
                                                 <td bgcolor="#EEEEFF" colspan="2">
                                                     <input type="submit"  class="ControlPushButton"
-                                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.ViewMessage.btnReply"/>"/>
+                                                        name="reply" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.ViewMessage.btnReply"/>"/>
                                                     <input type="submit" class="ControlPushButton"
-                                                        value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.ViewMessage.btnReplyAll"/>"/>
+                                                        name="replyAll" value=" <fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.ViewMessage.btnReplyAll"/>"/>
                                                     <input type="submit" class="ControlPushButton"
-                                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.ViewMessage.btnForward"/>"/>
+                                                        name="forward" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.ViewMessage.btnForward"/>"/>
                                                     <input type="submit" class="ControlPushButton"
-                                                        value="<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.ViewMessage.btnDelete"/>"/>
+                                                        name="delete" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="messenger.ViewMessage.btnDelete"/>"/>
                                                     <input type="hidden" name="messageNo" id="messageNo" value="${ viewMessageNo }"/>
                                                 </td>
                                             </tr>
