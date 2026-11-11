@@ -31,7 +31,10 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ca.openosp.openo.appt.LocationList;
+import ca.openosp.openo.commn.model.LookupList;
 import ca.openosp.openo.commn.model.LookupListItem;
+import ca.openosp.openo.managers.AppointmentLocationManager;
 import ca.openosp.openo.managers.LookupListManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
@@ -118,7 +121,8 @@ public class LookupListManager2Action extends ActionSupport {
         }
 
         if (lookupListItemLabel != null && !lookupListItemLabel.isEmpty() &&
-                lookupListId != null && !lookupListId.isEmpty()) {
+                lookupListId != null && !lookupListId.isEmpty() &&
+                fitsList(loggedInInfo, Integer.parseInt(lookupListId), lookupListItemLabel)) {
 
             lookupListIdInteger = Integer.parseInt(lookupListId);
             lookupListItems = lookupListManager.findLookupListItemsByLookupListId(loggedInInfo, lookupListIdInteger);
@@ -142,6 +146,13 @@ public class LookupListManager2Action extends ActionSupport {
         request.setAttribute("lookupLists", lookupListManager.findAllActiveLookupLists(loggedInInfo));
 
         return SUCCESS;
+    }
+
+    /* A booking saves a copy of a location's name, so the Location List takes no name longer than that copy. */
+    private boolean fitsList(LoggedInInfo loggedInInfo, int lookupListId, String label) {
+        LookupList list = lookupListManager.findLookupListById(loggedInInfo, lookupListId);
+        boolean locationList = list != null && AppointmentLocationManager.LOCATION_LIST.equals(list.getName());
+        return !locationList || label.length() <= LocationList.LABEL_MAX_LENGTH;
     }
 
     @SuppressWarnings("unused")

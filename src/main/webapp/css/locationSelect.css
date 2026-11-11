@@ -1,0 +1,26 @@
+/*
+ * Location List dropdown on the booking screens (WEB-INF/tags/locationSelect.tag), drawn by the
+ * locationmenu widget in js/appointment/locationSelect.js.
+ *
+ * The booking pages give every element 12px Arial with line-height 1, all !important, through a
+ * :root * rule. These rules don't depend on where they sit relative to it: :root * never matches
+ * ::before, and the row rule's classes outrank it.
+ */
+
+/* The page rule gives glyph icons Arial too; the glyph is drawn in ::before, which it doesn't reach. */
+.location-chip .glyphicon::before {
+    font-family: 'Glyphicons Halflings';
+}
+
+/* Menu rows a little roomier than the browser's own list, as in Reason. The 16px line fits a chip,
+   which sits at its top. */
+.ui-selectmenu-menu.location-menu .ui-menu .ui-menu-item-wrapper {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 13px !important;
+    line-height: 16px !important;
+}
+
+.location-menu .location-chip {
+    vertical-align: top;
+}

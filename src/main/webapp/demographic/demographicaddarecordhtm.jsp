@@ -782,6 +782,7 @@ if("true".equals(OscarProperties.getInstance().getProperty("iso3166.2.enabled","
                     <input type="hidden" name="notes" value="<%=Encode.forHtmlAttribute(request.getParameter("notes"))%>">
                     <input type="hidden" name="reason" value="<%=Encode.forHtmlAttribute(request.getParameter("reason"))%>">
                     <input type="hidden" name="location" value="<%=Encode.forHtmlAttribute(request.getParameter("location"))%>">
+                    <input type="hidden" name="locationCode" value="<%=Encode.forHtmlAttribute(request.getParameter("locationCode"))%>">
                     <input type="hidden" name="resources" value="<%=Encode.forHtmlAttribute(request.getParameter("resources"))%>">
                     <input type="hidden" name="type" value="<%=Encode.forHtmlAttribute(request.getParameter("type"))%>">
                     <input type="hidden" name="style" value="<%=Encode.forHtmlAttribute(request.getParameter("style"))%>">

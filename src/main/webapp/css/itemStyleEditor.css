@@ -1,0 +1,131 @@
+/*
+ * Item Style editor dialog (appointment/itemStyleEditorDialog.jspf), and the colour swatch on the
+ * pages that use it.
+ *
+ * Fits the window: the title and buttons stay in view and only the body between them scrolls. In an
+ * iframe, itemStyleEditor.js sets --item-style-editor-room to the height the browser window shows.
+ */
+.item-style-editor {
+    width: min(32rem, 95vw);
+    max-height: min(28rem, var(--item-style-editor-room, calc(100vh - 2rem)));
+    overflow: hidden;
+}
+
+.item-style-editor[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+/* The colour picker is taller than the other kinds' fields. */
+.item-style-editor[data-kind="colour"] {
+    max-height: min(40rem, var(--item-style-editor-room, calc(100vh - 2rem)));
+}
+
+.item-style-editor > form {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.item-style-editor .card-body {
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.item-style-editor::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.item-style-editor-icons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+    gap: 0.25rem;
+}
+
+.item-style-editor-choice {
+    padding: 0.4rem 0.25rem;
+    line-height: 1;
+}
+
+.item-style-editor-choice img {
+    max-width: 1.75rem;
+    max-height: 1.75rem;
+}
+
+.item-style-editor-choice[aria-pressed="true"] {
+    outline: 2px solid var(--bs-primary, #0d6efd);
+    background-color: var(--bs-primary-bg-subtle, #cfe2ff);
+}
+
+/* The current icon when it is outside the set: spans the grid so its caption fits. */
+.item-style-editor-choice-current {
+    grid-column: 1 / -1;
+}
+
+/*
+ * An image icon in a settings table, 10px tall as the schedule draws it, so the Customized images
+ * (55x24 files) don't show larger here than they ever do there.
+ */
+.item-style-icon img {
+    height: 10px;
+}
+
+/*
+ * The colour picker (Coloris), inline in the dialog: the presets on top in 9 columns, then the
+ * colours in use, the colour area, the hue and opacity sliders, and the value.
+ */
+.item-style-editor-picker .clr-picker {
+    width: 100%;
+    box-shadow: none;
+}
+
+.item-style-editor-picker .clr-swatches {
+    order: -1;
+    width: 100%;
+    margin: 0;
+}
+
+.item-style-editor-picker .clr-swatches div {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 4px;
+    padding-bottom: 8px;
+}
+
+.item-style-editor-picker .clr-swatches button {
+    width: 100%;
+    height: 24px;
+    margin: 0;
+    border-radius: 3px;
+}
+
+/* The heading before the colours in use, a full row of the swatch grid. */
+.item-style-editor-in-use {
+    grid-column: 1 / -1;
+    margin: 4px 0 0;
+    font-size: 0.875rem;
+    color: var(--bs-secondary, #6c757d);
+}
+
+.item-style-editor-picker .clr-gradient {
+    height: 140px;
+}
+
+/* A dark ring around the marker's white border, so it shows on light colours as well as dark ones. */
+.item-style-editor-picker .clr-marker {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.55);
+}
+
+/*
+ * A colour's swatch, beside its hex value; js/appointment/itemStyleEditor.js sets its colour, and the
+ * checks show through a see-through one.
+ */
+.item-style-swatch {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    vertical-align: middle;
+    border: 1px solid var(--bs-gray-500, #adb5bd);
+    background:
+        linear-gradient(var(--item-style-swatch-colour, transparent), var(--item-style-swatch-colour, transparent)),
+        repeating-conic-gradient(#ccc 0 25%, #fff 0 50%) 0 0 / 8px 8px;
+}

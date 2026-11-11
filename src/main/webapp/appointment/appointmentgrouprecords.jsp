@@ -44,6 +44,7 @@
 <%@page import="ca.openosp.openo.commn.dao.AppointmentArchiveDao" %>
 <%@page import="ca.openosp.openo.commn.dao.OscarAppointmentDao" %>
 <%@page import="ca.openosp.openo.commn.model.Appointment" %>
+<%@page import="ca.openosp.openo.appt.LocationList" %>
 <%@page import="ca.openosp.openo.commn.dao.MyGroupDao" %>
 <%@page import="ca.openosp.openo.commn.model.MyGroup" %>
 <%@page import="ca.openosp.openo.commn.model.Provider" %>
@@ -119,7 +120,7 @@
                 a.setName(request.getParameter("keyword"));
                 a.setNotes(request.getParameter("notes"));
                 a.setReason(request.getParameter("reason"));
-                a.setLocation(request.getParameter("location"));
+                LocationList.applyPostedLocation(a, request);
                 a.setResources(request.getParameter("resources"));
                 a.setType(request.getParameter("type"));
                 a.setStyle(request.getParameter("style"));
@@ -206,14 +207,9 @@
                 }
 
                 if (request.getParameter("groupappt").equals("Group Update")) {
+                    Appointment original = null;
                     if (request.getParameter("appointment_no" + datano) != null) {
-                        Appointment appt = appointmentDao.find(Integer.parseInt(request.getParameter("appointment_no" + datano)));
-                        if (appt != null) {
-                            appointmentArchiveDao.archiveAppointment(appt);
-                            appointmentDao.remove(appt.getId());
-                            rowsAffected = 1;
-
-                        }
+                        original = appointmentDao.find(Integer.parseInt(request.getParameter("appointment_no" + datano)));
                     }
 
                     String[] paramu = new String[20];
@@ -245,7 +241,12 @@
                     a.setName(request.getParameter("keyword"));
                     a.setNotes(request.getParameter("notes"));
                     a.setReason(request.getParameter("reason"));
-                    a.setLocation(request.getParameter("location"));
+                    if (original != null) {
+                        // The replaced appointment's location, so a past one staying there keeps its saved name, as an edit does.
+                        a.setLocation(original.getLocation());
+                        a.setLocationCode(original.getLocationCode());
+                    }
+                    LocationList.applyPostedLocation(a, request);
                     a.setResources(request.getParameter("resources"));
                     a.setType(request.getParameter("type"));
                     a.setStyle(request.getParameter("style"));
@@ -265,6 +266,12 @@
                     a.setUrgency(request.getParameter("urgency"));
                     a.setReasonCode(Integer.parseInt(request.getParameter("reasonCode")));
 
+                    // Replaced only now, so nothing that can fail runs between removing it and saving its copy.
+                    if (original != null) {
+                        appointmentArchiveDao.archiveAppointment(original);
+                        appointmentDao.remove(original.getId());
+                        rowsAffected = 1;
+                    }
                     appointmentDao.persist(a);
                     rowsAffected = 1;
 
