@@ -266,6 +266,15 @@ public class RxSessionBean implements java.io.Serializable {
         return stash.get(index);
     }
 
+    /**
+     * Gets the number of the prescription the stashed drugs were saved on.
+     *
+     * @return String the first stash item's prescription number, or null when the stash is empty
+     */
+    public String getStashScriptNo() {
+        return stash.isEmpty() ? null : stash.get(0).getScript_no();
+    }
+
     //return prescript from its random id
     public RxPrescriptionData.Prescription getStashItem2(int randomId) {
         RxPrescriptionData.Prescription psp = null;

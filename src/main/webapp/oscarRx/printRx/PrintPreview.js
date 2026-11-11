@@ -126,20 +126,23 @@ function printIframe(providerNo, demographicNo, userName, ctx) {
     if (browserName === "Microsoft Internet Explorer") {
         alert("Use of Microsoft Internet Explorer is not permitted")
     } else {
-        if ('function' === typeof window.onbeforeunload) {
-            window.onbeforeunload = null;
-        }
+        // Saved before the print dialog, because the window closes right after it
+        whenSignatureSaved(ctx, () => {
+            if ('function' === typeof window.onbeforeunload) {
+                window.onbeforeunload = null;
+            }
 
-        printDivContent('printableContent');
+            printDivContent('printableContent');
 
-        self.onfocus = function () {
-            self.setTimeout(function () {
-                if (demographicNo) {
-                    openEncounter(providerNo, demographicNo, providerNo, userName, ctx);
-                }
-                self.parent.close();
-            }, 1000);
-        };
+            self.onfocus = function () {
+                self.setTimeout(function () {
+                    if (demographicNo) {
+                        openEncounter(providerNo, demographicNo, providerNo, userName, ctx);
+                    }
+                    self.parent.close();
+                }, 1000);
+            };
+        });
     }
 }
 
@@ -340,6 +343,137 @@ function signatureHandler(result, contextPath, scriptNo) {
     }
 }
 
+/**
+ * Shows a signature in the preview: the prescriber name in the header, on the signature line, and in
+ * the field posted for the PDF and fax.
+ *
+ * @param {string} text the signature
+ */
+function showPrescriberSignature(text) {
+    document.getElementById('prescriberSignatureHeader').textContent = text;
+    document.getElementById('prescriberSignatureLine').textContent = text;
+    document.getElementById('sigDoctorName').value = text;
+}
+
+/**
+ * Shows the signature picked in the dropdown. Nothing is saved until the prescription is printed.
+ *
+ * @param {HTMLSelectElement} select the signature dropdown
+ */
+function previewPrescriberSignature(select) {
+    showPrescriberSignature(select.options[select.selectedIndex].dataset.signature);
+}
+
+/**
+ * Saves the picked signature on the prescription before its first print, fax or PDF, so the paper and
+ * the chart show the same one, then locks the dropdown on it. Does nothing when it is saved already or
+ * the page has no signature dropdown.
+ *
+ * @param {string} ctx the context path, or empty to work it out from the page
+ * @returns {Promise<boolean>} true once the signature is saved, or when there is none to save; false, after
+ *          telling the user, when it couldn't be saved or the picked one has been deleted
+ */
+function lockPrescriberSignature(ctx) {
+    const select = document.getElementById('prescriberSignature');
+    if (!select || select.dataset.locked === 'true') {
+        return Promise.resolve(true);
+    }
+
+    const body = new URLSearchParams({
+        scriptNo: select.dataset.scriptNo,
+        demographicNo: select.dataset.demographicNo,
+        signatureId: select.value
+    });
+    const csrfToken = document.getElementById('previewCsrfToken');
+    if (csrfToken) {
+        body.append(csrfToken.name, csrfToken.value);
+    }
+
+    return fetch(resolveContextPath(ctx) + '/oscarRx/prescriberSignature.do', {method: 'POST', body: body})
+        .then(response => {
+            if (response.status === 409) {
+                // Deleted in another window: drop it, so the next pick is one that still exists, and go
+                // back to the default (the prescriber name, the first option, if the default was the one deleted)
+                select.remove(select.selectedIndex);
+                const defaultOption = select.querySelector('option[data-default="true"]');
+                select.selectedIndex = defaultOption ? defaultOption.index : 0;
+                previewPrescriberSignature(select);
+                alert(select.dataset.deletedError);
+                return false;
+            }
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status);
+            }
+            return response.json().then(result => {
+                if (result.signature !== null) {
+                    lockPrescriberSignatureCard(select, result.signature);
+                }
+                // Null when there was none to save (the prescriber has no name on file): print as shown
+                return true;
+            });
+        })
+        .catch(error => {
+            console.error('Could not save the prescription signature', error);
+            alert(select.dataset.saveError);
+            return false;
+        });
+}
+
+/**
+ * Shows the signature saved on the prescription and locks the dropdown on it.
+ *
+ * @param {HTMLSelectElement} select the signature dropdown
+ * @param {string} signature the saved signature
+ */
+function lockPrescriberSignatureCard(select, signature) {
+    // Another window may have printed it first, so show what was actually saved
+    showPrescriberSignature(signature);
+    select.replaceChildren(new Option(signature, ''));
+    select.disabled = true;
+    select.dataset.locked = 'true';
+    document.getElementById('prescriberSignatureSaved').hidden = false;
+}
+
+/**
+ * Saves the signature (see lockPrescriberSignature), then does what the button does.
+ *
+ * @param {string} ctx the context path, or empty to work it out from the page
+ * @param {function(): *} action what the button does once the signature is saved
+ * @param {function(): *} [refused] what to do instead when it couldn't be saved; the user has been told already
+ * @returns {Promise<*>} what action, or refused, returns
+ */
+function whenSignatureSaved(ctx, action, refused = () => undefined) {
+    return lockPrescriberSignature(ctx).then(saved => saved ? action() : refused());
+}
+
+/**
+ * A promise that never settles, for a button whose caller chains the next step with then(): that step
+ * then never runs.
+ *
+ * @returns {Promise<never>} the promise
+ */
+function neverSettles() {
+    return new Promise(() => {});
+}
+
+/**
+ * The Rx icon: saves the signature, then opens the prescription as a PDF in a new tab.
+ *
+ * @param {string} method "print", or "rePrint" for a reprint
+ * @param {string} scriptId the prescription's number
+ * @param {boolean} useSC whether a satellite clinic address is used
+ * @param {string} scAddress the satellite clinic address
+ * @param {string} ctx the context path
+ */
+function printRxPdf(method, scriptId, useSC, scAddress, ctx) {
+    // Opened during the click, so the pop-up blocker allows it although the PDF is posted after the save
+    const target = 'rxPdf' + Date.now();
+    const pdfWindow = window.open('', target);
+    whenSignatureSaved(ctx,
+        () => onPrint2(method, scriptId, useSC, scAddress, ctx, target),
+        () => pdfWindow && pdfWindow.close());
+}
+
 function closeRxPreviewBootstrapModal() {
     const modal = document.getElementById('rxPreviewBootstrapModal');
     let bsModal = bootstrap.Modal.getInstance(modal);
@@ -348,7 +482,7 @@ function closeRxPreviewBootstrapModal() {
     }
 }
 
-function onPrint2(method, scriptId, useSC, scAddress, ctx) {
+function onPrint2(method, scriptId, useSC, scAddress, ctx, target) {
     ctx = resolveContextPath(ctx);
     const rxPageSize = $('printPageSize').value;
     console.log("rxPagesize  " + rxPageSize);
@@ -362,7 +496,7 @@ function onPrint2(method, scriptId, useSC, scAddress, ctx) {
         + "&scriptId=" + encodeURIComponent(scriptId);
     document.getElementById("preview2Form").action = action;
     if (method !== "oscarRxFax") {
-        document.getElementById("preview2Form").target = "_blank";
+        document.getElementById("preview2Form").target = target || "_blank";
     }
     document.getElementById("preview2Form").submit();
 
@@ -370,26 +504,31 @@ function onPrint2(method, scriptId, useSC, scAddress, ctx) {
 }
 
 function sendFax(scriptId, signatureRequestId, useSC, scAddress, ctx) {
-    if ('function' === typeof window.onbeforeunload) {
-        window.onbeforeunload = null;
-    }
-    let faxNumber = document.getElementById('faxNumber');
-    document.getElementById('finalFax').value = faxNumber.options[faxNumber.selectedIndex].value;
-    document.getElementById('pdfId').value = signatureRequestId;
+    // The fax carries the signature saved on the prescription, so it is saved first
+    whenSignatureSaved(ctx, () => {
+        if ('function' === typeof window.onbeforeunload) {
+            window.onbeforeunload = null;
+        }
+        let faxNumber = document.getElementById('faxNumber');
+        document.getElementById('finalFax').value = faxNumber.options[faxNumber.selectedIndex].value;
+        document.getElementById('pdfId').value = signatureRequestId;
 
-    onPrint2('oscarRxFax', scriptId, useSC, scAddress, ctx);
+        onPrint2('oscarRxFax', scriptId, useSC, scAddress, ctx);
+    });
 }
 
 function printPasteToParent(ctx, rxPasteAsterisk, prefPharmacy, demographicNo, providerName, providerNo, pharmacyName,
                             pharmacyFax, prescribedBy, pharmacyPhone = "") {
-    return printPaste2Parent(ctx, true, false, true, rxPasteAsterisk, prefPharmacy, demographicNo, providerName,
-        providerNo, pharmacyName, pharmacyFax, prescribedBy, pharmacyPhone)
+    // Saved before the note is pasted, so a failed save pastes nothing
+    return whenSignatureSaved(ctx, () => printPaste2Parent(ctx, true, false, true, rxPasteAsterisk, prefPharmacy,
+        demographicNo, providerName, providerNo, pharmacyName, pharmacyFax, prescribedBy, pharmacyPhone));
 }
 
 function faxPasteToParent(ctx, rxPasteAsterisk, prefPharmacy, demographicNo, providerName, providerNo, pharmacyName,
                             pharmacyFax, prescribedBy, pharmacyPhone = "") {
-    return printPaste2Parent(ctx, false, true, true, rxPasteAsterisk, prefPharmacy, demographicNo, providerName,
-        providerNo, pharmacyName, pharmacyFax, prescribedBy, pharmacyPhone)
+    // Saved before the note is pasted; when it fails, the button's chained fax doesn't run either
+    return whenSignatureSaved(ctx, () => printPaste2Parent(ctx, false, true, true, rxPasteAsterisk, prefPharmacy,
+        demographicNo, providerName, providerNo, pharmacyName, pharmacyFax, prescribedBy, pharmacyPhone), neverSettles);
 }
 
 function printPaste2Parent(ctx, print, fax, pasteRx, rxPasteAsterisk, prefPharmacy, demographicNo, providerName,

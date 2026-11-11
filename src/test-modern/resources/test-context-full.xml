@@ -204,6 +204,8 @@
     <bean id="ProgramProviderDAO" class="ca.openosp.openo.PMmodule.dao.ProgramProviderDAOImpl" autowire="byName" />
     <bean id="providerDao" class="ca.openosp.openo.PMmodule.dao.ProviderDaoImpl" autowire="byName" />
     <bean id="providerExtDao" class="ca.openosp.openo.commn.dao.ProviderExtDaoImpl" autowire="byName" />
+    <bean id="providerSignatureDao" class="ca.openosp.openo.commn.dao.ProviderSignatureDaoImpl" autowire="byName" />
+    <bean id="prescriptionDao" class="ca.openosp.openo.commn.dao.PrescriptionDaoImpl" autowire="byName" />
     <bean id="hashAuditDao" class="ca.openosp.openo.commn.dao.HashAuditDaoImpl" autowire="byName" />
 
     <!-- Manually define managers -->

@@ -63,6 +63,9 @@ public class ProviderManager2 {
     private ProviderExtDao providerExtDao;
 
     @Autowired
+    private ProviderSignatureManager providerSignatureManager;
+
+    @Autowired
 	private SecurityInfoManager securityInfoManager;
 
     public List<Provider> getProviders(LoggedInInfo loggedInInfo, Boolean active) {
@@ -498,11 +501,6 @@ public class ProviderManager2 {
             pp = new ProviderPreference();
         }
 
-        ProviderExt providerExt = providerExtDao.find(providerNo);
-        if (providerExt == null) {
-            providerExt = new ProviderExt();
-        }
-
         List<Property> props = propertyDao.findByProvider(providerNo);
 
         pp.setNewTicklerWarningWindow(settings.getNewTicklerWarningWindow());
@@ -717,10 +715,8 @@ public class ProviderManager2 {
             }
         }
 
-        providerExt.setProviderNo(providerNo);
-        providerExt.setSignature(settings.getSignature());
-
-        providerExtDao.merge(providerExt);
+        // Through the signature list, so the default stays one of the provider's choices when printing
+        providerSignatureManager.saveDefaultSignatureText(loggedInInfo, providerNo, settings.getSignature());
 
     }
 

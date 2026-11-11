@@ -18,7 +18,6 @@ import ca.openosp.openo.utility.MiscUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ca.openosp.openo.log.LogAction;
-import ca.openosp.openo.providers.data.ProSignatureData;
 import ca.openosp.openo.prescript.data.RxPatientData;
 import ca.openosp.openo.prescript.data.RxProviderData;
 import ca.openosp.openo.util.DateUtils;
@@ -44,6 +43,9 @@ public class PrescriptionManagerImpl implements PrescriptionManager {
 
     @Autowired
     private PatientConsentManager patientConsentManager;
+
+    @Autowired
+    private ProviderSignatureManager providerSignatureManager;
 
     @Override
     public Prescription getPrescription(LoggedInInfo loggedInInfo, Integer prescriptionId) {
@@ -255,17 +257,7 @@ public class PrescriptionManagerImpl implements PrescriptionManager {
 
         StringBuilder textView = new StringBuilder();
 
-        ProSignatureData sig = new ProSignatureData();
-
-        boolean hasSig = sig.hasSignature(info.getLoggedInProviderNo());
-
-        String doctorName;
-
-        if (hasSig) {
-            doctorName = sig.getSignature(info.getLoggedInProviderNo());
-        } else {
-            doctorName = provider.getFirstName() + ' ' + provider.getSurname();
-        }
+        String doctorName = providerSignatureManager.getDefaultSignature(info.getLoggedInProviderNo());
 
         textView.append(doctorName + "\n");
         textView.append(provider.getClinicName() + "\n");
