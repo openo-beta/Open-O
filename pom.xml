@@ -1761,6 +1761,7 @@
                                 <include>**/casemgmt/**/*UnitTest.java</include>
                                 <include>**/util/UtilDateUtilities*Test.java</include>
                                 <include>**/util/DateUtils*Test.java</include>
+                                <include>**/prevention/Prevention*Test.java</include>
                             </includes>
                             <excludes>
                                 <!-- Exclude archive tests from modern test run -->
