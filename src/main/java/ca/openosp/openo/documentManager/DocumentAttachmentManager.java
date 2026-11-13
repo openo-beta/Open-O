@@ -218,6 +218,62 @@ public interface DocumentAttachmentManager {
      * @return List&lt;EFormData&gt; attached eForms, or empty list when {@code fdid} is {@code null} or not this patient's
      */
     public List<EFormData> getAttachedEFormsForEForm(String demographicNo, String fdid);
+
+    /**
+     * Returns the EDocs currently attached to a tickler, deleted ones and other providers'
+     * private docs included, or an empty list when {@code ticklerId} is absent or the tickler
+     * isn't this patient's. Tickler counterpart of {@link #getAttachedDocsForConsult}, used by
+     * the attachment dialog to list and pre-check every attached doc.
+     *
+     * @param loggedInInfo  LoggedInInfo the current user's session information
+     * @param demographicNo String the patient's demographic number; the tickler must belong to this patient
+     * @param ticklerId     Integer the tickler id; {@code null} short-circuits to an empty list
+     * @return List&lt;EDoc&gt; attached EDocs, or empty list when {@code ticklerId} is {@code null} or not this patient's
+     * @throws RuntimeException if the user lacks the required "_tickler" read privilege
+     */
+    public List<EDoc> getAttachedDocsForTickler(LoggedInInfo loggedInInfo, String demographicNo, Integer ticklerId);
+
+    /**
+     * Returns the eForms currently attached to a tickler, superseded and deleted versions
+     * included, or an empty list when {@code ticklerId} is absent or the tickler isn't this
+     * patient's. Tickler counterpart of {@link #getAttachedEFormsForConsult}.
+     *
+     * @param loggedInInfo  LoggedInInfo the current user's session information
+     * @param demographicNo String the patient's demographic number; the tickler must belong to this patient
+     * @param ticklerId     Integer the tickler id; {@code null} short-circuits to an empty list
+     * @return List&lt;EFormData&gt; attached eForms, or empty list when {@code ticklerId} is {@code null} or not this patient's
+     * @throws RuntimeException if the user lacks the required "_tickler" read privilege
+     */
+    public List<EFormData> getAttachedEFormsForTickler(LoggedInInfo loggedInInfo, String demographicNo, Integer ticklerId);
+
+    /**
+     * Returns the encounter form versions currently attached to a tickler, or an empty list when
+     * {@code ticklerId} is absent, the tickler isn't this patient's, or the user lacks "_form" read.
+     *
+     * <p>Saving an encounter form inserts a new row, so an attached form stops being the patient's
+     * latest as soon as the form is saved again. Every version is searched so the attached one
+     * still resolves. A form id shared by two form types is skipped rather than guessed, as in
+     * {@link #getFormNamesByFormId}.</p>
+     *
+     * @param loggedInInfo  LoggedInInfo the current user's session information
+     * @param demographicNo String the patient's demographic number; the tickler must belong to this patient
+     * @param ticklerId     Integer the tickler id; {@code null} short-circuits to an empty list
+     * @return List&lt;EctFormData.PatientForm&gt; attached form versions (empty if none resolve)
+     * @throws RuntimeException if the user lacks the required "_tickler" read privilege
+     */
+    public List<EctFormData.PatientForm> getAttachedFormsForTickler(LoggedInInfo loggedInInfo, String demographicNo, Integer ticklerId);
+
+    /**
+     * Merges attached encounter form versions into the attachment window's form list, which only
+     * offers each form's latest version. An attached version the list doesn't already offer, such
+     * as one superseded by a later save, is added directly after the latest version of the same
+     * form (or at the end when that form isn't listed), so it can be shown pre-checked and kept.
+     *
+     * @param currentForms  List&lt;EctFormData.PatientForm&gt; the latest version of each form; may be null
+     * @param attachedForms List&lt;EctFormData.PatientForm&gt; the attached form versions; may be null
+     * @return List&lt;EctFormData.PatientForm&gt; a new list of the current forms plus any missing attached versions
+     */
+    public List<EctFormData.PatientForm> mergeAttachedForms(List<EctFormData.PatientForm> currentForms, List<EctFormData.PatientForm> attachedForms);
 }
 
 	
