@@ -30,6 +30,10 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -122,62 +126,53 @@ public class UtilDateUtilities {
 
 
     /**
-     * This returns the Patients Age string at a point in time.  IE. How old the patient will be right now or how old will they be on march.31 of this year.
+     * Returns the patient's age at a point in time as a display string, for example how old the
+     * patient is right now or how old they will be on March 31 of this year.
      *
-     * @param DOB         Demographics Date of birth
-     * @param pointInTime The date you would like to calculate there age at.
-     * @return age string ( ie 2 months, 4 years .etc )
+     * <p>Ages are counted in completed calendar units and are never rounded up:</p>
+     * <ul>
+     *   <li>under 14 days: whole days (e.g. "9 days")</li>
+     *   <li>14 to 69 days: whole weeks (e.g. "6 weeks")</li>
+     *   <li>70 days to under 2 years: completed calendar months (e.g. "5 months")</li>
+     *   <li>2 years and older: completed years (e.g. "4 years")</li>
+     * </ul>
+     *
+     * <p>A month is complete on the same day-of-month as the birth date. When that day does not
+     * exist in the target month (e.g. born on the 31st), the month is complete on the first day of
+     * the following month. For example, a child born January 1 is "5 months" on June 30 and
+     * "6 months" on July 1; a child born August 31 is "6 months" on March 1.</p>
+     *
+     * <p>Only the calendar dates are compared; the time of day on either argument is ignored.</p>
+     *
+     * @param DOB         Date the patient's date of birth
+     * @param pointInTime Date the date at which to calculate the age
+     * @return String the localized age string (e.g. "5 months", "4 years"), the localized
+     *         "Not Born" label if {@code pointInTime} is before {@code DOB}, or {@code null} if
+     *         {@code DOB} is {@code null}
      */
     public static String calcAgeAtDate(Date DOB, Date pointInTime) {
         if (DOB == null) return (null);
 
+        LocalDate birthDate = toLocalDate(DOB);
+        LocalDate asOfDate = toLocalDate(pointInTime);
+
         // If as of date is before birth, return "Not born"
-        if (pointInTime.before(DOB)) {
-            return ResourceBundle.getBundle("oscarResources").getString("global.notBorn");
+        if (asOfDate.isBefore(birthDate)) {
+            return getAgeLabel("global.notBorn");
         }
 
-        GregorianCalendar now = new GregorianCalendar();
-        now.setTime(pointInTime);
-        int curYear = now.get(Calendar.YEAR);
-        int curMonth = now.get(Calendar.MONTH) + 1;
-        int curDay = now.get(Calendar.DAY_OF_MONTH);
-
-        GregorianCalendar birthDate = new GregorianCalendar();
-        birthDate.setTime(DOB);
-        int birthYear = birthDate.get(Calendar.YEAR);
-        int birthMonth = birthDate.get(Calendar.MONTH) + 1;
-        int birthDay = birthDate.get(5);
-
-        int ageInYears = curYear - birthYear;
-        String result = ageInYears + " " + ResourceBundle.getBundle("oscarResources_en").getString("global.years");
-
-
-        if (curMonth > birthMonth || curMonth == birthMonth && curDay >= birthDay) {
-            ageInYears = curYear - birthYear;
-            result = ageInYears + " " + ResourceBundle.getBundle("oscarResources_en").getString("global.years");
-        } else {
-            ageInYears = curYear - birthYear - 1;
-            result = ageInYears + " " + ResourceBundle.getBundle("oscarResources_en").getString("global.years");
+        long ageInYears = ChronoUnit.YEARS.between(birthDate, asOfDate);
+        if (ageInYears >= 2) {
+            return ageInYears + " " + getAgeLabel("global.years");
         }
-        if (ageInYears < 2) {
-            int yearDiff = curYear - birthYear;
-            int ageInDays;
-            if (yearDiff == 2) {
-                ageInDays = (birthDate.getActualMaximum(Calendar.DAY_OF_YEAR) - birthDate.get(Calendar.DAY_OF_YEAR)) + now.get(Calendar.DAY_OF_YEAR) + 365;
-            } else if (yearDiff == 1) {
-                ageInDays = (birthDate.getActualMaximum(Calendar.DAY_OF_YEAR) - birthDate.get(Calendar.DAY_OF_YEAR)) + now.get(Calendar.DAY_OF_YEAR);
-            } else {
-                ageInDays = now.get(Calendar.DAY_OF_YEAR) - birthDate.get(Calendar.DAY_OF_YEAR);
-            }
-            if (ageInDays / 7 > 9) {
-                result = ageInDays / 30 + " " + ResourceBundle.getBundle("oscarResources_en").getString("global.months");
-            } else if (ageInDays >= 14) {
-                result = ageInDays / 7 + " " + ResourceBundle.getBundle("oscarResources_en").getString("global.weeks");
-            } else {
-                result = ageInDays + " " + ResourceBundle.getBundle("oscarResources_en").getString("global.days");
-            }
+
+        long ageInDays = ChronoUnit.DAYS.between(birthDate, asOfDate);
+        if (ageInDays >= 70) {
+            return ChronoUnit.MONTHS.between(birthDate, asOfDate) + " " + getAgeLabel("global.months");
+        } else if (ageInDays >= 14) {
+            return ageInDays / 7 + " " + getAgeLabel("global.weeks");
         }
-        return result;
+        return ageInDays + " " + getAgeLabel("global.days");
     }
 
 
@@ -361,5 +356,28 @@ public class UtilDateUtilities {
             return -1;
         }
 
+    }
+
+    /**
+     * Converts a {@link Date} to a {@link LocalDate} in the system default time zone.
+     *
+     * <p>Uses the epoch milliseconds rather than {@link Date#toInstant()} because
+     * {@link java.sql.Date#toInstant()} throws {@link UnsupportedOperationException}.</p>
+     *
+     * @param date Date the date to convert (may be a java.sql.Date or java.sql.Timestamp)
+     * @return LocalDate the calendar date of {@code date} in the system default time zone
+     */
+    private static LocalDate toLocalDate(Date date) {
+        return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    /**
+     * Looks up a localized age unit label from the oscarResources bundle.
+     *
+     * @param key String the resource key (e.g. "global.months")
+     * @return String the localized label
+     */
+    private static String getAgeLabel(String key) {
+        return ResourceBundle.getBundle("oscarResources").getString(key);
     }
 }
