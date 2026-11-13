@@ -707,6 +707,9 @@
 
             jQuery("#attachDocumentDisplay").load(trigger.data('poload'), function (response, status, xhr) {
                 if (status === "success") {
+                    // The picker pre-checks the tickler's saved attachments. The delegates hold any
+                    // unsaved changes, so un-check saved attachments removed in an earlier dialog session.
+                    syncPreCheckedToDelegates($form, false);
                     // Pre-check the picker boxes for attachments already on this tickler.
                     // Match by name+value, since a docNo can be a patient doc, public eDoc or private eDoc.
                     $form.find(".delegateAttachment").each(function () {

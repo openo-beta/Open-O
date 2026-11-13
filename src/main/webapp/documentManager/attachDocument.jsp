@@ -574,12 +574,16 @@
                                     </button>
                                 </li>
                                 <c:forEach items="${ allForms }" var="form" varStatus="loop">
+                                    <%-- Attached versions are pre-checked; a superseded one is only listed because it is attached --%>
+                                    <c:set var="isAttached" value="${not empty attachedFormIds and attachedFormIds.contains(form.formId)}"/>
+                                    <c:set var="isPreviousVersion" value="${not empty previousVersionFormIds and previousVersionFormIds.contains(form.formId)}"/>
                                     <li class="form ${loop.index > 19 ? 'hide' : ''}">
                                         <input class="form_check attachable_check" type="checkbox" name="formNo"
                                                id="formNo${ form.formId }" value="${form.formId}"
+                                               ${isAttached ? 'checked="checked" data-pre-attached="true"' : ''}
                                                title="${e:forHtmlAttribute(form.formName)}"/>
                                         <label for="formNo${form.formId}">
-                                            <c:out value="${ form.formName } ${ form.getEdited() }"/>
+                                            <c:out value="${ form.formName } ${ form.getEdited() }"/><c:if test="${isPreviousVersion}"> (previous version)</c:if>
                                         </label>
                                         <button class="preview-button" type="button" title="Preview"
                                                 onclick="getPdf('FORM', '${form.formId}', 'method=renderFormPDF&formId=${form.formId}&formName=${form.formName}&demographicNo=${form.getDemoNo()}')">

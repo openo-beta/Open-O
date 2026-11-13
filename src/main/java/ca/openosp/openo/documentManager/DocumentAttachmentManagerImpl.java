@@ -87,6 +87,8 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
     @Autowired
     private TicklerDocsDao ticklerDocsDao;
     @Autowired
+    private ca.openosp.openo.commn.dao.TicklerDao ticklerDao;
+    @Autowired
     private ConsultationRequestDao consultationRequestDao;
 
     @Autowired
@@ -1044,6 +1046,148 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
     public List<EFormData> getAttachedEFormsForEForm(String demographicNo, String fdid) {
         if (!eFormBelongsTo(fdid, demographicNo)) return Collections.emptyList();
         return EFormUtil.listPatientEformsCurrentAttachedToEForm(fdid);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<EDoc> getAttachedDocsForTickler(LoggedInInfo loggedInInfo, String demographicNo, Integer ticklerId) {
+        List<String> docIds = getTicklerAttachmentIds(loggedInInfo, demographicNo, ticklerId, DocumentType.DOC);
+        List<EDoc> attachedDocs = new ArrayList<>();
+        for (String docId : docIds) {
+            EDoc doc = loadEDoc(docId);
+            // getDoc returns an empty EDoc when the document row no longer exists
+            if (doc != null && doc.getDocId() != null) {
+                attachedDocs.add(doc);
+            }
+        }
+        return attachedDocs;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<EFormData> getAttachedEFormsForTickler(LoggedInInfo loggedInInfo, String demographicNo, Integer ticklerId) {
+        List<String> fdids = getTicklerAttachmentIds(loggedInInfo, demographicNo, ticklerId, DocumentType.EFORM);
+        Integer demographicId = ConversionUtils.fromIntString(demographicNo);
+        List<EFormData> attachedEForms = new ArrayList<>();
+        for (String fdid : fdids) {
+            int fdidValue = ConversionUtils.fromIntString(fdid);
+            EFormData eForm = eFormDataDao.find(fdidValue);
+            if (eForm != null && Objects.equals(eForm.getDemographicId(), demographicId)) {
+                attachedEForms.add(eForm);
+            }
+        }
+        return attachedEForms;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<EctFormData.PatientForm> getAttachedFormsForTickler(LoggedInInfo loggedInInfo, String demographicNo, Integer ticklerId) {
+        List<String> formIds = getTicklerAttachmentIds(loggedInInfo, demographicNo, ticklerId, DocumentType.FORM);
+        if (formIds.isEmpty()
+                || !securityInfoManager.hasPrivilege(loggedInInfo, "_form", SecurityInfoManager.READ, null)) {
+            return Collections.emptyList();
+        }
+
+        Integer demographicId = ConversionUtils.fromIntString(demographicNo);
+        // getAllVersions must stay true: the attached version is usually no longer the latest
+        List<EctFormData.PatientForm> allVersions = formsManager
+                .getEncounterFormsByDemographicNumbers(loggedInInfo, Collections.singletonList(demographicId), true, true)
+                .getOrDefault(demographicId, Collections.emptyList());
+
+        Map<String, List<EctFormData.PatientForm>> versionsById = new HashMap<>();
+        for (EctFormData.PatientForm form : allVersions) {
+            versionsById.computeIfAbsent(form.getFormId(), id -> new ArrayList<>()).add(form);
+        }
+
+        List<EctFormData.PatientForm> attachedForms = new ArrayList<>();
+        for (String formId : formIds) {
+            List<EctFormData.PatientForm> matches = versionsById.get(formId);
+            // Skip ids shared by two form types: the stored id alone can't say which one is attached
+            if (matches != null && matches.size() == 1) {
+                attachedForms.add(matches.get(0));
+            }
+        }
+        return attachedForms;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<EctFormData.PatientForm> mergeAttachedForms(List<EctFormData.PatientForm> currentForms,
+                                                             List<EctFormData.PatientForm> attachedForms) {
+        List<EctFormData.PatientForm> merged = currentForms == null ? new ArrayList<>() : new ArrayList<>(currentForms);
+        if (attachedForms == null || attachedForms.isEmpty()) {
+            return merged;
+        }
+
+        Set<String> listedIds = new HashSet<>();
+        for (EctFormData.PatientForm form : merged) {
+            listedIds.add(form.getFormId());
+        }
+
+        for (EctFormData.PatientForm attachedForm : attachedForms) {
+            if (!listedIds.add(attachedForm.getFormId())) {
+                continue;
+            }
+            // Place the attached version after the last listed entry of the same form, so the
+            // older version sits beneath the latest one it was superseded by
+            int insertAt = merged.size();
+            for (int i = merged.size() - 1; i >= 0; i--) {
+                if (Objects.equals(merged.get(i).getFormName(), attachedForm.getFormName())) {
+                    insertAt = i + 1;
+                    break;
+                }
+            }
+            merged.add(insertAt, attachedForm);
+        }
+        return merged;
+    }
+
+    /**
+     * Returns the ids of a tickler's attachments of one type, after checking the "_tickler" read
+     * privilege and that the tickler belongs to the patient. Empty when either check fails.
+     */
+    private List<String> getTicklerAttachmentIds(LoggedInInfo loggedInInfo, String demographicNo, Integer ticklerId,
+                                                 DocumentType documentType) {
+        Integer demographicId = ConversionUtils.fromIntString(demographicNo);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_tickler", SecurityInfoManager.READ, demographicId)) {
+            throw new RuntimeException("missing required sec object (_tickler)");
+        }
+        if (!ticklerBelongsTo(ticklerId, demographicNo)) {
+            return Collections.emptyList();
+        }
+        List<String> ids = new ArrayList<>();
+        for (TicklerDocs ticklerDoc : ticklerDocsDao.findByTicklerIdDocType(ticklerId, documentType.getType())) {
+            ids.add(String.valueOf(ticklerDoc.getDocumentNo()));
+        }
+        return ids;
+    }
+
+    /**
+     * Loads one document as an EDoc. Package-private so unit tests can stub it, since
+     * {@link EDocUtil} resolves its DAOs statically.
+     *
+     * @param docId String the document number
+     * @return EDoc the document, with a null doc id when it doesn't exist
+     */
+    EDoc loadEDoc(String docId) {
+        return EDocUtil.getDoc(docId);
+    }
+
+    // The tickler attachment queries filter by tickler id only, so without this check a request
+    // pairing one patient with another patient's tickler would list its attachments.
+    // Package-private for unit tests.
+    boolean ticklerBelongsTo(Integer ticklerId, String demographicNo) {
+        if (ticklerId == null) return false;
+        ca.openosp.openo.commn.model.Tickler tickler = ticklerDao.find(ticklerId);
+        return tickler != null && Objects.equals(tickler.getDemographicNo(), ConversionUtils.fromIntString(demographicNo));
     }
 
     // The attached-item queries filter by consult/eForm id only, so without this check a
