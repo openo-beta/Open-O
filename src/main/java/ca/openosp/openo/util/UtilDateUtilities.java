@@ -181,6 +181,15 @@ public class UtilDateUtilities {
     }
 
 
+    /**
+     * Calculates a person's age today in completed years. The age increases on the birthday itself.
+     *
+     * @param year_of_birth  String the four digit year of birth
+     * @param month_of_birth String the month of birth (1-12)
+     * @param date_of_birth  String the day of the month of birth
+     * @return int the age in completed years
+     * @throws NumberFormatException if any argument is not a valid integer
+     */
     public static int calcAge(String year_of_birth, String month_of_birth, String date_of_birth) {
         GregorianCalendar now = new GregorianCalendar();
         int curYear = now.get(Calendar.YEAR);
@@ -191,7 +200,7 @@ public class UtilDateUtilities {
         if (curMonth > Integer.parseInt(month_of_birth)) {
             age = curYear - Integer.parseInt(year_of_birth);
         } else {
-            if (curMonth == Integer.parseInt(month_of_birth) && curDay > Integer.parseInt(date_of_birth)) {
+            if (curMonth == Integer.parseInt(month_of_birth) && curDay >= Integer.parseInt(date_of_birth)) {
                 age = curYear - Integer.parseInt(year_of_birth);
             } else {
                 age = curYear - Integer.parseInt(year_of_birth) - 1;
