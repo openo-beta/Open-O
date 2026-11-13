@@ -8,6 +8,7 @@
 package ca.openosp.openo.util;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -37,6 +38,10 @@ class UtilDateUtilitiesGetNumMonthsTest {
         return Date.from(LocalDate.parse(isoDate).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
+    private static Date dateTime(String isoDateTime) {
+        return Date.from(LocalDateTime.parse(isoDateTime).atZone(ZoneId.systemDefault()).toInstant());
+    }
+
     @ParameterizedTest(name = "{0} to {1} -> {2}")
     @CsvSource({
             "2026-01-01, 2026-06-30, 5",
@@ -53,6 +58,17 @@ class UtilDateUtilitiesGetNumMonthsTest {
     void shouldCountCompletedCalendarMonths_whenGivenTwoDates(String start, String end, int expected) {
         assertThat(UtilDateUtilities.getNumMonths(date(start), date(end))).isEqualTo(expected);
         assertThat(ca.openosp.openo.PMmodule.utility.UtilDateUtilities.getNumMonths(date(start), date(end))).isEqualTo(expected);
+    }
+
+    @ParameterizedTest(name = "{0} to {1} -> {2}")
+    @CsvSource({
+            // Lab matching: four months to the day, but earlier in the day, is not yet four months
+            "2026-01-15T10:00, 2026-05-15T09:00, 3",
+            "2026-01-15T10:00, 2026-05-15T10:00, 4",
+            "2026-01-15T10:00, 2026-05-15T11:00, 4"
+    })
+    void shouldNotCountMonthBeforeAnniversaryInstant_whenDatesHaveTimes(String start, String end, int expected) {
+        assertThat(UtilDateUtilities.getNumMonths(dateTime(start), dateTime(end))).isEqualTo(expected);
     }
 
     @Test
