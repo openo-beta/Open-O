@@ -71,6 +71,24 @@
             background-color: white !important;
         }
 
+        /* Pin weights and margins so the picker renders the same in every host page
+           (Consult loads no Bootstrap; the Tickler windows load Bootstrap 3). */
+        .attachmentContainer h2 {
+            font-weight: bold;
+            margin: 0.83em 0;
+        }
+
+        .attachmentContainer label {
+            font-weight: normal;
+            display: inline;
+            margin-bottom: 0;
+            max-width: none;
+        }
+
+        .attachmentContainer ul {
+            margin: 1em 0;
+        }
+
         .attachmentContainer {
             display: flex;
             width: 95vw;
@@ -556,12 +574,16 @@
                                     </button>
                                 </li>
                                 <c:forEach items="${ allForms }" var="form" varStatus="loop">
+                                    <%-- Attached versions are pre-checked; a superseded one is only listed because it is attached --%>
+                                    <c:set var="isAttached" value="${not empty attachedFormIds and attachedFormIds.contains(form.formId)}"/>
+                                    <c:set var="isPreviousVersion" value="${not empty previousVersionFormIds and previousVersionFormIds.contains(form.formId)}"/>
                                     <li class="form ${loop.index > 19 ? 'hide' : ''}">
                                         <input class="form_check attachable_check" type="checkbox" name="formNo"
                                                id="formNo${ form.formId }" value="${form.formId}"
+                                               ${isAttached ? 'checked="checked" data-pre-attached="true"' : ''}
                                                title="${e:forHtmlAttribute(form.formName)}"/>
                                         <label for="formNo${form.formId}">
-                                            <c:out value="${ form.formName } ${ form.getEdited() }"/>
+                                            <c:out value="${ form.formName } ${ form.getEdited() }"/><c:if test="${isPreviousVersion}"> (previous version)</c:if>
                                         </label>
                                         <button class="preview-button" type="button" title="Preview"
                                                 onclick="getPdf('FORM', '${form.formId}', 'method=renderFormPDF&formId=${form.formId}&formName=${form.formName}&demographicNo=${form.getDemoNo()}')">
