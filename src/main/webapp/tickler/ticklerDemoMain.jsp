@@ -91,6 +91,7 @@
     ca.openosp.openo.commn.dao.TicklerDocsDao ticklerDocsDao = SpringUtils.getBean(ca.openosp.openo.commn.dao.TicklerDocsDao.class);
     ca.openosp.openo.commn.dao.PatientLabRoutingDao patientLabRoutingDao = SpringUtils.getBean(ca.openosp.openo.commn.dao.PatientLabRoutingDao.class);
     ca.openosp.openo.documentManager.DocumentAttachmentManager documentAttachmentManager = SpringUtils.getBean(ca.openosp.openo.documentManager.DocumentAttachmentManager.class);
+    ca.openosp.openo.commn.dao.DocumentDao documentDao = SpringUtils.getBean(ca.openosp.openo.commn.dao.DocumentDao.class);
 
     // Encounter form names, resolved lazily per patient the first time a form attachment is seen.
     java.util.Map<Integer, java.util.Map<String, String>> formNamesByDemographic = new java.util.HashMap<Integer, java.util.Map<String, String>>();
@@ -390,6 +391,15 @@
             function reportWindow(page) {
                 windowprops = "height=660, width=960, location=no, scrollbars=yes, menubars=no, toolbars=no, resizable=yes, top=0, left=0";
                 var popup = window.open(page, "labreport", windowprops);
+                popup.focus();
+            }
+
+            // The EMR document viewer shows the PDF beside its details panel, so it gets the whole
+            // screen, matching the eChart's document links.
+            function documentViewerWindow(page) {
+                windowprops = "height=" + window.screen.height + ", width=" + window.screen.width +
+                    ", location=no, scrollbars=yes, menubars=no, toolbars=no, resizable=yes, top=0, left=0";
+                var popup = window.open(page, "ticklerdocument", windowprops);
                 popup.focus();
             }
         </script>
@@ -944,14 +954,25 @@
                                     // Lab sub-type is recovered from patient_lab_routing to pick the correct viewer.
                                     List<ca.openosp.openo.commn.model.TicklerDocs> ticklerDocsList =
                                             ticklerDocsDao.findByTicklerId(t.getId());
+                                    // PDFs open in the EMR document viewer, as from the eChart; one query per tickler
+                                    List<Integer> attachedDocNos = new java.util.ArrayList<Integer>();
+                                    for (ca.openosp.openo.commn.model.TicklerDocs td : ticklerDocsList) {
+                                        if (ca.openosp.openo.commn.model.TicklerDocs.DOCTYPE_DOC.equals(td.getDocType())) {
+                                            attachedDocNos.add(td.getDocumentNo());
+                                        }
+                                    }
+                                    java.util.Set<Integer> pdfDocNos = attachedDocNos.isEmpty()
+                                            ? java.util.Collections.<Integer>emptySet()
+                                            : new java.util.HashSet<Integer>(documentDao.findPdfDocumentNos(attachedDocNos));
                                     for (ca.openosp.openo.commn.model.TicklerDocs td : ticklerDocsList) {
                                         String dtype = td.getDocType();
                                         String docNoStr = String.valueOf(td.getDocumentNo());
                                         String href;
+                                        boolean pdfDocument = false;
                                         if (ca.openosp.openo.commn.model.TicklerDocs.DOCTYPE_DOC.equals(dtype)) {
-                                            href = request.getContextPath() + "/documentManager/ManageDocument.do?method=display&doc_no="
-                                                    + Encode.forUriComponent(docNoStr) + "&providerNo=" + Encode.forUriComponent(String.valueOf(user_no))
-                                                    + "&searchProviderNo=" + Encode.forUriComponent(String.valueOf(user_no)) + "&status=";
+                                            pdfDocument = pdfDocNos.contains(td.getDocumentNo());
+                                            href = request.getContextPath()
+                                                    + ca.openosp.openo.documentManager.DocumentViewUrl.forDocument(docNoStr, pdfDocument, String.valueOf(user_no));
                                         } else if (ca.openosp.openo.commn.model.TicklerDocs.DOCTYPE_HRM.equals(dtype)) {
                                             href = request.getContextPath() + "/hospitalReportManager/Display.do?id=" + Encode.forUriComponent(docNoStr);
                                         } else if (ca.openosp.openo.commn.model.TicklerDocs.DOCTYPE_EFORM.equals(dtype)) {
@@ -998,7 +1019,7 @@
                                         }
                                         if (href != null) {
                                 %>
-                                <a href="javascript:reportWindow('<%=Encode.forJavaScript(href)%>')">ATT</a>
+                                <a href="javascript:<%=pdfDocument ? "documentViewerWindow" : "reportWindow"%>('<%=Encode.forJavaScript(href)%>')">ATT</a>
                                 <%
                                         } else {
                                 %>

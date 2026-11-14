@@ -500,12 +500,14 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
             String displayName = null;
             String labType = null;
             String formName = null;
+            boolean pdfDocument = false;
 
             switch (documentType) {
                 case DOC:
                     Document document = documentDao.getDocument(documentId);
                     if (document != null) {
                         displayName = document.getDocdesc();
+                        pdfDocument = DocumentViewUrl.isPdfContentType(document.getContenttype());
                     }
                     break;
                 case LAB:
@@ -547,7 +549,8 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
             if (StringUtils.isNullOrEmpty(displayName)) {
                 displayName = documentType.getName() + " #" + documentId;
             }
-            String viewUrl = buildTicklerAttachmentViewUrl(documentType, documentId, labType, formName, demographicNo, providerNo);
+            String viewUrl = buildTicklerAttachmentViewUrl(documentType, documentId, labType, formName, pdfDocument,
+                    demographicNo, providerNo);
             attachmentDetails.add(new TicklerAttachmentData(documentType, documentId, displayName, viewUrl));
         }
         return attachmentDetails;
@@ -573,18 +576,21 @@ public class DocumentAttachmentManagerImpl implements DocumentAttachmentManager 
     /**
      * Builds the context-relative URL of the viewer for one tickler attachment, using the same
      * viewers as the tickler list. Labs are routed by sub-type, falling back to the BC viewer.
+     * A PDF document opens in the EMR document viewer, as it does from the eChart; any other
+     * document opens as the raw file (see {@link DocumentViewUrl}).
      *
      * @return String the viewer URL, or null for a form whose name no longer resolves, since
      *         encounter forms span many tables and the id alone cannot address one
      */
     private String buildTicklerAttachmentViewUrl(DocumentType documentType, String documentId, String labType,
-                                                 String formName, Integer demographicNo, String providerNo) {
+                                                 String formName, boolean pdfDocument, Integer demographicNo,
+                                                 String providerNo) {
         String id = Encode.forUriComponent(documentId);
         String providerParams = "&providerNo=" + Encode.forUriComponent(String.valueOf(providerNo))
                 + "&searchProviderNo=" + Encode.forUriComponent(String.valueOf(providerNo)) + "&status=";
         switch (documentType) {
             case DOC:
-                return "/documentManager/ManageDocument.do?method=display&doc_no=" + id + providerParams;
+                return DocumentViewUrl.forDocument(documentId, pdfDocument, providerNo);
             case EFORM:
                 return "/eform/efmshowform_data.jsp?fdid=" + id;
             case HRM:
