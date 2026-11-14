@@ -103,4 +103,15 @@ public interface DocumentDao extends AbstractDao<Document> {
      * @return List&lt;Integer&gt; the subset of {@code docNos} attachable to this patient's chart
      */
     public List<Integer> findValidAttachmentDocNos(Integer demographicNo, List<Integer> docNos);
+
+    /**
+     * Returns the subset of {@code docNos} that are PDFs, in a single query, so a page listing many
+     * document links can choose each link's viewer without a lookup per row. A document is a PDF
+     * when its content type contains {@code /pdf}, the same test as
+     * {@link ca.openosp.openo.documentManager.EDoc#isPDF()}.
+     *
+     * @param docNos List&lt;Integer&gt; document numbers to check; null or empty yields an empty list
+     * @return List&lt;Integer&gt; the document numbers among {@code docNos} that are PDFs
+     */
+    public List<Integer> findPdfDocumentNos(List<Integer> docNos);
 }

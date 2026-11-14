@@ -324,6 +324,43 @@ public class DocumentAttachmentManagerUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
+        @DisplayName("should open a PDF document in the EMR document viewer, as the eChart does")
+        void shouldBuildEmrDocumentViewerUrl_whenPdfDocAttached() {
+            // Given
+            when(mockTicklerDocsDao.findByTicklerId(TICKLER_ID)).thenReturn(Collections.singletonList(
+                    new TicklerDocs(TICKLER_ID, 12, TicklerDocs.DOCTYPE_DOC, PROVIDER_NO)));
+            Document document = new Document();
+            document.setDocdesc("Discharge Summary");
+            document.setContenttype("application/pdf");
+            when(mockDocumentDao.getDocument("12")).thenReturn(document);
+
+            // When
+            List<TicklerAttachmentData> details = manager.getTicklerAttachmentDetails(mockLoggedInInfo, TICKLER_ID, DEMOGRAPHIC_NO);
+
+            // Then
+            assertThat(details.get(0).getViewUrl()).isEqualTo("/documentManager/showDocument.jsp?inWindow=true&segmentID=12");
+        }
+
+        @Test
+        @DisplayName("should open a non-PDF document as the raw file, since the EMR viewer only renders PDFs")
+        void shouldBuildRawFileUrl_whenNonPdfDocAttached() {
+            // Given
+            when(mockTicklerDocsDao.findByTicklerId(TICKLER_ID)).thenReturn(Collections.singletonList(
+                    new TicklerDocs(TICKLER_ID, 12, TicklerDocs.DOCTYPE_DOC, PROVIDER_NO)));
+            Document document = new Document();
+            document.setDocdesc("Wound photo");
+            document.setContenttype("image/jpeg");
+            when(mockDocumentDao.getDocument("12")).thenReturn(document);
+
+            // When
+            List<TicklerAttachmentData> details = manager.getTicklerAttachmentDetails(mockLoggedInInfo, TICKLER_ID, DEMOGRAPHIC_NO);
+
+            // Then
+            assertThat(details.get(0).getViewUrl()).isEqualTo(
+                    "/documentManager/ManageDocument.do?method=display&doc_no=12&providerNo=999990&searchProviderNo=999990&status=");
+        }
+
+        @Test
         @DisplayName("should link an eForm to the eForm viewer")
         void shouldBuildEFormViewerUrl_whenEFormAttached() {
             // Given

@@ -282,6 +282,10 @@
                 } else if (type === 'HL7') {
                     href = "javascript:reportWindow('" + ctx + "/lab/CA/ALL/labDisplay.jsp?segmentID=" + safeTableId +
                         "&providerNo=" + uNo + "&searchProviderNo=" + uNo + "&status=')";
+                } else if (type === 'DOC' && link.pdf) {
+                    // A PDF opens in the EMR document viewer, full screen, as it does from the eChart
+                    href = "javascript:documentViewerWindow('" + ctx + "/documentManager/showDocument.jsp?inWindow=true&segmentID=" +
+                        safeTableId + "')";
                 } else if (type === 'DOC') {
                     href = "javascript:reportWindow('" + ctx + "/documentManager/ManageDocument.do?method=display&doc_no=" + safeTableId +
                         "&providerNo=" + uNo + "&searchProviderNo=" + uNo + "&status=')";
@@ -539,6 +543,15 @@
             function reportWindow(page) {
                 windowprops = "height=660, width=960, location=no, scrollbars=yes, menubars=no, toolbars=no, resizable=yes, top=0, left=0";
                 var popup = window.open(page, "labreport", windowprops);
+                popup.focus();
+            }
+
+            // The EMR document viewer shows the PDF beside its details panel, so it gets the whole
+            // screen, matching the eChart's document links.
+            function documentViewerWindow(page) {
+                windowprops = "height=" + window.screen.height + ", width=" + window.screen.width +
+                    ", location=no, scrollbars=yes, menubars=no, toolbars=no, resizable=yes, top=0, left=0";
+                var popup = window.open(page, "ticklerdocument", windowprops);
                 popup.focus();
             }
 

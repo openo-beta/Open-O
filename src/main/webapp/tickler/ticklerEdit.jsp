@@ -785,10 +785,15 @@
             });
         });
 
-        // Open attachment links in the same popup size the tickler list uses.
+        // Open attachment links in the same popup size the tickler list uses. A PDF document opens
+        // in the EMR document viewer, which (as from the eChart) gets the whole screen.
         jQuery(document).on('click', '#attachmentNames a.attachment-link', function (event) {
             event.preventDefault();
-            popupPage(660, 960, this.href);
+            if (this.pathname.indexOf('/documentManager/showDocument.jsp') !== -1) {
+                popupPage(window.screen.height, window.screen.width, this.href);
+            } else {
+                popupPage(660, 960, this.href);
+            }
         });
     </script>
 

@@ -5,6 +5,7 @@ import ca.openosp.openo.commn.dao.TicklerDocsDao;
 import ca.openosp.openo.commn.model.CustomFilter;
 import ca.openosp.openo.commn.model.Tickler;
 import ca.openosp.openo.commn.model.TicklerDocs;
+import ca.openosp.openo.commn.dao.DocumentDao;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.managers.TicklerManager;
@@ -57,6 +58,9 @@ class TicklerList2ActionTest extends OpenOWebTestBase {
     @Mock
     private DocumentAttachmentManager mockDocumentAttachmentManager;
 
+    @Mock
+    private DocumentDao mockDocumentDao;
+
     private TicklerList2Action action;
 
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -85,6 +89,7 @@ class TicklerList2ActionTest extends OpenOWebTestBase {
         // Default: no attachments, so link-unrelated tests do not need to stub the attachment path
         when(mockTicklerDocsDao.findByTicklerIds(anyList())).thenReturn(Collections.emptyList());
         when(mockPatientLabRoutingDao.findByLabNos(anyList())).thenReturn(Collections.emptyList());
+        when(mockDocumentDao.findPdfDocumentNos(anyList())).thenReturn(Collections.emptyList());
 
         action = new TicklerList2Action();
         injectField("ticklerManager", mockTicklerManager);
@@ -92,6 +97,7 @@ class TicklerList2ActionTest extends OpenOWebTestBase {
         injectField("ticklerDocsDao", mockTicklerDocsDao);
         injectField("patientLabRoutingDao", mockPatientLabRoutingDao);
         injectField("documentAttachmentManager", mockDocumentAttachmentManager);
+        injectField("documentDao", mockDocumentDao);
     }
 
     // ── Privilege Enforcement ──────────────────────────────────────────
@@ -239,6 +245,68 @@ class TicklerList2ActionTest extends OpenOWebTestBase {
         assertThat(links.size()).isEqualTo(1);
         assertThat(links.get(0).get("tableName").asText()).isEqualTo("DOC");
         assertThat(links.get(0).get("tableId").asLong()).isEqualTo(999L);
+    }
+
+    @Test
+    @DisplayName("Should flag a PDF document so the client opens it in the EMR document viewer")
+    void shouldFlagPdf_whenAttachedDocumentIsPdf() throws Exception {
+        allowPrivilege("_tickler", "r");
+
+        stubPaginatedResults(1, List.of(createTestTickler(5, "Document attached")));
+        stubAttachments(ticklerDoc(5, 999, TicklerDocs.DOCTYPE_DOC));
+        when(mockDocumentDao.findPdfDocumentNos(anyList())).thenReturn(List.of(999));
+
+        executeAction(action);
+
+        JsonNode link = parseResponse().get("data").get(0).get("links").get(0);
+        assertThat(link.get("pdf").asBoolean()).isTrue();
+    }
+
+    @Test
+    @DisplayName("Should not flag a non-PDF document, which keeps opening as the raw file")
+    void shouldNotFlagPdf_whenAttachedDocumentIsNotPdf() throws Exception {
+        allowPrivilege("_tickler", "r");
+
+        stubPaginatedResults(1, List.of(createTestTickler(5, "Image attached")));
+        stubAttachments(ticklerDoc(5, 999, TicklerDocs.DOCTYPE_DOC));
+
+        executeAction(action);
+
+        JsonNode link = parseResponse().get("data").get(0).get("links").get(0);
+        assertThat(link.has("pdf")).isFalse();
+    }
+
+    @Test
+    @DisplayName("Should look up PDFs for the whole page in one query, and only when documents are attached")
+    void shouldBatchPdfLookup_whenDocumentsAttached() throws Exception {
+        allowPrivilege("_tickler", "r");
+
+        stubPaginatedResults(2, List.of(
+                createTestTickler(1, "First"),
+                createTestTickler(2, "Second")));
+        stubAttachments(
+                ticklerDoc(1, 999, TicklerDocs.DOCTYPE_DOC),
+                ticklerDoc(2, 999, TicklerDocs.DOCTYPE_DOC),
+                ticklerDoc(2, 33, TicklerDocs.DOCTYPE_EFORM));
+
+        executeAction(action);
+
+        ArgumentCaptor<List<Integer>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mockDocumentDao).findPdfDocumentNos(captor.capture());
+        assertThat(captor.getValue()).containsExactly(999);
+    }
+
+    @Test
+    @DisplayName("Should not query for PDFs when the page has no document attachments")
+    void shouldSkipPdfLookup_whenNoDocumentsAttached() throws Exception {
+        allowPrivilege("_tickler", "r");
+
+        stubPaginatedResults(1, List.of(createTestTickler(5, "eForm attached")));
+        stubAttachments(ticklerDoc(5, 33, TicklerDocs.DOCTYPE_EFORM));
+
+        executeAction(action);
+
+        verify(mockDocumentDao, never()).findPdfDocumentNos(anyList());
     }
 
     @Test

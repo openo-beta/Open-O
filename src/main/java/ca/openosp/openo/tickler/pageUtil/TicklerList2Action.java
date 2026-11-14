@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.opensymphony.xwork2.ActionSupport;
 
 import ca.openosp.OscarProperties;
+import ca.openosp.openo.commn.dao.DocumentDao;
 import ca.openosp.openo.commn.dao.PatientLabRoutingDao;
 import ca.openosp.openo.commn.dao.TicklerDocsDao;
 import ca.openosp.openo.commn.model.CustomFilter;
@@ -57,6 +59,7 @@ public class TicklerList2Action extends ActionSupport {
     private TicklerDocsDao ticklerDocsDao = SpringUtils.getBean(TicklerDocsDao.class);
     private PatientLabRoutingDao patientLabRoutingDao = SpringUtils.getBean(PatientLabRoutingDao.class);
     private DocumentAttachmentManager documentAttachmentManager = SpringUtils.getBean(DocumentAttachmentManager.class);
+    private DocumentDao documentDao = SpringUtils.getBean(DocumentDao.class);
 
     /**
      * Handles DataTables server-side processing requests. Accepts standard
@@ -115,6 +118,7 @@ public class TicklerList2Action extends ActionSupport {
 
         Map<Integer, List<TicklerDocs>> ticklerDocsByTicklerId = loadTicklerDocsByTicklerId(ticklers);
         Map<Integer, String> labTypeByDocumentNo = loadLabTypesByDocumentNo(ticklerDocsByTicklerId);
+        Set<Integer> pdfDocumentNos = loadPdfDocumentNos(ticklerDocsByTicklerId);
         Map<Integer, Map<String, String>> formNamesByDemographic =
                 loadFormNamesByDemographic(loggedInInfo, ticklers, ticklerDocsByTicklerId);
 
@@ -126,7 +130,8 @@ public class TicklerList2Action extends ActionSupport {
             List<TicklerDocs> ticklerDocs = ticklerDocsByTicklerId.getOrDefault(tickler.getId(), Collections.emptyList());
             Map<String, String> formNames = formNamesByDemographic
                     .getOrDefault(tickler.getDemographicNo(), Collections.emptyMap());
-            dataArray.add(buildTicklerRow(tickler, warning, datetimeFormat, dateOnlyFormat, locale, ticklerDocs, labTypeByDocumentNo, formNames));
+            dataArray.add(buildTicklerRow(tickler, warning, datetimeFormat, dateOnlyFormat, locale, ticklerDocs, labTypeByDocumentNo,
+                    pdfDocumentNos, formNames));
 
             List<TicklerCommentDTO> tcomments = tickler.getComments();
             if (tcomments != null && !tcomments.isEmpty()) {
@@ -178,6 +183,8 @@ public class TicklerList2Action extends ActionSupport {
      *        {@link #loadTicklerDocsByTicklerId}
      * @param labTypeByDocumentNo Map&lt;Integer, String&gt; lab document number to lab sub-type,
      *        pre-fetched in bulk by {@link #loadLabTypesByDocumentNo}
+     * @param pdfDocumentNos Set&lt;Integer&gt; document numbers of attached documents that are PDFs,
+     *        pre-fetched in bulk by {@link #loadPdfDocumentNos}
      * @param formNames Map&lt;String, String&gt; form id to form name for <em>this tickler's patient</em>,
      *        pre-fetched by {@link #loadFormNamesByDemographic}
      * @return ObjectNode the JSON row
@@ -186,6 +193,7 @@ public class TicklerList2Action extends ActionSupport {
                                        DateFormat datetimeFormat, DateFormat dateOnlyFormat,
                                        Locale locale, List<TicklerDocs> ticklerDocs,
                                        Map<Integer, String> labTypeByDocumentNo,
+                                       Set<Integer> pdfDocumentNos,
                                        Map<String, String> formNames) {
         ObjectNode row = objectMapper.createObjectNode();
         row.put("id", tickler.getId());
@@ -208,6 +216,10 @@ public class TicklerList2Action extends ActionSupport {
             ObjectNode linkNode = objectMapper.createObjectNode();
             linkNode.put("tableName", resolveAttachmentType(td, labTypeByDocumentNo));
             linkNode.put("tableId", td.getDocumentNo());
+            if (TicklerDocs.DOCTYPE_DOC.equals(td.getDocType()) && pdfDocumentNos.contains(td.getDocumentNo())) {
+                // The client opens a PDF in the EMR document viewer rather than as the raw file
+                linkNode.put("pdf", true);
+            }
             if (TicklerDocs.DOCTYPE_FORM.equals(td.getDocType())) {
                 // Left absent when the form no longer resolves; the client then renders an
                 // unlinked icon rather than a URL that cannot identify a form.
@@ -256,6 +268,27 @@ public class TicklerList2Action extends ActionSupport {
         List<PatientLabRouting> routings = patientLabRoutingDao.findByLabNos(labDocumentNos);
         return routings.stream().collect(Collectors.toMap(
                 PatientLabRouting::getLabNo, PatientLabRouting::getLabType, (first, second) -> first));
+    }
+
+    /**
+     * Finds which attached documents on this page are PDFs, in one batched query, so the client can
+     * open each in the EMR document viewer (as the eChart does) instead of as the raw file.
+     *
+     * @param ticklerDocsByTicklerId Map&lt;Integer, List&lt;TicklerDocs&gt;&gt; attachments grouped by
+     *        tickler id, as returned by {@link #loadTicklerDocsByTicklerId}
+     * @return Set&lt;Integer&gt; document numbers of the attached documents that are PDFs
+     */
+    private Set<Integer> loadPdfDocumentNos(Map<Integer, List<TicklerDocs>> ticklerDocsByTicklerId) {
+        List<Integer> documentNos = ticklerDocsByTicklerId.values().stream()
+                .flatMap(List::stream)
+                .filter(td -> TicklerDocs.DOCTYPE_DOC.equals(td.getDocType()))
+                .map(TicklerDocs::getDocumentNo)
+                .distinct()
+                .collect(Collectors.toList());
+        if (documentNos.isEmpty()) {
+            return Collections.emptySet();
+        }
+        return new HashSet<>(documentDao.findPdfDocumentNos(documentNos));
     }
 
     /**
