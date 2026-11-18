@@ -184,6 +184,13 @@ textarea.txtArea {
     padding: 2px 5px;
 }
 
+/* Note text boxes grow to fit their text, so the mouse wheel must pass through them to the notes list.
+   Firefox 150+ stops the wheel at a box with overscroll-behavior: none even when it has nothing to scroll.
+   The notes list keeps none, so the page behind it still does not move. */
+div#encMainDivWrapper textarea {
+    overscroll-behavior: auto;
+}
+
 div#patient-label div {
     margin: auto 5px;
     font-size: small;
