@@ -253,6 +253,17 @@ public class DocumentDaoImpl extends AbstractDaoImpl<Document> implements Docume
         return query.getResultList();
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Integer> findPdfDocumentNos(List<Integer> docNos) {
+        if (docNos == null || docNos.isEmpty()) return Collections.emptyList();
+        Query query = entityManager.createQuery(
+                "SELECT d.documentNo FROM Document d WHERE d.documentNo IN :docNos AND d.contenttype LIKE :pdf");
+        query.setParameter("docNos", docNos);
+        query.setParameter("pdf", "%/pdf%");
+        return query.getResultList();
+    }
+
     @Override
     public List<Document> findByDemographicId(String demoNo) {
         Integer id = null;
