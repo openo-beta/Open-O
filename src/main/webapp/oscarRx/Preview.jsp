@@ -34,7 +34,8 @@
 <%@ page import="ca.openosp.*,java.lang.*,java.util.Date" %>
 <%@ page import="ca.openosp.openo.utility.LoggedInInfo" %>
 <%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
-<%@ page import="ca.openosp.openo.providers.data.ProSignatureData" %>
+<%@ page import="ca.openosp.openo.managers.ProviderSignatureManager" %>
+<%@ page import="ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.prescript.pageUtil.RxSessionBean" %>
 <%@ page import="ca.openosp.openo.prescript.util.RxUtil" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxProviderData" %>
@@ -124,14 +125,8 @@
 
         RxPrescriptionData.Prescription rx = null;
         int i;
-        ProSignatureData sig = new ProSignatureData();
-        boolean hasSig = sig.hasSignature(signingProvider);
-        String doctorName = "";
-        if (hasSig) {
-            doctorName = sig.getSignature(signingProvider);
-        } else {
-            doctorName = (provider.getFirstName() + ' ' + provider.getSurname());
-        }
+        ProviderSignatureManager providerSignatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
+        String doctorName = providerSignatureManager.getPrintedSignature(bean.getStashScriptNo(), signingProvider);
 
         doctorName = doctorName.replaceAll("\\d{6}", "");
         doctorName = doctorName.replaceAll("\\-", "");

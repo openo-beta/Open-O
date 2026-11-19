@@ -121,6 +121,41 @@
                         </c:if>
                     </c:if>
 
+                    <!-- Prescriber signature: chosen here until the first print, fax or PDF saves it on the prescription -->
+                    <fmt:message key="oscarRx.Preview.signatureSaveError" var="signatureSaveError"/>
+                    <fmt:message key="oscarRx.Preview.signatureDeletedError" var="signatureDeletedError"/>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <label for="prescriberSignature" class="form-label"><fmt:message key="oscarRx.Preview.signatureLabel"/></label>
+                            <select id="prescriberSignature" class="form-select" onchange="previewPrescriberSignature(this);"
+                                    data-locked="<c:out value='${signatureCard.locked}'/>"
+                                    data-script-no="<c:out value='${signatureCard.scriptNo}'/>"
+                                    data-demographic-no="<c:out value='${requestScope.sessionBean.demographicNo}'/>"
+                                    data-save-error="<c:out value='${signatureSaveError}'/>"
+                                    data-deleted-error="<c:out value='${signatureDeletedError}'/>"
+                                    <c:if test="${not signatureCard.editable}">disabled</c:if>>
+                                <c:choose>
+                                    <c:when test="${signatureCard.editable}">
+                                        <c:forEach var="choice" items="${signatureCard.choices}">
+                                            <option value="<c:out value='${choice.postedId}'/>"
+                                                    data-signature="<c:out value='${choice.text}'/>"
+                                                    <c:if test="${choice.defaultChoice}">data-default="true" selected</c:if>>
+                                                <c:out value="${choice.text}"/>
+                                                <c:if test="${choice.defaultChoice}"><fmt:message key="oscarRx.Preview.signatureDefault"/></c:if>
+                                            </option>
+                                        </c:forEach>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <%-- Saved already, or not the prescriber's to choose: what will print --%>
+                                        <option value="" data-signature="<c:out value='${signatureCard.signature}'/>"><c:out value="${signatureCard.signature}"/></option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </select>
+                            <div id="prescriberSignatureSaved" class="form-text"
+                                 <c:if test="${not signatureCard.locked}">hidden</c:if>><fmt:message key="oscarRx.Preview.signatureSaved"/></div>
+                        </div>
+                    </div>
+
                     <!-- Actions Section -->
                     <div class="card mb-3">
                         <div class="card-header">

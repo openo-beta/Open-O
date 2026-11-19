@@ -27,9 +27,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%--<%@ taglib prefix="logic" uri="http://struts.apache.org/tags-logic" %>--%>
 <%@ taglib prefix="oscar" uri="/oscarPropertiestag" %>
+<%@ taglib prefix="csrf" uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" %>
 <%--<%@ taglib prefix="bean" uri="http://struts.apache.org/tags-bean" %>--%>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.util.Objects" %>
 <%@ page import="ca.openosp.openo.prescript.data.RxPatientData" %>
 <%@ page import="ca.openosp.OscarProperties, ca.openosp.openo.utility.DigitalSignatureUtils" %>
 <fmt:setBundle basename="oscarResources"/>
@@ -86,6 +88,8 @@
     <div topmargin="0" leftmargin="0" vlink="#0000FF" id="printableContent">
 
     <form action="${pageContext.request.contextPath}/form/formname.do" method="post" id="preview2Form">
+        <%-- Rendered here because this page is loaded into the Rx modal, where csrfguard.js does not inject tokens. --%>
+        <input type="hidden" id="previewCsrfToken" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
         <input type="hidden" name="demographic_no" value="${sessionScope.RxSessionBean.demographicNo}"/>
         <table>
             <tr>
@@ -97,7 +101,12 @@
                                 <input type="image"
                                        src="oscarRx/img/rx.gif" border="0" alt="[Submit]"
                                        name="submit" title="Print in a half letter size paper"
-                                       onclick="${requestScope.reprint eq 'true' ? 'javascript:return onPrint2(\'rePrint\');' : 'javascript:return onPrint2(\'print\');'}"/>
+                                       onclick="printRxPdf('<%= "true".equals(request.getAttribute("reprint")) ? "rePrint" : "print" %>',
+                                               '<%= Encode.forJavaScript(Objects.toString(request.getParameter("scriptId"), "")) %>',
+                                               <%= Boolean.TRUE.equals(request.getAttribute("useSC")) %>,
+                                               '<%= Encode.forJavaScript(Objects.toString(request.getAttribute("selectedAddress"), "")) %>',
+                                               '<%= Encode.forJavaScript(request.getContextPath()) %>');
+                                               return false;"/>
                                     <%-- Clinic title and enhanced RX information are now set in the action --%>
                                 <c:choose>
                                     <c:when test="${empty infirmaryView_programAddress}">
@@ -140,12 +149,12 @@
                                        value="<fmt:message key="RxPreview.msgTel"/>: <%=StringEscapeUtils.escapeHtml((String)request.getAttribute("patientPhone")) %>"/>
                                 <input type="hidden" name="rxDate"
                                        value="<%= StringEscapeUtils.escapeHtml((String)request.getAttribute("rxDateFormatted")) %>"/>
-                                <input type="hidden" name="sigDoctorName"
+                                <input type="hidden" name="sigDoctorName" id="sigDoctorName"
                                        value="<%= StringEscapeUtils.escapeHtml((String)request.getAttribute("doctorName")) %>"/>
                                 <!--img src="img/rx.gif" border="0"-->
                             </th>
                             <th valign=top height="100px" id="clinicAddress">
-                                <b>${requestScope.doctorName}</b><br>
+                                <b id="prescriberSignatureHeader"><c:out value="${requestScope.doctorName}"/></b><br>
                                 <c:choose>
                                     <c:when test="${empty infirmaryView_programAddress}">
                                         <%= ((ca.openosp.openo.prescript.data.RxProviderData.Provider) request.getAttribute("provider")).getClinicName().replaceAll("\\(\\d{6}\\)", "") %>
@@ -256,7 +265,7 @@
                                 </c:if>
                             </td>
                             <td height=25px>
-                                &nbsp; <c:out value="${requestScope.doctorName}"/>
+                                &nbsp; <span id="prescriberSignatureLine"><c:out value="${requestScope.doctorName}"/></span>
                                 <c:if test="${not empty requestScope.pracNo && requestScope.pracNo ne 'null'}">
                                     <br>
                                     &nbsp;<fmt:message key="RxPreview.PractNo"/> <c:out value="${requestScope.pracNo}"/>
@@ -271,13 +280,14 @@
                                     <td height=55px colspan="2">
 										<span style="float:right; font-size:10px;">
 											<fmt:message key="RxPreview.msgReprintBy"/> <c:out
-                                                value="${ProviderData.getProviderName(sessionScope.user)}"/> <br>
+                                                value="${requestScope.reprintedBy}"/> <br>
 											<fmt:message key="RxPreview.msgOrigPrinted"/>:&nbsp;${rx.printDate} <br>
 											<fmt:message key="RxPreview.msgTimesPrinted"/>:&nbsp;${rx.numPrints}
 										</span>
                                         <input type="hidden" name="origPrintDate" value="${rx.printDate}"/>
                                         <input type="hidden" name="numPrints" value="${rx.numPrints}"/>
                                         <input type="hidden" name="rxReprint" value="true"/>
+                                        <input type="hidden" name="reprintedBy" value="<c:out value='${requestScope.reprintedBy}'/>"/>
                                     </td>
                                 </tr>
                             </c:if>

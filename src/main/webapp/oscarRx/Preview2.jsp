@@ -27,7 +27,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscar" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="ca.openosp.openo.providers.data.ProSignatureData, ca.openosp.openo.providers.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.providers.data.ProviderData" %>
+<%@ page import="ca.openosp.openo.managers.ProviderSignatureManager" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 
 <%@ page import="ca.openosp.*,
@@ -188,14 +189,8 @@
 
         RxPrescriptionData.Prescription rx = null;
         int i;
-        ProSignatureData sig = new ProSignatureData();
-        boolean hasSig = sig.hasSignature(signingProvider);
-        String doctorName = "";
-        if (hasSig) {
-            doctorName = sig.getSignature(signingProvider);
-        } else {
-            doctorName = (provider.getFirstName() + ' ' + provider.getSurname());
-        }
+        ProviderSignatureManager providerSignatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
+        String doctorName = providerSignatureManager.getPrintedSignature(bean.getStashScriptNo(), signingProvider);
 
 //doctorName = doctorName.replaceAll("\\d{6}","");
 //doctorName = doctorName.replaceAll("\\-","");

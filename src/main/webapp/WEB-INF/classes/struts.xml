@@ -1155,6 +1155,7 @@
       <action name="oscarRx/printPreview" class="ca.openosp.openo.rx.RxPrintPreview2Action" >
         <result name="success">/oscarRx/printRx/PrintPreview.jsp</result>
       </action>
+      <action name="oscarRx/prescriberSignature" class="ca.openosp.openo.rx.RxPrescriberSignature2Action"/>
 
     <action name="digitalSignature" class="ca.openosp.openo.digitalsignature.DigitalSignature2Action" />
 
@@ -1276,7 +1277,8 @@
             <result name="input">/oscarMaintenance/oscarMaintenanceInput.jsp</result>
         </action-->
         <action name="EnterSignature" class="ca.openosp.openo.providers.pageUtil.ProEditSignature2Action">
-            <result name="success">/provider/providerSignature.jsp</result>
+            <result name="success" type="redirect">/provider/providerSignature.jsp</result>
+            <result name="input">/provider/editSignature.jsp</result>
         </action>
         <action name="EditPhoneNum" class="ca.openosp.openo.providers.pageUtil.ProEditPhoneNum2Action">
             <result name="success">/provider/providerPhone.jsp</result>

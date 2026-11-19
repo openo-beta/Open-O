@@ -31,7 +31,7 @@ import ca.openosp.openo.commn.dao.PrescriptionDao;
 import ca.openosp.openo.commn.model.Drug;
 import ca.openosp.openo.prescript.pageUtil.RxSessionBean;
 import ca.openosp.openo.prescript.util.RxUtil;
-import ca.openosp.openo.providers.data.ProSignatureData;
+import ca.openosp.openo.managers.ProviderSignatureManager;
 import ca.openosp.openo.util.ConversionUtils;
 import ca.openosp.openo.util.DateUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -542,14 +542,8 @@ public class RxPrescriptionData {
         } catch (Exception e) {
             logger.error("unexpected error", e);
         }
-        ProSignatureData sig = new ProSignatureData();
-        boolean hasSig = sig.hasSignature(bean.getProviderNo());
-        String doctorName = "";
-        if (hasSig) {
-            doctorName = sig.getSignature(bean.getProviderNo());
-        } else {
-            doctorName = (provider.getFirstName() + ' ' + provider.getSurname());
-        }
+        ProviderSignatureManager providerSignatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
+        String doctorName = providerSignatureManager.getDefaultSignature(bean.getProviderNo());
 
         textView.append(doctorName + "\n");
         textView.append(provider.getClinicName() + "\n");
