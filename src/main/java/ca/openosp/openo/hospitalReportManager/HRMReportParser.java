@@ -410,7 +410,7 @@ public class HRMReportParser {
 
     /**
      * UC69/UC70: HCN found a candidate patient but the strict match failed.
-     * Emit one warning per field (DateOfBirth, LastName) that disagrees with the
+     * Emit one warning per field (DateOfBirth, LastName, Gender) that disagrees with the
      * report so the uploader can reconcile the mismatch.
      */
     private static void addStrictMatchMismatchWarnings(HRMProcessingContext ctx, List<Demographic> candidates) {
@@ -420,9 +420,11 @@ public class HRMReportParser {
         Demographic d = candidates.get(0);
         String reportDob = report.getDateOfBirthAsString();
         String reportLastName = report.getLegalLastName();
+        String reportGender = report.getGender();
 
         boolean dobMatches = reportDob != null && reportDob.equalsIgnoreCase(d.getBirthDayAsString());
         boolean lastNameMatches = reportLastName != null && reportLastName.equalsIgnoreCase(d.getLastName());
+        boolean genderMatches = reportGender != null && reportGender.equalsIgnoreCase(d.getSex());
 
         if (!dobMatches) {
             ctx.addWarning("Patient unmatched: DateOfBirth in the report (" + reportDob
@@ -431,6 +433,10 @@ public class HRMReportParser {
         if (!lastNameMatches) {
             ctx.addWarning("Patient unmatched: LastName in the report (" + reportLastName
                     + ") does not match the patient's LastName.");
+        }
+        if (!genderMatches) {
+            ctx.addWarning("Patient unmatched: Gender in the report (" + reportGender
+                    + ") does not match the patient's Gender.");
         }
     }
 
