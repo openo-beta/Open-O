@@ -35,6 +35,7 @@ import java.nio.charset.StandardCharsets;
 
 import java.util.regex.Pattern;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.Logger;
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.dao.DemographicCustDao;
@@ -238,6 +239,7 @@ public class HRMReportParser {
         addOutOfProvinceHealthCardWarning(ctx);
         addUnknownSendingFacilityWarning(ctx);
         addUnknownSubClassWarning(ctx);
+        addMissingBinaryContentWarning(ctx);
 
         HRMDocument document = new HRMDocument();
 
@@ -454,6 +456,23 @@ public class HRMReportParser {
     }
 
     /**
+     * Warns when a report says its Format is Binary but carries no file in Content/Media,
+     * so the user knows there is nothing to open.
+     *
+     * @param ctx HRMProcessingContext the context holding the report being imported
+     */
+    private static void addMissingBinaryContentWarning(HRMProcessingContext ctx) {
+        HRMReport report = ctx.getReport();
+        if (!report.isBinary()) return;
+
+        byte[] content = report.getBinaryContent();
+        if (content == null || content.length == 0) {
+            ctx.addWarning("Binary report has no content: the " + report.getFileExtension()
+                    + " file is missing from the report.");
+        }
+    }
+
+    /**
      * UC65: warn when an HRM report arrives from a Sending Facility that has not
      * been configured on this clinic. "Configured" means at least one HRMSubClass
      * mapping row references the SF ID. Wildcard rows (SF = "*") are ignored.
@@ -608,7 +627,8 @@ public class HRMReportParser {
                 continue;
             }
 
-            boolean hasSameReportContent = report.getFirstReportTextContent().equalsIgnoreCase(loadedReport.getFirstReportTextContent());
+            // A Binary report without its file has no content, so either side can be null
+            boolean hasSameReportContent = Strings.CI.equals(report.getFirstReportTextContent(), loadedReport.getFirstReportTextContent());
             boolean hasSameStatus = hasSameStatus(report, loadedReport);
             boolean hasSameClass = report.getFirstReportClass().equalsIgnoreCase(loadedReport.getFirstReportClass());
             boolean hasSameDate = false;
