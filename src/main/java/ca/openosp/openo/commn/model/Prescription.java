@@ -68,6 +68,11 @@ public class Prescription extends AbstractModel<Integer> implements Serializable
     @Column(name = "dates_reprinted")
     private String datesReprinted;
 
+    /**
+     * Written when the prescription is created, then only by {@code PrescriptionDao.lockPrescriberSignature},
+     * so saving a copy loaded earlier can't put the old signature back on its first line.
+     */
+    @Column(updatable = false)
     private String textView;
 
     @Column(name = "rx_comments")
@@ -78,6 +83,14 @@ public class Prescription extends AbstractModel<Integer> implements Serializable
 
 	@Column(name = "digital_signature_id")
 	private Integer digitalSignatureId;
+
+    /**
+     * The signature printed on the prescription, saved at its first print, fax or PDF. Null until then.
+     * Only {@code PrescriptionDao.lockPrescriberSignature} writes it, so saving a copy loaded before the
+     * first print can't clear it.
+     */
+    @Column(name = "prescriber_signature", insertable = false, updatable = false)
+    private String prescriberSignature;
 
     @PreRemove
     protected void jpaPreventDelete() {
@@ -190,4 +203,23 @@ public class Prescription extends AbstractModel<Integer> implements Serializable
 	public void setDigitalSignatureId(Integer digitalSignatureId) {
 		this.digitalSignatureId = digitalSignatureId;
 	}
+
+    /**
+     * Gets the signature saved on the prescription at its first print, fax or PDF.
+     *
+     * @return String the saved signature, or null when the prescription hasn't been printed yet
+     */
+    public String getPrescriberSignature() {
+        return prescriberSignature;
+    }
+
+    /**
+     * Sets the saved signature on this copy only. The column isn't written when the prescription is
+     * saved; {@code PrescriptionDao.lockPrescriberSignature} saves it.
+     *
+     * @param prescriberSignature String the signature
+     */
+    public void setPrescriberSignature(String prescriberSignature) {
+        this.prescriberSignature = prescriberSignature;
+    }
 }

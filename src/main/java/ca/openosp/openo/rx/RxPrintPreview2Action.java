@@ -36,12 +36,13 @@ import ca.openosp.openo.commn.model.Site;
 import ca.openosp.openo.commn.model.UserProperty;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.FaxManager;
+import ca.openosp.openo.managers.ProviderSignatureManager;
+import ca.openosp.openo.managers.model.SignatureCard;
 import ca.openosp.openo.prescript.data.RxPatientData;
 import ca.openosp.openo.prescript.data.RxPharmacyData;
 import ca.openosp.openo.prescript.data.RxPrescriptionData;
 import ca.openosp.openo.prescript.pageUtil.RxSessionBean;
 import ca.openosp.openo.prescript.util.RxUtil;
-import ca.openosp.openo.providers.data.ProSignatureData;
 import ca.openosp.openo.ui.servlet.ImageRenderingServlet;
 import ca.openosp.openo.utility.DigitalSignatureUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
@@ -79,6 +80,7 @@ public class RxPrintPreview2Action extends ActionSupport {
     private final OscarAppointmentDao appointmentDao = SpringUtils.getBean(OscarAppointmentDao.class);
     private final SiteDao siteDao = SpringUtils.getBean(SiteDao.class);
     private final FaxManager faxManager = SpringUtils.getBean(FaxManager.class);
+    private final ProviderSignatureManager providerSignatureManager = SpringUtils.getBean(ProviderSignatureManager.class);
     private static final boolean isMultiSitesEnabled = ca.openosp.openo.commn.IsPropertiesOn.isMultisitesEnable();
 
     @Override
@@ -224,14 +226,15 @@ public class RxPrintPreview2Action extends ActionSupport {
 
         ca.openosp.openo.prescript.data.RxProviderData.Provider provider = new ca.openosp.openo.prescript.data.RxProviderData().getProvider(signingProvider);
 
-        ProSignatureData sig = new ProSignatureData();
-        boolean hasSig = sig.hasSignature(signingProvider);
-        String doctorName = "";
-        if (hasSig) {
-            doctorName = sig.getSignature(signingProvider);
-        } else {
-            doctorName = (provider.getFirstName() + ' ' + provider.getSurname());
-        }
+        // Saved at the first print, fax or PDF; until then the prescriber can pick it in this window.
+        // scriptId is the prescription this window prints, faxes and annotates.
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        SignatureCard signatureCard = providerSignatureManager.getSignatureCard(loggedInInfo, request.getParameter("scriptId"),
+                sessionBean.getDemographicNo(), signingProvider);
+        String doctorName = signatureCard.getSignature();
+        request.setAttribute("signatureCard", signatureCard);
+        // A reprint names the person reprinting, not the prescriber's signature
+        request.setAttribute("reprintedBy", ca.openosp.openo.providers.data.ProviderData.getProviderName(loggedInInfo.getLoggedInProviderNo()));
 
         String pracNo = provider.getPractitionerNo();
 
@@ -488,15 +491,7 @@ public class RxPrintPreview2Action extends ActionSupport {
      * @return Formatted doctor name
      */
     private String getDoctorName(RxSessionBean sessionBean) {
-        ca.openosp.openo.prescript.data.RxProviderData.Provider rxprovider = new ca.openosp.openo.prescript.data.RxProviderData().getProvider(sessionBean.getProviderNo());
-        ProSignatureData sig = new ProSignatureData();
-        boolean hasSig = sig.hasSignature(sessionBean.getProviderNo());
-        String doctorName = "";
-        if (hasSig) {
-            doctorName = sig.getSignature(sessionBean.getProviderNo());
-        } else {
-            doctorName = (rxprovider.getFirstName() + ' ' + rxprovider.getSurname());
-        }
+        String doctorName = providerSignatureManager.getDefaultSignature(sessionBean.getProviderNo());
         doctorName = doctorName.replaceAll("\\d{6}", "");
         doctorName = doctorName.replaceAll("\\-", "");
         return doctorName;

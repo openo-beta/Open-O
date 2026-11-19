@@ -1215,6 +1215,29 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         return "listCPPNotes";
     }
 
+    /**
+     * Picks the appointment a saved note should be linked to, from the appointment number its
+     * encounter window posted. Signing or verifying the note then marks that appointment.
+     *
+     * @param postedAppointmentNo String the appointment number the encounter form posted, may be null, "0" or not a number
+     * @param demographicNo String the demographic number of the patient whose note is being saved
+     * @param appointmentDao OscarAppointmentDao used to look up the posted appointment
+     * @return int the appointment number to link, or 0 if none was posted, it doesn't exist, or it belongs to another patient
+     * @since 2026-10-21
+     */
+    static int appointmentNoForNote(String postedAppointmentNo, String demographicNo, OscarAppointmentDao appointmentDao) {
+        int appointmentNo = NumberUtils.toInt(postedAppointmentNo, 0);
+        if (appointmentNo <= 0) {
+            return 0;
+        }
+        Appointment appointment = appointmentDao.find(appointmentNo);
+        if (appointment == null || !String.valueOf(appointment.getDemographicNo()).equals(demographicNo)) {
+            logger.warn("Not linking note to appointment " + appointmentNo + ": it doesn't exist or belongs to another patient");
+            return 0;
+        }
+        return appointmentNo;
+    }
+
     private long noteSave() throws Exception {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
         String providerNo = loggedInInfo.getLoggedInProviderNo();
@@ -1412,7 +1435,6 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
         }
 
         // update appointment and add verify message to note if verified
-        EctSessionBean sessionBean = (EctSessionBean) session.getAttribute("EctSessionBean");
         String verifyStr = request.getParameter("verify");
         boolean verify = false;
         if (verifyStr != null && verifyStr.equalsIgnoreCase("on")) {
@@ -1460,8 +1482,12 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
             }
         }
 
-        if (sessionBean.appointmentNo != null && sessionBean.appointmentNo.length() > 0) {
-            note.setAppointmentNo(Integer.parseInt(sessionBean.appointmentNo));
+        // Use the appointment this encounter window posted, not the shared session bean:
+        // other encounter windows and nav panels rebuild that bean without it
+        int noteAppointmentNo = appointmentNoForNote(this.getAppointmentNo(), demo,
+                (OscarAppointmentDao) SpringUtils.getBean(OscarAppointmentDao.class));
+        if (noteAppointmentNo > 0) {
+            note.setAppointmentNo(noteAppointmentNo);
         }
 
         /* Save annotation */
@@ -1970,10 +1996,10 @@ public class CaseManagementEntry2Action extends ActionSupport implements Session
 
         if (toBill != null && toBill.equalsIgnoreCase("true")) {
             String region = this.getBillRegion();
-            // Try to get appointment number from the note first, before the action field
+            // The note holds the posted appointment once it has passed the patient check
             Integer noteApptNo = this.getCaseNote() != null ? this.getCaseNote().getAppointmentNo() : null;
             String appointmentNo = (noteApptNo != null && noteApptNo > 0) ?
-                String.valueOf(noteApptNo) : this.getAppointmentNo();
+                String.valueOf(noteApptNo) : "0";
             String name = this.getDemoName(demoNo);
             String date = this.getAppointmentDate();
             String start_time = this.getStart_time();
