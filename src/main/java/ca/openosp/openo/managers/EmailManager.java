@@ -85,8 +85,13 @@ public class EmailManager {
             EmailSender emailSender = new EmailSender(loggedInInfo, emailLog.getEmailConfig(), emailData);
             emailSender.send();
             updateEmailStatus(loggedInInfo, emailLog, EmailStatus.SUCCESS, "");
-            if (emailLog.getChartDisplayOption().equals(ChartDisplayOption.WITH_FULL_NOTE)) {
-                addEmailNote(loggedInInfo, emailLog);
+            // The email has already gone out, so a failed chart note must not look like a failed send
+            try {
+                if (emailLog.getChartDisplayOption().equals(ChartDisplayOption.WITH_FULL_NOTE)) {
+                    addEmailNote(loggedInInfo, emailLog);
+                }
+            } catch (RuntimeException e) {
+                logger.error("Email sent, but adding its chart note failed", e);
             }
         } catch (EmailSendingException e) {
             updateEmailStatus(loggedInInfo, emailLog, EmailStatus.FAILED, e.getMessage());
