@@ -209,19 +209,7 @@ public class UtilDateUtilities {
      * @return the number of months
      */
     public static int getNumMonths(Date dStart, Date dEnd) {
-        int i = 0;
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dStart);
-        while (calendar.getTime().before(dEnd) || calendar.getTime().equals(dEnd)) {
-            calendar.add(Calendar.MONTH, 1);
-            i++;
-        }
-        i--;
-        if (i < 0) {
-            i = 0;
-        }
-        return i;
+        return ca.openosp.openo.util.UtilDateUtilities.getNumMonths(dStart, dEnd);
     }
 
 

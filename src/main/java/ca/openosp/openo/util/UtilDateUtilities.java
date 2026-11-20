@@ -242,18 +242,15 @@ public class UtilDateUtilities {
     public static int getNumMonths(Date dStart, Date dEnd) {
         if (dStart == null || dEnd == null) return (0);
 
-        int i = 0;
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dStart);
-        while (calendar.getTime().before(dEnd) || calendar.getTime().equals(dEnd)) {
-            calendar.add(Calendar.MONTH, 1);
-            i++;
-        }
-        i--;
-        if (i < 0) {
-            i = 0;
-        }
-        return i;
+        // Count completed calendar months. Unlike repeatedly adding one month to a Calendar,
+        // this does not drift for month-end start dates (Jan 31 -> Feb 28 -> Mar 28).
+        // Time of day is kept so a month is not counted before its anniversary instant
+        // (lab matching compares full timestamps).
+        java.time.ZoneId zone = java.time.ZoneId.systemDefault();
+        java.time.LocalDateTime start = java.time.Instant.ofEpochMilli(dStart.getTime()).atZone(zone).toLocalDateTime();
+        java.time.LocalDateTime end = java.time.Instant.ofEpochMilli(dEnd.getTime()).atZone(zone).toLocalDateTime();
+        long months = java.time.temporal.ChronoUnit.MONTHS.between(start, end);
+        return (int) Math.max(months, 0);
     }
 
 
