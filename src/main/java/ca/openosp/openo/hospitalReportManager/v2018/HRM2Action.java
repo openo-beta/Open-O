@@ -354,7 +354,11 @@ public class HRM2Action extends ActionSupport implements UploadedFilesAware {
     //new SFTPConnector().startAutoFetch(loggedInInfo);
     public String fetch() throws Exception {
 
-        boolean isHrm = securityInfoManager.hasPrivilege(LoggedInInfo.getLoggedInInfoFromSession(request), "_hrm", "r", null);
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        boolean isHrm = securityInfoManager.hasPrivilege(loggedInInfo, "_hrm", "r", null)
+                || securityInfoManager.hasPrivilege(loggedInInfo, "_admin", "r", null)
+                || securityInfoManager.hasPrivilege(loggedInInfo, "_admin.misc", "r", null)
+                || securityInfoManager.hasPrivilege(loggedInInfo, "_hrm.administrator", "r", null);
 
         if (!isHrm) {
             return null;

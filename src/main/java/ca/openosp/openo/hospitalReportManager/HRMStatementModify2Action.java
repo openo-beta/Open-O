@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import ca.openosp.openo.hospitalReportManager.dao.HRMProviderConfidentialityStatementDao;
 import ca.openosp.openo.hospitalReportManager.model.HRMProviderConfidentialityStatement;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.SpringUtils;
 
@@ -26,9 +27,15 @@ public class HRMStatementModify2Action extends ActionSupport {
 
 
     HRMProviderConfidentialityStatementDao hrmProviderConfidentialityStatementDao = (HRMProviderConfidentialityStatementDao) SpringUtils.getBean(HRMProviderConfidentialityStatementDao.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     public String execute() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_admin", "w", null)
+                && !securityInfoManager.hasPrivilege(loggedInInfo, "_admin.misc", "w", null)
+                && !securityInfoManager.hasPrivilege(loggedInInfo, "_hrm.administrator", "w", null)) {
+            throw new SecurityException("missing required sec object (_admin, _admin.misc or _hrm.administrator)");
+        }
         String providerNo = loggedInInfo.getLoggedInProviderNo();
         String statement = request.getParameter("statement");
 

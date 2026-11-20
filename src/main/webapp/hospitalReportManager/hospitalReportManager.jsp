@@ -16,9 +16,9 @@
     String roleName$ = (String) session.getAttribute("userrole") + "," + (String) session.getAttribute("user");
     boolean authed = true;
 %>
-<security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.misc" rights="r" reverse="<%=true%>">
+<security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.misc,_hrm.administrator" rights="r" reverse="<%=true%>">
     <%authed = false; %>
-    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_admin&type=_admin.misc");%>
+    <%response.sendRedirect(request.getContextPath() + "/securityError.jsp?type=_admin&type=_admin.misc&type=_hrm.administrator");%>
 </security:oscarSec>
 <%
     if (!authed) {
@@ -283,6 +283,8 @@
             Please wait until the current fetch task completes before requesting another data fetch.
             <% } %>
         </p>
+        <%-- Uploading HRM files is for administrators only --%>
+        <security:oscarSec roleName="<%=roleName$%>" objectName="_admin" rights="r">
         <form enctype="multipart/form-data" action="<%=request.getContextPath() %>/hospitalReportManager/UploadLab.do"
               method="post" onsubmit="return validateForm()">
             Upload HRM reports from your computer: <input type="file" id="fileInput" name="uploads" multiple
@@ -325,6 +327,7 @@
                 </c:forEach>
             </div>
         </c:if>
+        </security:oscarSec>
         <%
             HRMProviderConfidentialityStatementDao hrmProviderConfidentialityStatementDao = (HRMProviderConfidentialityStatementDao) SpringUtils.getBean(HRMProviderConfidentialityStatementDao.class);
             String statement = hrmProviderConfidentialityStatementDao.getConfidentialityStatementForProvider(loggedInInfo.getLoggedInProviderNo());
@@ -345,9 +348,12 @@
                 <% } %>
             </div>
         </form>
+        <%-- Turning off outage messages is for administrators only --%>
+        <security:oscarSec roleName="<%=roleName$%>" objectName="_admin,_admin.misc" rights="r">
         <input type="button" class="btn"
                value="I don't want to receive any more HRM outage messages for this outage instance"
                onclick="window.location='hospitalReportManager/disable_msg_action.jsp'">
+        </security:oscarSec>
     </div>
     </body>
 </html>
