@@ -39,8 +39,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.struts2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
@@ -120,6 +123,8 @@ public class DocumentPreview2Action extends ActionSupport {
             }
             else if (method.equalsIgnoreCase("fetchConsultDocuments"))
                 return fetchConsultDocuments();
+            else if (method.equalsIgnoreCase("fetchTicklerDocuments"))
+                return fetchTicklerDocuments();
         }
 
         return fetchConsultDocuments();
@@ -386,7 +391,47 @@ public class DocumentPreview2Action extends ActionSupport {
 		List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
         populateCommonDocs(loggedInInfo, demographicNo, allEForms,
                 documentAttachmentManager.getAttachedDocsForConsult(loggedInInfo, demographicNo, requestId),
-                documentAttachmentManager.getAttachedEFormsForConsult(demographicNo, requestId));
+                documentAttachmentManager.getAttachedEFormsForConsult(demographicNo, requestId),
+                Collections.emptyList());
+
+        return "fetchDocuments";
+    }
+
+    /**
+     * Fetches the documents available for attaching to a tickler.
+     *
+     * <p>Tickler counterpart of {@link #fetchConsultDocuments()}. Populates the patient's documents,
+     * HRM reports, labs and encounter forms (via {@link #populateCommonDocs}) plus the full list of
+     * current eForms, then forwards to the shared attachment picker ({@code attachDocument.jsp}). Unlike
+     * {@link #fetchEFormDocuments()} there is no self-exclusion, since a tickler is not itself an eForm.</p>
+     *
+     * Request parameters:
+     * - demographicNo: String the patient's demographic number (defaults to "0" if not provided)
+     * - ticklerId: String the tickler being edited; when present its existing attachments are merged
+     *   into the picker and pre-checked (absent for a new tickler)
+     *
+     * @return String "fetchDocuments" result name for Struts2 result mapping
+     * @throws SecurityException if the user lacks the required "_tickler" read privilege
+     */
+    public String fetchTicklerDocuments() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+
+        String demographicNo = WebUtils.positiveIntParamOrDefault(request.getParameter("demographicNo"), "0");
+        String ticklerIdParam = WebUtils.positiveIntParamOrNull(request.getParameter("ticklerId"));
+        Integer ticklerId = ticklerIdParam == null ? null : Integer.valueOf(ticklerIdParam);
+
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_tickler", SecurityInfoManager.READ, demographicNo)) {
+            throw new SecurityException("missing required sec object (_tickler)");
+        }
+
+        // Merge the tickler's existing attachments into the picker so each is listed and pre-checked,
+        // including superseded eForm/form versions, deleted docs and other providers' private docs.
+        // Without this, "Save and Close" drops any attachment the picker doesn't offer.
+        List<EFormData> allEForms = EFormUtil.listPatientEformsCurrent(Integer.valueOf(demographicNo), true);
+        populateCommonDocs(loggedInInfo, demographicNo, allEForms,
+                documentAttachmentManager.getAttachedDocsForTickler(loggedInInfo, demographicNo, ticklerId),
+                documentAttachmentManager.getAttachedEFormsForTickler(loggedInInfo, demographicNo, ticklerId),
+                documentAttachmentManager.getAttachedFormsForTickler(loggedInInfo, demographicNo, ticklerId));
 
         return "fetchDocuments";
     }
@@ -432,7 +477,8 @@ public class DocumentPreview2Action extends ActionSupport {
 		List<EFormData> allEForms = documentAttachmentManager.getAllEFormsExpectFdid(loggedInInfo, Integer.parseInt(demographicNo), Integer.parseInt(fdidForEformList));
         populateCommonDocs(loggedInInfo, demographicNo, allEForms,
                 documentAttachmentManager.getAttachedDocsForEForm(loggedInInfo, demographicNo, fdidForAttached),
-                documentAttachmentManager.getAttachedEFormsForEForm(demographicNo, fdidForAttached));
+                documentAttachmentManager.getAttachedEFormsForEForm(demographicNo, fdidForAttached),
+                Collections.emptyList());
 
         return "fetchDocuments";
     }
@@ -493,15 +539,27 @@ public class DocumentPreview2Action extends ActionSupport {
      * @param allEForms      List&lt;EFormData&gt; the current eForms to offer in the eForms section
      * @param attachedDocs   List&lt;EDoc&gt; docs already attached to this consult/eForm (empty when not applicable)
      * @param attachedEForms List&lt;EFormData&gt; eForms already attached to this consult/eForm (empty when not applicable)
+     * @param attachedForms  List&lt;EctFormData.PatientForm&gt; encounter form versions already attached (empty when not applicable)
      */
-    private void populateCommonDocs(LoggedInInfo loggedInInfo, String demographicNo, List<EFormData> allEForms, List<EDoc> attachedDocs, List<EFormData> attachedEForms) {
+    private void populateCommonDocs(LoggedInInfo loggedInInfo, String demographicNo, List<EFormData> allEForms, List<EDoc> attachedDocs,
+                                    List<EFormData> attachedEForms, List<EctFormData.PatientForm> attachedForms) {
         List<EDoc> patientDocuments = EDocUtil.listDocs(loggedInInfo, "demographic", demographicNo, null, EDocUtil.PRIVATE, EDocUtil.EDocSort.OBSERVATIONDATE);
         List<EDoc> providerPrivateDocuments = EDocUtil.getProviderPrivateDocs(loggedInInfo);
         List<EDoc> providerPublicDocuments = EDocUtil.getProviderPublicDocs(loggedInInfo);
         AttachmentSections sections = new AttachmentSections(patientDocuments, providerPrivateDocuments, providerPublicDocuments, allEForms);
         ArrayList<HashMap<String,? extends Object>> allHRMDocuments = HRMUtil.listHRMDocuments(loggedInInfo, "report_date", false, demographicNo,false);
         List<AttachmentLabResultData> allLabsSortedByVersions = documentAttachmentManager.getAllLabsSortedByVersions(loggedInInfo, demographicNo);
-        List<EctFormData.PatientForm> allForms = formsManager.getEncounterFormsbyDemographicNumber(loggedInInfo, Integer.parseInt(demographicNo), false, true);
+        List<EctFormData.PatientForm> currentForms = formsManager.getEncounterFormsbyDemographicNumber(loggedInInfo, Integer.parseInt(demographicNo), false, true);
+        // The form list offers each form's latest version only; add attached versions it is missing
+        List<EctFormData.PatientForm> allForms = documentAttachmentManager.mergeAttachedForms(currentForms, attachedForms);
+        Set<String> attachedFormIds = new HashSet<>();
+        for (EctFormData.PatientForm attachedForm : attachedForms) {
+            attachedFormIds.add(attachedForm.getFormId());
+        }
+        Set<String> previousVersionFormIds = new HashSet<>(attachedFormIds);
+        for (EctFormData.PatientForm currentForm : currentForms) {
+            previousVersionFormIds.remove(currentForm.getFormId());
+        }
 
         documentAttachmentManager.mergeAttachedIntoSections(loggedInInfo, attachedDocs, attachedEForms, sections);
 
@@ -515,5 +573,7 @@ public class DocumentPreview2Action extends ActionSupport {
         request.setAttribute("attachedDocumentIds", sections.getAttachedDocumentIds());
         request.setAttribute("foreignPrivateDocIds", sections.getForeignPrivateDocIds());
         request.setAttribute("attachedEFormIds", sections.getAttachedEFormIds());
+        request.setAttribute("attachedFormIds", attachedFormIds);
+        request.setAttribute("previousVersionFormIds", previousVersionFormIds);
     }
 }
