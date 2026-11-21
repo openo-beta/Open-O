@@ -58,6 +58,26 @@ public class RxUtil {
         return defaultQuantity;
     }
 
+    /**
+     * Checks whether a staged prescription is being saved without a drug name.
+     *
+     * A custom drug saved with a blank name is stored with a null custom name, brand name
+     * and regional identifier, so isCustom() no longer recognises it and pages that expect
+     * every non-custom drug to have a regional identifier fail (for example the Timeline
+     * Drug Profile). Custom notes are exempt because they never have a drug name.
+     *
+     * @param rx RxPrescriptionData.Prescription the staged prescription, may be null
+     * @param submittedName String the name submitted in the drugName_ field, may be null
+     * @return boolean true if the prescription is not a custom note and the submitted name is null or blank
+     * @since 2026-11-20
+     */
+    public static boolean isMissingDrugName(RxPrescriptionData.Prescription rx, String submittedName) {
+        if (rx == null || rx.isCustomNote()) {
+            return false;
+        }
+        return submittedName == null || submittedName.trim().isEmpty();
+    }
+
     public static Date StringToDate(String Expression) {
         return StringToDate(Expression, defaultPattern);
     }
