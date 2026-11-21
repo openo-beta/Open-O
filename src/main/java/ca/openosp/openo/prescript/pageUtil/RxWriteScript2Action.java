@@ -1007,6 +1007,23 @@ public final class RxWriteScript2Action extends ActionSupport {
             }
         }
 
+        // Check that every staged drug has a name.
+        for (String num : randNum) {
+            int stashIndex = bean.getIndexFromRx(Integer.parseInt(num));
+            if (stashIndex == -1) {
+                continue;
+            }
+            // Reject the whole save before the stash is changed.
+            if (RxUtil.isMissingDrugName(bean.getStashItem(stashIndex), request.getParameter("drugName_" + num))) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.setContentType("application/json");
+                Map<String, String> error = new HashMap<>();
+                error.put("error", "Please enter a name for each medication before saving.");
+                response.getOutputStream().write(objectMapper.valueToTree(error).toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                return null;
+            }
+        }
+
         List<Integer> allIndex = new ArrayList();
         for (int i = 0; i < bean.getStashSize(); i++) {
             allIndex.add(i);
@@ -1039,7 +1056,7 @@ public final class RxWriteScript2Action extends ActionSupport {
                         String elem = (String) em.nextElement();
                         String val = request.getParameter(elem);
                         val = val.trim();
-                        if (elem.startsWith("drugName_" + num)) {
+                        if (elem.equals("drugName_" + num)) {
                             if (rx.isCustom()) {
                                 rx.setCustomName(val);
                                 rx.setBrandName(null);

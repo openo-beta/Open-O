@@ -3827,6 +3827,64 @@
             return form.querySelectorAll('input[name^="drugName_"]').length;
         }
 
+        /**
+         * Finds the first staged medication whose name is blank.
+         *
+         * A custom drug saved without a name is stored with no name or regional
+         * identifier and breaks pages such as the Timeline Drug Profile. Custom
+         * notes (data-custom-note="true", set in prescribe.jsp) never have a name
+         * and are skipped. The server applies the same rule in
+         * RxWriteScript2Action.updateSaveAllDrugs() via RxUtil.isMissingDrugName().
+         *
+         * @returns {HTMLInputElement|null} the first blank drugName_ input, or null if every medication is named
+         */
+        function findUnnamedStagedMedication() {
+            const form = document.getElementById('drugForm');
+            if (!form) {
+                return null;
+            }
+            const nameInputs = form.querySelectorAll('input[name^="drugName_"]');
+            for (const input of nameInputs) {
+                if (input.dataset.customNote !== 'true' && input.value.trim() === '') {
+                    return input;
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Warns the user and focuses the field if a staged medication has no name.
+         *
+         * @returns {boolean} true if every staged medication has a name and saving can continue
+         */
+        function validateDrugNames() {
+            const unnamed = findUnnamedStagedMedication();
+            if (unnamed) {
+                alert('Please enter a name for each medication before saving.');
+                unnamed.focus();
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Shows the server's error message when a save is rejected.
+         *
+         * @param {Object} transport the Prototype Ajax response
+         */
+        function showSaveError(transport) {
+            let message = 'The prescription could not be saved.';
+            try {
+                const body = JSON.parse(transport.responseText);
+                if (body && body.error) {
+                    message = body.error;
+                }
+            } catch (err) {
+                console.error("Error parsing save error response:", err);
+            }
+            alert(message);
+        }
+
         function updateSaveAllDrugsPrintCheckContinue() {
             // Nothing staged: warn instead of saving an empty prescription (#2453).
             // The ReRx selection is left intact so the user can still click
@@ -3836,12 +3894,18 @@
                 alert('No medications have been added.');
                 return;
             }
+            if (!validateDrugNames()) {
+                return;
+            }
             updateSaveAllDrugsPrintContinue();
         }
 
         function updateSaveAllDrugsCheckContinue() {
             // Nothing staged: do nothing rather than save an empty prescription (#2453).
             if (countStagedMedications() === 0) {
+                return;
+            }
+            if (!validateDrugNames()) {
                 return;
             }
             updateSaveAllDrugsContinue();
@@ -3913,7 +3977,8 @@
               console.error("Error parsing script ID response:", err);
             }
             resetReRxDrugList();
-          }
+          },
+          onFailure: showSaveError
         });
       return false;
     }
@@ -3945,7 +4010,8 @@
             resetReRxDrugList();
 
             resetStash();
-          }
+          },
+          onFailure: showSaveError
         });
       return false;
     }
