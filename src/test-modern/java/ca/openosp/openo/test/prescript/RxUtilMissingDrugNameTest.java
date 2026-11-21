@@ -57,6 +57,13 @@ class RxUtilMissingDrugNameTest {
     }
 
     @Test
+    @DisplayName("should report a missing name when the submitted name is the literal null in any case")
+    void shouldReportMissingName_whenNameIsLiteralNull() {
+        assertThat(RxUtil.isMissingDrugName(stagedRx(false), "null")).isTrue();
+        assertThat(RxUtil.isMissingDrugName(stagedRx(false), " NULL ")).isTrue();
+    }
+
+    @Test
     @DisplayName("should accept a medication when a name is submitted")
     void shouldAcceptMedication_whenNameIsPresent() {
         assertThat(RxUtil.isMissingDrugName(stagedRx(false), "Amoxicillin 500 mg")).isFalse();

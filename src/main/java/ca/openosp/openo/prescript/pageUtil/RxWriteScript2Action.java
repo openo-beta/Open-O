@@ -1056,7 +1056,7 @@ public final class RxWriteScript2Action extends ActionSupport {
                         String elem = (String) em.nextElement();
                         String val = request.getParameter(elem);
                         val = val.trim();
-                        if (elem.startsWith("drugName_" + num)) {
+                        if (elem.equals("drugName_" + num)) {
                             if (rx.isCustom()) {
                                 rx.setCustomName(val);
                                 rx.setBrandName(null);
