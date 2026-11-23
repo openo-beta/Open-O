@@ -125,13 +125,44 @@
                     <!-- Prescriber signature: chosen here until the first print, fax or PDF saves it on the prescription -->
                     <fmt:message key="oscarRx.Preview.signatureSaveError" var="signatureSaveError"/>
                     <fmt:message key="oscarRx.Preview.signatureDeletedError" var="signatureDeletedError"/>
+                    <fmt:message key="oscarRx.Preview.signatureDefault" var="signatureDefault"/>
+                    <fmt:message key="oscarRx.Preview.signatureSettings" var="signatureSettings"/>
+                    <style>
+                        /* Cog that opens Signature Preference: the consultation request's a.pastePrefCog, where the
+                           stroke thickens the glyph, in a 24px box centred above the dropdown's arrow. Bootstrap puts
+                           the arrow's centre 1px border + .75rem + 8px (half its width) from the right, in rem, which
+                           this page sets to 12px; the margin is that less half this box. */
+                        a.signatureSettingsCog {
+                            font-size: 18px;
+                            font-weight: bold;
+                            -webkit-text-stroke: 0.6px #333;
+                            color: #333;
+                            text-decoration: none;
+                            line-height: 1;
+                            display: inline-flex;
+                            justify-content: center;
+                            width: 24px;
+                            margin-right: calc(.75rem - 3px);
+                            padding: 2px 0;
+                        }
+                    </style>
                     <div class="card mb-3">
                         <div class="card-body">
-                            <label for="prescriberSignature" class="form-label"><fmt:message key="oscarRx.Preview.signatureLabel"/></label>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label for="prescriberSignature" class="form-label mb-0"><fmt:message key="oscarRx.Preview.signatureLabel"/></label>
+                                <%-- Only when the signatures are the user's own --%>
+                                <c:if test="${signatureCard.ownSignatures}">
+                                    <a href="#" class="signatureSettingsCog"
+                                       title="<c:out value='${signatureSettings}'/>" aria-label="<c:out value='${signatureSettings}'/>"
+                                       onclick="openPrescriberSignatureSettings(); return false;">&#9881;&#xFE0E;</a>
+                                </c:if>
+                            </div>
                             <select id="prescriberSignature" class="form-select" onchange="previewPrescriberSignature(this);"
                                     data-locked="<c:out value='${signatureCard.locked}'/>"
                                     data-script-no="<c:out value='${signatureCard.scriptNo}'/>"
                                     data-demographic-no="<c:out value='${requestScope.sessionBean.demographicNo}'/>"
+                                    data-context-path="<c:out value='${ctx}'/>"
+                                    data-default-label="<c:out value='${signatureDefault}'/>"
                                     data-save-error="<c:out value='${signatureSaveError}'/>"
                                     data-deleted-error="<c:out value='${signatureDeletedError}'/>"
                                     <c:if test="${not signatureCard.editable}">disabled</c:if>>
@@ -142,7 +173,7 @@
                                                     data-signature="<c:out value='${choice.text}'/>"
                                                     <c:if test="${choice.defaultChoice}">data-default="true" selected</c:if>>
                                                 <c:out value="${choice.text}"/>
-                                                <c:if test="${choice.defaultChoice}"><fmt:message key="oscarRx.Preview.signatureDefault"/></c:if>
+                                                <c:if test="${choice.defaultChoice}"><c:out value="${signatureDefault}"/></c:if>
                                             </option>
                                         </c:forEach>
                                     </c:when>
