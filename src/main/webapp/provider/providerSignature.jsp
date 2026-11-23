@@ -29,7 +29,8 @@
     Lists the provider's prescriber name and their saved signatures, marks the default (pre-selected
     when they print a prescription), and links to add, edit, delete and make default. The provider name
     is listed as entered; a note under the list says prescriptions add "Dr." to it, and not to custom
-    signatures. Changes post to EnterSignature.do, which comes back here.
+    signatures. Changes post to EnterSignature.do, which comes back here. Each time the list shows, it
+    tells the user's open prescription print windows to update their signature dropdown from it.
 
     @since 2002-11-08
 --%>
@@ -61,6 +62,16 @@
 <html>
     <head>
         <script type="text/javascript" src="<%= request.getContextPath() %>/js/global.js"></script>
+        <script type="text/javascript">
+            // Every change comes back to this list, so each time it shows, the user's open print windows
+            // update their dropdown from it. PrintPreview.js listens on this channel; the message goes only
+            // to the user's other windows in this browser. Kept in a page-level constant so the channel
+            // isn't closed before the message goes.
+            const signaturesChannel = typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel('openo-provider-signatures');
+            if (signaturesChannel) {
+                signaturesChannel.postMessage('refresh');
+            }
+        </script>
 
         <base href="<%= request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/" %>">
         <link rel="stylesheet" type="text/css"

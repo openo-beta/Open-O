@@ -435,6 +435,65 @@ function lockPrescriberSignatureCard(select, signature) {
 }
 
 /**
+ * Opens Signature Preference, where the user adds and edits their signatures, in the same popup
+ * Provider Preferences opens it in. The dropdown updates itself as they change things there.
+ */
+function openPrescriberSignatureSettings() {
+    const select = document.getElementById('prescriberSignature');
+    popupPage(230, 860, resolveContextPath(select.dataset.contextPath) + '/provider/providerSignature.jsp');
+}
+
+/**
+ * Updates the signature dropdown from the prescriber's current list each time Signature Preference
+ * shows it, so after every add, edit, delete or change of default. Their pick stays if it is still in
+ * the list, a pick left on the default moves to the new default, and a deleted pick goes back to the
+ * default. Nothing else in the window changes. Does nothing when the dropdown can't change: the
+ * signature is saved already, or it isn't the user's to choose.
+ */
+function updatePrescriberSignatureChoices() {
+    const select = document.getElementById('prescriberSignature');
+    if (!select || select.disabled) {
+        return;
+    }
+
+    const query = new URLSearchParams({
+        method: 'choices',
+        scriptNo: select.dataset.scriptNo,
+        demographicNo: select.dataset.demographicNo
+    });
+    fetch(resolveContextPath(select.dataset.contextPath) + '/oscarRx/prescriberSignature.do?' + query)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status);
+            }
+            return response.json();
+        })
+        .then(result => {
+            // Left alone when a print has saved the signature meanwhile, the window was opened again (its
+            // preview now shows another prescription), or the list is empty because the user can't choose
+            if (select.disabled || !select.isConnected || result.choices.length === 0) {
+                return;
+            }
+            const picked = select.options[select.selectedIndex];
+            const keptValue = picked.dataset.default === 'true' ? null : picked.value;
+            select.replaceChildren(...result.choices.map(choice => {
+                const option = new Option(choice.default ? choice.text + ' ' + select.dataset.defaultLabel : choice.text, choice.id);
+                option.dataset.signature = choice.text;
+                if (choice.default) {
+                    option.dataset.default = 'true';
+                }
+                return option;
+            }));
+            // The list always has exactly one default
+            const kept = Array.from(select.options).find(option => option.value === keptValue);
+            (kept || select.querySelector('option[data-default="true"]')).selected = true;
+            // The picked signature's text may have been edited
+            previewPrescriberSignature(select);
+        })
+        .catch(error => console.error('Could not update the signature list', error));
+}
+
+/**
  * Saves the signature (see lockPrescriberSignature), then does what the button does.
  *
  * @param {string} ctx the context path, or empty to work it out from the page
@@ -626,4 +685,12 @@ function printPaste2Parent(ctx, print, fax, pasteRx, rxPasteAsterisk, prefPharma
         return Promise.resolve();
     }
 
+}
+
+// Signature Preference (providerSignature.jsp) posts on this channel each time it shows the user's
+// list; the message goes only to the user's other windows in this browser. Kept in a constant so the
+// channel lives as long as the page.
+const prescriberSignatureChannel = typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel('openo-provider-signatures');
+if (prescriberSignatureChannel) {
+    prescriberSignatureChannel.onmessage = () => updatePrescriberSignatureChoices();
 }
