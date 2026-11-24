@@ -152,33 +152,33 @@
                                 <%-- Only when the signatures are the user's own --%>
                                 <c:if test="${signatureCard.ownSignatures}">
                                     <a href="#" class="signatureSettingsCog"
-                                       title="<c:out value='${signatureSettings}'/>" aria-label="<c:out value='${signatureSettings}'/>"
+                                       title="${e:forHtmlAttribute(signatureSettings)}" aria-label="${e:forHtmlAttribute(signatureSettings)}"
                                        onclick="openPrescriberSignatureSettings(); return false;">&#9881;&#xFE0E;</a>
                                 </c:if>
                             </div>
                             <select id="prescriberSignature" class="form-select" onchange="previewPrescriberSignature(this);"
-                                    data-locked="<c:out value='${signatureCard.locked}'/>"
-                                    data-script-no="<c:out value='${signatureCard.scriptNo}'/>"
+                                    data-locked="${e:forHtmlAttribute(signatureCard.locked)}"
+                                    data-script-no="${e:forHtmlAttribute(signatureCard.scriptNo)}"
                                     data-demographic-no="<c:out value='${requestScope.sessionBean.demographicNo}'/>"
-                                    data-context-path="<c:out value='${ctx}'/>"
-                                    data-default-label="<c:out value='${signatureDefault}'/>"
-                                    data-save-error="<c:out value='${signatureSaveError}'/>"
-                                    data-deleted-error="<c:out value='${signatureDeletedError}'/>"
+                                    data-context-path="${e:forHtmlAttribute(ctx)}"
+                                    data-default-label="${e:forHtmlAttribute(signatureDefault)}"
+                                    data-save-error="${e:forHtmlAttribute(signatureSaveError)}"
+                                    data-deleted-error="${e:forHtmlAttribute(signatureDeletedError)}"
                                     <c:if test="${not signatureCard.editable}">disabled</c:if>>
                                 <c:choose>
                                     <c:when test="${signatureCard.editable}">
                                         <c:forEach var="choice" items="${signatureCard.choices}">
-                                            <option value="<c:out value='${choice.postedId}'/>"
-                                                    data-signature="<c:out value='${choice.text}'/>"
+                                            <option value="${e:forHtmlAttribute(choice.postedId)}"
+                                                    data-signature="${e:forHtmlAttribute(choice.text)}"
                                                     <c:if test="${choice.defaultChoice}">data-default="true" selected</c:if>>
-                                                <c:out value="${choice.text}"/>
-                                                <c:if test="${choice.defaultChoice}"><c:out value="${signatureDefault}"/></c:if>
+                                                ${e:forHtml(choice.text)}
+                                                <c:if test="${choice.defaultChoice}">${e:forHtml(signatureDefault)}</c:if>
                                             </option>
                                         </c:forEach>
                                     </c:when>
                                     <c:otherwise>
                                         <%-- Saved already, or not the prescriber's to choose: what will print --%>
-                                        <option value="" data-signature="<c:out value='${signatureCard.signature}'/>"><c:out value="${signatureCard.signature}"/></option>
+                                        <option value="" data-signature="${e:forHtmlAttribute(signatureCard.signature)}">${e:forHtml(signatureCard.signature)}</option>
                                     </c:otherwise>
                                 </c:choose>
                             </select>
