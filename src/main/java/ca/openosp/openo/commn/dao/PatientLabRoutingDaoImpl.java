@@ -80,8 +80,11 @@ public class PatientLabRoutingDaoImpl extends AbstractDaoImpl<PatientLabRouting>
         if (labNos == null || labNos.isEmpty()) {
             return Collections.emptyList();
         }
-        Query q = entityManager.createQuery("select x from PatientLabRouting x where x.labNo in (:labNos)");
+        // Documents are routed in the same table and their ids can match a lab's id, so leave them out
+        Query q = entityManager.createQuery(
+                "select x from PatientLabRouting x where x.labNo in (:labNos) and x.labType <> :documentType");
         q.setParameter("labNos", labNos);
+        q.setParameter("documentType", "DOC");
         return q.getResultList();
     }
 
