@@ -463,35 +463,23 @@
 
         }
 
+        // Completed calendar months between birthDate and today. Never rounds up.
+        // A month is complete on the same day-of-month as the birth date (or the 1st of the
+        // following month when that day does not exist, e.g. born on the 31st).
         function calcAgeInMths(birthDate) {
-            var mths = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-            var numDays = calcAgeInDays(birthDate);
-            var numMths = 0;
-            var mth = 0;
+            var now = new Date();
+            var numMths = (now.getFullYear() - birthDate.getFullYear()) * 12 + (now.getMonth() - birthDate.getMonth());
 
-            while (numDays > 0) {
-                numDays -= mths[mth];
-
-                if (numDays > 0) {
-                    ++numMths;
-                }
-
-                if (mth == 11) {
-                    mth = 0;
-                } else {
-                    ++mth;
-                }
-
+            if (now.getDate() < birthDate.getDate()) {
+                --numMths;
             }
 
-            return numMths;
+            return Math.max(numMths, 0);
         }
 
+        // Completed years between birthDate and today; increases on the birthday itself.
         function calcAgeInYears(birthDate) {
-            var now = new Date();
-            var numYrs = now.getFullYear() - birthDate.getFullYear();
-
-            return numYrs;
+            return Math.floor(calcAgeInMths(birthDate) / 12);
         }
 
         //set as default "not discussed" for all radio buttons if no value is set for a group

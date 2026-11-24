@@ -675,89 +675,19 @@ public class Utility {
     }
 
     /**
-     * This returns the Patients Age string at a point in time. IE. How old the
-     * patient will be right now or how old will they be on march.31 of this
-     * year.
+     * Returns the patient's age at a point in time as a display string.
      *
-     * @param DOB         Demographics Date of birth
-     * @param pointInTime The date you would like to calculate there age at.
-     * @return age string ( ie 2 months, 4 years .etc )
+     * <p>Delegates to {@link ca.openosp.openo.util.UtilDateUtilities#calcAgeAtDate(Date, Date)} so
+     * that every screen counts ages the same way (completed calendar units, never rounded up).</p>
+     *
+     * @param DOB         Date the patient's date of birth
+     * @param pointInTime Date the date at which to calculate the age
+     * @return String the localized age string (e.g. "5 months", "4 years"), the localized
+     *         "Not Born" label if {@code pointInTime} is before {@code DOB}, or {@code null} if
+     *         {@code DOB} is {@code null}
      */
     public static String calcAgeAtDate(Date DOB, Date pointInTime) {
-        if (DOB == null) return (null);
-
-        // If as of date is before birth, return "Not born"
-        if (pointInTime.before(DOB)) {
-            return ResourceBundle.getBundle("oscarResources").getString("global.notBorn");
-        }
-
-        GregorianCalendar now = new GregorianCalendar();
-        now.setTime(pointInTime);
-        int curYear = now.get(Calendar.YEAR);
-        int curMonth = now.get(Calendar.MONTH) + 1;
-        int curDay = now.get(Calendar.DAY_OF_MONTH);
-
-        GregorianCalendar birthDate = new GregorianCalendar();
-        birthDate.setTime(DOB);
-        int birthYear = birthDate.get(Calendar.YEAR);
-        int birthMonth = birthDate.get(Calendar.MONTH) + 1;
-        int birthDay = birthDate.get(5);
-
-        int ageInYears = curYear - birthYear;
-        String result = ageInYears
-                + " "
-                + ResourceBundle.getBundle("oscarResources").getString(
-                "global.years");
-
-        if (curMonth > birthMonth || curMonth == birthMonth
-                && curDay >= birthDay) {
-            ageInYears = curYear - birthYear;
-            result = ageInYears
-                    + " "
-                    + ResourceBundle.getBundle("oscarResources").getString(
-                    "global.years");
-        } else {
-            ageInYears = curYear - birthYear - 1;
-            result = ageInYears
-                    + " "
-                    + ResourceBundle.getBundle("oscarResources").getString(
-                    "global.years");
-        }
-        if (ageInYears < 2) {
-            int yearDiff = curYear - birthYear;
-            int ageInDays;
-            if (yearDiff == 2) {
-                ageInDays = (birthDate.getActualMaximum(Calendar.DAY_OF_YEAR) - birthDate
-                        .get(Calendar.DAY_OF_YEAR))
-                        + now.get(Calendar.DAY_OF_YEAR) + 365;
-            } else if (yearDiff == 1) {
-                ageInDays = (birthDate.getActualMaximum(Calendar.DAY_OF_YEAR) - birthDate
-                        .get(Calendar.DAY_OF_YEAR))
-                        + now.get(Calendar.DAY_OF_YEAR);
-            } else {
-                ageInDays = now.get(Calendar.DAY_OF_YEAR)
-                        - birthDate.get(Calendar.DAY_OF_YEAR);
-            }
-            if (ageInDays / 7 > 9) {
-                result = ageInDays
-                        / 30
-                        + " "
-                        + ResourceBundle.getBundle("oscarResources").getString(
-                        "global.months");
-            } else if (ageInDays >= 14) {
-                result = ageInDays
-                        / 7
-                        + " "
-                        + ResourceBundle.getBundle("oscarResources").getString(
-                        "global.weeks");
-            } else {
-                result = ageInDays
-                        + " "
-                        + ResourceBundle.getBundle("oscarResources").getString(
-                        "global.days");
-            }
-        }
-        return result;
+        return ca.openosp.openo.util.UtilDateUtilities.calcAgeAtDate(DOB, pointInTime);
     }
 
     public static int calcAge(String year_of_birth, String month_of_birth, String date_of_birth) {
