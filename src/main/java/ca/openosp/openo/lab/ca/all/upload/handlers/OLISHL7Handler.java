@@ -47,10 +47,21 @@ public class OLISHL7Handler implements MessageHandler {
     }
 
     public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, String ipAddr) {
-        return parse(loggedInInfo, serviceName, fileName, fileId, false);
+        return parse(loggedInInfo, serviceName, fileName, fileId, false, null);
     }
 
     public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, boolean routeToCurrentProvider) {
+        return parse(loggedInInfo, serviceName, fileName, fileId, routeToCurrentProvider, null);
+    }
+
+    /**
+     * @param olisPollingProviderNo the provider an OLIS Z04 poll ran on behalf of, threaded
+     *                              through to {@code MessageUploader} so unmatched-result
+     *                              routing can honour that provider's
+     *                              {@code OLISProviderPreferences} override (OLIS02.03);
+     *                              {@code null} for non-polling callers
+     */
+    public String parse(LoggedInInfo loggedInInfo, String serviceName, String fileName, int fileId, boolean routeToCurrentProvider, String olisPollingProviderNo) {
         int i = 0;
         String lastTimeStampAccessed = null;
         RouteReportResults results = new RouteReportResults();
@@ -68,7 +79,7 @@ public class OLISHL7Handler implements MessageHandler {
                     LogAction.addLog(loggedInInfo.getLoggedInProviderNo(), "OLIS", "DUPLICATE", fileName, null);
                     continue;
                 }
-                MessageUploader.routeReport(loggedInInfo, serviceName, "OLIS_HL7", msg.replace("\\E\\", "\\SLASHHACK\\").replace("µ", "\\MUHACK\\").replace("\\H\\", "\\.H\\").replace("\\N\\", "\\.N\\"), fileId, results);
+                MessageUploader.routeReport(loggedInInfo, serviceName, "OLIS_HL7", msg.replace("\\E\\", "\\SLASHHACK\\").replace("µ", "\\MUHACK\\").replace("\\H\\", "\\.H\\").replace("\\N\\", "\\.N\\"), fileId, results, olisPollingProviderNo);
                 if (routeToCurrentProvider) {
                     ProviderLabRouting routing = new ProviderLabRouting();
                     routing.route(results.segmentId, loggedInInfo.getLoggedInProviderNo(), DbConnectionFilter.getThreadLocalDbConnection(), "HL7");

@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.owasp.encoder.Encode;
 import ca.openosp.openo.PMmodule.dao.ProviderDao;
 import ca.openosp.openo.commn.dao.DemographicDao;
 import ca.openosp.openo.commn.dao.OscarLogDao;
@@ -29,6 +30,7 @@ import ca.openosp.openo.commn.model.Demographic;
 import ca.openosp.openo.commn.model.OscarLog;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.UserProperty;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.SpringUtils;
@@ -58,6 +60,7 @@ import ca.openosp.openo.olis1.parameters.ZBR6;
 import ca.openosp.openo.olis1.parameters.ZBR8;
 import ca.openosp.openo.olis1.parameters.ZBX1;
 import ca.openosp.openo.olis1.parameters.ZPD1;
+import ca.openosp.openo.olis1.parameters.ZSD;
 import ca.openosp.openo.olis1.parameters.ZPD3;
 import ca.openosp.openo.olis1.parameters.ZRP1;
 import ca.openosp.openo.olis1.queries.Query;
@@ -118,6 +121,7 @@ public class OLISSearch2Action extends ActionSupport {
 
     private DemographicDao demographicDao = (DemographicDao) SpringUtils.getBean(DemographicDao.class);
     private ProviderDao providerDao = (ProviderDao) SpringUtils.getBean(ProviderDao.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     public static HashMap<String, Query> searchQueryMap = new HashMap<String, Query>();
 
@@ -180,6 +184,9 @@ public class OLISSearch2Action extends ActionSupport {
     public String execute() {
 
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_lab", "r", null)) {
+            throw new SecurityException("missing required sec object");
+        }
 
         String queryType = request.getParameter("queryType");
         boolean redo = "true".equals(request.getParameter("redo"));
@@ -187,12 +194,35 @@ public class OLISSearch2Action extends ActionSupport {
             String uuid = request.getParameter("uuid");
             request.setAttribute("searchUuid", uuid);
             boolean force = "true".equals(request.getParameter("force"));
-            Query q = (Query) searchQueryMap.get(uuid).clone();
+            Query original = searchQueryMap.get(uuid);
+            if (original == null) {
+                // The stored query is gone — server restart, expiry, or an unknown/forged
+                // uuid. Fail cleanly with a message instead of NPE-ing on clone(). The uuid
+                // is intentionally kept out of the log.
+                MiscUtils.getLogger().warn("OLIS redo requested for an unknown or expired search uuid");
+                request.setAttribute("olisError", "This search is no longer available (it may have expired). Please run the search again.");
+                return "results";
+            }
+            Query q = (Query) original.clone();
             if (force) {
                 q.setConsentToViewBlockedInformation(new ZPD1("Z"));
 
                 String blockedInfoIndividual = request.getParameter("blockedInformationIndividual");
-                // Log the consent override
+                String sdmFirstName = request.getParameter("sdmFirstName");
+                String sdmLastName = request.getParameter("sdmLastName");
+                String sdmRelationship = request.getParameter("sdmRelationship");
+
+                // When the override is authorized by a Substitute Decision Maker, attach
+                // the SDM identity (ZSD) so OLIS records who authorized viewing the blocked
+                // information (CV11.2b / CV12.2b). Without this the SDM name/relationship is
+                // never transmitted. Derived from oscarpro.
+                if ("substitute".equalsIgnoreCase(blockedInfoIndividual)) {
+                    q.setSubstituteDecisionMaker(new ZSD(sdmFirstName, sdmLastName, sdmRelationship));
+                }
+
+                // Build the consent-override audit row up front and persist it in a
+                // finally block so the override is always audited (OLIS03.06: a
+                // security-sensitive event), even if Driver.submitOLISQuery throws.
                 OscarLogDao logDao = (OscarLogDao) SpringUtils.getBean(OscarLogDao.class);
                 OscarLog logItem = new OscarLog();
                 logItem.setAction("OLIS");
@@ -200,28 +230,55 @@ public class OLISSearch2Action extends ActionSupport {
                 //logItem.setContentId("demographicNo=" + q.getDemographicNo() + ",givenby=" + blockedInfoIndividual);
                 logItem.setContentId(uuid);
                 logItem.setProviderNo(loggedInInfo.getLoggedInProviderNo());
-
-                StringBuilder data = new StringBuilder();
-                data.append("Initiating Provider: " + providerDao.getProvider(loggedInInfo.getLoggedInProviderNo()).getFormattedName() + "\n");
-                data.append("Requesting HIC: " + providerDao.getProviderByPractitionerNo(q.getRequestingHICProviderNo()) + "\n");
-                data.append("Authorized by:" + blockedInfoIndividual + "\n");
-
-                logItem.setData(data.toString());
-
                 logItem.setIp(request.getRemoteAddr());
-
 
                 if (q.getQueryType() == QueryType.Z01) {
                     String demographicNo = ((Z01Query) q).getDemographicNo();
-                    if (!StringUtils.isEmpty(demographicNo)) {
+                    // Only a numeric demographicNo sets the audit demographic id. A malformed
+                    // value must not throw here — that would crash the override before it is
+                    // submitted or audited (this runs ahead of the try/finally audit block).
+                    if (StringUtils.isNumeric(demographicNo)) {
                         logItem.setDemographicId(Integer.parseInt(demographicNo));
                     }
                 }
 
-                logDao.persist(logItem);
+                try {
+                    // Submit so the OLIS Transaction ID from the response (stashed on the
+                    // request by Driver.submitOLISQuery) is available for the audit row.
+                    Driver.submitOLISQuery(loggedInInfo, request, q);
+                } finally {
+                    StringBuilder data = new StringBuilder();
+                    // Guard the provider lookup: this runs in a finally, so an NPE here
+                    // would mask any exception thrown by submitOLISQuery — the very
+                    // failure case this audit row exists to record.
+                    Provider initiatingProvider = providerDao.getProvider(loggedInInfo.getLoggedInProviderNo());
+                    data.append("Initiating Provider: ")
+                            .append(initiatingProvider != null ? initiatingProvider.getFormattedName() : loggedInInfo.getLoggedInProviderNo())
+                            .append("\n");
+                    data.append("Requesting HIC: ").append(providerDao.getProviderByPractitionerNo(q.getRequestingHICProviderNo())).append("\n");
+                    // The selector and SDM identity fields come straight from request
+                    // parameters. Encode them for a Java/string context before they enter
+                    // the audit record so embedded newlines or control characters cannot
+                    // forge or split audit-log lines (OLIS03.06 is a security-sensitive event).
+                    data.append("Authorized by:").append(Encode.forJava(blockedInfoIndividual)).append("\n");
+                    if ("substitute".equalsIgnoreCase(blockedInfoIndividual)) {
+                        data.append("Substitute Decision Maker: ")
+                                .append(Encode.forJava(sdmLastName)).append(", ").append(Encode.forJava(sdmFirstName))
+                                .append(" (").append(Encode.forJava(sdmRelationship)).append(")\n");
+                    }
 
+                    Object olisTransactionId = request.getAttribute("olisTransactionId");
+                    if (olisTransactionId != null) {
+                        data.append("OLIS Transaction ID: ").append(olisTransactionId).append("\n");
+                    }
+
+                    logItem.setData(data.toString());
+                    logDao.persist(logItem);
+                }
+
+            } else {
+                Driver.submitOLISQuery(loggedInInfo, request, q);
             }
-            Driver.submitOLISQuery(loggedInInfo, request, q);
 
         } else if (queryType != null) {
             UserPropertyDAO userPropertyDAO = (UserPropertyDAO) SpringUtils.getBean(UserPropertyDAO.class);
@@ -479,7 +536,7 @@ public class OLISSearch2Action extends ActionSupport {
                     OscarLog logItem = new OscarLog();
                     logItem.setAction("OLIS search");
                     logItem.setContent("consent override");
-                    logItem.setContentId("demographicNo=" + demographicNo + ",givenby=" + blockedInfoIndividual);
+                    logItem.setContentId("demographicNo=" + Encode.forJava(demographicNo) + ",givenby=" + Encode.forJava(blockedInfoIndividual));
                     if (loggedInInfo.getLoggedInProvider() != null)
                         logItem.setProviderNo(loggedInInfo.getLoggedInProviderNo());
                     else
@@ -569,7 +626,7 @@ public class OLISSearch2Action extends ActionSupport {
                     OscarLog logItem = new OscarLog();
                     logItem.setAction("OLIS search");
                     logItem.setContent("consent override");
-                    logItem.setContentId("demographicNo=" + demographicNo + ",givenby=" + blockedInfoIndividual);
+                    logItem.setContentId("demographicNo=" + Encode.forJava(demographicNo) + ",givenby=" + Encode.forJava(blockedInfoIndividual));
                     if (loggedInInfo.getLoggedInProvider() != null)
                         logItem.setProviderNo(loggedInInfo.getLoggedInProviderNo());
                     else

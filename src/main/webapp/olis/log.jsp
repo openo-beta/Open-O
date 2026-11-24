@@ -55,15 +55,15 @@
         <script type="text/javascript"
                 src="${ pageContext.request.contextPath }/library/bootstrap/3.0.0/js/bootstrap.min.js"></script>
         <script type="text/javascript"
-                src="${ pageContext.request.contextPath }/library/DataTables-1.10.12/media/js/dataTables.bootstrap.min.js"></script>
-        <script type="text/javascript"
                 src="${ pageContext.request.contextPath }/library/DataTables-1.10.12/media/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript"
+                src="${ pageContext.request.contextPath }/library/DataTables-1.10.12/media/js/dataTables.bootstrap.min.js"></script>
         <script>
             // table sorting
             $(document).ready(function () {
                 $('#libraryTable').DataTable({
                     serverSide: true,
-                    ajax: "<%=request.getContextPath() %>/olis1/AddToInbox.do?method=viewLog",
+                    ajax: "<%=request.getContextPath() %>/olis/AddToInbox.do?method=viewLog",
                     searching: false,
                     "dom": '<"top"i>rt<"bottom"lp><"clear">',
                     "columns": [
@@ -74,7 +74,13 @@
                         {"data": "contentId"},
                         {
                             "data": "data", render: function (data, type, full, meta) {
-                                return data.replace(/[\r\n]+/g, "<br/>");
+                                // Only escape for display; return raw for sort/filter/type.
+                                if (type !== 'display') { return data; }
+                                // HTML-escape user-controlled audit data (DOM XSS guard),
+                                // then convert newlines to <br/> for readable rendering.
+                                var div = document.createElement('div');
+                                div.textContent = data == null ? '' : data;
+                                return div.innerHTML.replace(/[\r\n]+/g, "<br/>");
                             }
                         },
                         {"data": "demographic"}

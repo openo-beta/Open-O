@@ -14,6 +14,7 @@ import ca.openosp.openo.olis1.parameters.OBR22;
 import ca.openosp.openo.olis1.parameters.ORC21;
 import ca.openosp.openo.olis1.parameters.QRD7;
 import ca.openosp.openo.olis1.parameters.ZPD1;
+import ca.openosp.openo.olis1.parameters.ZSD;
 
 /**
  * Z06 - Retrieve Laboratory Information Updates for Ordering Facility
@@ -65,6 +66,11 @@ public class Z06Query extends Query {
 
     @Override
     public void setConsentToViewBlockedInformation(ZPD1 consentToViewBlockedInformation) {
+        throw new RuntimeException("Not valid for this type of query.");
+    }
+
+    @Override
+    public void setSubstituteDecisionMaker(ZSD substituteDecisionMaker) {
         throw new RuntimeException("Not valid for this type of query.");
     }
 }

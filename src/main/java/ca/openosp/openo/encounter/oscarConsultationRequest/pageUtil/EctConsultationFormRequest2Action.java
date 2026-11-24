@@ -56,6 +56,10 @@ import ca.openosp.openo.managers.FaxManager.TransactionType;
 import ca.openosp.OscarProperties;
 import ca.openosp.openo.encounter.data.EctFormData;
 import ca.openosp.openo.lab.ca.all.pageUtil.LabPDFCreator;
+import ca.openosp.openo.lab.ca.all.pageUtil.OLISLabPDFCreator;
+import ca.openosp.openo.lab.ca.all.parsers.Factory;
+import ca.openosp.openo.lab.ca.all.parsers.MessageHandler;
+import ca.openosp.openo.lab.ca.all.parsers.OLISHL7Handler;
 import ca.openosp.openo.lab.ca.on.CommonLabResultData;
 import ca.openosp.openo.lab.ca.on.LabResultData;
 
@@ -571,7 +575,12 @@ public class EctConsultationFormRequest2Action extends ActionSupport {
         ArrayList<LabResultData> labs = labData.populateLabResultsData(loggedInInfo, demographic.getDemographicNo().toString(), consultationRequest.getId().toString(), CommonLabResultData.ATTACHED);
         for (LabResultData attachment : labs) {
             try {
-                byte[] dataBytes = LabPDFCreator.getPdfBytes(attachment.getSegmentID(), sendingProvider.getProviderNo());
+                // Parse the lab once and reuse the handler in the chosen creator.
+                MessageHandler labHandler = Factory.getHandler(attachment.getSegmentID());
+                boolean isOlis = labHandler instanceof OLISHL7Handler;
+                byte[] dataBytes = isOlis
+                        ? OLISLabPDFCreator.getPdfBytes(attachment.getSegmentID(), (OLISHL7Handler) labHandler)
+                        : LabPDFCreator.getPdfBytes(attachment.getSegmentID(), sendingProvider.getProviderNo(), labHandler);
                 Hl7TextInfo hl7TextInfo = hl7TextInfoDao.findLabId(Integer.parseInt(attachment.getSegmentID()));
 
                 ObservationData observationData = new ObservationData();

@@ -156,7 +156,11 @@
         }
 
         function showMatch(name, uuid) {
-            popupPage(800, 1000, '<%=request.getContextPath()%>/oscarMDS/SearchPatient.do?labType=HL7&from=olis1&segmentID=' + uuid + '&name=' + encodeURIComponent(name));
+            // Pass the uuid as both segmentID (for the form's hidden fields) and labNo
+            // (for PatientSearch.jsp:346's onclick handler that calls back into our
+            // updateLabDemoStatus2 → saveMatch ajax). Without labNo the popup's onclick
+            // fires updateLabDemoStatus2 with an empty uuid and saveMatch silently no-ops.
+            popupPage(800, 1000, '<%=request.getContextPath()%>/oscarMDS/SearchPatient.do?labType=HL7&from=olis1&segmentID=' + uuid + '&labNo=' + uuid + '&name=' + encodeURIComponent(name));
         }
 
         function updateLabDemoStatus2(uuid, demo) {
@@ -236,6 +240,7 @@
         var testRequestCodeFilter = "";
         var testRequestStatusFilter = "";
         var resultStatusFilter = "";
+        var practitionerFilter = "";
 
         function filterResults(select) {
             if (select.name == "labFilter") {
@@ -256,6 +261,8 @@
                 testRequestStatusFilter = select.value;
             } else if (select.name == "resultStatusFilter") {
                 resultStatusFilter = select.value;
+            } else if (select.name == "practitionerFilter") {
+                practitionerFilter = select.value;
             }
 
             var performFilter = function () {
@@ -267,7 +274,8 @@
                     && (abnormalFilter == "" || jQuery(this).attr("abnormal") == abnormalFilter)
                     && (testRequestCodeFilter == "" || jQuery(this).attr("testRequestCode") == testRequestCodeFilter)
                     && (testRequestStatusFilter == "" || jQuery(this).attr("testRequestStatus") == testRequestStatusFilter)
-                    && (resultStatusFilter == "" || jQuery(this).attr("resultStatus").indexOf(resultStatusFilter) != -1);
+                    && (resultStatusFilter == "" || jQuery(this).attr("resultStatus").indexOf(resultStatusFilter) != -1)
+                    && (practitionerFilter == "" || jQuery(this).attr("practitioner").indexOf(practitionerFilter) != -1);
 
 
                 if (visible) {
@@ -474,6 +482,8 @@
 			-->
             <%
                 boolean hasBlockedContent = false;
+                boolean patientLevelBlocked = false;
+                boolean requestLevelBlocked = false;
                 try {
                     if (resp != null && resp.length() > 0) {
                         OLISHL7Handler reportHandler = (OLISHL7Handler) Factory.getHandler("OLIS_HL7", resp);
@@ -487,7 +497,13 @@
             <%
                                 }
                             }
-                            hasBlockedContent = reportHandler.isReportBlocked();
+                            // Patient-level block (ZPD.3=Y, CT 6.1.1) vs test-request-level
+                            // block (ZBR.1=Y, CT 6.2.1) — each carries a distinct pre-override warning.
+                            patientLevelBlocked = reportHandler.isReportBlocked();
+                            for (int b = 0; b < reportHandler.getOBRCount(); b++) {
+                                if (reportHandler.isOBRBlocked(b)) { requestLevelBlocked = true; break; }
+                            }
+                            hasBlockedContent = patientLevelBlocked || requestLevelBlocked;
                         }
                     }
                 } catch (Exception e) {
@@ -495,6 +511,12 @@
                 }
                 if (hasBlockedContent) {
             %>
+            <% if (patientLevelBlocked) { %>
+            <div style="color:#CC0000; font-weight:bold;">Warning: At the time the query was submitted to OLIS, a patient-level block consent directive was in effect.</div>
+            <% } %>
+            <% if (requestLevelBlocked) { %>
+            <div style="color:#CC0000; font-weight:bold;">Warning: Some or all of the requested laboratory information was not returned due to a patient consent directive. If appropriate, the query may be resubmitted with an override.</div>
+            <% } %>
             <form action="<%=request.getContextPath()%>/olis/Search.do"
                   onsubmit="return confirm('Are you sure you want to resubmit this query with a patient consent override?')">
                 <input type="hidden" name="redo" value="true"/>
@@ -502,11 +524,39 @@
                 <input type="hidden" name="force" value="true"/>
                 <input type="submit" value="Submit Override Consent"/>
                 Authorized by:
-                <select id="blockedInformationIndividual" name="blockedInformationIndividual">
+                <select id="blockedInformationIndividual" name="blockedInformationIndividual"
+                        onchange="toggleSdmFields(this.value);">
                     <option value="patient">Patient</option>
                     <option value="substitute">Substitute Decision Maker</option>
                 </select>
+                <%-- Substitute Decision Maker identity (ZSD). Shown only when the override
+                     is authorized by an SDM; transmitted so OLIS records who authorized
+                     viewing the blocked information (CV11.2b / CV12.2b). The inputs start
+                     disabled so that — unless an SDM is explicitly chosen — no SDM identity
+                     (PHI) is submitted with the override (PHI minimization). --%>
+                <span id="sdmFields" style="display:none;">
+                    First Name: <input type="text" name="sdmFirstName" size="12" disabled="disabled"/>
+                    Last Name: <input type="text" name="sdmLastName" size="12" disabled="disabled"/>
+                    Relationship: <input type="text" name="sdmRelationship" size="12" disabled="disabled"/>
+                </span>
             </form>
+            <script type="text/javascript">
+                // Show the SDM identity inputs only for a substitute-decision-maker
+                // override. Disabling (not just hiding) keeps the browser from submitting
+                // the fields, and clearing them on switch-back prevents stale SDM PHI from
+                // lingering in the form after the user reverts to "Patient".
+                function toggleSdmFields(value) {
+                    var isSubstitute = (value === "substitute");
+                    document.getElementById("sdmFields").style.display = isSubstitute ? "inline" : "none";
+                    var inputs = document.querySelectorAll("#sdmFields input");
+                    for (var i = 0; i < inputs.length; i++) {
+                        inputs[i].disabled = !isSubstitute;
+                        if (!isSubstitute) {
+                            inputs[i].value = "";
+                        }
+                    }
+                }
+            </script>
             <%
                 }
                 List<String> resultList = (List<String>) request.getAttribute("resultList");
@@ -527,6 +577,7 @@
                     List<String> abnormals = new ArrayList<String>();
                     List<String> testRequestCodes = new ArrayList<String>();
                     List<String> testRequestStatuses = new ArrayList<String>();
+                    List<String> practitioners = new ArrayList<String>();
 
                     OLISHL7Handler result;
 
@@ -574,6 +625,13 @@
                         String abnormal = Misc.getStr(result.hasAbnormalResult() ? "true" : "false", "").trim();
                         if (!abnormal.equals("")) {
                             abnormals.add(abnormal);
+                        }
+
+                        for (String practitioner : result.getAllPractitioners()) {
+                            String prac = Misc.getStr(practitioner, "").trim();
+                            if (!prac.equals("")) {
+                                practitioners.add(prac);
+                            }
                         }
 
                         String resultStatus = Misc.getStr(result.getTestResultStatuses(), "").trim();
@@ -726,6 +784,20 @@
                     </td>
                 </tr>
                 <tr>
+                    <td style="text-align:right"><b>Practitioner:</b></td>
+                    <td>
+                        <select name="practitionerFilter" onChange="filterResults(this)">
+                            <option value="">All Practitioners</option>
+                            <%
+                                for (String tmp : new HashSet<String>(practitioners)) {
+                            %>
+                            <option value="<%=Encode.forHtmlAttribute(String.valueOf(tmp))%>"><%=Encode.forHtml(String.valueOf(tmp))%>
+                            </option>
+                            <% } %>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="3">
                         <div id="action_result" style="font-size:12px;color:blue"/>
                     </td>
@@ -765,15 +837,19 @@
                                     <th class="unsortable" style="white-space: nowrap;"></th>
                                 -->
                                 <th style="white-space: nowrap;">Patient Name</th>
+                                <th style="white-space: nowrap;">Match</th>
                                 <th style="white-space: nowrap;">Health Number</th>
                                 <th style="white-space: nowrap;">DOB</th>
                                 <th style="white-space: nowrap;">Sex</th>
                                 <th style="white-space: nowrap;">Date of Test</th>
                                 <th style="white-space: nowrap;">Discipline</th>
+                                <th style="white-space: nowrap;">Reporting Lab</th>
+                                <th style="white-space: nowrap;">Performing Lab</th>
                                 <th style="white-space: nowrap;">Tests</th> <!-- test request name -->
                                 <th style="white-space: nowrap;">Status</th><!-- test request status -->
                                 <th style="white-space: nowrap;width:30%">Results</th>
                                 <th style="white-space: nowrap;">Abnormal</th>
+                                <th style="white-space: nowrap;">Blocked</th>
                                 <th style="white-space: nowrap;">Practitioners</th>
 
                             </tr>
@@ -794,7 +870,9 @@
                                 abnormal="<%=Encode.forHtmlAttribute(String.valueOf(result.hasAbnormalResult()))%>"
                                 testRequestCode="<%=Encode.forHtmlAttribute(String.valueOf(result.getTestRequestCode()))%>"
                                 testRequestStatus="<%=Encode.forHtmlAttribute(String.valueOf(result.getOrderStatus()))%>"
-                                resultStatus="<%=Encode.forHtmlAttribute(String.valueOf(result.getTestResultStatuses()))%>" uuid="<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>">
+                                resultStatus="<%=Encode.forHtmlAttribute(String.valueOf(result.getTestResultStatuses()))%>"
+                                practitioner="<%=Encode.forHtmlAttribute(String.join("|", result.getAllPractitioners()))%>"
+                                uuid="<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>">
 
                                 <td><input title="Add to my inbox" type="checkbox" name="addToInbox_<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>"
                                            uuid="<%=Encode.forHtmlAttribute(String.valueOf(resultUuid))%>"/></td>
@@ -838,6 +916,9 @@
                                         src="<%= request.getContextPath() %>/images/here.gif" border="0"/></a>
                                     <% } %>
                                 </td>
+                                <td style="white-space: nowrap;">
+                                    <%=demId != null ? "Matched" : "<span style='color:red'>Unmatched</span>" %>
+                                </td>
                                 <td><%=Encode.forHtml(String.valueOf(result.getHealthNum()))%>
                                 </td>
 
@@ -861,6 +942,10 @@
                                         <% }
                                         } %>
                                     </ul>
+                                </td>
+                                <td style="white-space: nowrap;"><%=Encode.forHtml(String.valueOf(result.getReportingFacilityName()))%>
+                                </td>
+                                <td style="white-space: nowrap;"><%=Encode.forHtml(String.valueOf(result.getPerformingFacilityNameOnly()))%>
                                 </td>
                                 <td style="white-space: nowrap;">
                                     <ul>
@@ -926,6 +1011,8 @@
                                 </td>
                                 <td><%=result.hasAbnormalResult() ? "<span style='color:red'>Abnormal</span>" : "" %>
                                 </td>
+                                <td style="white-space: nowrap;"><%=Boolean.TRUE.equals(result.isReportBlocked()) ? "<span style='color:red'>Blocked</span>" : "" %>
+                                </td>
                                 <td>
 
                                     <%
@@ -949,7 +1036,7 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <td colspan="18">
+                                <td colspan="20">
 
                                     <input type="button" value="Process Changes" onClick="bulkProcess()"/>
                                 </td>

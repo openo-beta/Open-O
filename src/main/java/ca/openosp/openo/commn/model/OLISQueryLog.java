@@ -53,6 +53,17 @@ public class OLISQueryLog extends AbstractModel<Integer> {
 
     private Integer demographicNo;
 
+    /**
+     * OLIS Transaction ID extracted from the query response. OLIS does not mint a
+     * distinct identifier; the response (ERP) echoes the request's Message Control ID
+     * in MSA-2, which is the correlation value captured here. Populated post-response
+     * by {@code Driver.submitOLISQuery}; remains {@code null} if the query failed
+     * before a response was received, or if the response carried no MSA segment.
+     * Required for OLIS06.02 (log all messages sent/received) and OLIS03.06
+     * (consent-override audit).
+     */
+    private String olisTransactionId;
+
 
     public Integer getId() {
         return id;
@@ -116,6 +127,16 @@ public class OLISQueryLog extends AbstractModel<Integer> {
 
     public void setDemographicNo(Integer demographicNo) {
         this.demographicNo = demographicNo;
+    }
+
+
+    public String getOlisTransactionId() {
+        return olisTransactionId;
+    }
+
+
+    public void setOlisTransactionId(String olisTransactionId) {
+        this.olisTransactionId = olisTransactionId;
     }
 
 

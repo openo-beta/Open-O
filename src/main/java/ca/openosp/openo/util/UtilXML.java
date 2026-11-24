@@ -34,6 +34,9 @@ import java.io.StringWriter;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -47,6 +50,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class UtilXML {
 
@@ -152,6 +156,32 @@ public class UtilXML {
         InputSource is = new InputSource(new FileReader(fileName));
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
         return doc;
+    }
+
+    /**
+     * Creates a {@link SAXParser} hardened against XML External Entity (XXE)
+     * attacks: DOCTYPE declarations, external general/parameter entities and
+     * external DTD loading are all disabled. This is the streaming (SAX)
+     * counterpart to the protections applied in {@link #parseXML(String)}, for
+     * callers that parse untrusted XML (e.g. uploaded XLSX content).
+     *
+     * @return SAXParser a parser safe for untrusted XML input
+     * @throws ParserConfigurationException if the parser cannot be configured
+     * @throws SAXException if a requested security feature is not supported
+     */
+    public static SAXParser newSecureSAXParser() throws ParserConfigurationException, SAXException {
+        SAXParserFactory factory = SAXParserFactory.newInstance();
+
+        // Disable external entities and DTDs to prevent XXE attacks
+        factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+        factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+        // Disable XInclude
+        factory.setXIncludeAware(false);
+
+        return factory.newSAXParser();
     }
 
 

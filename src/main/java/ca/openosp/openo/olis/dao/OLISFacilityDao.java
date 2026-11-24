@@ -1,0 +1,161 @@
+package ca.openosp.openo.olis.dao;
+
+import java.util.List;
+
+import javax.persistence.Query;
+
+import org.springframework.stereotype.Repository;
+
+import ca.openosp.openo.commn.dao.AbstractDaoImpl;
+import ca.openosp.openo.olis.model.OLISFacility;
+
+@Repository
+public class OLISFacilityDao extends AbstractDaoImpl<OLISFacility> {
+
+    public OLISFacilityDao() {
+        super(OLISFacility.class);
+    }
+
+    /**
+     * Lookup a single facility by its class + licence number (the natural key).
+     * Returns null if no row exists; the importer uses this for upsert.
+     *
+     * @param facilityClass String "LAB" or "SCC"
+     * @param licenceNumber String the licence number from the extract
+     * @return OLISFacility the row, or null
+     */
+    public OLISFacility findByClassAndLicence(String facilityClass, String licenceNumber) {
+        String sql = "select x from " + this.modelClass.getName() + " x"
+                + " where x.facilityClass = :facilityClass"
+                + "   and x.licenceNumber = :licenceNumber";
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("facilityClass", facilityClass);
+        query.setParameter("licenceNumber", licenceNumber);
+        return this.getSingleResultOrNull(query);
+    }
+
+    /**
+     * Lookup a facility by licence number alone (class-agnostic), preferring an
+     * ACTIVE row. Used to enrich a performing/reporting facility name from the
+     * catalog when an OLIS lab message carries only the facility licence (no name)
+     * — e.g. a ZBR that yields a bare {@code 5552}. Returns null if no row matches.
+     *
+     * @param licenceNumber String the facility licence parsed from the HL7 ZBR identifier
+     * @return OLISFacility the matching catalog row (ACTIVE preferred), or null
+     */
+    @SuppressWarnings("unchecked")
+    public OLISFacility findByLicenceNumber(String licenceNumber) {
+        if (licenceNumber == null || licenceNumber.trim().isEmpty()) {
+            return null;
+        }
+        String sql = "select x from " + this.modelClass.getName() + " x"
+                + " where x.licenceNumber = :licenceNumber"
+                + " order by case when x.status = 'ACTIVE' then 0 else 1 end";
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("licenceNumber", licenceNumber.trim());
+        query.setMaxResults(1);
+        List<OLISFacility> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    /**
+     * Lookup a facility by OID + licence number — the disambiguated form, since a
+     * licence is unique only within an org type (LAB/SCC/HOS). Preferred over
+     * {@link #findByLicenceNumber(String)} when the HL7 identifier carries the OID.
+     * ACTIVE row preferred. Returns null if no row matches.
+     *
+     * @param oid           String the org-type OID from the HL7 identifier
+     * @param licenceNumber String the facility licence
+     * @return OLISFacility the matching catalog row (ACTIVE preferred), or null
+     */
+    @SuppressWarnings("unchecked")
+    public OLISFacility findByOidAndLicence(String oid, String licenceNumber) {
+        if (oid == null || oid.trim().isEmpty() || licenceNumber == null || licenceNumber.trim().isEmpty()) {
+            return null;
+        }
+        String sql = "select x from " + this.modelClass.getName() + " x"
+                + " where x.oid = :oid and x.licenceNumber = :licenceNumber"
+                + " order by case when x.status = 'ACTIVE' then 0 else 1 end";
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("oid", oid.trim());
+        query.setParameter("licenceNumber", licenceNumber.trim());
+        query.setMaxResults(1);
+        List<OLISFacility> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    /**
+     * Active rows for one class, used by the AJAX picker to provide name+address
+     * +city+licence suggestions. Splits the user query on whitespace and requires
+     * EVERY token to appear (in any order) within the haystack
+     * {@code lower(name + ' ' + addressLine1 + ' ' + city)}. So a single-token
+     * query like {@code "lifelabs"} matches anywhere; a multi-token query like
+     * {@code "lifelabs toronto"} narrows to rows containing both tokens
+     * regardless of adjacency (the address text between name and city would
+     * otherwise break a naive contiguous-substring LIKE). Capped at 4 tokens
+     * (extras ignored) so the SQL stays one literal with fixed parameter slots.
+     * Unused slots are bound to {@code "%"} which matches every row.
+     * <p>
+     * The address span is what disambiguates the ~23 LifeLabs SCCs all in
+     * city=Toronto — each has a distinct addressLine1.
+     *
+     * @param facilityClass String "LAB", "SCC", or null/"ANY" for both
+     * @param term          String whitespace-separated tokens; all must match
+     * @param limit         int max rows to return
+     * @return List of matching active facilities, at most {@code limit} entries
+     */
+    @SuppressWarnings("unchecked")
+    public List<OLISFacility> findByClassAndNameLike(String facilityClass, String term, int limit) {
+        String[] split = term.toLowerCase().trim().split("\\s+");
+        java.util.List<String> tokens = new java.util.ArrayList<String>();
+        for (String t : split) {
+            if (!t.isEmpty()) {
+                tokens.add("%" + t + "%");
+            }
+        }
+        if (tokens.isEmpty()) {
+            return java.util.Collections.emptyList();
+        }
+        // Pad to exactly 4 token slots so the SQL stays a fixed literal; cap extras.
+        while (tokens.size() < 4) tokens.add("%");
+        if (tokens.size() > 4) tokens = tokens.subList(0, 4);
+
+        boolean filterClass = (facilityClass != null && !facilityClass.isEmpty() && !"ANY".equalsIgnoreCase(facilityClass));
+        String baseSql = "select x from " + this.modelClass.getName() + " x where x.status = 'ACTIVE' "
+                + "and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term0 "
+                + "and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term1 "
+                + "and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term2 "
+                + "and lower(concat(x.name, ' ', coalesce(x.addressLine1, ''), ' ', coalesce(x.city, ''))) like :term3 ";
+        Query query;
+        if (filterClass) {
+            query = entityManager.createQuery(baseSql + "and x.facilityClass = :facilityClass order by x.name, x.city, x.licenceNumber");
+            query.setParameter("facilityClass", facilityClass);
+        } else {
+            query = entityManager.createQuery(baseSql + "order by x.name, x.city, x.licenceNumber");
+        }
+        query.setParameter("term0", tokens.get(0));
+        query.setParameter("term1", tokens.get(1));
+        query.setParameter("term2", tokens.get(2));
+        query.setParameter("term3", tokens.get(3));
+        query.setMaxResults(limit);
+        return query.getResultList();
+    }
+
+    /**
+     * Mark every row of one class INACTIVE. Used by the importer to pre-deprecate
+     * before upserting present rows back to ACTIVE — anything not in the new
+     * extract therefore ends INACTIVE.
+     *
+     * @param facilityClass String "LAB" or "SCC"
+     * @return int the number of rows marked INACTIVE
+     */
+    public int markAllInactive(String facilityClass) {
+        String sql = "update " + this.modelClass.getName() + " x"
+                + " set x.status = 'INACTIVE'"
+                + " where x.facilityClass = :facilityClass"
+                + "   and x.status = 'ACTIVE'";
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("facilityClass", facilityClass);
+        return query.executeUpdate();
+    }
+}

@@ -1,0 +1,713 @@
+24H	Urine 24 Hour
+24HEFF	Effluent 24 Hour
+24HS	Stool 24 Hour
+ABD	Abdominal
+ABS	Abscess
+ABSB	Bartholin Abscess
+ABSDEN	Abscess, Dental
+ABSF	Abscess Fluid
+ABSPEL	Abscess, Pelvic
+ADND	Adenoid
+ADRNLGLD	Adrenal Gland
+ADRNLLFT	Adrenal Gland, Left
+ADRNLRHT	Adrenal Gland, Right
+ALBOS	Allograft Bone Swab
+ALFLD	Allograft Fluid
+ALSWB	Allograft Swab
+AMN	Amniotic fluid
+AMNSC	Amniotic Sac
+AMP	Amputation Site
+ANGI	Catheter Tip, Angio
+ANGM	Angioma
+ANK	Ankle
+ANKLT	Ankle, Left
+ANKRT	Ankle, Right
+ANL	Anal
+ANTLBRSH	Antral Brush
+ANTRLBSY	Gastric Antral Biopsy
+ANTW	Lavage, Antral
+AORV	Aortic valve
+APPEN	Appendix
+AQUFLD	Aqueous Fluid
+ARM	Arm
+ARMLT	Arm, Left
+ARMRT	Arm, Right
+ART	Artery
+ARTC	Catheter Tip, Arterial
+ARTFST	Arteriovenous Fistula
+ASC	Ascitic Fluid
+ASP	Aspirate
+ATMSPHR	Atmosphere
+AUBOS	Autograft Bone Swab
+AUDCN	Auditory Canal
+AUGS	Auger Suction
+AUSWB	Autograft Swab
+AUTP	Autopsy
+AX	Axilla
+AXGRN	Axilla+Groin
+AXLT	Axilla, Left
+AXRT	Axilla, Right
+BACK	Back
+BAL	Bronchial Alveolar Lavage
+BALLTLWL	Bronchial Alveolar Lavage, Left Lower Lobe
+BALLTUPL	Bronchial Alveolar Lavage, Left Upper Lobe
+BALRTLWL	Bronchial Alveolar Lavage, Right Lower Lobe
+BALRTMDL	Bronchial Alveolar Lavage, Right Middle Lobe
+BALRTUPL	Bronchial Alveolar Lavage, Right Upper Lobe
+BBL	Blood bag
+BC	Buffy Coat
+BDY	Whole body
+BIDCT	Bile Duct
+BIFL	Bile fluid
+BILST	Biliary Stent
+BIODEV	Biomedical Device
+BITE	Bite
+BLAD	Bladder
+BLADA	Bladder Aspirate
+BLADW	Bladder Washing
+BLD	Whole blood
+BLDA	Blood arterial
+BLDAP	Blood Arterial, Pulmonary
+BLDBC	Bld.buffy coat
+BLDC	Blood capillary
+BLDCO	Cord blood
+BLDCOA	Cord blood arterial
+BLDCOV	Cord blood venous
+BLDCRCT	Circuit Blood
+BLDCRRT	BldCRRT
+BLDCU	Blood Culture
+BLDD	Blood dot
+BLDF	Fetal Whole Blood
+BLDFC	Fetal Blood Capillary
+BLDMV	Blood mixed venous
+BLDPLS	Blood+Plasma
+BLDSERPLAS	Blood+Ser/Plas
+BLDTIS	Blood/Tissue
+BLDV	Blood venous
+BLDVD	Blood Venous, Distal
+BLIST	Blister
+BON	Bone
+BONALL	Bone Allograft
+BONAU	Bone Autograft
+BOW	Bowel
+BPH	Basophiles
+BPU	Blood product unit
+BRAIN	Brain
+BRN	Burn
+BRO	Bronchial
+BROA	Bronchial Aspirate
+BROB	Bronchial brush
+BROBLT	Bronchial Brush, Left
+BROBRT	Bronchial Brush, Right
+BRON	Bronchus
+BROW	Bronchial washing
+BROWLT	Bronchial Washing, Left
+BROWRT	Bronchial Washing, Right
+BRST	Breast
+BRSTCYSTFLD	Breast Cyst Fluid
+BRSTLT	Breast, Left
+BRSTMSSLT	Breast Mass, Left
+BRSTMSSRT	Breast Mass, Right
+BRSTRT	Breast, Right
+BRTH	Breath
+BS	Bedsore
+BUCC	Buccal
+BUCORLNSL	Buccal+Oral+Nasal
+BURSA	Bursa
+BUTT	Buttock
+BUTTLT	Buttock, Left
+BUTTRT	Buttock, Right
+BX	Biopsy
+BXBR	Biopsy, Brain
+BXDU	Biopsy, Duodenal
+BXMSCL	Biopsy, Muscle
+BXPLR	Biopsy, Pleura
+CALC	Calculus
+CALF	Calf
+CALFLT	Calf, Left
+CALFRT	Calf, Right
+CATBIT	Cat Bite
+CATH	Catheter Site
+CATHD	Catheter, Dialysis Site
+CDM	Cardiac muscle
+CHAN	Chancroid
+CHIN	Chin
+CHK	Cheek
+CHRN	Chorion
+CHST	Chest
+CLAV	Clavicle
+CLITO	Clitoral
+CNL	Cannula
+COCCA	Coccyx Abscess
+COCCU	Coccyx Ulcer
+COCCY	Coccyx
+COL	Colostrum
+COLODR	Colostomy Drainage
+COLON	Colon
+COLOS	Colostomy Stoma
+CONJ	Conjunctiva
+CONJS	Conjunctival Scraping
+CONL	Contact lens Case/Solution
+CONLEN	Contact Lens
+CORN	Cornea
+CORND	Cornea, Donor
+CORS	Corneal Scraping
+CRVA	Cervical Vaginal
+CSF	Cerebral spinal fluid
+CSFSH	CSF Shunt
+CTP	Catheter tip
+CTSWB	Swab, Chest Tube Site
+CUDES	Cul de Sac
+CUR	Curettage
+CVC	Catheter, Central Venous
+CVM	Cervical mucus
+CVPOSTP	Cervical, Post Partum
+CVTY	Cavity
+CVX	Cervix
+CVXENDCVX	Cervical/Endocervical
+CXSW	Cervical Swab
+CYLE	Cystocele
+CYST	Cyst
+DCS	Sputum, Deep Cough
+DCT	Duct
+DCVC	Catheter-distal, Central Venous
+DDIAC	Catheter-distal, Dialysis (CV VHDF)
+DECU	Decubitus Ulcer
+DESCOL	Descending Colon
+DIAC	Catheter, Dialysis (CV VHDF)
+DIAF	Dialysis fluid
+DISGE	Discharge
+DIVR	Diverticulum
+DLYST	Dialysate
+DOGBIT	Dog Bite
+DPHGM	Diaphragm
+DRN	Drain
+DRNFLD	Drainage Fluid
+DRNG	Drainage, Tube
+DUFL	Duodenal fluid
+DUOD	Duodenum
+EAR	Ear
+EARDGE	Ear Discharge
+EARLB	Ear Lobe
+EARLT	Ear, Left
+EARRT	Ear, Right
+EARW	Ear wax (cerumen)
+ECTCRVX	Ectocervix
+EFF	Effluent
+EISO	Environmental, Isolate
+ELB	Elbow
+ELBLT	Elbow, Left
+ELBRT	Elbow, Right
+ELT	Electrode
+ELU	Eluate
+ENDC	Endocardium
+ENDCVX	Endocervix
+ENDM	Endometrium
+ENDO	Endotracheal tube
+ENDOT	Endotracheal
+EOS	Eosinophils
+EPID	Epididymis
+EPIDUR	Epidural
+EPIGL	Epiglottis
+ESO	Esophagus
+ESOBSH	Esophageal Brush
+ESTCHNTB	Eustachian Tube
+ETA	Endotracheal Aspirate
+ETHMO	Ethmoid
+EXG	Exhaled gas (=breath)
+EXTVNTDRNTP	External Ventricular Drain Tip
+EYBRW	Eyebrow
+EYE	Eye
+EYELT	Eye, Left
+EYERT	Eye, Right
+EYLD	Eyelid
+FACA	Facalith
+FACE	Face
+FALLT	Fallopian Tube
+FASC	Fascia
+FASCL	Fascia Lata
+FBD	Foreign Body
+FBL	Fibula
+FCNCL	Furuncle
+FDNGTB	Feeding Tube
+FETUS	Fetus
+FETUSA	Fetus A
+FETUSB	Fetus B
+FETUSC	Fetus C
+FETUSD	Fetus D
+FETUSE	Fetus E
+FETUSES	Fetuses
+FIB	Fibroblasts
+FIST	Fistula
+FLLTBLT	Fallopian Tube, Left
+FLLTBRT	Fallopian Tube, Right
+FLNK	Flank
+FLSRPL	Body fld+Ser/Plas
+FLT	Filter
+FLU	Body fluid
+FLUID	Fluid
+FMHD	Femoral Head
+FMHDLFT	Femoral Head, Left
+FMHDRGHT	Femoral Head, Right
+FMR	Femur
+FNGR	Finger
+FNGRNL	Finger Nail
+FNNA	Fine Needle Aspirate
+FOOT	Foot
+FOOTLT	Foot, Left
+FOOTRT	Foot, Right
+FRARM	Forearm
+FRHD	Forehead
+FRSK	Foreskin
+FVUR	First Void Urine
+GANG	Ganglion Cyst
+GAS	Gas
+GASA	Gastric Aspirate
+GASFS	Gastric Fundus Structure
+GAST	Gastric fluid/contents
+GBBD	Gall Bladder/Bile Duct
+GEN	Genital
+GENC	Genital cervix
+GENEN	Genital endocervix
+GENL	Genital lochia
+GENU	Genital ulcer
+GENV	Genital vaginal
+GENVUL	Genital Vulvar
+GLLSTN	Gallstone
+GLNDB	Bartholin gland
+GRAFT	Graft
+GRN	Groin
+GRNLT	Groin, Left
+GRNRT	Groin, Right
+GSPEC	Biopsy, Gastric
+GSTRCBRSH	Gastric Brushings
+GTUBE	Tube, Gastric
+GUM	Gum
+HAND	Hand
+HANDLT	Hand, Left
+HANDRT	Hand, Right
+HAR	Hair
+HARDW	Hardware
+HEAD	Head
+HEEL	Heel
+HEELLT	Heel, Left
+HEELRT	Heel, Right
+HICK	Catheter Site, Hickman
+HICKD	Catheter-distal, Hickman
+HICKP	Catheter-proximal, Hickman
+HIP	Hip
+HIPLT	Hip, Left
+HIPRT	Hip, Right
+HMRS	Humerus
+HRFCL	Hair Follicle
+HRN	Hernia
+HRT	Heart
+HRTV	Heart Valve
+HTMA	Hematoma
+HUMBT	Human Bite
+HYDRO	Hydrocele
+ICRG	Intracorneal Ring Implant
+IDC	Catheter Tip, Indwelling
+IHG	Inhaled Gas
+ILCRT	Iliac Crest
+ILEAS	Ileostomy
+ILEU	Ileum
+ILLPCH	Ileal Pouch
+ILSTMFLD	Ileostomy Fluid
+ILVL	Illeocecal Valve
+IMP	Implant
+INCI	Site, Incision/Surgical
+INS	Insect
+INSRT	Insertion Site
+INT	Introital
+INTC	Intermittent Catheter
+INTN	Intestine
+INTREC	Introital/Rectal
+INTROCLN	Intraocular Lens
+INTROD	Introducer
+INTRODD	Introducer-distal
+INTRODP	Introducer-proximal
+INTRSTLFLD	Interstitial Fluid
+ISLT	Isolate
+ISLTSPEC	Isolate/Specimen
+IT	Intubation tube
+IUD	Intra-Uterine Device
+IVCAT	Catheter Tip, IV
+IVSITE	Intravenous Site
+JAW	Jaw
+JEJU	Jejunum
+JEJUNOS	Jejunostomy Stoma
+JNT	Joint
+JNTFLD	Fluid, Joint
+JTUBE	Jejunostomy Tube
+KID	Kidney
+KIDA	Kidney Aspirate
+KIDLT	Kidney, Left
+KIDRT	Kidney, Right
+KJSF	Knee Joint Synovial Fluid
+KNEE	Knee
+KNEELT	Knee, Left
+KNEERT	Knee, Right
+KNKL	Knuckle
+LAB	Labia
+LAC	Lacrimal Stone
+LAM	Lamella
+LARY	Larynx
+LAVG	Lavage, Bronchial
+LAVGG	Lavage, Gastric
+LAVGP	Lavage, Peritoneal
+LAVPG	Lavage, Pre-Bronch
+LEG	Leg
+LEGLT	Leg, Left
+LEGRT	Leg, Right
+LESN	Lesion
+LIGMT	Ligament
+LIP	Lip
+LIPMA	Lipoma
+LIQ	Liquid NOS
+LIV	Liver
+LLLLW	Lung, Left Lower Lobe Washing
+LLULW	Lung, Left Upper Lobe Washing
+LN	Line
+LNA	Line arterial
+LNV	Line venous
+LNVEN	Ventricular Line
+LOUSE	Louse
+LRLLW	Lung, Right Lower Lobe Washing
+LRMLW	Lung, Right Middle Lobe Washing
+LRT	Lower Respiratory Tract
+LRULW	Lung, Right Upper Lobe Washing
+LUNG	Lung
+LUNGLT	Lung, Left
+LUNGRT	Lung, Right
+LVBX	Liver Biopsy
+LYM	Lymphocytes
+LYMNOD	Lymph Node
+MAC	Macrophages
+MAR	Marrow
+MASS	Mass
+MAXSIN	Maxillary Sinus
+MBLD	Menstrual blood
+MEC	Meconium
+MEDNA	Mediastinal Needle Aspirate
+MENIS	Meniscus
+MESTNM	Mediastinum
+MILK	Breast milk
+MILKPP	Breast Milk, Post Pasteurization
+MLK	Milk
+MNDBL	Mandible
+MNNGS	Meninges
+MOUTH	Mouth
+MTUR	Mid Turbinate
+MUSC	Muscle
+MXLL	Maxilla
+NAEP	Nucleic Acid Extraction Product
+NAGPS	Nasal+Axilla+Groin+Perineum Swabs
+NAGS	Nasal+Axilla+Groin Swabs
+NAIL	Nail
+NARES	Nares
+NASAL	Nasal
+NASASP	Nasopharyngeal Aspirate
+NASOPH	Nasopharynx
+NASOPHS	Nasopharyngeal Swab
+NASS	Nasal Septum
+NAST	Nasal Turbinate
+NASTHRT	Nasopharyngeal+Throat
+NCBBX	Needle Core Breast Biopsy
+NECK	Neck
+NERV	Nerve
+NEUR	Neuroma
+NFFA	Nuchal Fold, Fetus A
+NFFB	Nuchal Fold, Fetus B
+NFFC	Nuchal Fold, Fetus C
+NFFD	Nuchal Fold, Fetus D
+NFFE	Nuchal Fold, Fetus E
+NGASP	Nasogastric Aspirate
+NIP	Nipple
+NIPDIS	Nipple Discharge
+NIPDISLT	Nipple Discharge, Left
+NIPDISRT	Nipple Discharge, Right
+NLBD	Nail Bed
+NMUS	Nasal+Mouth+Umbilical Swabs
+NOS	Nose (nasal passage)
+NOSLT	Nose, Left
+NOSRT	Nose, Right
+NPHSTMYST	Nephrostomy Site
+NPHSTMYTB	Nephrostomy Tube
+NPSWAB	Nasal+Perianal Swabs
+NRS	Nasal+Rectal Swabs
+NRSGRN	Nares/Groin
+NSEXT	Nose (Exterior)
+NSLMTH	Nasal+Mouth
+NSLPRNLRCTL	Nasal/Perianal/Rectal
+NTASP	Nasotracheal Aspirate
+NTS	Nasal+Throat Swabs
+NUS	Nasal+Umbilical Swabs
+OMEN	Omentum
+ORAL	Oral
+ORH	Other
+ORLCAV	Oral Cavity
+ORPHRYNX	Oropharynx
+OVARY	Ovary
+OVRYLT	Ovary, Left
+OVRYRT	Ovary, Right
+PAC	Catheter, Pulmonary Arterial
+PACD	Catheter-distal, Pulmonary Arterial
+PACP	Catheter-proximal, Pulmonary Arterial
+PAFL	Pancreatic fluid
+PALTE	Palate
+PAR	Paratracheal
+PARA	Paracentesis
+PARAEMBTISS	Paraffin Embedded Tissue
+PAT	Patient
+PATELLA	Patella
+PCFL	Fluid, Pericardial
+PCVC	Catheter-proximal, Central Venous
+PDCATHE	Catheter, Peritoneal Dialysis Exit Site
+PDIAC	Catheter-proximal, Dialysis (CV VHDF)
+PELVIS	Pelvis
+PENI	Penile
+PERA	Perianal
+PERCAV	Peritoneal Cavity
+PERD	Dialysate, Peritoneal
+PERICARD	Pericardial
+PERITON	Peritoneum
+PEROP	Perianal Ova + Parasite
+PHARYN	Pharynx
+PICC	Peripheral Inserted Central Cath (PICC)
+PICCD	Peripheral Inserted Central Cath (PICC)-Distal
+PICCP	Peripheral Inserted Central Cath (PICC)-Proximal
+PICCPER	Peripheral Inserted Central Cath (PICC)-Peripheral
+PILO	Pilonidal Sinus
+PIN	Pin Site
+PINP	Pinworm Paddle
+PJNTFLD	Prosthetic Joint Fluid
+PLAS	Plasma
+PLB	Plasma bag
+PLC	Placenta
+PLCF	Placenta - Fetal Surface
+PLCM	Placenta - Maternal Surface
+PLEURA	Pleura
+PLF	Fetal Plasma
+PLR	Pleural fluid (thoracentesis fld)
+PLRF	Fetal Pleural Fluid
+PLRLT	Pleural, Left
+PLRRT	Pleural, Right
+PLTB	Platelet Bag
+PMK	Pacemaker
+PMKT	PacemakerTip
+PMN	Polymorphonuclear neutrophils
+PNCRS	Pancreas
+PNLGLND	Pineal Gland
+PNLSN	Paranasal Sinus
+PNM	Perineum
+PNRSDRN	Penrose Drain
+PPBLD	Postpartum Blood
+PPP	Platelet poor plasma
+PPP/BLD	Platelet Poor Plasma/Whole Blood
+PPTRLRGN	Popliteal Region
+PRCTLR	Perirectal Region
+PROD	Products of Conception
+PRODEV	Prosthetic Device
+PROSFLU	Prostatic Fluid
+PRP	Platelet rich plasma
+PRPC	Prepuce
+PRSTT	Prostate
+PRT	Peritoneal fluid/ascites
+PRTD	Parotid
+PRTHYRD	Parathyroid
+PSCST	Pseudocyst
+PSM	Psoas Muscle
+PSTL	Pustule
+PTAC	Porta Catheter
+PTTRYGLND	Pituitary Gland
+PUBIS	Pubis
+PUS	Pus
+RADIUS	Radius
+RASH	Rash
+RBC	Erythrocytes
+RBCCO	Cord Red Blood Cells
+RCS	Rectal+Colostomy Swabs
+REC	Rectum
+RESP	Respiratory
+RESW	Rectal Swab
+RINSF	Rinse FNA
+RNPL	Renal Pelvis
+RTRPRTNM	Retroperitoneum
+SAC	Sacrum
+SAL	Saliva
+SBDRLSPC	Subdural Space
+SBMANGLD	Submandibular Gland
+SCAL	Scalp
+SCB	Scab
+SCLBUCK	Scleral Buckle
+SCLRD	Sclera, Donor
+SCRT	Scrotum
+SCTP	Scotch Tape Prep
+SEB	Sebaceous Glands
+SER	Serum
+SER/PLAS	Serum/Plasma
+SER/PLASUC	Serum/Plasma, Ultracentrifugate
+SERF/PLASF	Fetal Serum/Plasma
+SHIN	Shin
+SHLDR	Shoulder
+SHLDRLT	Shoulder, Left
+SHLDRRT	Shoulder, Right
+SHNT	Shunt
+SIGM	Sigmoid
+SINUS	Sinus
+SKBP	Biopsy, Skin
+SKM	Skeletal muscle
+SKN	Skin
+SKSC	Skin scraping
+SLVRYGLND	Salivary Gland
+SLVRYGLNDLT	Salivary Gland, Left
+SLVRYGLNDRT	Salivary Gland, Right
+SMN	Seminal fluid
+SMR	Smear
+SNV	Synovial fluid
+SNVLT	Synovial, Left
+SNVRT	Synovial, Right
+SPBP	Suprapubic bladder puncture
+SPECNFPSVD	Specimen, Non-fixative Preserved
+SPINE	Spine
+SPLEEN	Spleen
+SPNLCRD	Spinal Cord
+SPRCLVCLR	Supraclavicular
+SPRM	Spermatozoa
+SPT	Sputum
+SPTC	Sputum - coughed
+SPTT	Sputum-Tracheal Aspirate
+SRCSF	Ser+CSF
+SRPLBLDC	Ser/Plas+Blood capillary
+SRPLCSF	SER/PLAS+CSF
+SRPLST	Ser/Plas+Stool
+SRPLUR	Urine+Ser/Plas
+SSSMR	Slit Skin Smear
+STENT	Stent
+STL	Stool = Fecal
+STMCH	Stomach
+STMCLL	Stem Cell
+STOMA	Stoma Site
+STRNM	Sternum
+SURMAR	Surgical Margins
+SWAB	Swab
+SWT	Sweat
+TASP	Tracheal Aspirate
+TEAR	Tears
+THIGH	Thigh
+THIGHLT	Thigh, Left
+THIGHRT	Thigh, Right
+THO	Thorax
+THRB	Thrombocyte (Platelet)
+THRT	Throat
+THRTNSL	Throat+Nasal Swab
+THRTSWB	Throat Swab
+THUMB	Thumb
+THYMS	Thymus
+THYRD	Thyroid
+THYRDCYST	Thyroid Cyst
+THYRDCYSTLT	Thyroid Cyst, Left
+THYRDCYSTMTPLLT	Thyroid Cyst Multiple, Left
+THYRDCYSTMTPLRT	Thyroid Cyst Multiple, Right
+THYRDCYSTRT	Thyroid Cyst, Right
+THYRDLT	Thyroid, Left
+THYRDNDL	Thyroid Nodule
+THYRDNDLLT	Thyroid Nodule, Left
+THYRDNDLMTPLLT	Thyroid Nodule Multiple, Left
+THYRDNDLMTPLRT	Thyroid Nodule Multiple, Right
+THYRDNDLRT	Thyroid Nodule, Right
+THYRDRT	Thyroid, Right
+TIB	Tibia
+TIC	Tick
+TISALL	Allograft Tissue
+TISAUT	Autograft Tissue
+TISG	Tissue gall bladder
+TISPL	Tissue placenta
+TISS	Tissue
+TISSFFPMBD	Tissue; Formalin-fixed, Paraffin-embedded
+TISSFRSH	Tissue, Fresh
+TISSFRZN	Tissue, Frozen
+TISU	Tissue ulcer
+TLGI	Tissue large intestine
+TLNG	Tissue lung
+TMPN	Tampon
+TMR	Tumor
+TNDN	Tendon
+TNL	Toenail
+TOE	Toe
+TONG	Tongue
+TONS	Tonsil
+TOOTH	Tooth
+TORSO	Torso
+TPNC	Total Parenteral Nutrition Cath, Central
+TPNCD	Total Parenteral Nutrition Cath, Central Distal
+TPNCP	Total Parenteral Nutrition Cath, Central Proximal
+TPNP	Total Parenteral Nutrition Cath, Peripheral
+TPNS	Total Parenteral Nutrition Solution
+TRACH	Tracheostomy Site
+TRACHW	Tracheal Washing
+TRANSASP	Trachea
+TRPHL	Trephine Hole
+TSMI	Tissue small intestine
+TSTCL	Testicle
+TTRA	Transtracheal Aspirate
+TUB	Tube NOS
+TYMPFLU	Tympanocentesis Fluid
+ULC	Ulcer
+ULNA	Ulna
+UMB	Umbilical blood
+UMBC	Umbilicus
+UMBCC	Catheter, Umbilical
+UMBCCD	Catheter-distal, Umbilical
+UMBCCP	Catheter-proximal, Umbilical
+UMBCN	Umbilicus, Neonatal
+UMBLCLSTMP	Umbilical Cord Stump
+UMED	Unknown medicine
+UR	Urine
+URB	Urine, Bag
+URC	Urine clean catch
+URET	Ureter
+URF	Fetal Urine
+URILEAC	Urine, Ileal Conduit
+URINC	Cystoscopy Urine
+URINM	Urine, Midstream
+URINN	Nephrostomy Urine
+URNS	Urine sediment
+UROGEN	Urogenital
+URSP	Urine, Suprapubic
+URSW	Urethral Swab
+URT	Urine catheter
+URTH	Urethra
+URTIM	Urine Timed Collection
+URURO	Urine, Urostomy
+US	Uterine Swab
+USPEC	Source, Unspecified
+UT	Uterus
+UVULA	Uvula
+VAGCFF	Vaginal Cuff
+VAGPN	Vaginal, Prenatal
+VAGPOSTP	Vaginal, Post Partum
+VAGPP	Vaginal, Prepubertal
+VAGREC	Vaginal Rectal
+VAGVAU	Vaginal Vault
+VDSS	Vascular Device Segment Site
+VEIN	Vein
+VES	Vesicle
+VESFLU	Vesicular Fluid
+VGSW	Vaginal Swab
+VITF	Vitreous Fluid
+VOM	Vomitus
+VSDFRNS	Vas deferens
+VSDFRNSLT	Vas deferens, Left
+VSDFRNSRT	Vas deferens, Right
+VULVA	Vulva
+WASH	Wash
+WAT	Water
+WBC	Leukocytes
+WICK	Wick
+WND	Wound
+WNDE	Wound exudate
+WNDSW	Wound Swab
+WOR	Worm
+WRST	Wrist
