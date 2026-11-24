@@ -40,6 +40,8 @@
         <!-- Prescription signature entities (ProviderSignatureDao integration tests) -->
         <class>ca.openosp.openo.commn.model.ProviderSignature</class>
         <class>ca.openosp.openo.commn.model.Prescription</class>
+        <!-- Lab routing entity (PatientLabRoutingDao integration tests) -->
+        <class>ca.openosp.openo.commn.model.PatientLabRouting</class>
         <!-- HBM.XML mapped entities -->
         <mapping-file>ca/openosp/openo/commn/model/Provider.hbm.xml</mapping-file>
         <mapping-file>ca/openosp/openo/commn/model/Demographic.hbm.xml</mapping-file>
