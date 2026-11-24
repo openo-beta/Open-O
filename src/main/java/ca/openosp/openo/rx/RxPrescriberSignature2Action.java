@@ -68,17 +68,20 @@ public class RxPrescriberSignature2Action extends ActionSupport {
             return null;
         }
 
-        // RxSessionFilter picks this window's patient from the demographicNo parameter
-        RxSessionBean sessionBean = (RxSessionBean) request.getSession().getAttribute("RxSessionBean");
         Integer scriptNo;
+        int demographicNo;
         Integer signatureId;
         try {
             scriptNo = Integer.valueOf(request.getParameter("scriptNo"));
+            demographicNo = Integer.parseInt(request.getParameter("demographicNo"));
             signatureId = SignatureChoice.parsePostedId(request.getParameter("signatureId"));
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
+        // This window's own patient: another tab's Rx request can swap the shared "RxSessionBean" key
+        // between RxSessionFilter and here
+        RxSessionBean sessionBean = RxSessionBean.getFromSession(request, demographicNo);
         if (sessionBean == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
