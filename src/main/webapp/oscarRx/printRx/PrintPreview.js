@@ -365,6 +365,23 @@ function previewPrescriberSignature(select) {
 }
 
 /**
+ * Sends a request to the signature card's endpoint. Every request is a POST with the print window's CSRF
+ * token, which CSRFGuard checks on POSTs.
+ *
+ * @param {string} ctx the context path, or empty to work it out from the page
+ * @param {Object<string, string>} params the request's parameters
+ * @returns {Promise<Response>} the response
+ */
+function postPrescriberSignature(ctx, params) {
+    const body = new URLSearchParams(params);
+    const csrfToken = document.getElementById('previewCsrfToken');
+    if (csrfToken) {
+        body.append(csrfToken.name, csrfToken.value);
+    }
+    return fetch(resolveContextPath(ctx) + '/oscarRx/prescriberSignature.do', {method: 'POST', body: body});
+}
+
+/**
  * Saves the picked signature on the prescription before its first print, fax or PDF, so the paper and
  * the chart show the same one, then locks the dropdown on it. Does nothing when it is saved already or
  * the page has no signature dropdown.
@@ -381,17 +398,11 @@ function lockPrescriberSignature(ctx) {
 
     // Kept for a 409: a refresh can rebuild the dropdown while this is in flight
     const submittedId = select.value;
-    const body = new URLSearchParams({
+    return postPrescriberSignature(ctx, {
         scriptNo: select.dataset.scriptNo,
         demographicNo: select.dataset.demographicNo,
         signatureId: submittedId
-    });
-    const csrfToken = document.getElementById('previewCsrfToken');
-    if (csrfToken) {
-        body.append(csrfToken.name, csrfToken.value);
-    }
-
-    return fetch(resolveContextPath(ctx) + '/oscarRx/prescriberSignature.do', {method: 'POST', body: body})
+    })
         .then(response => {
             if (response.status === 409) {
                 // Deleted in another window: drop the one sent (a refresh may have dropped it already), so the
@@ -470,12 +481,11 @@ function updatePrescriberSignatureChoices() {
     }
 
     const refresh = ++prescriberSignatureRefreshes;
-    const query = new URLSearchParams({
+    postPrescriberSignature(select.dataset.contextPath, {
         method: 'choices',
         scriptNo: select.dataset.scriptNo,
         demographicNo: select.dataset.demographicNo
-    });
-    fetch(resolveContextPath(select.dataset.contextPath) + '/oscarRx/prescriberSignature.do?' + query)
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error('HTTP ' + response.status);

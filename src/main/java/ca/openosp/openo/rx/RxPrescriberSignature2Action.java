@@ -29,11 +29,13 @@ import java.io.IOException;
  * longer in the prescriber's list (deleted in another window) answers 409, so the window can ask for
  * another pick.
  *
- * <p>{@code method=choices} saves nothing: it answers with the list the card's dropdown shows now
+ * <p>With {@code method=choices}, it saves nothing: it answers with the list the card's dropdown shows now
  * ({@code {"choices": [{"id": "", "text": "...", "default": true}, ...]}}), so the window can update
  * the dropdown after the prescriber changes their signatures in Signature Preference. Parameters:
  * {@code scriptNo} and {@code demographicNo}. The list is empty when the user can't choose: the
  * signature is saved already, or they aren't the prescriber.
+ *
+ * <p>Both are POSTs, so CSRFGuard checks their token; anything else answers 405.
  *
  * @since 2026-10-26
  */
@@ -61,9 +63,8 @@ public class RxPrescriberSignature2Action extends ActionSupport {
             throw new SecurityException("missing required sec object (_rx)");
         }
 
-        boolean listChoices = "choices".equals(request.getParameter("method"));
-        // Saving is POST only, so CSRFGuard checks the token; listing the choices saves nothing
-        if (!listChoices && !"POST".equalsIgnoreCase(request.getMethod())) {
+        // POST only, so CSRFGuard checks the token
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return null;
         }
@@ -88,7 +89,7 @@ public class RxPrescriberSignature2Action extends ActionSupport {
         }
 
         ObjectNode json = new ObjectMapper().createObjectNode();
-        if (listChoices) {
+        if ("choices".equals(request.getParameter("method"))) {
             ArrayNode choices = json.putArray("choices");
             for (SignatureChoice choice : providerSignatureManager.getChoicesForPrescription(loggedInInfo, scriptNo, sessionBean.getDemographicNo())) {
                 choices.addObject()
@@ -96,8 +97,6 @@ public class RxPrescriberSignature2Action extends ActionSupport {
                         .put("text", choice.getText())
                         .put("default", choice.isDefaultChoice());
             }
-            // The list changes whenever the prescriber edits it, so the browser must not reuse an old answer
-            response.setHeader("Cache-Control", "no-store");
         } else {
             try {
                 json.put("signature", providerSignatureManager.lockForPrescription(loggedInInfo, scriptNo, sessionBean.getDemographicNo(), signatureId));
