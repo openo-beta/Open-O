@@ -303,9 +303,10 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     /**
      * Whether the user is the prescriber. Only the prescriber picks the prescription's signature, and
      * only their own list is behind the card; anyone else printing it gets the prescriber's default.
+     * A user with no provider number isn't anyone's prescriber.
      */
     private static boolean isPrescriber(LoggedInInfo loggedInInfo, String prescriberNo) {
-        return loggedInInfo.getLoggedInProviderNo().equals(prescriberNo);
+        return prescriberNo != null && prescriberNo.equals(loggedInInfo.getLoggedInProviderNo());
     }
 
     /**

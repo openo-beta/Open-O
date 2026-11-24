@@ -379,10 +379,12 @@ function lockPrescriberSignature(ctx) {
         return Promise.resolve(true);
     }
 
+    // Kept for a 409: a refresh can rebuild the dropdown while this is in flight
+    const submittedId = select.value;
     const body = new URLSearchParams({
         scriptNo: select.dataset.scriptNo,
         demographicNo: select.dataset.demographicNo,
-        signatureId: select.value
+        signatureId: submittedId
     });
     const csrfToken = document.getElementById('previewCsrfToken');
     if (csrfToken) {
@@ -392,9 +394,13 @@ function lockPrescriberSignature(ctx) {
     return fetch(resolveContextPath(ctx) + '/oscarRx/prescriberSignature.do', {method: 'POST', body: body})
         .then(response => {
             if (response.status === 409) {
-                // Deleted in another window: drop it, so the next pick is one that still exists, and go
-                // back to the default (the prescriber name, the first option, if the default was the one deleted)
-                select.remove(select.selectedIndex);
+                // Deleted in another window: drop the one sent (a refresh may have dropped it already), so the
+                // next pick is one that still exists, and go back to the default (the prescriber name, the
+                // first option, if the default was the one deleted)
+                const submitted = Array.from(select.options).find(option => option.value === submittedId);
+                if (submitted) {
+                    submitted.remove();
+                }
                 const defaultOption = select.querySelector('option[data-default="true"]');
                 select.selectedIndex = defaultOption ? defaultOption.index : 0;
                 previewPrescriberSignature(select);

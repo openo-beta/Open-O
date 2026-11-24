@@ -396,6 +396,27 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
+        @DisplayName("should show a user with no provider number the saved signature, locked and not theirs")
+        void shouldShowSavedSignatureNotTheirs_whenUserHasNoProviderNumber() {
+            prescription.setPrescriberSignature(UNDER_WELCH);
+
+            SignatureCard card = providerSignatureManager.getSignatureCard(new LoggedInInfo(), String.valueOf(SCRIPT_NO), DEMOGRAPHIC_NO, PROVIDER_NO);
+
+            assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable, SignatureCard::isOwnSignatures)
+                    .containsExactly(UNDER_WELCH, true, false, false);
+        }
+
+        @Test
+        @DisplayName("should show a user with no provider number the prescriber's default with nothing to choose")
+        void shouldShowDefaultWithNothingToChoose_whenUserHasNoProviderNumber() {
+            SignatureCard card = providerSignatureManager.getSignatureCard(new LoggedInInfo(), String.valueOf(SCRIPT_NO), DEMOGRAPHIC_NO, PROVIDER_NO);
+
+            assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable, SignatureCard::isOwnSignatures)
+                    .containsExactly(UNDER_ARMSTRONG, false, false, false);
+            assertThat(card.getChoices()).isEmpty();
+        }
+
+        @Test
         @DisplayName("should treat a window with no prescription yet as not printed")
         void shouldTreatAsNotPrinted_whenThereIsNoPrescription() {
             SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, null, DEMOGRAPHIC_NO, PROVIDER_NO);
