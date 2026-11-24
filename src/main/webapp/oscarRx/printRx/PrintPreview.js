@@ -434,7 +434,10 @@ function lockPrescriberSignature(ctx) {
 function lockPrescriberSignatureCard(select, signature) {
     // Another window may have printed it first, so show what was actually saved
     showPrescriberSignature(signature);
-    select.replaceChildren(new Option(signature, ''));
+    // With its text in data-signature, like the locked option the page draws, so a preview shows it too
+    const saved = new Option(signature, '');
+    saved.dataset.signature = signature;
+    select.replaceChildren(saved);
     select.disabled = true;
     select.dataset.locked = 'true';
     document.getElementById('prescriberSignatureSaved').hidden = false;
