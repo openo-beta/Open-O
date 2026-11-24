@@ -449,12 +449,16 @@ function openPrescriberSignatureSettings() {
     popupPage(230, 860, resolveContextPath(select.dataset.contextPath) + '/provider/providerSignature.jsp');
 }
 
+// Counts the dropdown's refreshes, so each one can tell whether a later one was sent after it
+let prescriberSignatureRefreshes = 0;
+
 /**
  * Updates the signature dropdown from the prescriber's current list each time Signature Preference
  * shows it, so after every add, edit, delete or change of default. Their pick stays if it is still in
  * the list, a pick left on the default moves to the new default, and a deleted pick goes back to the
  * default. Nothing else in the window changes. Does nothing when the dropdown can't change: the
- * signature is saved already, or it isn't the user's to choose.
+ * signature is saved already, or it isn't the user's to choose. Only the latest refresh's answer is
+ * used, since answers can come back out of order.
  */
 function updatePrescriberSignatureChoices() {
     const select = document.getElementById('prescriberSignature');
@@ -462,6 +466,7 @@ function updatePrescriberSignatureChoices() {
         return;
     }
 
+    const refresh = ++prescriberSignatureRefreshes;
     const query = new URLSearchParams({
         method: 'choices',
         scriptNo: select.dataset.scriptNo,
@@ -475,9 +480,10 @@ function updatePrescriberSignatureChoices() {
             return response.json();
         })
         .then(result => {
-            // Left alone when a print has saved the signature meanwhile, the window was opened again (its
-            // preview now shows another prescription), or the list is empty because the user can't choose
-            if (select.disabled || !select.isConnected || result.choices.length === 0) {
+            // Left alone when a later refresh was sent meanwhile (its answer is the newer list), a print has
+            // saved the signature meanwhile, the window was opened again (its preview now shows another
+            // prescription), or the list is empty because the user can't choose
+            if (refresh !== prescriberSignatureRefreshes || select.disabled || !select.isConnected || result.choices.length === 0) {
                 return;
             }
             const picked = select.options[select.selectedIndex];
