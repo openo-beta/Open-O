@@ -77,6 +77,20 @@ public interface ProviderSignatureManager {
     SignatureCard getSignatureCard(LoggedInInfo loggedInInfo, String scriptNo, Integer demographicNo, String prescriberNo);
 
     /**
+     * Gets the list the prescription window's signature dropdown shows now, so the window can update
+     * it after the prescriber changes their signatures. It is the {@link #getSignatureCard} list for
+     * the prescription's prescriber, so it is empty once the signature is saved or when the user isn't
+     * the prescriber. Nothing is saved.
+     *
+     * @param loggedInInfo LoggedInInfo the user whose window asks
+     * @param scriptNo Integer the prescription's number
+     * @param demographicNo Integer the patient of the user's prescription window
+     * @return List&lt;SignatureChoice&gt; the prescriber's choices, or empty when the user can't choose
+     * @throws SecurityException when the prescription isn't for that patient
+     */
+    List<SignatureChoice> getChoicesForPrescription(LoggedInInfo loggedInInfo, Integer scriptNo, Integer demographicNo);
+
+    /**
      * Saves the signature on a prescription at its first print, fax or PDF, so every reprint shows
      * the same one, and writes it on the first line of the prescription's text copy. Only the
      * prescriber chooses; anyone else saves the prescriber's default. When the prescription already

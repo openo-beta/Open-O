@@ -365,6 +365,23 @@ function previewPrescriberSignature(select) {
 }
 
 /**
+ * Sends a request to the signature card's endpoint. Every request is a POST with the print window's CSRF
+ * token, which CSRFGuard checks on POSTs.
+ *
+ * @param {string} ctx the context path, or empty to work it out from the page
+ * @param {Object<string, string>} params the request's parameters
+ * @returns {Promise<Response>} the response
+ */
+function postPrescriberSignature(ctx, params) {
+    const body = new URLSearchParams(params);
+    const csrfToken = document.getElementById('previewCsrfToken');
+    if (csrfToken) {
+        body.append(csrfToken.name, csrfToken.value);
+    }
+    return fetch(resolveContextPath(ctx) + '/oscarRx/prescriberSignature.do', {method: 'POST', body: body});
+}
+
+/**
  * Saves the picked signature on the prescription before its first print, fax or PDF, so the paper and
  * the chart show the same one, then locks the dropdown on it. Does nothing when it is saved already or
  * the page has no signature dropdown.
@@ -379,22 +396,22 @@ function lockPrescriberSignature(ctx) {
         return Promise.resolve(true);
     }
 
-    const body = new URLSearchParams({
+    // Kept for a 409: a refresh can rebuild the dropdown while this is in flight
+    const submittedId = select.value;
+    return postPrescriberSignature(ctx, {
         scriptNo: select.dataset.scriptNo,
         demographicNo: select.dataset.demographicNo,
-        signatureId: select.value
-    });
-    const csrfToken = document.getElementById('previewCsrfToken');
-    if (csrfToken) {
-        body.append(csrfToken.name, csrfToken.value);
-    }
-
-    return fetch(resolveContextPath(ctx) + '/oscarRx/prescriberSignature.do', {method: 'POST', body: body})
+        signatureId: submittedId
+    })
         .then(response => {
             if (response.status === 409) {
-                // Deleted in another window: drop it, so the next pick is one that still exists, and go
-                // back to the default (the prescriber name, the first option, if the default was the one deleted)
-                select.remove(select.selectedIndex);
+                // Deleted in another window: drop the one sent (a refresh may have dropped it already), so the
+                // next pick is one that still exists, and go back to the default (the prescriber name, the
+                // first option, if the default was the one deleted)
+                const submitted = Array.from(select.options).find(option => option.value === submittedId);
+                if (submitted) {
+                    submitted.remove();
+                }
                 const defaultOption = select.querySelector('option[data-default="true"]');
                 select.selectedIndex = defaultOption ? defaultOption.index : 0;
                 previewPrescriberSignature(select);
@@ -428,10 +445,77 @@ function lockPrescriberSignature(ctx) {
 function lockPrescriberSignatureCard(select, signature) {
     // Another window may have printed it first, so show what was actually saved
     showPrescriberSignature(signature);
-    select.replaceChildren(new Option(signature, ''));
+    // With its text in data-signature, like the locked option the page draws, so a preview shows it too
+    const saved = new Option(signature, '');
+    saved.dataset.signature = signature;
+    select.replaceChildren(saved);
     select.disabled = true;
     select.dataset.locked = 'true';
     document.getElementById('prescriberSignatureSaved').hidden = false;
+}
+
+/**
+ * Opens Signature Preference, where the user adds and edits their signatures, in the same popup
+ * Provider Preferences opens it in. The dropdown updates itself as they change things there.
+ */
+function openPrescriberSignatureSettings() {
+    const select = document.getElementById('prescriberSignature');
+    popupPage(230, 860, resolveContextPath(select.dataset.contextPath) + '/provider/providerSignature.jsp');
+}
+
+// Counts the dropdown's refreshes, so each one can tell whether a later one was sent after it
+let prescriberSignatureRefreshes = 0;
+
+/**
+ * Updates the signature dropdown from the prescriber's current list each time Signature Preference
+ * shows it, so after every add, edit, delete or change of default. Their pick stays if it is still in
+ * the list, a pick left on the default moves to the new default, and a deleted pick goes back to the
+ * default. Nothing else in the window changes. Does nothing when the dropdown can't change: the
+ * signature is saved already, or it isn't the user's to choose. Only the latest refresh's answer is
+ * used, since answers can come back out of order.
+ */
+function updatePrescriberSignatureChoices() {
+    const select = document.getElementById('prescriberSignature');
+    if (!select || select.disabled) {
+        return;
+    }
+
+    const refresh = ++prescriberSignatureRefreshes;
+    postPrescriberSignature(select.dataset.contextPath, {
+        method: 'choices',
+        scriptNo: select.dataset.scriptNo,
+        demographicNo: select.dataset.demographicNo
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status);
+            }
+            return response.json();
+        })
+        .then(result => {
+            // Left alone when a later refresh was sent meanwhile (its answer is the newer list), a print has
+            // saved the signature meanwhile, the window was opened again (its preview now shows another
+            // prescription), or the list is empty because the user can't choose
+            if (refresh !== prescriberSignatureRefreshes || select.disabled || !select.isConnected || result.choices.length === 0) {
+                return;
+            }
+            const picked = select.options[select.selectedIndex];
+            const keptValue = picked.dataset.default === 'true' ? null : picked.value;
+            select.replaceChildren(...result.choices.map(choice => {
+                const option = new Option(choice.default ? choice.text + ' ' + select.dataset.defaultLabel : choice.text, choice.id);
+                option.dataset.signature = choice.text;
+                if (choice.default) {
+                    option.dataset.default = 'true';
+                }
+                return option;
+            }));
+            // The list always has exactly one default
+            const kept = Array.from(select.options).find(option => option.value === keptValue);
+            (kept || select.querySelector('option[data-default="true"]')).selected = true;
+            // The picked signature's text may have been edited
+            previewPrescriberSignature(select);
+        })
+        .catch(error => console.error('Could not update the signature list', error));
 }
 
 /**
@@ -626,4 +710,12 @@ function printPaste2Parent(ctx, print, fax, pasteRx, rxPasteAsterisk, prefPharma
         return Promise.resolve();
     }
 
+}
+
+// Signature Preference (providerSignature.jsp) posts on this channel each time it shows the user's
+// list; the message goes only to the user's other windows in this browser. Kept in a constant so the
+// channel lives as long as the page.
+const prescriberSignatureChannel = typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel('openo-provider-signatures');
+if (prescriberSignatureChannel) {
+    prescriberSignatureChannel.onmessage = () => updatePrescriberSignatureChoices();
 }

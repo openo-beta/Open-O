@@ -342,8 +342,9 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
 
             SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, String.valueOf(SCRIPT_NO), DEMOGRAPHIC_NO, PROVIDER_NO);
 
-            assertThat(card).extracting(SignatureCard::getScriptNo, SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable)
-                    .containsExactly(String.valueOf(SCRIPT_NO), UNDER_WELCH, true, false);
+            assertThat(card).extracting(SignatureCard::getScriptNo, SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable,
+                            SignatureCard::isOwnSignatures)
+                    .containsExactly(String.valueOf(SCRIPT_NO), UNDER_WELCH, true, false, true);
             assertThat(card.getChoices()).isEmpty();
         }
 
@@ -363,8 +364,8 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
         void shouldGivePrescriberTheirList_whenNotPrintedYet() {
             SignatureCard card = providerSignatureManager.getSignatureCard(loggedInInfo, String.valueOf(SCRIPT_NO), DEMOGRAPHIC_NO, PROVIDER_NO);
 
-            assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable)
-                    .containsExactly(UNDER_ARMSTRONG, false, true);
+            assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable, SignatureCard::isOwnSignatures)
+                    .containsExactly(UNDER_ARMSTRONG, false, true, true);
             assertThat(card.getChoices()).extracting(SignatureChoice::getSignatureId).containsExactly(null, 1, 2);
         }
 
@@ -376,8 +377,42 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
 
             SignatureCard card = providerSignatureManager.getSignatureCard(someoneElse, String.valueOf(SCRIPT_NO), DEMOGRAPHIC_NO, PROVIDER_NO);
 
-            assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable)
-                    .containsExactly(UNDER_ARMSTRONG, false, false);
+            assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable, SignatureCard::isOwnSignatures)
+                    .containsExactly(UNDER_ARMSTRONG, false, false, false);
+            assertThat(card.getChoices()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should show anyone else the saved signature, locked and not theirs, once the prescription has one")
+        void shouldShowSomeoneElseTheSavedSignature_whenPrescriptionHasOne() {
+            LoggedInInfo someoneElse = new LoggedInInfo();
+            someoneElse.setLoggedInProvider(new Provider(OTHER_PROVIDER_NO));
+            prescription.setPrescriberSignature(UNDER_WELCH);
+
+            SignatureCard card = providerSignatureManager.getSignatureCard(someoneElse, String.valueOf(SCRIPT_NO), DEMOGRAPHIC_NO, PROVIDER_NO);
+
+            assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable, SignatureCard::isOwnSignatures)
+                    .containsExactly(UNDER_WELCH, true, false, false);
+        }
+
+        @Test
+        @DisplayName("should show a user with no provider number the saved signature, locked and not theirs")
+        void shouldShowSavedSignatureNotTheirs_whenUserHasNoProviderNumber() {
+            prescription.setPrescriberSignature(UNDER_WELCH);
+
+            SignatureCard card = providerSignatureManager.getSignatureCard(new LoggedInInfo(), String.valueOf(SCRIPT_NO), DEMOGRAPHIC_NO, PROVIDER_NO);
+
+            assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable, SignatureCard::isOwnSignatures)
+                    .containsExactly(UNDER_WELCH, true, false, false);
+        }
+
+        @Test
+        @DisplayName("should show a user with no provider number the prescriber's default with nothing to choose")
+        void shouldShowDefaultWithNothingToChoose_whenUserHasNoProviderNumber() {
+            SignatureCard card = providerSignatureManager.getSignatureCard(new LoggedInInfo(), String.valueOf(SCRIPT_NO), DEMOGRAPHIC_NO, PROVIDER_NO);
+
+            assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked, SignatureCard::isEditable, SignatureCard::isOwnSignatures)
+                    .containsExactly(UNDER_ARMSTRONG, false, false, false);
             assertThat(card.getChoices()).isEmpty();
         }
 
@@ -397,6 +432,72 @@ class ProviderSignatureManagerUnitTest extends OpenOUnitTestBase {
 
             assertThat(card).extracting(SignatureCard::getSignature, SignatureCard::isLocked)
                     .containsExactly(UNDER_ARMSTRONG, false);
+        }
+    }
+
+    /**
+     * The list the print window updates its dropdown from after the prescriber changes their signatures.
+     */
+    @Nested
+    @DisplayName("choices for a prescription")
+    class ChoicesForPrescription {
+
+        private static final int SCRIPT_NO = 287;
+        private static final int DEMOGRAPHIC_NO = 1;
+
+        private Prescription prescription;
+
+        @BeforeEach
+        void givenUnsavedPrescription() {
+            prescription = new Prescription();
+            ReflectionTestUtils.setField(prescription, "id", SCRIPT_NO);
+            prescription.setProviderNo(PROVIDER_NO);
+            prescription.setDemographicId(DEMOGRAPHIC_NO);
+            when(prescriptionDao.find(Integer.valueOf(SCRIPT_NO))).thenReturn(prescription);
+            givenSavedDefault(UNDER_ARMSTRONG);
+            givenList(signature(1, PROVIDER_NO, UNDER_ARMSTRONG), signature(2, PROVIDER_NO, UNDER_WELCH));
+        }
+
+        @Test
+        @DisplayName("should give the prescriber their current list, with the default marked, and save nothing")
+        void shouldGivePrescriberTheirCurrentList_whenNotPrintedYet() {
+            List<SignatureChoice> choices = providerSignatureManager.getChoicesForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO);
+
+            assertThat(choices).extracting(SignatureChoice::getSignatureId, SignatureChoice::getText, SignatureChoice::isDefaultChoice)
+                    .containsExactly(tuple(null, "Dr. doctor openodoc", false), tuple(1, UNDER_ARMSTRONG, true), tuple(2, UNDER_WELCH, false));
+            verify(prescriptionDao, never()).lockPrescriberSignature(any(), any(), any());
+            verify(providerSignatureDao, never()).persist(any());
+        }
+
+        @Test
+        @DisplayName("should give nothing to choose once the signature is saved on the prescription")
+        void shouldGiveNothingToChoose_whenSignatureIsSaved() {
+            prescription.setPrescriberSignature(UNDER_WELCH);
+
+            assertThat(providerSignatureManager.getChoicesForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO)).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should give nothing to choose to anyone but the prescription's prescriber")
+        void shouldGiveNothingToChoose_whenUserIsNotThePrescriber() {
+            LoggedInInfo someoneElse = new LoggedInInfo();
+            someoneElse.setLoggedInProvider(new Provider(OTHER_PROVIDER_NO));
+
+            assertThat(providerSignatureManager.getChoicesForPrescription(someoneElse, SCRIPT_NO, DEMOGRAPHIC_NO)).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should refuse a prescription for another patient")
+        void shouldRefuse_whenPrescriptionIsForAnotherPatient() {
+            assertThatThrownBy(() -> providerSignatureManager.getChoicesForPrescription(loggedInInfo, SCRIPT_NO, DEMOGRAPHIC_NO + 1))
+                    .isInstanceOf(SecurityException.class);
+        }
+
+        @Test
+        @DisplayName("should refuse a prescription that doesn't exist")
+        void shouldRefuse_whenPrescriptionDoesNotExist() {
+            assertThatThrownBy(() -> providerSignatureManager.getChoicesForPrescription(loggedInInfo, SCRIPT_NO + 1, DEMOGRAPHIC_NO))
+                    .isInstanceOf(SecurityException.class);
         }
     }
 

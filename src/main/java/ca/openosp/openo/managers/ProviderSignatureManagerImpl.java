@@ -69,28 +69,32 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     @Override
     public SignatureCard getSignatureCard(LoggedInInfo loggedInInfo, String scriptNo, Integer demographicNo, String prescriberNo) {
         Prescription prescription = findPrescription(scriptNo);
+        boolean ownSignatures = isPrescriber(loggedInInfo, prescriberNo);
         // Another patient's prescription shows as not printed, the way lockForPrescription refuses it
         if (prescription != null && Objects.equals(prescription.getDemographicId(), demographicNo)
                 && prescription.getPrescriberSignature() != null) {
-            return new SignatureCard(scriptNo, prescription.getPrescriberSignature(), true, List.of());
+            return SignatureCard.saved(scriptNo, prescription.getPrescriberSignature(), ownSignatures);
         }
-        List<SignatureChoice> choices = choosesSignature(loggedInInfo, prescriberNo) ? getChoices(prescriberNo) : List.of();
-        return new SignatureCard(scriptNo, getDefaultSignature(prescriberNo), false, choices);
+        return SignatureCard.unsaved(scriptNo, getDefaultSignature(prescriberNo), ownSignatures,
+                ownSignatures ? getChoices(prescriberNo) : List.of());
+    }
+
+    @Override
+    public List<SignatureChoice> getChoicesForPrescription(LoggedInInfo loggedInInfo, Integer scriptNo, Integer demographicNo) {
+        Prescription prescription = findForPatient(scriptNo, demographicNo);
+        return getSignatureCard(loggedInInfo, String.valueOf(scriptNo), demographicNo, prescription.getProviderNo()).getChoices();
     }
 
     @Override
     public String lockForPrescription(LoggedInInfo loggedInInfo, Integer scriptNo, Integer demographicNo, Integer signatureId) {
-        Prescription prescription = prescriptionDao.find(scriptNo);
-        if (prescription == null || !prescription.getDemographicId().equals(demographicNo)) {
-            throw new SecurityException("Prescription " + scriptNo + " is not for the patient in this prescription window");
-        }
+        Prescription prescription = findForPatient(scriptNo, demographicNo);
         if (prescription.getPrescriberSignature() != null) {
             return prescription.getPrescriberSignature();
         }
 
         String prescriberNo = prescription.getProviderNo();
         // The window posts an id from the same list getSignatureCard gave it; anyone else saves the default
-        String signature = choosesSignature(loggedInInfo, prescriberNo)
+        String signature = isPrescriber(loggedInInfo, prescriberNo)
                 ? findChoice(prescriberNo, signatureId).orElseThrow(() -> new ProviderSignatureException(ERROR_DELETED)).getText()
                 : getDefaultSignature(prescriberNo);
         if (signature.isBlank()) {
@@ -297,11 +301,12 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
     }
 
     /**
-     * Whether the user picks the prescription's signature: only the prescriber does. Anyone else
-     * printing it gets the prescriber's default.
+     * Whether the user is the prescriber. Only the prescriber picks the prescription's signature, and
+     * only their own list is behind the card; anyone else printing it gets the prescriber's default.
+     * A user with no provider number isn't anyone's prescriber.
      */
-    private static boolean choosesSignature(LoggedInInfo loggedInInfo, String prescriberNo) {
-        return loggedInInfo.getLoggedInProviderNo().equals(prescriberNo);
+    private static boolean isPrescriber(LoggedInInfo loggedInInfo, String prescriberNo) {
+        return prescriberNo != null && prescriberNo.equals(loggedInInfo.getLoggedInProviderNo());
     }
 
     /**
@@ -331,5 +336,21 @@ public class ProviderSignatureManagerImpl implements ProviderSignatureManager {
             // Too big to be a prescription number
             return null;
         }
+    }
+
+    /**
+     * Finds a prescription for the patient of the user's prescription window.
+     *
+     * @param scriptNo Integer the prescription's number
+     * @param demographicNo Integer the patient of the prescription window
+     * @return Prescription the prescription
+     * @throws SecurityException when there is no such prescription, or it is for another patient
+     */
+    private Prescription findForPatient(Integer scriptNo, Integer demographicNo) {
+        Prescription prescription = prescriptionDao.find(scriptNo);
+        if (prescription == null || !prescription.getDemographicId().equals(demographicNo)) {
+            throw new SecurityException("Prescription " + scriptNo + " is not for the patient in this prescription window");
+        }
+        return prescription;
     }
 }
