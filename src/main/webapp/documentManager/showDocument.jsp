@@ -57,6 +57,7 @@
 <%@page import="ca.openosp.openo.commn.dao.*,ca.openosp.openo.commn.model.*,ca.openosp.openo.utility.SpringUtils" %>
 <%@ page import="ca.openosp.openo.documentManager.EDocUtil" %>
 <%@ page import="ca.openosp.openo.documentManager.EDoc" %>
+<%@ page import="ca.openosp.openo.documentManager.DocumentSendButtons" %>
 <%@ page import="ca.openosp.openo.documentManager.IncomingDocUtil" %>
 <%@ page import="ca.openosp.openo.log.LogAction" %>
 <%@ page import="ca.openosp.openo.log.LogConst" %>
@@ -375,6 +376,9 @@
             </option>
             <%}%>
         </select>
+        <%-- Turned on by showSendButtons below --%>
+        <input type="button" id="faxBtn_<%=Encode.forHtmlAttribute(String.valueOf(docId))%>" value="Fax" disabled>
+        <input type="button" id="emailBtn_<%=Encode.forHtmlAttribute(String.valueOf(docId))%>" value="Email" disabled>
     </form>
     <table class="docTable">
         <tr>
@@ -810,6 +814,9 @@
 
     jQuery(setupProviderAutoCompletion());
 
+    // Last, so a failure here can't stop the setup above
+    showSendButtons('<%=Encode.forJavaScript(String.valueOf(docId))%>',
+        JSON.parse('<%=Encode.forJavaScript(DocumentSendButtons.forDocument(loggedInInfo, curdoc).toJson())%>'));
 
 </script>
 <jsp:include page="/images/spinner.jsp"/>

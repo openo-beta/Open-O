@@ -136,7 +136,7 @@ public class DocumentManagerImpl implements DocumentManager {
         if (!securityInfoManager.isAllowedAccessToPatientRecord(loggedInInfo, demographicNo)) {
             throw new SecurityException("Unauthorized access to patient record");
         }
-        if (document.getStatus() == 'D') {
+        if (document.getStatus() == Document.STATUS_DELETED) {
             throw new DocumentNotSendableException("It has been deleted.");
         }
         return demographicNo;

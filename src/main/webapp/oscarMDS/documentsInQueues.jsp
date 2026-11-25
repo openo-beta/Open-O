@@ -2127,6 +2127,8 @@
                         num = num.replace(/\s/g, '');
                         $("saveSucessMsg_" + num).show();
                         $('saved' + num).value = 'true';
+                        // Before the inbox updates below, so one that throws can't skip it: the Fax and Email buttons follow the saved link
+                        refreshSendButtons(num);
                         //console.log('before update global data');
                         var success = addDocToPatient(num, patientId);
                         //console.log('result of update global data='+success);

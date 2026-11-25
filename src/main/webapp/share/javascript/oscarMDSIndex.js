@@ -1841,6 +1841,9 @@ function updateDocument(eleId) {
         } catch (e) {
             console.warn("Not JSON");
         }
+
+        // After the try, so an inbox update above that throws can't skip it: the Fax and Email buttons follow the saved link
+        refreshSendButtons(num);
     })
     .catch(error => console.error("Save failed:", error));
 

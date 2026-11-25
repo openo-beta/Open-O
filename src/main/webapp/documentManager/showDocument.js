@@ -58,3 +58,69 @@ function setupDemoAutoCompletion(docId, contextPath) {
 		});
 	}
 }
+
+/**
+ * Shows one document's Fax and Email buttons from the server's DocumentSendButtons: a greyed-out button
+ * shows why as its hover tip. Runs when the document view loads, and again after a save (refreshSendButtons).
+ *
+ * @param {string} docId the document number
+ * @param {Object} sendButtons the DocumentSendButtons JSON
+ */
+function showSendButtons(docId, sendButtons) {
+    showSendButton('faxBtn_' + docId, sendButtons.faxBlockedReason, 'Fax this document', () =>
+        popup(900, 1000, contextpath + '/fax/faxAction.do?method=prepareFax&transactionType=DOCUMENT&transactionId='
+            + encodeURIComponent(docId) + '&demographicNo=' + encodeURIComponent(sendButtons.demographicNo), 'faxDocument' + docId));
+
+    showSendButton('emailBtn_' + docId, sendButtons.emailBlockedReason, 'Email this document to the patient', () => {
+        if (confirmEmailRecipient(sendButtons)) {
+            popup(900, 1000, contextpath + '/email/emailComposeAction.do?method=prepareComposeDocumentMailer&documentNo='
+                + encodeURIComponent(docId), 'emailDocument' + docId);
+        }
+    });
+}
+
+// Greys out the button with the reason as its tip, or turns it on with the usual tip
+function showSendButton(buttonId, blockedReason, tip, send) {
+    const button = document.getElementById(buttonId);
+    button.disabled = blockedReason !== null;
+    button.title = blockedReason || tip;
+    button.onclick = send;
+}
+
+/**
+ * The eForm toolbar's checks before emailing a patient: stop when the patient has no valid email address,
+ * and ask staff to type "Yes" when the patient hasn't explicitly opted in. Keep in step with remoteEmail()
+ * in eform/eformFloatingToolbar/eform_floating_toolbar.js.
+ *
+ * @param {Object} sendButtons the DocumentSendButtons JSON
+ * @returns {boolean} true when the email window can open
+ */
+function confirmEmailRecipient(sendButtons) {
+    if (!sendButtons.hasValidEmail) {
+        alert("Sorry - this patient does not have a valid email address in their demographic. Please update their demographic and try again.");
+        return false;
+    }
+    if (sendButtons.emailConsentStatus !== "Explicit Opt-In") {
+        const userResponse = prompt("This patient has not explicitly opted-in: [" + sendButtons.emailConsentName + "]\nType 'Yes' to acknowledge you understand the risks before proceeding.", "No");
+        return userResponse !== null && userResponse.toLowerCase() === 'yes';
+    }
+    return true;
+}
+
+/**
+ * Asks the server for one document's Fax and Email buttons again, after a save that may have linked the
+ * document to a patient.
+ *
+ * @param {string} docId the document number
+ */
+function refreshSendButtons(docId) {
+    fetch(contextpath + '/documentManager/documentSendButtons.do?documentNo=' + encodeURIComponent(docId))
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status);
+            }
+            return response.json();
+        })
+        .then(sendButtons => showSendButtons(docId, sendButtons))
+        .catch(error => console.error('Could not refresh the Fax and Email buttons:', error));
+}
