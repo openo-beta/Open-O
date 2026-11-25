@@ -34,17 +34,21 @@ import ca.openosp.openo.commn.dao.ClinicDAO;
 import ca.openosp.openo.commn.dao.FaxClientLogDao;
 import ca.openosp.openo.commn.dao.FaxConfigDao;
 import ca.openosp.openo.commn.dao.FaxJobDao;
+import ca.openosp.openo.commn.exception.DocumentNotSendableException;
 import ca.openosp.openo.commn.model.Clinic;
+import ca.openosp.openo.commn.model.Document;
 import ca.openosp.openo.commn.model.FaxClientLog;
 import ca.openosp.openo.commn.model.FaxConfig;
 import ca.openosp.openo.commn.model.FaxJob;
 import ca.openosp.openo.commn.model.FaxJob.STATUS;
+import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.fax.core.FaxAccount;
 import ca.openosp.openo.fax.core.FaxRecipient;
 import ca.openosp.openo.fax.core.FaxSchedulerJob;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
+import ca.openosp.openo.utility.PDFGenerationException;
 import ca.openosp.openo.utility.PathValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,6 +93,12 @@ public class FaxManagerImpl implements FaxManager {
     @Autowired
     private FaxSchedulerJob faxSchedulerJob;
 
+    @Autowired
+    private DocumentManager documentManager;
+
+    @Autowired
+    private DocumentAttachmentManager documentAttachmentManager;
+
     private Logger logger = MiscUtils.getLogger();
 
     // public enum TransactionType {CONSULTATION, EFORM, FORM, RX, DOCUMENT}
@@ -120,7 +130,11 @@ public class FaxManagerImpl implements FaxManager {
                 renderedDocument = renderConsultationRequest(loggedInInfo, transactionId, demographicNo);
                 break;
             case DOCUMENT:
-                renderedDocument = renderDocument(loggedInInfo, transactionId, demographicNo);
+                try {
+                    renderedDocument = renderDocument(loggedInInfo, transactionId, demographicNo);
+                } catch (PDFGenerationException e) {
+                    throw new IllegalStateException(e.getMessage(), e);
+                }
                 break;
             case EFORM:
                 renderedDocument = renderEform(loggedInInfo, transactionId, demographicNo);
@@ -150,14 +164,25 @@ public class FaxManagerImpl implements FaxManager {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>The document manager renders an image into a new temp PDF but hands back the stored file
+     * for a PDF, so a PDF is copied through {@link DocumentAttachmentManager#concatPDF(List)} first.</p>
+     */
     @Override
-    public Path renderDocument(LoggedInInfo loggedInInfo, int documentNo, int demographicNo) {
-        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", SecurityInfoManager.WRITE, demographicNo)) {
-            throw new RuntimeException("missing required sec object (_edoc)");
+    public Path renderDocument(LoggedInInfo loggedInInfo, int documentNo, int demographicNo) throws PDFGenerationException {
+        Document document = documentManager.getDocument(loggedInInfo, documentNo);
+        // The fax is recorded against the patient the document view showed, so the document must be filed to that patient
+        if (documentManager.getSendableDemographicNo(loggedInInfo, document) != demographicNo) {
+            throw new DocumentNotSendableException("It isn't linked to this patient.");
         }
 
         logger.info("Rendering document number " + documentNo + " for fax preview.");
-        return null;
+
+        Path renderedDocument = documentManager.renderDocument(loggedInInfo, String.valueOf(documentNo));
+        boolean isStoredPdf = document.getContenttype() != null && document.getContenttype().contains("/pdf");
+        return isStoredPdf ? documentAttachmentManager.concatPDF(List.of(renderedDocument)) : renderedDocument;
     }
 
     @Override

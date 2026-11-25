@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import ca.openosp.openo.commn.dao.*;
+import ca.openosp.openo.commn.exception.DocumentNotSendableException;
 import ca.openosp.openo.commn.model.*;
 import com.itextpdf.text.DocumentException;
 import org.apache.commons.io.FileUtils;
@@ -107,6 +108,38 @@ public class DocumentManagerImpl implements DocumentManager {
         }
 
         return (result);
+    }
+
+    @Override
+    public Integer getLinkedDemographicNo(LoggedInInfo loggedInInfo, Integer documentId) {
+        CtlDocument link = getCtlDocumentByDocumentId(loggedInInfo, documentId);
+        if (link == null || !link.isDemographicDocument()) {
+            return null;
+        }
+        Integer demographicNo = link.getId().getModuleId();
+        // An uploaded document stays linked to -1 until staff save a patient
+        return demographicNo != null && demographicNo > 0 ? demographicNo : null;
+    }
+
+    @Override
+    public int getSendableDemographicNo(LoggedInInfo loggedInInfo, Document document) throws DocumentNotSendableException {
+        if (document == null) {
+            throw new DocumentNotSendableException("It has been deleted.");
+        }
+        Integer demographicNo = getLinkedDemographicNo(loggedInInfo, document.getDocumentNo());
+        if (demographicNo == null) {
+            throw new DocumentNotSendableException("It isn't linked to a patient.");
+        }
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", SecurityInfoManager.READ, demographicNo)) {
+            throw new SecurityException("missing required sec object (_edoc)");
+        }
+        if (!securityInfoManager.isAllowedAccessToPatientRecord(loggedInInfo, demographicNo)) {
+            throw new SecurityException("Unauthorized access to patient record");
+        }
+        if (document.getStatus() == 'D') {
+            throw new DocumentNotSendableException("It has been deleted.");
+        }
+        return demographicNo;
     }
 
     /**

@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import ca.openosp.openo.commn.dao.DocumentDao;
+import ca.openosp.openo.commn.exception.DocumentNotSendableException;
 import ca.openosp.openo.commn.model.CtlDocument;
 import ca.openosp.openo.commn.model.Document;
 
@@ -25,6 +26,37 @@ public interface DocumentManager {
     public List<Document> getDocumentsByDemographicNo(LoggedInInfo loggedInInfo, Integer demographicNo);
 
     public CtlDocument getCtlDocumentByDocumentId(LoggedInInfo loggedInInfo, Integer documentId);
+
+    /**
+     * Returns the patient a document is filed to.
+     *
+     * <p>A document has one {@link CtlDocument} link. An uploaded document starts linked to
+     * patient -1 until staff save a patient, and a document in a provider's inbox is linked to
+     * that provider instead; neither counts as filed to a patient.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @param documentId Integer the document number
+     * @return Integer the patient's demographic number, or null when the document has no link or isn't filed to a patient
+     * @throws RuntimeException if the user may not read documents
+     * @since 2026-11-25
+     */
+    public Integer getLinkedDemographicNo(LoggedInInfo loggedInInfo, Integer documentId);
+
+    /**
+     * Returns the patient a document can be faxed or emailed for: the patient it is filed to.
+     *
+     * <p>This is the one rule for sending a document from the document view. The document must exist,
+     * be filed to a patient whose record the user may open, and not be deleted. The deleted check comes
+     * after the access checks, so a user who can't open the patient learns nothing about the document.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @param document Document the document the caller loaded, or null when it wasn't found
+     * @return int the patient's demographic number
+     * @throws DocumentNotSendableException if the document is missing, deleted or not filed to a patient
+     * @throws SecurityException if the user may not read this patient's documents or open the patient's record
+     * @since 2026-11-25
+     */
+    public int getSendableDemographicNo(LoggedInInfo loggedInInfo, Document document) throws DocumentNotSendableException;
 
     /**
      * Creates a document and saves it to the provided demographic

@@ -112,6 +112,7 @@ public class Fax2Action extends ActionSupport {
             return NONE;
         }
 
+        // DOCUMENT maps to close.html: a document fax opens in its own popup
         return faxForward;
     }
 
@@ -367,6 +368,15 @@ public class Fax2Action extends ActionSupport {
                     String errorMessage = "This eForm (and attachments, if applicable) cannot be faxed. \\n\\n" + e.getMessage();
                     request.setAttribute("errorMessage", errorMessage);
                     return "eFormError";
+                }
+            } else if (transactionType.equals(TransactionType.DOCUMENT)) {
+                try {
+                    pdfPath = faxManager.renderDocument(loggedInInfo, transactionId, demographicNo);
+                } catch (PDFGenerationException e) {
+                    // The message can hold the document description, so log only the cause
+                    logger.warn("Document " + transactionId + " could not be faxed", e.getCause());
+                    request.setAttribute("errorMessage", "This document cannot be faxed.\n\n" + e.getMessage());
+                    return "popupError";
                 }
             }
         } else {

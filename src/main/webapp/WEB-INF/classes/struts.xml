@@ -1378,6 +1378,8 @@
             <result name="CONSULTATION">/oscarEncounter/ViewRequest.do</result>
             <result name="EFORM">/eform/efmshowform_data.jsp</result>
             <result name="eFormError">/eform/efmshowform_data.jsp?error=true</result>
+            <result name="DOCUMENT">/close.html</result>
+            <result name="popupError">/fax/faxPopupError.jsp</result>
         </action>
         <action name="admin/ManageEmails" class="ca.openosp.openo.email.admin.ManageEmails2Action">
             <result name="show">/admin/manageEmails.jsp</result>

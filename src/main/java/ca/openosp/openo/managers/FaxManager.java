@@ -35,6 +35,7 @@ import ca.openosp.openo.commn.model.FaxJob;
 import ca.openosp.openo.fax.core.FaxAccount;
 import ca.openosp.openo.fax.core.FaxRecipient;
 import ca.openosp.openo.utility.LoggedInInfo;
+import ca.openosp.openo.utility.PDFGenerationException;
 import ca.openosp.openo.utility.SpringUtils;
 import ca.openosp.openo.form.util.FormTransportContainer;
 
@@ -59,7 +60,23 @@ public interface FaxManager {
 
     Path renderConsultationRequest(LoggedInInfo loggedInInfo, int requestId, int demographicNo);
 
-    Path renderDocument(LoggedInInfo loggedInInfo, int documentNo, int demographicNo);
+    /**
+     * Renders a patient document (PDF or image) as a temporary PDF ready to be faxed.
+     *
+     * <p>The returned file is always a temporary copy, never the stored document, so cancelling
+     * the fax can delete it and the fax job never points at the patient's original file. Form
+     * fields are flattened in the copy.</p>
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @param documentNo int the document number to fax
+     * @param demographicNo int the patient the document must be linked to
+     * @return Path the temporary PDF to preview and fax
+     * @throws SecurityException if the user may not read the patient's documents or open the patient's record
+     * @throws PDFGenerationException a {@link ca.openosp.openo.commn.exception.DocumentNotSendableException}
+     *                                if the document is missing, deleted or not linked to this patient, with a
+     *                                reason written for staff; otherwise if it isn't a PDF or an image, or can't be read
+     */
+    Path renderDocument(LoggedInInfo loggedInInfo, int documentNo, int demographicNo) throws PDFGenerationException;
 
     Path renderEform(LoggedInInfo loggedInInfo, int eformId, int demographicNo);
 
