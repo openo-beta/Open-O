@@ -410,26 +410,15 @@ public class EmailData {
      * Sets the transaction type from a string value.
      * Convenience method for parsing request parameters.
      * 
-     * @param transactionType String one of "EFORM", "CONSULTATION", "TICKLER", or any other value
-     *                       (including null) which defaults to DIRECT
+     * @param transactionType String the name of any {@link TransactionType}, in any case; an unknown value
+     *                       (including null or empty) defaults to DIRECT
      */
     public void setTransactionType(String transactionType) {
-        if (transactionType == null) {
-            transactionType = "DIRECT";
-        }
-        switch (transactionType.toUpperCase()) {
-            case "EFORM":
-                this.transactionType = TransactionType.EFORM;
-                break;
-            case "CONSULTATION":
-                this.transactionType = TransactionType.CONSULTATION;
-                break;
-            case "TICKLER":
-                this.transactionType = TransactionType.TICKLER;
-                break;
-            default:
-                this.transactionType = TransactionType.DIRECT;
-                break;
+        // Every TransactionType is accepted, so a new type needs no change here
+        try {
+            this.transactionType = transactionType == null ? TransactionType.DIRECT : TransactionType.valueOf(transactionType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            this.transactionType = TransactionType.DIRECT;
         }
     }
 

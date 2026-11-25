@@ -1393,6 +1393,7 @@
         <action name="email/emailSendAction" class="ca.openosp.openo.email.action.EmailSend2Action">
             <result name="success">/email/emailCompose.jsp</result>
             <result name="EFORM">/eform/efmshowform_data.jsp</result>
+            <result name="DOCUMENT">/close.html</result>
         </action>
         <action name="setProviderColour" class="ca.openosp.openo.providers.pageUtil.ProEditColour2Action">
             <result name="success">/provider/providerColourPicker.jsp</result>

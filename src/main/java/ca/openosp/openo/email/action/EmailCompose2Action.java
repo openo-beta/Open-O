@@ -11,12 +11,13 @@ import org.apache.logging.log4j.Logger;
 import org.owasp.encoder.Encode;
 
 import ca.openosp.OscarProperties;
+import ca.openosp.openo.commn.exception.DocumentNotSendableException;
 import ca.openosp.openo.commn.model.EmailAttachment;
-import ca.openosp.openo.commn.model.EmailConfig;
 import ca.openosp.openo.commn.model.EmailLog.TransactionType;
 import ca.openosp.openo.email.core.EmailAttachmentSettings;
 import ca.openosp.openo.email.core.EmailComposeStore;
 import ca.openosp.openo.managers.DemographicManager;
+import ca.openosp.openo.managers.DocumentManager;
 import ca.openosp.openo.managers.EmailComposeManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
@@ -79,20 +80,27 @@ public class EmailCompose2Action extends ActionSupport {
     HttpServletResponse response = ServletActionContext.getResponse();
 
     private static final Logger logger = MiscUtils.getLogger();
+    // Start of every reason a document can't be emailed; the compose page turns each literal \n into a line break
+    private static final String DOCUMENT_NOT_EMAILED = "This document cannot be emailed.\\n\\n";
     private DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
     private EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManager.class);
+    private DocumentManager documentManager = SpringUtils.getBean(DocumentManager.class);
 
     /**
      * Executes the default action for email composition.
      *
-     * This method serves as the main entry point for the Struts2 action and delegates to
-     * prepareComposeEFormMailer() to handle the email composition preparation logic.
+     * Routes on the "method" request parameter: prepareComposeDocumentMailer prepares the email of a
+     * patient document; anything else prepares the email of an eForm.
      *
      * @return String the Struts2 result name, either "compose" for successful preparation
-     *         or "eFormError" if PDF generation fails
+     *         or "eFormError" if PDF generation fails for an eForm email
      * @see #prepareComposeEFormMailer()
+     * @see #prepareComposeDocumentMailer()
      */
     public String execute() {
+        if ("prepareComposeDocumentMailer".equals(request.getParameter("method"))) {
+            return prepareComposeDocumentMailer();
+        }
         return prepareComposeEFormMailer();
     }
 
@@ -181,7 +189,8 @@ public class EmailCompose2Action extends ActionSupport {
      * @see ca.openosp.openo.managers.EmailComposeManager#createEmailPDFPassword(LoggedInInfo, Integer)
      * @see ca.openosp.openo.managers.EmailComposeManager#prepareEFormAttachments(LoggedInInfo, String, String[])
      * @see ca.openosp.openo.managers.EmailComposeManager#sanitizeAttachments(List)
-     * @see #emailComposeError(HttpServletRequest, String)
+     * @see #eFormPageError(HttpServletRequest, String)
+     * @see #composePageError(String)
      */
     public String prepareComposeEFormMailer() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
@@ -191,9 +200,7 @@ public class EmailCompose2Action extends ActionSupport {
         EmailComposeStore.Entry entry = EmailComposeStore.get(request.getSession(), composeKey);
         EmailAttachmentSettings settings = entry == null ? null : entry.settings();
         if (settings == null) {
-            request.setAttribute("isEmailError", true);
-            request.setAttribute("emailErrorMessage", "This email page has already been used or has expired. If you already pressed Send, check Manage Emails or the patient's chart. Otherwise open the eForm again and click Email.");
-            return "compose";
+            return composePageError("This email page has already been used or has expired. If you already pressed Send, check Manage Emails or the patient's chart. Otherwise open the eForm again and click Email.");
         }
 
         String fdid = settings.attachEFormItSelf() ? settings.fdid() : "";
@@ -209,17 +216,7 @@ public class EmailCompose2Action extends ActionSupport {
             fid = null;
         }
 
-        String[] emailConsent = emailComposeManager.getEmailConsentStatus(loggedInInfo, Integer.parseInt(demographicId));
-
-        String receiverName = demographicManager.getDemographicFormattedName(loggedInInfo, Integer.parseInt(demographicId));
-        List<?>[] receiverEmailList = emailComposeManager.getRecipients(loggedInInfo, Integer.parseInt(demographicId));
-
-        List<EmailConfig> senderAccounts = emailComposeManager.getAllSenderAccounts();
-
-        if (emailPDFPassword == null) {
-            emailPDFPassword = emailComposeManager.createEmailPDFPassword(loggedInInfo, Integer.parseInt(demographicId));
-            emailPDFPasswordClue = "To protect your privacy, the PDF attachments in this email have been encrypted with a 18 digit password - your date of birth in the format YYYYMMDD followed by the 10 digits of your health insurance number.";
-        }
+        setPatientAttributes(loggedInInfo, Integer.parseInt(demographicId), emailPDFPassword, emailPDFPasswordClue);
 
         List<EmailAttachment> emailAttachmentList = new ArrayList<>();
         try {
@@ -231,27 +228,18 @@ public class EmailCompose2Action extends ActionSupport {
         } catch (PDFGenerationException e) {
             logger.error(e.getMessage(), e);
             EmailComposeStore.remove(request.getSession(), composeKey);
-            return emailComposeError(request,"This eForm (and attachments, if applicable) could not be emailed. \\n\\n" + e.getMessage());
+            return eFormPageError(request,"This eForm (and attachments, if applicable) could not be emailed. \\n\\n" + e.getMessage());
         }
         emailComposeManager.sanitizeAttachments(emailAttachmentList);
 
         // Set request attributes for JSP
         request.setAttribute("transactionType", TransactionType.EFORM);
-        request.setAttribute("emailConsentName", emailConsent[0]);
-        request.setAttribute("emailConsentStatus", emailConsent[1]);
-        request.setAttribute("receiverName", receiverName);
-        request.setAttribute("receiverEmailList", receiverEmailList[0]);
-        request.setAttribute("invalidReceiverEmailList", receiverEmailList[1]);
-        request.setAttribute("senderAccounts", senderAccounts);
-        request.setAttribute("emailPDFPassword", emailPDFPassword);
-        request.setAttribute("emailPDFPasswordClue", emailPDFPasswordClue);
         request.setAttribute("senderEmail", settings.senderEmail());
         request.setAttribute("subjectEmail", settings.subjectEmail());
         request.setAttribute("bodyEmail", settings.bodyEmail());
         request.setAttribute("footerEmail", settings.footerEmail());
         request.setAttribute("encryptedMessageEmail", settings.encryptedMessageEmail());
         request.setAttribute("emailPatientChartOption", settings.emailPatientChartOption());
-        request.setAttribute("demographicId", demographicId);
         request.setAttribute("fdid", settings.fdid());
         request.setAttribute("fid", fid);
         request.setAttribute("isEmailEncrypted", settings.isEmailEncrypted());
@@ -266,11 +254,109 @@ public class EmailCompose2Action extends ActionSupport {
     }
 
     /**
-     * Handles email composition errors by setting error message and returning error result.
+     * Prepares the compose page for emailing one patient document from the document view.
      *
-     * This method is called when email composition preparation fails, typically due to PDF generation
+     * <p>The patient comes from the document itself, so the email can only go to the patient the
+     * document is filed to, at the addresses on file. The subject and message start blank, and
+     * encryption starts on, as for an eForm that doesn't set it. Send posts to sendDirectEmail with
+     * this page's key; Cancel closes the popup.</p>
+     *
+     * <p>When the document can't be emailed (missing, deleted, not filed to a patient, or not a PDF or
+     * an image), the compose page alerts the reason and closes.</p>
+     *
+     * Request Parameters:
+     * <ul>
+     *   <li>documentNo (String) - the document to email</li>
+     * </ul>
+     *
+     * @return String the Struts2 result name "compose"
+     * @throws SecurityException if the user may not read the patient's documents or open the patient's record
+     * @since 2026-11-25
+     */
+    public String prepareComposeDocumentMailer() {
+        LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        String documentNo = request.getParameter("documentNo");
+        if (documentNo == null || !documentNo.matches("\\d{1,9}")) {
+            return composePageError(DOCUMENT_NOT_EMAILED + "No document was given.");
+        }
+        int documentId = Integer.parseInt(documentNo);
+
+        // The email goes to the patient the document is filed to
+        int demographicNo;
+        List<EmailAttachment> emailAttachmentList;
+        try {
+            demographicNo = documentManager.getSendableDemographicNo(loggedInInfo, documentManager.getDocument(loggedInInfo, documentId));
+            emailAttachmentList = emailComposeManager.prepareEDocAttachments(loggedInInfo, new String[]{documentNo});
+        } catch (DocumentNotSendableException e) {
+            return composePageError(DOCUMENT_NOT_EMAILED + e.getMessage());
+        } catch (PDFGenerationException e) {
+            // The message can hold the document description, so show a fixed reason and log only the cause
+            logger.warn("Document " + documentId + " could not be emailed", e.getCause());
+            return composePageError(DOCUMENT_NOT_EMAILED + "It couldn't be turned into a PDF attachment. Only PDFs and images can be emailed.");
+        }
+        emailComposeManager.sanitizeAttachments(emailAttachmentList);
+
+        setPatientAttributes(loggedInInfo, demographicNo, null, null);
+        request.setAttribute("transactionType", TransactionType.DOCUMENT);
+        // A document has no eForm settings, so use the eForm default: both kinds of encryption on unless an eForm turns them off
+        request.setAttribute("isEmailEncrypted", true);
+        request.setAttribute("isEmailAttachmentEncrypted", true);
+        request.setAttribute("emailAttachmentList", emailAttachmentList);
+        // Nothing is handed over from another page, so this page stores its own entry, as a resend does; Send uses only this list
+        request.setAttribute("composeKey", EmailComposeStore.putDocument(request.getSession(), demographicNo, emailAttachmentList));
+        return "compose";
+    }
+
+    /**
+     * Sets what the compose page shows about the patient: email consent, name, the addresses on file
+     * and the sender accounts, plus the attachment password.
+     *
+     * @param loggedInInfo LoggedInInfo the logged in user
+     * @param demographicNo int the patient the email is for
+     * @param emailPDFPassword String the attachment password; null means the patient's default password
+     *                         (date of birth and health number) with {@link EmailComposeManager#DEFAULT_PDF_PASSWORD_CLUE}
+     * @param emailPDFPasswordClue String the password clue, used only with a password that isn't null
+     */
+    private void setPatientAttributes(LoggedInInfo loggedInInfo, int demographicNo, String emailPDFPassword, String emailPDFPasswordClue) {
+        String[] emailConsent = emailComposeManager.getEmailConsentStatus(loggedInInfo, demographicNo);
+        List<?>[] receiverEmailList = emailComposeManager.getRecipients(loggedInInfo, demographicNo);
+        if (emailPDFPassword == null) {
+            emailPDFPassword = emailComposeManager.createEmailPDFPassword(loggedInInfo, demographicNo);
+            emailPDFPasswordClue = EmailComposeManager.DEFAULT_PDF_PASSWORD_CLUE;
+        }
+
+        request.setAttribute("emailConsentName", emailConsent[0]);
+        request.setAttribute("emailConsentStatus", emailConsent[1]);
+        request.setAttribute("receiverName", demographicManager.getDemographicFormattedName(loggedInInfo, demographicNo));
+        request.setAttribute("receiverEmailList", receiverEmailList[0]);
+        request.setAttribute("invalidReceiverEmailList", receiverEmailList[1]);
+        request.setAttribute("senderAccounts", emailComposeManager.getAllSenderAccounts());
+        request.setAttribute("emailPDFPassword", emailPDFPassword);
+        request.setAttribute("emailPDFPasswordClue", emailPDFPasswordClue);
+        request.setAttribute("demographicId", String.valueOf(demographicNo));
+    }
+
+    /**
+     * Shows an error on the compose page, which alerts the message and closes.
+     *
+     * <p>The page puts the message into the page without encoding it, so it must be fixed text written
+     * for staff, never document or patient content. The page turns each literal \n into a line break.</p>
+     *
+     * @param message String the fixed message to show
+     * @return String the Struts2 result name "compose"
+     */
+    private String composePageError(String message) {
+        request.setAttribute("isEmailError", true);
+        request.setAttribute("emailErrorMessage", message);
+        return "compose";
+    }
+
+    /**
+     * Shows an eForm email error on the eForm page, which the eForm email came from.
+     *
+     * This method is called when eForm email composition preparation fails, typically due to PDF generation
      * errors for attachments. It sets the error message as a request attribute for display on the
-     * error page.
+     * eForm page. Errors that belong on the compose page itself use {@link #composePageError(String)}.
      *
      * Common Error Scenarios:
      * <ul>
@@ -286,7 +372,7 @@ public class EmailCompose2Action extends ActionSupport {
      * @return String the Struts2 result name "eFormError" which maps to the error display page
      * @see ca.openosp.openo.utility.PDFGenerationException
      */
-    private String emailComposeError(HttpServletRequest request, String errorMessage) {
+    private String eFormPageError(HttpServletRequest request, String errorMessage) {
         request.setAttribute("errorMessage", errorMessage);
         return "eFormError";
     }

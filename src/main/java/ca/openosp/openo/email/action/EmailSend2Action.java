@@ -153,6 +153,7 @@ public class EmailSend2Action extends ActionSupport {
      *   <li>Removing the entry stored under this compose page's key</li>
      *   <li>Reading the transaction type from the request</li>
      *   <li>For EFORM transactions: redirects to the EForm display page with original form data</li>
+     *   <li>For DOCUMENT transactions: the DOCUMENT result closes the popup opened from the document view</li>
      * </ul>
      *
      * @return String Struts2 result identifier matching the transaction type name

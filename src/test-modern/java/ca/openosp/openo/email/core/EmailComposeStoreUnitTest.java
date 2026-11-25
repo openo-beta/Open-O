@@ -133,6 +133,22 @@ class EmailComposeStoreUnitTest {
         }
 
         @Test
+        @DisplayName("should store a document email as DOCUMENT with its patient and document, no settings and no eForm id")
+        void shouldStoreDocumentEntry_whenPutDocument() {
+            List<EmailAttachment> attachments = documents(15);
+            String key = EmailComposeStore.putDocument(session, 3001, attachments);
+            attachments.clear();
+
+            EmailComposeStore.Entry entry = EmailComposeStore.get(session, key);
+
+            assertThat(entry.transactionType()).isEqualTo(TransactionType.DOCUMENT);
+            assertThat(entry.settings()).isNull();
+            assertThat(entry.demographicNo()).isEqualTo("3001");
+            assertThat(entry.fdid()).isEmpty();
+            assertThat(documentIds(entry)).containsExactly(15);
+        }
+
+        @Test
         @DisplayName("should store a null eForm id as empty")
         void shouldStoreEmptyFdid_whenSettingsFdidIsNull() {
             String key = EmailComposeStore.putEForm(session, eFormSettings(null, "3"));
@@ -409,6 +425,22 @@ class EmailComposeStoreUnitTest {
             assertThat(EmailComposeStore.get(session, refreshed)).isNotNull();
             assertThat(EmailComposeStore.get(session, newest)).isNotNull();
             assertThat(others).allMatch(key -> EmailComposeStore.get(session, key) != null);
+        }
+
+        @Test
+        @DisplayName("should drop a document email before any eForm page, because it can be opened again")
+        void shouldDropDocumentEmail_beforeEFormPage_whenOver50Pages() {
+            String eForm = EmailComposeStore.putEForm(session, eFormSettings("1", "1"));
+            String document = EmailComposeStore.putDocument(session, 1, documents(15));
+            for (int i = 0; i < 48; i++) {
+                EmailComposeStore.putEForm(session, eFormSettings(String.valueOf(i + 2), "1"));
+            }
+
+            String newest = EmailComposeStore.putEForm(session, eFormSettings("51", "1"));
+
+            assertThat(EmailComposeStore.get(session, document)).isNull();
+            assertThat(EmailComposeStore.get(session, eForm)).isNotNull();
+            assertThat(EmailComposeStore.get(session, newest)).isNotNull();
         }
 
         @Test

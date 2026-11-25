@@ -95,7 +95,9 @@ public class EmailLog extends AbstractModel<Integer> implements Comparable<Email
         /** Email generated from a tickler or reminder notification */
         TICKLER,
         /** Direct email communication not tied to a specific transaction type */
-        DIRECT
+        DIRECT,
+        /** A patient document emailed from the document view */
+        DOCUMENT
     }
 
     @Id

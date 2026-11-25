@@ -47,8 +47,8 @@ import ca.openosp.openo.commn.model.EmailLog.TransactionType;
  * press Send again. A refresh of the compose page keeps the entry.
  * <p>
  * Entries that are never sent or cancelled are dropped once more than {@value #MAX_ENTRIES} are
- * waiting, or when the user logs out. Viewed or resent old emails go first, the least recently used
- * of them, because they can be opened again and a half-written eForm email cannot.
+ * waiting, or when the user logs out. Viewed or resent old emails and document emails go first, the
+ * least recently used of them, because they can be opened again and a half-written eForm email cannot.
  * <p>
  * Nothing here survives a Tomcat restart: the store is not serializable, so Tomcat drops it
  * when it saves sessions, and an email page opened before the restart is refused on Send.
@@ -66,8 +66,8 @@ public final class EmailComposeStore {
     /**
      * What one compose page shows and may send.
      *
-     * @param settings EmailAttachmentSettings the eForm email settings, null when resending an old email
-     * @param transactionType TransactionType EFORM for an eForm email, DIRECT for a resend
+     * @param settings EmailAttachmentSettings the eForm email settings, null for a resend or a document email
+     * @param transactionType TransactionType EFORM for an eForm email, DIRECT for a resend, DOCUMENT for a document
      * @param demographicNo String the patient the email is for
      * @param fdid String the eForm data id, empty when the email is not from an eForm
      * @param attachments List&lt;EmailAttachment&gt; the attachments shown on the compose page
@@ -113,6 +113,19 @@ public final class EmailComposeStore {
      */
     public static String putDirect(HttpSession session, int demographicNo, List<EmailAttachment> attachments) {
         return put(session, new Entry(null, TransactionType.DIRECT, String.valueOf(demographicNo), "", new ArrayList<>(attachments)));
+    }
+
+    /**
+     * Stores a patient document opened for emailing from the document view.
+     *
+     * @param session HttpSession the logged in user's session
+     * @param demographicNo int the patient the document is filed to
+     * @param attachments List&lt;EmailAttachment&gt; the document, as shown on the compose page
+     * @return String the key to put on the compose page
+     * @since 2026-11-25
+     */
+    public static String putDocument(HttpSession session, int demographicNo, List<EmailAttachment> attachments) {
+        return put(session, new Entry(null, TransactionType.DOCUMENT, String.valueOf(demographicNo), "", new ArrayList<>(attachments)));
     }
 
     /**
@@ -218,7 +231,8 @@ public final class EmailComposeStore {
                 }
                 Iterator<EmailComposeStore.Entry> pages = values().iterator();
                 while (pages.hasNext()) {
-                    if (pages.next().transactionType() == TransactionType.DIRECT) {
+                    // Only a half-written eForm email can't be opened again
+                    if (pages.next().transactionType() != TransactionType.EFORM) {
                         pages.remove();
                         return false;
                     }

@@ -57,6 +57,14 @@ import ca.openosp.openo.util.StringUtils;
  */
 @Service
 public class EmailComposeManager {
+
+    /**
+     * The clue sent with the patient's default attachment password from {@link #createEmailPDFPassword}.
+     *
+     * @since 2026-11-25
+     */
+    public static final String DEFAULT_PDF_PASSWORD_CLUE = "To protect your privacy, the PDF attachments in this email have been encrypted with a 18 digit password - your date of birth in the format YYYYMMDD followed by the 10 digits of your health insurance number.";
+
     private final Logger logger = MiscUtils.getLogger();
 
     @Autowired

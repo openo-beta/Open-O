@@ -174,7 +174,7 @@
                 <c:when test="${transactionType eq 'EFORM'}">
                     <c:set var="emailSendAction" value="${ctx}/email/emailSendAction.do?method=sendEFormEmail"/>
                 </c:when>
-                <c:when test="${transactionType eq 'DIRECT'}">
+                <c:when test="${transactionType eq 'DIRECT' or transactionType eq 'DOCUMENT'}">
                     <c:set var="emailSendAction" value="${ctx}/email/emailSendAction.do?method=sendDirectEmail"/>
                 </c:when>
             </c:choose>
