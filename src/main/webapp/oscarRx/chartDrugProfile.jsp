@@ -75,8 +75,8 @@
     } else {
         for (int idx = 0; idx < arr.length; ++idx) {
             RxPrescriptionData.Prescription drug = arr[idx];
-            if (!drug.isCustom()) {
-                sb.append("&drug=" + Encode.forUriComponent(String.valueOf(drug.getRegionalIdentifier())));
+            if (isChartable(drug)) {
+                sb.append("&drug=" + Encode.forUriComponent(drug.getRegionalIdentifier()));
                 h.put(drug.getRegionalIdentifier(), "drug");
             }
         }
@@ -164,7 +164,7 @@
                                     continue;
                                 }
 
-                                if (drug.isCustom()) {
+                                if (!isChartable(drug)) {
                                     continue;
                                 }
                                 String styleColor = "";
@@ -192,6 +192,26 @@
 </html>
 
 <%!
+    /**
+     * Decides whether a drug can be drawn on the timeline graph.
+     *
+     * The graph looks drugs up by their regional identifier (DIN), so a drug without one
+     * cannot be charted. Custom drugs are skipped too. A custom drug saved with a blank
+     * name has a null custom name, so isCustom() returns false for it; checking the
+     * regional identifier also catches those drugs, which would otherwise put a null key
+     * into a Hashtable and fail the page with a 500.
+     *
+     * @param drug RxPrescriptionData.Prescription the prescription to check
+     * @return boolean true if the drug is not custom and has a non-blank regional identifier
+     */
+    boolean isChartable(RxPrescriptionData.Prescription drug) {
+        if (drug.isCustom()) {
+            return false;
+        }
+        String regionalIdentifier = drug.getRegionalIdentifier();
+        return regionalIdentifier != null && !regionalIdentifier.trim().isEmpty();
+    }
+
     String getChecked(Hashtable h, String reg) {
         if (reg == null || reg.isEmpty()) {
             return "";
