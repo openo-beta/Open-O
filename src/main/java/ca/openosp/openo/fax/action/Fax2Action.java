@@ -33,6 +33,7 @@ import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.commn.model.FaxConfig;
 import ca.openosp.openo.commn.model.FaxJob;
 import ca.openosp.openo.commn.model.FaxJob.STATUS;
+import ca.openosp.openo.commn.model.EmailLog.ChartDisplayOption;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import ca.openosp.openo.fax.dto.FaxJobParams;
 import ca.openosp.openo.managers.FaxManager;
@@ -236,10 +237,25 @@ public class Fax2Action extends ActionSupport {
             }
         }
 
+        // Like the email window, it charts unless staff chose not to
+        if (success && !ChartDisplayOption.WITHOUT_NOTE.getValue().equals(patientChartOption)) {
+            addFaxNote(loggedInInfo, transactionType, faxJobList);
+        }
+
         request.setAttribute("faxSuccessful", success);
         request.setAttribute("faxJobList", faxJobList);
 
         return "preview";
+    }
+
+    // The fax is already queued, so a failed chart note must not look like a failed fax
+    private void addFaxNote(LoggedInInfo loggedInInfo, TransactionType transactionType, List<FaxJob> faxJobList) {
+        try {
+            faxManager.addFaxNote(loggedInInfo, transactionType, transactionId, demographicNo, faxJobList,
+                    Boolean.parseBoolean(coverpage), comments, internalComment);
+        } catch (RuntimeException e) {
+            logger.error(transactionType + " " + transactionId + " was queued for faxing, but adding its chart note failed", e);
+        }
     }
 
 
@@ -433,6 +449,8 @@ public class Fax2Action extends ActionSupport {
     private String comments;
     private String coverpage;
     private String[] copyToRecipients;
+    private String patientChartOption;
+    private String internalComment;
 
     public String getFaxFilePath() {
         return faxFilePath;
@@ -520,5 +538,31 @@ public class Fax2Action extends ActionSupport {
 
     public void setCopyToRecipients(String[] copyToRecipients) {
         this.copyToRecipients = copyToRecipients;
+    }
+
+    public String getPatientChartOption() {
+        return patientChartOption;
+    }
+
+    /**
+     * Sets the chart option the fax window posts, with the email window's values.
+     *
+     * @param patientChartOption String "doNotAddAsNote" to leave the chart alone, otherwise "addFullNote"
+     */
+    public void setPatientChartOption(String patientChartOption) {
+        this.patientChartOption = patientChartOption;
+    }
+
+    public String getInternalComment() {
+        return internalComment;
+    }
+
+    /**
+     * Sets the internal comment the fax window adds to its chart note; it isn't faxed.
+     *
+     * @param internalComment String the comment, or blank for none
+     */
+    public void setInternalComment(String internalComment) {
+        this.internalComment = internalComment;
     }
 }

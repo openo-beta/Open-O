@@ -116,6 +116,10 @@
             margin-left: 15px;
         }
 
+        #internalComment_container {
+            padding-left: 20px;
+        }
+
         ul.ui-widget {
             margin: 10px;
             max-width: 100%;
@@ -389,6 +393,36 @@
                                     <label for="commentsTextArea">Comments</label>
                                     <textarea class="form-control" name="comments" id="commentsTextArea"
                                               rows="5"><%= OscarProperties.getInstance().getProperty("DEFAULT_FAX_COVERPAGE_COMMENT", "") %></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Additional options</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label>Chart options</label>
+                                    <div>
+                                        <label class="radio-inline" for="doNotAddAsNoteOption">
+                                            <input type="radio" name="patientChartOption" id="doNotAddAsNoteOption" value="doNotAddAsNote"
+                                                   onchange="document.getElementById('internalComment_container').style.display = 'none';"/>Do not add to patient chart
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="radio-inline" for="addFullNoteOption">
+                                            <input type="radio" checked="checked" name="patientChartOption" id="addFullNoteOption" value="addFullNote"
+                                                   onchange="document.getElementById('internalComment_container').style.display = 'block';"/>Chart as new note in patient's chart
+                                        </label>
+                                    </div>
+                                    <div id="internalComment_container">
+                                        <textarea class="form-control" name="internalComment" id="internalComment" rows="3"
+                                                  placeholder="Internal comment to include"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>

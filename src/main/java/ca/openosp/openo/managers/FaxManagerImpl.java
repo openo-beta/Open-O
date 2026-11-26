@@ -29,7 +29,10 @@ package ca.openosp.openo.managers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.Logger;
+import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import ca.openosp.openo.commn.dao.ClinicDAO;
 import ca.openosp.openo.commn.dao.FaxClientLogDao;
 import ca.openosp.openo.commn.dao.FaxConfigDao;
@@ -37,6 +40,7 @@ import ca.openosp.openo.commn.dao.FaxJobDao;
 import ca.openosp.openo.commn.exception.DocumentNotSendableException;
 import ca.openosp.openo.commn.model.Clinic;
 import ca.openosp.openo.commn.model.Document;
+import ca.openosp.openo.commn.model.EFormData;
 import ca.openosp.openo.commn.model.FaxClientLog;
 import ca.openosp.openo.commn.model.FaxConfig;
 import ca.openosp.openo.commn.model.FaxJob;
@@ -46,6 +50,7 @@ import ca.openosp.openo.documentManager.EDocUtil;
 import ca.openosp.openo.fax.core.FaxAccount;
 import ca.openosp.openo.fax.core.FaxRecipient;
 import ca.openosp.openo.fax.core.FaxSchedulerJob;
+import ca.openosp.openo.utility.DateUtils;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PDFGenerationException;
@@ -98,6 +103,12 @@ public class FaxManagerImpl implements FaxManager {
 
     @Autowired
     private DocumentAttachmentManager documentAttachmentManager;
+
+    @Autowired
+    private CaseManagementManager caseManagementManager;
+
+    @Autowired
+    private EformDataManager eformDataManager;
 
     private Logger logger = MiscUtils.getLogger();
 
@@ -183,6 +194,67 @@ public class FaxManagerImpl implements FaxManager {
         Path renderedDocument = documentManager.renderDocument(loggedInInfo, String.valueOf(documentNo));
         boolean isStoredPdf = document.getContenttype() != null && document.getContenttype().contains("/pdf");
         return isStoredPdf ? documentAttachmentManager.concatPDF(List.of(renderedDocument)) : renderedDocument;
+    }
+
+    @Override
+    public void addFaxNote(LoggedInInfo loggedInInfo, TransactionType transactionType, int transactionId, int demographicNo,
+                           List<FaxJob> faxJobs, boolean coverPage, String coverPageComments, String internalComment) {
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_fax", SecurityInfoManager.WRITE, null)) {
+            throw new RuntimeException("missing required sec object (_fax)");
+        }
+        // The consultation fax doesn't check this itself
+        if (!securityInfoManager.isAllowedAccessToPatientRecord(loggedInInfo, demographicNo)) {
+            throw new SecurityException("missing access to the patient's record");
+        }
+
+        StringBuilder note = new StringBuilder("Faxed ").append(faxedItem(loggedInInfo, transactionType, transactionId))
+                .append(" (ID: ").append(transactionId).append(")\n\n");
+        for (int i = 0; i < faxJobs.size(); i++) {
+            note.append(i == 0 ? "To: " : "Copy to: ").append(faxRecipient(faxJobs.get(i))).append("\n");
+        }
+        note.append("Cover page: ").append(coverPage ? "Yes" : "No").append("\n");
+        if (coverPage && StringUtils.isNotBlank(coverPageComments)) {
+            note.append("Cover page comments:\n").append(coverPageComments.trim()).append("\n");
+        }
+        if (StringUtils.isNotBlank(internalComment)) {
+            note.append("\n***Internal Comment***\n\n").append(internalComment.trim()).append("\n");
+        }
+        // "Queued", since the fax hasn't been sent yet
+        note.append("\n[Queued for sending on ").append(DateUtils.format("dd-MMM-yyyy H:mm", new Date(), null));
+        String queuedBy = caseManagementManager.getSignatureName(loggedInInfo.getLoggedInProvider());
+        if (!queuedBy.isBlank()) {
+            note.append(" by ").append(queuedBy);
+        }
+        note.append("]");
+
+        caseManagementManager.saveSignedNote(loggedInInfo, demographicNo, note.toString());
+    }
+
+    private String faxedItem(LoggedInInfo loggedInInfo, TransactionType transactionType, int transactionId) {
+        switch (transactionType) {
+            case CONSULTATION:
+                return "consultation request";
+            case EFORM:
+                EFormData eForm = eformDataManager.findByFdid(loggedInInfo, transactionId);
+                if (eForm == null) {
+                    throw new IllegalStateException("eForm " + transactionId + " no longer exists");
+                }
+                return "eForm: " + eForm.getFormName();
+            case DOCUMENT:
+                Document document = documentManager.getDocument(loggedInInfo, transactionId);
+                if (document == null) {
+                    throw new IllegalStateException("Document " + transactionId + " no longer exists");
+                }
+                return "document: " + document.getDocdesc();
+            default:
+                throw new IllegalArgumentException("The fax window doesn't send " + transactionType + " faxes");
+        }
+    }
+
+    private static String faxRecipient(FaxJob faxJob) {
+        // Fax2Action.queue stores the recipient's name HTML-encoded, so show it as typed
+        String name = StringEscapeUtils.unescapeHtml4(faxJob.getRecipient());
+        return StringUtils.isNotBlank(name) ? name.trim() + " (" + faxJob.getDestination() + ")" : faxJob.getDestination();
     }
 
     @Override

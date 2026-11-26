@@ -78,6 +78,28 @@ public interface FaxManager {
      */
     Path renderDocument(LoggedInInfo loggedInInfo, int documentNo, int demographicNo) throws PDFGenerationException;
 
+    /**
+     * Adds a signed note to the patient's chart recording that a fax was queued from the OSCAR Fax window: what
+     * was faxed (a consultation request, an eForm or a document), the recipient and copies, the cover page and an
+     * internal comment. Laid out like the email window's chart note. The note names what was faxed and isn't
+     * linked to it, since OpenO reads the newest note linked to a document as the document's annotation.
+     *
+     * @param loggedInInfo LoggedInInfo the current user's session information
+     * @param transactionType TransactionType what was faxed: CONSULTATION, EFORM or DOCUMENT
+     * @param transactionId int the consultation request, eForm data or document number
+     * @param demographicNo int the patient whose chart gets the note
+     * @param faxJobs List&lt;FaxJob&gt; the queued fax jobs, the recipient first and then each copy
+     * @param coverPage boolean whether a cover page was added
+     * @param coverPageComments String the cover page comments, which went to the recipients; ignored without a cover page
+     * @param internalComment String a comment for the chart only, or null or blank for none
+     * @throws RuntimeException if the user may not send faxes or read the eForm or document
+     * @throws SecurityException if the user may not open the patient's record
+     * @throws IllegalStateException if the eForm or document no longer exists
+     * @throws IllegalArgumentException for a FORM or RX transaction, which the fax window doesn't send
+     */
+    void addFaxNote(LoggedInInfo loggedInInfo, TransactionType transactionType, int transactionId, int demographicNo,
+                    List<FaxJob> faxJobs, boolean coverPage, String coverPageComments, String internalComment);
+
     Path renderEform(LoggedInInfo loggedInInfo, int eformId, int demographicNo);
 
     Path renderPrescription(LoggedInInfo loggedInInfo, int rxId, int demographicNo);

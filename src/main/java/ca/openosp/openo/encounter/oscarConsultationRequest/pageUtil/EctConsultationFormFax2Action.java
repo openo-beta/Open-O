@@ -18,6 +18,7 @@ import ca.openosp.openo.commn.dao.ClinicDAO;
 import ca.openosp.openo.commn.dao.FaxConfigDao;
 import ca.openosp.openo.commn.dao.FaxJobDao;
 import ca.openosp.openo.commn.model.Clinic;
+import ca.openosp.openo.commn.model.EmailLog.ChartDisplayOption;
 import ca.openosp.openo.commn.model.FaxConfig;
 import ca.openosp.openo.commn.model.FaxJob;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
@@ -41,8 +42,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -130,6 +132,7 @@ public class EctConsultationFormFax2Action extends ActionSupport {
         boolean validFaxNumber;
         int count = 0;
         Set<FaxRecipient> faxRecipients = this.getAllFaxRecipients();
+        List<FaxJob> faxJobs = new ArrayList<>();
         try {
             for (FaxRecipient faxRecipient : faxRecipients) {
 
@@ -198,6 +201,7 @@ public class EctConsultationFormFax2Action extends ActionSupport {
                 faxJob.setNumPages(numPages);
 
                 faxJobDao.persist(faxJob);
+                faxJobs.add(faxJob);
 
                 // start up a log track each time the CLIENT was run.
                 faxManager.logFaxJob(loggedInInfo, faxJob, TransactionType.CONSULTATION, Integer.parseInt(reqId));
@@ -212,6 +216,13 @@ public class EctConsultationFormFax2Action extends ActionSupport {
             }
 
             LogAction.addLog(provider_no, LogConst.SENT, LogConst.CON_FAX, "CONSULT " + reqId);
+
+            // As in Fax2Action.queue: once every recipient is queued, it charts unless staff chose not to
+            if (faxJobs.stream().noneMatch(faxJob -> FaxJob.STATUS.ERROR.equals(faxJob.getStatus()))
+                    && !ChartDisplayOption.WITHOUT_NOTE.getValue().equals(patientChartOption)) {
+                addFaxNote(loggedInInfo, reqId, demoNo, faxJobs, doCoverPage, note);
+            }
+
             request.setAttribute("faxSuccessful", true);
             return SUCCESS;
         } catch (DocumentException de) {
@@ -227,6 +238,17 @@ public class EctConsultationFormFax2Action extends ActionSupport {
             return "error";
         }
         return null;
+    }
+
+    // The fax is already queued, so a failed chart note must not look like a failed fax
+    private void addFaxNote(LoggedInInfo loggedInInfo, String reqId, String demoNo, List<FaxJob> faxJobs,
+                            boolean coverPage, String coverPageComments) {
+        try {
+            faxManager.addFaxNote(loggedInInfo, TransactionType.CONSULTATION, Integer.parseInt(reqId),
+                    Integer.parseInt(demoNo), faxJobs, coverPage, coverPageComments, internalComment);
+        } catch (RuntimeException e) {
+            logger.error("Consultation request " + reqId + " was queued for faxing, but adding its chart note failed", e);
+        }
     }
 
 
@@ -246,6 +268,8 @@ public class EctConsultationFormFax2Action extends ActionSupport {
     private Set<FaxRecipient> allFaxRecipients;
     private Set<FaxRecipient> copiedTo;
     private FaxAccount sender;
+    private String patientChartOption;
+    private String internalComment;
 
     public String getMethod() {
         return method;
@@ -336,7 +360,8 @@ public class EctConsultationFormFax2Action extends ActionSupport {
     }
     public Set<FaxRecipient> getAllFaxRecipients() {
         if(allFaxRecipients == null) {
-            allFaxRecipients = new HashSet<FaxRecipient>();
+            // In order, so the chart note lists the recipient first and then each copy
+            allFaxRecipients = new LinkedHashSet<FaxRecipient>();
             allFaxRecipients.add( new FaxRecipient( getRecipient() , getRecipientFaxNumber() ) );
             allFaxRecipients.addAll(getCopiedTo());
         }
@@ -346,7 +371,7 @@ public class EctConsultationFormFax2Action extends ActionSupport {
 
     public Set<FaxRecipient> getCopiedTo() {
         if (copiedTo == null) {
-            copiedTo = new HashSet<FaxRecipient>();
+            copiedTo = new LinkedHashSet<FaxRecipient>();
             for (String faxRecipient : getFaxRecipients()) {
                 try {
                     ObjectNode jsonObject = (ObjectNode) objectMapper.readTree("{" + faxRecipient + "}");
@@ -358,6 +383,32 @@ public class EctConsultationFormFax2Action extends ActionSupport {
             }
         }
         return copiedTo;
+    }
+
+    public String getPatientChartOption() {
+        return patientChartOption;
+    }
+
+    /**
+     * Sets the chart option the fax window posts, with the email window's values.
+     *
+     * @param patientChartOption String "doNotAddAsNote" to leave the chart alone, otherwise "addFullNote"
+     */
+    public void setPatientChartOption(String patientChartOption) {
+        this.patientChartOption = patientChartOption;
+    }
+
+    public String getInternalComment() {
+        return internalComment;
+    }
+
+    /**
+     * Sets the internal comment the fax window adds to its chart note; it isn't faxed.
+     *
+     * @param internalComment String the comment, or blank for none
+     */
+    public void setInternalComment(String internalComment) {
+        this.internalComment = internalComment;
     }
 
     public HttpServletRequest getRequest() {
