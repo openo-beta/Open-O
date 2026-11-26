@@ -7,13 +7,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import ca.openosp.openo.commn.model.EFormData;
 import ca.openosp.openo.commn.model.EmailAttachment;
-import ca.openosp.openo.casemgmt.model.ProviderExt;
-import ca.openosp.openo.commn.dao.ProviderExtDao;
-import ca.openosp.openo.commn.model.Provider;
+import ca.openosp.openo.casemgmt.service.CaseManagementManager;
 import ca.openosp.openo.commn.model.EmailLog;
 import ca.openosp.openo.commn.model.EmailLog.ChartDisplayOption;
 import ca.openosp.openo.documentManager.EDoc;
@@ -68,7 +65,7 @@ public class EmailNoteUtil {
     private CommonLabResultData commonLabResultData;
     private EformDataManager eFormDataManager = SpringUtils.getBean(EformDataManager.class);
     private FormsManager formsManager = SpringUtils.getBean(FormsManager.class);
-    private ProviderExtDao providerExtDao = SpringUtils.getBean(ProviderExtDao.class);
+    private CaseManagementManager caseManagementManager = SpringUtils.getBean(CaseManagementManager.class);
 
     /**
      * Private default constructor to prevent instantiation without required parameters.
@@ -343,31 +340,11 @@ public class EmailNoteUtil {
 
     private void addSentByLine(StringBuilder noteBuilder) {
         String dateTime = DateUtils.format(SENT_DATE_FORMAT, emailLog.getTimestamp(), null);
-        String displayName = resolveProviderDisplayName();
+        String displayName = caseManagementManager.getSignatureName(loggedInInfo.getLoggedInProvider());
         noteBuilder.append("\n\n[Sent on ").append(dateTime);
         if (!displayName.isBlank()) {
             noteBuilder.append(" by ").append(displayName);
         }
         noteBuilder.append("]");
-    }
-
-    /**
-     * Resolves the display name for the logged-in provider.
-     *
-     * <p>Uses the custom signature from {@link ProviderExt} if configured,
-     * otherwise falls back to the provider's full name — consistent with
-     * encounter note sign &amp; save behaviour.
-     *
-     * @return String the display name to use in the sent-by line
-     */
-    private String resolveProviderDisplayName() {
-        Provider provider = loggedInInfo.getLoggedInProvider();
-        if (provider == null) return "";
-        ProviderExt pe = providerExtDao.find(provider.getProviderNo());
-        return Optional.ofNullable(pe)
-                .map(ProviderExt::getSignature)
-                .filter(sig -> !sig.isBlank())
-                .map(String::trim)
-                .orElseGet(provider::getFullName);
     }
 }

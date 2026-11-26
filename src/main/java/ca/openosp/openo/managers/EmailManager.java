@@ -16,8 +16,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Logger;
-import ca.openosp.openo.PMmodule.model.ProgramProvider;
-import ca.openosp.openo.PMmodule.service.ProgramManager;
 import ca.openosp.openo.casemgmt.model.CaseManagementNote;
 import ca.openosp.openo.casemgmt.model.CaseManagementNoteLink;
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
@@ -30,7 +28,6 @@ import ca.openosp.openo.commn.model.EmailLog;
 import ca.openosp.openo.commn.model.Provider;
 import ca.openosp.openo.commn.model.EmailLog.ChartDisplayOption;
 import ca.openosp.openo.commn.model.EmailLog.EmailStatus;
-import ca.openosp.openo.commn.model.SecRole;
 import ca.openosp.openo.commn.model.enumerator.DocumentType;
 import ca.openosp.openo.documentManager.ConvertToEdoc;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
@@ -47,7 +44,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ca.openosp.openo.log.LogAction;
-import ca.openosp.openo.encounter.data.EctProgram;
 import ca.openosp.openo.util.StringUtils;
 
 /**
@@ -92,8 +88,6 @@ public class EmailManager {
     private DemographicManager demographicManager;
     @Autowired
     private DocumentAttachmentManager documentAttachmentManager;
-    @Autowired
-    private ProgramManager programManager;
     @Autowired
     private ProviderManager2 providerManager;
     @Autowired
@@ -355,30 +349,8 @@ public class EmailManager {
             throw new RuntimeException("missing required sec object (_email)");
         }
 
-        EmailNoteUtil emailNoteUtil = new EmailNoteUtil(loggedInInfo, emailLog);
-        String emailNote = emailNoteUtil.createNote();
-
-        String providerNo = loggedInInfo.getLoggedInProviderNo();
-        String programId = new EctProgram(loggedInInfo.getSession()).getProgram(providerNo);
-        Date creationDate = new Date();
-
-        ProgramProvider programProvider = programManager.getProgramProvider(providerNo, programId);
-        SecRole doctorRole = caseManagementManager.getSecRoleByRoleName("doctor");
-        String role = programProvider != null ? String.valueOf(programProvider.getRoleId()) : String.valueOf(doctorRole.getId());
-
-        CaseManagementNote caseManagementNote = new CaseManagementNote();
-        caseManagementNote.setUpdate_date(creationDate);
-        caseManagementNote.setObservation_date(creationDate);
-        caseManagementNote.setDemographic_no(String.valueOf(emailLog.getDemographic().getDemographicNo()));
-        caseManagementNote.setProviderNo(providerNo);
-        caseManagementNote.setNote(emailNote);
-        caseManagementNote.setSigned(true);
-        caseManagementNote.setSigning_provider_no(providerNo);
-        caseManagementNote.setProgram_no(programId);
-        caseManagementNote.setReporter_caisi_role(role);
-        caseManagementNote.setReporter_program_team("0");
-        caseManagementNote.setHistory(emailNote);
-        Long noteId = caseManagementManager.saveNoteSimpleReturnID(caseManagementNote);
+        String emailNote = new EmailNoteUtil(loggedInInfo, emailLog).createNote();
+        Long noteId = caseManagementManager.saveSignedNote(loggedInInfo, emailLog.getDemographic().getDemographicNo(), emailNote);
 
         CaseManagementNoteLink caseManagementNoteLink = new CaseManagementNoteLink(CaseManagementNoteLink.EMAIL, Long.valueOf(emailLog.getId()), noteId);
         caseManagementManager.saveNoteLink(caseManagementNoteLink);

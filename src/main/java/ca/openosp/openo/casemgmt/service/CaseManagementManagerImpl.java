@@ -28,6 +28,7 @@ import ca.openosp.openo.caisi_integrator.ws.CachedDemographicNote;
 import ca.openosp.openo.caisi_integrator.ws.CachedFacility;
 import ca.openosp.openo.casemgmt.common.EChartNoteEntry;
 import ca.openosp.openo.documentManager.EDocUtil;
+import ca.openosp.openo.encounter.data.EctProgram;
 import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
@@ -180,6 +181,40 @@ public class CaseManagementManagerImpl implements CaseManagementManager {
     @Override
     public SecRole getSecRoleByRoleName(String roleName) {
         return secRoleDao.findByName(roleName);
+    }
+
+    @Override
+    public Long saveSignedNote(LoggedInInfo loggedInInfo, int demographicNo, String text) {
+        String providerNo = loggedInInfo.getLoggedInProviderNo();
+        String programId = new EctProgram(loggedInInfo.getSession()).getProgram(providerNo);
+        ProgramProvider programProvider = programManager.getProgramProvider(providerNo, programId);
+        String role = programProvider != null ? String.valueOf(programProvider.getRoleId())
+                : String.valueOf(getSecRoleByRoleName("doctor").getId());
+        Date now = new Date();
+
+        CaseManagementNote note = new CaseManagementNote();
+        note.setUpdate_date(now);
+        note.setObservation_date(now);
+        note.setDemographic_no(String.valueOf(demographicNo));
+        note.setProviderNo(providerNo);
+        note.setNote(text);
+        note.setSigned(true);
+        note.setSigning_provider_no(providerNo);
+        note.setProgram_no(programId);
+        note.setReporter_caisi_role(role);
+        note.setReporter_program_team("0");
+        note.setHistory(text);
+        return saveNoteSimpleReturnID(note);
+    }
+
+    @Override
+    public String getSignatureName(Provider provider) {
+        if (provider == null) {
+            return "";
+        }
+        ProviderExt providerExt = providerExtDao.find(provider.getProviderNo());
+        String signature = providerExt == null ? null : providerExt.getSignature();
+        return signature == null || signature.isBlank() ? provider.getFullName() : signature.trim();
     }
 
     @Override

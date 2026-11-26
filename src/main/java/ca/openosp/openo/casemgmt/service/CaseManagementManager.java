@@ -363,4 +363,26 @@ public interface CaseManagementManager {
 
     public String listNotes(String code, String providerNo, String demoNo);
 
+    /**
+     * Saves a signed note in a patient's chart, written by the logged-in provider in their current program and role
+     * (the doctor role when they have none there). For notes OpenO writes on the provider's behalf, such as the
+     * email and fax notes.
+     *
+     * @param loggedInInfo LoggedInInfo the logged-in provider, who writes and signs the note
+     * @param demographicNo int the patient whose chart gets the note
+     * @param text String the note text
+     * @return Long the saved note's id
+     * @since 2026-11-26
+     */
+    public Long saveSignedNote(LoggedInInfo loggedInInfo, int demographicNo, String text);
+
+    /**
+     * Gets the name a provider signs notes with: their signature if they set one, otherwise their full name.
+     *
+     * @param provider Provider the provider, or null
+     * @return String the name, or an empty string when there is no provider
+     * @since 2026-11-26
+     */
+    public String getSignatureName(Provider provider);
+
 }
