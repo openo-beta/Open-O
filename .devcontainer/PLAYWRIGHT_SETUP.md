@@ -6,9 +6,14 @@ The `.mcp.json` file in the repository root configures the Playwright MCP server
 
 ### Current Configuration
 
-- **Playwright Version**: 1.56.0 (specified in `.devcontainer/development/Dockerfile`)
-- **Chromium Revision**: 1194
-- **Executable Path**: `/root/.cache/ms-playwright/chromium-1194/chrome-linux/chrome`
+- **Playwright Version**: 1.65.1 (specified in `.devcontainer/development/Dockerfile`)
+- **Chromium Revision**: 1255
+- **Executable Path**: `/root/.cache/ms-playwright/chromium-1255/chrome-linux64/chrome`
+- **Node.js**: 24.x (pinned in the Dockerfile)
+
+> **Minimum version**: Playwright must be 1.60.0 or newer. Older versions hang right after the
+> browser download reaches 100% when run on Node 24.16+ or Node 26 (the archive extraction stalls).
+> See [microsoft/playwright#40724](https://github.com/microsoft/playwright/issues/40724).
 
 ### How to Verify the Path
 
@@ -21,8 +26,8 @@ If you need to verify or update the Chromium executable path, follow these steps
 
 2. **Find the Chromium revision** for that Playwright version:
    ```bash
-   # For Playwright 1.56.0
-   curl -s https://raw.githubusercontent.com/microsoft/playwright/v1.56.0/packages/playwright-core/browsers.json | grep -A 3 '"name": "chromium"'
+   # For Playwright 1.65.1
+   curl -s https://raw.githubusercontent.com/microsoft/playwright/v1.65.1/packages/playwright-core/browsers.json | grep -A 3 '"name": "chromium"'
    ```
 
 3. **Verify the installed path** inside the devcontainer:
@@ -41,11 +46,11 @@ Playwright's Chromium installation follows this structure on Linux:
 ```
 /root/.cache/ms-playwright/
 └── chromium-{revision}/
-    └── chrome-linux/
+    └── chrome-linux64/
         └── chrome          # The executable
 ```
 
-**Note**: The directory is `chrome-linux` (not `chrome-linux64`), regardless of whether the system is 32-bit or 64-bit.
+**Note**: Since Playwright 1.57, Chromium is a Chrome for Testing build and unpacks to `chrome-linux64/` on x64 (`chrome-linux-arm64/` on arm64). Playwright 1.56 and earlier used `chrome-linux/`.
 
 ### Updating the Configuration
 
@@ -60,7 +65,7 @@ If you update the Playwright version in the Dockerfile, you must also update the
          "args": [
            ...
            "--executable-path",
-           "/root/.cache/ms-playwright/chromium-{NEW_REVISION}/chrome-linux/chrome"
+           "/root/.cache/ms-playwright/chromium-{NEW_REVISION}/chrome-linux64/chrome"
          ]
        }
      }
@@ -73,6 +78,7 @@ If you update the Playwright version in the Dockerfile, you must also update the
 |-------------------|-------------------|--------------------------|
 | 1.56.0            | 1194              | 141.0.7390.37            |
 | 1.57.0            | 1200              | 143.0.7499.4             |
+| 1.65.1            | 1255              | 159.0.8154.6             |
 
 To find the mapping for other versions, check the official browsers.json file:
 ```bash
