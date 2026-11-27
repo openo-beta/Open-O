@@ -1,4 +1,4 @@
-FROM tomcat:9.0.97-jdk21-temurin
+FROM tomcat:9.0.124-jdk21-temurin
 
 # Set environment variables for Tomcat
 ENV CATALINA_HOME /usr/local/tomcat
