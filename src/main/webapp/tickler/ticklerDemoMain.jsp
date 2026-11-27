@@ -77,6 +77,7 @@
 <%@ page import="ca.openosp.openo.commn.model.Tickler" %>
 <%@ page import="ca.openosp.openo.commn.model.TicklerComment" %>
 <%@ page import="ca.openosp.openo.commn.model.TicklerUpdate" %>
+<%@ page import="ca.openosp.openo.commn.model.PatientLabRouting" %>
 <%@ page import="ca.openosp.openo.managers.TicklerManager" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.*" %>
 <%@ page import="ca.openosp.openo.lab.ca.on.LabResultData" %>
@@ -996,9 +997,9 @@
                                                         + "&formId=" + Encode.forUriComponent(docNoStr);
                                             }
                                         } else {
-                                            ca.openosp.openo.commn.model.PatientLabRouting plr =
-                                                    patientLabRoutingDao.findByLabNo(td.getDocumentNo());
-                                            String labType = (plr != null) ? plr.getLabType() : null;
+                                            List<PatientLabRouting> labRoutings =
+                                                    patientLabRoutingDao.findByLabNos(Collections.singletonList(td.getDocumentNo()));
+                                            String labType = labRoutings.isEmpty() ? null : labRoutings.get(0).getLabType();
                                             if (LabResultData.MDS.equals(labType)) {
                                                 href = request.getContextPath() + "/oscarMDS/SegmentDisplay.jsp?segmentID=" + Encode.forUriComponent(docNoStr)
                                                         + "&providerNo=" + Encode.forUriComponent(String.valueOf(user_no))

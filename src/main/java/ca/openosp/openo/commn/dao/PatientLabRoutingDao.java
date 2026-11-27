@@ -23,10 +23,11 @@ public interface PatientLabRoutingDao extends AbstractDao<PatientLabRouting> {
 
     /**
      * Batch-finds routing records for a set of lab numbers in a single query, to avoid
-     * per-row lookups when resolving lab sub-types for a page of results.
+     * per-row lookups when resolving lab sub-types for a page of results. Document rows
+     * (lab type "DOC") are left out, since a document id can equal a lab id.
      *
      * @param labNos List&lt;Integer&gt; the lab numbers to fetch routing records for
-     * @return List&lt;PatientLabRouting&gt; routing records matching the given lab numbers (empty if none found)
+     * @return List&lt;PatientLabRouting&gt; lab routing records matching the given lab numbers (empty if none found)
      */
     public List<PatientLabRouting> findByLabNos(List<Integer> labNos);
 

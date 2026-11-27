@@ -114,7 +114,8 @@ public class EmailManager {
      * 4. Encrypts message and/or attachments if requested
      * 5. Sends email via configured email server, with the footer appended to the body
      * 6. Updates log status to SUCCESS or FAILED
-     * 7. Creates chart note if configured for WITH_FULL_NOTE display
+     * 7. Creates chart note if configured for WITH_FULL_NOTE display; a note failure is logged
+     *    and the log stays SUCCESS, since the email has already been sent
      *
      * The chart note is built from the body recorded on the email log, which excludes the footer,
      * so footer boilerplate such as a clinic signature or unsubscribe line never enters the chart.
@@ -138,8 +139,13 @@ public class EmailManager {
             EmailSender emailSender = new EmailSender(loggedInInfo, emailLog.getEmailConfig(), emailData);
             emailSender.send();
             updateEmailStatus(loggedInInfo, emailLog, EmailStatus.SUCCESS, "");
-            if (emailLog.getChartDisplayOption().equals(ChartDisplayOption.WITH_FULL_NOTE)) {
-                addEmailNote(loggedInInfo, emailLog);
+            // The email has already gone out, so a failed chart note must not look like a failed send
+            try {
+                if (emailLog.getChartDisplayOption().equals(ChartDisplayOption.WITH_FULL_NOTE)) {
+                    addEmailNote(loggedInInfo, emailLog);
+                }
+            } catch (RuntimeException e) {
+                logger.error("Email sent, but adding its chart note failed", e);
             }
         } catch (EmailSendingException e) {
             updateEmailStatus(loggedInInfo, emailLog, EmailStatus.FAILED, e.getMessage());

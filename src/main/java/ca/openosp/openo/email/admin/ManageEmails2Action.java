@@ -12,6 +12,7 @@ import ca.openosp.openo.commn.model.EmailLog.EmailStatus;
 import ca.openosp.openo.commn.model.EmailLog.TransactionType;
 import ca.openosp.openo.commn.model.enumerator.DocumentType;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
+import ca.openosp.openo.email.core.EmailComposeStore;
 import ca.openosp.openo.email.core.EmailStatusResult;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
@@ -263,7 +264,11 @@ public class ManageEmails2Action extends ActionSupport {
         request.setAttribute("isEmailAttachmentEncrypted", emailLog.getIsAttachmentEncrypted());
         request.setAttribute("emailPatientChartOption", emailLog.getChartDisplayOption().getValue());
         request.setAttribute("emailAdditionalParams", emailLog.getAdditionalParams());
-        request.getSession().setAttribute("emailAttachmentList", emailAttachmentList);
+        request.setAttribute("emailAttachmentList", emailAttachmentList);
+        // Send uses only this list, stored under this page's key; a page that failed to load cannot be sent
+        if (request.getAttribute("isEmailError") == null) {
+            request.setAttribute("composeKey", EmailComposeStore.putDirect(request.getSession(), demographicNo, emailAttachmentList));
+        }
 
         return "compose";
     }
