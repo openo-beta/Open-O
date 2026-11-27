@@ -44,11 +44,13 @@ import ca.openosp.openo.commn.model.EmailLog.TransactionType;
  * patient, eForm and attachments stored under that key, so a second compose page, or viewing an
  * old email from the eChart, can never change what another page sends. Send and Cancel remove the
  * entry, so the same page cannot send twice. A send that fails puts the entry back, so the user can
- * press Send again. A refresh of the compose page keeps the entry.
+ * press Send again. Refreshing an eForm compose page keeps its entry, since the key is in its URL. A
+ * resend or document page stores a new entry each time it opens, and the old one waits to be dropped.
  * <p>
  * Entries that are never sent or cancelled are dropped once more than {@value #MAX_ENTRIES} are
  * waiting, or when the user logs out. Viewed or resent old emails and document emails go first, the
  * least recently used of them, because they can be opened again and a half-written eForm email cannot.
+ * The page just opened is never the one dropped.
  * <p>
  * Nothing here survives a Tomcat restart: the store is not serializable, so Tomcat drops it
  * when it saves sessions, and an email page opened before the restart is refused on Send.
@@ -230,7 +232,8 @@ public final class EmailComposeStore {
                     return false;
                 }
                 Iterator<EmailComposeStore.Entry> pages = values().iterator();
-                while (pages.hasNext()) {
+                // Every page but the newest, which was just opened and is last
+                for (int older = size() - 1; older > 0; older--) {
                     // Only a half-written eForm email can't be opened again
                     if (pages.next().transactionType() != TransactionType.EFORM) {
                         pages.remove();

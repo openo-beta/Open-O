@@ -30,6 +30,7 @@ package ca.openosp.openo.managers;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import ca.openosp.openo.commn.dao.FaxConfigDao;
+import ca.openosp.openo.commn.model.EmailLog;
 import ca.openosp.openo.commn.model.FaxConfig;
 import ca.openosp.openo.commn.model.FaxJob;
 import ca.openosp.openo.fax.core.FaxAccount;
@@ -92,9 +93,10 @@ public interface FaxManager {
      * @param coverPage boolean whether a cover page was added
      * @param coverPageComments String the cover page comments, which went to the recipients; ignored without a cover page
      * @param internalComment String a comment for the chart only, or null or blank for none
-     * @throws RuntimeException if the user may not send faxes or read the eForm or document
+     * @throws RuntimeException if the user may not use the fax window or read the eForm or document
      * @throws SecurityException if the user may not open the patient's record
-     * @throws IllegalStateException if the eForm or document no longer exists
+     * @throws IllegalStateException if what was faxed no longer exists or isn't filed to this patient, since the
+     *                               window posts both numbers back and a document can be re-linked while it is open
      * @throws IllegalArgumentException for a FORM or RX transaction, which the fax window doesn't send
      */
     void addFaxNote(LoggedInInfo loggedInInfo, TransactionType transactionType, int transactionId, int demographicNo,
@@ -298,5 +300,21 @@ public interface FaxManager {
 
         }
         return Boolean.FALSE;
+    }
+
+    /**
+     * Whether the OSCAR Fax window adds its chart note after Send: only when every fax was queued, and unless staff
+     * chose "Do not add to patient chart", as the email window does.
+     *
+     * @param faxJobs List&lt;FaxJob&gt; the fax jobs the window queued, the recipient first and then each copy
+     * @param patientChartOption String the chart option the window posted, with the email window's values
+     *                           ("doNotAddAsNote" or "addFullNote"); null charts, as the window's default does
+     * @return boolean true to add the chart note
+     * @since 2026-11-26
+     */
+    static boolean isFaxNoteWanted(List<FaxJob> faxJobs, String patientChartOption) {
+        return !faxJobs.isEmpty()
+                && faxJobs.stream().noneMatch(faxJob -> FaxJob.STATUS.ERROR.equals(faxJob.getStatus()))
+                && !EmailLog.ChartDisplayOption.WITHOUT_NOTE.getValue().equals(patientChartOption);
     }
 }

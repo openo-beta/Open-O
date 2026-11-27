@@ -33,7 +33,6 @@ import org.apache.struts2.ServletActionContext;
 import ca.openosp.openo.commn.model.FaxConfig;
 import ca.openosp.openo.commn.model.FaxJob;
 import ca.openosp.openo.commn.model.FaxJob.STATUS;
-import ca.openosp.openo.commn.model.EmailLog.ChartDisplayOption;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
 import ca.openosp.openo.fax.dto.FaxJobParams;
 import ca.openosp.openo.managers.FaxManager;
@@ -237,8 +236,7 @@ public class Fax2Action extends ActionSupport {
             }
         }
 
-        // Like the email window, it charts unless staff chose not to
-        if (success && !ChartDisplayOption.WITHOUT_NOTE.getValue().equals(patientChartOption)) {
+        if (FaxManager.isFaxNoteWanted(faxJobList, patientChartOption)) {
             addFaxNote(loggedInInfo, transactionType, faxJobList);
         }
 

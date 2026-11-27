@@ -61,8 +61,7 @@ public class DocumentSendButtons2Action extends ActionSupport {
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
         response.setHeader("X-Content-Type-Options", "nosniff");
-        response.getOutputStream().write(DocumentSendButtons.forDocument(loggedInInfo, document).toJson()
-                .getBytes(StandardCharsets.UTF_8));
+        response.getOutputStream().write(DocumentSendButtons.jsonFor(loggedInInfo, document).getBytes(StandardCharsets.UTF_8));
         return null;
     }
 }

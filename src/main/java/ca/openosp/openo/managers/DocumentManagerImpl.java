@@ -112,7 +112,11 @@ public class DocumentManagerImpl implements DocumentManager {
 
     @Override
     public Integer getLinkedDemographicNo(LoggedInInfo loggedInInfo, Integer documentId) {
-        CtlDocument link = getCtlDocumentByDocumentId(loggedInInfo, documentId);
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_edoc", "r", "")) {
+            throw new RuntimeException("Read Access Denied _edoc for provider " + loggedInInfo.getLoggedInProviderNo());
+        }
+        // Not through getCtlDocumentByDocumentId, which writes an audit row: the document view calls this on every load
+        CtlDocument link = ctlDocumentDao.getCtrlDocument(documentId);
         if (link == null || !link.isDemographicDocument()) {
             return null;
         }

@@ -814,9 +814,9 @@
 
     jQuery(setupProviderAutoCompletion());
 
-    // Last, so a failure here can't stop the setup above
+    // Last, so a script failure here can't stop the setup above; jsonFor greys both buttons rather than fail on the server
     showSendButtons('<%=Encode.forJavaScript(String.valueOf(docId))%>',
-        JSON.parse('<%=Encode.forJavaScript(DocumentSendButtons.forDocument(loggedInInfo, curdoc).toJson())%>'));
+        JSON.parse('<%=Encode.forJavaScript(DocumentSendButtons.jsonFor(loggedInInfo, curdoc))%>'));
 
 </script>
 <jsp:include page="/images/spinner.jsp"/>

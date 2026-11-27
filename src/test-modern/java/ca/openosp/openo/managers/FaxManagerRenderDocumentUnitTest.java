@@ -40,8 +40,9 @@ import static org.mockito.Mockito.when;
  * <p>The contract: {@link DocumentManager#getSendableDemographicNo(LoggedInInfo, Document)} decides whether the
  * document can be sent at all, and its refusals pass through unchanged. The document must also be filed to the
  * patient the document view showed. The document manager renders an image into a new temp PDF but hands back the
- * stored file for a PDF, so a PDF is copied through {@link DocumentAttachmentManager#concatPDF(List)} and the
- * stored file never reaches the fax job. Fax rights are checked when the fax is sent.</p>
+ * stored file for a PDF, so anything outside the temp folders is copied through
+ * {@link DocumentAttachmentManager#concatPDF(List)} and the stored file never reaches the fax job, whatever the
+ * document's content type says. Fax rights are checked when the fax is sent.</p>
  *
  * @since 2026-11-24
  */
@@ -58,8 +59,9 @@ class FaxManagerRenderDocumentUnitTest extends OpenOUnitTestBase {
     private static final int DEMOGRAPHIC_NO = 3001;
     private static final int OTHER_DEMOGRAPHIC_NO = 3002;
     private static final Path STORED_PATH = Paths.get("/var/lib/OscarDocument/oscar/document/fake_mri_head.pdf");
-    private static final Path IMAGE_PDF = Paths.get("/usr/local/tomcat/temp/tempPDF1/temporaryPDF1.pdf");
-    private static final Path TEMP_COPY = Paths.get("/usr/local/tomcat/temp/tempPDF2/combinedPDF_2.pdf");
+    // Rendered files land in the JVM's temp folder, one of the allowed temp folders
+    private static final Path IMAGE_PDF = Paths.get(System.getProperty("java.io.tmpdir"), "tempPDF1", "temporaryPDF1.pdf");
+    private static final Path TEMP_COPY = Paths.get(System.getProperty("java.io.tmpdir"), "tempPDF2", "combinedPDF_2.pdf");
 
     @Mock
     private DocumentManager documentManager;
@@ -110,6 +112,15 @@ class FaxManagerRenderDocumentUnitTest extends OpenOUnitTestBase {
 
             assertThat(faxManager.renderDocument(loggedInInfo, DOCUMENT_NO, DEMOGRAPHIC_NO)).isEqualTo(IMAGE_PDF);
             verify(documentAttachmentManager, never()).concatPDF(anyList());
+        }
+
+        @Test
+        @DisplayName("should copy whatever comes back outside the temp folders, whatever the content type says")
+        void shouldCopyStoredFile_whateverContentTypeSays() throws Exception {
+            givenDocument("application/octet-stream", STORED_PATH);
+
+            assertThat(faxManager.renderDocument(loggedInInfo, DOCUMENT_NO, DEMOGRAPHIC_NO)).isEqualTo(TEMP_COPY);
+            verify(documentAttachmentManager).concatPDF(List.of(STORED_PATH));
         }
 
         @Test

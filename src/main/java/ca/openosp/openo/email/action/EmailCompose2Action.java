@@ -19,6 +19,7 @@ import ca.openosp.openo.email.core.EmailComposeStore;
 import ca.openosp.openo.managers.DemographicManager;
 import ca.openosp.openo.managers.DocumentManager;
 import ca.openosp.openo.managers.EmailComposeManager;
+import ca.openosp.openo.managers.SecurityInfoManager;
 import ca.openosp.openo.utility.LoggedInInfo;
 import ca.openosp.openo.utility.MiscUtils;
 import ca.openosp.openo.utility.PDFGenerationException;
@@ -85,6 +86,7 @@ public class EmailCompose2Action extends ActionSupport {
     private DemographicManager demographicManager = SpringUtils.getBean(DemographicManager.class);
     private EmailComposeManager emailComposeManager = SpringUtils.getBean(EmailComposeManager.class);
     private DocumentManager documentManager = SpringUtils.getBean(DocumentManager.class);
+    private SecurityInfoManager securityInfoManager = SpringUtils.getBean(SecurityInfoManager.class);
 
     /**
      * Executes the default action for email composition.
@@ -270,11 +272,15 @@ public class EmailCompose2Action extends ActionSupport {
      * </ul>
      *
      * @return String the Struts2 result name "compose"
-     * @throws SecurityException if the user may not read the patient's documents or open the patient's record
+     * @throws SecurityException if the user may not send emails, read the patient's documents or open the patient's record
      * @since 2026-11-25
      */
     public String prepareComposeDocumentMailer() {
         LoggedInInfo loggedInInfo = LoggedInInfo.getLoggedInInfoFromSession(request);
+        // The page shows the patient's addresses and attachment password, so only someone who may send gets it
+        if (!securityInfoManager.hasPrivilege(loggedInInfo, "_email", SecurityInfoManager.WRITE, null)) {
+            throw new SecurityException("missing required sec object (_email)");
+        }
         String documentNo = request.getParameter("documentNo");
         if (documentNo == null || !documentNo.matches("\\d{1,9}")) {
             return composePageError(DOCUMENT_NOT_EMAILED + "No document was given.");

@@ -1,6 +1,8 @@
 package ca.openosp.openo.managers;
 
 import ca.openosp.openo.casemgmt.service.CaseManagementManager;
+import ca.openosp.openo.commn.dao.ConsultationRequestDao;
+import ca.openosp.openo.commn.model.ConsultationRequest;
 import ca.openosp.openo.commn.model.Document;
 import ca.openosp.openo.commn.model.EFormData;
 import ca.openosp.openo.commn.model.FaxJob;
@@ -46,8 +48,9 @@ import static org.mockito.Mockito.when;
  * OpenO reads the newest note linked to a document as the annotation. Laid out like the email window's note, it names
  * what was faxed, the recipient and each copy (names as typed), whether a cover page went with its comments, and an
  * internal comment when one was typed, and says the fax was queued, not sent, by the sender's signature name. Only a
- * user who may send faxes and open the patient's record can add it, and only for an eForm or document that still
- * exists.</p>
+ * user who may use the fax window and open the patient's record can add it, and only for a consultation request,
+ * eForm or document that still exists and is filed to that patient. The fax window adds it once every fax was
+ * queued, unless staff chose "Do not add to patient chart" ({@link FaxManager#isFaxNoteWanted(List, String)}).</p>
  *
  * @since 2026-11-26
  */
@@ -64,6 +67,7 @@ class FaxManagerFaxNoteUnitTest extends OpenOUnitTestBase {
     private static final int EFORM_DATA_ID = 55;
     private static final int CONSULTATION_ID = 12;
     private static final int DEMOGRAPHIC_NO = 3001;
+    private static final int OTHER_DEMOGRAPHIC_NO = 3002;
     private static final String QUEUED_LINE = "\\[Queued for sending on \\d{2}-[A-Z][a-z]{2}-\\d{4} \\d{1,2}:\\d{2}";
 
     @Mock
@@ -78,26 +82,47 @@ class FaxManagerFaxNoteUnitTest extends OpenOUnitTestBase {
     @Mock
     private CaseManagementManager caseManagementManager;
 
+    @Mock
+    private ConsultationRequestDao consultationRequestDao;
+
     @InjectMocks
     private FaxManagerImpl faxManager;
 
     private LoggedInInfo loggedInInfo;
+
+    private EFormData eForm;
+
+    private ConsultationRequest consultation;
 
     @BeforeEach
     void setUp() {
         loggedInInfo = new LoggedInInfo();
         loggedInInfo.setLoggedInProvider(new Provider("999998"));
 
-        when(securityInfoManager.hasPrivilege(any(), eq("_fax"), eq(SecurityInfoManager.WRITE), isNull(String.class))).thenReturn(true);
+        // Only the fax read right, which is all a consultation fax needs
+        when(securityInfoManager.hasPrivilege(any(), eq("_fax"), eq(SecurityInfoManager.READ), isNull(String.class))).thenReturn(true);
         when(securityInfoManager.isAllowedAccessToPatientRecord(any(), eq(DEMOGRAPHIC_NO))).thenReturn(true);
         Document document = new Document(DOCUMENT_NO);
         document.setDocdesc("FAKE MRI head report");
         when(documentManager.getDocument(any(LoggedInInfo.class), eq(DOCUMENT_NO))).thenReturn(document);
-        EFormData eForm = new EFormData();
+        when(documentManager.getLinkedDemographicNo(any(LoggedInInfo.class), eq(DOCUMENT_NO))).thenReturn(DEMOGRAPHIC_NO);
+        eForm = new EFormData();
         eForm.setId(EFORM_DATA_ID);
         eForm.setFormName("FAKE Referral letter");
+        eForm.setDemographicId(DEMOGRAPHIC_NO);
         when(eformDataManager.findByFdid(any(LoggedInInfo.class), eq(EFORM_DATA_ID))).thenReturn(eForm);
+        consultation = new ConsultationRequest();
+        consultation.setDemographicId(DEMOGRAPHIC_NO);
+        when(consultationRequestDao.find(CONSULTATION_ID)).thenReturn(consultation);
         when(caseManagementManager.getSignatureName(any())).thenReturn("FAKE-Sam Example");
+    }
+
+    private void assertRefusedWithoutSaving(TransactionType transactionType, int transactionId, String message) {
+        assertThatThrownBy(() -> faxManager.addFaxNote(loggedInInfo, transactionType, transactionId, DEMOGRAPHIC_NO,
+                oneRecipient(), false, null, null))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining(message);
+        verify(caseManagementManager, never()).saveSignedNote(any(), anyInt(), anyString());
     }
 
     private static FaxJob job(String recipient, String fax) {
@@ -141,9 +166,9 @@ class FaxManagerFaxNoteUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should refuse without saving when the user may not send faxes")
-        void shouldRefuse_whenUserCannotSendFaxes() {
-            when(securityInfoManager.hasPrivilege(any(), eq("_fax"), eq(SecurityInfoManager.WRITE), isNull(String.class))).thenReturn(false);
+        @DisplayName("should refuse without saving when the user may not use the fax window")
+        void shouldRefuse_whenUserCannotUseFaxWindow() {
+            when(securityInfoManager.hasPrivilege(any(), eq("_fax"), eq(SecurityInfoManager.READ), isNull(String.class))).thenReturn(false);
 
             assertThatThrownBy(() -> faxManager.addFaxNote(loggedInInfo, TransactionType.DOCUMENT, DOCUMENT_NO,
                     DEMOGRAPHIC_NO, oneRecipient(), false, null, null))
@@ -168,11 +193,23 @@ class FaxManagerFaxNoteUnitTest extends OpenOUnitTestBase {
         void shouldRefuse_whenDocumentIsGone() {
             when(documentManager.getDocument(any(LoggedInInfo.class), eq(DOCUMENT_NO))).thenReturn(null);
 
-            assertThatThrownBy(() -> faxManager.addFaxNote(loggedInInfo, TransactionType.DOCUMENT, DOCUMENT_NO,
-                    DEMOGRAPHIC_NO, oneRecipient(), false, null, null))
-                    .isInstanceOf(IllegalStateException.class)
-                    .hasMessageContaining("15");
-            verify(caseManagementManager, never()).saveSignedNote(any(), anyInt(), anyString());
+            assertRefusedWithoutSaving(TransactionType.DOCUMENT, DOCUMENT_NO, "Document 15 no longer exists");
+        }
+
+        @Test
+        @DisplayName("should refuse without saving when the document was re-linked to another patient")
+        void shouldRefuse_whenDocumentIsFiledToAnotherPatient() {
+            when(documentManager.getLinkedDemographicNo(any(LoggedInInfo.class), eq(DOCUMENT_NO))).thenReturn(OTHER_DEMOGRAPHIC_NO);
+
+            assertRefusedWithoutSaving(TransactionType.DOCUMENT, DOCUMENT_NO, "Document 15 isn't filed to the patient");
+        }
+
+        @Test
+        @DisplayName("should refuse without saving when the document is no longer filed to a patient")
+        void shouldRefuse_whenDocumentIsUnlinked() {
+            when(documentManager.getLinkedDemographicNo(any(LoggedInInfo.class), eq(DOCUMENT_NO))).thenReturn(null);
+
+            assertRefusedWithoutSaving(TransactionType.DOCUMENT, DOCUMENT_NO, "Document 15 isn't filed to the patient");
         }
 
         @Test
@@ -180,11 +217,31 @@ class FaxManagerFaxNoteUnitTest extends OpenOUnitTestBase {
         void shouldRefuse_whenEFormIsGone() {
             when(eformDataManager.findByFdid(any(LoggedInInfo.class), eq(EFORM_DATA_ID))).thenReturn(null);
 
-            assertThatThrownBy(() -> faxManager.addFaxNote(loggedInInfo, TransactionType.EFORM, EFORM_DATA_ID,
-                    DEMOGRAPHIC_NO, oneRecipient(), false, null, null))
-                    .isInstanceOf(IllegalStateException.class)
-                    .hasMessageContaining("55");
-            verify(caseManagementManager, never()).saveSignedNote(any(), anyInt(), anyString());
+            assertRefusedWithoutSaving(TransactionType.EFORM, EFORM_DATA_ID, "eForm 55 no longer exists");
+        }
+
+        @Test
+        @DisplayName("should refuse without saving when the eForm belongs to another patient")
+        void shouldRefuse_whenEFormIsFiledToAnotherPatient() {
+            eForm.setDemographicId(OTHER_DEMOGRAPHIC_NO);
+
+            assertRefusedWithoutSaving(TransactionType.EFORM, EFORM_DATA_ID, "eForm 55 isn't filed to the patient");
+        }
+
+        @Test
+        @DisplayName("should refuse without saving when the consultation request no longer exists")
+        void shouldRefuse_whenConsultationIsGone() {
+            when(consultationRequestDao.find(CONSULTATION_ID)).thenReturn(null);
+
+            assertRefusedWithoutSaving(TransactionType.CONSULTATION, CONSULTATION_ID, "Consultation request 12 no longer exists");
+        }
+
+        @Test
+        @DisplayName("should refuse without saving when the consultation request belongs to another patient")
+        void shouldRefuse_whenConsultationIsFiledToAnotherPatient() {
+            consultation.setDemographicId(OTHER_DEMOGRAPHIC_NO);
+
+            assertRefusedWithoutSaving(TransactionType.CONSULTATION, CONSULTATION_ID, "Consultation request 12 isn't filed to the patient");
         }
 
         @ParameterizedTest
@@ -195,6 +252,44 @@ class FaxManagerFaxNoteUnitTest extends OpenOUnitTestBase {
                     oneRecipient(), false, null, null))
                     .isInstanceOf(IllegalArgumentException.class);
             verify(caseManagementManager, never()).saveSignedNote(any(), anyInt(), anyString());
+        }
+    }
+
+    @Nested
+    @DisplayName("when the fax window adds it")
+    class WhenWanted {
+
+        @Test
+        @DisplayName("should add the note when every fax was queued and staff chose to chart it")
+        void shouldAddNote_whenAllQueuedAndCharted() {
+            assertThat(FaxManager.isFaxNoteWanted(List.of(job("A", "1"), job("B", "2")), "addFullNote")).isTrue();
+        }
+
+        @Test
+        @DisplayName("should add the note when no chart option was posted, as the window charts by default")
+        void shouldAddNote_whenNoChartOptionPosted() {
+            assertThat(FaxManager.isFaxNoteWanted(oneRecipient(), null)).isTrue();
+        }
+
+        @Test
+        @DisplayName("should not add the note when staff chose not to add it to the chart")
+        void shouldNotAddNote_whenStaffChoseNotTo() {
+            assertThat(FaxManager.isFaxNoteWanted(oneRecipient(), "doNotAddAsNote")).isFalse();
+        }
+
+        @Test
+        @DisplayName("should not add the note when any fax couldn't be queued")
+        void shouldNotAddNote_whenAnyFaxFailed() {
+            FaxJob failed = job("B", "2");
+            failed.setStatus(FaxJob.STATUS.ERROR);
+
+            assertThat(FaxManager.isFaxNoteWanted(List.of(job("A", "1"), failed), "addFullNote")).isFalse();
+        }
+
+        @Test
+        @DisplayName("should not add the note when nothing was queued")
+        void shouldNotAddNote_whenNothingQueued() {
+            assertThat(FaxManager.isFaxNoteWanted(List.of(), "addFullNote")).isFalse();
         }
     }
 

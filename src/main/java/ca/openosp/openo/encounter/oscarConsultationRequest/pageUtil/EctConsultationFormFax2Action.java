@@ -18,7 +18,6 @@ import ca.openosp.openo.commn.dao.ClinicDAO;
 import ca.openosp.openo.commn.dao.FaxConfigDao;
 import ca.openosp.openo.commn.dao.FaxJobDao;
 import ca.openosp.openo.commn.model.Clinic;
-import ca.openosp.openo.commn.model.EmailLog.ChartDisplayOption;
 import ca.openosp.openo.commn.model.FaxConfig;
 import ca.openosp.openo.commn.model.FaxJob;
 import ca.openosp.openo.documentManager.DocumentAttachmentManager;
@@ -217,9 +216,7 @@ public class EctConsultationFormFax2Action extends ActionSupport {
 
             LogAction.addLog(provider_no, LogConst.SENT, LogConst.CON_FAX, "CONSULT " + reqId);
 
-            // As in Fax2Action.queue: once every recipient is queued, it charts unless staff chose not to
-            if (faxJobs.stream().noneMatch(faxJob -> FaxJob.STATUS.ERROR.equals(faxJob.getStatus()))
-                    && !ChartDisplayOption.WITHOUT_NOTE.getValue().equals(patientChartOption)) {
+            if (FaxManager.isFaxNoteWanted(faxJobs, patientChartOption)) {
                 addFaxNote(loggedInInfo, reqId, demoNo, faxJobs, doCoverPage, note);
             }
 

@@ -147,6 +147,16 @@ class DocumentManagerSendableDocumentUnitTest extends OpenOUnitTestBase {
                     .isInstanceOf(RuntimeException.class)
                     .hasMessageContaining("_edoc");
         }
+
+        @Test
+        @DisplayName("should not write an audit row, since the document view looks the link up on every load")
+        void shouldNotWriteAuditRow_whenLookingUpLink() {
+            givenLink("demographic", DEMOGRAPHIC_NO);
+
+            documentManager.getLinkedDemographicNo(loggedInInfo, DOCUMENT_NO);
+
+            logActionMock.verifyNoInteractions();
+        }
     }
 
     @Nested

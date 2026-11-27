@@ -30,10 +30,13 @@ import static org.mockito.Mockito.when;
  * Tests for {@link DocumentSendButtons#forDocument(LoggedInInfo, EDoc)}, the document view's Fax and Email buttons.
  *
  * <p>The contract: a greyed-out button shows one reason, checked in this order: the document is deleted; it is
- * neither a PDF nor an image; the clinic or the user can't send (no active fax account or no fax write right, or
- * email not set up or no email write right); it isn't filed to a patient. "Unlinked" comes last because saving a
- * patient on the view clears it. The patient's email address and consent are looked up only when Email can be
- * used. The JSON keeps every field, nulls included, under the names the view's script reads.</p>
+ * neither a PDF nor an image; the clinic hasn't set up sending (no active fax account, or email not set up); the
+ * user doesn't have the write right to send; it isn't filed to a patient; the user can't open that patient's record
+ * (document read for the patient and chart access, as the fax and email windows require; Email also needs the
+ * patient read right). "Unlinked" comes after the reasons that saving a patient won't fix. The patient's email
+ * address and consent are looked up only when Email can be used. The JSON keeps every field, nulls included,
+ * under the names the view's script reads, and when the buttons can't be worked out both are greyed out so the
+ * view still loads.</p>
  *
  * @since 2026-11-25
  */
@@ -62,12 +65,15 @@ class DocumentSendButtonsUnitTest extends OpenOUnitTestBase {
         faxConfigDao = createAndRegisterMock(FaxConfigDao.class);
         loggedInInfo = new LoggedInInfo();
 
-        // Ready to send: filed to a patient, an active fax account, email set up, and both write rights
+        // Ready to send: filed to a patient the user may open, an active fax account, email set up, both write rights
         when(documentManager.getLinkedDemographicNo(loggedInInfo, DOCUMENT_NO)).thenReturn(DEMOGRAPHIC_NO);
         givenActiveFaxAccount(true);
         when(emailComposeManager.isEmailEnabled()).thenReturn(true);
         givenWriteRight("_fax", true);
         givenWriteRight("_email", true);
+        givenPatientRight("_edoc", true);
+        givenPatientRight("_demographic", true);
+        when(securityInfoManager.isAllowedAccessToPatientRecord(loggedInInfo, DEMOGRAPHIC_NO)).thenReturn(true);
         when(emailComposeManager.hasValidRecipient(loggedInInfo, DEMOGRAPHIC_NO)).thenReturn(true);
         when(emailComposeManager.getEmailConsentStatus(loggedInInfo, DEMOGRAPHIC_NO))
                 .thenReturn(new String[]{CONSENT_NAME, OPTED_IN});
@@ -82,6 +88,11 @@ class DocumentSendButtonsUnitTest extends OpenOUnitTestBase {
     private void givenWriteRight(String securityObject, boolean granted) {
         when(securityInfoManager.hasPrivilege(eq(loggedInInfo), eq(securityObject), eq(SecurityInfoManager.WRITE),
                 isNull(String.class))).thenReturn(granted);
+    }
+
+    private void givenPatientRight(String securityObject, boolean granted) {
+        when(securityInfoManager.hasPrivilege(eq(loggedInInfo), eq(securityObject), eq(SecurityInfoManager.READ),
+                eq(DEMOGRAPHIC_NO))).thenReturn(granted);
     }
 
     private void givenUnlinked() {
@@ -134,12 +145,38 @@ class DocumentSendButtonsUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should grey out Fax when the user may not send faxes")
-        void shouldGreyOutFax_whenUserCannotWriteFaxes() {
+        @DisplayName("should grey out Fax with a permission tip when the user may not send faxes")
+        void shouldGreyOutFaxWithPermissionTip_whenUserCannotWriteFaxes() {
             givenWriteRight("_fax", false);
 
             assertThat(buttonsFor(document('A', "application/pdf")).faxBlockedReason())
-                    .isEqualTo(DocumentSendButtons.NO_FAX_SENDERS);
+                    .isEqualTo(DocumentSendButtons.NO_FAX_RIGHT);
+        }
+
+        @Test
+        @DisplayName("should grey out Fax when the user can't open the patient's record")
+        void shouldGreyOutFax_whenUserCannotOpenPatient() {
+            when(securityInfoManager.isAllowedAccessToPatientRecord(loggedInInfo, DEMOGRAPHIC_NO)).thenReturn(false);
+
+            assertThat(buttonsFor(document('A', "application/pdf")).faxBlockedReason())
+                    .isEqualTo(DocumentSendButtons.NO_PATIENT_ACCESS);
+        }
+
+        @Test
+        @DisplayName("should grey out Fax when the user may not read the patient's documents")
+        void shouldGreyOutFax_whenUserCannotReadPatientDocuments() {
+            givenPatientRight("_edoc", false);
+
+            assertThat(buttonsFor(document('A', "application/pdf")).faxBlockedReason())
+                    .isEqualTo(DocumentSendButtons.NO_PATIENT_ACCESS);
+        }
+
+        @Test
+        @DisplayName("should keep Fax on when only the patient read right is missing, since the fax window doesn't use it")
+        void shouldKeepFaxOn_whenOnlyPatientReadRightIsMissing() {
+            givenPatientRight("_demographic", false);
+
+            assertThat(buttonsFor(document('A', "application/pdf")).faxBlockedReason()).isNull();
         }
 
         @Test
@@ -195,12 +232,32 @@ class DocumentSendButtonsUnitTest extends OpenOUnitTestBase {
         }
 
         @Test
-        @DisplayName("should grey out Email without looking up the patient when the user may not send emails")
-        void shouldGreyOutEmail_whenUserCannotWriteEmails() {
+        @DisplayName("should grey out Email with a permission tip, without looking up the patient, when the user may not send emails")
+        void shouldGreyOutEmailWithPermissionTip_whenUserCannotWriteEmails() {
             givenWriteRight("_email", false);
 
             assertThat(buttonsFor(document('A', "application/pdf")).emailBlockedReason())
-                    .isEqualTo(DocumentSendButtons.EMAIL_NOT_SET_UP);
+                    .isEqualTo(DocumentSendButtons.NO_EMAIL_RIGHT);
+            verifyNoPatientEmailLookup();
+        }
+
+        @Test
+        @DisplayName("should grey out Email without looking up the patient when the user can't open the patient's record")
+        void shouldGreyOutEmail_whenUserCannotOpenPatient() {
+            when(securityInfoManager.isAllowedAccessToPatientRecord(loggedInInfo, DEMOGRAPHIC_NO)).thenReturn(false);
+
+            assertThat(buttonsFor(document('A', "application/pdf")).emailBlockedReason())
+                    .isEqualTo(DocumentSendButtons.NO_PATIENT_ACCESS);
+            verifyNoPatientEmailLookup();
+        }
+
+        @Test
+        @DisplayName("should grey out Email without looking up the patient when the user may not read the patient's details")
+        void shouldGreyOutEmail_whenUserCannotReadPatientDetails() {
+            givenPatientRight("_demographic", false);
+
+            assertThat(buttonsFor(document('A', "application/pdf")).emailBlockedReason())
+                    .isEqualTo(DocumentSendButtons.NO_PATIENT_ACCESS);
             verifyNoPatientEmailLookup();
         }
 
@@ -257,6 +314,33 @@ class DocumentSendButtonsUnitTest extends OpenOUnitTestBase {
             assertThat(buttons.faxBlockedReason()).isEqualTo(DocumentSendButtons.NO_FAX_SENDERS);
             assertThat(buttons.emailBlockedReason()).isEqualTo(DocumentSendButtons.EMAIL_NOT_SET_UP);
         }
+
+        @Test
+        @DisplayName("should name the clinic's setup before the user's permission")
+        void shouldNameSetup_beforePermission() {
+            givenActiveFaxAccount(false);
+            when(emailComposeManager.isEmailEnabled()).thenReturn(false);
+            givenWriteRight("_fax", false);
+            givenWriteRight("_email", false);
+
+            DocumentSendButtons buttons = buttonsFor(document('A', "application/pdf"));
+
+            assertThat(buttons.faxBlockedReason()).isEqualTo(DocumentSendButtons.NO_FAX_SENDERS);
+            assertThat(buttons.emailBlockedReason()).isEqualTo(DocumentSendButtons.EMAIL_NOT_SET_UP);
+        }
+
+        @Test
+        @DisplayName("should name the user's permission before the link")
+        void shouldNamePermission_beforeUnlinked() {
+            givenUnlinked();
+            givenWriteRight("_fax", false);
+            givenWriteRight("_email", false);
+
+            DocumentSendButtons buttons = buttonsFor(document('A', "application/pdf"));
+
+            assertThat(buttons.faxBlockedReason()).isEqualTo(DocumentSendButtons.NO_FAX_RIGHT);
+            assertThat(buttons.emailBlockedReason()).isEqualTo(DocumentSendButtons.NO_EMAIL_RIGHT);
+        }
     }
 
     @Nested
@@ -283,7 +367,30 @@ class DocumentSendButtonsUnitTest extends OpenOUnitTestBase {
             JsonNode json = new ObjectMapper().readTree(buttonsFor(document('A', "application/pdf")).toJson());
 
             assertThat(json.get("faxBlockedReason").isNull()).isTrue();
-            assertThat(json.get("emailBlockedReason").asText()).isEqualTo(DocumentSendButtons.EMAIL_NOT_SET_UP);
+            assertThat(json.get("emailBlockedReason").asText()).isEqualTo(DocumentSendButtons.NO_EMAIL_RIGHT);
+        }
+
+        @Test
+        @DisplayName("should write the buttons for the document view")
+        void shouldWriteButtons_forDocumentView() throws Exception {
+            JsonNode json = new ObjectMapper().readTree(DocumentSendButtons.jsonFor(loggedInInfo, document('A', "application/pdf")));
+
+            assertThat(json.get("faxBlockedReason").isNull()).isTrue();
+            assertThat(json.get("emailBlockedReason").isNull()).isTrue();
+            assertThat(json.get("demographicNo").asInt()).isEqualTo(DEMOGRAPHIC_NO);
+        }
+
+        @Test
+        @DisplayName("should grey out both buttons, so the document view still loads, when a lookup fails")
+        void shouldGreyOutBoth_whenLookupFails() throws Exception {
+            when(emailComposeManager.getEmailConsentStatus(loggedInInfo, DEMOGRAPHIC_NO))
+                    .thenThrow(new RuntimeException("Unauthorised Access. Object[_demographic]"));
+
+            JsonNode json = new ObjectMapper().readTree(DocumentSendButtons.jsonFor(loggedInInfo, document('A', "application/pdf")));
+
+            assertThat(json.get("faxBlockedReason").asText()).isEqualTo(DocumentSendButtons.UNAVAILABLE);
+            assertThat(json.get("emailBlockedReason").asText()).isEqualTo(DocumentSendButtons.UNAVAILABLE);
+            assertThat(json.get("demographicNo").isNull()).isTrue();
         }
     }
 }

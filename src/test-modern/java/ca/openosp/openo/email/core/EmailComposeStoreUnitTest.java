@@ -444,6 +444,20 @@ class EmailComposeStoreUnitTest {
         }
 
         @Test
+        @DisplayName("should keep a document page just opened when 50 eForm pages are waiting, dropping the oldest eForm page")
+        void shouldKeepNewDocumentPage_whenOnlyEFormPagesWaiting() {
+            String oldest = EmailComposeStore.putEForm(session, eFormSettings("1", "1"));
+            for (int i = 0; i < 49; i++) {
+                EmailComposeStore.putEForm(session, eFormSettings(String.valueOf(i + 2), "1"));
+            }
+
+            String document = EmailComposeStore.putDocument(session, 1, documents(15));
+
+            assertThat(EmailComposeStore.get(session, document)).isNotNull();
+            assertThat(EmailComposeStore.get(session, oldest)).isNull();
+        }
+
+        @Test
         @DisplayName("should drop the least recently used eForm page when only eForm pages are waiting")
         void shouldDropLeastRecentlyUsedEForm_whenOnlyEFormPages() {
             String oldest = EmailComposeStore.putEForm(session, eFormSettings("1", "1"));
