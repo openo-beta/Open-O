@@ -396,6 +396,9 @@
                     <security:oscarSec roleName="<%=roleName$%>" objectName="_eChart" rights="r">
                         <a href="javascript:void(0)" onClick="openEChart()" style="color: blue;">[<fmt:message key="admin.admin.eChart"/>]</a>
                     </security:oscarSec>
+                    <% if (StringUtils.isNotBlank(d.getPrefName())) { %>
+                        <span style="margin-left: 1em;"><fmt:message key="tickler.ticklerEdit.preferredName"/>: <%=Encode.forHtmlContent(d.getPrefName().trim())%></span>
+                    <% } %>
                     </td>
                     <th style="background-color: #EEEEFF"><fmt:message key="tickler.ticklerEdit.phoneNumbers"/></th>
                     <td>
