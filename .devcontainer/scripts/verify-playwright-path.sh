@@ -4,7 +4,7 @@
 
 set -e
 
-echo "🔍 Playwright Chromium Path Verification"
+echo "Playwright Chromium Path Verification"
 echo "=========================================="
 echo
 
@@ -16,61 +16,71 @@ NC='\033[0m' # No Color
 
 # Check if we're in the devcontainer
 if [ ! -d "/root/.cache/ms-playwright" ]; then
-    echo -e "${YELLOW}⚠️  Warning: Playwright cache directory not found.${NC}"
+    echo -e "${YELLOW}Warning: Playwright cache directory not found.${NC}"
     echo "This script should be run inside the devcontainer after Playwright is installed."
     exit 1
 fi
 
 # Get Playwright version from Dockerfile
 PLAYWRIGHT_VERSION=$(grep -oP 'playwright@\K[0-9.]+' /workspace/.devcontainer/development/Dockerfile || echo "unknown")
-echo "📦 Playwright version in Dockerfile: ${PLAYWRIGHT_VERSION}"
+echo "Playwright version in Dockerfile: ${PLAYWRIGHT_VERSION}"
 
 # Check installed Chromium directories
 echo
-echo "📁 Installed Chromium directories:"
+echo "Installed Chromium directories:"
 ls -d /root/.cache/ms-playwright/chromium-* 2>/dev/null || echo "  None found"
 
 # Get the latest installed Chromium revision
 LATEST_CHROMIUM=$(ls -d /root/.cache/ms-playwright/chromium-* 2>/dev/null | sort -t- -k2 -n | tail -1 | grep -oP 'chromium-\K[0-9]+' || echo "")
 
 if [ -z "$LATEST_CHROMIUM" ]; then
-    echo -e "${RED}❌ No Chromium installation found${NC}"
+    echo -e "${RED}No Chromium installation found${NC}"
     exit 1
 fi
 
 echo
-echo "🌐 Latest installed Chromium revision: ${LATEST_CHROMIUM}"
+echo "Latest installed Chromium revision: ${LATEST_CHROMIUM}"
 
 # Check if the executable exists
-EXPECTED_PATH="/root/.cache/ms-playwright/chromium-${LATEST_CHROMIUM}/chrome-linux/chrome"
+# Chromium unpacks to chrome-linux64/ on x64 and chrome-linux-arm64/ on arm64
+case "$(uname -m)" in
+    aarch64|arm64) CHROME_DIR="chrome-linux-arm64" ;;
+    *)             CHROME_DIR="chrome-linux64" ;;
+esac
+EXPECTED_PATH="/root/.cache/ms-playwright/chromium-${LATEST_CHROMIUM}/${CHROME_DIR}/chrome"
 if [ -f "$EXPECTED_PATH" ]; then
-    echo -e "${GREEN}✅ Chromium executable found at: ${EXPECTED_PATH}${NC}"
+    echo -e "${GREEN}Chromium executable found at: ${EXPECTED_PATH}${NC}"
 else
-    echo -e "${RED}❌ Chromium executable not found at expected path${NC}"
+    echo -e "${RED}Chromium executable not found at expected path${NC}"
     echo "   Expected: ${EXPECTED_PATH}"
     
     # Try to find alternative paths
     echo
-    echo "🔎 Searching for chrome executable..."
+    echo "Searching for chrome executable..."
     find /root/.cache/ms-playwright/chromium-${LATEST_CHROMIUM} -name "chrome" -type f 2>/dev/null || echo "  Not found"
     exit 1
 fi
 
 # Check .mcp.json configuration
 echo
-echo "⚙️  Checking .mcp.json configuration..."
+echo "Checking .mcp.json configuration..."
 MCP_JSON="/workspace/.mcp.json"
 
 if [ ! -f "$MCP_JSON" ]; then
-    echo -e "${YELLOW}⚠️  .mcp.json not found${NC}"
+    echo -e "${YELLOW}.mcp.json not found${NC}"
     exit 1
 fi
 
 # Extract the current executable path from .mcp.json
-CURRENT_PATH=$(grep -oP '"--executable-path",\s*"\K[^"]+' "$MCP_JSON" || echo "")
+# Parse .mcp.json as JSON and take the argument that follows --executable-path
+CURRENT_PATH=$(node -e '
+const args = require(process.argv[1]).mcpServers?.playwright?.args || [];
+const i = args.indexOf("--executable-path");
+if (i >= 0 && args[i + 1]) console.log(args[i + 1]);
+' "$MCP_JSON" 2>/dev/null || echo "")
 
 if [ -z "$CURRENT_PATH" ]; then
-    echo -e "${YELLOW}⚠️  No executable-path found in .mcp.json${NC}"
+    echo -e "${YELLOW}No executable-path found in .mcp.json${NC}"
     exit 1
 fi
 
@@ -78,9 +88,9 @@ echo "   Current path in .mcp.json: ${CURRENT_PATH}"
 echo "   Expected path: ${EXPECTED_PATH}"
 
 if [ "$CURRENT_PATH" = "$EXPECTED_PATH" ]; then
-    echo -e "${GREEN}✅ Configuration is correct!${NC}"
+    echo -e "${GREEN}Configuration is correct!${NC}"
 else
-    echo -e "${RED}❌ Configuration mismatch!${NC}"
+    echo -e "${RED}Configuration mismatch!${NC}"
     echo
     echo "To fix this, update the executable-path in .mcp.json to:"
     echo "   ${EXPECTED_PATH}"
@@ -91,4 +101,4 @@ else
 fi
 
 echo
-echo -e "${GREEN}🎉 All checks passed!${NC}"
+echo -e "${GREEN}All checks passed!${NC}"

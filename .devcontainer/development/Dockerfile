@@ -39,8 +39,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fonts-roboto fonts-liberation fonts-noto-color-emoji \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js (latest LTS)
-RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+# Install Node.js 24.x LTS, pinned to a major version so rebuilds get the same toolchain
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
     && apt-get install -y nodejs \
     && node --version && npm --version
 
@@ -64,15 +64,15 @@ RUN which npm && npm install -g @anthropic-ai/claude-code @docusaurus/core @docu
 RUN npm install -g @google/gemini-cli
 
 # Install Playwright globally first to ensure it's available
-# Version 1.56.0 has correct Ubuntu 24.04 t64 package names in its dependency list
-RUN npm install -g playwright@1.56.0 && \
-    echo "✅ Playwright CLI installed: $(npx playwright --version)"
+# see .devcontainer/PLAYWRIGHT_SETUP.md for details.
+RUN npm install -g playwright@1.65.1 && \
+    echo "Playwright CLI installed: $(npx playwright --version)"
 
 # Install all Playwright browsers (Chromium, Chrome, Firefox) with system dependencies
 # Note: --with-deps installs required system libraries for each browser
-# Version 1.56.0+ correctly uses t64 package names (e.g., libasound2t64) for Ubuntu 24.04
+# Playwright 1.56.0+ correctly uses t64 package names (e.g., libasound2t64) for Ubuntu 24.04
 RUN npx playwright install --with-deps chromium chrome firefox && \
-    echo "✅ Playwright browsers installed (Chromium, Chrome, Firefox)"
+    echo "Playwright browsers installed (Chromium, Chrome, Firefox)"
 
 # Install pipx and Aider AI coding assistant
 RUN apt-get update && apt-get install -y pipx && \
